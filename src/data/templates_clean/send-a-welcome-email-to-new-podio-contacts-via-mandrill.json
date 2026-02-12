@@ -1,0 +1,1 @@
+{"id":444,"name":"Send a welcome email to new Podio contacts via Mandrill","description":"Every time a new contact is created in Podio, Make will automatically send that person a welcome email via Mandrill.","url":"444-send-a-welcome-email-to-new-podio-contacts-via-mandrill","usedApps":["mandrill","podio"],"usage":6}

@@ -1,0 +1,1 @@
+{"id":8294,"name":"Enrich businesses in HubSpot CRM using Yelp","description":"Make will watch for new companies in HubSpot CRM at regular intervals, search businesses containing in records by phone, and update a company in HubSpot CRM using information found.","url":"8294-enrich-businesses-in-hubspot-crm-using-yelp","usedApps":["hubspotcrm","yelp"],"usage":9}

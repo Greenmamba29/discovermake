@@ -1,0 +1,1 @@
+{"id":8723,"name":"Create Trello cards for new Microsoft 365 Calendar events","description":"Make will watch your Microsoft 365 Calendar at regular intervals and create identical Trello cards for them. ","url":"8723-create-trello-cards-for-new-microsoft-365-calendar-events","usedApps":["microsoft-calendar","trello"],"usage":74}

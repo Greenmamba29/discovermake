@@ -1,0 +1,1 @@
+{"id":1429,"name":"Send push notifications via Google Chrome for new events  in Drip","description":"Every time a certain event occurs in your Drip account, Make will automatically send a push notification via Google Chrome.","url":"1429-send-push-notifications-via-google-chrome-for-new-events-in-drip","usedApps":["drip","chrome"],"usage":2}

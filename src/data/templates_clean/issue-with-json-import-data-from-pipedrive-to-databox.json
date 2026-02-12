@@ -1,0 +1,1 @@
+{"id":4130,"name":"issue with JSON - Import data from PipeDrive to Databox","description":"When a new deal is created in Pipedrive CRM, the data are imported to Databox.","url":"4130-issue-with-json-import-data-from-pipedrive-to-databox","usedApps":["pipedrive","json","databox"],"usage":15}

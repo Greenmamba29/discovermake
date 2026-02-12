@@ -1,0 +1,1 @@
+{"id":3035,"name":"Send new deal event from Pipedrive CRM to Facebook Offline Conversions","description":"When a new deal event is created, the record with the deal event is sent to Facebook Offline Conversions.","url":"3035-send-new-deal-event-from-pipedrive-crm-to-facebook-offline-conversions","usedApps":["pipedrive","facebook-offline-conversions"],"usage":0}

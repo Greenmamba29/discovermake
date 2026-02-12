@@ -1,0 +1,1 @@
+{"id":8166,"name":"Create Todoist tasks from new Clio Manage matters","description":"Every time there is a new matter in Clio Manage, Make will automatically create a new task in Todoist using information received.","url":"8166-create-todoist-tasks-from-new-clio-manage-matters","usedApps":["clio-manage","todoist"],"usage":18}

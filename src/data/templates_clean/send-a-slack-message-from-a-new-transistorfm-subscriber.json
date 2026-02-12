@@ -1,0 +1,1 @@
+{"id":6911,"name":"Send a Slack message from a new Transistor.fm subscriber","description":"Every time a new subscriber is added in Transistor.fm, a messages containing subscription details (email, show name) will be sent via Slack.","url":"6911-send-a-slack-message-from-a-new-transistor-fm-subscriber","usedApps":["transistor-fm","slack"],"usage":0}

@@ -1,0 +1,1 @@
+{"id":10910,"name":"Create bar codes for listings on Etsy and send them in a Front message","description":"Make will retrieve shop listings from Etsy, generate a barcode for them, and send them as attachments in a Front message.","url":"3723-create-bar-codes-for-listings-on-etsy-and-send-them-in-a-front-message","usedApps":["etsy","barcode","builtin","front"],"usage":7}

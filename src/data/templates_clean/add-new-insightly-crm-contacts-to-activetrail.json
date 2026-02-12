@@ -1,0 +1,1 @@
+{"id":1980,"name":"Add new Insightly CRM contacts to ActiveTrail","description":"Every time a new contact is created in Insightly CRM, Make will automatically create a new contact in ActiveTrail.","url":"1980-add-new-insightly-crm-contacts-to-activetrail","usedApps":["activetrail","insightly"],"usage":0}

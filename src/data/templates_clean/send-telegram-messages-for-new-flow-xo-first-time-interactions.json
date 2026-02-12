@@ -1,0 +1,1 @@
+{"id":7205,"name":"Send Telegram messages for new Flow XO first time interactions","description":"When a person interacts with your Flow XO bot for the first time, Make will automatically send a message in Telegram.","url":"7205-send-telegram-messages-for-new-flow-xo-first-time-interactions","usedApps":["flow-xo","telegram"],"usage":8}

@@ -1,0 +1,1 @@
+{"id":8071,"name":"Create SMSC contacts from new Pipedrive CRM contacts","description":"Every time a new contact is created in Pipedrive CRM, Make will automatically add that contact to SMSC.","url":"8071-create-smsc-contacts-from-new-pipedrive-crm-contacts","usedApps":["pipedrive","smsc"],"usage":1}

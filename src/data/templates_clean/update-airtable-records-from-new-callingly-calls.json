@@ -1,0 +1,1 @@
+{"id":8622,"name":"Update Airtable records from new Callingly calls","description":"Every time a new call is received on Callingly, Make will automatically update a record in Airtable. For the example, we will use the \"Sales CRM\" template from airtable.","url":"8622-update-airtable-records-from-new-callingly-calls","usedApps":["callingly","builtin","airtable"],"usage":4}

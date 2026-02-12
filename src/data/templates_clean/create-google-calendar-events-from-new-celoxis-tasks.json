@@ -1,0 +1,1 @@
+{"id":4197,"name":"Create Google Calendar events from new Celoxis tasks","description":"Every time a new Celoxis task is created, Make will automatically create a new event in Google Calendar.","url":"4197-create-google-calendar-events-from-new-celoxis-tasks","usedApps":["celoxis","google-calendar"],"usage":2}

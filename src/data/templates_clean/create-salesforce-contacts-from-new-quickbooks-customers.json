@@ -1,0 +1,1 @@
+{"id":10498,"name":"Create Salesforce contacts from new QuickBooks customers","description":"Whenever you have create new customers in QuickBooks, this automation will retrieve the customers and create contacts for you on Salesforce.","url":"5712-create-salesforce-contacts-from-new-quickbooks-customers","usedApps":["quickbooks","salesforce"],"usage":9}

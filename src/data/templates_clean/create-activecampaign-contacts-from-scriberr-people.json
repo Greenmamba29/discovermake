@@ -1,0 +1,1 @@
+{"id":7798,"name":"Create ActiveCampaign contacts from Scriberr people","description":"Every time a new person is copied in Scriberr, Make will automatically add that person to ActiveCampaign as a new contact or update existing contact.","url":"7798-create-activecampaign-contacts-from-scriberr-people","usedApps":["scriberr","activecampaign"],"usage":1}

@@ -1,0 +1,1 @@
+{"id":11444,"name":"Send new Notion database items as Slack messages","description":"Receive Slack notifications for every new Notion page update.","url":"11444-send-new-notion-database-items-as-slack-messages","usedApps":["notion","slack"],"usage":742}

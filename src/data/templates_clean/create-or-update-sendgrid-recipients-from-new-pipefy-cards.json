@@ -1,0 +1,1 @@
+{"id":2665,"name":"Create or update SendGrid recipients from new Pipefy cards","description":"Every time a new card is created in Pipefy, Make will automatically add or update a recipient in SendGrid.","url":"2665-create-or-update-sendgrid-recipients-from-new-pipefy-cards","usedApps":["pipefy","sendgrid"],"usage":1}

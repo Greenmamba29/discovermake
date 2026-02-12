@@ -1,0 +1,1 @@
+{"id":10127,"name":"Connect Salla to Facebook Conversion API","description":"When there is a new purchase event in Salla, it is automatically sent to Facebook Conversions API.","url":"10127-new-template","usedApps":["salla","facebook-conversions-api"],"usage":485}

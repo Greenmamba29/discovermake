@@ -1,0 +1,1 @@
+{"id":6148,"name":"Send a Slack message from a Resource Guru booking","description":"Every time a Resource Guru booking is created or updated, Make will automatically send a Slack message to a channel or a user.","url":"6148-send-a-slack-message-from-a-resource-guru-booking","usedApps":["resource-guru","builtin","slack"],"usage":5}

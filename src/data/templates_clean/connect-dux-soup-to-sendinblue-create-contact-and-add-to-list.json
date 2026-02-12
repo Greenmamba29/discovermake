@@ -1,0 +1,1 @@
+{"id":4178,"name":"Connect Dux-Soup to Sendinblue: Create contact and add to List","description":"When a webhook from Dux-Soup Turbo is received, a new contact is created or updated in Sendinblue and assigned to the selected List","url":"4178-connect-dux-soup-to-sendinblue-create-contact-and-add-to-list","usedApps":["dux-soup","sendinblue"],"usage":40}

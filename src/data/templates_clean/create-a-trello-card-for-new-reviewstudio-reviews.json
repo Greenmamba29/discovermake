@@ -1,0 +1,1 @@
+{"id":5700,"name":"Create a Trello card for new ReviewStudio reviews","description":"Every time a new ReviewStudio review is received, Make will automatically create a card in the specified Trello board.","url":"5700-create-a-trello-card-for-new-reviewstudio-reviews","usedApps":["reviewstudio","trello"],"usage":1}

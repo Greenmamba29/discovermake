@@ -1,0 +1,1 @@
+{"id":3241,"name":"Add new SendFox contacts to a Google Sheets spreadsheet as a new row","description":"Every time a new contact is added to SendFox, Make will automatically add that contact to a new row in a Google Sheets spreadsheet.","url":"3241-add-new-sendfox-contacts-to-a-google-sheets-spreadsheet-as-a-new-row","usedApps":["sendfox","google-sheets"],"usage":11}

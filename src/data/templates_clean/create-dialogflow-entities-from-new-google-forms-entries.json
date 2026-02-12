@@ -1,0 +1,1 @@
+{"id":4433,"name":"Create Dialogflow entities from new Google Forms entries","description":"Every time a new entry is added to a Google Form, Make will automatically create a new entity in Google Cloud Dialogflow.","url":"4433-create-dialogflow-entities-from-new-google-forms-entries","usedApps":["google-forms","google-cloud-dialogflow"],"usage":8}

@@ -1,0 +1,1 @@
+{"id":5536,"name":"Add new Braintree customers to the contact list in Avochato","description":"Every time a new Braintree customer is created, Make will automatically create a contact in Avochato.","url":"5536-add-new-braintree-customers-to-the-contact-list-in-avochato","usedApps":["braintree","avochato"],"usage":2}

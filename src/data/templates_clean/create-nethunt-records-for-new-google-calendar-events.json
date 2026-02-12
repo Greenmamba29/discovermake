@@ -1,0 +1,1 @@
+{"id":8456,"name":"Create NetHunt records for new Google Calendar events","description":"Every time a new event is added to your Google Calendar, Make will automatically create a new record in NetHunt.","url":"8456-create-nethunt-records-for-new-google-calendar-events","usedApps":["google-calendar","nethunt"],"usage":9}

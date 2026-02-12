@@ -1,0 +1,1 @@
+{"id":3009,"name":"Send a new contact from Harvest to Google Contacts","description":"When a new contact is made in Harvest, a new contacts with ist credentials is made in Google Contacts.","url":"3009-send-a-new-contact-from-harvest-to-google-contacts","usedApps":["harvest","google-contacts"],"usage":2}

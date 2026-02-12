@@ -1,0 +1,1 @@
+{"id":7865,"name":"Add UseINBOX contacts from new Typeform responses","description":"Make will watch for new Typeform responses at regular intervals and add contacts to a UseINBOX mailing list using information from the response.","url":"7865-add-useinbox-contacts-from-new-typeform-responses","usedApps":["typeform","useinbox"],"usage":1}

@@ -1,0 +1,1 @@
+{"id":13616,"name":"Track user events in Mixpanel and send emails with SendGrid","description":"Automatically track user events in Mixpanel and send personalized emails via SendGrid. Enhance engagement by monitoring actions and communicating effectively.","url":"13616-track-user-events-in-mixpanel-and-send-emails-with-sendgrid","usedApps":["mixpanel","sendgrid"],"usage":17}

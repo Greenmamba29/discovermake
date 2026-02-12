@@ -1,0 +1,1 @@
+{"id":5332,"name":"Create a customer and send a survey in Retently from a new paid Stripe invoice","description":"Every time a Stripe invoice is paid, Make will automatically create a customer and send a survey in Retently.","url":"5332-create-a-customer-and-send-a-survey-in-retently-from-a-new-paid-stripe-invoice","usedApps":["stripe","retently"],"usage":3}

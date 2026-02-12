@@ -1,0 +1,1 @@
+{"id":6920,"name":"Create new events in Timely for new time entries in Toggl","description":"Every time a new time entry in Toggl is created, Make will automatically calculate the needed values and add that time entry to Timely as a new event.","url":"6920-create-new-events-in-timely-for-new-time-entries-in-toggl","usedApps":["toggl","math","util","timelyapp"],"usage":24}

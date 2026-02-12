@@ -1,0 +1,1 @@
+{"id":5718,"name":"Send a Email notification for your new schedules in Deputy","description":"Every time you received a new schedule in Deputy,  Make will automatically send an email to the specified address.","url":"5718-send-a-email-notification-for-your-new-schedules-in-deputy","usedApps":["deputy","email"],"usage":2}

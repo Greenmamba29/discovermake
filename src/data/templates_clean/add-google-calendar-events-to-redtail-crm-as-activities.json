@@ -1,0 +1,1 @@
+{"id":9115,"name":"Add Google Calendar events to Redtail CRM as activities","description":"Make will watch for new events in your specified Google Calendar and create activities in Redtail CRM using information received.","url":"9115-add-google-calendar-events-to-redtail-crm-as-activities","usedApps":["google-calendar","builtin","redtail-crm"],"usage":3}

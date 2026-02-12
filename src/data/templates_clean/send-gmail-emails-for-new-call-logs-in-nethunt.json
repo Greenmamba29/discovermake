@@ -1,0 +1,1 @@
+{"id":8457,"name":"Send Gmail emails for new call logs in NetHunt","description":"Every time a new call log is created in NetHunt, Make will automatically send an email via Gmail.","url":"8457-send-gmail-emails-for-new-call-logs-in-nethunt","usedApps":["nethunt","google-email"],"usage":3}

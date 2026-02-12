@@ -1,0 +1,1 @@
+{"id":3724,"name":"Create Evernote notes from Front conversations","description":"Every time a new conversation is triggered on Front, Make will automatically add a note in Evernote.","url":"3724-create-evernote-notes-from-front-conversations","usedApps":["front","evernote"],"usage":1}

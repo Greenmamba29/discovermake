@@ -1,0 +1,1 @@
+{"id":13519,"name":"Send a Telegram reply message when data is receive from your app","description":"Automatically send a Telegram reply message when data is transmitted via HTTP, enhancing communication and response efficiency.","url":"13519-send-a-telegram-reply-message-when-data-is-receive-from-your-app","usedApps":["http","builtin","telegram"],"usage":10}

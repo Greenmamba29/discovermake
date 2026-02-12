@@ -1,0 +1,1 @@
+{"id":4970,"name":"Create a Slack message when an Asana task (or subtask) due date is added (or changed)","description":"Every time an Asana task (or subtask) due date is added or changed, a Slack message is created.","url":"4970-create-a-slack-message-when-an-asana-task-or-subtask-due-date-is-added-or-changed","usedApps":["asana","slack"],"usage":27}

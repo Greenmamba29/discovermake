@@ -1,0 +1,1 @@
+{"id":4443,"name":"Send an email to every Corsizio attendee","description":"This Template helps you send an email invitation to your Corsizio attendees. At a regular time interval, Make will automatically send a message to all your attendees via Gmail.","url":"4443-send-an-email-to-every-corsizio-attendee","usedApps":["corsizio","google-email"],"usage":9}

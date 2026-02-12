@@ -1,0 +1,1 @@
+{"id":5790,"name":"Add Kanbanize tasks list to Airtable","description":"Import all or selected fields from Kanbanize tasks list into Airtable records. In order for this scenario to work your table has to look like this [example](https://airtable.com/shrjIy710TsELznbj).","url":"5790-add-kanbanize-tasks-list-to-airtable","usedApps":["kanbanize","airtable"],"usage":1}

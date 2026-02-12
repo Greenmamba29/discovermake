@@ -1,0 +1,1 @@
+{"id":8790,"name":"Create Google Contacts from new Thankster addresses","description":"Every time a new address is created in Thankster, Make will automatically create a new contact in Google Contacts.","url":"8790-create-google-contacts-from-new-thankster-addresses","usedApps":["thankster","google-contacts"],"usage":2}

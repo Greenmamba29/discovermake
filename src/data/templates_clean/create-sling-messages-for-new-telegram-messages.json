@@ -1,0 +1,1 @@
+{"id":7730,"name":"Create Sling messages for new Telegram messages","description":"Every time a new message appears in your Telegram, Make will forward it to your Sling.","url":"7730-create-sling-messages-for-new-telegram-messages","usedApps":["telegram","sling"],"usage":2}

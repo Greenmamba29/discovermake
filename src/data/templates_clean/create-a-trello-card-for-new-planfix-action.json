@@ -1,0 +1,1 @@
+{"id":5628,"name":"Create a Trello card for new Planfix action","description":"Every time a new event in the Planfix scenario is сreated, Make will automatically create a Trello card.","url":"5628-create-a-trello-card-for-new-planfix-action","usedApps":["planfix","trello"],"usage":9}

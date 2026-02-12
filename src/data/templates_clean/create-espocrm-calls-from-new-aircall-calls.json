@@ -1,0 +1,1 @@
+{"id":4299,"name":"Create EspoCRM calls from new Aircall calls","description":"Every time a call is received on Aircall, Make will automatically create a call in EspoCRM.","url":"4299-create-espocrm-calls-from-new-aircall-calls","usedApps":["aircall","espo-crm"],"usage":10}

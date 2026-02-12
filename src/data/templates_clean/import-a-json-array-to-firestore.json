@@ -1,0 +1,1 @@
+{"id":4752,"name":"Import a JSON array to Firestore","description":"This template shows how to import a JSON array of objects into a Firestore collection. The scenario can be setup to run periodically (every hour, day, week, or month).","url":"4752-import-a-json-array-to-firestore","usedApps":["json","builtin","google-cloud-firestore"],"usage":199}

@@ -1,0 +1,1 @@
+{"id":7107,"name":"Activates Virtual button for new alert in Pingdom","description":"Every time you have a new alert in Pingdom, Make will automatically activate the button in Virtual Buttons.","url":"7107-activates-virtual-button-for-new-alert-in-pingdom","usedApps":["pingdom","virtual-buttons"],"usage":1}

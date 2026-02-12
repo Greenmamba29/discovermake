@@ -1,0 +1,1 @@
+{"id":7482,"name":"Create Zoho CRM contacts for new Syncro customers","description":"Every time a new customer is added to your Syncro, Make will create identical contacts in your Zoho CRM.","url":"7482-create-zoho-crm-contacts-for-new-syncro-customers","usedApps":["syncro","zohocrm"],"usage":4}

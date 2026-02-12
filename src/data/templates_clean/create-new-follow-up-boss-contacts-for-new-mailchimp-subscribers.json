@@ -1,0 +1,1 @@
+{"id":5904,"name":"Create new Follow Up Boss contacts for new Mailchimp subscribers","description":"Every time a new Mailchimp subscriber is received, Make will automatically create Contact in Follow Up Boss.","url":"5904-create-new-follow-up-boss-contacts-for-new-mailchimp-subscribers","usedApps":["mailchimp","follow-up-boss"],"usage":5}

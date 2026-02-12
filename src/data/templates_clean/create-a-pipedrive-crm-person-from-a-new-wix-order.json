@@ -1,0 +1,1 @@
+{"id":5678,"name":"Create a Pipedrive CRM person from a new Wix order","description":"Every time a new Wix order is created, Make will automatically create a Pipedrive CRM person (provided it doesn't already exist).","url":"5678-create-a-pipedrive-crm-person-from-a-new-wix-order","usedApps":["wix","pipedrive"],"usage":8}

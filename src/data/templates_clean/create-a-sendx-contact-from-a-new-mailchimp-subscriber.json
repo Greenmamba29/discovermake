@@ -1,0 +1,1 @@
+{"id":5394,"name":"Create a SendX contact from a new Mailchimp subscriber","description":"Every time a new Mailchimp subscriber is created, Make will automatically create a SendX contact.","url":"5394-create-a-sendx-contact-from-a-new-mailchimp-subscriber","usedApps":["mailchimp","sendx"],"usage":2}

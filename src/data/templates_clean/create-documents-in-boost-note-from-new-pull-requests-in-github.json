@@ -1,0 +1,1 @@
+{"id":7519,"name":"Create documents in Boost Note from new pull requests in GitHub","description":"Every time a you have new pull requests in GitHub, Make will automatically create a new documents in Boost Note.","url":"7519-create-documents-in-boost-note-from-new-pull-requests-in-github","usedApps":["github","boost-hub"],"usage":3}

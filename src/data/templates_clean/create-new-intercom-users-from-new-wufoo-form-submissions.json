@@ -1,0 +1,1 @@
+{"id":1874,"name":"Create new Intercom users from new Wufoo form submissions","description":"Every time someone fills out your Wufoo form, Make will automatically create a new user in Intercom.","url":"1874-create-new-intercom-users-from-new-wufoo-form-submissions","usedApps":["wufoo","intercom"],"usage":3}

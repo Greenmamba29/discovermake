@@ -1,0 +1,1 @@
+{"id":7330,"name":"Create Fleep messages for new BambooHR employees","description":"Every time a new employee is added to your BambooHR, Make will create a Fleep message.","url":"7330-create-fleep-messages-for-new-bamboohr-employees","usedApps":["bamboohr","fleep"],"usage":0}

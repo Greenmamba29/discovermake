@@ -1,0 +1,1 @@
+{"id":4032,"name":"Create Freshbooks invoices from 1CRM sales orders","description":"Every time a new sales order is created on 1CRM, Make will automatically create a new FreshBooks invoice.","url":"4032-create-freshbooks-invoices-from-1crm-sales-orders","usedApps":["onecrm","freshbooks"],"usage":4}

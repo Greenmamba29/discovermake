@@ -1,0 +1,1 @@
+{"id":12743,"name":"Create a new Sendinblue contact for every updated site in Webflow","description":"Automatically add a new Sendinblue contact whenever a site is updated in Webflow, ensuring your contact list stays current with site changes.","url":"12743-create-a-new-sendinblue-contact-for-every-updated-site-in-webflow","usedApps":["webflow","sendinblue"],"usage":64}

@@ -1,0 +1,1 @@
+{"id":3869,"name":"Send new Freshdesk ticket data to Databox","description":"When a new ticket comes to Freshdesk, Make will automatically send the ticket data to Databox.","url":"3869-send-new-freshdesk-ticket-data-to-databox","usedApps":["freshdesk","databox"],"usage":40}

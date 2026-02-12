@@ -1,0 +1,1 @@
+{"id":4782,"name":"Create Okta accounts for new G Suite users","description":"Every time G Suite users are added to your organization, Make will automatically create an account for them in Okta.","url":"4782-create-okta-accounts-for-new-g-suite-users","usedApps":["google-g-suite","okta"],"usage":7}

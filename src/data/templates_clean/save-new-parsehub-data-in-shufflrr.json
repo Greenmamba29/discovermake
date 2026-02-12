@@ -1,0 +1,1 @@
+{"id":7070,"name":"Save new ParseHub data in Shufflrr","description":"This scenario can be run at specific intervals to retrieve the latest data of a ParseHub project. Make will automatically extract, convert and save the data in specified Shufflrr folder.","url":"7070-save-new-parsehub-data-in-shufflrr","usedApps":["parsehub","cloudconvert","archive","shufflrr"],"usage":2}

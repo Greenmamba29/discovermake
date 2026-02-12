@@ -1,0 +1,1 @@
+{"id":3309,"name":"Send Skype message for Google Calendar New Events","description":"Every time a new event is added to a selected Google calendar, Make will automatically send a new message in Skype.","url":"3309-send-skype-message-for-google-calendar-new-events","usedApps":["google-calendar","skype"],"usage":8}

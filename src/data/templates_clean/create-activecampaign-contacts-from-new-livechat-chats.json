@@ -1,0 +1,1 @@
+{"id":8216,"name":"Create ActiveCampaign contacts from new LiveChat chats","description":"Every time a new chat incoming in Livechat, Make will automatically create or update a contact in ActiveCampaign.","url":"8216-create-activecampaign-contacts-from-new-livechat-chats","usedApps":["livechat","activecampaign"],"usage":1}

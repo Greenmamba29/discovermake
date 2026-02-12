@@ -1,0 +1,1 @@
+{"id":7349,"name":"Send Slack messages for new missed calls in Placetel","description":"Every time a new call is missed in Placetel, Make will automatically send a reminders message in Slack.","url":"7349-send-slack-messages-for-new-missed-calls-in-placetel","usedApps":["placetel","slack"],"usage":10}

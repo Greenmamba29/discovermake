@@ -1,0 +1,1 @@
+{"id":2996,"name":"Send a message to Telegram Bot about a new client in Harvest","description":"When a new task is created in Harvest, a new message about this event is sent to Telegram Bot.","url":"2996-send-a-message-to-telegram-bot-about-a-new-client-in-harvest","usedApps":["harvest","telegram"],"usage":0}

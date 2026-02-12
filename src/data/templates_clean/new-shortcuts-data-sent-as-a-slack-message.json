@@ -1,0 +1,1 @@
+{"id":8304,"name":"New Shortcuts data sent as a Slack message","description":"When a special Shortcast is triggered on your iPhone or iPad, the Make automatically sends a message to Slack with the details of the Shortcast.","url":"8304-new-shortcuts-data-sent-as-a-slack-message","usedApps":["shortcuts","slack"],"usage":25}

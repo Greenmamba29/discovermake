@@ -1,0 +1,1 @@
+{"id":3259,"name":"Create Pipedrive CRM deals when a new Zoho Sign is completed","description":"Every time a new document is completed with Zoho Sign, Make will automatically add a new deal in Pipedrive CRM.","url":"3259-create-pipedrive-crm-deals-when-a-new-zoho-sign-is-completed","usedApps":["zoho-sign","pipedrive"],"usage":6}

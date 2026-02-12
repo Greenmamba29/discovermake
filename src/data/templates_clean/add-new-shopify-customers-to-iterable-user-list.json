@@ -1,0 +1,1 @@
+{"id":7753,"name":"Add new Shopify customers to Iterable user list","description":"Every time a new customer is created in Shopify, Make will automatically add that customer to Iterable user list of your choice.","url":"7753-add-new-shopify-customers-to-iterable-user-list","usedApps":["shopify","iterable"],"usage":3}

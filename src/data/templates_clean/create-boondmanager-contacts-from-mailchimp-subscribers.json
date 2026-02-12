@@ -1,0 +1,1 @@
+{"id":7504,"name":"Create BoondManager contacts from Mailchimp subscribers","description":"Every time a new subscriber added to a speified list in Mailchimp, Make will automatically create a contact in BoondManager.","url":"7504-create-boondmanager-contacts-from-mailchimp-subscribers","usedApps":["mailchimp","boondmanager"],"usage":4}

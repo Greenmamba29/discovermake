@@ -1,0 +1,1 @@
+{"id":4691,"name":"Create Mailchimp subscribers from Neto customers","description":"Every time a new customer is created in Neto, Make will automatically create a new subscriber in Mailchimp.","url":"4691-create-mailchimp-subscribers-from-neto-customers","usedApps":["neto","mailchimp"],"usage":5}

@@ -1,0 +1,1 @@
+{"id":4437,"name":"Send a Go4clients Email to a Lead Created in Copper","description":"Every time a new lead is created in Copper, Make will automatically send an email with Go4clients.","url":"4437-send-a-go4clients-email-to-a-lead-created-in-copper","usedApps":["prosperworks","go4clients"],"usage":0}

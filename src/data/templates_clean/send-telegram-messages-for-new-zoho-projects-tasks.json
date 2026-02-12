@@ -1,0 +1,1 @@
+{"id":7843,"name":"Send Telegram messages for new Zoho Projects tasks","description":"Make will watch for new tasks in a specified project in Zoho Projects at regular intervals and send a message to a selected Telegram channel/chat.","url":"7843-send-telegram-messages-for-new-zoho-projects-tasks","usedApps":["zoho-projects","telegram"],"usage":10}

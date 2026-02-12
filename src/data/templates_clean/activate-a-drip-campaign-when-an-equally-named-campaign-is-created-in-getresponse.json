@@ -1,0 +1,1 @@
+{"id":1427,"name":"Activate a Drip campaign when an equally-named campaign is created in GetResponse","description":"Every time a new campaign is created in GetResponse, Make will automatically activate a campaign with the same name in Drip.","url":"1427-activate-a-drip-campaign-when-an-equally-named-campaign-is-created-in-getresponse","usedApps":["drip","getresponse"],"usage":1}

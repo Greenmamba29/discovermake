@@ -1,0 +1,1 @@
+{"id":4020,"name":"Send emails when RepairShopr tickets are resolved","description":"Every time a ticket is resolved in RepairShopr, Make will automatically send a personalized email to the customer via Gmail.","url":"4020-send-emails-when-repairshopr-tickets-are-resolved","usedApps":["repairshopr","google-email"],"usage":1}

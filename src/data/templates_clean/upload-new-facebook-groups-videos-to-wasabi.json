@@ -1,0 +1,1 @@
+{"id":2461,"name":"Upload new Facebook Groups videos to Wasabi","description":"Every time a new video is posted in your Facebook group, Make will automatically upload that video to a specified Wasabi folder.","url":"2461-upload-new-facebook-groups-videos-to-wasabi","usedApps":["facebook-groups","http","wasabi"],"usage":4}

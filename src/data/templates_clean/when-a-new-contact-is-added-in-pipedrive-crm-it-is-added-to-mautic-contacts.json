@@ -1,0 +1,1 @@
+{"id":3384,"name":"When a new contact is added in Pipedrive CRM it is added to Mautic contacts","description":"Every time a new contact is created in Pipedrive CRM, Make will automatically create or update a contact in Mautic.","url":"3384-when-a-new-contact-is-added-in-pipedrive-crm-it-is-added-to-mautic-contacts","usedApps":["pipedrive","mautic"],"usage":1}

@@ -1,0 +1,1 @@
+{"id":5328,"name":"Create a customer and send a survey in Retently from a new Chargebee invoice","description":"Every time a new Chargebee invoice is created, Make will automatically create a customer and send a survey in Retently.","url":"5328-create-a-customer-and-send-a-survey-in-retently-from-a-new-chargebee-invoice","usedApps":["chargebee","retently"],"usage":1}

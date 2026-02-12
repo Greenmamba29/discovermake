@@ -1,0 +1,1 @@
+{"id":5086,"name":"Create a Vision6 contact for new Google Contacts contact","description":"Every time a new contact is added to Google Contacts, Make will automatically create a contact in Vision6.","url":"5086-create-a-vision6-contact-for-new-google-contacts-contact","usedApps":["google-contacts","vision6"],"usage":0}

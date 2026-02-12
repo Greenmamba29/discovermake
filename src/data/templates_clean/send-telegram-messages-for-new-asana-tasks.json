@@ -1,0 +1,1 @@
+{"id":3423,"name":"Send Telegram messages for new Asana tasks","description":"Every time a new task is added to your Asana project, Make will automatically send a message to a selected chat in Telegram.","url":"3423-send-telegram-messages-for-new-asana-tasks","usedApps":["asana","telegram"],"usage":296}

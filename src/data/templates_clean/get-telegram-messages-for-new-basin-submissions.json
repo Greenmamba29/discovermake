@@ -1,0 +1,1 @@
+{"id":5665,"name":"Get Telegram messages for new Basin submissions","description":"This scenario lets you see information on unread submissions from Basin in Telegram regularly with a possibility to set up a schedule.","url":"5665-get-telegram-messages-for-new-basin-submissions","usedApps":["basin","telegram"],"usage":5}

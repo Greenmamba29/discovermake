@@ -1,0 +1,1 @@
+{"id":8604,"name":"Send Slybroadcast campaigns with audio files for Livestorm events started","description":"Every time an event starts in your Livestorm, Interomat will automatically send a SLybroadcast campaign with an audiofile.","url":"8604-send-slybroadcast-campaigns-with-audio-files-for-livestorm-events-started","usedApps":["livestorm","slybroadcast"],"usage":1}

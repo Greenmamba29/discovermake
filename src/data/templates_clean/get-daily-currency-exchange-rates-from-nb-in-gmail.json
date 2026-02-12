@@ -1,0 +1,1 @@
+{"id":6619,"name":"Get daily currency exchange rates from ČNB in Gmail","description":"Make will retrieve relevant currency rates on Czech koruna on schedule which you can set up yourself and send it to the recepients you want.","url":"6619-get-daily-currency-exchange-rates-from-cnb-in-gmail","usedApps":["kurzy-cnb","util","email"],"usage":3}

@@ -1,0 +1,1 @@
+{"id":5192,"name":"Send Twilio SMS messages for new Salesforce contacts","description":"Every time a new contact is created in Salesforce, Make will automatically send an SMS message via Twilio.","url":"5192-send-twilio-sms-messages-for-new-salesforce-contacts","usedApps":["salesforce","twilio"],"usage":24}

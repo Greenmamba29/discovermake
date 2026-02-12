@@ -1,0 +1,1 @@
+{"id":4556,"name":"Send a Call with drip from Go4Clients for new Facebook Lead Ads","description":"Every time a new Facebook lead Ads Is created, Make will trigger a Drip Call with Go4Clients.","url":"4556-send-a-call-with-drip-from-go4clients-for-new-facebook-lead-ads","usedApps":["facebook-lead-ads","go4clients"],"usage":1}

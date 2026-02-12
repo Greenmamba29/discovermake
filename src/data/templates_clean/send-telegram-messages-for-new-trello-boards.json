@@ -1,0 +1,1 @@
+{"id":2121,"name":"Send Telegram messages for new Trello boards","description":"Every time a new board is created in Trello, Make will automatically send a message in Telegram.","url":"2121-send-telegram-messages-for-new-trello-boards","usedApps":["trello","telegram"],"usage":28}

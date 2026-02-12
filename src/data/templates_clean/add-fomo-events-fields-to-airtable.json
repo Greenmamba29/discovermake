@@ -1,0 +1,1 @@
+{"id":5791,"name":"Add Fomo events fields to Airtable","description":"Import all or selected fields from Fomo event into Airtable records. In order for this scenario to work your table has to look like this [example](https://airtable.com/shrivouL6qRZD1sGK).","url":"5791-add-fomo-events-fields-to-airtable","usedApps":["fomo","airtable"],"usage":0}

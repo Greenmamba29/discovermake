@@ -1,0 +1,1 @@
+{"id":8619,"name":"Log your Callingly call history in Google Sheets","description":"Every time a new call is received on Callingly, Make will automatically store information about the call in Google Sheets.","url":"8619-log-your-callingly-call-history-in-google-sheets","usedApps":["callingly","google-sheets"],"usage":7}

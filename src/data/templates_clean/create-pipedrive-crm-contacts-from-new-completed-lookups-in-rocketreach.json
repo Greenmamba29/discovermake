@@ -1,0 +1,1 @@
+{"id":8463,"name":"Create Pipedrive CRM contacts from new completed lookups in RocketReach","description":"Every time a new lookup has been completed in RocketReach, Make will automatically create a new contact in Pipedrive CRM.","url":"8463-create-pipedrive-crm-contacts-from-new-completed-lookups-in-rocketreach","usedApps":["rocketreach","pipedrive"],"usage":5}

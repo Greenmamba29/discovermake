@@ -1,0 +1,1 @@
+{"id":1067,"name":"Send push notifications via Apple Safari for new RSS feed posts","description":"Every time a new post is added to a watched RSS feed, Make will automatically send a push notification via Apple Safari.","url":"1067-send-push-notifications-via-apple-safari-for-new-rss-feed-posts","usedApps":["rss","safari"],"usage":50}

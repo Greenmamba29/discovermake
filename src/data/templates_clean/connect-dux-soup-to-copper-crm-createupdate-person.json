@@ -1,0 +1,1 @@
+{"id":4180,"name":"Connect Dux-Soup to Copper CRM: Create/Update Person","description":"When a webhook from Dux-Soup Turbo is received, a person in Copper is created or updated","url":"4180-connect-dux-soup-to-copper-crm-create-update-person","usedApps":["dux-soup","prosperworks","builtin"],"usage":3}

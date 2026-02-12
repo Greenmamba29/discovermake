@@ -1,0 +1,1 @@
+{"id":7589,"name":"Add new MailerLite subscribers from Encharge people","description":"Every time a new person has been added to MailerLite, Make will automatically add a new subscriber to a specified group in MailerLite.","url":"7589-add-new-mailerlite-subscribers-from-encharge-people","usedApps":["encharge","mailerlite"],"usage":1}

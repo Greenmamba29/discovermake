@@ -1,0 +1,1 @@
+{"id":7511,"name":"Add items to a Yeeflow list from new Google Forms responses","description":"Every time there is a new Google Forms response submitted, Make will automatically add a new item to a specified Yeeflow list.","url":"7511-add-items-to-a-yeeflow-list-from-new-google-forms-responses","usedApps":["google-forms","yeeflow"],"usage":2}

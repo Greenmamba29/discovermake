@@ -1,0 +1,1 @@
+{"id":4390,"name":"Identify Segment users from Autopilot events","description":"Every time a new contact is created in Autopilot, Make will automatically identify a user in Segment.","url":"4390-identify-segment-users-from-autopilot-events","usedApps":["autopilot","segment"],"usage":1}

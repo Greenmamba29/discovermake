@@ -1,0 +1,1 @@
+{"id":3772,"name":"Track new Stripe payments as Mixpanel events","description":"Every time a new payment charge has succeeded in Stripe, Make will automatically track this event in Mixpanel.","url":"3772-track-new-stripe-payments-as-mixpanel-events","usedApps":["stripe","mixpanel"],"usage":54}

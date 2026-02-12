@@ -1,0 +1,1 @@
+{"id":8845,"name":"Update the ticket metric in Databox with the number of Zendesk tickets created on the previous day","description":"https://hook.make.com/generic-webhook-placeholder","url":"8845-update-the-ticket-metric-in-databox-with-the-number-of-zendesk-tickets-created-on-the-previous-day","usedApps":["zendesk","util","databox"],"usage":8}

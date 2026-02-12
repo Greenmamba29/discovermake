@@ -1,0 +1,1 @@
+{"id":4560,"name":"Send SignNow invites for new Stripe payments","description":"Every time a new payment is successfully charged in Stripe, Make will automatically create a document in SignNow and send an invite to the customer.","url":"4560-send-signnow-invites-for-new-stripe-payments","usedApps":["stripe","signnow"],"usage":23}

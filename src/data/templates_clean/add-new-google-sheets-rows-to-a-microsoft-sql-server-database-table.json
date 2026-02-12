@@ -1,0 +1,1 @@
+{"id":6693,"name":"Add new Google Sheets rows to a Microsoft SQL Server database table","description":"Use this template to automatically insert a row into a Microsoft SQL Server database table when a new Google Sheets spreadsheet row is added.","url":"6693-add-new-google-sheets-rows-to-a-microsoft-sql-server-database-table","usedApps":["google-sheets","mssql"],"usage":36}

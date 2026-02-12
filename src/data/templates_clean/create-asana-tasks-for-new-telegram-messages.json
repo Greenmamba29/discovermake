@@ -1,0 +1,1 @@
+{"id":3561,"name":"Create Asana tasks for new Telegram messages.","description":"Every time a new message is sent to a specified chat/channel on Telegram, Make will automatically create a new task on Asana.","url":"3561-create-asana-tasks-for-new-telegram-messages","usedApps":["telegram","asana"],"usage":251}

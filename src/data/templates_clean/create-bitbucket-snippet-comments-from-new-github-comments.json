@@ -1,0 +1,1 @@
+{"id":1132,"name":"Create Bitbucket snippet comments from new GitHub comments","description":"Every time a new comment is added in GitHub, Make will automatically create a new comment on a specified Bitbucket snippet.","url":"1132-create-bitbucket-snippet-comments-from-new-github-comments","usedApps":["github","bitbucket"],"usage":2}

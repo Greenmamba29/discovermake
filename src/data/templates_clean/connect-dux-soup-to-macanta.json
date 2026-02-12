@@ -1,0 +1,1 @@
+{"id":7362,"name":"Connect Dux-Soup to Macanta","description":"When a webhook from Dux-Soup Turbo is received, a new contact is created in Macanta.","url":"7362-connect-dux-soup-to-macanta","usedApps":["dux-soup","macanta"],"usage":0}

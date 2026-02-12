@@ -1,0 +1,1 @@
+{"id":7224,"name":"Save new Google Contacts to FogBugz as a new users","description":"Every time when a new contact is created in Google Contacts, Make will automatically save that contact to FogBugz as a new user.","url":"7224-save-new-google-contacts-to-fogbugz-as-a-new-users","usedApps":["google-contacts","fogbugz"],"usage":1}

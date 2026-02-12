@@ -1,0 +1,1 @@
+{"id":3655,"name":"Create Xero invoice and contacts from Zoho Invoice","description":"Every time a new invoice is created on Zoho Invoice, Make will automatically get the details of the contact in the invoice, and create a new contact and invoice in Xero.","url":"3655-create-xero-invoice-and-contacts-from-zoho-invoice","usedApps":["zoho-invoice","xero"],"usage":27}

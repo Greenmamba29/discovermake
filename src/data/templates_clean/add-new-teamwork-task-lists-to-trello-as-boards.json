@@ -1,0 +1,1 @@
+{"id":1148,"name":"Add new Teamwork task lists to Trello as boards","description":"Every time a new task list is created in a Teamwork task list, Make will automatically create a new board in Trello.","url":"1148-add-new-teamwork-task-lists-to-trello-as-boards","usedApps":["teamwork","trello"],"usage":8}

@@ -1,0 +1,1 @@
+{"id":8577,"name":"Add new JIRA Service Desk requests to Google Sheets","description":"Every time a new request is added to your JIRA Service Desk, Make will automatically create the corresponding record in Google Sheets.","url":"8577-add-new-jira-service-desk-requests-to-google-sheets","usedApps":["jira-service-desk","google-sheets"],"usage":21}

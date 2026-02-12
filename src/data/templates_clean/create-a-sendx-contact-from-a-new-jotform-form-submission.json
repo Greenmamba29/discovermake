@@ -1,0 +1,1 @@
+{"id":5389,"name":"Create a SendX contact from a new Jotform form submission","description":"Every time a Jotform form is submitted, Make will automatically create a SendX contact.","url":"5389-create-a-sendx-contact-from-a-new-jotform-form-submission","usedApps":["jotform","sendx"],"usage":3}

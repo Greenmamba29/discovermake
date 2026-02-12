@@ -1,0 +1,1 @@
+{"id":3078,"name":"Create a new product in Shopify with data stored in a row in Google Sheets","description":"When a new row with a product is added in Google Sheets, a new product is created in Shopify.","url":"3078-create-a-new-product-in-shopify-with-data-stored-in-a-row-in-google-sheets","usedApps":["google-sheets","shopify"],"usage":426}

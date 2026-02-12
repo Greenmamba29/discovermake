@@ -1,0 +1,1 @@
+{"id":4835,"name":"Save attachments from new Email to Onedrive","description":"Every time you receive an email with an attachment, Make will automatically save that attachment to a specified folder in OneDrive. The attachment will be saved in its original format.","url":"4835-save-attachments-from-new-email-to-onedrive","usedApps":["email","builtin","onedrive"],"usage":788}

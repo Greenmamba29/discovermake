@@ -1,0 +1,1 @@
+{"id":5693,"name":"Create Asana tasks from emails matching certain criteria","description":"If your email subject line matches criteria that you set up, Make will create tasks on Asana for you automatically using the information from the email.","url":"5693-create-asana-tasks-from-emails-matching-certain-criteria","usedApps":["google-email","asana"],"usage":71}

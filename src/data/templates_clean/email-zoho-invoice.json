@@ -1,0 +1,1 @@
+{"id":4794,"name":"Email Zoho Invoice","description":"This templates retrieves all your new draft invoices from Zoho and emails them to the specified customers. The body of each email can be dynamically customised for your needs.","url":"4794-email-zoho-invoice","usedApps":["zoho-invoice","zoho-invoice"],"usage":26}

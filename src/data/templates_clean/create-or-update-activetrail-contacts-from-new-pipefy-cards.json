@@ -1,0 +1,1 @@
+{"id":2666,"name":"Create or update ActiveTrail contacts from new Pipefy cards","description":"Every time a new card is created in Pipefy, Integrormat will automatically create or update a contact in ActiveTrail.","url":"2666-create-or-update-activetrail-contacts-from-new-pipefy-cards","usedApps":["pipefy","activetrail"],"usage":1}

@@ -1,0 +1,1 @@
+{"id":7831,"name":"Create new LimbleCMMS tasks for new ClickUp tasks","description":"Every time a new task is created in ClickUp, Make will automatically create a new task in LimbleCMMS.","url":"7831-create-new-limblecmms-tasks-for-new-clickup-tasks","usedApps":["clickup","limble-cmms"],"usage":2}

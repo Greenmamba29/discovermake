@@ -1,0 +1,1 @@
+{"id":2550,"name":"Create a new Google Sheets row for every answered RingCentral call","description":"Every time a new call is answered in RingCentral, Make will automatically add that call's info to a new row in your Google Sheets spreadsheet.","url":"2550-create-a-new-google-sheets-row-for-every-answered-ringcentral-call","usedApps":["ringcentral","google-sheets"],"usage":107}

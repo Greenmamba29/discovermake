@@ -1,0 +1,1 @@
+{"id":1084,"name":"Send push notifications via Apple Safari for new Uber trips","description":"Every time a new ride appears in your Uber account, Make will automatically send a push notification via Apple Safari.","url":"1084-send-push-notifications-via-apple-safari-for-new-uber-trips","usedApps":["safari","uber"],"usage":1}

@@ -1,0 +1,1 @@
+{"id":8629,"name":"Create jobs in Detrack from new Shopify orders","description":"Make will watch for new orders in Shopify at regular intervals and create a job in Detrack.","url":"8629-create-jobs-in-detrack-from-new-shopify-orders","usedApps":["shopify","builtin","detrack"],"usage":11}

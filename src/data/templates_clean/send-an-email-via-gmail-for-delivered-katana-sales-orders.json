@@ -1,0 +1,1 @@
+{"id":6005,"name":"Send an email via Gmail for delivered Katana sales orders","description":"When an order status is changed to delivered, a new e-mail is sent to the customer by Gmail.","url":"6005-send-an-email-via-gmail-for-delivered-katana-sales-orders","usedApps":["katana-mrp","google-email"],"usage":19}

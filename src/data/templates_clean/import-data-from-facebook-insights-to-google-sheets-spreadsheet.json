@@ -1,0 +1,1 @@
+{"id":4119,"name":"Import data from Facebook Insights to Google Sheets spreadsheet","description":"Retrieve Facebook Insights for a date preset and send the data to Google Sheets spreadsheet.","url":"4119-import-data-from-facebook-insights-to-google-sheets-spreadsheet","usedApps":["facebook-insights","google-sheets"],"usage":2036}

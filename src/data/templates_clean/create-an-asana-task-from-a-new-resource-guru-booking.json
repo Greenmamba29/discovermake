@@ -1,0 +1,1 @@
+{"id":6142,"name":"Create an Asana task from a new Resource Guru booking","description":"Every time a Resource Guru booking is created, Make will automatically create an Asana task.","url":"6142-create-an-asana-task-from-a-new-resource-guru-booking","usedApps":["resource-guru","asana"],"usage":1}

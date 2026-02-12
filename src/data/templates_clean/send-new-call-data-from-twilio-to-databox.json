@@ -1,0 +1,1 @@
+{"id":3913,"name":"Send new call data from Twilio to Databox","description":"Whenever Twilio records a new call event, Make will push that event to Databox, making sure your reports are always up-to-date. ","url":"3913-send-new-call-data-from-twilio-to-databox","usedApps":["twilio","databox"],"usage":23}

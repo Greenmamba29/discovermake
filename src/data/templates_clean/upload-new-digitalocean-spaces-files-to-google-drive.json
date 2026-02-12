@@ -1,0 +1,1 @@
+{"id":7214,"name":"Upload new DigitalOcean Spaces files to Google Drive","description":"Every time there is a new file in a DigitalOcean space, Make will automatically download it and upload to Google Drive.","url":"7214-upload-new-digitalocean-spaces-files-to-google-drive","usedApps":["digitalocean-spaces","google-drive"],"usage":13}

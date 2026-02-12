@@ -1,0 +1,1 @@
+{"id":13612,"name":"Transfer new SFTP files to Google Sheets by parsing CSV data","description":"Automatically transfer new SFTP files to Google Sheets by parsing CSV data, ensuring your spreadsheets are always up-to-date with the latest information.","url":"13612-transfer-new-sftp-files-to-google-sheets-by-parsing-csv-data","usedApps":["sftp","csv","google-sheets"],"usage":127}

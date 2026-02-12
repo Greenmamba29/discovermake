@@ -1,0 +1,1 @@
+{"id":8104,"name":"Add new collected Proofly leads to Mailchimp as subscribers","description":"Every time there is a new lead collected in Proofly, Make will automatically add this lead to a specified Mailchimp mailing list.","url":"8104-add-new-collected-proofly-leads-to-mailchimp-as-subscribers","usedApps":["proofly","mailchimp"],"usage":1}

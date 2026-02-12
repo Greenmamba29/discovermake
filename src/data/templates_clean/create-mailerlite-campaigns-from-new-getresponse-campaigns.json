@@ -1,0 +1,1 @@
+{"id":1375,"name":"Create Mailerlite campaigns from new GetResponse campaigns","description":"Every time a new campaign is created in GetResponse, Make will automatically create a new campaign in Mailerlite.","url":"1375-create-mailerlite-campaigns-from-new-getresponse-campaigns","usedApps":["mailerlite","getresponse"],"usage":3}

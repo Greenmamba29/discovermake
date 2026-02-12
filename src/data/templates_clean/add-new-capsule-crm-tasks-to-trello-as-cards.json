@@ -1,0 +1,1 @@
+{"id":1925,"name":"Add new Capsule CRM tasks to Trello as cards","description":"Every time a new task is created in Capsule CRM, Make will automatically create a new card in Trello.","url":"1925-add-new-capsule-crm-tasks-to-trello-as-cards","usedApps":["capsule-crm","trello"],"usage":7}

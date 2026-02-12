@@ -1,0 +1,1 @@
+{"id":8373,"name":"Get Pushover notifications for new Google Calendar events","description":"Every time a new event is created in Google Calendar, Make will automatically send a notification message in Pushover.","url":"8373-get-pushover-notifications-for-new-google-calendar-events","usedApps":["google-calendar","pushover"],"usage":13}

@@ -1,0 +1,1 @@
+{"id":9023,"name":"Add WhatConverts leads from ShipStation orders","description":"Every time there is a new order in ShipStation, Make will create a lead in your WhatConverts using information received.","url":"9023-add-whatconverts-leads-from-shipstation-orders","usedApps":["shipstation","builtin","util","whatconverts"],"usage":7}

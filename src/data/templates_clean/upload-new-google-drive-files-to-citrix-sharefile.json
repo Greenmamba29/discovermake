@@ -1,0 +1,1 @@
+{"id":1942,"name":"Upload new Google Drive files to Citrix ShareFile","description":"Every time you upload a new file to Google Drive, Make will automatically copy that file to Citrix ShareFile.","url":"1942-upload-new-google-drive-files-to-citrix-sharefile","usedApps":["google-drive","sharefile"],"usage":7}

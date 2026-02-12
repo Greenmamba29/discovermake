@@ -1,0 +1,1 @@
+{"id":8545,"name":"Create JobNimbus contacts for new Mailchimp subscribers","description":"Every time a new subscriber added to a speified list in Mailchimp, Make will automatically create a new contact in JobNimbus.","url":"8545-create-jobnimbus-contacts-for-new-mailchimp-subscribers","usedApps":["mailchimp","jobnimbus"],"usage":4}

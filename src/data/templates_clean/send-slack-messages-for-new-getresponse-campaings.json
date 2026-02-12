@@ -1,0 +1,1 @@
+{"id":854,"name":"Send Slack messages for new GetResponse campaings","description":"Every time a new campaign is created in GetResponse, Make will automatically send a message in Slack.","url":"854-send-slack-messages-for-new-getresponse-campaings","usedApps":["getresponse","slack"],"usage":2}

@@ -1,0 +1,1 @@
+{"id":13324,"name":"Add contacts to ActiveTrail groups using a custom webhook","description":"Automatically add contacts to ActiveTrail groups via a custom webhook. Streamline contact management with ActiveTrail's CreateUpdateContact and addtogroup modules.","url":"13324-add-contacts-to-activetrail-groups-using-a-custom-webhook","usedApps":["gateway","activetrail"],"usage":4}

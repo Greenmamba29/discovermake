@@ -1,0 +1,1 @@
+{"id":6512,"name":"Send print jobs for new files added in Dropbox","description":"Every time a document is added to your Dropbox, Make will send that file as a print job to your computer via Printnode.","url":"6512-send-print-jobs-for-new-files-added-in-dropbox","usedApps":["dropbox","printnode"],"usage":16}

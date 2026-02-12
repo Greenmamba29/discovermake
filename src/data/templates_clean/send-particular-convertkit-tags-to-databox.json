@@ -1,0 +1,1 @@
+{"id":3901,"name":"Send particular ConvertKit Tags to Databox","description":"Every time you add a new Tag to any of your subscribers in ConvertKit, Make will automatically update your subscriber data in Databox. ","url":"3901-send-particular-convertkit-tags-to-databox","usedApps":["convertkit","databox"],"usage":5}

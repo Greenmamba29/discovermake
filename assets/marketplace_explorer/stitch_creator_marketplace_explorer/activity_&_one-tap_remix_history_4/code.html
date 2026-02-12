@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Team Roles - DiscoverMake</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style type="text/tailwindcss">
+        :root {
+            --primary: #2563eb;
+            --background-light: #f8fafc;
+            --background-dark: #0f172a;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .ios-blur {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .fill-icon {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-[var(--background-light)] dark:bg-[var(--background-dark)] text-slate-900 dark:text-slate-100 min-h-screen">
+<header class="sticky top-0 z-20 bg-[var(--background-light)]/80 dark:bg-[var(--background-dark)]/80 ios-blur px-6 pt-12 pb-4">
+<div class="max-w-md mx-auto">
+<div class="flex items-center justify-between mb-4">
+<button class="text-primary font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined">chevron_left</span>
+                    Back
+                </button>
+<span class="text-xs font-bold uppercase tracking-widest text-slate-400">Step 2 of 3</span>
+<button class="text-primary font-semibold">Skip</button>
+</div>
+<div class="w-full bg-slate-200 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full transition-all duration-500" style="width: 66.6%"></div>
+</div>
+</div>
+</header>
+<main class="max-w-md mx-auto px-6 py-6 space-y-8 pb-32">
+<div>
+<h1 class="text-2xl font-bold tracking-tight">Define Team Roles</h1>
+<p class="text-slate-500 dark:text-slate-400 mt-1">Set up your workspace structure and initial permissions.</p>
+</div>
+<section class="space-y-3">
+<label class="block text-sm font-semibold text-slate-700 dark:text-slate-300">Workspace Name</label>
+<input class="w-full bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 rounded-xl px-4 py-3 focus:ring-primary focus:border-primary" placeholder="e.g. Marketing AI Team" type="text"/>
+</section>
+<section class="space-y-4">
+<div class="flex justify-between items-end">
+<label class="block text-sm font-semibold text-slate-700 dark:text-slate-300">Seat Allocation</label>
+<span class="text-2xl font-bold text-primary">12 <span class="text-sm font-medium text-slate-400">seats</span></span>
+</div>
+<input class="w-full h-2 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-primary" max="50" min="1" type="range" value="12"/>
+<div class="flex justify-between text-[10px] text-slate-400 font-bold uppercase">
+<span>1 Seat</span>
+<span>Enterprise (50+)</span>
+</div>
+</section>
+<section class="space-y-4">
+<h2 class="text-lg font-bold">Primary Roles</h2>
+<div class="space-y-3">
+<div class="flex items-start gap-4 p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl">
+<div class="bg-blue-50 dark:bg-blue-900/30 p-2 rounded-lg text-primary">
+<span class="material-symbols-outlined fill-icon">shield_person</span>
+</div>
+<div class="flex-1">
+<h3 class="font-bold text-sm">Workspace Admin</h3>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">Full access to billing, user management, and all workspace settings.</p>
+</div>
+<div class="w-5 h-5 border-2 border-primary rounded-full flex items-center justify-center">
+<div class="w-2.5 h-2.5 bg-primary rounded-full"></div>
+</div>
+</div>
+<div class="flex items-start gap-4 p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl">
+<div class="bg-amber-50 dark:bg-amber-900/30 p-2 rounded-lg text-amber-600">
+<span class="material-symbols-outlined fill-icon">auto_fix</span>
+</div>
+<div class="flex-1">
+<h3 class="font-bold text-sm">Creator</h3>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">Can create, edit, and remix workflows. Access to AI model tuning.</p>
+</div>
+<div class="w-5 h-5 border-2 border-slate-300 dark:border-slate-700 rounded-full"></div>
+</div>
+<div class="flex items-start gap-4 p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl">
+<div class="bg-slate-50 dark:bg-slate-800 p-2 rounded-lg text-slate-500">
+<span class="material-symbols-outlined fill-icon">visibility</span>
+</div>
+<div class="flex-1">
+<h3 class="font-bold text-sm">Viewer</h3>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">Read-only access to published outputs and performance metrics.</p>
+</div>
+<div class="w-5 h-5 border-2 border-slate-300 dark:border-slate-700 rounded-full"></div>
+</div>
+</div>
+</section>
+<section class="space-y-4">
+<h2 class="text-lg font-bold">Invite Members</h2>
+<div class="border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-2xl p-6 text-center">
+<span class="material-symbols-outlined text-slate-400 text-3xl">upload_file</span>
+<p class="text-sm font-semibold mt-2">Bulk Invite via CSV</p>
+<p class="text-xs text-slate-500 mt-1">Drop your file here or <span class="text-primary font-bold">browse</span></p>
+</div>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+<span class="material-symbols-outlined text-[20px]">mail</span>
+</div>
+<input class="w-full bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 rounded-xl pl-10 pr-4 py-3 focus:ring-primary focus:border-primary text-sm" placeholder="Enter emails separated by commas..." type="text"/>
+</div>
+</section>
+</main>
+<div class="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-[var(--background-light)] dark:from-[var(--background-dark)] via-[var(--background-light)] dark:via-[var(--background-dark)] to-transparent">
+<div class="max-w-md mx-auto space-y-4">
+<button class="w-full py-4 bg-primary text-white rounded-2xl font-bold shadow-lg shadow-blue-500/20 active:scale-[0.98] transition-transform">
+                Save &amp; Continue
+            </button>
+<div class="mx-auto w-32 h-1 bg-slate-300 dark:bg-slate-700 rounded-full"></div>
+</div>
+</div>
+
+</body></html>

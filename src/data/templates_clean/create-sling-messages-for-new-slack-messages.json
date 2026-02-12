@@ -1,0 +1,1 @@
+{"id":7729,"name":"Create Sling messages for new Slack messages","description":"Every time you get a message in your designated Slack channel, Make will forward it to your Sling.","url":"7729-create-sling-messages-for-new-slack-messages","usedApps":["slack","sling"],"usage":2}

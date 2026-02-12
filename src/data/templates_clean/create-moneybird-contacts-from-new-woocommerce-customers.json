@@ -1,0 +1,1 @@
+{"id":6665,"name":"Create Moneybird contacts from new WooCommerce customers","description":"Every time there is a new WooCommerce customer, Make will automatically create a contact in Moneybird.","url":"6665-create-moneybird-contacts-from-new-woocommerce-customers","usedApps":["woocommerce","moneybird"],"usage":8}

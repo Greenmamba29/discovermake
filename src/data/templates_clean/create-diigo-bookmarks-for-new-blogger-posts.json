@@ -1,0 +1,1 @@
+{"id":8190,"name":"Create Diigo bookmarks for new Blogger posts","description":"Every time a new post is added to a selected blog on Blogger, Make will automatically create a new bookmark in Diigo.","url":"8190-create-diigo-bookmarks-for-new-blogger-posts","usedApps":["blogger","diigo"],"usage":7}

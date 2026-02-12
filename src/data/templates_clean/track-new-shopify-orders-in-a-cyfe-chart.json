@@ -1,0 +1,1 @@
+{"id":4156,"name":"Track new Shopify orders in a Cyfe chart","description":"Every time a new order is created in Shopify, Make will automically push values for each order item in your Cyfe widget.","url":"4156-track-new-shopify-orders-in-a-cyfe-chart","usedApps":["shopify","builtin","cyfe"],"usage":5}

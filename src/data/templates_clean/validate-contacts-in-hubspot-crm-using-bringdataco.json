@@ -1,0 +1,1 @@
+{"id":8946,"name":"Validate contacts in HubSpot CRM using BringData.co","description":"When a new contact is created in HubSpot CRM, that contact is validated by BringData.co. If the e-mail is not valid, it is deactivated.","url":"8946-validate-contacts-in-hubspot-crm-using-bringdata-co","usedApps":["hubspotcrm","bringdata"],"usage":2}

@@ -1,0 +1,1 @@
+{"id":3368,"name":"Send Android push notifications for new Wix Answers tickets","description":"Every time a new ticket is added to Wix Answers, Make will automatically send a Push notification to your Android device.","url":"3368-send-android-push-notifications-for-new-wix-answers-tickets","usedApps":["wix-answers","android"],"usage":0}

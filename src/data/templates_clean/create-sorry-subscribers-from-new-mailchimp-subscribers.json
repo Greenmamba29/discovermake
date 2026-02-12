@@ -1,0 +1,1 @@
+{"id":8439,"name":"Create Sorry subscribers from new Mailchimp subscribers","description":"Every time there's a new subscriber in Mailchimp, Make will automatically create subscriber in Sorry.","url":"8439-create-sorry-subscribers-from-new-mailchimp-subscribers","usedApps":["mailchimp","sorry"],"usage":2}

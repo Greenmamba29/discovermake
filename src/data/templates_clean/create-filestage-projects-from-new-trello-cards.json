@@ -1,0 +1,1 @@
+{"id":8787,"name":"Create Filestage projects from new Trello cards","description":"Every time a new card is created in Trello, Make will automatically create a new project in Filestage.","url":"8787-create-filestage-projects-from-new-trello-cards","usedApps":["trello","filestage"],"usage":3}

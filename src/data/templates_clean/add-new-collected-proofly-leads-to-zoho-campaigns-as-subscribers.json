@@ -1,0 +1,1 @@
+{"id":8106,"name":"Add new collected Proofly leads to Zoho Campaigns as subscribers","description":"Every time there is a new lead collected in Proofly, Make will automatically add this lead to Zoho Campaigns as a subscriber.","url":"8106-add-new-collected-proofly-leads-to-zoho-campaigns-as-subscribers","usedApps":["proofly","zoho-campaigns"],"usage":1}

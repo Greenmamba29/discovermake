@@ -1,0 +1,1 @@
+{"id":5671,"name":"Add a Wix form submission to Google Sheets as a new row","description":"Every time a visitor fills out a Wix form on your site, Make will automatically add form submission details to your Google Sheets spreadsheet as a new row.","url":"5671-add-a-wix-form-submission-to-google-sheets-as-a-new-row","usedApps":["wix","util","google-sheets"],"usage":320}

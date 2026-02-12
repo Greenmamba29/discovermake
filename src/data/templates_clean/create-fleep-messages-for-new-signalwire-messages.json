@@ -1,0 +1,1 @@
+{"id":7341,"name":"Create Fleep messages for new SignalWire messages","description":"Every time a message appears in your SignalWire, Make will forward it to your Fleep.","url":"7341-create-fleep-messages-for-new-signalwire-messages","usedApps":["signalwire","fleep"],"usage":0}

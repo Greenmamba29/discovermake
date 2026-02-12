@@ -1,0 +1,1 @@
+{"id":5320,"name":"Create a customer and send a survey in Retently from a new WooCommerce order","description":"Every time a new WooCommerce order is created, Make will automatically create a customer and send a survey in Retently.","url":"5320-create-a-customer-and-send-a-survey-in-retently-from-a-new-woocommerce-order","usedApps":["woocommerce","retently"],"usage":2}

@@ -1,0 +1,1 @@
+{"id":7210,"name":"BigML Scores to GSheets-daily- not good","description":"Once every day adds anomalies scores of the previous day to a sheet in Google Sheets. ","url":"7210-bigml-scores-to-gsheets-daily-not-good","usedApps":["bigml","google-sheets"],"usage":3}

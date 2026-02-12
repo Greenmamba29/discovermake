@@ -1,0 +1,1 @@
+{"id":450,"name":"Send Twilio SMS messages for new WooCommerce orders","description":"Every time a new order is received in WooCommerce, Make will automatically send a Twilio SMS message.","url":"450-send-twilio-sms-messages-for-new-woocommerce-orders","usedApps":["woocommerce","twilio"],"usage":248}

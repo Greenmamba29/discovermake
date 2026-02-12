@@ -1,0 +1,1 @@
+{"id":4829,"name":"Upload Sendcloud labels to Google Drive","description":"Every time a Sendcloud parcel is updated, Make will automatically upload the corresponding label to Google Drive.","url":"4829-upload-sendcloud-labels-to-google-drive","usedApps":["sendcloud","google-drive"],"usage":22}

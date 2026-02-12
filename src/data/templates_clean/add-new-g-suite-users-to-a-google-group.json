@@ -1,0 +1,1 @@
+{"id":3759,"name":"Add new G Suite users to a Google Group","description":"Every time G Suite users are added to your organization, Make will automatically add them as members of a specified Google Group.","url":"3759-add-new-g-suite-users-to-a-google-group","usedApps":["google-g-suite","google-groups"],"usage":69}

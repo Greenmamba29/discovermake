@@ -1,0 +1,1 @@
+{"id":7521,"name":"Create Boost Note documents from Google Docs documents","description":"Every time a new Google Docs document is added, Make will automatically get the content of that document and insert it into a Boost Note document.","url":"7521-create-boost-note-documents-from-google-docs-documents","usedApps":["google-docs","boost-hub"],"usage":9}

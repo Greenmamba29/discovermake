@@ -1,0 +1,1 @@
+{"id":1032,"name":"Create Knack records from new Google Sheets rows","description":"Every time a new row is added to a Google Sheets spreadsheet, Make will automatically create a new record in Knack. The template uses this [example spreadsheet](https://goo.gl/xuPrGW).","url":"1032-create-knack-records-from-new-google-sheets-rows","usedApps":["google-sheets","knack"],"usage":96}

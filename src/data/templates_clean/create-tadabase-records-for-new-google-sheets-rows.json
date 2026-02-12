@@ -1,0 +1,1 @@
+{"id":6398,"name":"Create Tadabase records for new Google Sheets rows","description":"Every time a new row is added to your Google Sheets spreadsheet, Make will automatically create a record in Tadabase.","url":"6398-create-tadabase-records-for-new-google-sheets-rows","usedApps":["google-sheets","tadabase"],"usage":5}

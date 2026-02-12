@@ -1,0 +1,1 @@
+{"id":4258,"name":"Create new Dubb contacts from Braintree","description":"When a new customer is created in Braintree, a new contact is created in Dubb.","url":"4258-create-new-dubb-contacts-from-braintree","usedApps":["braintree","dubb"],"usage":1}

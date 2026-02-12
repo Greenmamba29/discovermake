@@ -1,0 +1,1 @@
+{"id":4102,"name":"Create Pipedrive CRM deals from EasyCSV","description":"Every time a new CSV import is performed via EasyCSV, Make will automatically create a new deal in Pipedrive CRM.","url":"4102-create-pipedrive-crm-deals-from-easycsv","usedApps":["easycsv","pipedrive"],"usage":2}

@@ -1,0 +1,1 @@
+{"id":2579,"name":"Create GetResponse contacts from new Acuity Scheduling appointments","description":"Every time a new contact is created in Acuity Scheduling, Make will automatically create a new contact in GetResponse.","url":"2579-create-getresponse-contacts-from-new-acuity-scheduling-appointments","usedApps":["acuity-scheduling","getresponse"],"usage":7}

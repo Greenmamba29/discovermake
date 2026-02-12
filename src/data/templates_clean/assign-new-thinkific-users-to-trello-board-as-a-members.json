@@ -1,0 +1,1 @@
+{"id":6768,"name":"Assign new Thinkific users to Trello board as a members","description":"Every time there is new Thinkific user, Make will automatically assign that user to the Trello board of your choice.","url":"6768-assign-new-thinkific-users-to-trello-board-as-a-members","usedApps":["thinkific","trello"],"usage":1}

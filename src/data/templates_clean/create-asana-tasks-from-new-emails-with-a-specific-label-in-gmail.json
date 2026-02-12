@@ -1,0 +1,1 @@
+{"id":5685,"name":"Create Asana tasks from new emails with a specific label in Gmail","description":"When you receive emails labelled Asana in your Gmail inbox, Make will retrieve the emails and create a task on Asana automatically.","url":"5685-create-asana-tasks-from-new-emails-with-a-specific-label-in-gmail","usedApps":["google-email","asana"],"usage":147}

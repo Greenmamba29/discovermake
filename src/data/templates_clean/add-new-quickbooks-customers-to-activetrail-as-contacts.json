@@ -1,0 +1,1 @@
+{"id":1978,"name":"Add new QuickBooks customers to ActiveTrail as contacts","description":"Every time a new customer is created in QuickBooks, Make will automatically add that customer to ActiveTrail as a new contact.","url":"1978-add-new-quickbooks-customers-to-activetrail-as-contacts","usedApps":["quickbooks","activetrail"],"usage":3}

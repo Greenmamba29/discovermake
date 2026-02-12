@@ -1,0 +1,1 @@
+{"id":8276,"name":"Create a work order from a new private message on Slack","description":"Create a new work order in MaintainX from new private messages on Slack. The automation is set to scan for new messages every 8 hours.","url":"8276-create-a-work-order-from-a-new-private-message-on-slack","usedApps":["slack","maintainx"],"usage":6}

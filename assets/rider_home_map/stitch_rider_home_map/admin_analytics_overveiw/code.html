@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Admin Analytics Overview</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .bg-orb {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -1;
+            opacity: 0.4;
+        }
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen overflow-x-hidden">
+<!-- Abstract Background Orbs -->
+<div class="bg-orb top-[-50px] left-[-50px] bg-primary"></div>
+<div class="bg-orb bottom-[100px] right-[-50px] bg-purple-600"></div>
+<div class="relative flex h-auto min-h-screen w-full flex-col font-display pb-20">
+<!-- TopAppBar -->
+<div class="sticky top-0 z-50 glass-panel px-4 py-4 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="size-10 shrink-0 rounded-full border-2 border-primary/50 overflow-hidden">
+<div class="w-full h-full bg-center bg-no-repeat bg-cover" data-alt="Professional male admin profile headshot" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDgbEDumrJPK677GxnD9j1ZbwtYU4tue8NK6dJLSTluDY3TXG2aF5quFocVQiAb8bc8JcoNJ22YA4bZAIfX6Aa0W1ngdnQ-nvW1uP_UBTa4IZpB8Y3eOWZwFBw4wU5P0pkMsH83hZ6L2-WhOap0UOEnJrSo99Y0TaH5N54RCtPAW3CJs-nROT0M-UJgTGK1qYtEXlfxcXgJGRJJu92mm6q2iEY7xfRg_oReqU6fZA6xiLLaQR1PTWqAUwRu2IOg-Bg_5l0r9lM1ZzeP");'></div>
+</div>
+<div>
+<h2 class="text-white text-lg font-bold leading-tight tracking-tight">Analytics</h2>
+<p class="text-white/50 text-xs font-medium uppercase tracking-widest">System Online</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="flex size-10 items-center justify-center rounded-full glass-card hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-white text-[22px]">notifications</span>
+</button>
+<button class="flex size-10 items-center justify-center rounded-full glass-card hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-white text-[22px]">settings</span>
+</button>
+</div>
+</div>
+<!-- KPI Widgets Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 mt-2">
+<!-- Total Revenue -->
+<div class="glass-card rounded-xl p-5 flex flex-col gap-1 relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-3 opacity-20 group-hover:opacity-40 transition-opacity">
+<span class="material-symbols-outlined text-4xl">payments</span>
+</div>
+<p class="text-white/60 text-sm font-medium">Total Revenue</p>
+<div class="flex items-baseline gap-2">
+<p class="text-white text-2xl font-bold">$128,430</p>
+<span class="text-[#0bda5e] text-xs font-bold">+12.5%</span>
+</div>
+<div class="w-full h-1 bg-white/5 rounded-full mt-3 overflow-hidden">
+<div class="w-3/4 h-full bg-primary shadow-[0_0_8px_rgba(19,91,236,0.6)]"></div>
+</div>
+</div>
+<!-- Active Rides -->
+<div class="glass-card rounded-xl p-5 flex flex-col gap-1 relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-3 opacity-20 group-hover:opacity-40 transition-opacity">
+<span class="material-symbols-outlined text-4xl">directions_car</span>
+</div>
+<p class="text-white/60 text-sm font-medium">Active Rides</p>
+<div class="flex items-baseline gap-2">
+<p class="text-white text-2xl font-bold">1,240</p>
+<span class="text-[#0bda5e] text-xs font-bold">+4.2%</span>
+</div>
+<div class="flex items-center gap-2 mt-3">
+<div class="size-2 bg-[#0bda5e] rounded-full animate-pulse shadow-[0_0_8px_#0bda5e]"></div>
+<span class="text-white/40 text-[10px] uppercase font-bold tracking-wider">Live tracking active</span>
+</div>
+</div>
+<!-- Pending Bounties -->
+<div class="glass-card rounded-xl p-5 flex flex-col gap-1 relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-3 opacity-20 group-hover:opacity-40 transition-opacity">
+<span class="material-symbols-outlined text-4xl">bug_report</span>
+</div>
+<p class="text-white/60 text-sm font-medium">Pending Bounties</p>
+<div class="flex items-baseline gap-2">
+<p class="text-white text-2xl font-bold">42</p>
+<span class="text-[#fa6238] text-xs font-bold">-2.1%</span>
+</div>
+<div class="mt-3 flex gap-1">
+<div class="h-1 flex-1 bg-red-500/50 rounded-full"></div>
+<div class="h-1 flex-1 bg-orange-500/50 rounded-full"></div>
+<div class="h-1 flex-1 bg-white/10 rounded-full"></div>
+</div>
+</div>
+</div>
+<!-- Main Chart Section -->
+<div class="px-4 py-2">
+<div class="glass-panel rounded-xl overflow-hidden">
+<div class="flex items-center justify-between p-5 pb-0">
+<div>
+<h2 class="text-white text-lg font-bold">Ride &amp; Revenue Trends</h2>
+<p class="text-white/40 text-xs">Aggregated performance data</p>
+</div>
+<div class="flex bg-white/5 rounded-lg p-1">
+<button class="px-3 py-1 text-xs font-bold text-white/50 hover:text-white transition-colors">24h</button>
+<button class="px-3 py-1 text-xs font-bold text-white bg-primary rounded shadow-lg">7d</button>
+<button class="px-3 py-1 text-xs font-bold text-white/50 hover:text-white transition-colors">30d</button>
+</div>
+</div>
+<div class="p-5">
+<div class="flex items-baseline gap-2 mb-6">
+<p class="text-white text-3xl font-bold tracking-tight">$12,400.00</p>
+<p class="text-[#0bda5e] text-sm font-medium">avg / day</p>
+</div>
+<div class="relative h-48 w-full">
+<!-- Chart SVG -->
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 400 150">
+<defs>
+<lineargradient id="chartGradient" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#135bec" stop-opacity="0.3"></stop>
+<stop offset="100%" stop-color="#135bec" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<path d="M0 120 Q50 80 100 100 T200 60 T300 40 T400 20 L400 150 L0 150 Z" fill="url(#chartGradient)"></path>
+<path d="M0 120 Q50 80 100 100 T200 60 T300 40 T400 20" fill="none" stroke="#135bec" stroke-linecap="round" stroke-width="3"></path>
+<!-- Interaction Dots -->
+<circle cx="300" cy="40" fill="#135bec" r="5" stroke="white" stroke-width="2"></circle>
+</svg>
+<!-- Tooltip Overlay (Mock) -->
+<div class="absolute top-4 left-[260px] glass-card px-2 py-1 rounded text-[10px] text-white border-primary/30">
+                            Sat: $14.2k
+                        </div>
+</div>
+<div class="flex justify-between mt-4 px-2">
+<span class="text-white/30 text-[10px] font-bold">MON</span>
+<span class="text-white/30 text-[10px] font-bold">TUE</span>
+<span class="text-white/30 text-[10px] font-bold">WED</span>
+<span class="text-white/30 text-[10px] font-bold">THU</span>
+<span class="text-white/30 text-[10px] font-bold">FRI</span>
+<span class="text-white/30 text-[10px] font-bold">SAT</span>
+<span class="text-white/30 text-[10px] font-bold">SUN</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Quick Actions -->
+<div class="p-4 grid grid-cols-2 gap-4">
+<button class="glass-card py-4 px-4 rounded-xl flex items-center gap-3 active:scale-95 transition-transform">
+<div class="size-10 rounded-lg bg-primary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">ios_share</span>
+</div>
+<span class="text-white font-bold text-sm">Export Logs</span>
+</button>
+<button class="glass-card py-4 px-4 rounded-xl flex items-center gap-3 active:scale-95 transition-transform">
+<div class="size-10 rounded-lg bg-purple-500/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-purple-400">group</span>
+</div>
+<span class="text-white font-bold text-sm">Manage Users</span>
+</button>
+</div>
+<!-- Recent Activity Feed -->
+<div class="px-4 pb-10">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-white font-bold tracking-tight">System Events</h3>
+<button class="text-primary text-xs font-bold uppercase tracking-widest">View All</button>
+</div>
+<div class="space-y-3">
+<div class="glass-card p-4 rounded-lg flex items-center gap-4">
+<div class="size-10 rounded-full glass-panel flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[#fa6238]">warning</span>
+</div>
+<div class="flex-1">
+<p class="text-white text-sm font-semibold">Security Breach Attempt</p>
+<p class="text-white/40 text-xs">IP: 192.168.1.104 • 2m ago</p>
+</div>
+<div class="size-2 bg-red-500 rounded-full shadow-[0_0_8px_red]"></div>
+</div>
+<div class="glass-card p-4 rounded-lg flex items-center gap-4">
+<div class="size-10 rounded-full glass-panel flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[#0bda5e]">task_alt</span>
+</div>
+<div class="flex-1">
+<p class="text-white text-sm font-semibold">New Bounty Validated</p>
+<p class="text-white/40 text-xs">Bug ID: #XR-9921 • 15m ago</p>
+</div>
+<span class="text-white/20 text-xs">+$250</span>
+</div>
+<div class="glass-card p-4 rounded-lg flex items-center gap-4 opacity-70">
+<div class="size-10 rounded-full glass-panel flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary">electric_car</span>
+</div>
+<div class="flex-1">
+<p class="text-white text-sm font-semibold">Surge Pricing Active</p>
+<p class="text-white/40 text-xs">Downtown Sector • 1h ago</p>
+</div>
+</div>
+</div>
+</div>
+<!-- iOS Home Indicator Overlay -->
+<div class="fixed bottom-0 left-0 w-full h-20 pointer-events-none flex flex-col justify-end items-center pb-2">
+<div class="w-1/3 h-1.5 bg-white/20 rounded-full"></div>
+</div>
+<!-- Bottom Nav Bar (Simulated) -->
+<div class="fixed bottom-4 left-4 right-4 h-16 glass-panel rounded-full z-50 flex items-center justify-around px-4">
+<button class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">dashboard</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Dashboard</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-white/40">
+<span class="material-symbols-outlined">map</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Fleet</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-white/40">
+<span class="material-symbols-outlined">shield_person</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Bounty</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-white/40">
+<span class="material-symbols-outlined">bar_chart</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Reports</span>
+</button>
+</div>
+</div>
+</body></html>

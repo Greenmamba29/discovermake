@@ -1,0 +1,1 @@
+{"id":8416,"name":"Import new Google contacts to Simpleshop.cz","description":"Every time a Google contact is created, Make checks if the contact has an Organization name and imports it to Simpleshop.cz contacts. Contacts without Organization name will be skipped.","url":"8416-import-new-google-contacts-to-simpleshop-cz","usedApps":["google-contacts","simpleshop-cz2"],"usage":3}

@@ -1,0 +1,1 @@
+{"id":7845,"name":"Create ClickUp tasks from new Zoho Projects tasks","description":"Make will watch for new tasks in a specified project in Zoho Projects at regular intervals and create a task in a specified ClickUp folder.","url":"7845-create-clickup-tasks-from-new-zoho-projects-tasks","usedApps":["zoho-projects","clickup"],"usage":7}

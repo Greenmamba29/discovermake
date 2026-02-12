@@ -1,0 +1,1 @@
+{"id":13722,"name":"Send automated replies to messages using Line and JSON parsing","description":"Automatically respond to incoming Line messages by parsing JSON data and sending replies. Streamline communication with this automated messaging workflow.","url":"13722-send-automated-replies-to-messages-using-line-and-json-parsing","usedApps":["line","http","json"],"usage":65}

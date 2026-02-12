@@ -1,0 +1,1 @@
+{"id":7316,"name":"Create SwiftKanban cards from new Trello cards","description":"Every time a new card is created in Trello, Make will automatically create a new card in SwiftKanban.","url":"7316-create-swiftkanban-cards-from-new-trello-cards","usedApps":["trello","swiftkanban"],"usage":1}

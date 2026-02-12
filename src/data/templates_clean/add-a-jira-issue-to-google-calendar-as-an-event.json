@@ -1,0 +1,1 @@
+{"id":5480,"name":"Add a JIRA issue to Google Calendar as an event","description":"Every time a JIRA Cloud Platform issue is created, Make will automatically create a Google Calendar event.","url":"5480-add-a-jira-issue-to-google-calendar-as-an-event","usedApps":["jira","google-calendar"],"usage":128}

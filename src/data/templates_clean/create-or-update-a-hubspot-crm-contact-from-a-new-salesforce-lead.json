@@ -1,0 +1,1 @@
+{"id":6002,"name":"Create or update a HubSpot CRM contact from a new Salesforce lead","description":"Use this template to automatically create or update a HubSpot CRM contact when a new Salesforce lead is created.","url":"6002-create-or-update-a-hubspot-crm-contact-from-a-new-salesforce-lead","usedApps":["salesforce","hubspotcrm"],"usage":21}

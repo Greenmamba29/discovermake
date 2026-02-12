@@ -1,0 +1,1 @@
+{"id":7091,"name":"Add and Update Google Contacts to SMSAPI","description":"Every time when a new contact is created in Google Contacts, Make will automatically add that contact to SMSAPI as a new contact or update existing contact.","url":"7091-add-and-update-google-contacts-to-smsapi","usedApps":["google-contacts","smsapi","builtin"],"usage":4}

@@ -1,0 +1,1 @@
+{"id":8721,"name":"Send Android push notifications for new Microsoft 365 Calendar events","description":"Make will watch your Microsoft 365 Calendar events at regular intervals and send push notifications to your Android for them.","url":"8721-send-android-push-notifications-for-new-microsoft-365-calendar-events","usedApps":["microsoft-calendar","android"],"usage":42}

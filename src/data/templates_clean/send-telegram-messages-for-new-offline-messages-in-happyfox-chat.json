@@ -1,0 +1,1 @@
+{"id":7149,"name":"Send Telegram messages for new offline messages in HappyFox Chat","description":"Every time an offline message is received in your HappyFox Chat, Make will send it to your Telegram.","url":"7149-send-telegram-messages-for-new-offline-messages-in-happyfox-chat","usedApps":["happyfox-chat","telegram"],"usage":0}

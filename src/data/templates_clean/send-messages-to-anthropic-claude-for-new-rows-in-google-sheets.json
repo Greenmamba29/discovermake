@@ -1,0 +1,1 @@
+{"id":13189,"name":"Send messages to Anthropic Claude for new rows in Google Sheets","description":"Automatically send messages to Anthropic Claude for each new row in Google Sheets, then update the row with the response.","url":"13189-send-messages-to-anthropic-claude-for-new-rows-in-google-sheets","usedApps":["google-sheets","anthropic-claude"],"usage":215}

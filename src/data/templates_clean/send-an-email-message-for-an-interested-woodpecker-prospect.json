@@ -1,0 +1,1 @@
+{"id":6062,"name":"Send an Email message for an interested Woodpecker prospect","description":"Every time a Woodpecker prospect is marked as ‘Interested’, Make will automatically send an Email message.","url":"6062-send-an-email-message-for-an-interested-woodpecker-prospect","usedApps":["woodpecker","email"],"usage":4}

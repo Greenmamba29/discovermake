@@ -1,0 +1,1 @@
+{"id":13142,"name":"Send data to a custom webhook and respond with a confirmation message","description":"Automatically send data to a custom webhook using API key authentication and receive a confirmation message with this Make template.","url":"13142-send-data-to-a-custom-webhook-and-respond-with-a-confirmation-message","usedApps":["gateway","http"],"usage":33}

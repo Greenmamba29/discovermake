@@ -1,0 +1,1 @@
+{"id":3518,"name":"Add new Office 365 contacts to a SendPulse mailing list.","description":"Every time a new contact is added to Office 365 People, Make will automatically create a new contact in SendPulse and add it to a specified mailing list.","url":"3518-add-new-office-365-contacts-to-a-sendpulse-mailing-list","usedApps":["microsoft-people","sendpulse"],"usage":7}

@@ -1,0 +1,1 @@
+{"id":3350,"name":"Create new page in OneNote when a meeting is booked on ScheduleOnce","description":"Every time an appointment is scheduled with ScheduleOnce, Make will automatically create a page in OneNote.","url":"3350-create-new-page-in-onenote-when-a-meeting-is-booked-on-scheduleonce","usedApps":["scheduleonce","onenote"],"usage":33}

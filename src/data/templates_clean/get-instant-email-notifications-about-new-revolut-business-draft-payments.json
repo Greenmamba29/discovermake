@@ -1,0 +1,1 @@
+{"id":6327,"name":"Get instant email notifications about new Revolut Business draft payments","description":"Every time a new Revolut Business draft payment is created, Make will automatically send an email message.","url":"6327-get-instant-email-notifications-about-new-revolut-business-draft-payments","usedApps":["revolut","builtin","email","util"],"usage":9}

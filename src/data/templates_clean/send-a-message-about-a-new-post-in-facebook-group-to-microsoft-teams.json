@@ -1,0 +1,1 @@
+{"id":3116,"name":"Send a message about a new post in Facebook group to Microsoft Teams","description":"When a new post is created in Facebook Group, a message about this event is sent to Microsoft Teams.","url":"3116-send-a-message-about-a-new-post-in-facebook-group-to-microsoft-teams","usedApps":["facebook-groups","microsoft-teams"],"usage":47}

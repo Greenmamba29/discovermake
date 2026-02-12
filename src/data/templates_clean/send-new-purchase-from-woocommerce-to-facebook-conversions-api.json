@@ -1,0 +1,1 @@
+{"id":5233,"name":"Send new purchase from WooCommerce to Facebook Conversions API","description":"When an order is completed in WooCommerce, a new \"purchase\" event is sent to Facebook Conversions API.","url":"5233-send-new-purchase-from-woocommerce-to-facebook-conversions-api","usedApps":["woocommerce","facebook-conversions-api"],"usage":80}

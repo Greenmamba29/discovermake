@@ -1,0 +1,1 @@
+{"id":7257,"name":"Send Slack for new mail campaign in CleverReach","description":"Every time a new campaign is created in CleverReach, Make will automatically send a message in Slack with details.","url":"7257-send-slack-for-new-mail-campaign-in-cleverreach","usedApps":["cleverreach","slack"],"usage":2}

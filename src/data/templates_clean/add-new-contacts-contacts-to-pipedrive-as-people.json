@@ -1,0 +1,1 @@
+{"id":6270,"name":"Add new Contacts+ contacts to Pipedrive as people","description":"Every time a new contact is created in Contacts+, Make will automatically add that contact to Pipedrive as a new person.","url":"6270-add-new-contacts-contacts-to-pipedrive-as-people","usedApps":["contactsplus","pipedrive"],"usage":2}

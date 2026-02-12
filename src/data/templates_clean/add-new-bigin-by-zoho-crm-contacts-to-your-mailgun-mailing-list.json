@@ -1,0 +1,1 @@
+{"id":7144,"name":"Add new Bigin by Zoho CRM contacts to your Mailgun mailing list","description":"Every time a new contact is created in Bigin by Zoho CRM, Make will automatically add the email address of that contact to your Mailgun mailing list.","url":"7144-add-new-bigin-by-zoho-crm-contacts-to-your-mailgun-mailing-list","usedApps":["bigin-by-zoho","mailgun"],"usage":3}

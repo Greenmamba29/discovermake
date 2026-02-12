@@ -1,0 +1,1 @@
+{"id":8415,"name":"Send a message to Slack when a new record in Attio is created","description":"Every time a new record is created in the watched Attio Collection, Make will automatically send a message to the selected Slack channel.","url":"8415-send-a-message-to-slack-when-a-new-record-in-attio-is-created","usedApps":["attio","slack"],"usage":28}

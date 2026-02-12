@@ -1,0 +1,1 @@
+{"id":7704,"name":"Create SatisMeter for new Zoho CRM contacts","description":"Make will watch your Zoho CRM contacts at regular intervals and create SatisMeter users.","url":"7704-create-satismeter-for-new-zoho-crm-contacts","usedApps":["zohocrm","satismeter"],"usage":1}

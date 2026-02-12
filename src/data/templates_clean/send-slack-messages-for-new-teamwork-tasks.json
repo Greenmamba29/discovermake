@@ -1,0 +1,1 @@
+{"id":1152,"name":"Send Slack messages for new Teamwork tasks","description":"Every time a new task is created in Teamwork, Make will automatically send a message in Slack.","url":"1152-send-slack-messages-for-new-teamwork-tasks","usedApps":["teamwork","slack"],"usage":44}

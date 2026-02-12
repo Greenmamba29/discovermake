@@ -1,0 +1,1 @@
+{"id":1489,"name":"Send Slack messages for deleted Toodledo notes","description":"Every time a note is deleted in Toodledo, Make will automatically send a message in Slack.","url":"1489-send-slack-messages-for-deleted-toodledo-notes","usedApps":["toodledo","slack"],"usage":3}

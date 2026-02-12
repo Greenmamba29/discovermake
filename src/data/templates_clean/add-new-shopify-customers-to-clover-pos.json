@@ -1,0 +1,1 @@
+{"id":8145,"name":"Add new Shopify customers to Clover POS","description":"Make will watch new Shopify customers at regular intervals and create Clover POS customers using information received.","url":"8145-add-new-shopify-customers-to-clover-pos","usedApps":["shopify","clover-pos","builtin"],"usage":12}

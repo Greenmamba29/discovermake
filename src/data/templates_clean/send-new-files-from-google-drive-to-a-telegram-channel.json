@@ -1,0 +1,1 @@
+{"id":1769,"name":"Send new files from Google Drive to a Telegram channel","description":"Every time a new file is uploaded to your Google Drive,  Make will automatically send that file to Telegram channel you specify.","url":"1769-send-new-files-from-google-drive-to-a-telegram-channel","usedApps":["google-drive","telegram"],"usage":2164}

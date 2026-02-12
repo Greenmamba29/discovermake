@@ -1,0 +1,1 @@
+{"id":5159,"name":"Create Google Calendar events from new published events on Livestorm","description":"Every time when new event is published on Livestorm, Make will automatically create an event in Google Calendar.","url":"5159-create-google-calendar-events-from-new-published-events-on-livestorm","usedApps":["livestorm","google-calendar"],"usage":9}

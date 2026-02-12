@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Payouts &amp; Financials - DiscoverMake</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13a4ec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101c22",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white min-h-screen">
+<div class="max-w-md mx-auto min-h-screen flex flex-col bg-background-light dark:bg-background-dark">
+<!-- Header -->
+<header class="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md px-4 py-4 flex items-center justify-between border-b border-slate-200 dark:border-slate-800">
+<button class="text-slate-900 dark:text-white flex items-center justify-center size-10">
+<span class="material-symbols-outlined">arrow_back_ios</span>
+</button>
+<h1 class="text-lg font-bold flex-1 text-center pr-10">Payouts &amp; Financials</h1>
+</header>
+<main class="flex-1 pb-10">
+<!-- Hero Estimated Payout Card -->
+<div class="p-4 @container">
+<div class="relative overflow-hidden flex flex-col items-stretch justify-start rounded-xl shadow-lg bg-slate-900 dark:bg-[#1c2327] p-6 border border-slate-800">
+<!-- Abstract Background Pattern -->
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl -mr-10 -mt-10"></div>
+<div class="relative z-10 flex flex-col gap-1">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-primary text-sm">schedule</span>
+<p class="text-slate-400 text-sm font-medium">Next Payout: Oct 15</p>
+</div>
+<p class="text-white text-4xl font-bold tracking-tight mb-4">$1,240.50</p>
+<div class="flex items-center justify-between mt-2 pt-4 border-t border-slate-700/50">
+<div class="flex flex-col">
+<p class="text-slate-400 text-xs uppercase tracking-wider font-semibold">Status</p>
+<p class="text-primary text-sm font-medium">Processing</p>
+</div>
+<button class="bg-primary/20 hover:bg-primary/30 text-primary px-4 py-2 rounded-lg text-sm font-semibold transition-colors">
+                                View Breakdown
+                            </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Banking & Tax Section -->
+<section class="mt-4">
+<div class="flex items-center justify-between px-4 mb-2">
+<h2 class="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-widest">Banking &amp; Security</h2>
+<span class="material-symbols-outlined text-slate-400 text-lg">verified_user</span>
+</div>
+<div class="bg-white dark:bg-[#1c2327] border-y border-slate-200 dark:border-slate-800">
+<!-- Bank Account -->
+<div class="flex items-center gap-4 px-4 py-4 justify-between border-b border-slate-100 dark:border-slate-800/50">
+<div class="flex items-center gap-4">
+<div class="text-white flex items-center justify-center rounded-lg bg-slate-100 dark:bg-[#283339] shrink-0 size-10">
+<span class="material-symbols-outlined text-slate-600 dark:text-white">account_balance</span>
+</div>
+<div class="flex flex-col">
+<p class="text-slate-900 dark:text-white text-base font-semibold leading-tight">Connected Bank</p>
+<p class="text-slate-500 dark:text-slate-400 text-xs">Primary payout method</p>
+</div>
+</div>
+<div class="flex items-center gap-1">
+<p class="text-slate-600 dark:text-slate-300 text-sm font-mono">**** 4421</p>
+<span class="material-symbols-outlined text-slate-400 text-sm">chevron_right</span>
+</div>
+</div>
+<!-- Tax Information -->
+<div class="flex items-center gap-4 px-4 py-4 justify-between">
+<div class="flex items-center gap-4">
+<div class="text-white flex items-center justify-center rounded-lg bg-slate-100 dark:bg-[#283339] shrink-0 size-10">
+<span class="material-symbols-outlined text-slate-600 dark:text-white">description</span>
+</div>
+<div class="flex flex-col">
+<p class="text-slate-900 dark:text-white text-base font-semibold leading-tight">Tax Information</p>
+<p class="text-slate-500 dark:text-slate-400 text-xs">W-9 Form &amp; Residency</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="bg-emerald-500/10 text-emerald-500 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">Verified</span>
+<span class="material-symbols-outlined text-emerald-500 text-xl">check_circle</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Transaction History -->
+<section class="mt-8">
+<div class="flex items-center justify-between px-4 mb-4">
+<h2 class="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-widest">Transaction History</h2>
+<button class="text-primary text-xs font-bold uppercase">See All</button>
+</div>
+<div class="space-y-0.5">
+<!-- Transaction 1 -->
+<div class="flex items-center justify-between bg-white dark:bg-[#1c2327] px-4 py-4 border-b border-slate-100 dark:border-slate-800/50">
+<div class="flex flex-col">
+<p class="text-slate-900 dark:text-white text-sm font-bold">Payout Sent</p>
+<p class="text-slate-500 dark:text-slate-400 text-xs">Sep 15, 2023</p>
+</div>
+<div class="flex flex-col items-end">
+<p class="text-slate-900 dark:text-white text-sm font-bold">$1,050.20</p>
+<span class="bg-emerald-500/10 text-emerald-500 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider mt-1">Paid</span>
+</div>
+</div>
+<!-- Transaction 2 -->
+<div class="flex items-center justify-between bg-white dark:bg-[#1c2327] px-4 py-4 border-b border-slate-100 dark:border-slate-800/50">
+<div class="flex flex-col">
+<p class="text-slate-900 dark:text-white text-sm font-bold">Payout Sent</p>
+<p class="text-slate-500 dark:text-slate-400 text-xs">Aug 15, 2023</p>
+</div>
+<div class="flex flex-col items-end">
+<p class="text-slate-900 dark:text-white text-sm font-bold">$980.00</p>
+<span class="bg-emerald-500/10 text-emerald-500 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider mt-1">Paid</span>
+</div>
+</div>
+<!-- Transaction 3 -->
+<div class="flex items-center justify-between bg-white dark:bg-[#1c2327] px-4 py-4">
+<div class="flex flex-col">
+<p class="text-slate-900 dark:text-white text-sm font-bold">Marketplace Credits</p>
+<p class="text-slate-500 dark:text-slate-400 text-xs">Jul 28, 2023</p>
+</div>
+<div class="flex flex-col items-end">
+<p class="text-slate-900 dark:text-white text-sm font-bold">$210.00</p>
+<span class="bg-primary/10 text-primary px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider mt-1">Pending</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Support / Help Link -->
+<section class="mt-8 px-4">
+<div class="bg-primary/5 dark:bg-primary/10 border border-primary/20 rounded-xl p-5 flex items-center justify-between">
+<div class="flex flex-col gap-1">
+<p class="text-slate-900 dark:text-white text-sm font-bold">Need help with payouts?</p>
+<p class="text-slate-500 dark:text-slate-400 text-xs">Contact our 24/7 financial support team.</p>
+</div>
+<button class="bg-primary text-white size-10 rounded-full flex items-center justify-center shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined">mail</span>
+</button>
+</div>
+</section>
+<!-- Bottom Disclaimer -->
+<div class="mt-6 px-8 text-center">
+<p class="text-slate-400 text-[10px] leading-relaxed">
+                    Financial services provided by DiscoverMake Bank Partners. Your information is encrypted using 256-bit SSL security. 
+                    <a class="text-primary hover:underline" href="#">View Privacy Policy</a>
+</p>
+</div>
+</main>
+<!-- Navigation Placeholder (iOS style) -->
+<nav class="h-16 border-t border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md flex items-center justify-around px-4 sticky bottom-0">
+<span class="material-symbols-outlined text-slate-400">home</span>
+<span class="material-symbols-outlined text-slate-400">explore</span>
+<span class="material-symbols-outlined text-primary font-bold">account_balance_wallet</span>
+<span class="material-symbols-outlined text-slate-400">notifications</span>
+<span class="material-symbols-outlined text-slate-400">person</span>
+</nav>
+</div>
+</body></html>

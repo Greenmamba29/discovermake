@@ -1,0 +1,1 @@
+{"id":6886,"name":"Save new Telegram files to Nextcloud","description":"Every time a new file is posted to your Telegram channel, Make will automatically save that file to a Nextcloud folder you specify.","url":"6886-save-new-telegram-files-to-nextcloud","usedApps":["telegram","nextcloud"],"usage":84}

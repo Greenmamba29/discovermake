@@ -1,0 +1,1 @@
+{"id":6435,"name":"Get new Telegram messages in Flock","description":"Every time you receive a new message on Telegram, Make will automatically send a message in Flock.","url":"6435-get-new-telegram-messages-in-flock","usedApps":["telegram","flock"],"usage":3}

@@ -1,0 +1,1 @@
+{"id":7340,"name":"Create Slack messages for new SignalWire messages","description":"Every time a new message appears in your SignalWire, Make will forward it to your Slack.","url":"7340-create-slack-messages-for-new-signalwire-messages","usedApps":["signalwire","slack"],"usage":2}

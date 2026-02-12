@@ -1,0 +1,1 @@
+{"id":8797,"name":"Send Telegram messages for new Thankster addresses","description":"Every time a new address is created in Thankster, Make will automatically create a message in your Telegram.","url":"8797-send-telegram-messages-for-new-thankster-addresses","usedApps":["thankster","telegram"],"usage":2}

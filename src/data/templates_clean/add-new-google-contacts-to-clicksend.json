@@ -1,0 +1,1 @@
+{"id":2737,"name":"Add new Google Contacts to ClickSend","description":"Every time a new contact is added in Google Contacts, Make will automatically add that contact to ClickSend.","url":"2737-add-new-google-contacts-to-clicksend","usedApps":["google-contacts","clicksend"],"usage":20}

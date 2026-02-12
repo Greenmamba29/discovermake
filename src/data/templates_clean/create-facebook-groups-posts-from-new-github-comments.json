@@ -1,0 +1,1 @@
+{"id":235,"name":"Create Facebook Groups posts from new GitHub comments","description":"Every time someone leaves a comment on GitHub, Make  will automatically post a new entry to a selected Facebook Group.","url":"235-create-facebook-groups-posts-from-new-github-comments","usedApps":["github","facebook-groups"],"usage":11}

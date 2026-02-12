@@ -1,0 +1,1 @@
+{"id":4231,"name":"Save new Uploadcare files to Dropbox","description":"Every time a new file is uploaded to Uploadcare, Make will automatically create a backup to your Dropbox account. If the file is too large, Make will compress it prior to the upload.","url":"4231-save-new-uploadcare-files-to-dropbox","usedApps":["uploadcare","http","builtin","archive","dropbox"],"usage":32}

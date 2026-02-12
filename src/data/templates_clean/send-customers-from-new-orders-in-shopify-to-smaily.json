@@ -1,0 +1,1 @@
+{"id":3264,"name":"Send customers from new orders in Shopify to Smaily","description":"When a new order is received in Shopify, the customer is sent to Smaily and the automation workflow is triggered.","url":"3264-send-customers-from-new-orders-in-shopify-to-smaily","usedApps":["shopify","smaily"],"usage":2}

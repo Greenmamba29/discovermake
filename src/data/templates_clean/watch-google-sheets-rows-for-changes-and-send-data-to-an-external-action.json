@@ -1,0 +1,1 @@
+{"id":13075,"name":"Watch Google Sheets rows for changes and send data to an external action","description":"Monitor changes in Google Sheets rows and automatically send updated data to an external action, then update the row in Google Sheets.","url":"13075-watch-google-sheets-rows-for-changes-and-send-data-to-an-external-action","usedApps":["google-sheets","http"],"usage":16}

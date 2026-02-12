@@ -1,0 +1,1 @@
+{"id":5993,"name":"Create new SmartTask task from Jenkins Job Notification","description":"Every time you have a new Job Notification on Jenkins, Make automatically create a new SmartTask task with corresponding details","url":"5993-create-new-smarttask-task-from-jenkins-job-notification","usedApps":["jenkins","smarttask"],"usage":1}

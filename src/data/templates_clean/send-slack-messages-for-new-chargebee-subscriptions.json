@@ -1,0 +1,1 @@
+{"id":2063,"name":"Send Slack messages for new Chargebee subscriptions","description":"Every time a new subscription is created in Chargebee, Make will automatically send a message in Slack.","url":"2063-send-slack-messages-for-new-chargebee-subscriptions","usedApps":["chargebee","slack"],"usage":8}

@@ -1,0 +1,1 @@
+{"id":1950,"name":"Send an email via Gmail for new ShipStation orders","description":"Every time a new order is created in ShipStation, Make, Make will automatically send a message from Gmail.","url":"1950-send-an-email-via-gmail-for-new-shipstation-orders","usedApps":["shipstation","google-email"],"usage":14}

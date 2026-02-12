@@ -1,0 +1,1 @@
+{"id":6008,"name":"Create tasks on Todoist with new comments from a user","description":"When a user that you are watching on Reddit adds new comments, the comments are retrieved and tasks are created on Todoist.","url":"6008-create-tasks-on-todoist-with-new-comments-from-a-user","usedApps":["reddit","todoist"],"usage":2}

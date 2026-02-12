@@ -1,0 +1,1 @@
+{"id":6069,"name":"Create Slack reminders for upcoming Zoom webinars","description":"When a new Zoom webinar is created, Make will automatically create a Slack reminder that is sent 15 minutes (you can change this number) before the webinar starts.","url":"6069-create-slack-reminders-for-upcoming-zoom-webinars","usedApps":["zoom","slack"],"usage":7}

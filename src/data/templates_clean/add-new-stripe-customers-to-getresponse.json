@@ -1,0 +1,1 @@
+{"id":1995,"name":"Add new Stripe customers to GetResponse","description":"Every time a new customer is created in Stripe, Make will automatically add that customer to GetResponse.","url":"1995-add-new-stripe-customers-to-getresponse","usedApps":["stripe","getresponse"],"usage":31}

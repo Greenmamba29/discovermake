@@ -1,0 +1,1 @@
+{"id":3984,"name":"Send new VTiger CRM service contracts to Databox","description":"Every time you create a new service contract in Vtiger, Make will automatically send the data of the service contract to Databox to be analyzed. ","url":"3984-send-new-vtiger-crm-service-contracts-to-databox","usedApps":["vtiger","databox"],"usage":7}

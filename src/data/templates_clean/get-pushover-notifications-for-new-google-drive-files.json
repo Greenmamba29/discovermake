@@ -1,0 +1,1 @@
+{"id":8374,"name":"Get Pushover notifications for new Google Drive files","description":"Every time a new file is uploaded to your Google Drive, Make will automatically send a notification message in Pushover.","url":"8374-get-pushover-notifications-for-new-google-drive-files","usedApps":["google-drive","builtin","pushover"],"usage":10}

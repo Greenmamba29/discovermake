@@ -1,0 +1,1 @@
+{"id":4436,"name":"Export Google Sheets data to Firestore","description":"Every time a new row is added to your Google Sheets spreadsheet, Make will automatically save the data to your Firestore database.","url":"4436-export-google-sheets-data-to-firestore","usedApps":["google-sheets","google-cloud-firestore"],"usage":103}

@@ -1,0 +1,1 @@
+{"id":7538,"name":"Create Pipedrive CRM persons for new Factorial employees","description":"Make will watch your Factorial employees at regular intervals and create Pipedrive persons.","url":"7538-create-pipedrive-crm-persons-for-new-factorial-employees","usedApps":["factorial","pipedrive"],"usage":1}

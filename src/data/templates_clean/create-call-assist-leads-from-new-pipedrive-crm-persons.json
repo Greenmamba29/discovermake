@@ -1,0 +1,1 @@
+{"id":8633,"name":"Create Call Assist leads from new Pipedrive CRM persons","description":"Make will watch for new Pipedrive CRM persons at regular intervals and create the leads in Call Assist from these persons.","url":"8633-create-call-assist-leads-from-new-pipedrive-crm-persons","usedApps":["pipedrive","call-assist"],"usage":8}

@@ -1,0 +1,1 @@
+{"id":2606,"name":"Create Knack records from finished Yodel.io calls","description":"Every time a call is finished or missed in Yodel.io, Make will automatically create a new record in Knack.","url":"2606-create-knack-records-from-finished-yodel-io-calls","usedApps":["yodel","knack"],"usage":1}

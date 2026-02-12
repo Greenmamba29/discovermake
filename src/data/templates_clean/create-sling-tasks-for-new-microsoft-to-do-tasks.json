@@ -1,0 +1,1 @@
+{"id":7738,"name":"Create Sling tasks for new Microsoft To Do tasks","description":"Make will watch your Microsoft To Do tasks and create identical tasks in your Sling.","url":"7738-create-sling-tasks-for-new-microsoft-to-do-tasks","usedApps":["microsoft-to-do","regexp","sling"],"usage":6}

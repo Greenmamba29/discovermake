@@ -1,0 +1,1 @@
+{"id":3014,"name":"Create a user from a new record in Airtable","description":"When a new record with new user/staff is created in Airtable, a new user with their credentials is created in Harvest.","url":"3014-create-a-user-from-a-new-record-in-airtable","usedApps":["airtable","harvest"],"usage":12}

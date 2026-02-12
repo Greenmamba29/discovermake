@@ -1,0 +1,1 @@
+{"id":6529,"name":"Add new Mailigen subscribers from HubSpot CRM contacts","description":"When a new contact is created in HubSpot CRM, a new subscriber is created in Mailigen.","url":"6529-add-new-mailigen-subscribers-from-hubspot-crm-contacts","usedApps":["hubspotcrm","mailigen"],"usage":0}

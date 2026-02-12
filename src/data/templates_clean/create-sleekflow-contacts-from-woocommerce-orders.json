@@ -1,0 +1,1 @@
+{"id":7369,"name":"Create SleekFlow contacts from WooCommerce orders","description":"Every time there is a new order in your WooCommerce, Make will automatically create a new SeekFlow contact using information about a customer.","url":"7369-create-sleekflow-contacts-from-woocommerce-orders","usedApps":["woocommerce","sleekflow"],"usage":3}

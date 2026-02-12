@@ -1,0 +1,1 @@
+{"id":6412,"name":"Create a ProfitWell subscription for new Mailchimp subscriber","description":"Every time a new Mailchimp subscriber is created, Make will automatically create a Profitwell subscription.","url":"6412-create-a-profitwell-subscription-for-new-mailchimp-subscriber","usedApps":["mailchimp","profitwell"],"usage":1}

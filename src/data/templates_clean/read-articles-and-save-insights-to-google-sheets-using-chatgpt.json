@@ -1,0 +1,1 @@
+{"id":15281,"name":"Read articles and save insights to Google Sheets using ChatGPT","description":"Automatically read articles from RSS feeds, generate insights using ChatGPT, and save them to Google Sheets for easy tracking and analysis.","url":"15281-read-articles-and-save-insights-to-google-sheets-using-chatgpt","usedApps":["rss","openai-gpt-3","google-sheets"],"usage":43}

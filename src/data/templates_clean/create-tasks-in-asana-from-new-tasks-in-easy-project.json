@@ -1,0 +1,1 @@
+{"id":6568,"name":"Create tasks in Asana from new tasks in Easy Project","description":"Every time a task is created in your Easy Project Make will create a task/subtask in your Asana.","url":"6568-create-tasks-in-asana-from-new-tasks-in-easy-project","usedApps":["easy-project","asana"],"usage":5}

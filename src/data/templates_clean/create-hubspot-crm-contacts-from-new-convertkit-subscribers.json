@@ -1,0 +1,1 @@
+{"id":3993,"name":"Create HubSpot CRM contacts from new ConvertKit subscribers","description":"Every time a ConvertKit form is subscribed, Make will automatically create a new contact in HubSpot CRM.","url":"3993-create-hubspot-crm-contacts-from-new-convertkit-subscribers","usedApps":["convertkit","hubspotcrm"],"usage":18}

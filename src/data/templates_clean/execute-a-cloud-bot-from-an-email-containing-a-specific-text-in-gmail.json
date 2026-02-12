@@ -1,0 +1,1 @@
+{"id":5052,"name":"Execute a Cloud BOT from an email containing a specific text in Gmail","description":"Every time you receive an email containing a specific text in Gmail, Make will automatically execute a Cloud BOT bot.","url":"5052-execute-a-cloud-bot-from-an-email-containing-a-specific-text-in-gmail","usedApps":["google-email","cloud-bot"],"usage":4}

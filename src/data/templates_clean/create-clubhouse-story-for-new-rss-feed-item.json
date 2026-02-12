@@ -1,0 +1,1 @@
+{"id":4988,"name":"Create Clubhouse story for new RSS feed item","description":"Every time a new item is posted to a watched RSS feed, Make will automatically create a story in Clubhouse.","url":"4988-create-clubhouse-story-for-new-rss-feed-item","usedApps":["rss","clubhouse"],"usage":8}

@@ -1,0 +1,1 @@
+{"id":8472,"name":"Send an email via Gmail when a new order in Prestashop is created","description":"Every time a new order is created in Prestashop, an email will be automatically sent via Gmail.","url":"8472-send-an-email-via-gmail-when-a-new-order-in-prestashop-is-created","usedApps":["prestashop","google-email"],"usage":132}

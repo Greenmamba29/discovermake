@@ -1,0 +1,1 @@
+{"id":6051,"name":"Add your Typeform responses to a Notion database","description":"Retrieve a new message from a Typeform and create a Notion database item for it. Add some of the form field answers as properties to the database page and the rest as content to the page.","url":"6051-add-your-typeform-responses-to-a-notion-database","usedApps":["typeform","notion"],"usage":275}

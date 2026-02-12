@@ -1,0 +1,1 @@
+{"id":6879,"name":"Send messages to Slack for new users or leads in Customerly","description":"Every time there is a new user or lead added to Customerly, Make will automatically send a message containing info about that user or lead via Slack.","url":"6879-send-messages-to-slack-for-new-users-or-leads-in-customerly","usedApps":["customerly","slack"],"usage":0}

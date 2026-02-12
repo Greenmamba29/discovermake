@@ -1,0 +1,1 @@
+{"id":8259,"name":"Add new Adalo records to Mailchimp as subscribers","description":"Make will watch for new records in Adalo at regular intervals and add these records to a specified Mailchimp mailing list as subscribers.","url":"8259-add-new-adalo-records-to-mailchimp-as-subscribers","usedApps":["adalo","mailchimp"],"usage":7}

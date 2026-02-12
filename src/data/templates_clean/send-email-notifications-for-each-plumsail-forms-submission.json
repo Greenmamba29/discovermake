@@ -1,0 +1,1 @@
+{"id":14601,"name":"Send email notifications for each Plumsail Forms submission","description":"When a new form is submitted in Plumsail, automatically send an email notification with the submission details.","url":"14601-send-email-notifications-for-each-plumsail-forms-submission","usedApps":["plumsail-forms","google-email"],"usage":3}

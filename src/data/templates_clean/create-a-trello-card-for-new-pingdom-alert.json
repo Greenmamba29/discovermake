@@ -1,0 +1,1 @@
+{"id":5702,"name":"Create a Trello card for new Pingdom Alert","description":"Whenever Pingdom gets a new alert that your site is down, Make will automatically create a card in the specified Trello board.","url":"5702-create-a-trello-card-for-new-pingdom-alert","usedApps":["pingdom","trello"],"usage":1}

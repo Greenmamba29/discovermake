@@ -1,0 +1,1 @@
+{"id":14600,"name":"Send Plumsail Forms submission data to a custom HTTP endpoint","description":"Automatically send Plumsail form submission data to a custom HTTP endpoint.","url":"14600-send-plumsail-forms-submission-data-to-a-custom-http-endpoint","usedApps":["plumsail-forms","http"],"usage":2}

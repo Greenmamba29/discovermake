@@ -1,0 +1,1 @@
+{"id":7966,"name":"Add new Stripe customers to Zoho Campaigns mailing list","description":"Make wil watch for new Stripe customers at regular intervals and subscribe people to a mailing list in Zoho Campaigns.","url":"7966-add-new-stripe-customers-to-zoho-campaigns-mailing-list","usedApps":["stripe","zoho-campaigns"],"usage":6}

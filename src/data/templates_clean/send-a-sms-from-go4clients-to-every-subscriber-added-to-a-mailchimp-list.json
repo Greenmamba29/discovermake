@@ -1,0 +1,1 @@
+{"id":4445,"name":"Send a SMS from Go4clients to every subscriber added to a Mailchimp list","description":"Every time a new subscriber is added to a Mailchimp list, Make will send a SMS via Go4clients.","url":"4445-send-a-sms-from-go4clients-to-every-subscriber-added-to-a-mailchimp-list","usedApps":["mailchimp","go4clients"],"usage":0}

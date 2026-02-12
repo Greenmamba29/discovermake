@@ -1,0 +1,1 @@
+{"id":5019,"name":"Create a Beeminder datapoint for new Harvest time entry","description":"Every time a new Harvest time entry is received, Make will automatically create a datapoint in Beeminder.","url":"5019-create-a-beeminder-datapoint-for-new-harvest-time-entry","usedApps":["harvest","beeminder"],"usage":0}

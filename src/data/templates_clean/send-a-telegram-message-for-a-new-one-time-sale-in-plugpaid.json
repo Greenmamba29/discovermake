@@ -1,0 +1,1 @@
+{"id":7459,"name":"Send a Telegram message for a new one time sale in Plug&Paid","description":"Every time a new one time sale is created in Plug&Paid, Make will automatically send a message to a selected chat in Telegram.","url":"7459-send-a-telegram-message-for-a-new-one-time-sale-in-plug-paid","usedApps":["plug-paid","builtin","util","telegram"],"usage":6}

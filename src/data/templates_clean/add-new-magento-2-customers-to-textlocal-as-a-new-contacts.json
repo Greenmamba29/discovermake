@@ -1,0 +1,1 @@
+{"id":6990,"name":"Add new Magento 2 customers to Textlocal as a new contacts","description":"Every time a new customer is created in Magento 2, Make will automatically add a new contact in Textlocal.","url":"6990-add-new-magento-2-customers-to-textlocal-as-a-new-contacts","usedApps":["magento2","textlocal"],"usage":3}

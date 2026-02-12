@@ -1,0 +1,1 @@
+{"id":3001,"name":"Send a message to Slack about a new project in Harvest","description":"When a new project in Harvest is created, a notification to Slack is sent.","url":"3001-send-a-message-to-slack-about-a-new-project-in-harvest","usedApps":["harvest","slack"],"usage":8}

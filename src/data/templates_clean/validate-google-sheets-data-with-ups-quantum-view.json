@@ -1,0 +1,1 @@
+{"id":8503,"name":"Validate Google Sheets data with UPS Quantum View","description":"Every time a new row is added to Google Sheets, Make will automatically validate it with UPS Quantum View.","url":"8503-validate-google-sheets-data-with-ups-quantum-view","usedApps":["google-sheets","ups-quantum-view"],"usage":15}

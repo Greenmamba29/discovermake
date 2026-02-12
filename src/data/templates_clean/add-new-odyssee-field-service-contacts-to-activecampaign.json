@@ -1,0 +1,1 @@
+{"id":7090,"name":"Add new Odyssee Field Service contacts to ActiveCampaign","description":"Every time a new contact is created in Odyssee Field Service, Make will automatically create a new contact in ActiveCampaign.","url":"7090-add-new-odyssee-field-service-contacts-to-activecampaign","usedApps":["odyssee-field-service","activecampaign"],"usage":1}

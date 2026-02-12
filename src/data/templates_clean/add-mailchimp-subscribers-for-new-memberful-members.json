@@ -1,0 +1,1 @@
+{"id":8144,"name":"Add Mailchimp subscribers for new Memberful members","description":"Every time a new member signs up into your Memberful, Make will add him as a subscriber into your Mailchimp.","url":"8144-add-mailchimp-subscribers-for-new-memberful-members","usedApps":["memberful","mailchimp"],"usage":1}

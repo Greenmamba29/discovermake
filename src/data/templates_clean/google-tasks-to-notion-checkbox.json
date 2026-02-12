@@ -1,0 +1,1 @@
+{"id":16302,"name":"Google Tasks to Notion (checkbox)","description":"Required fields in Notion:\n\n1. Name (title)\n2. Due (date)\n3. Google Task ID (text)\n4. Hash (text)\n5. Next Due (date, for recurring tasks)\n6. Is Completed (checkbox)","url":"16302-google-tasks-to-notion-checkbox","usedApps":["google-tasks","notion"],"usage":53}

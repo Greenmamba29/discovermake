@@ -1,0 +1,1 @@
+{"id":7909,"name":"Create Trello cards for new Bitrix24 tasks","description":"Every time a new task is created in Bitrix24, Make will automatically create a new card in Trello.","url":"7909-create-trello-cards-for-new-bitrix24-tasks","usedApps":["bitrix24","trello"],"usage":14}

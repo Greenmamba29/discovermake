@@ -1,0 +1,1 @@
+{"id":255,"name":"Create Evernote notes from new Foursquare checkins","description":"Every time a new checkin is logged on Foursquare, Make will automatically create a new note in a selected Evernote notebook.","url":"255-create-evernote-notes-from-new-foursquare-checkins","usedApps":["evernote","foursquare"],"usage":19}

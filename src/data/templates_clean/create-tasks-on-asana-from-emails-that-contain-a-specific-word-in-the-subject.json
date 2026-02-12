@@ -1,0 +1,1 @@
+{"id":5987,"name":"Create tasks on Asana from emails that contain a specific word in the subject","description":"This automation retrieves new emails containing a specific word in the subject line and creates tasks on Asana for you.","url":"5987-create-tasks-on-asana-from-emails-that-contain-a-specific-word-in-the-subject","usedApps":["email","asana"],"usage":18}

@@ -1,0 +1,1 @@
+{"id":3088,"name":"Create a new ticket in Zendesk with data from a new order in Shopify","description":"When a new order is created/updated and meets specified criteria, a new ticket is created in Zendesk.","url":"3088-create-a-new-ticket-in-zendesk-with-data-from-a-new-order-in-shopify","usedApps":["shopify","zendesk"],"usage":19}

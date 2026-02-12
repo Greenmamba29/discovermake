@@ -1,0 +1,1 @@
+{"id":7002,"name":"Add new Service Provider Pro orders to Trello as cards","description":"When a new order is added to Service Provider Pro, Make will automatically add it to Trello as a card.","url":"7002-add-new-service-provider-pro-orders-to-trello-as-cards","usedApps":["service-provider-pro","trello"],"usage":2}

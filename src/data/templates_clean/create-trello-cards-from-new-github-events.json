@@ -1,0 +1,1 @@
+{"id":5742,"name":"Create Trello cards from new GitHub events","description":"This automation will instantly receive new events in GitHub and create Trello cards with the information for you.","url":"5742-create-trello-cards-from-new-github-events","usedApps":["github","trello"],"usage":6}

@@ -1,0 +1,1 @@
+{"id":7835,"name":"Create ServiceWorks customers from new Google Sheets spreadsheet rows","description":"Every time a new row is added to a Google Sheets spreadsheet, Make will automatically create a new customer in ServiceWorks.","url":"7835-create-serviceworks-customers-from-new-google-sheets-spreadsheet-rows","usedApps":["google-sheets","serviceworks"],"usage":1}

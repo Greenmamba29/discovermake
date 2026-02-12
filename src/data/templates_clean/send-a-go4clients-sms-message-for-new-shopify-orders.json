@@ -1,0 +1,1 @@
+{"id":4529,"name":"Send a Go4Clients SMS message for new Shopify orders","description":"Every time a new order is created in Shopify, Make, will automatically send an SMS message via Go4Clients SMS","url":"4529-send-a-go4clients-sms-message-for-new-shopify-orders","usedApps":["shopify","go4clients"],"usage":3}

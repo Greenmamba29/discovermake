@@ -1,0 +1,1 @@
+{"id":3091,"name":"Send website statistics from SendPulse to Slack","description":"Get a Website statistics about subscribers in SendPulse and and send them in a message to Slack.","url":"3091-send-website-statistics-from-sendpulse-to-slack","usedApps":["sendpulse","slack"],"usage":7}

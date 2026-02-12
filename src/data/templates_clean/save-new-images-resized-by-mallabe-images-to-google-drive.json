@@ -1,0 +1,1 @@
+{"id":7473,"name":"Save new images resized by Mallabe Images to Google Drive","description":"Every time a new image resized by Mallabe Images, Make will automatically save that image to a Google Drive folder you specify.","url":"7473-save-new-images-resized-by-mallabe-images-to-google-drive","usedApps":["mallabe-images","http","google-drive"],"usage":34}

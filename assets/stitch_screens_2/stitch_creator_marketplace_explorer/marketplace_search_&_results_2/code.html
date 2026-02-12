@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>DiscoverMake Marketplace Search</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13a4ec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101c22",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .sticky-search { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white">
+<!-- Sticky Header -->
+<header class="sticky top-0 z-30 bg-background-light/80 dark:bg-background-dark/80 sticky-search border-b border-slate-200 dark:border-slate-800">
+<!-- Top App Bar Area -->
+<div class="flex items-center gap-3 p-4 pb-2">
+<button class="flex items-center justify-center size-10 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800">
+<span class="material-symbols-outlined">arrow_back_ios_new</span>
+</button>
+<div class="flex-1 bg-slate-100 dark:bg-slate-800/80 rounded-full flex items-center px-4 py-2 border border-slate-200 dark:border-slate-700">
+<span class="material-symbols-outlined text-slate-400 text-sm mr-2">search</span>
+<span class="text-sm font-medium truncate">Automated Customer Support Bot</span>
+</div>
+<button class="flex items-center justify-center size-10 rounded-full bg-primary/10 text-primary">
+<span class="material-symbols-outlined">tune</span>
+</button>
+</div>
+<!-- Filter Chips Scroll -->
+<div class="flex gap-2 overflow-x-auto px-4 py-3 no-scrollbar">
+<button class="flex h-8 shrink-0 items-center justify-center gap-1 rounded-lg bg-primary text-white px-3 text-xs font-semibold">
+<span>Verified only</span>
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+</button>
+<button class="flex h-8 shrink-0 items-center justify-center gap-1 rounded-lg bg-slate-200 dark:bg-slate-800 px-3 text-xs font-medium border border-slate-300 dark:border-slate-700">
+<span>Outcome type</span>
+<span class="material-symbols-outlined text-[16px]">expand_more</span>
+</button>
+<button class="flex h-8 shrink-0 items-center justify-center gap-1 rounded-lg bg-slate-200 dark:bg-slate-800 px-3 text-xs font-medium border border-slate-300 dark:border-slate-700">
+<span>Time-to-deploy</span>
+<span class="material-symbols-outlined text-[16px]">expand_more</span>
+</button>
+<button class="flex h-8 shrink-0 items-center justify-center gap-1 rounded-lg bg-slate-200 dark:bg-slate-800 px-3 text-xs font-medium border border-slate-300 dark:border-slate-700">
+<span>Tech stack</span>
+<span class="material-symbols-outlined text-[16px]">expand_more</span>
+</button>
+<button class="flex h-8 shrink-0 items-center justify-center gap-1 rounded-lg bg-slate-200 dark:bg-slate-800 px-3 text-xs font-medium border border-slate-300 dark:border-slate-700">
+<span>Price</span>
+<span class="material-symbols-outlined text-[16px]">expand_more</span>
+</button>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="p-4 pb-32 space-y-4">
+<!-- Result Count / Sort Label -->
+<div class="flex items-center justify-between px-1">
+<span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Top Matches (12 found)</span>
+<div class="flex items-center gap-1 text-xs font-medium text-primary">
+<span>Sort by: Relevance</span>
+<span class="material-symbols-outlined text-[14px]">swap_vert</span>
+</div>
+</div>
+<!-- Card 1 (Top Match) -->
+<div class="group relative overflow-hidden rounded-xl bg-white dark:bg-[#192b33] border-2 border-primary/40 shadow-xl shadow-primary/5 transition-all">
+<div class="absolute top-3 left-3 z-10">
+<span class="bg-primary text-white text-[10px] font-bold px-2 py-1 rounded shadow-sm flex items-center gap-1 uppercase">
+<span class="material-symbols-outlined text-[12px] fill-1">stars</span> Top Match
+                </span>
+</div>
+<div class="flex flex-col">
+<div class="aspect-[21/9] w-full bg-slate-200 dark:bg-slate-800 overflow-hidden relative">
+<img alt="Modern blue AI interface with glowing nodes" class="w-full h-full object-cover" data-alt="Digital interface showing automated support metrics" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeOmHCcF-imom74dV_TPQVN1cYFmcausQNo4oR9NYyxi0rUfYqmr93ajneqvRTRunAPODqt-yDp2vtPmhWPflh56StSEuCKR1bJ018mi82U8ofU8C4lx9_tbdnQrz9iGId9QBdOHcX3QgQi5kz4rxGlx58F_AUhbdQnW4RrI90QbWIldtnI6vp1cAx9EpHTcJ_M_37rMBCP-TGGlocEeBnGrUmSWDMkWE_3w_GlN4Ui4wIMoQVhUUxXLQlr7GE1RPDPK6d3bRgYvc"/>
+<div class="absolute bottom-2 right-2 bg-black/60 backdrop-blur px-2 py-1 rounded text-white text-[10px] font-bold">
+                        ETA: 2 MINS
+                    </div>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-start mb-1">
+<h3 class="text-lg font-bold text-slate-900 dark:text-white leading-tight">Instant Support Weaver</h3>
+<div class="flex items-center bg-green-500/10 text-green-500 px-1.5 py-0.5 rounded text-[10px] font-bold border border-green-500/20">
+                            FREE
+                        </div>
+</div>
+<p class="text-sm text-slate-600 dark:text-slate-400 mb-4 font-medium leading-relaxed">Reduce ticket volume by 40% with RAG-based AI natively in your help center.</p>
+<div class="flex items-center justify-between border-t border-slate-100 dark:border-slate-800 pt-4 mt-1">
+<div class="flex items-center gap-2">
+<div class="size-6 rounded-full bg-slate-300 overflow-hidden">
+<img alt="User avatar" data-alt="Creator avatar portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYpYH7c-gnJJ3LvRZYWh_D7-1wpcE8bGiHxxy-E7XmbZ55LGt43aVmYodHL2Wp2t7-Bn6PZjfFImSvZhewDtHUuFKa0vUyjvHjk5Lm90CypVmJ3KjqL_gc4N1Xs0KQ5YSXM-eGnGPaWq-16PYLxZOceHiUDs_Rdg6RUjOAJJV2lh4ajaLkvF_6m3Whk-WaHqUxDMKyJCJtt7LglrICPTNkFtHdUFkCnte0FKGgnujRDaMC-dogJXbTQPX_u_W_MG1EadqprHjxh3s"/>
+</div>
+<span class="text-xs font-semibold text-slate-500">Flux Labs</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-amber-400 text-[16px] fill-1">star</span>
+<span class="text-xs font-bold">4.8</span>
+</div>
+<div class="flex items-center gap-1 text-slate-400">
+<span class="material-symbols-outlined text-[16px]">cached</span>
+<span class="text-xs font-bold">1.2k</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 2 (Verified) -->
+<div class="rounded-xl bg-white dark:bg-[#192b33] border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm transition-all hover:border-primary/20">
+<div class="flex">
+<div class="w-32 shrink-0 relative bg-slate-200 dark:bg-slate-800 overflow-hidden">
+<img alt="Clean support dashboard preview" class="w-full h-full object-cover" data-alt="App dashboard with blue highlights" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCCRc4s3Zh9mS_gG8VPEEhrmK0V3RrYQqvX-AhSntHxmvNlk6OWwH5ThMfendgya2x6_JxTUeReZ-7VH_vTavOZIzeb80kz_bZ9GBQf2qtBPcANXdi75YHAqyiAXmF9yNk-JY7E2rbahFR8s7gbRB8B7RkIhHB-xq26cOOr64fCnrviQhqaHELVj37GR_uzPtLYQ3ZgZggomz-6JXfeAITrDeQYWQn1iOARmATsCp2NPjR0NoNUsEtcHlZHFyC5GtxJF-0dxlu4wgw"/>
+<div class="absolute top-2 left-2 flex gap-1">
+<span class="material-symbols-outlined text-primary text-[16px] bg-white dark:bg-background-dark rounded-full">verified</span>
+</div>
+</div>
+<div class="flex-1 p-3">
+<div class="flex justify-between items-start">
+<h3 class="text-sm font-bold text-slate-900 dark:text-white">SupportSync Pro</h3>
+<span class="text-[10px] font-bold text-slate-400">7 MINS</span>
+</div>
+<p class="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 mt-1 mb-2">Connect Zendesk with custom LLM agents for deep intent routing.</p>
+<div class="flex items-center justify-between mt-auto">
+<div class="flex items-center gap-1 text-[10px] font-bold">
+<span class="material-symbols-outlined text-amber-400 text-[12px] fill-1">star</span>
+<span>4.9</span>
+<span class="text-slate-400 mx-1">•</span>
+<span class="text-slate-400 uppercase">Enterprise</span>
+</div>
+<button class="text-primary text-[10px] font-bold uppercase tracking-wider hover:underline">View Details</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="rounded-xl bg-white dark:bg-[#192b33] border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm transition-all hover:border-primary/20">
+<div class="flex">
+<div class="w-32 shrink-0 relative bg-slate-200 dark:bg-slate-800 overflow-hidden">
+<img alt="Fast response bot visual" class="w-full h-full object-cover" data-alt="Abstract fast-moving light patterns" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBD0QlI5fYebtmcBMGpf2ktpUjTQuBeVu9mryFC4wAeyavgQxZqVGJrOwcHWyB9dcLp32_q49nG5AZHaKlTVsLWancGc_z9DrD8--hQ-Co7SkDhUzKQHyPDcHZ-SnX98bNP-RK0JB0NmhNhn2NNNwKtj3UHnSXay9ihUhajegK1Y-zOC1CL0cDOkLFaMHCVcoX917rg1yVFuXjOaCkNKnpG9xRz1nEyicVuGP4LONOnQTylTM-iP29gF-rWu8dbSD2F7Y3Gdra8uCY"/>
+</div>
+<div class="flex-1 p-3">
+<div class="flex justify-between items-start">
+<h3 class="text-sm font-bold text-slate-900 dark:text-white">Rapid Response Bot</h3>
+<span class="text-[10px] font-bold text-slate-400">2 MINS</span>
+</div>
+<p class="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 mt-1 mb-2">Deploy a GPT-4 powered helpdesk in minutes with zero-code setup.</p>
+<div class="flex items-center justify-between mt-auto">
+<div class="flex items-center gap-1 text-[10px] font-bold">
+<span class="material-symbols-outlined text-amber-400 text-[12px] fill-1">star</span>
+<span>4.5</span>
+<span class="text-slate-400 mx-1">•</span>
+<span class="text-slate-400 uppercase">Basic</span>
+</div>
+<button class="text-primary text-[10px] font-bold uppercase tracking-wider hover:underline">View Details</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 4 (Community) -->
+<div class="rounded-xl bg-white dark:bg-[#192b33] border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm transition-all hover:border-primary/20">
+<div class="flex">
+<div class="w-32 shrink-0 relative bg-slate-200 dark:bg-slate-800 overflow-hidden">
+<img alt="Open source code visual" class="w-full h-full object-cover" data-alt="Abstract neon code block patterns" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_h0Xz1tQf-1VSFaOFEDHahYB8PnNFKJzfKLdeTEHfPXxTR7CckKPMlE098w6Bvz4lB_8Vaas1RW3FawXie7Xd6Ymwp81E48IeaD8v8Cx6faiQJQOBCHAC52m3bTiFYDQnLnwbQU0vye63tS8_Q-UC3wV6IAfsh4ic1WsyjWeJ0CGHKKg-q_ijCxFdDasvLULgxeoOaG2xsDZRGPKiE-WpU2c9MxeTcj_YknMKz6d4RNuLvNVPc1fHmqgjfr1zyYz4wcgGJD89EIE"/>
+</div>
+<div class="flex-1 p-3">
+<div class="flex justify-between items-start">
+<h3 class="text-sm font-bold text-slate-900 dark:text-white">AutoHelper Lite</h3>
+<span class="text-[10px] font-bold text-slate-400">12 MINS</span>
+</div>
+<p class="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 mt-1 mb-2">A lightweight community version for smaller discord/slack servers.</p>
+<div class="flex items-center justify-between mt-auto">
+<div class="flex items-center gap-1 text-[10px] font-bold">
+<span class="material-symbols-outlined text-amber-400 text-[12px] fill-1">star</span>
+<span>4.2</span>
+<span class="text-slate-400 mx-1">•</span>
+<span class="text-slate-400 uppercase">Community</span>
+</div>
+<button class="text-primary text-[10px] font-bold uppercase tracking-wider hover:underline">View Details</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Sticky Bottom Bar -->
+<footer class="fixed bottom-0 left-0 right-0 z-40 bg-white/90 dark:bg-[#111c22]/90 sticky-search border-t border-slate-200 dark:border-slate-800 pb-8 p-4">
+<div class="flex gap-3 max-w-md mx-auto">
+<button class="flex-1 h-12 flex items-center justify-center rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold text-sm border border-slate-300 dark:border-slate-700 active:scale-95 transition-transform">
+                Start from blank
+            </button>
+<button class="flex-[1.5] h-12 flex items-center justify-center rounded-xl bg-primary text-white font-bold text-sm shadow-lg shadow-primary/20 active:scale-95 transition-transform">
+                Remix top match
+            </button>
+</div>
+</footer>
+<!-- iOS Home Indicator Overlay (Simulated) -->
+<div class="fixed bottom-1 left-1/2 -translate-x-1/2 w-32 h-1.5 bg-slate-400/30 dark:bg-slate-700/50 rounded-full z-50"></div>
+</body></html>

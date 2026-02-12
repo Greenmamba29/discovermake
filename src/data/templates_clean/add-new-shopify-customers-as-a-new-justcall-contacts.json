@@ -1,0 +1,1 @@
+{"id":5929,"name":"Add new Shopify customers as a new JustCall contacts","description":"Every time a new customer is created in Shopify, Make will automatically add that customer as a new JustCall contact and send message.","url":"5929-add-new-shopify-customers-as-a-new-justcall-contacts","usedApps":["shopify","justcall"],"usage":3}

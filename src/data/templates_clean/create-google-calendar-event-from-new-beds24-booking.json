@@ -1,0 +1,1 @@
+{"id":3444,"name":"Create Google Calendar event from new Beds24 booking","description":"When a new Beds24 booking is created, a corresponding Google Calendar event will be created.","url":"3444-create-google-calendar-event-from-new-beds24-booking","usedApps":["beds24","google-calendar"],"usage":147}

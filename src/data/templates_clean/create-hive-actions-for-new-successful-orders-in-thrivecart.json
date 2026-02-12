@@ -1,0 +1,1 @@
+{"id":7405,"name":"Create Hive actions for new successful orders in ThriveCart","description":"Every time a successful order is completed in your ThriveCart, Make will create an action with information from the order in your Hive.","url":"7405-create-hive-actions-for-new-successful-orders-in-thrivecart","usedApps":["thrivecart","hive"],"usage":8}

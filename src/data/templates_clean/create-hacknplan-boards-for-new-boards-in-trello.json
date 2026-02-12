@@ -1,0 +1,1 @@
+{"id":7168,"name":"Create HacknPlan boards for new boards in Trello","description":"Every time a new board is created in your Trello, Make will create a board in your HacknPlan.","url":"7168-create-hacknplan-boards-for-new-boards-in-trello","usedApps":["trello","hacknplan"],"usage":2}

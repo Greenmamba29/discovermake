@@ -1,0 +1,1 @@
+{"id":2200,"name":"Add new Magento 2 customers to a Mailgun list","description":"Every time a new customer is created in Magento 2, Make will automatically add that customer to a Mailgun list of your choice.","url":"2200-add-new-magento-2-customers-to-a-mailgun-list","usedApps":["magento2","mailgun"],"usage":4}

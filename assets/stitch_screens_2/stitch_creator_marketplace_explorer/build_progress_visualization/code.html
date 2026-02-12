@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Build Progress Visualization</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13a4ec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101c22",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .circuit-bg {
+            background-image: radial-gradient(circle at 2px 2px, rgba(19, 164, 236, 0.05) 1px, transparent 0);
+            background-size: 24px 24px;
+        }
+        .progress-glow {
+            filter: drop-shadow(0 0 8px rgba(19, 164, 236, 0.4));
+        }
+        .skeleton-pulse {
+            background: linear-gradient(90deg, #1a2b34 25%, #233c48 50%, #1a2b34 75%);
+            background-size: 200% 100%;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white">
+<div class="relative flex h-screen w-full max-w-[430px] mx-auto flex-col bg-background-dark overflow-hidden shadow-2xl border-x border-white/5">
+<!-- High-tech Texture Background Overlay -->
+<div class="absolute inset-0 circuit-bg pointer-events-none opacity-40"></div>
+<div class="absolute inset-0 bg-gradient-to-b from-background-dark via-transparent to-background-dark pointer-events-none"></div>
+<!-- Top Navigation -->
+<div class="relative z-10 flex items-center justify-between p-6">
+<button class="text-white/60 hover:text-white transition-colors">
+<span class="material-symbols-outlined">close</span>
+</button>
+<div class="flex items-center gap-2">
+<div class="size-2 rounded-full bg-primary animate-pulse"></div>
+<span class="text-xs font-medium tracking-widest uppercase text-primary/80">DiscoverMake Engine</span>
+</div>
+<div class="w-6"></div>
+</div>
+<!-- Header -->
+<div class="relative z-10 px-8 text-center mt-2">
+<h1 class="text-2xl font-bold tracking-tight text-white mb-1">Building your Remix...</h1>
+<p class="text-white/40 text-sm">Your custom tool is coming to life</p>
+</div>
+<!-- Central Circular Progress -->
+<div class="relative z-10 flex flex-col items-center justify-center py-10">
+<div class="relative size-56 flex items-center justify-center">
+<!-- SVG Progress Ring -->
+<svg class="size-full -rotate-90 progress-glow" viewbox="0 0 100 100">
+<circle cx="50" cy="50" fill="transparent" r="44" stroke="rgba(19, 164, 236, 0.1)" stroke-width="8"></circle>
+<circle cx="50" cy="50" fill="transparent" r="44" stroke="#13a4ec" stroke-dasharray="276" stroke-dashoffset="88" stroke-linecap="round" stroke-width="8"></circle>
+</svg>
+<!-- Percentage Text -->
+<div class="absolute flex flex-col items-center">
+<span class="text-5xl font-bold tracking-tighter">68%</span>
+<span class="text-[10px] font-bold text-primary tracking-[0.2em] uppercase mt-1">Analyzing</span>
+</div>
+</div>
+</div>
+<!-- Decision Log Terminal -->
+<div class="relative z-10 flex-1 px-6 pb-4 overflow-hidden flex flex-col">
+<div class="flex items-center justify-between mb-3 px-1">
+<h3 class="text-sm font-semibold text-white/70 uppercase tracking-wider">Decision Log</h3>
+<span class="text-[10px] text-primary bg-primary/10 px-2 py-0.5 rounded border border-primary/20">LIVE FEED</span>
+</div>
+<div class="flex-1 bg-[#0a1216]/80 backdrop-blur-md rounded-xl border border-white/5 p-4 font-mono text-xs overflow-y-auto space-y-4">
+<!-- Log Item: Done -->
+<div class="flex items-start gap-3 opacity-60">
+<span class="material-symbols-outlined text-green-400 text-sm mt-0.5">check_circle</span>
+<div class="flex flex-col">
+<p class="text-white">Provisioning GPT-4o...</p>
+<p class="text-white/40 text-[10px]">Environment container ready [1.2s]</p>
+</div>
+</div>
+<!-- Log Item: Done -->
+<div class="flex items-start gap-3 opacity-60">
+<span class="material-symbols-outlined text-green-400 text-sm mt-0.5">check_circle</span>
+<div class="flex flex-col">
+<p class="text-white">Connecting Salesforce API...</p>
+<p class="text-white/40 text-[10px]">Auth-Handshake successful</p>
+</div>
+</div>
+<!-- Log Item: Active -->
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary text-sm mt-0.5 animate-spin">refresh</span>
+<div class="flex flex-col">
+<p class="text-white font-medium">Synthesizing UI components...</p>
+<p class="text-primary/70 text-[10px]">Mapping Tailwind tokens to design system</p>
+</div>
+</div>
+<!-- Log Item: Pending -->
+<div class="flex items-start gap-3 opacity-30">
+<span class="material-symbols-outlined text-white/40 text-sm mt-0.5">hourglass_empty</span>
+<div class="flex flex-col">
+<p class="text-white">Optimizing data flow...</p>
+<p class="text-white/40 text-[10px]">Waiting for schema validation</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Preview Glimpse Card -->
+<div class="relative z-10 px-6 pb-8">
+<div class="bg-white/5 rounded-xl p-4 border border-white/10 backdrop-blur-sm overflow-hidden">
+<p class="text-xs font-medium text-white/40 mb-3 uppercase tracking-widest">Preview Glimpse</p>
+<!-- Skeleton/Blurred UI -->
+<div class="space-y-3 blur-[2px] opacity-40">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full skeleton-pulse"></div>
+<div class="flex-1 space-y-2">
+<div class="h-3 w-2/3 skeleton-pulse rounded"></div>
+<div class="h-2 w-1/2 skeleton-pulse rounded"></div>
+</div>
+</div>
+<div class="h-24 w-full skeleton-pulse rounded-lg"></div>
+<div class="grid grid-cols-2 gap-3">
+<div class="h-12 skeleton-pulse rounded-lg"></div>
+<div class="h-12 skeleton-pulse rounded-lg"></div>
+</div>
+</div>
+<!-- Visual Mask (Optional overlay for realism) -->
+<div class="absolute inset-0 bg-gradient-to-t from-background-dark/80 via-transparent to-transparent flex items-end justify-center pb-4">
+<span class="text-[10px] text-white/40 font-medium">Assembling Dashboard...</span>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<div class="relative z-10 px-6 pb-10 flex flex-col items-center">
+<button class="px-6 py-2 text-white/40 hover:text-white text-sm font-medium transition-colors border border-transparent hover:border-white/10 rounded-full">
+                Cancel Build
+            </button>
+<p class="mt-4 text-[10px] text-white/20 uppercase tracking-[0.3em]">Build ID: DM-9823-XF</p>
+</div>
+</div>
+</body></html>

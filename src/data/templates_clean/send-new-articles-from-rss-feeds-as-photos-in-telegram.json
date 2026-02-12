@@ -1,0 +1,1 @@
+{"id":13169,"name":"Send new articles from RSS feeds as photos in Telegram","description":"Automatically convert new RSS feed articles to text and send them as photos in Telegram, keeping your audience engaged with fresh content.","url":"13169-send-new-articles-from-rss-feeds-as-photos-in-telegram","usedApps":["rss","regexp","telegram"],"usage":134}

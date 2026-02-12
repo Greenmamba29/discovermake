@@ -1,0 +1,1 @@
+{"id":6367,"name":"Create Trello cards from new or updated records in Airtable","description":"When you add new records or update existing ones, Make retrieves the records and creates Trello cards automatically.","url":"6367-create-trello-cards-from-new-or-updated-records-in-airtable","usedApps":["airtable","trello"],"usage":174}

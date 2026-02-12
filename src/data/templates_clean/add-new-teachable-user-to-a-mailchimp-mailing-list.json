@@ -1,0 +1,1 @@
+{"id":5166,"name":"Add new Teachable user to a Mailchimp mailing list","description":"Every time a new user is added to Teachable, Make will automatically add this user to the specified Mailchimp mailing list.\n","url":"5166-add-new-teachable-user-to-a-mailchimp-mailing-list","usedApps":["teachable","mailchimp"],"usage":18}

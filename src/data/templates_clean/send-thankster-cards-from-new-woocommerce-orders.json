@@ -1,0 +1,1 @@
+{"id":8800,"name":"Send Thankster cards from new WooCommerce orders","description":"Every time a new order is received in WooCommerce, Make will automatically send a new card in Thankster.","url":"8800-send-thankster-cards-from-new-woocommerce-orders","usedApps":["woocommerce","thankster"],"usage":4}

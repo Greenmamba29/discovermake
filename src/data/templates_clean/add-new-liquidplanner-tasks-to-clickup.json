@@ -1,0 +1,1 @@
+{"id":8270,"name":"Add new LiquidPlanner tasks to ClickUp","description":"Every time there is a new task in LiquidPlanner, Make will automatically create a new task in ClickUp.","url":"8270-add-new-liquidplanner-tasks-to-clickup","usedApps":["liquidplanner","clickup"],"usage":2}

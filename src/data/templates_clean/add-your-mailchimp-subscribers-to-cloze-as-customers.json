@@ -1,0 +1,1 @@
+{"id":9140,"name":"Add your Mailchimp subscribers to Cloze as customers","description":"Make will watch for new subscribers in a specified Mailchimp mailing list at regular intervals and add them to Cloze using information received.","url":"9140-add-your-mailchimp-subscribers-to-cloze-as-customers","usedApps":["mailchimp","cloze"],"usage":1}

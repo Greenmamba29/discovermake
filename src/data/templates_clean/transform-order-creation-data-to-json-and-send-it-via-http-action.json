@@ -1,0 +1,1 @@
+{"id":13096,"name":"Transform order creation data to JSON and send it via HTTP action","description":"Automatically convert new Salla order data to JSON and send it via HTTP, streamlining data integration and communication with external systems.","url":"13096-transform-order-creation-data-to-json-and-send-it-via-http-action","usedApps":["salla","json","http"],"usage":30}

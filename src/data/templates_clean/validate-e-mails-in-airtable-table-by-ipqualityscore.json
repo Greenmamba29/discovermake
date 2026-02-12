@@ -1,0 +1,1 @@
+{"id":8157,"name":"Validate e-mails in Airtable table by IPQualityScore","description":"When a new record is created in Airtable, e-mail from the record is validated by IPQualityScore. If the e-mail is not valid, it is deleted from the table.","url":"8157-validate-e-mails-in-airtable-table-by-ipqualityscore","usedApps":["airtable","ipqualityscore"],"usage":2}

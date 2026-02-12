@@ -1,0 +1,1 @@
+{"id":10934,"name":"Create HERE Tracking shipments from new Shopify orders","description":"Every time a new Shopify order is made, Make will automatically look for the shipping address and create the corresponding location in HERE Tracking.","url":"8318-create-here-tracking-shipments-from-new-shopify-orders","usedApps":["shopify","google-maps","here"],"usage":25}

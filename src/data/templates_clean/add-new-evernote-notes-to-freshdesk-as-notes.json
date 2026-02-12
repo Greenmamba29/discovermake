@@ -1,0 +1,1 @@
+{"id":1523,"name":"Add new Evernote notes to Freshdesk as notes","description":"Every time a new note is created in Evernote, Make will automatically add a new note to a selected ticket in Freshdesk.","url":"1523-add-new-evernote-notes-to-freshdesk-as-notes","usedApps":["freshdesk","evernote"],"usage":6}

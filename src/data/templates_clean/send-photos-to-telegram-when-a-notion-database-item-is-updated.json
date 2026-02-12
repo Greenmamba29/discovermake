@@ -1,0 +1,1 @@
+{"id":12824,"name":"Send photos to Telegram when a Notion database item is updated","description":"When a Notion database item is updated, automatically send photos to Telegram to keep your team informed and engaged with visual updates.","url":"12824-send-photos-from-telegram-when-a-notion-database-item-is-updated","usedApps":["notion","telegram"],"usage":40}

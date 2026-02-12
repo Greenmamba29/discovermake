@@ -1,0 +1,1 @@
+{"id":1212,"name":"Add new Fakturoid contacts to Teamwork as people","description":"Every time a new contact is created in Fakturoid, Make will automatically add that contact to Teamwork.","url":"1212-add-new-fakturoid-contacts-to-teamwork-as-people","usedApps":["fakturoid","teamwork"],"usage":1}

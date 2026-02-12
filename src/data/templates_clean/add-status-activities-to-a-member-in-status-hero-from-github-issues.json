@@ -1,0 +1,1 @@
+{"id":3818,"name":"Add status activities to a member in Status Hero from GitHub issues","description":"Every time a new issue is created on GitHub, Make will automatically add a new status activity to a member on Status Hero.","url":"3818-add-status-activities-to-a-member-in-status-hero-from-github-issues","usedApps":["github","status-hero"],"usage":1}

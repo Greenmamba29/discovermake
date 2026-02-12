@@ -1,0 +1,1 @@
+{"id":6030,"name":"Transfer files from Dropbox to Google Drive","description":"This automation watches a specific folder in Dropbox for new file uploads, retrieves the files and uploads them to a specific folder in Google Drive.","url":"6030-transfer-files-from-dropbox-to-google-drive","usedApps":["dropbox","google-drive"],"usage":454}

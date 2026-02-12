@@ -1,0 +1,1 @@
+{"id":8330,"name":"Save new Gmail attachments to Box","description":"Every time you receive a new email in Gmail with an attachment, Make will automatically save that attachment in Box.","url":"8330-save-new-gmail-attachments-to-box","usedApps":["google-email","box"],"usage":30}

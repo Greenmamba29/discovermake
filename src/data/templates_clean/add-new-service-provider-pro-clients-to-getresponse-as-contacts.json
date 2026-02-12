@@ -1,0 +1,1 @@
+{"id":6999,"name":"Add new Service Provider Pro clients to GetResponse as contacts","description":"Every time a new client is added to Service Provider Pro, Make will automatically create a new contact in GetResponse.","url":"6999-add-new-service-provider-pro-clients-to-getresponse-as-contacts","usedApps":["service-provider-pro","getresponse"],"usage":2}

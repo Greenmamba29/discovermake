@@ -1,0 +1,1 @@
+{"id":6382,"name":"Add new Pipedrive organizations to Invoiced as clients","description":"Every time a new organization is created in Pipedrive, Make will automatically create a new client in Invoiced.","url":"6382-add-new-pipedrive-organizations-to-invoiced-as-clients","usedApps":["pipedrive","invoiced"],"usage":6}

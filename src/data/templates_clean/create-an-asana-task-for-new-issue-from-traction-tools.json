@@ -1,0 +1,1 @@
+{"id":5631,"name":"Create an Asana task for new issue from Traction tools","description":"Every time a new Traction Tools issue is received, Make will automatically create a task in Asana.","url":"5631-create-an-asana-task-for-new-issue-from-traction-tools","usedApps":["traction-tools","asana"],"usage":2}

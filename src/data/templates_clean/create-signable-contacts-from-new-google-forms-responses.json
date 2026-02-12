@@ -1,0 +1,1 @@
+{"id":7999,"name":"Create Signable contacts from new Google Forms responses","description":"Every time a new response is entered on your Google Form, Make will automatically create a new contact in Signable.","url":"7999-create-signable-contacts-from-new-google-forms-responses","usedApps":["google-forms","signable"],"usage":2}

@@ -1,0 +1,1 @@
+{"id":7552,"name":"Create Evernote notes for new Trint transcripts","description":"Every time a new Trint transcript is ready, Make will automatically add that transcript as a new note to a selected notebook in Evernote.","url":"7552-create-evernote-notes-for-new-trint-transcripts","usedApps":["trint","evernote"],"usage":1}

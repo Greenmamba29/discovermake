@@ -1,0 +1,1 @@
+{"id":468,"name":"Send Slack messages when a card is copied in Trello","description":"Every time a card is copied in Trello, Make will automatically post a message to Slack.","url":"468-send-slack-messages-when-a-card-is-copied-in-trello","usedApps":["trello","slack"],"usage":150}

@@ -1,0 +1,1 @@
+{"id":5915,"name":"Create a Flexie CRM contact for new Google Contacts contact","description":"Every time a new Google Contacts contact is created, Make will automatically create a contact in Flexie CRM.","url":"5915-create-a-flexie-crm-contact-for-new-google-contacts-contact","usedApps":["google-contacts","flexie-crm"],"usage":0}

@@ -1,0 +1,1 @@
+{"id":4827,"name":"Create an Income in Wave Accounting for every Sendcloud parcel","description":"Every time a Sendcloud parcel is updated to the specified status, Make will automatically book the corresponding sales entry in Wave accounting.","url":"4827-create-an-income-in-wave-accounting-for-every-sendcloud-parcel","usedApps":["sendcloud","builtin","wave"],"usage":3}

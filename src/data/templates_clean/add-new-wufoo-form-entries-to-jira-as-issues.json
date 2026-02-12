@@ -1,0 +1,1 @@
+{"id":1487,"name":"Add new Wufoo form entries to JIRA as issues","description":"Every time someone fills out your Wufoo form, Make will automatically create a new issue in JIRA.","url":"1487-add-new-wufoo-form-entries-to-jira-as-issues","usedApps":["jira","wufoo"],"usage":3}

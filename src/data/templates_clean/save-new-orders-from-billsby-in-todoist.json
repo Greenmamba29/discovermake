@@ -1,0 +1,1 @@
+{"id":5949,"name":"Save new orders from Billsby in Todoist","description":"Every time a new order from Billsby is saved, Make will automatically create a task in Todoist.","url":"5949-save-new-orders-from-billsby-in-todoist","usedApps":["billsby","todoist"],"usage":1}

@@ -1,0 +1,1 @@
+{"id":7644,"name":"Create Pipedrive CRM persons for new Circle members","description":"Make will watch your Circle members at regular intervals and create Pipdrive CRM persons.","url":"7644-create-pipedrive-crm-persons-for-new-circle-members","usedApps":["circle-so","pipedrive"],"usage":2}

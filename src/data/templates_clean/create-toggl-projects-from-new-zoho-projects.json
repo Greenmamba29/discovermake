@@ -1,0 +1,1 @@
+{"id":7846,"name":"Create Toggl projects from new Zoho Projects","description":"Make will watch for new projects in Zoho Projects at regular intervals and create projects in Toggl using information retrieved.","url":"7846-create-toggl-projects-from-new-zoho-projects","usedApps":["zoho-projects","toggl"],"usage":14}

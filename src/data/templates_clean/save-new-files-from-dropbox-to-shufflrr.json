@@ -1,0 +1,1 @@
+{"id":7071,"name":"Save new files from Dropbox to Shufflrr","description":"Every time a new file is uploaded to your Dropbox, Make will automatically upload that file to Shufflrr folder you specify.","url":"7071-save-new-files-from-dropbox-to-shufflrr","usedApps":["dropbox","shufflrr"],"usage":2}

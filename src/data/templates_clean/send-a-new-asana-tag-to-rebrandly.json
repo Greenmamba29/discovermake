@@ -1,0 +1,1 @@
+{"id":2982,"name":"Send a new Asana tag to Rebrandly","description":"When a new tag is created in Asana, a new tag with the same name is created in Rebrandly.","url":"2982-send-a-new-asana-tag-to-rebrandly","usedApps":["asana","rebrandly"],"usage":2}

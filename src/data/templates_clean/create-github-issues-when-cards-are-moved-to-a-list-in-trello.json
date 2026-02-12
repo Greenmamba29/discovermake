@@ -1,0 +1,1 @@
+{"id":5750,"name":"Create GitHub issues when cards are moved to a list in Trello","description":"When you move cards to a list that you are watching in Trello, the names and IDs of the cards will be retrieved and issues on GitHub will be created automatically.","url":"5750-create-github-issues-when-cards-are-moved-to-a-list-in-trello","usedApps":["trello","github"],"usage":8}

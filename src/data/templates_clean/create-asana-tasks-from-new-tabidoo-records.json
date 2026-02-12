@@ -1,0 +1,1 @@
+{"id":4548,"name":"Create Asana tasks from new Tabidoo records","description":"Every time a new record is added to Tabidoo, Make will automatically create a new task in a selected Asana workspace.","url":"4548-create-asana-tasks-from-new-tabidoo-records","usedApps":["tabidoo","asana"],"usage":1}

@@ -1,0 +1,1 @@
+{"id":2784,"name":"Add new Google Contacts to Autopilot","description":"Every time a new contact is created in Google Cotnacts, Make will automatically add that contact to your Autopilot list.","url":"2784-add-new-google-contacts-to-autopilot","usedApps":["google-contacts","autopilot"],"usage":2}

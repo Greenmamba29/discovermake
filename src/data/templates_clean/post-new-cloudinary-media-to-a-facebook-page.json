@@ -1,0 +1,1 @@
+{"id":6234,"name":"Post new Cloudinary media to a Facebook page","description":"Every time there is new tagged media in Cloudinary, Make will automatically upload it to a Facebook Page as a new post.","url":"6234-post-new-cloudinary-media-to-a-facebook-page","usedApps":["cloudinary","http","facebook-pages"],"usage":36}

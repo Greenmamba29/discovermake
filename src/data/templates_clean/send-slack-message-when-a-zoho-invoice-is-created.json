@@ -1,0 +1,1 @@
+{"id":3685,"name":"Send Slack message when a Zoho Invoice is created","description":"Every time a new invoice is created on Zoho Invoice, Make will automatically send a Slack message.","url":"3685-send-slack-message-when-a-zoho-invoice-is-created","usedApps":["zoho-invoice","slack"],"usage":5}

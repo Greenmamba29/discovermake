@@ -1,0 +1,1 @@
+{"id":3961,"name":"Send new Freshsales deals to Databox","description":"Make will automatically track new deals created in Freshsales and update that information in Databox. ","url":"3961-send-new-freshsales-deals-to-databox","usedApps":["freshsales","databox"],"usage":7}

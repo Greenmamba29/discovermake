@@ -1,0 +1,1 @@
+{"id":5786,"name":"Send Telegram messages for new Kanbanize tasks","description":"Every time a new task is created in Kanbanize, Make will automatically send a message in Telegram.","url":"5786-send-telegram-messages-for-new-kanbanize-tasks","usedApps":["kanbanize","util","telegram"],"usage":3}

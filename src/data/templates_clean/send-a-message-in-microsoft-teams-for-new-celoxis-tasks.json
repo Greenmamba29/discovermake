@@ -1,0 +1,1 @@
+{"id":4200,"name":"Send a message in Microsoft Teams for new Celoxis tasks","description":"Every time a new Celoxis task is created, Make will automatically send a message in Microsoft Teams.","url":"4200-send-a-message-in-microsoft-teams-for-new-celoxis-tasks","usedApps":["celoxis","microsoft-teams"],"usage":5}

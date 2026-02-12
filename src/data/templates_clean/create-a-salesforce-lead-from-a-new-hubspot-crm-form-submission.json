@@ -1,0 +1,1 @@
+{"id":5999,"name":"Create a Salesforce lead from a new HubSpot CRM form submission","description":"Use this template to automatically create a Salesforce lead when a HubSpot CRM form is submitted.","url":"5999-create-a-salesforce-lead-from-a-new-hubspot-crm-form-submission","usedApps":["hubspotcrm","salesforce"],"usage":15}

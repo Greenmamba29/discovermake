@@ -1,0 +1,1 @@
+{"id":4854,"name":"Send a new email to Cisco Webex","description":"Every time you receive a new email, Make will automatically send that email to a selected room in Cisco Webex.","url":"4854-send-a-new-email-to-cisco-webex","usedApps":["email","webex-teams"],"usage":15}

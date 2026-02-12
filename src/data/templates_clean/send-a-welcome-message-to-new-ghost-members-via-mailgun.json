@@ -1,0 +1,1 @@
+{"id":3628,"name":"Send a welcome message to new Ghost Members via Mailgun","description":"Every time a new member is added to Ghost, Make will automatically send them a welcome message via Mailgun.","url":"3628-send-a-welcome-message-to-new-ghost-members-via-mailgun","usedApps":["ghost","mailgun"],"usage":24}

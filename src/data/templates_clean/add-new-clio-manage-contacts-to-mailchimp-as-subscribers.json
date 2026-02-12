@@ -1,0 +1,1 @@
+{"id":8164,"name":"Add new Clio Manage contacts to Mailchimp as subscribers","description":"Every time there is a new contact in Clio Manage, Make will automatically add a subscriber to a specified Mailchimp mailing list or update an existing subscriber.","url":"8164-add-new-clio-manage-contacts-to-mailchimp-as-subscribers","usedApps":["clio-manage","mailchimp"],"usage":10}

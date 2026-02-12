@@ -1,0 +1,1 @@
+{"id":5428,"name":"Send a Thanks.io postcard to a new Salesforce lead","description":"Every time a new Salesforce lead is created, Make will automatically send a Thanks.io postcard.","url":"5428-send-a-thanks-io-postcard-to-a-new-salesforce-lead","usedApps":["salesforce","thanks-io"],"usage":2}

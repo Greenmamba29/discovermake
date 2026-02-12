@@ -1,0 +1,1 @@
+{"id":2440,"name":"Send SendGrid emails for new RSS feed items","description":"Every time a new item is posted to a watched RSS feed, Make will automatically send an email via SendGrid to a specified recipient group.","url":"2440-send-sendgrid-emails-for-new-rss-feed-items","usedApps":["rss","sendgrid"],"usage":22}

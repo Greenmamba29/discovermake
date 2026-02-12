@@ -1,0 +1,1 @@
+{"id":8531,"name":"Save new OneDrive media to Restdb.io","description":"Every time there is new media files in a specified OneDrive folder, Make will automatically upload it to Restdb.io.","url":"8531-save-new-onedrive-media-to-restdb-io","usedApps":["onedrive","restdb-io"],"usage":7}

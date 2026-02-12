@@ -1,0 +1,1 @@
+{"id":8460,"name":"Create ActiveCampaign contacts from new completed lookups in RocketReach","description":"Every time a new lookup has been completed in RocketReach, Make will automatically create a new contact in ActiveCampaign.","url":"8460-create-activecampaign-contacts-from-new-completed-lookups-in-rocketreach","usedApps":["rocketreach","activecampaign"],"usage":2}

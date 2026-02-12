@@ -1,0 +1,1 @@
+{"id":4558,"name":"Create a Copper Activities from Finished Go4Clients calls","description":"Every time you make or receive a call from a specific number via Go4Clients, Make will automatically create a new activity in Copper","url":"4558-create-a-copper-activities-from-finished-go4clients-calls","usedApps":["go4clients","prosperworks"],"usage":0}

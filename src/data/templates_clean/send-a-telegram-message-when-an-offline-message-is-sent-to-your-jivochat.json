@@ -1,0 +1,1 @@
+{"id":6422,"name":"Send a Telegram message when an offline message is sent to your JivoChat","description":"Every time a message is received Make will send it to you via a Telegram Bot.","url":"6422-send-a-telegram-message-when-an-offline-message-is-sent-to-your-jivochat","usedApps":["jivochat","telegram"],"usage":14}

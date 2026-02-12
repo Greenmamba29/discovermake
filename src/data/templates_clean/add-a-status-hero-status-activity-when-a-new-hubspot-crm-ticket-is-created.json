@@ -1,0 +1,1 @@
+{"id":5256,"name":"Add a Status Hero status activity when a new HubSpot CRM ticket is created","description":"Every time a new HubSpot CRM ticket is created, Make will automatically add a Status Hero status activity.","url":"5256-add-a-status-hero-status-activity-when-a-new-hubspot-crm-ticket-is-created","usedApps":["hubspotcrm","status-hero"],"usage":2}

@@ -1,0 +1,1 @@
+{"id":7139,"name":"New customer SupportBee reply sent as a Slack message","description":"Every time you have a new Customer reply in SupportBee, Make will automatically send a message in Slack.","url":"7139-new-customer-supportbee-reply-sent-as-a-slack-message","usedApps":["supportbee","slack"],"usage":0}

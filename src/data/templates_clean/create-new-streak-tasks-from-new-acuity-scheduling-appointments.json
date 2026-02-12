@@ -1,0 +1,1 @@
+{"id":2576,"name":"Create new Streak tasks from new Acuity Scheduling appointments","description":"Every time a new appointment is scheduled in Acuity Scheduling, Make will automatically create a new task in Streak.","url":"2576-create-new-streak-tasks-from-new-acuity-scheduling-appointments","usedApps":["acuity-scheduling","streak"],"usage":0}

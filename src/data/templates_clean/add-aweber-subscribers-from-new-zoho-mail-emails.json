@@ -1,0 +1,1 @@
+{"id":2710,"name":"Add AWeber subscribers from new Zoho Mail emails","description":"Every time a new email is received in a specific Zoho Mail folder, Make will automatically add a new subscriber to your AWeber list..","url":"2710-add-aweber-subscribers-from-new-zoho-mail-emails","usedApps":["zoho-mail","aweber"],"usage":3}

@@ -1,0 +1,1 @@
+{"id":5117,"name":"Send messages to Telegram Bot about new incidents in PagerDuty","description":"Every time a new incident is triggered in PagerDuty, Make will automatically send a  message to Telegram Bot.","url":"5117-send-messages-to-telegram-bot-about-new-incidents-in-pagerduty","usedApps":["pagerduty","telegram"],"usage":5}

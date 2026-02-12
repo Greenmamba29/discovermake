@@ -1,0 +1,1 @@
+{"id":3010,"name":"Add a new line item in a new invoice in Harvest","description":"When a new invoice is created in Harvest and meets specified criteria, a new invoice line item is added in the invoice in Harvest.","url":"3010-add-a-new-line-item-in-a-new-invoice-in-harvest","usedApps":["harvest","harvest"],"usage":7}

@@ -1,0 +1,1 @@
+{"id":5777,"name":"Save new Telegram files to pCloud","description":"Every time a new file is posted to your Telegram channel, Make will automatically save that file to pCloud folder you specify.","url":"5777-save-new-telegram-files-to-pcloud","usedApps":["telegram","pcloud"],"usage":45}

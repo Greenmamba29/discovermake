@@ -1,0 +1,1 @@
+{"id":4141,"name":"Create posts in Facebook Groups from new Celestory messages","description":"Every time a new Celestory message is sent, Make will automatically create a post in a specified Facebook Group.","url":"4141-create-posts-in-facebook-groups-from-new-celestory-messages","usedApps":["celestory","facebook-groups"],"usage":7}

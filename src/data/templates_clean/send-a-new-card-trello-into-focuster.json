@@ -1,0 +1,1 @@
+{"id":2927,"name":"Send a new card Trello into Focuster","description":"When a new card in Trello is made, a new action is added into Focuster.","url":"2927-send-a-new-card-trello-into-focuster","usedApps":["trello","util","focuster"],"usage":3}

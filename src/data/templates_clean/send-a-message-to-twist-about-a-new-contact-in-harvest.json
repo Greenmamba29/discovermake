@@ -1,0 +1,1 @@
+{"id":3004,"name":"Send a message to Twist about a new contact in Harvest","description":"When a new contact is created in Harvest, a new message is sent to specified thread in Twist.","url":"3004-send-a-message-to-twist-about-a-new-contact-in-harvest","usedApps":["harvest","twist"],"usage":0}

@@ -1,0 +1,1 @@
+{"id":15099,"name":"Summarize emails with ChatGPT and store on a Google Sheet","description":"This template logs new emails in Google Sheets with generated AI summarizes using ChatGPT for streamlined email management and record-keeping.","url":"15099-summarize-emails-with-chatgpt-and-store-on-a-google-sheet","usedApps":["email","openai-gpt-3","google-sheets"],"usage":54}

@@ -1,0 +1,1 @@
+{"id":7711,"name":"Add new prospects to MailChimp list as a subscriber","description":"Add a new prospect from Bind ERP to a MailChimp mailing list as a subscriber (it's possible to also choose a different subscription status).","url":"7711-add-new-prospects-to-mailchimp-list-as-a-subscriber","usedApps":["bind-erp","mailchimp"],"usage":1}

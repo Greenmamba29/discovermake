@@ -1,0 +1,1 @@
+{"id":2706,"name":"Send Zoho Mail emails for new Cognito Forms entries","description":"Every time someone fills out your Cognito Form, Make will automatically send an email in Zoho Mail.","url":"2706-send-zoho-mail-emails-for-new-cognito-forms-entries","usedApps":["cognitoforms","zoho-mail"],"usage":3}

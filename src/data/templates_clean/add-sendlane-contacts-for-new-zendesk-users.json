@@ -1,0 +1,1 @@
+{"id":8225,"name":"Add Sendlane contacts for new Zendesk users","description":"Make will watch your Zendesk users at regular intervals and create identical Sendlane contacts.","url":"8225-add-sendlane-contacts-for-new-zendesk-users","usedApps":["zendesk","sendlane"],"usage":2}

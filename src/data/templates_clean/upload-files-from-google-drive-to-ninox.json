@@ -1,0 +1,1 @@
+{"id":4065,"name":"Upload files from Google Drive to Ninox","description":"When a new file is uploaded in Google Drive, a new record is created in Ninox and the file is uploaded to the record.","url":"4065-upload-files-from-google-drive-to-ninox","usedApps":["google-drive","ninox"],"usage":63}

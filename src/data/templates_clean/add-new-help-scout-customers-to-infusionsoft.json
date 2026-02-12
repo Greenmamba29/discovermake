@@ -1,0 +1,1 @@
+{"id":2777,"name":"Add new Help Scout customers to Infusionsoft","description":"Every time a new customer is created in Help Scout, Make will automatically create a new contact in Infusionsoft.","url":"2777-add-new-help-scout-customers-to-infusionsoft","usedApps":["helpscout","infusionsoft"],"usage":2}

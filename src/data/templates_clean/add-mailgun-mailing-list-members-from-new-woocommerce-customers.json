@@ -1,0 +1,1 @@
+{"id":7207,"name":"Add Mailgun mailing list members from new WooCommerce customers","description":"Every time a new customer is added to your WooCommerce, Make will add them to your Mailgun mailing list.","url":"7207-add-mailgun-mailing-list-members-from-new-woocommerce-customers","usedApps":["woocommerce","mailgun"],"usage":3}

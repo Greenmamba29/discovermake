@@ -1,0 +1,1 @@
+{"id":2353,"name":"Update Telegram from music playlist on Spotify","description":"Include your telegram followers to what you are listening to with your music playlist from Spotify. Every time a new track plays the track is updated to your Telegram followers.","url":"2353-update-telegram-from-music-playlist-on-spotify","usedApps":["spotify","util","telegram"],"usage":288}

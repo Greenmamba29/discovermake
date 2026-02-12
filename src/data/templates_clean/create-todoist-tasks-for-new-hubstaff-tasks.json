@@ -1,0 +1,1 @@
+{"id":7344,"name":"Create Todoist tasks for new Hubstaff tasks","description":"Every time there is a new task created on Hubstaff, Make will automatically create one in Todoist.","url":"7344-create-todoist-tasks-for-new-hubstaff-tasks","usedApps":["hubstaff","todoist"],"usage":4}

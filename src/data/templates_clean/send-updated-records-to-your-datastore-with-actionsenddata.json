@@ -1,0 +1,1 @@
+{"id":12789,"name":"Send updated records to your datastore with ActionSendData","description":"Automatically update your datastore with new records using HTTP request. Streamline data management by sending updated records directly to your datastore.","url":"12789-send-updated-records-to-your-datastore-with-actionsenddata","usedApps":["http","datastore"],"usage":5}

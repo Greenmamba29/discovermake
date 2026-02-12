@@ -1,0 +1,1 @@
+{"id":5585,"name":"Creates Alert in Opsgenie for new uploaded Files in Google Drive","description":"Every time a new file is uploaded to your Google Drive, Make will automatically  create a new Alert in Opsgenie.","url":"5585-creates-alert-in-opsgenie-for-new-uploaded-files-in-google-drive","usedApps":["google-drive","opsgenie"],"usage":5}

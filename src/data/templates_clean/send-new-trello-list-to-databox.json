@@ -1,0 +1,1 @@
+{"id":3799,"name":"Send new Trello list to Databox","description":"When a new list is added in Trello, Make will automatically send its data to Databox.","url":"3799-send-new-trello-list-to-databox","usedApps":["trello","databox"],"usage":2}

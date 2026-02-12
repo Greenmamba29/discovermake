@@ -1,0 +1,1 @@
+{"id":7200,"name":"Forward emails with attachments from Gmail to Mailgun","description":"Every time a new email is received in your Gmail, Make will iterate through the attachments of it and send it to your recipients via Mailgun.","url":"7200-forward-emails-with-attachments-from-gmail-to-mailgun","usedApps":["google-email","mailgun"],"usage":27}

@@ -1,0 +1,1 @@
+{"id":8081,"name":"New Checkvist items sent as email","description":"Every time a new item is created in Checkvist, you will get an email with the items details.","url":"8081-new-checkvist-items-sent-as-email","usedApps":["checkvist","email"],"usage":2}

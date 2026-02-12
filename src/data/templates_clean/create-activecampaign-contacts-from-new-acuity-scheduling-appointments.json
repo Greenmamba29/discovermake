@@ -1,0 +1,1 @@
+{"id":2583,"name":"Create ActiveCampaign contacts from new Acuity Scheduling appointments","description":"Every time a new appointment is scheduled in Acuity Scheduling, Make will automatically create a new contact in ActiveCampaign.","url":"2583-create-activecampaign-contacts-from-new-acuity-scheduling-appointments","usedApps":["acuity-scheduling","activecampaign"],"usage":43}

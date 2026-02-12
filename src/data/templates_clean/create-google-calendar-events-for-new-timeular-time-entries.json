@@ -1,0 +1,1 @@
+{"id":7051,"name":"Create Google Calendar events for new Timeular time entries","description":"Every time there is a new Timeular time entry, Make will automatically add that entry to a selected Google Calendar as an event.","url":"7051-create-google-calendar-events-for-new-timeular-time-entries","usedApps":["timeular","google-calendar"],"usage":10}

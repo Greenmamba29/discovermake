@@ -1,0 +1,1 @@
+{"id":4969,"name":"Create ServiceM8 clients from Pipedrive CRM persons","description":"Every time a new Pipedrive CRM person is added, Make will automatically create a new ServiceM8 client.","url":"4969-create-servicem8-clients-from-pipedrive-crm-persons","usedApps":["pipedrive","servicem8"],"usage":8}

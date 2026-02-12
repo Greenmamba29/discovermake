@@ -1,0 +1,1 @@
+{"id":6299,"name":"Send new Webflow form submissions to Facebook Conversions API","description":"Every time a new form submission is made in Webflow, a new conversion will be uploaded to Facebook Conversions API. ","url":"6299-send-new-webflow-form-submissions-to-facebook-conversions-api","usedApps":["webflow","facebook-conversions-api"],"usage":182}

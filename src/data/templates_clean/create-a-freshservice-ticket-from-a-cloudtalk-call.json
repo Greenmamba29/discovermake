@@ -1,0 +1,1 @@
+{"id":6179,"name":"Create a Freshservice ticket from a CloudTalk call","description":"Use this template to automatically create a Freshservice ticket when a new CloudTalk call is registered.","url":"6179-create-a-freshservice-ticket-from-a-cloudtalk-call","usedApps":["cloudtalk","freshservice"],"usage":2}

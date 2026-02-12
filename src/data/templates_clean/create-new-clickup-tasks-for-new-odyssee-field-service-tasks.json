@@ -1,0 +1,1 @@
+{"id":7086,"name":"Create new ClickUp tasks for new Odyssee Field Service tasks","description":"Every time a new task is created in Odyssee Field Service, Make will automatically add that task to ClickUp.","url":"7086-create-new-clickup-tasks-for-new-odyssee-field-service-tasks","usedApps":["odyssee-field-service","clickup"],"usage":1}

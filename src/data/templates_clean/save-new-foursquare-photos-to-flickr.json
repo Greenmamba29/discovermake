@@ -1,0 +1,1 @@
+{"id":101,"name":"Save new Foursquare photos to Flickr","description":"Every time a selected user adds a new photo to Foursquare, Make will automatically save the photo to a Flickr album you specify.","url":"101-save-new-foursquare-photos-to-flickr","usedApps":["flickr","foursquare"],"usage":5}

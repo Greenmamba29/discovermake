@@ -1,0 +1,1 @@
+{"id":4648,"name":"Migrate AWS S3 files to Google Cloud Storage","description":"This template helps you export files from an Amazon S3 bucket to the GCS bucket of your choice. The scenario can be setup to run at regular intervals (every hour, day, week, etc..).","url":"4648-migrate-aws-s3-files-to-google-cloud-storage","usedApps":["aws-s3","google-cloud-storage"],"usage":63}

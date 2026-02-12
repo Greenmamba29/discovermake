@@ -1,0 +1,1 @@
+{"id":5739,"name":"Get Telegram messages for new deals in Teamleader","description":"Every time a new deal is created in your Teamleader a message from your Telegram bot will be sent.","url":"5739-get-telegram-messages-for-new-deals-in-teamleader","usedApps":["teamleader","util","telegram"],"usage":3}

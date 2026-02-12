@@ -1,0 +1,1 @@
+{"id":8059,"name":"Create EZOfficeInventory users from new BambooHR employees","description":"Every time a new employee is created in BambooHR, Make will automatically add that employee to EZOfficeInventory as a new user.","url":"8059-create-ezofficeinventory-users-from-new-bamboohr-employees","usedApps":["bamboohr","ezofficeinventory"],"usage":3}

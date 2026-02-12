@@ -1,0 +1,1 @@
+{"id":4967,"name":"Create ServiceM8 clients from Google Contacts","description":"Every time a new Google Contact is created, Make will automatically create a new client in ServiceM8.","url":"4967-create-servicem8-clients-from-google-contacts","usedApps":["google-contacts","servicem8"],"usage":12}

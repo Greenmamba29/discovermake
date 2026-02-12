@@ -1,0 +1,1 @@
+{"id":1034,"name":"Create Knack records with OpenWeatherMap current weather","description":"Every time this scenario is run, Make will automatically get the current weather for a selected location from OpenWeatherMap and add it to Knack as a new record.","url":"1034-create-knack-records-with-openweathermap-current-weather","usedApps":["openweathermap","knack"],"usage":10}

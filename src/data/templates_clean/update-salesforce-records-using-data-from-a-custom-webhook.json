@@ -1,0 +1,1 @@
+{"id":12854,"name":"Update Salesforce records using data from a custom webhook","description":"Automatically update Salesforce records with data from a custom webhook, ensuring your CRM stays current with real-time information from external sources.","url":"12854-update-salesforce-records-using-data-from-a-custom-webhook","usedApps":["gateway","salesforce"],"usage":23}

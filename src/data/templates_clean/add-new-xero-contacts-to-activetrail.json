@@ -1,0 +1,1 @@
+{"id":1990,"name":"Add new Xero contacts to ActiveTrail","description":"Every time a new contact is created in Xero, Make will automatically add it to an ActiveTrail group of your choice.","url":"1990-add-new-xero-contacts-to-activetrail","usedApps":["xero","activetrail"],"usage":2}

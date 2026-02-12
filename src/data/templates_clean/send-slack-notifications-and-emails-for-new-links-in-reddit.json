@@ -1,0 +1,1 @@
+{"id":5892,"name":"Send Slack notifications and emails for new links in Reddit","description":"When you receive new links in Reddit, Make will automatically send Slack notifications and emails with the links to whoever you want.","url":"5892-send-slack-notifications-and-emails-for-new-links-in-reddit","usedApps":["reddit","slack","email"],"usage":35}

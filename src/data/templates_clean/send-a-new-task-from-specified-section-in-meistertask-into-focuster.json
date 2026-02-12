@@ -1,0 +1,1 @@
+{"id":2932,"name":"Send a new task from specified section in MeisterTask into Focuster","description":"When a new task in a specified section in MeisterTask is created and meets specified criteria a new action is added into Focuster.","url":"2932-send-a-new-task-from-specified-section-in-meistertask-into-focuster","usedApps":["meistertask","focuster"],"usage":1}

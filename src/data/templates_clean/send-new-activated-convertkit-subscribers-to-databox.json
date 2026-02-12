@@ -1,0 +1,1 @@
+{"id":3899,"name":"Send new activated ConvertKit subscribers to Databox","description":"Every time a new subscriber is activated in ConvertKit, Make will automatically update the number of your subscribers in Databox. ","url":"3899-send-new-activated-convertkit-subscribers-to-databox","usedApps":["convertkit","databox"],"usage":3}

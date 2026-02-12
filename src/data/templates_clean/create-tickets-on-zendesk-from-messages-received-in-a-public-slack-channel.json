@@ -1,0 +1,1 @@
+{"id":5204,"name":"Create tickets on Zendesk from messages received in a public Slack channel","description":"This integration retrieves messages from a public Slack channel and creates tickets from it on Zendesk.","url":"5204-create-tickets-on-zendesk-from-messages-received-in-a-public-slack-channel","usedApps":["slack","zendesk"],"usage":13}

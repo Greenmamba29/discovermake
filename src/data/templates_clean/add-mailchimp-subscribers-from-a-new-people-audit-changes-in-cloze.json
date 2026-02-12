@@ -1,0 +1,1 @@
+{"id":9136,"name":"Add Mailchimp subscribers from a new people audit changes in Cloze","description":"Every time a your person audit is changed in Cloze, Make will automatically add subscriber to your Mailchimp.","url":"9136-add-mailchimp-subscribers-from-a-new-people-audit-changes-in-cloze","usedApps":["cloze","mailchimp"],"usage":1}

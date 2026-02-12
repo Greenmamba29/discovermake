@@ -1,0 +1,1 @@
+{"id":3394,"name":"Save completed tasks from Asana to a Google Sheets spreadsheet","description":"Every time a task is completed in Asana, Make will automatically save it to a Google Sheets spreadsheet.","url":"3394-save-completed-tasks-from-asana-to-a-google-sheets-spreadsheet","usedApps":["asana","google-sheets"],"usage":548}

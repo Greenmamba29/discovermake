@@ -1,0 +1,1 @@
+{"id":2616,"name":"Add finished incoming Yodel.io calls to Zoho CRM","description":"Every time an incoming call is finished in Yodel.io, Make will automatically add that call's info to Zoho CRM.","url":"2616-add-finished-incoming-yodel-io-calls-to-zoho-crm","usedApps":["yodel","zohocrm"],"usage":1}

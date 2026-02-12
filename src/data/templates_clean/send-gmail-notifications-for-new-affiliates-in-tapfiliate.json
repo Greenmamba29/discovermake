@@ -1,0 +1,1 @@
+{"id":6621,"name":"Send Gmail notifications for new affiliates in Tapfiliate","description":"Every time a new affiliate is added in Tapfiliate, a Gmail email will be sent with affiliate's details to an email address of your choice.","url":"6621-send-gmail-notifications-for-new-affiliates-in-tapfiliate","usedApps":["tapfiliate","google-email"],"usage":2}

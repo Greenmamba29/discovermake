@@ -1,0 +1,1 @@
+{"id":4803,"name":"Create a new Thankster card from a new Contact in HubSpot CRM","description":"This scenario will trigger the mailing of a Thankster card when a contact becomes an opportuity.","url":"4803-create-a-new-thankster-card-from-a-new-contact-in-hubspot-crm","usedApps":["hubspotcrm","thankster"],"usage":2}

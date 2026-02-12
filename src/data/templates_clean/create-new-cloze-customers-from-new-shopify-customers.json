@@ -1,0 +1,1 @@
+{"id":9137,"name":"Create new Cloze customers from new Shopify customers","description":"Every time a new customer is added to a Shopify, Make will automatically create a new customer in Cloze.","url":"9137-create-new-cloze-customers-from-new-shopify-customers","usedApps":["shopify","cloze"],"usage":3}

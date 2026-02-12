@@ -1,0 +1,1 @@
+{"id":5873,"name":"Add form responses from Wufoo to tables in Caspio","description":"This automation retrieves your form responses from Wufoo and adds the data as new rows on a table in Caspio.","url":"5873-add-form-responses-from-wufoo-to-tables-in-caspio","usedApps":["wufoo","caspio"],"usage":3}

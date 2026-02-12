@@ -1,0 +1,1 @@
+{"id":7391,"name":"Add new Simvoly orders to Shopify","description":"Every time a new order is created in Simvoly, Make will automatically add the data submitted to Shopify as a new customer and subsequently create a new order in Shopify.","url":"7391-add-new-simvoly-orders-to-shopify","usedApps":["simvoly2","shopify","builtin","util"],"usage":15}

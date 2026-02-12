@@ -1,0 +1,1 @@
+{"id":2751,"name":"Receive incoming ClickSend SMS messages in Slack","description":"Every time a new SMS message is received in ClickSend, Make will automatically send a message in Slack.","url":"2751-receive-incoming-clicksend-sms-messages-in-slack","usedApps":["clicksend","slack"],"usage":11}

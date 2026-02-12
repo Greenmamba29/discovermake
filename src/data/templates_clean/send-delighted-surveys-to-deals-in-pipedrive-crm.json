@@ -1,0 +1,1 @@
+{"id":7111,"name":"Send Delighted surveys to deals in Pipedrive CRM","description":"Every time there is a new updated or created deal in Pipedrive CRM, Make will automatically send a Delighted survey to this person.","url":"7111-send-delighted-surveys-to-deals-in-pipedrive-crm","usedApps":["pipedrive","delighted"],"usage":2}

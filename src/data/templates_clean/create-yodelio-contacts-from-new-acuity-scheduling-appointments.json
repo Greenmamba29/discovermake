@@ -1,0 +1,1 @@
+{"id":2632,"name":"Create Yodel.io contacts from new Acuity Scheduling appointments","description":"Every time a new appointment is scheduled in Acuity Scheduling, Make will automatically create a new contact in Yodel.io.","url":"2632-create-yodel-io-contacts-from-new-acuity-scheduling-appointments","usedApps":["acuity-scheduling","yodel"],"usage":0}

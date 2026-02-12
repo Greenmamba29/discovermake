@@ -1,0 +1,1 @@
+{"id":3112,"name":"Send a push notification to Apple device with data from Moosend webhook","description":"When a new webhook is received from automation in Moosend, a push notification is sent to Apple device.","url":"3112-send-a-push-notification-to-apple-device-with-data-from-moosend-webhook","usedApps":["moosend","ios"],"usage":4}

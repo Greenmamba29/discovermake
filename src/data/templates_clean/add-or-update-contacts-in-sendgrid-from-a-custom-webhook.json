@@ -1,0 +1,1 @@
+{"id":12721,"name":"Add or update contacts in SendGrid from a custom webhook","description":"Automatically update or add contacts in SendGrid whenever a custom webhook event occurs, ensuring your email list is always current and accurate.","url":"12721-add-or-update-contacts-in-sendgrid-from-a-custom-webhook","usedApps":["gateway","sendgrid"],"usage":10}

@@ -1,0 +1,1 @@
+{"id":8150,"name":"Add Mailgun list members for new Memberful members","description":"Every time a new member signs up into your Memberful, Make will automatically add a mailing list member into your Mailgun.","url":"8150-add-mailgun-list-members-for-new-memberful-members","usedApps":["memberful","mailgun"],"usage":1}

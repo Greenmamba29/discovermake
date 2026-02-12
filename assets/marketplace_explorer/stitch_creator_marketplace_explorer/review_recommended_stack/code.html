@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Review Recommended Stack</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13a4ec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#111c22", // Updated to match the requested dark base
+                        "surface-dark": "#192b33", // Slightly lighter for cards
+                        "surface-darker": "#0d1418", // Darker for contrast areas
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom Scrollbar for hidden look but functional */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        /* IOS Toggle Switch Customization */
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #13a4ec;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #13a4ec;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-gray-900 dark:text-white antialiased overflow-hidden h-screen flex flex-col">
+<!-- Header -->
+<header class="flex items-center justify-between p-4 pb-2 bg-background-light dark:bg-background-dark shrink-0 z-10">
+<button class="text-gray-900 dark:text-white flex size-10 shrink-0 items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
+<span class="material-symbols-outlined text-[24px]">arrow_back_ios_new</span>
+</button>
+<h2 class="text-gray-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-10">Recommended Stack</h2>
+</header>
+<!-- Progress Bar -->
+<div class="flex w-full flex-row items-center justify-center gap-2 px-6 py-4 shrink-0 bg-background-light dark:bg-background-dark">
+<div class="h-1.5 flex-1 rounded-full bg-surface-dark dark:bg-gray-700"></div>
+<div class="h-1.5 flex-1 rounded-full bg-surface-dark dark:bg-gray-700"></div>
+<div class="h-1.5 flex-1 rounded-full bg-primary shadow-[0_0_8px_rgba(19,164,236,0.6)]"></div>
+<div class="h-1.5 flex-1 rounded-full bg-surface-dark dark:bg-gray-700"></div>
+</div>
+<!-- Main Content Area (Scrollable) -->
+<main class="flex-1 overflow-y-auto no-scrollbar px-4 pb-24">
+<!-- Intro Text -->
+<div class="mb-6">
+<h1 class="text-2xl font-bold tracking-tight mb-2">Review Stack</h1>
+<p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
+                Our Decision Engine suggests the following stack based on your requirements.
+            </p>
+</div>
+<!-- Preview Card -->
+<div class="mb-8 p-1 rounded-2xl bg-gradient-to-br from-primary/30 to-transparent">
+<div class="bg-white dark:bg-surface-dark rounded-xl overflow-hidden shadow-lg border border-gray-100 dark:border-gray-800">
+<div class="relative h-48 w-full bg-gray-200 dark:bg-gray-800" data-alt="Abstract futuristic dashboard UI with glowing elements" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCHN5xOmOKQLhMQvzkrU5odm4YSISM9fOsjdemaqISUm-wg2I6xGnKhJL89e01qJO4mDusWciJy13b1wX7CmuKrR_6pCv4LvwqdoJH0UfCHdQEKtrCiCYWMh7BMjf0F-kxj6elXoukc-YTg0JNjiViNWrhrvygeRpihsTbxpAG6cXLoVUzlZ10RgUPPhWBZpLe55gIhMhhsBCQpYand40qyGbacT-17oDHP-sS2Zc3DFXhSpUz9BOPzwAS4IhCXMn7ykmUGZ0eK00A'); background-size: cover; background-position: center;">
+<div class="absolute inset-0 bg-gradient-to-t from-surface-dark to-transparent opacity-90"></div>
+<div class="absolute bottom-4 left-4 right-4">
+<div class="flex items-center gap-2 mb-1">
+<span class="bg-primary/20 text-primary text-xs font-bold px-2 py-0.5 rounded uppercase tracking-wider">Outcome</span>
+</div>
+<h3 class="text-white text-xl font-bold">AI Chatbot Assistant</h3>
+<p class="text-gray-300 text-sm">Real-time capabilities with context awareness.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Stack Configuration List -->
+<div class="space-y-4">
+<h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider px-1">Core Components</h3>
+<!-- AI Model Item -->
+<div class="group bg-white dark:bg-surface-dark rounded-xl p-4 flex items-center justify-between border border-gray-100 dark:border-gray-800 shadow-sm transition-all hover:border-primary/50">
+<div class="flex items-start gap-3">
+<div class="size-10 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined">psychology</span>
+</div>
+<div>
+<h4 class="font-semibold text-base text-gray-900 dark:text-white">GPT-4o</h4>
+<p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">High reasoning &amp; multimodal</p>
+</div>
+</div>
+<!-- iOS Toggle -->
+<div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+<input checked="" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 border-surface-dark appearance-none cursor-pointer translate-x-6 transition-transform duration-200 ease-in-out focus:ring-0 checked:translate-x-full checked:border-primary" id="toggle-gpt" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-6 rounded-full bg-primary cursor-pointer" for="toggle-gpt"></label>
+</div>
+</div>
+<!-- Backend Item -->
+<div class="group bg-white dark:bg-surface-dark rounded-xl p-4 flex items-center justify-between border border-gray-100 dark:border-gray-800 shadow-sm transition-all hover:border-primary/50">
+<div class="flex items-start gap-3">
+<div class="size-10 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined">database</span>
+</div>
+<div>
+<h4 class="font-semibold text-base text-gray-900 dark:text-white">Supabase</h4>
+<p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Realtime DB &amp; Auth</p>
+</div>
+</div>
+<div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+<input checked="" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 border-surface-dark appearance-none cursor-pointer translate-x-6 transition-transform duration-200 ease-in-out focus:ring-0 checked:translate-x-full checked:border-primary" id="toggle-supabase" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-6 rounded-full bg-primary cursor-pointer" for="toggle-supabase"></label>
+</div>
+</div>
+<!-- Language Item -->
+<div class="group bg-white dark:bg-surface-dark rounded-xl p-4 flex items-center justify-between border border-gray-100 dark:border-gray-800 shadow-sm transition-all hover:border-primary/50">
+<div class="flex items-start gap-3">
+<div class="size-10 rounded-lg bg-yellow-500/20 text-yellow-400 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined">code</span>
+</div>
+<div>
+<h4 class="font-semibold text-base text-gray-900 dark:text-white">Python</h4>
+<p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Backend Logic &amp; Processing</p>
+</div>
+</div>
+<div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+<input checked="" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 border-surface-dark appearance-none cursor-pointer translate-x-6 transition-transform duration-200 ease-in-out focus:ring-0 checked:translate-x-full checked:border-primary" id="toggle-python" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-6 rounded-full bg-primary cursor-pointer" for="toggle-python"></label>
+</div>
+</div>
+<!-- Frontend Item (Inactive Example) -->
+<div class="group bg-gray-100 dark:bg-surface-dark/50 rounded-xl p-4 flex items-center justify-between border border-transparent dark:border-gray-800/50 shadow-none opacity-70">
+<div class="flex items-start gap-3 grayscale">
+<div class="size-10 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined">smartphone</span>
+</div>
+<div>
+<h4 class="font-semibold text-base text-gray-900 dark:text-white">React Native</h4>
+<p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Cross-platform Mobile</p>
+</div>
+</div>
+<div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+<input class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 border-gray-600 appearance-none cursor-pointer transition-transform duration-200 ease-in-out focus:ring-0" id="toggle-rn" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-600 cursor-pointer" for="toggle-rn"></label>
+</div>
+</div>
+<!-- Extra info -->
+<div class="pt-4 pb-8 text-center">
+<p class="text-xs text-gray-500 dark:text-gray-600 flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-[14px]">info</span>
+                    Toggling off components may impact functionality.
+                </p>
+</div>
+</div>
+</main>
+<!-- Sticky Footer Action Bar -->
+<div class="fixed bottom-0 left-0 w-full bg-white/90 dark:bg-background-dark/95 backdrop-blur-md border-t border-gray-200 dark:border-gray-800 p-4 pb-8 z-20">
+<div class="flex items-center gap-3 max-w-md mx-auto">
+<button class="flex-1 py-3.5 px-4 rounded-xl border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-white font-medium text-sm hover:bg-gray-100 dark:hover:bg-white/5 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">refresh</span>
+                Modify
+            </button>
+<button class="flex-[2] py-3.5 px-4 rounded-xl bg-primary hover:bg-sky-500 text-white font-bold text-sm shadow-[0_4px_12px_rgba(19,164,236,0.3)] transition-all active:scale-[0.98] flex items-center justify-center gap-2">
+                Continue to Build
+                <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<script>
+        // Simple script to handle toggle visual state for the demo
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const label = this.nextElementSibling;
+                const parent = this.closest('.group');
+                
+                if (this.checked) {
+                    label.classList.remove('bg-gray-600');
+                    label.classList.add('bg-primary');
+                    this.classList.remove('border-gray-600');
+                    this.classList.add('border-surface-dark');
+                    this.classList.add('checked:border-primary');
+                    
+                    // Visual feedback on container
+                    parent.classList.remove('opacity-70', 'bg-gray-100', 'dark:bg-surface-dark/50', 'shadow-none');
+                    parent.classList.add('bg-white', 'dark:bg-surface-dark', 'shadow-sm');
+                    parent.querySelector('.flex.items-start').classList.remove('grayscale');
+                } else {
+                    label.classList.remove('bg-primary');
+                    label.classList.add('bg-gray-600');
+                    this.classList.remove('border-surface-dark');
+                    this.classList.remove('checked:border-primary');
+                    this.classList.add('border-gray-600');
+                    
+                    // Visual feedback on container
+                    parent.classList.add('opacity-70', 'bg-gray-100', 'dark:bg-surface-dark/50', 'shadow-none');
+                    parent.classList.remove('bg-white', 'dark:bg-surface-dark', 'shadow-sm');
+                    parent.querySelector('.flex.items-start').classList.add('grayscale');
+                }
+            });
+        });
+    </script>
+</body></html>

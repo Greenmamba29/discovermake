@@ -1,0 +1,1 @@
+{"id":6707,"name":"Send emails for changed KissFlow items steps","description":"Every time there are changes in a process items on KiSSFLOW, Make will automatically send an email message to a specified email address.","url":"6707-send-emails-for-changed-kissflow-items-steps","usedApps":["kissflow","email"],"usage":2}

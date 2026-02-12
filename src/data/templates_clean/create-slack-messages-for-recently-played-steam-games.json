@@ -1,0 +1,1 @@
+{"id":8583,"name":"Create Slack messages for recently played Steam games","description":"Make will list one's recently played games at regular intervals and send them to Slack.","url":"8583-create-slack-messages-for-recently-played-steam-games","usedApps":["steam","slack"],"usage":4}

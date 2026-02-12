@@ -1,0 +1,1 @@
+{"id":5262,"name":"Get a Slack notification on a completed PandaDoc document","description":"Every time a PandaDoc document is completed, Make will automatically create a Slack message.","url":"5262-get-a-slack-notification-on-a-completed-pandadoc-document","usedApps":["pandadoc","slack"],"usage":46}

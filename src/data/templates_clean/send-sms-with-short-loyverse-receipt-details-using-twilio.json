@@ -1,0 +1,1 @@
+{"id":8023,"name":"Send sms with short Loyverse receipt details using Twilio","description":"Every time a new receipt in Loyverse POS is created Make will send a short sms with purchase details to the customer using Twilio.","url":"8023-send-sms-with-short-loyverse-receipt-details-using-twilio","usedApps":["loyverse","util","twilio"],"usage":59}

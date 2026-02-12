@@ -1,0 +1,1 @@
+{"id":371,"name":"Post new Google Photos to Slack","description":"Every time a new photo is added to a watched folder on Google Photos, Make will automatically post that photo as a file to Slack.","url":"371-post-new-google-photos-to-slack","usedApps":["google-photos","slack"],"usage":180}

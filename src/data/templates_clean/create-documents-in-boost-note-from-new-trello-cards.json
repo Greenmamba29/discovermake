@@ -1,0 +1,1 @@
+{"id":7516,"name":"Create documents in Boost Note from new Trello cards","description":"Every time a new card is created in Trello, Make will automatically create a new document in Boost Note.","url":"7516-create-documents-in-boost-note-from-new-trello-cards","usedApps":["trello","boost-hub"],"usage":2}

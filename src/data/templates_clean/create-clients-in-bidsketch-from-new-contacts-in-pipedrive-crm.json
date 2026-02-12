@@ -1,0 +1,1 @@
+{"id":8237,"name":"Create clients in Bidsketch from new contacts in Pipedrive CRM","description":"Every time new contact is created in Pipedrive CRM, Make will automatically add that contact to Bidsketch as a client.","url":"8237-create-clients-in-bidsketch-from-new-contacts-in-pipedrive-crm","usedApps":["pipedrive","bidsketch"],"usage":3}

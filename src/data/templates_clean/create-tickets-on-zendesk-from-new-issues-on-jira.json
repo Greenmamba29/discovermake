@@ -1,0 +1,1 @@
+{"id":5202,"name":"Create tickets on Zendesk from new issues on JIRA","description":"This integration watches JIRA for new issues, automatically retrieves it and creates tickets on Zendesk.\n\n","url":"5202-create-tickets-on-zendesk-from-new-issues-on-jira","usedApps":["jira","zendesk"],"usage":22}

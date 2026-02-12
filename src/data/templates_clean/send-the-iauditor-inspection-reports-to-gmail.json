@@ -1,0 +1,1 @@
+{"id":7736,"name":"Send the iAuditor inspection reports to Gmail","description":"Make will watch your modified iAuditor inspections at regular intervals and send emails with attached inspection reports via Gmail. ","url":"7736-send-the-iauditor-inspection-reports-to-gmail","usedApps":["iauditor","http","google-email"],"usage":12}

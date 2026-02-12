@@ -1,0 +1,1 @@
+{"id":3582,"name":"Create Trello cards for new Discord messages","description":"Every time a new message is posted on your Discord server, Make will automatically create a Trello card on a specified board.","url":"3582-create-trello-cards-for-new-discord-messages","usedApps":["discord","trello"],"usage":673}

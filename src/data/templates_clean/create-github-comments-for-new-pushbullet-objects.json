@@ -1,0 +1,1 @@
+{"id":261,"name":"Create GitHub comments for new Pushbullet objects","description":"Every time a new object is created in Pushbullet, Make will automatically create a new comment in GitHub.","url":"261-create-github-comments-for-new-pushbullet-objects","usedApps":["github","pushbullet"],"usage":5}

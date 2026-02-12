@@ -1,0 +1,1 @@
+{"id":4517,"name":"Add Google Sheets rows for new Mailparser.io emails","description":"Every time a new email is parsed in mailparser.io, Make will automatically save a corresponding data row in Google Sheets.","url":"4517-add-google-sheets-rows-for-new-mailparser-io-emails","usedApps":["mailparser-io","google-sheets"],"usage":35}

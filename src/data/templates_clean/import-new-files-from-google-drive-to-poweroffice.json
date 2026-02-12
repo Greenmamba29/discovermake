@@ -1,0 +1,1 @@
+{"id":8584,"name":"Import new files from Google Drive to PowerOffice","description":"Make will watch for new files in a specified Google Drive folder at regular intervals, download it, and import to PowerOffice.","url":"8584-import-new-files-from-google-drive-to-poweroffice","usedApps":["google-drive","poweroffice"],"usage":12}

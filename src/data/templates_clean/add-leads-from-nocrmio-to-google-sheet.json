@@ -1,0 +1,1 @@
+{"id":5613,"name":"Add leads from noCRM.io to Google Sheet","description":"Import all or selected leads from noCRM into Google Sheets.\nThe Google Sheets used in this scenario has the following columns:\nLead ID, Title, Description, Status, and Step.","url":"5613-add-leads-from-nocrm-io-to-google-sheet","usedApps":["nocrm-io","google-sheets"],"usage":8}

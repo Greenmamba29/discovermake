@@ -1,0 +1,1 @@
+{"id":7122,"name":"Send a Mocean SMS from a new/updated event in Google Calendar","description":"Every time there is a new/updated event in Google Calendar, a new SMS containing event details will be instantly sent via Mocean.","url":"7122-send-a-mocean-sms-from-a-new-updated-event-in-google-calendar","usedApps":["google-calendar","mocean"],"usage":3}

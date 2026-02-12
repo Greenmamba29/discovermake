@@ -1,0 +1,1 @@
+{"id":6032,"name":"Create folders in Dropbox when new folders are created in Google Drive","description":"When new folders are created in Google Drive, folders with the same names are created on Dropbox. ","url":"6032-create-folders-in-dropbox-when-new-folders-are-created-in-google-drive","usedApps":["google-drive","dropbox"],"usage":35}

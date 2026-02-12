@@ -1,0 +1,1 @@
+{"id":27,"name":"Backup Pushbullet messages to Evernote ","description":"Every time this scenario is run, Make will add your Pushbullet messages to Evernote as new notes.","url":"27-backup-pushbullet-messages-to-evernote","usedApps":["evernote","pushbullet","util"],"usage":23}

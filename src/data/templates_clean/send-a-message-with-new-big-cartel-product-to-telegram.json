@@ -1,0 +1,1 @@
+{"id":5140,"name":"Send a message with new Big Cartel product to Telegram","description":"Every time a new product is created in Big Cartel, Make will automatically send a message to Telegram Bot.","url":"5140-send-a-message-with-new-big-cartel-product-to-telegram","usedApps":["big-cartel","telegram"],"usage":4}

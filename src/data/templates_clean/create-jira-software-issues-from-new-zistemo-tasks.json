@@ -1,0 +1,1 @@
+{"id":8123,"name":"Create Jira Software issues from new Zistemo tasks","description":"Every time a new task is created in Zistemo, Make will automatically create a new issue in Jira Software.","url":"8123-create-jira-software-issues-from-new-zistemo-tasks","usedApps":["zistemo","jira"],"usage":6}

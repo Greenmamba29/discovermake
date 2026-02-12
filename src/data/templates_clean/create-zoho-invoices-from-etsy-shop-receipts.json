@@ -1,0 +1,1 @@
+{"id":10911,"name":"Create Zoho Invoices from Etsy shop receipts","description":"Every time a new Etsy shop receipt is created, Make will automatically create a new invoice on Zoho Invoice, email that invoice to a specific email address, and mark the invoice as sent.","url":"3664-create-zoho-invoices-from-etsy-shop-receipts","usedApps":["etsy","zoho-invoice"],"usage":78}

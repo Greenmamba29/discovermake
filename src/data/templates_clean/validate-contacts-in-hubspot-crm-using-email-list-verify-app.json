@@ -1,0 +1,1 @@
+{"id":6700,"name":"Validate contacts in HubSpot CRM using Email List Verify app","description":"When a new contact is created in HubSpot CRM, that contact is validated by Email List Verify. If the e-mail is not valid, it is deactivated.","url":"6700-validate-contacts-in-hubspot-crm-using-email-list-verify-app","usedApps":["hubspotcrm","email-list-verify"],"usage":6}

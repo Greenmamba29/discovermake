@@ -1,0 +1,1 @@
+{"id":4412,"name":"Create Kanbanize tasks for new GitLab issues","description":"Every time a new issue is created in GitLab, Make will automatically create a new task in Kanbanize.","url":"4412-create-kanbanize-tasks-for-new-gitlab-issues","usedApps":["gitlab","kanbanize"],"usage":4}

@@ -1,0 +1,1 @@
+{"id":1575,"name":"Add new HubSpot CRM deals to Freshdesk as new tickets","description":"Every time a new deal is created in HubSpot CRM, Make will automatically create a new ticket in Freshdesk.","url":"1575-add-new-hubspot-crm-deals-to-freshdesk-as-new-tickets","usedApps":["freshdesk","hubspotcrm"],"usage":6}

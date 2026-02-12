@@ -1,0 +1,1 @@
+{"id":3287,"name":"Add new WordPress users to MailChimp as subscribers.","description":"Every time a new user is added to WordPress, Make will automatically create it as a new subscriber in MailChimp.","url":"3287-add-new-wordpress-users-to-mailchimp-as-subscribers","usedApps":["wordpress","mailchimp"],"usage":151}

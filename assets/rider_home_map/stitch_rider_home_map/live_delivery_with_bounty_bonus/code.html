@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Live Delivery with Bounty Bonus</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#3B82F6", // Blue for main actions
+                        secondary: "#8B5CF6", // Purple for accents
+                        "background-light": "#F0F4F8",
+                        "background-dark": "#0B1120", // Deep dark blue/black
+                        "card-dark": "#162032",
+                        "glass-dark": "rgba(30, 41, 59, 0.7)",
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "1rem",
+                        'xl': '1.5rem',
+                        '2xl': '2rem',
+                    },
+                    boxShadow: {
+                        'glow-blue': '0 0 20px rgba(59, 130, 246, 0.5)',
+                        'glow-purple': '0 0 20px rgba(139, 92, 246, 0.5)',
+                        'glow-green': '0 0 20px rgba(34, 197, 94, 0.5)',
+                        'glow-gold': '0 0 20px rgba(234, 179, 8, 0.4)',
+                    }
+                },
+            },
+        };
+    </script>
+<style>.glass-panel {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1)
+    }
+.glass-panel-light {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.5)
+    }
+.map-bg {
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuB96r9QGVsToYVjGT_4DiFrx_qPztE2s8NA-lFYjvRUa5hqFuqWD6JEhn7L3sJQHZ__nIyuDtuTLkSG_-LV7P9HwTghyvyjUgVlYGd7v5-Bavuz1gRgbg7DU4ueVeG1-L7QyaYkhIDamBzMzjIYwbNrR5qY6EqJIPpQXTvBeogbLtlyqdHWXpArjC5EeKBwSqjHcNtHrtVfY6EA6-i5hiivZZD9PwCmuoc3IXMz2Pfq4i8Or500aC8jP7L7V-yLQ3A_FKoucB7vFVff);background-size: cover;
+    background-position: center;
+    background-color: #1a202c;
+    position: relative
+    }.simulated-map {
+    background-color: #0f172a;
+    background-image: linear-gradient(#1e293b 2px, transparent 2px), linear-gradient(90deg, #1e293b 2px, transparent 2px), linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px
+    }
+.stream-line {
+    position: absolute;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, #3B82F6, #60A5FA, #3B82F6, transparent);
+    border-radius: 4px;
+    filter: blur(2px);
+    animation: flow 3s infinite linear;
+    opacity: 0.8
+    }
+@keyframes flow {
+    0% {
+        background-position: 200% 0;
+        } 100% {
+        background-position: -200% 0;
+        }
+    }
+.pulse-ring {
+    position: absolute;
+    border-radius: 50%;
+    animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite
+    }
+@keyframes pulse-ring {
+    0% {
+        transform: scale(0.8);
+        opacity: 0.8;
+        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7);
+        } 70% {
+        transform: scale(1.2);
+        opacity: 0;
+        box-shadow: 0 0 0 20px rgba(59, 130, 246, 0);
+        } 100% {
+        transform: scale(0.8);
+        opacity: 0;
+        }
+    }</style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-800 dark:text-white font-display min-h-screen transition-colors duration-300">
+<div class="max-w-md mx-auto relative min-h-screen flex flex-col overflow-hidden bg-background-light dark:bg-background-dark shadow-2xl">
+<div class="px-6 pt-12 pb-4 flex justify-between items-center z-20">
+<div class="w-10 h-10 rounded-full glass-panel-light dark:glass-panel flex items-center justify-center text-primary shadow-lg">
+<span class="material-icons-round text-xl">terminal</span>
+</div>
+<h1 class="text-lg font-bold tracking-tight text-slate-900 dark:text-white">Live Code Delivery</h1>
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-white/20">
+<img alt="User Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBhiAo1d_HFFpzXBX08JZ-uXE0k6AnI3EFi5KMa06-o7mH5pysf9odWVc7nYojtQVWd2pZvld7BZtvIVcsSnHkU0Vbdi3sNWpZEyftLR_0FukGdIo4YQ7IlQLaQEHX-GlF4Yj_w36mjY7ibaakZSDwabntW6-Fw4i5dOl1DtS2gcAJWlOVOhbi6_iqMl25uJwES3oDtvEGfGnyYCMWypM7nyi6i3uqaWFqJRAmCeb0c2E9jUQqXAVHiTYlYNx31AGm5MC6iSP-ozEY"/>
+</div>
+</div>
+<div class="flex-1 px-4 pb-24 overflow-y-auto space-y-5 scrollbar-hide">
+<div class="relative w-full aspect-[4/5] rounded-[2rem] overflow-hidden shadow-2xl border border-white/30 dark:border-white/10 group">
+<div class="absolute inset-0 simulated-map opacity-80 dark:opacity-60"></div>
+<div class="absolute inset-0 bg-gradient-to-b from-slate-900/30 via-transparent to-slate-900/90 pointer-events-none"></div>
+<div class="absolute top-4 right-4 z-30">
+<div class="glass-panel dark:bg-yellow-500/20 bg-yellow-100/80 backdrop-blur-md px-3 py-1.5 rounded-full border border-yellow-400/50 flex items-center gap-2 shadow-glow-gold animate-pulse">
+<span class="material-icons-round text-yellow-600 dark:text-yellow-400 text-sm">bug_report</span>
+<div class="flex flex-col leading-none">
+<span class="text-[10px] font-bold text-yellow-700 dark:text-yellow-300 uppercase tracking-wider">Bug Bounty</span>
+<span class="text-xs font-bold text-yellow-800 dark:text-yellow-200">+20% Bonus Active</span>
+</div>
+</div>
+</div>
+<div class="absolute top-6 left-1/2 -translate-x-1/2 z-20">
+<div class="glass-panel px-4 py-1.5 rounded-full text-xs font-medium text-white/80 border border-white/10 shadow-lg">
+                        Enterprise Deployment Zone
+                    </div>
+</div>
+<svg class="absolute inset-0 w-full h-full pointer-events-none z-10 opacity-70" style="filter: drop-shadow(0 0 8px rgba(59,130,246,0.6));">
+<path class="animate-[dash_20s_linear_infinite]" d="M 80,320 C 150,320 150,150 280,120" fill="none" stroke="#3B82F6" stroke-dasharray="10 5" stroke-width="3"></path>
+<path d="M 80,320 C 150,320 150,150 280,120" fill="none" stroke="rgba(59,130,246,0.3)" stroke-width="12"></path>
+<path class="opacity-60" d="M 120,340 C 180,340 180,180 280,120" fill="none" stroke="#8B5CF6" stroke-dasharray="6 4" stroke-width="2"></path>
+<path class="opacity-40" d="M 280,120 C 320,100 340,140 350,180" fill="none" stroke="#10B981" stroke-dasharray="4 8" stroke-width="1.5"></path>
+</svg>
+<div class="absolute top-[100px] right-[60px] z-20 flex flex-col items-center">
+<div class="w-14 h-14 rounded-full glass-panel bg-slate-800/80 flex items-center justify-center border border-blue-400/30 shadow-glow-blue relative">
+<span class="material-icons-round text-blue-400 text-2xl">cloud_queue</span>
+<div class="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-slate-900"></div>
+</div>
+<span class="mt-2 text-xs font-medium text-white shadow-black drop-shadow-md">Production Cloud</span>
+</div>
+<div class="absolute bottom-[140px] left-[60px] z-20">
+<div class="relative">
+<div class="pulse-ring w-16 h-16 bg-blue-500/20 -inset-2 absolute rounded-full"></div>
+<div class="flex items-center">
+<div class="w-12 h-12 rounded-full border-2 border-slate-900 relative z-30 shadow-xl overflow-hidden">
+<img alt="Dev 1" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBC4kSWk9GCUhBzykiAH83bkSpqVPWK01pb3OKtebxCDnOyYwgveYJcVXALtLTx7syn00f77PXqjiL3Rd_rIs9c9cLThvGhCrNvRaI1zhnutXEoe-iGM64DNDEzPHr9ZOZB-D0x4n9VKUvkYpnME2aI6_p6KlNCBde-xMbMmsg5VP8Z5U4HbTljTw3Qr6NbXYWip6oNa5S_SHPIncCrELAAj0OBZg7Dw66jaNM89r0mY1jMpoQGEFI8VBSAIvRHkhAWSkZg5Vfsxep2"/>
+</div>
+<div class="w-10 h-10 rounded-full border-2 border-slate-900 relative z-20 -ml-4 shadow-xl overflow-hidden grayscale opacity-80">
+<img alt="Dev 2" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnSABNzlW5B1oHHDdlwCqQTbb6xnQOObBQmYYeLJ6jA7S9rwbBkRmOqzGIRCTrRdIqnXmMuq8eDT1zo_3ZVPnE3FMqjB40swO7YFpDZC6FFzADocHOPwEv15JVWjdBtBqPXiLyIC2mdWVvBWu_5JYD4Rz_Q6z6SsHZ_fyXEiEwMwf7XmxsFsvQ6Kg0E0hQ5NS-tojC1HmWxaz7F8zT3VJgpiwGaHPYpd3DhINrJeItzWz2h4WBrhRxnlC19lj3Z-rE9gW0O5o8gr3I"/>
+</div>
+<div class="w-8 h-8 rounded-full border-2 border-slate-900 bg-slate-700 relative z-10 -ml-3 flex items-center justify-center text-[10px] text-white font-bold shadow-xl">
+                                +3
+                            </div>
+</div>
+<div class="absolute top-14 left-0 w-max">
+<span class="text-xs font-bold text-white drop-shadow-md block">Dev Squad Alpha</span>
+<span class="text-[10px] text-blue-300 drop-shadow-md block">Uploading...</span>
+</div>
+</div>
+</div>
+<div class="absolute top-[220px] left-[160px] z-20 animate-bounce" style="animation-duration: 3s;">
+<div class="w-8 h-8 rounded-lg bg-blue-600 shadow-glow-blue flex items-center justify-center transform rotate-12 border border-white/20">
+<span class="material-icons-round text-white text-sm font-bold">code</span>
+</div>
+</div>
+<div class="absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-slate-900 via-slate-900/80 to-transparent">
+<div class="glass-panel px-4 py-3 rounded-xl flex items-center justify-between">
+<div class="flex flex-col">
+<span class="text-xs text-slate-400 uppercase tracking-wide">Status</span>
+<span class="text-sm font-semibold text-white">Live Code Delivery</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse"></div>
+<span class="text-xs font-mono text-green-400">98% UP</span>
+</div>
+</div>
+</div>
+</div>
+<div class="space-y-3">
+<div class="relative overflow-hidden p-4 rounded-2xl bg-white dark:bg-card-dark shadow-lg border border-blue-100 dark:border-blue-500/30 group">
+<div class="absolute inset-0 bg-blue-500/5 dark:bg-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)]"></div>
+<div class="flex items-start gap-4">
+<div class="flex-shrink-0 w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center text-blue-600 dark:text-blue-400">
+<span class="material-icons-round text-2xl">directions_run</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-1">
+<h3 class="font-bold text-slate-800 dark:text-white">Sprinting</h3>
+<span class="text-xs font-mono text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-900/30 px-2 py-0.5 rounded">Phase 1</span>
+</div>
+<p class="text-sm text-slate-500 dark:text-slate-400 leading-snug">
+                                Code optimization in progress. Refactoring module A1.
+                            </p>
+<div class="mt-3 h-1.5 w-full bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+<div class="h-full bg-blue-500 w-3/4 rounded-full shadow-[0_0_8px_rgba(59,130,246,0.8)]"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="relative overflow-hidden p-4 rounded-2xl bg-white dark:bg-card-dark shadow-lg border border-purple-100 dark:border-purple-500/30">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-purple-500 shadow-[0_0_10px_rgba(168,85,247,0.5)]"></div>
+<div class="flex items-start gap-4">
+<div class="flex-shrink-0 w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-900/40 flex items-center justify-center text-purple-600 dark:text-purple-400">
+<span class="material-icons-round text-2xl">science</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-1">
+<h3 class="font-bold text-slate-800 dark:text-white">Testing</h3>
+<span class="text-xs font-mono text-purple-600 dark:text-purple-400 bg-purple-100 dark:bg-purple-900/30 px-2 py-0.5 rounded">Phase 2</span>
+</div>
+<p class="text-sm text-slate-500 dark:text-slate-400 leading-snug">
+                                Automated and manual tests queued. Waiting for build.
+                            </p>
+<div class="mt-3 h-1.5 w-full bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+<div class="h-full bg-purple-500 w-1/4 rounded-full shadow-[0_0_8px_rgba(168,85,247,0.8)]"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="relative overflow-hidden p-4 rounded-2xl bg-white dark:bg-card-dark shadow-lg border border-slate-100 dark:border-slate-700 opacity-60">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-slate-300 dark:bg-slate-600"></div>
+<div class="flex items-start gap-4">
+<div class="flex-shrink-0 w-12 h-12 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400 dark:text-slate-500">
+<span class="material-icons-round text-2xl">rocket_launch</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-1">
+<h3 class="font-bold text-slate-800 dark:text-white">Deployed</h3>
+<span class="text-xs font-mono text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded">Phase 3</span>
+</div>
+<p class="text-sm text-slate-500 dark:text-slate-400 leading-snug">
+                                Code is live. Pending previous stages.
+                            </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="absolute bottom-24 left-1/2 -translate-x-1/2 z-30">
+<button class="w-16 h-16 rounded-full bg-primary hover:bg-blue-600 text-white shadow-[0_4px_20px_rgba(59,130,246,0.6)] flex items-center justify-center transition-transform hover:scale-105 active:scale-95 border-4 border-background-light dark:border-background-dark">
+<span class="material-icons-round text-3xl">add</span>
+</button>
+</div>
+<div class="absolute bottom-0 w-full bg-white dark:bg-[#0B1120]/90 backdrop-blur-lg border-t border-slate-200 dark:border-slate-800 pb-6 pt-3 px-6 z-20">
+<div class="flex justify-between items-center">
+<button class="flex flex-col items-center gap-1 text-primary">
+<span class="material-icons-round">grid_view</span>
+<span class="text-[10px] font-medium">Projects</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
+<span class="material-icons-round">search</span>
+<span class="text-[10px] font-medium">Discover</span>
+</button>
+<div class="w-12"></div> 
+<button class="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
+<span class="material-icons-round">chat_bubble_outline</span>
+<span class="text-[10px] font-medium">Messages</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
+<span class="material-icons-round">person_outline</span>
+<span class="text-[10px] font-medium">Profile</span>
+</button>
+</div>
+<div class="absolute bottom-8 left-1/2 -translate-x-1/2 text-[10px] font-medium text-slate-400 dark:text-slate-500 pointer-events-none">
+                New Job
+            </div>
+</div>
+</div>
+<script>
+        // Simple dark mode toggle logic for demonstration
+        // In a real app, this would be handled by system preference or a toggle button
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        } else {
+             document.documentElement.classList.add('dark'); // Force dark mode for the specific dark UI request unless changed
+        }
+    </script>
+
+</body></html>

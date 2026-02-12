@@ -1,0 +1,1 @@
+{"id":8247,"name":"Add Testomato users to a project from new Google Forms responses","description":"Every time a new response is entered on your Google Form, Make will automatically add a user to the project in Testomato.","url":"8247-add-testomato-users-to-a-project-from-new-google-forms-responses","usedApps":["google-forms","testomato"],"usage":2}

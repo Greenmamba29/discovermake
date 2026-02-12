@@ -1,0 +1,1 @@
+{"id":4856,"name":"Send new Google Forms responses to Cisco Webex","description":"Every time a new response is entered on your Google Form, Make will automatically send it to a selected room in Cisco Webex.","url":"4856-send-new-google-forms-responses-to-cisco-webex","usedApps":["google-forms","webex-teams"],"usage":7}

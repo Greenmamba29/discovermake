@@ -1,0 +1,1 @@
+{"id":2612,"name":"Create engagements in HubSpot CRM from finished outgoing Yodel.io calls","description":"Every time an outgoing call is finished in Yodel.io, Make will automatically create an engagement in HubSpot CRM.","url":"2612-create-engagements-in-hubspot-crm-from-finished-outgoing-yodel-io-calls","usedApps":["yodel","hubspotcrm"],"usage":34}

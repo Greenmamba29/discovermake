@@ -1,0 +1,1 @@
+{"id":13249,"name":"Send automated replies to messages in Line using HTTP","description":"Automatically respond to incoming Line messages using HTTP. This template watches messages and sends replies, streamlining your communication process.","url":"13249-send-automated-replies-to-messages-in-line-using-http","usedApps":["line","http"],"usage":67}

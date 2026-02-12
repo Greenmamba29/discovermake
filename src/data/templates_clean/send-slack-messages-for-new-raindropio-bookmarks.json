@@ -1,0 +1,1 @@
+{"id":6604,"name":"Send Slack messages for new Raindrop.io bookmarks","description":"Every time a new bookmark is created in Raindrop.io, Make will automatically send a message in Slack.","url":"6604-send-slack-messages-for-new-raindrop-io-bookmarks","usedApps":["raindrop-io","slack"],"usage":25}

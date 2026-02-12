@@ -1,0 +1,1 @@
+{"id":7137,"name":"Create Trello cards for new SupportBee ticket","description":"Every time a new ticket is created in SupportBee, Make will automatically create a Trello card on a specified board.","url":"7137-create-trello-cards-for-new-supportbee-ticket","usedApps":["supportbee","trello"],"usage":2}

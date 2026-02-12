@@ -1,0 +1,1 @@
+{"id":6038,"name":"Create posts on LinkedIn from completed tasks on Asana","description":"When you have new events on Asana, the data will be received instantly in this scenario, only the completed tasks will be filtered out and new posts will be created on LinkedIn.","url":"6038-create-posts-on-linkedin-from-completed-tasks-on-asana","usedApps":["asana","linkedin"],"usage":44}

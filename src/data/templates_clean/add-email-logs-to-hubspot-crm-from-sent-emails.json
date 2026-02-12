@@ -1,0 +1,1 @@
+{"id":4351,"name":"Add email logs to HubSpot CRM from sent emails","description":"Every time an email is sent, Make will automatically look that email address up in HubSpot CRM contacts. If the contact exists it will create a log with that email.","url":"4351-add-email-logs-to-hubspot-crm-from-sent-emails","usedApps":["google-email","hubspotcrm"],"usage":160}

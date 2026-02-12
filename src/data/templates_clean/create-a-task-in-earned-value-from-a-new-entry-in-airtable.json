@@ -1,0 +1,1 @@
+{"id":4113,"name":"Create a task in Earned Value from a new entry in Airtable","description":"When a new record is created in Airtable, a new task is created in Earned Value.","url":"4113-create-a-task-in-earned-value-from-a-new-entry-in-airtable","usedApps":["airtable","earned-value"],"usage":1}

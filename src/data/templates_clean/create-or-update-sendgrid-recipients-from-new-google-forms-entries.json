@@ -1,0 +1,1 @@
+{"id":2435,"name":"Create or update SendGrid recipients from new Google Forms entries","description":"Every time someone fills out your Google Forms form, Make will automatically add/update a recipient in SendGrid.","url":"2435-create-or-update-sendgrid-recipients-from-new-google-forms-entries","usedApps":["google-forms","sendgrid"],"usage":4}

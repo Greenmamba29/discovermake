@@ -1,0 +1,1 @@
+{"id":7861,"name":"Get Kaleyra notifications about new Gmail emails","description":"Every time a new message arrives in a selected Gmail folder, Make will automatically send a message in Kaleyra.","url":"7861-get-kaleyra-notifications-about-new-gmail-emails","usedApps":["google-email","kaleyra"],"usage":2}

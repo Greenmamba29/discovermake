@@ -1,0 +1,1 @@
+{"id":8129,"name":"Create Authvia merchants from new Airtable records","description":"Every time a new record is added in Airtable, Make will automatically create a merchant in Authvia. The template uses this [example table](https://airtable.com/shrD2FNgVMplxX8iS).","url":"8129-create-authvia-merchants-from-new-airtable-records","usedApps":["airtable","authvia"],"usage":2}

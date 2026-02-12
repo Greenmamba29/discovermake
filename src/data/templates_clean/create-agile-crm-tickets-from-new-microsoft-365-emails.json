@@ -1,0 +1,1 @@
+{"id":3848,"name":"Create Agile CRM tickets from new Microsoft 365 emails","description":"Every time a new message is delivered to your Outlook 365 mailbox, Make will automatically create a ticket in Agile CRM.","url":"3848-create-agile-crm-tickets-from-new-microsoft-365-emails","usedApps":["microsoft-email","agile-crm"],"usage":66}

@@ -1,0 +1,1 @@
+{"id":1707,"name":"Send emails from Gmail for new Google Calendar events","description":"Every time this scenario is run, Make will automatically send an email via Gmail with a summary of new Google Calendar events to a specified email address.","url":"1707-send-emails-from-gmail-for-new-google-calendar-events","usedApps":["google-calendar","util","google-email"],"usage":901}

@@ -1,0 +1,1 @@
+{"id":2048,"name":"Create Streak boxes from new Google Sheets rows","description":"Every time you add a new row to your Google Sheets spreadsheet, Make will automatically create a new box in Streak. The template uses this [example spreadsheet](https://bit.ly/2xB1c70).","url":"2048-create-streak-boxes-from-new-google-sheets-rows","usedApps":["google-sheets","streak"],"usage":37}

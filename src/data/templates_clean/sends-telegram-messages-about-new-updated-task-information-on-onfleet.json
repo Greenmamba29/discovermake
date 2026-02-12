@@ -1,0 +1,1 @@
+{"id":5988,"name":"Sends Telegram messages about new updated task information on Onfleet","description":"Every time your task in your Onfleet account has been Updated, Make will automatically send a message in Telegram.","url":"5988-sends-telegram-messages-about-new-updated-task-information-on-onfleet","usedApps":["onfleet","telegram"],"usage":3}

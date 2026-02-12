@@ -1,0 +1,1 @@
+{"id":6794,"name":"Send Slack messages for Process Street tasks","description":"Every time the task in Process Street has been checked/unchecked, Make will automatically send a message about that task via Slack.","url":"6794-send-slack-messages-for-process-street-tasks","usedApps":["process-street","slack"],"usage":6}

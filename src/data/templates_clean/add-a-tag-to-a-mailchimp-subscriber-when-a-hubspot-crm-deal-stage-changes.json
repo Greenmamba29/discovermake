@@ -1,0 +1,1 @@
+{"id":5343,"name":"Add a tag to a Mailchimp subscriber when a HubSpot CRM deal stage changes","description":"Every time a HubSpot CRM deal stage changes to a value of your choice, Make will automatically add a tag to a Mailchimp subscriber.","url":"5343-add-a-tag-to-a-mailchimp-subscriber-when-a-hubspot-crm-deal-stage-changes","usedApps":["hubspotcrm","mailchimp"],"usage":76}

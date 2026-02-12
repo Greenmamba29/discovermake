@@ -1,0 +1,1 @@
+{"id":8002,"name":"Save documents from new signed envelopes in Signable to Dropbox","description":"Every time a new envelope is signed in Signable, Make will automatically save document from that envelope to a Dropbox folder you specify.","url":"8002-save-documents-from-new-signed-envelopes-in-signable-to-dropbox","usedApps":["signable","http","dropbox"],"usage":8}

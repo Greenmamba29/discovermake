@@ -1,0 +1,1 @@
+{"id":6399,"name":"Create Tadabase records for new Notion database items","description":"Every time a new row is added to your Notion database, Make will automatically create a record in Tadabase.","url":"6399-create-tadabase-records-for-new-notion-database-items","usedApps":["notion","tadabase"],"usage":43}

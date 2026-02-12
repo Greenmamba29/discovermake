@@ -1,0 +1,1 @@
+{"id":8248,"name":"Add Testomato users to a project from new Google Sheets spreadsheet rows","description":"Every time a new row is added to a Google Sheets spreadsheet, Make will automatically add a user to the project in Testomato.","url":"8248-add-testomato-users-to-a-project-from-new-google-sheets-spreadsheet-rows","usedApps":["google-sheets","testomato"],"usage":1}

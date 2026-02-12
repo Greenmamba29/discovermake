@@ -1,0 +1,1 @@
+{"id":13213,"name":"Send customized emails using a webhook and Microsoft Email","description":"Automatically send personalized emails via Microsoft Email when a custom webhook is triggered, then respond with a confirmation using Webhook Response.","url":"13213-send-customized-emails-using-a-webhook-and-microsoft-email","usedApps":["gateway","microsoft-email"],"usage":62}

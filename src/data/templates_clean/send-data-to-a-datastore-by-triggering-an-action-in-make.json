@@ -1,0 +1,1 @@
+{"id":12662,"name":"Send data to a datastore by triggering an action in Make","description":"Effortlessly send data to your datastore by triggering an action in Make. Use HTTP to send data and add records to your datastore.","url":"12662-send-data-to-a-datastore-by-triggering-an-action-in-make","usedApps":["http","datastore"],"usage":17}

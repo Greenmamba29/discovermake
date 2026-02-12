@@ -1,0 +1,1 @@
+{"id":3652,"name":"Create new Zoho invoices from Google Sheet rows","description":"Every time a new Google Sheets row is created, Make will automatically create a new invoice on Zoho Invoice.","url":"3652-create-new-zoho-invoices-from-google-sheet-rows","usedApps":["google-sheets","zoho-invoice"],"usage":106}

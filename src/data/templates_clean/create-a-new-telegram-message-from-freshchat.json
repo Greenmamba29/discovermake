@@ -1,0 +1,1 @@
+{"id":6409,"name":"Create a new Telegram message from Freshchat","description":"Every time a new message is received on Freshchat, Make will automatically send a notification with information about it to a desired channel in your Telegram.","url":"6409-create-a-new-telegram-message-from-freshchat","usedApps":["freshchat","telegram"],"usage":85}

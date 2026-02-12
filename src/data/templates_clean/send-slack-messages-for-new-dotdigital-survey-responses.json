@@ -1,0 +1,1 @@
+{"id":7173,"name":"Send Slack messages for new dotdigital survey responses","description":"Every time someone complete a dotdigital survey, Make will automatically send a Slack message.","url":"7173-send-slack-messages-for-new-dotdigital-survey-responses","usedApps":["dotdigital","slack"],"usage":0}

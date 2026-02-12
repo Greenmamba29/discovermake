@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SSO Configuration Deep-Dive</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13a4ec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#0f171c",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "mono": ["Roboto Mono", "monospace"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        input::placeholder { font-family: 'Inter', sans-serif; font-size: 0.875rem; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 antialiased">
+<div class="relative flex h-screen w-full flex-col overflow-hidden max-w-md mx-auto border-x border-slate-200 dark:border-slate-800">
+<header class="sticky top-0 z-20 flex flex-col bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+<div class="flex items-center p-4 justify-between">
+<div class="flex items-center gap-3">
+<button class="flex items-center justify-center">
+<span class="material-symbols-outlined text-slate-500">arrow_back_ios</span>
+</button>
+<div>
+<h2 class="text-lg font-bold leading-tight tracking-tight">SSO Configuration</h2>
+<p class="text-[10px] text-slate-500 dark:text-slate-400 font-mono uppercase tracking-wider">Security &amp; Auth</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="flex size-2 rounded-full bg-green-500 animate-pulse"></span>
+<span class="text-[10px] font-bold text-green-500 uppercase tracking-tighter">Live</span>
+</div>
+</div>
+</header>
+<main class="flex-1 overflow-y-auto p-4 space-y-6 pb-32">
+<section class="bg-white dark:bg-slate-900 rounded-xl p-4 border border-slate-200 dark:border-slate-800 flex items-center justify-between">
+<div>
+<h3 class="text-sm font-bold">Enable Single Sign-On</h3>
+<p class="text-[11px] text-slate-500">Allow users to log in via external IdP</p>
+</div>
+<div class="relative inline-flex h-6 w-11 items-center rounded-full bg-primary">
+<span class="inline-block h-4 w-4 translate-x-6 rounded-full bg-white transition"></span>
+</div>
+</section>
+<section class="space-y-3">
+<label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">Identity Provider</label>
+<div class="relative">
+<select class="w-full appearance-none bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-3 text-sm font-medium focus:ring-primary focus:border-primary">
+<option>Microsoft Entra ID</option>
+<option>Okta Enterprise</option>
+<option>Google Workspace</option>
+<option>Custom SAML 2.0</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 top-3 text-slate-400 pointer-events-none">unfold_more</span>
+</div>
+</section>
+<section class="space-y-4">
+<div class="flex items-center justify-between px-1">
+<label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">SAML 2.0 Settings</label>
+<span class="material-symbols-outlined text-sm text-slate-400">info</span>
+</div>
+<div class="space-y-4 bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
+<div class="space-y-1.5">
+<label class="text-[11px] font-semibold text-slate-400">SSO URL (Endpoint)</label>
+<input class="w-full bg-slate-50 dark:bg-black/20 border border-slate-200 dark:border-slate-800 rounded-lg px-3 py-2.5 text-xs font-mono text-primary" placeholder="Enter IdP SSO URL" type="text" value="https://login.microsoftonline.com/3920-ads..."/>
+</div>
+<div class="space-y-1.5">
+<label class="text-[11px] font-semibold text-slate-400">Entity ID (Issuer)</label>
+<input class="w-full bg-slate-50 dark:bg-black/20 border border-slate-200 dark:border-slate-800 rounded-lg px-3 py-2.5 text-xs font-mono text-primary" placeholder="Enter Entity ID" type="text" value="spn:00000003-0000-0000-c000-0000..."/>
+</div>
+<div class="space-y-1.5">
+<label class="text-[11px] font-semibold text-slate-400">X.509 Certificate</label>
+<div class="border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-lg p-6 flex flex-col items-center justify-center gap-2 bg-slate-50/50 dark:bg-black/10">
+<span class="material-symbols-outlined text-slate-400">upload_file</span>
+<div class="text-center">
+<p class="text-[11px] font-medium">Upload .crt or .pem file</p>
+<p class="text-[10px] text-slate-500">Max size 2MB</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="space-y-3">
+<label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1">Attribute Mapping</label>
+<div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 divide-y divide-slate-100 dark:divide-slate-800">
+<div class="p-3 flex items-center justify-between">
+<div class="flex flex-col">
+<span class="text-[10px] text-slate-400 font-mono">http://schemas.xmlsoap.org/ws...</span>
+<span class="text-xs font-bold">User Email</span>
+</div>
+<span class="material-symbols-outlined text-slate-400 text-sm">link</span>
+</div>
+<div class="p-3 flex items-center justify-between">
+<div class="flex flex-col">
+<span class="text-[10px] text-slate-400 font-mono">givenname / surname</span>
+<span class="text-xs font-bold">Full Name</span>
+</div>
+<span class="material-symbols-outlined text-slate-400 text-sm">link</span>
+</div>
+<div class="p-3 flex items-center justify-between">
+<div class="flex flex-col">
+<span class="text-[10px] text-slate-400 font-mono">extension_role</span>
+<span class="text-xs font-bold">DiscoverMake Role</span>
+</div>
+<span class="material-symbols-outlined text-primary text-sm">edit</span>
+</div>
+</div>
+<button class="w-full py-2 text-[11px] font-bold text-primary flex items-center justify-center gap-1 border border-primary/20 rounded-lg bg-primary/5">
+<span class="material-symbols-outlined text-sm">add</span> Add Custom Mapping
+                </button>
+</section>
+</main>
+<div class="absolute bottom-0 left-0 right-0 p-4 bg-background-light/90 dark:bg-background-dark/90 backdrop-blur-lg border-t border-slate-200 dark:border-slate-800 space-y-3">
+<button class="w-full flex items-center justify-center gap-2 bg-slate-200 dark:bg-slate-800 text-slate-900 dark:text-slate-100 py-3 rounded-xl font-bold text-xs border border-slate-300 dark:border-slate-700">
+<span class="material-symbols-outlined text-lg">labs</span>
+                Test Configuration
+            </button>
+<button class="w-full flex items-center justify-center gap-2 bg-primary text-white py-4 rounded-xl font-bold text-sm shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-lg">rocket_launch</span>
+                Save &amp; Deploy
+            </button>
+</div>
+<nav class="hidden">
+</nav>
+</div>
+
+</body></html>

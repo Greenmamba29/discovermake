@@ -1,0 +1,1 @@
+{"id":1958,"name":"Create Citrix ShareFile folders for new QuickBooks customers","description":"Every time a new customer is created in QuickBooks, Make will automatically create a new folder in Citrix ShareFile.","url":"1958-create-citrix-sharefile-folders-for-new-quickbooks-customers","usedApps":["quickbooks","sharefile"],"usage":6}

@@ -1,0 +1,1 @@
+{"id":7212,"name":"Upload new DigitalOcean Spaces files to OneDrive","description":"Every time there is a new file in a DigitalOcean space, Make will automatically download it and upload to OneDrive.","url":"7212-upload-new-digitalocean-spaces-files-to-onedrive","usedApps":["digitalocean-spaces","onedrive"],"usage":1}

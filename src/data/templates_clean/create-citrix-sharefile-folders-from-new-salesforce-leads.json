@@ -1,0 +1,1 @@
+{"id":1944,"name":"Create Citrix ShareFile folders from new SalesForce leads","description":"Every time a new lead is created in SalesForce, Make will automatically create a new folder in Citrix ShareFile.","url":"1944-create-citrix-sharefile-folders-from-new-salesforce-leads","usedApps":["sharefile","salesforce"],"usage":4}

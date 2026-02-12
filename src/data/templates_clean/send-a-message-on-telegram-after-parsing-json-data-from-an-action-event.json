@@ -1,0 +1,1 @@
+{"id":13194,"name":"Send a message on Telegram after parsing JSON data from an action event","description":"Automatically send a message on Telegram by parsing JSON data from an action event using HTTP and JSON modules.","url":"13194-send-a-message-on-telegram-after-parsing-json-data-from-an-action-event","usedApps":["http","json","telegram"],"usage":76}

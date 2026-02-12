@@ -1,0 +1,1 @@
+{"id":2052,"name":"Add new Tradegecko contacts to MailerLite as subscribers","description":"Every time a new contact is created in Tradegecko, Make will automatically add that contact to a MailerLite group of your choice.","url":"2052-add-new-tradegecko-contacts-to-mailerlite-as-subscribers","usedApps":["mailerlite","tradegecko"],"usage":1}

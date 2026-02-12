@@ -1,0 +1,1 @@
+{"id":338,"name":"Send Slack messages for new Facebook Groups posts","description":"Every time a new update is posted to a selected Facebook Group, Make will automatically send a message in Slack.","url":"338-send-slack-messages-for-new-facebook-groups-posts","usedApps":["facebook-groups","slack"],"usage":574}

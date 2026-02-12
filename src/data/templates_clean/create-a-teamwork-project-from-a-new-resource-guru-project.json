@@ -1,0 +1,1 @@
+{"id":6154,"name":"Create a Teamwork project from a new Resource Guru project","description":"Every time a Resource Guru project is created, Make will automatically create a Teamwork project.","url":"6154-create-a-teamwork-project-from-a-new-resource-guru-project","usedApps":["resource-guru","teamwork"],"usage":5}

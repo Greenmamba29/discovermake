@@ -1,0 +1,1 @@
+{"id":2750,"name":"Add new incoming ClickSend messages to Evernote as notes","description":"Every time a new SMS message  is received in ClickSend, Make will automatically create a new note in your Evernote notebook.","url":"2750-add-new-incoming-clicksend-messages-to-evernote-as-notes","usedApps":["clicksend","evernote"],"usage":2}

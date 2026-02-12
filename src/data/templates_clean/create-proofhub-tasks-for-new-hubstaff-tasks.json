@@ -1,0 +1,1 @@
+{"id":8049,"name":"Create ProofHub tasks for new Hubstaff tasks","description":"Make will watch your Hubstaff tasks at regular intervals and create identical ones in your ProofHub.","url":"8049-create-proofhub-tasks-for-new-hubstaff-tasks","usedApps":["hubstaff","proofhub"],"usage":4}

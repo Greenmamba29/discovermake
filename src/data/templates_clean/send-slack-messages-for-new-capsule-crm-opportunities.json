@@ -1,0 +1,1 @@
+{"id":1935,"name":"Send Slack messages for new Capsule CRM opportunities","description":"Every time a new opportunity is created in Capsule CRM, Make will automatically send a message in Slack.","url":"1935-send-slack-messages-for-new-capsule-crm-opportunities","usedApps":["capsule-crm","slack"],"usage":10}

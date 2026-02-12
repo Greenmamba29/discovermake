@@ -1,0 +1,1 @@
+{"id":4603,"name":"Create GrowSurf subscribers from Mailchimp subscribers","description":"Every time a new Mailchimp subscriber is created, Make will automatically create a GrowSurf participant.","url":"4603-create-growsurf-subscribers-from-mailchimp-subscribers","usedApps":["mailchimp","growsurf"],"usage":2}

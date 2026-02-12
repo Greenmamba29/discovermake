@@ -1,0 +1,1 @@
+{"id":13486,"name":"Send data to PostgreSQL and email notifications with Sendinblue","description":"Automatically send data to PostgreSQL and notify via Sendinblue email. Streamline data management and communication with this powerful integration.","url":"13486-send-data-to-postgresql-and-email-notifications-with-sendinblue","usedApps":["http","postgres","sendinblue"],"usage":11}

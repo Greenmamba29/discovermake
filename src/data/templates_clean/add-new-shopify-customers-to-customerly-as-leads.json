@@ -1,0 +1,1 @@
+{"id":6877,"name":"Add new Shopify customers to Customerly as leads","description":"Every time a new order is created in Shopify, Make will automatically retrieve information about a customer and add that contact to Customerly as a lead.","url":"6877-add-new-shopify-customers-to-customerly-as-leads","usedApps":["shopify","customerly"],"usage":4}

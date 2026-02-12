@@ -1,0 +1,1 @@
+{"id":11507,"name":"Create Google Calendar events from new RSS feed items","description":"Automatically add a new event to a selected Google calendar, every time there's a new RSS feed post that contains a specific word.","url":"11505-create-google-calendar-events-from-new-rss-feed-items","usedApps":["rss","google-calendar"],"usage":70}

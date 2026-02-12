@@ -1,0 +1,1 @@
+{"id":8121,"name":"Create new Zistemo tasks for new Google Calendar events","description":"Every time a new event is added to your Google Calendar, Make will automatically create a new task in Zistemo.","url":"8121-create-new-zistemo-tasks-for-new-google-calendar-events","usedApps":["google-calendar","zistemo"],"usage":5}

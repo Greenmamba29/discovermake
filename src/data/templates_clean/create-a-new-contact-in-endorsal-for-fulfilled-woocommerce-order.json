@@ -1,0 +1,1 @@
+{"id":5959,"name":"Create a new contact in Endorsal for fulfilled WooCommerce order","description":"Every time a new WooCommerce order is fulfilled, Make will automatically create a new contact in Endorsal.","url":"5959-create-a-new-contact-in-endorsal-for-fulfilled-woocommerce-order","usedApps":["woocommerce","endorsal"],"usage":1}

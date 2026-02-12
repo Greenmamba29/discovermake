@@ -1,0 +1,1 @@
+{"id":4876,"name":"Send Slack message for new Plutio task","description":"Every time a new task is created in Plutio, Make will automatically send a message to the specified Slack channel.","url":"4876-send-slack-message-for-new-plutio-task","usedApps":["plutio","slack"],"usage":6}

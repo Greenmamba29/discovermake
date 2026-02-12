@@ -1,0 +1,1 @@
+{"id":6466,"name":"Create new JIRA issues from new rows of data on your Smartsheet","description":"This automation watches for new rows of data on your Smartsheet and creates new issues in JIRA for you with the data.","url":"6466-create-new-jira-issues-from-new-rows-of-data-on-your-smartsheet","usedApps":["smartsheet","jira"],"usage":43}

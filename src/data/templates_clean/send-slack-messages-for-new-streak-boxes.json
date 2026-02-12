@@ -1,0 +1,1 @@
+{"id":2042,"name":"Send Slack messages for new Streak boxes ","description":"Every time a new box is created in Streak, Make will automatically send a message in Slack.","url":"2042-send-slack-messages-for-new-streak-boxes","usedApps":["streak","slack"],"usage":6}

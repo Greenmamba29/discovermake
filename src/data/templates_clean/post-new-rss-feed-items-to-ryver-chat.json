@@ -1,0 +1,1 @@
+{"id":5113,"name":"Post new RSS feed items to Ryver chat","description":"Every time a new item is posted to a watched RSS feed, Make will automatically create a message in Ryver chat.","url":"5113-post-new-rss-feed-items-to-ryver-chat","usedApps":["rss","ryver"],"usage":4}

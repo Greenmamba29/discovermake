@@ -1,0 +1,1 @@
+{"id":7172,"name":"Unsubscribe dotdigital contact when contact unsubscribes from Intercom","description":"Every time a contact unsubscribes from Intercom, Make will automatically unsubscribe this contact from dotdigital.","url":"7172-unsubscribe-dotdigital-contact-when-contact-unsubscribes-from-intercom","usedApps":["intercom","dotdigital"],"usage":2}

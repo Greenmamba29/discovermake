@@ -1,0 +1,1 @@
+{"id":4416,"name":"Register notes in Capsule CRM new Toky calls","description":"Every time a new call is received on Toky, Make will automatically create a new note (entry) in Capsule CRM. ","url":"4416-register-notes-in-capsule-crm-new-toky-calls","usedApps":["toky","capsule-crm"],"usage":1}

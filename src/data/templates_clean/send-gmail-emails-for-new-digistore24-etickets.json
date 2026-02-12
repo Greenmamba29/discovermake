@@ -1,0 +1,1 @@
+{"id":8234,"name":"Send Gmail emails for new Digistore24 etickets","description":"Every time a new eticket has been created in Digistore24, Make will automatically send an email to the customer.","url":"8234-send-gmail-emails-for-new-digistore24-etickets","usedApps":["digistore","google-email"],"usage":4}

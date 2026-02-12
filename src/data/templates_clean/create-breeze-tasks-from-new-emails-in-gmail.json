@@ -1,0 +1,1 @@
+{"id":6052,"name":"Create Breeze tasks from new emails in Gmail","description":"Every time you receive a new email in Gmail, Make will automatically create a new task in a Breeze list of your choice.","url":"6052-create-breeze-tasks-from-new-emails-in-gmail","usedApps":["google-email","breeze"],"usage":3}

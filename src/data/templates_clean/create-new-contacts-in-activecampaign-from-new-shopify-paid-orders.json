@@ -1,0 +1,1 @@
+{"id":7266,"name":"Create new contacts in ActiveCampaign from new Shopify paid orders","description":"Every time a new order is paid in Shopify, Make will automatically create a new contact in ActiveCampaign or update existing contact.","url":"7266-create-new-contacts-in-activecampaign-from-new-shopify-paid-orders","usedApps":["shopify","activecampaign"],"usage":9}

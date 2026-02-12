@@ -1,0 +1,1 @@
+{"id":7854,"name":"Create new Ganttic tasks for new Google Calendar events","description":"Every time a new event is added to your Google Calendar, Make will automatically create a new task in Ganttic.","url":"7854-create-new-ganttic-tasks-for-new-google-calendar-events","usedApps":["google-calendar","ganttic"],"usage":1}

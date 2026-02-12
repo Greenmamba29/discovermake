@@ -1,0 +1,1 @@
+{"id":3896,"name":"Send new Chargebee Customers to Databox","description":"Every time a new customer is created in Chargebee, Make will automatically update the number of your new customers in Databox.","url":"3896-send-new-chargebee-customers-to-databox","usedApps":["chargebee","databox"],"usage":7}

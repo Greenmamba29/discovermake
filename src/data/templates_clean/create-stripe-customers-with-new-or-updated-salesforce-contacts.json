@@ -1,0 +1,1 @@
+{"id":6782,"name":"Create Stripe customers with new or updated Salesforce contacts","description":"With this automation, Make fetches new/updated contacts in Salesforce and creates/updates customers in Stripe for you.","url":"6782-create-stripe-customers-with-new-or-updated-salesforce-contacts","usedApps":["salesforce","stripe","builtin"],"usage":28}

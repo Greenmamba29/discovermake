@@ -1,0 +1,1 @@
+{"id":5689,"name":"Get ActiveDEMAND contact updates in Telegram","description":"Every time a contact is updated in your ActiveDEMAND get a message in Telegram with brief info about the changes.","url":"5689-get-activedemand-contact-updates-in-telegram","usedApps":["activedemand","telegram"],"usage":1}

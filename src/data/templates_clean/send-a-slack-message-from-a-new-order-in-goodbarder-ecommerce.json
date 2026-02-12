@@ -1,0 +1,1 @@
+{"id":9053,"name":"Send a Slack message from a new order in GoodBarder eCommerce","description":"Every time a new customer is created in GoodBarber eCommerce, a new message will be sent to a Slack channel.","url":"9053-send-a-slack-message-from-a-new-order-in-goodbarder-ecommerce","usedApps":["goodbarber-ecommerce","slack"],"usage":2}

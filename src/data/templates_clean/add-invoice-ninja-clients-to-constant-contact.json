@@ -1,0 +1,1 @@
+{"id":1862,"name":"Add Invoice Ninja clients to Constant Contact","description":"Every time a new contact is created in Invoice Ninja, Make will automatically create a new contact in Constant Contact.","url":"1862-add-invoice-ninja-clients-to-constant-contact","usedApps":["invoiceninja","constant-contact"],"usage":5}

@@ -1,0 +1,1 @@
+{"id":13264,"name":"Update Airtable records based on responses from a webhook in Make","description":"Automatically update Airtable records when a webhook response is received in Make, streamlining data management between Custom WebHook and Airtable.","url":"13264-update-airtable-records-based-on-responses-from-a-webhook-in-make","usedApps":["gateway","airtable"],"usage":9}

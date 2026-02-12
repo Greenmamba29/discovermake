@@ -1,0 +1,1 @@
+{"id":9139,"name":"Create new Cloze customers from new Xero contacts","description":"Every time a new contact is created in Xero, Make will automatically create a new customer in Cloze.","url":"9139-create-new-cloze-customers-from-new-xero-contacts","usedApps":["xero","cloze"],"usage":4}

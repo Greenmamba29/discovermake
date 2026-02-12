@@ -1,0 +1,1 @@
+{"id":3839,"name":"Send Apple iOS push notifications for new Taphome device interactions","description":"Every time a Taphome device switches state or changes value, Make will automatically send a push notification to the iOS device of your choice.","url":"3839-send-apple-ios-push-notifications-for-new-taphome-device-interactions","usedApps":["taphome","ios"],"usage":2}

@@ -1,0 +1,1 @@
+{"id":5057,"name":"Execute a Cloud BOT bot when a new Google Contacts group is created","description":"Every time you create a Google Contacts group, Make will automatically execute a Cloud BOT bot.","url":"5057-execute-a-cloud-bot-bot-when-a-new-google-contacts-group-is-created","usedApps":["google-contacts","cloud-bot"],"usage":1}

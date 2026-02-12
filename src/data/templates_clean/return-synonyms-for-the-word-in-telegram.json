@@ -1,0 +1,1 @@
+{"id":4874,"name":"Return synonyms for the word in Telegram","description":"Every time a new message with a word is received on Telegram, Make will automatically get the word synonyms and send it to the specified Telegram chat/channel.","url":"4874-return-synonyms-for-the-word-in-telegram","usedApps":["telegram","words-api","util"],"usage":6}

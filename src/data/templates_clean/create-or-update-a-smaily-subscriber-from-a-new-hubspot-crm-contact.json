@@ -1,0 +1,1 @@
+{"id":6189,"name":"Create or update a Smaily subscriber from a new HubSpot CRM contact","description":"Every time a HubSpot CRM contact is created, Make will automatically add a Smaily subscriber.","url":"6189-create-or-update-a-smaily-subscriber-from-a-new-hubspot-crm-contact","usedApps":["hubspotcrm","smaily"],"usage":2}

@@ -1,0 +1,1 @@
+{"id":7666,"name":"Save new signed documents in Revv Documents to Google Drive","description":"Every time a new document is signed in Revv Documents, Make will automatically save that document to a Google Drive folder you specify.","url":"7666-save-new-signed-documents-in-revv-documents-to-google-drive","usedApps":["revv-documents","http","google-drive"],"usage":3}

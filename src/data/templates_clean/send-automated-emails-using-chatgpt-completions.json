@@ -1,0 +1,1 @@
+{"id":15127,"name":"Send automated emails using ChatGPT completions","description":"This template sends personalized emails using ChatGPT completions. Trigger email actions with AI-generated content for engaging communication.","url":"15127-send-automated-emails-using-chatgpt-completions","usedApps":["openai-gpt-3","email"],"usage":16}

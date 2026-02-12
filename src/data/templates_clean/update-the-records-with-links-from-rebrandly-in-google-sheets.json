@@ -1,0 +1,1 @@
+{"id":2979,"name":"Update the records with links from Rebrandly in Google Sheets","description":"List the links in Rebrandly which meet specified criteria and update the rows with their records in Google Sheets.","url":"2979-update-the-records-with-links-from-rebrandly-in-google-sheets","usedApps":["rebrandly","google-sheets"],"usage":11}

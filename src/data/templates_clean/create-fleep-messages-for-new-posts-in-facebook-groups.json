@@ -1,0 +1,1 @@
+{"id":6595,"name":"Create Fleep messages for new posts in Facebook Groups","description":"Every time a message is posted in a designated Facebook group, Make will send it's text to your Fleep.","url":"6595-create-fleep-messages-for-new-posts-in-facebook-groups","usedApps":["facebook-groups","fleep"],"usage":1}

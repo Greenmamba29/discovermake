@@ -1,0 +1,1 @@
+{"id":10230,"name":"Merge PDFs in iLovePDF and upload files to Google Drive","description":"This template loads files from a Google Drive folder, merges them via iLovePDF and uploads the file to a Google Drive folder.","url":"10230-merge-pdfs-in-ilovepdf-and-upload-files-to-google-drive","usedApps":["google-drive","builtin","ilovepdf"],"usage":312}

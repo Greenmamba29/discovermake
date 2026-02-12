@@ -1,0 +1,1 @@
+{"id":4235,"name":"Create MailChimp subscribers from new Aircall contacts","description":"Every time a new contact is added to Aircall, Make will automatically subscribe each email address to a selected MailChimp mailing list.","url":"4235-create-mailchimp-subscribers-from-new-aircall-contacts","usedApps":["aircall","builtin","mailchimp"],"usage":7}

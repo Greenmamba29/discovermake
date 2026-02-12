@@ -1,0 +1,1 @@
+{"id":7742,"name":"Add new HubSpot CRM contacts to Retently as a new customers","description":"Every time a new contact is created in HubSpot CRM, Make will automatically add that contact to Retently as a new customer.","url":"7742-add-new-hubspot-crm-contacts-to-retently-as-a-new-customers","usedApps":["hubspotcrm","retently"],"usage":1}

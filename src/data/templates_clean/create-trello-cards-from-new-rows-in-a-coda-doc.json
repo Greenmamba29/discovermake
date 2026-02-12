@@ -1,0 +1,1 @@
+{"id":2517,"name":"Create Trello cards from new rows in a Coda doc","description":"Every time a new row is added to your table in a Coda doc, Make will automatically create a new card in Trello.","url":"2517-create-trello-cards-from-new-rows-in-a-coda-doc","usedApps":["coda","trello"],"usage":18}

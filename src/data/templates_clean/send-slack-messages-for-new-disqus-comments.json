@@ -1,0 +1,1 @@
+{"id":167,"name":"Send Slack messages for new Disqus comments","description":"Every time a new comment is added to a watched forum on Disqus, Make will automatically send a message in Slack.","url":"167-send-slack-messages-for-new-disqus-comments","usedApps":["disqus","slack"],"usage":8}

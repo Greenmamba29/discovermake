@@ -1,0 +1,1 @@
+{"id":5733,"name":"Get Telegram messages in Hive","description":"Every time your Telegram bot gets a message, the message is sent to your Hive.","url":"5733-get-telegram-messages-in-hive","usedApps":["telegram","hive"],"usage":5}

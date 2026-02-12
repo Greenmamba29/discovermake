@@ -1,0 +1,1 @@
+{"id":10499,"name":"Send a detailed message about a new event in QuickBooks to Slack","description":"When a new object is created in QuickBooks, a message with detailed information about this event is sent to Slack as a log.","url":"3146-send-a-detailed-message-about-a-new-event-in-quickbooks-to-slack","usedApps":["quickbooks","builtin","slack"],"usage":48}

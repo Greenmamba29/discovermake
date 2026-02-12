@@ -1,0 +1,1 @@
+{"id":10279,"name":"Upload new Dropbox files to Slack","description":"Every time a new file is added to a watched folder on Dropbox, Make will automatically upload that file to Slack.","url":"10270-upload-new-dropbox-files-to-slack","usedApps":["dropbox","slack"],"usage":24}

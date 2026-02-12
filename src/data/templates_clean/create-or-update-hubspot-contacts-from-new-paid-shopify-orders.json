@@ -1,0 +1,1 @@
+{"id":5992,"name":"Create or update HubSpot contacts from new paid Shopify orders","description":"This automation grabs the contact information from new paid orders in Shopify and creates or updates contacts in HubSpot CRM.","url":"5992-create-or-update-hubspot-contacts-from-new-paid-shopify-orders","usedApps":["shopify","hubspotcrm"],"usage":22}

@@ -1,0 +1,1 @@
+{"id":6944,"name":"Send Pushbullet notifications for new RapidReg registrations","description":"Every time there is a new RapidReg registration, Make will automatically send a push notification via Pushbullet to the registrant.","url":"6944-send-pushbullet-notifications-for-new-rapidreg-registrations","usedApps":["rapidreg","pushbullet"],"usage":2}

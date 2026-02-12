@@ -1,0 +1,1 @@
+{"id":3272,"name":"Send an email from a SendPulse template when a Stripe charge is created","description":"Every time a charge is created in Stripe, Make will automatically send an Email from a SendPulse template to the new customer.","url":"3272-send-an-email-from-a-sendpulse-template-when-a-stripe-charge-is-created","usedApps":["stripe","sendpulse"],"usage":68}

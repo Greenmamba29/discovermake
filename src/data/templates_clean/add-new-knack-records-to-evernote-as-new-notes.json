@@ -1,0 +1,1 @@
+{"id":1051,"name":"Add new Knack records to Evernote as new notes","description":"Every time a new record is created in Knack, Make will automatically create a new note in Evernote.","url":"1051-add-new-knack-records-to-evernote-as-new-notes","usedApps":["knack","evernote"],"usage":4}

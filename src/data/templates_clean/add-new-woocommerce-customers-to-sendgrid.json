@@ -1,0 +1,1 @@
+{"id":2443,"name":"Add new WooCommerce customers to SendGrid","description":"Every time a new customer is created in WooCommerce, Make will automatically add a new recipient to a SendGrid list of your choice.","url":"2443-add-new-woocommerce-customers-to-sendgrid","usedApps":["woocommerce","sendgrid"],"usage":24}

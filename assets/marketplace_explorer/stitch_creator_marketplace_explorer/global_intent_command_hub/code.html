@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Global Intent Command Hub - DiscoverMake</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13a4ec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101c22",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.375rem", "md": "0.375rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+        /* Glassmorphism utilities not natively in Tailwind v3 without config */
+        .glass-panel {
+            background: rgba(16, 28, 34, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-panel-light {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display antialiased selection:bg-primary selection:text-white">
+<div class="relative flex h-full min-h-screen w-full flex-col overflow-x-hidden">
+<!-- Background Layer -->
+<div class="fixed inset-0 z-0 w-full h-full bg-cover bg-center" data-alt="Modern clean workspace desk with laptop and plants soft lighting" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDIcqc1ydNqvxRMkUqrYjnly_8CfNDPzl-gNetYDIpmK5IuOJAHqNmyJdfacE-Zgx8srkUFtf--ohP3ZKo8dXJbYHpImKYMWRFLzyX-Qx4VxKTxH-CFUmG1P5pyiyni_ZXv7j4tYN5blEnX5yAsHd2m8ZURdMDmpeBcAKjQCQvgUNwq_u5hJpPeg8idxbXRJ6tHO-z4O2qppaLU-o4WlHYpN_oTvWquXKy8rbLm4N-GKJI73JkqOzmj1TcKjuSkgyAHRB2dn97Lza8');">
+<!-- Overlay to darken background for legibility -->
+<div class="absolute inset-0 bg-background-light/80 dark:bg-background-dark/90 backdrop-blur-[2px]"></div>
+</div>
+<!-- Content Wrapper -->
+<div class="relative z-10 flex flex-col min-h-screen pb-24">
+<!-- Top Header -->
+<header class="sticky top-0 z-50 flex items-center justify-between px-5 py-4 glass-panel-light dark:glass-panel border-b-0 rounded-b-xl shadow-sm">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-3xl">spark</span>
+<h2 class="text-lg font-bold tracking-tight text-slate-900 dark:text-white">DiscoverMake</h2>
+</div>
+<button class="relative overflow-hidden rounded-full h-10 w-10 border-2 border-white/20">
+<img alt="User Profile" class="h-full w-full object-cover" data-alt="Portrait of a smiling young woman" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYxOq6sG9sX55SmLbWV4B4BHmp6RurRTinxD_q-VqHLsUxrLQHmnyRddAaVBMqd1lH5JnCJQhFxB8W7BoVXIjoN6tTiij0gGj0vgK1iQh10WbB7WtKu_NStEPUiprenq3E34VQnAWPw4D667gTtZvV327KCKBvpBsSYIGaPm2guMIFBS9c8xjmFIU4b5IYXSt8aphtJ7HbMMO6FTLUxkWjRV4wRZw2HTJFXgcUqyWc535G_25dZjW1ea6yj4HdaKiqiXc_CK0u5-U"/>
+</button>
+</header>
+<!-- Hero Search Section -->
+<section class="flex flex-col items-center justify-center px-5 pt-8 pb-6 w-full max-w-lg mx-auto">
+<h1 class="text-3xl font-bold text-center mb-6 leading-tight tracking-tight text-slate-800 dark:text-white drop-shadow-sm">
+                    What do you want<br/>to <span class="text-primary">make</span> today?
+                </h1>
+<div class="w-full relative group">
+<div class="absolute -inset-0.5 bg-gradient-to-r from-primary to-purple-600 rounded-xl opacity-30 blur group-hover:opacity-60 transition duration-500"></div>
+<div class="relative flex w-full items-center bg-white dark:bg-[#1a262e] rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 overflow-hidden h-14">
+<div class="pl-4 pr-3 text-slate-400 dark:text-slate-500">
+<span class="material-symbols-outlined text-2xl">search</span>
+</div>
+<input class="w-full bg-transparent border-none focus:ring-0 text-base placeholder:text-slate-400 dark:placeholder:text-slate-500 text-slate-900 dark:text-white h-full py-2" placeholder="Describe your idea..." type="text"/>
+<button class="pr-4 pl-2 text-primary hover:text-primary/80 transition-colors">
+<span class="material-symbols-outlined text-2xl filled">mic</span>
+</button>
+</div>
+</div>
+<p class="text-sm text-slate-500 dark:text-slate-400 mt-3 font-medium">Type a prompt or choose a starter below</p>
+</section>
+<!-- Smart Suggestions (Horizontal Scroll) -->
+<section class="pl-5 mb-8">
+<div class="flex items-center justify-between pr-5 mb-3">
+<h3 class="text-base font-bold text-slate-800 dark:text-white">Smart Suggestions</h3>
+</div>
+<div class="flex overflow-x-auto space-x-4 pb-4 pr-5 no-scrollbar snap-x">
+<!-- Card 1 -->
+<button class="snap-start flex-none w-64 p-4 rounded-xl bg-white dark:bg-[#1a262e] shadow-md border border-slate-200 dark:border-slate-700/50 flex flex-col items-start gap-3 hover:border-primary/50 transition-all group text-left">
+<div class="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined">smart_toy</span>
+</div>
+<div>
+<h4 class="font-semibold text-slate-900 dark:text-white leading-tight">Build a custom AI Agent</h4>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Automate your daily tasks</p>
+</div>
+<div class="mt-auto pt-2 flex items-center text-xs font-medium text-primary">
+                            Tap to start <span class="material-symbols-outlined text-sm ml-1">arrow_forward</span>
+</div>
+</button>
+<!-- Card 2 -->
+<button class="snap-start flex-none w-64 p-4 rounded-xl bg-white dark:bg-[#1a262e] shadow-md border border-slate-200 dark:border-slate-700/50 flex flex-col items-start gap-3 hover:border-primary/50 transition-all group text-left">
+<div class="h-10 w-10 rounded-lg bg-purple-500/10 flex items-center justify-center text-purple-500 group-hover:bg-purple-500 group-hover:text-white transition-colors">
+<span class="material-symbols-outlined">dashboard</span>
+</div>
+<div>
+<h4 class="font-semibold text-slate-900 dark:text-white leading-tight">Remix a SaaS Dashboard</h4>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Modern analytics layout</p>
+</div>
+<div class="mt-auto pt-2 flex items-center text-xs font-medium text-primary">
+                            Tap to start <span class="material-symbols-outlined text-sm ml-1">arrow_forward</span>
+</div>
+</button>
+<!-- Card 3 -->
+<button class="snap-start flex-none w-64 p-4 rounded-xl bg-white dark:bg-[#1a262e] shadow-md border border-slate-200 dark:border-slate-700/50 flex flex-col items-start gap-3 hover:border-primary/50 transition-all group text-left">
+<div class="h-10 w-10 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-500 group-hover:bg-emerald-500 group-hover:text-white transition-colors">
+<span class="material-symbols-outlined">web</span>
+</div>
+<div>
+<h4 class="font-semibold text-slate-900 dark:text-white leading-tight">Design a Landing Page</h4>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1">High conversion template</p>
+</div>
+<div class="mt-auto pt-2 flex items-center text-xs font-medium text-primary">
+                            Tap to start <span class="material-symbols-outlined text-sm ml-1">arrow_forward</span>
+</div>
+</button>
+</div>
+</section>
+<!-- Community Feed -->
+<section class="px-5 w-full max-w-lg mx-auto">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-lg font-bold text-slate-800 dark:text-white">From the Community</h3>
+<button class="text-sm font-medium text-primary hover:text-primary/80">View all</button>
+</div>
+<div class="grid grid-cols-1 gap-5">
+<!-- Outcome Card 1 -->
+<div class="bg-white dark:bg-[#1a262e] rounded-xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-700/50">
+<div class="relative h-48 w-full bg-slate-200 dark:bg-slate-800">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="Data analytics dashboard screen on a monitor" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD5CloWHRBPvEQB0EB2FdL6ywb9bcZBzcR6JmP1uBRqAAMUo1ooW6rK-RdimJv5q3oF1HsPjXJDVZT9J1K6H8fE7hKGCqcpuWO63fDAHEa6LzeAbW_6WhN-AK6L49ME0u_LpuOKwcDdWaH_WzIT6LiTg0Bi3Sw-5x4L7xVNW878WG3mmEhMoOv7vIjDce_ciClFG1Gr8V907B_uSUqtNh9gUkz9vKoKYZTbQQ0Y48SHsw7dwf9MJvnE9q5-XJFs6WxbhRXNFyLa1oc');"></div>
+<div class="absolute top-3 right-3 bg-black/60 backdrop-blur-sm text-white text-xs font-bold px-2 py-1 rounded flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">local_fire_department</span> Trending
+                             </div>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h4 class="font-bold text-slate-900 dark:text-white">FinTrack Pro Dashboard</h4>
+<p class="text-xs text-slate-500 dark:text-slate-400">By @sarah_design</p>
+</div>
+<div class="flex items-center -space-x-2">
+<img alt="User 1" class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-[#1a262e] object-cover" data-alt="Small avatar of a woman" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBiYp1XLRyfV4ljm9xq87sfYVpW2hpRKKbnrJ6JTSGJFfg3KJb5hIW9LPpFBZy9cGnYi5kYx4GNLqrQUExqM5_LbqFjIAPgzGC0distYDu4vmS8ksU7LBoTfzoavyJNLsEXcOrREuPdXr19Fv0b8Oo7fmNvu5yvvAN_RYy0s5Z4PUMAl03Dj6VGD-THLNqmONOQZl6Z0acsinUgGR0KhL2Ut53eNvQ-D4nhh9a75OoyY0Ev4ubHJqzxO6qmSSheXZwYm23Xl2qSkfc"/>
+<img alt="User 2" class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-[#1a262e] object-cover" data-alt="Small avatar of a man" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJv49R5xL7Zc9xIHvkVtqHH1Y6afL0vp7VN2ehy7tQh_QE2danguet7y-LUv60lPvAoepSP3iDppW574RiQ2NjvjGudh-V5PDxvoG3_sM8iZCVCVmzDTjrpBVviVM7MzFPgRuXEaD9twC5EcljUbiXg-ag1C8LUihYohg-UlhjFcLVcik5EfwRKTnn2rK5FkF1MAOmF2sW_pd3ar5JPGP0-BEekv9nWuXzZM3E8HIMLyTxQrC9mvf5S_b6DlyzHhzaLfu7ojBgttk"/>
+<div class="h-6 w-6 rounded-full ring-2 ring-white dark:ring-[#1a262e] bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-[8px] font-bold text-slate-500 dark:text-slate-300">+42</div>
+</div>
+</div>
+<div class="flex items-center justify-between mt-4">
+<div class="flex gap-2">
+<span class="inline-flex items-center rounded-md bg-slate-100 dark:bg-slate-700/50 px-2 py-1 text-xs font-medium text-slate-600 dark:text-slate-300 ring-1 ring-inset ring-slate-500/10">SaaS</span>
+<span class="inline-flex items-center rounded-md bg-slate-100 dark:bg-slate-700/50 px-2 py-1 text-xs font-medium text-slate-600 dark:text-slate-300 ring-1 ring-inset ring-slate-500/10">Finance</span>
+</div>
+<button class="flex items-center gap-1.5 bg-primary/10 hover:bg-primary/20 text-primary px-3 py-1.5 rounded-lg text-sm font-semibold transition-colors">
+<span class="material-symbols-outlined text-base">autorenew</span>
+<span>Remix</span>
+<span class="text-xs opacity-70 ml-0.5">1.2k</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Outcome Card 2 -->
+<div class="bg-white dark:bg-[#1a262e] rounded-xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-700/50">
+<div class="relative h-48 w-full bg-slate-200 dark:bg-slate-800">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="Mobile app interface displaying social feed" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCkkGaN-ZDtdePDaAi2Dg80BgqzNQ-ORf6WASQYVYdxrpGZ7pSh2R4hT5TerSrjcCsOODkQJ_K3vn5UJAJdDp4ldrXTAFXTCKWuE_CA0WK2bSSedaQG4gb6I7L7HjZb02TfrFt_VkI-ztSAd_rEIzdv-pZhI3mFyyhL0nmMliRsCjz2NE6YG3fuZuGztvLNPQn5mS4nJtMtQe1-y2YnuAT6cSyJD0Y9Ss55aclSYfCCw1nPGwNAPA4yit6rlCmXhyf6ARcqcD1uC-0');"></div>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h4 class="font-bold text-slate-900 dark:text-white">Social Connect UI Kit</h4>
+<p class="text-xs text-slate-500 dark:text-slate-400">By @alex_builder</p>
+</div>
+<div class="flex items-center -space-x-2">
+<img alt="User 3" class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-[#1a262e] object-cover" data-alt="Small avatar of a man with glasses" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOchYs7z5GxKXOogLYH9yxmad1hbfYGC5ciWoJ7olRdv0SBaeuMdWlOhY4ecxw_e0ZRY2qZwRO-kf52mOqSWohCGudCdO53BG2IOtKdtOfemPO0XzWSfo-M_HEFvroxvns4iCoqF09kNdSezoFQZn-vIXT0cDDR7eq8B2yS90-32kcvLK4vp7gKMPaZEX0hcD7BvMHEZUkVYv99itrp12YYWt_-mzZGUUA7CkkRImeRHCpV_nPFJYZiTru8wAQCuaY6Gdny2vgQCc"/>
+</div>
+</div>
+<div class="flex items-center justify-between mt-4">
+<div class="flex gap-2">
+<span class="inline-flex items-center rounded-md bg-slate-100 dark:bg-slate-700/50 px-2 py-1 text-xs font-medium text-slate-600 dark:text-slate-300 ring-1 ring-inset ring-slate-500/10">Mobile</span>
+<span class="inline-flex items-center rounded-md bg-slate-100 dark:bg-slate-700/50 px-2 py-1 text-xs font-medium text-slate-600 dark:text-slate-300 ring-1 ring-inset ring-slate-500/10">Social</span>
+</div>
+<button class="flex items-center gap-1.5 bg-primary/10 hover:bg-primary/20 text-primary px-3 py-1.5 rounded-lg text-sm font-semibold transition-colors">
+<span class="material-symbols-outlined text-base">autorenew</span>
+<span>Remix</span>
+<span class="text-xs opacity-70 ml-0.5">856</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Sticky Bottom Nav -->
+<nav class="fixed bottom-4 left-4 right-4 z-40">
+<div class="glass-panel-light dark:glass-panel rounded-2xl shadow-xl backdrop-blur-xl border-t border-white/10 p-1 flex justify-around items-center h-16">
+<a class="flex flex-col items-center justify-center w-full h-full text-primary" href="#">
+<span class="material-symbols-outlined filled text-2xl mb-0.5">home</span>
+<span class="text-[10px] font-medium">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center w-full h-full text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors" href="#">
+<span class="material-symbols-outlined text-2xl mb-0.5">explore</span>
+<span class="text-[10px] font-medium">Explore</span>
+</a>
+<div class="relative -top-5">
+<button class="bg-primary hover:bg-primary/90 text-white rounded-full h-14 w-14 flex items-center justify-center shadow-lg shadow-primary/30 transition-transform hover:scale-105 active:scale-95">
+<span class="material-symbols-outlined text-3xl">add</span>
+</button>
+</div>
+<a class="flex flex-col items-center justify-center w-full h-full text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors" href="#">
+<span class="material-symbols-outlined text-2xl mb-0.5">folder</span>
+<span class="text-[10px] font-medium">Projects</span>
+</a>
+<a class="flex flex-col items-center justify-center w-full h-full text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors" href="#">
+<span class="material-symbols-outlined text-2xl mb-0.5">person</span>
+<span class="text-[10px] font-medium">Profile</span>
+</a>
+</div>
+</nav>
+</div>
+</body></html>

@@ -1,0 +1,1 @@
+{"id":3631,"name":"Save new Ghost members to a Google Sheets spreadsheet","description":"Every time a new member is added to Ghost, \nMake will automatically add the contact information to a Google Sheets spreadsheet.","url":"3631-save-new-ghost-members-to-a-google-sheets-spreadsheet","usedApps":["ghost","google-sheets"],"usage":16}

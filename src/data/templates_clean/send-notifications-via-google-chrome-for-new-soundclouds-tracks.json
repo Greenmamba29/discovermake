@@ -1,0 +1,1 @@
+{"id":1071,"name":"Send notifications via Google Chrome for new SoundClouds tracks","description":"Every time a selected user uploads a new track to SoundCloud, Make will automatically send a notification via Google Chrome.","url":"1071-send-notifications-via-google-chrome-for-new-soundclouds-tracks","usedApps":["chrome","soundcloud"],"usage":9}

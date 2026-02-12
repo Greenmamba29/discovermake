@@ -1,0 +1,1 @@
+{"id":1724,"name":"Get emails for new Google Forms submissions","description":"Every time a new Google Forms form is submitted, Make will automatically send an email message to a specified email address.","url":"1724-get-emails-for-new-google-forms-submissions","usedApps":["google-forms","email"],"usage":1268}

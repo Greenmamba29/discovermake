@@ -1,0 +1,1 @@
+{"id":6752,"name":"Create Jira issues from new records in Salesforce","description":"This automation will fetch new records in Salesforce and create issues in JIRA Cloud Platform for you.","url":"6752-create-jira-issues-from-new-records-in-salesforce","usedApps":["salesforce","jira"],"usage":79}

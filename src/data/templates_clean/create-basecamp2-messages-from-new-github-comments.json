@@ -1,0 +1,1 @@
+{"id":241,"name":"Create Basecamp2 messages from new GitHub comments","description":"Every time  a new comment is posted on GitHub, Make will automatically create a message on Basecamp2.","url":"241-create-basecamp2-messages-from-new-github-comments","usedApps":["basecamp","github"],"usage":2}

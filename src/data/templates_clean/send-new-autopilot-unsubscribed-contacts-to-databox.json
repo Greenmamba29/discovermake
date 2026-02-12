@@ -1,0 +1,1 @@
+{"id":3891,"name":"Send new Autopilot unsubscribed contacts to Databox","description":"If any of your contacts unsubscribe from your content in Autopilot, Make will automatically send the data to Databox for further analyses. ","url":"3891-send-new-autopilot-unsubscribed-contacts-to-databox","usedApps":["autopilot","databox"],"usage":1}

@@ -1,0 +1,1 @@
+{"id":13226,"name":"Send messages to Slack from a custom webhook","description":"Automatically send messages to Slack using a custom webhook. Trigger messages with Custom WebHook and create them with Slack's Create Message modules.","url":"13226-send-messages-to-slack-from-a-custom-webhook","usedApps":["gateway","slack"],"usage":12}

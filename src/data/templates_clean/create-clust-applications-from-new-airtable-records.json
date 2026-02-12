@@ -1,0 +1,1 @@
+{"id":8731,"name":"Create Clust applications from new Airtable records","description":"Make will watch for new Airtable records at regular intervals and create Clust applications. The template uses this [example table](https://airtable.com/shrsimuP04LloNdiQ).","url":"8731-create-clust-applications-from-new-airtable-records","usedApps":["airtable","clust"],"usage":2}

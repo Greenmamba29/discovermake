@@ -1,0 +1,1 @@
+{"id":6450,"name":"Add Square customers to QuickBooks","description":"Every time a Square customer is created, Make will automatically create a QuickBooks customer.","url":"6450-add-square-customers-to-quickbooks","usedApps":["square","quickbooks"],"usage":44}

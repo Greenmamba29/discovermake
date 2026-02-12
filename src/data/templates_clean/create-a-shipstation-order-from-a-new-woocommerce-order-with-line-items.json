@@ -1,0 +1,1 @@
+{"id":5596,"name":"Create a ShipStation order from a new WooCommerce order (with line items)","description":"Use this template to create a ShipStation order with line items when a new WooCommerce order is created.","url":"5596-create-a-shipstation-order-from-a-new-woocommerce-order-with-line-items","usedApps":["woocommerce","builtin","shipstation"],"usage":40}

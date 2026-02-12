@@ -1,0 +1,1 @@
+{"id":2773,"name":"Add new Help Scout customers to Google Contacts","description":"Every time a new customer is created in Help Scout, Make will automatically create a new contact in Google Contacts.","url":"2773-add-new-help-scout-customers-to-google-contacts","usedApps":["helpscout","google-contacts"],"usage":4}

@@ -1,0 +1,1 @@
+{"id":8027,"name":"Send Telegram messages for new Judge.me reviews","description":"Every time a new review is written in your Judge.me, Make will automatically send a message via your Telegram.","url":"8027-send-telegram-messages-for-new-judge-me-reviews","usedApps":["judge-me","telegram"],"usage":1}

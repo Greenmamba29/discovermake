@@ -1,0 +1,1 @@
+{"id":6400,"name":"Create Tadabase records for new Google Forms entries","description":"Every time a new entry is submitted to your Google Form, Make will automatically create a record in Tadabase.","url":"6400-create-tadabase-records-for-new-google-forms-entries","usedApps":["google-forms","tadabase"],"usage":5}

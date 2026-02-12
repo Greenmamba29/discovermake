@@ -1,0 +1,1 @@
+{"id":1989,"name":"Add people from Pipedrive to ActiveTrail as contacts","description":"Every time a new person is added in Pipedrive, Make will automatically create or update a contact in ActiveTrail.","url":"1989-add-people-from-pipedrive-to-activetrail-as-contacts","usedApps":["pipedrive","activetrail"],"usage":1}

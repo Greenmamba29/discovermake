@@ -1,0 +1,1 @@
+{"id":2742,"name":"Add new Zoho CRM leads to ClickSend","description":"Every time a new lead is created in Zoho CRM, Make will automatically create a new contact in ClickSend.","url":"2742-add-new-zoho-crm-leads-to-clicksend","usedApps":["zohocrm","clicksend"],"usage":19}

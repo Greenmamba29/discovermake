@@ -1,0 +1,1 @@
+{"id":2724,"name":"Send ClickSend SMS messages for new Shopify orders","description":"Every time a new order is created in Shopify, Make will automatically send an SMS message via ClickSend.","url":"2724-send-clicksend-sms-messages-for-new-shopify-orders","usedApps":["shopify","clicksend"],"usage":21}

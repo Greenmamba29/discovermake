@@ -1,0 +1,1 @@
+{"id":2991,"name":"Send a new client in Harvest as a new row to Google Sheets","description":"When a new client is created in Harvest, a new row with their credentials is added in Google Sheets.","url":"2991-send-a-new-client-in-harvest-as-a-new-row-to-google-sheets","usedApps":["harvest","google-sheets"],"usage":22}

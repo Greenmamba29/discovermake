@@ -1,0 +1,1 @@
+{"id":4420,"name":"Create a Beeminder datapoint for new Pipedrive CRM deals","description":"Every time a new deal occurs in Pipedrive CRM, Make will automatically add the corresponding datapoint to Beeminder.","url":"4420-create-a-beeminder-datapoint-for-new-pipedrive-crm-deals","usedApps":["pipedrive","beeminder"],"usage":0}

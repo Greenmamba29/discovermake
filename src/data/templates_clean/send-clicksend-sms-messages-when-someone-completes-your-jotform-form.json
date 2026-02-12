@@ -1,0 +1,1 @@
+{"id":2734,"name":"Send ClickSend SMS messages when someone completes your Jotform form","description":"Every time someone fills out your Jotform form, Make will automatically send an SMS message via ClickSend to a specified number.","url":"2734-send-clicksend-sms-messages-when-someone-completes-your-jotform-form","usedApps":["jotform","clicksend"],"usage":57}

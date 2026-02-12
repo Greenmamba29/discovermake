@@ -1,0 +1,1 @@
+{"id":4207,"name":"Add new Salesmate companies to Pipedrive CRM","description":"Every time a new company is added to Salesmate CRM, Make will automatically add that company as an organization in Pipedrive CRM.","url":"4207-add-new-salesmate-companies-to-pipedrive-crm","usedApps":["salesmate","pipedrive"],"usage":3}

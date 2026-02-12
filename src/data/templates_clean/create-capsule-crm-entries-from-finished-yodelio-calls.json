@@ -1,0 +1,1 @@
+{"id":2597,"name":"Create Capsule CRM entries from finished Yodel.io calls","description":"Every time a call is finished in Yodel.io, Make will automatically create a new entry in Capsule CRM.","url":"2597-create-capsule-crm-entries-from-finished-yodel-io-calls","usedApps":["yodel","capsule-crm"],"usage":0}

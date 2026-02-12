@@ -1,0 +1,1 @@
+{"id":3366,"name":"Save Wix Answers tickets to Google Sheets","description":"Every time a new ticket is opened in Wix Answers, Make will automatically add the ticket information to a Google Sheets spreadsheet.","url":"3366-save-wix-answers-tickets-to-google-sheets","usedApps":["wix-answers","google-sheets"],"usage":6}

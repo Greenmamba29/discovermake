@@ -1,0 +1,1 @@
+{"id":16730,"name":"Generate new Wordpress Posts when new posts are sent in beehiiv","description":"Whenever you publish a new post in your beehiiv account, Make will automatically create that post in Wordpress. ","url":"16622-generate-new-wordpress-posts-when-posts-are-sent-in-beehiiv","usedApps":["beehiiv","regexp","wordpress"],"usage":6}

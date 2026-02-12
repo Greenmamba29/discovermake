@@ -1,0 +1,1 @@
+{"id":2066,"name":"Send emails from Gmail for new Chargebee subscriptions","description":"Every time a new subscription is created in Chargebee, Make will automatically send an email via Gmail to a specified address.","url":"2066-send-emails-from-gmail-for-new-chargebee-subscriptions","usedApps":["chargebee","google-email"],"usage":4}

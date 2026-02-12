@@ -1,0 +1,1 @@
+{"id":13286,"name":"Send data to Airtable and trigger custom webhooks with Make","description":"Automatically send data to Airtable and trigger custom webhooks using Make. Streamline your workflow with Airtable, Custom WebHook, and HTTP module.","url":"13286-send-data-to-airtable-and-trigger-custom-webhooks-with-make","usedApps":["gateway","airtable","http"],"usage":11}

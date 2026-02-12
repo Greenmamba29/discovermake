@@ -1,0 +1,1 @@
+{"id":1858,"name":"Create pulses in Monday from Slack Messages","description":"Use this template to create an item in Monday anytime when you receive a message from a specific user in Slack.","url":"1858-create-pulses-in-monday-from-slack-messages","usedApps":["slack","monday"],"usage":127}

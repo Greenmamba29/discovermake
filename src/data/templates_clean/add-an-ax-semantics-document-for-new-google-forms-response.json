@@ -1,0 +1,1 @@
+{"id":6455,"name":"Add an AX Semantics document for new Google Forms response","description":"Every time a Google Forms response is received, Make will automatically aggregate data to JSON and add it as a document to AX Semantics.","url":"6455-add-an-ax-semantics-document-for-new-google-forms-response","usedApps":["google-forms","json","ax-semantics"],"usage":17}

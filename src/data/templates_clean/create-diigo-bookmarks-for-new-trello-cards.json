@@ -1,0 +1,1 @@
+{"id":8193,"name":"Create Diigo bookmarks for new Trello cards","description":"Every time a new card is created in a specified Trello board, Make will automatically create a new bookmark in Diigo.","url":"8193-create-diigo-bookmarks-for-new-trello-cards","usedApps":["trello","diigo"],"usage":2}

@@ -1,0 +1,1 @@
+{"id":6171,"name":"Add new Shopify customers as a new CloudTalk contacts","description":"Every time a new customer is created in Shopify, Make will automatically add that customer as a new CloudTalk contact.","url":"6171-add-new-shopify-customers-as-a-new-cloudtalk-contacts","usedApps":["shopify","cloudtalk"],"usage":3}

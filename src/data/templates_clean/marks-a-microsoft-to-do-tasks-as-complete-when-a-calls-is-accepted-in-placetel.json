@@ -1,0 +1,1 @@
+{"id":7350,"name":"Marks a Microsoft To Do tasks as complete when a calls is accepted in Placetel","description":"Every time a new call is accepted in Placetel, Make will automatically marks a Microsoft To Do task as complete.","url":"7350-marks-a-microsoft-to-do-tasks-as-complete-when-a-calls-is-accepted-in-placetel","usedApps":["placetel","microsoft-to-do"],"usage":5}

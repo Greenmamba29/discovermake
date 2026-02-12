@@ -1,0 +1,1 @@
+{"id":9020,"name":"Upload new Bannerbear images to Dropbox","description":"Every time a new image is created in Bannerbear, Make will automatically upload that image to a Dropbox folder you specify.","url":"9020-upload-new-bannerbear-images-to-dropbox","usedApps":["bannerbear","http","dropbox"],"usage":11}

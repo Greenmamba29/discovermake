@@ -1,0 +1,1 @@
+{"id":3837,"name":"Create Invoice Ninja invoices from Recurly transactions","description":"Every time a new Recurly transaction is created, Make will automatically create an invoice on Invoice Ninja.","url":"3837-create-invoice-ninja-invoices-from-recurly-transactions","usedApps":["recurly","invoiceninja"],"usage":6}

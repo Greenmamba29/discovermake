@@ -1,0 +1,1 @@
+{"id":7255,"name":"Send order item information from CleverReach via Email","description":"Whenever you have a new order item on your CleverReach account, Make will automatically send an email message to a specified email address.","url":"7255-send-order-item-information-from-cleverreach-via-email","usedApps":["cleverreach","email"],"usage":11}

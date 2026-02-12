@@ -1,0 +1,1 @@
+{"id":8558,"name":"Save new Dropbox documents to Parseur","description":"Every time there is new document files in a specified Dropbox folder, Make will automatically upload it to Parseur.","url":"8558-save-new-dropbox-documents-to-parseur","usedApps":["dropbox","parseur"],"usage":4}

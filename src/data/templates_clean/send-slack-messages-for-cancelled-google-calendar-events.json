@@ -1,0 +1,1 @@
+{"id":5944,"name":"Send Slack messages for cancelled Google Calendar events","description":"Use this template to send a Slack message to a channel or a user when a Google Calendar event is cancelled.","url":"5944-send-slack-messages-for-cancelled-google-calendar-events","usedApps":["google-calendar","slack"],"usage":32}

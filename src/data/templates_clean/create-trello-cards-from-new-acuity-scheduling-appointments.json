@@ -1,0 +1,1 @@
+{"id":2589,"name":"Create Trello cards from new Acuity Scheduling appointments","description":"Every time a new appointment is scheduled in Acuity Scheduling, Make will automatically create a new card in Trello.","url":"2589-create-trello-cards-from-new-acuity-scheduling-appointments","usedApps":["acuity-scheduling","trello"],"usage":9}

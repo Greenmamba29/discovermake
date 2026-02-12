@@ -1,0 +1,1 @@
+{"id":5312,"name":"Create or update SendGrid contacts from new Typeform form submissions","description":"Every time someone fills out your Typeform form, Make will automatically add/update a SendGrid contact.","url":"5312-create-or-update-sendgrid-contacts-from-new-typeform-form-submissions","usedApps":["typeform","sendgrid"],"usage":11}

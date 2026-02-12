@@ -1,0 +1,1 @@
+{"id":7852,"name":"Create Zoho Projects tasks from new Trello cards","description":"Make will watch for new cards in a specified Trello board at regular intervals and create tasks in a specified Zoho Project.","url":"7852-create-zoho-projects-tasks-from-new-trello-cards","usedApps":["trello","zoho-projects"],"usage":5}

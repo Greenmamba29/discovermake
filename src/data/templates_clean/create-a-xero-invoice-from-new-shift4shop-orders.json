@@ -1,0 +1,1 @@
+{"id":8339,"name":"Create a Xero invoice from new Shift4Shop orders","description":"Every time you get a new Shift4Shop order, a new Xero invoice will be created for the customer.","url":"8339-create-a-xero-invoice-from-new-shift4shop-orders","usedApps":["a3dcart","xero","builtin"],"usage":13}

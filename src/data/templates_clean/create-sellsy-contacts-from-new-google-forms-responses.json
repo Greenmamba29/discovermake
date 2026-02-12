@@ -1,0 +1,1 @@
+{"id":8022,"name":"Create Sellsy contacts from new Google Forms responses","description":"Integomat will watch for new Google Forms responses at regular intervals and create contacts in Sellsy using information received.","url":"8022-create-sellsy-contacts-from-new-google-forms-responses","usedApps":["google-forms","sellsy"],"usage":15}

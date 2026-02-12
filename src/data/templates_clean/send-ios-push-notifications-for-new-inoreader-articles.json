@@ -1,0 +1,1 @@
+{"id":4327,"name":"Send iOS push notifications for new Inoreader articles","description":"Every time a new article is published on your Inoreader feed, Make will automatically send a push notification to the Apple iOS device of your choice.","url":"4327-send-ios-push-notifications-for-new-inoreader-articles","usedApps":["inoreader","ios"],"usage":39}

@@ -1,0 +1,1 @@
+{"id":7003,"name":"Send messages to Slack for new Service Provider Pro orders","description":"Every time there is a new order in Service Provider Pro, Make will automatically send a message containing info about order to Slack.","url":"7003-send-messages-to-slack-for-new-service-provider-pro-orders","usedApps":["service-provider-pro","slack"],"usage":5}

@@ -1,0 +1,1 @@
+{"id":2492,"name":"Add new Salesforce contacts to Campaign Monitor","description":"Every time a new contact is created in SalesForce, Make will automaticaly add a new subsriber to your Campaign Monitor list.","url":"2492-add-new-salesforce-contacts-to-campaign-monitor","usedApps":["salesforce","campaign-monitor"],"usage":2}

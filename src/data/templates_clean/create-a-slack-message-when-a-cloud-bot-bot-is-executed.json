@@ -1,0 +1,1 @@
+{"id":5051,"name":"Create a Slack message when a Cloud BOT bot is executed","description":"Every time a Cloud BOT bot is executed, Make will automatically create a new Slack message.","url":"5051-create-a-slack-message-when-a-cloud-bot-bot-is-executed","usedApps":["cloud-bot","slack"],"usage":0}

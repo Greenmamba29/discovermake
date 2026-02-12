@@ -1,0 +1,1 @@
+{"id":2604,"name":"Save your Yodel.io call recordings to Wasabi","description":"Every time a call is recorded in Yodel.io, Make will automatically upload that recording to your Wasabi folder.","url":"2604-save-your-yodel-io-call-recordings-to-wasabi","usedApps":["yodel","http","wasabi"],"usage":3}

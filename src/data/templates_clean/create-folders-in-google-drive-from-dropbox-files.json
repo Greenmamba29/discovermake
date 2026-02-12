@@ -1,0 +1,1 @@
+{"id":6031,"name":"Create folders in Google Drive from Dropbox files","description":"When you upload files in Dropbox, the files are automatically retrieved and folders with the same names are created in Google Drive.","url":"6031-create-folders-in-google-drive-from-dropbox-files","usedApps":["dropbox","google-drive"],"usage":56}

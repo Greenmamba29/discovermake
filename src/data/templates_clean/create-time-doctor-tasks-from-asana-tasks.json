@@ -1,0 +1,1 @@
+{"id":4394,"name":"Create Time Doctor tasks from Asana tasks","description":"Every time a new task is created in Asana, Make will automatically create a new task in Time Doctor.","url":"4394-create-time-doctor-tasks-from-asana-tasks","usedApps":["asana","time-doctor"],"usage":9}

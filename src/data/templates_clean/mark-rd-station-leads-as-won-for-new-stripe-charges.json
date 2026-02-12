@@ -1,0 +1,1 @@
+{"id":4338,"name":"Mark RD Station leads as Won for new Stripe charges","description":"Every time a new charge is successfully captured in Stripe, Make will automatically mark the lead as won in RD Station.","url":"4338-mark-rd-station-leads-as-won-for-new-stripe-charges","usedApps":["stripe","rd-station"],"usage":8}

@@ -1,0 +1,1 @@
+{"id":2638,"name":"Create Pipefy cards from new Google Sheets rows","description":"Every time a new row is added to your Google Sheets spreadsheet, Make will automatically create a new card in Pipefy.","url":"2638-create-pipefy-cards-from-new-google-sheets-rows","usedApps":["google-sheets","pipefy"],"usage":144}

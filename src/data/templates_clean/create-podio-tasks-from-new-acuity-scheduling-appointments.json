@@ -1,0 +1,1 @@
+{"id":2574,"name":"Create Podio tasks from new Acuity Scheduling appointments","description":"Every time a new appointment is scheduled in Acuity Scheduling, Make will automatically create a new task in Podio.","url":"2574-create-podio-tasks-from-new-acuity-scheduling-appointments","usedApps":["acuity-scheduling","podio"],"usage":2}

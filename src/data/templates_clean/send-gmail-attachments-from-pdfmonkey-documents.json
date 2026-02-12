@@ -1,0 +1,1 @@
+{"id":4507,"name":"Send Gmail attachments from PDFMonkey documents","description":"Every time a new PDFMonkey is created, Make will automatically send an email attachment with the document.","url":"4507-send-gmail-attachments-from-pdfmonkey-documents","usedApps":["pdfmonkey","http","google-email"],"usage":12}

@@ -1,0 +1,1 @@
+{"id":10424,"name":"Create Kommo contacts from new Acuity Scheduling appointments","description":"Every time a new appointment is scheduled in Acuity Scheduling, Make will automatically create a new contact in Kommo.","url":"2585-create-amocrm-contacts-from-new-acuity-scheduling-appointments","usedApps":["acuity-scheduling","amo-crm"],"usage":15}

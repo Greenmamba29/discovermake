@@ -1,0 +1,1 @@
+{"id":8451,"name":"Create NetHunt records for new Shopify customers","description":"Every time a new customer is added to a Shopify, Make will automatically create a new record in NetHunt.","url":"8451-create-nethunt-records-for-new-shopify-customers","usedApps":["shopify","nethunt"],"usage":3}

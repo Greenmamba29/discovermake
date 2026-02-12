@@ -1,0 +1,1 @@
+{"id":5349,"name":"Create ReferralHero subscribers from new Google Forms responses","description":"Every time a new response is entered on your Google Form, Make will automatically create a new ReferralHero subscriber.","url":"5349-create-referralhero-subscribers-from-new-google-forms-responses","usedApps":["google-forms","referralhero"],"usage":3}

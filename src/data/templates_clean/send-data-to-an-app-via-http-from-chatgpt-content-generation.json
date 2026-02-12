@@ -1,0 +1,1 @@
+{"id":15283,"name":"Send data to an app via HTTP from ChatGPT content generation","description":"Periodically transmit data via HTTP from ChatGPT content generation, streamlining your content creation process.","url":"15283-send-data-to-an-app-via-http-from-chatgpt-content-generation","usedApps":["openai-gpt-3","http"],"usage":36}

@@ -1,0 +1,1 @@
+{"id":8425,"name":"Send a Slack message from DocuSign envelope status change","description":"Every time a new event occurs in DocuSign, a Slack message will be sent immediately.","url":"8425-send-a-slack-message-from-docusign-envelope-status-change","usedApps":["docusign","slack"],"usage":50}

@@ -1,0 +1,1 @@
+{"id":8515,"name":"Create Pastebin pastes from new Google Sheets rows","description":"Every time a new row is added to your Google Sheets spreadsheet, Make will automatically create a paste for it.","url":"8515-create-pastebin-pastes-from-new-google-sheets-rows","usedApps":["google-sheets","pastebin"],"usage":11}

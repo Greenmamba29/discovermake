@@ -1,0 +1,1 @@
+{"id":5986,"name":"Get Google Chrome notifications for created Task on Onfleet","description":"Every time a new Task is created on your Onfleet account, Make will automatically send a push notification via Google Chrome.","url":"5986-get-google-chrome-notifications-for-created-task-on-onfleet","usedApps":["onfleet","chrome"],"usage":6}

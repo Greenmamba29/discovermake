@@ -1,0 +1,1 @@
+{"id":8679,"name":"Create HubSpot contacts from new cituro customers","description":"After a new customer has been created, you'll also want to see it in your HubSpot CRM. This Make integration automatically adds every new cituro customer to HubSpot CRM as a new contact.","url":"8679-create-hubspot-contacts-from-new-cituro-customers","usedApps":["cituro","hubspotcrm"],"usage":6}

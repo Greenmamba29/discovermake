@@ -1,0 +1,1 @@
+{"id":7837,"name":"Create ServiceWorks customers from HubSpot CRM contacts","description":"Every time a new contact is created in HubSpot CRM, Make will automatically create a new customer in ServiceWorks.","url":"7837-create-serviceworks-customers-from-hubspot-crm-contacts","usedApps":["hubspotcrm","serviceworks"],"usage":1}

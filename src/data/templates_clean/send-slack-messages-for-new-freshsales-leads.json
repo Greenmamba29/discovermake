@@ -1,0 +1,1 @@
+{"id":2020,"name":"Send Slack messages for new Freshsales leads","description":"Every time a new lead is created in Freshsales, Make will automatically send a message with that lead's info to a Slack channel of your choice.","url":"2020-send-slack-messages-for-new-freshsales-leads","usedApps":["freshsales","slack"],"usage":13}

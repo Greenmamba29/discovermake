@@ -1,0 +1,1 @@
+{"id":5888,"name":"Create draft emails from new Trello cards","description":"When you have new Trello cards, Make will automatically retrieve the cards and create draft emails on Gmail for you.","url":"5888-create-draft-emails-from-new-trello-cards","usedApps":["trello","google-email"],"usage":19}

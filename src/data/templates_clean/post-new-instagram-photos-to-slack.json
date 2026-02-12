@@ -1,0 +1,1 @@
+{"id":405,"name":"Post new Instagram photos to Slack","description":"Every time a new photo is added to Instagram, Make will automatically send that photo as a file to Slack.","url":"405-post-new-instagram-photos-to-slack","usedApps":["instagram","builtin","slack"],"usage":585}

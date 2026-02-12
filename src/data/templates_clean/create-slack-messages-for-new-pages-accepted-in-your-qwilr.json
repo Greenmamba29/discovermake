@@ -1,0 +1,1 @@
+{"id":8094,"name":"Create Slack messages for new pages accepted in your Qwilr","description":"Every time a new page is accepted in your Qwilr, Make will automatically create a message in your Slack.","url":"8094-create-slack-messages-for-new-pages-accepted-in-your-qwilr","usedApps":["qwilr","slack"],"usage":4}

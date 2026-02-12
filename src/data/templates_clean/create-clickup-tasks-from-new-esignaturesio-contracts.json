@@ -1,0 +1,1 @@
+{"id":6468,"name":"Create ClickUp Tasks from new eSignatures.io contracts","description":"Every time a new eSignatures.io contract is sent, Make will automatically create a task in the ClickUp workspace of your choice.","url":"6468-create-clickup-tasks-from-new-esignatures-io-contracts","usedApps":["esignatures-io","clickup"],"usage":4}

@@ -1,0 +1,1 @@
+{"id":7160,"name":"Send Telegram messages for new Snatchbot messages","description":"Every time there is a new message received in Snatchbot, Make will automatically create a new message in Telegram.","url":"7160-send-telegram-messages-for-new-snatchbot-messages","usedApps":["snatchbot","telegram"],"usage":4}

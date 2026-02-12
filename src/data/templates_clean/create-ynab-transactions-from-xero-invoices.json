@@ -1,0 +1,1 @@
+{"id":4596,"name":"Create YNAB transactions from Xero invoices","description":"Every time a new Xero invoice is created, Make will automatically create a transaction in YNAB.","url":"4596-create-ynab-transactions-from-xero-invoices","usedApps":["xero","ynab"],"usage":9}

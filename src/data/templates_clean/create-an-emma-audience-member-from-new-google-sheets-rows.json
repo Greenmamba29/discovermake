@@ -1,0 +1,1 @@
+{"id":5199,"name":"Create an Emma audience member from new Google Sheets rows","description":"Every time a new row is added to your Google Sheets spreadsheet, Make will automatically create an audience member in Emma.","url":"5199-create-an-emma-audience-member-from-new-google-sheets-rows","usedApps":["google-sheets","emma"],"usage":12}

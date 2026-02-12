@@ -1,0 +1,1 @@
+{"id":5482,"name":"Send new tickets from Zendesk as Slack messages.","description":"Use this automation to notify your team on Slack whenever new tickets are created in Zendesk. Make will automatically retrieve the URLs of the tickets and send it as Slack messages.","url":"5482-send-new-tickets-from-zendesk-as-slack-messages","usedApps":["zendesk","slack"],"usage":25}

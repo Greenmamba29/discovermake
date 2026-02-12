@@ -1,0 +1,1 @@
+{"id":6153,"name":"Create a Teamwork person from a new Resource Guru resource","description":"Every time a new Resource Guru resource is created, Make will automatically create a Teamwork person.","url":"6153-create-a-teamwork-person-from-a-new-resource-guru-resource","usedApps":["resource-guru","teamwork"],"usage":1}

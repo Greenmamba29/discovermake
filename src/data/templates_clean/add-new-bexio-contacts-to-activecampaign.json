@@ -1,0 +1,1 @@
+{"id":6799,"name":"Add new bexio contacts to ActiveCampaign","description":"Every time a new contact is created in bexio, Make will automatically add that contact to your mailing list in ActiveCampaign.","url":"6799-add-new-bexio-contacts-to-activecampaign","usedApps":["bexio","activecampaign"],"usage":27}

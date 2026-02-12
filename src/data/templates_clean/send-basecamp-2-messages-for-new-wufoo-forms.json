@@ -1,0 +1,1 @@
+{"id":116,"name":"Send Basecamp 2 messages for new Wufoo forms","description":"Every time a new form is created in Wufoo, Make will automatically send a message in Basecamp 2.","url":"116-send-basecamp-2-messages-for-new-wufoo-forms","usedApps":["basecamp","wufoo"],"usage":3}

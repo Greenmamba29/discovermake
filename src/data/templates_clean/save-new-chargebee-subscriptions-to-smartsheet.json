@@ -1,0 +1,1 @@
+{"id":2065,"name":"Save new Chargebee subscriptions to Smartsheet","description":"Every time a new subscription is created in Chargebee, Make will automatically add that subscription's info to a new row in your Smartsheet sheet.","url":"2065-save-new-chargebee-subscriptions-to-smartsheet","usedApps":["chargebee","smartsheet"],"usage":3}

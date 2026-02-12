@@ -1,0 +1,1 @@
+{"id":5317,"name":"Send ClickSend SMS messages when someone completes your Typeform form","description":"Every time someone fills out your Typeform form, Make will automatically send an SMS message via ClickSend to a specified number.","url":"5317-send-clicksend-sms-messages-when-someone-completes-your-typeform-form","usedApps":["typeform","clicksend"],"usage":13}

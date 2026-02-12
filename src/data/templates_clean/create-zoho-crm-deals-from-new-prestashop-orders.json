@@ -1,0 +1,1 @@
+{"id":623,"name":"Create Zoho CRM deals from new PrestaShop orders","description":"Every time a new order is created in PrestaShop, Make will automatically create a new deal in Zoho CRM.","url":"623-create-zoho-crm-deals-from-new-prestashop-orders","usedApps":["prestashop","zohocrm"],"usage":64}

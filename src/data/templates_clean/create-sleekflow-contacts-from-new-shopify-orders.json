@@ -1,0 +1,1 @@
+{"id":7370,"name":"Create SleekFlow contacts from new Shopify orders","description":"Every time there is a new order in Shopify, Make will automatically create a new contact in SleekFlow using information about a customer from Shopify.","url":"7370-create-sleekflow-contacts-from-new-shopify-orders","usedApps":["shopify","sleekflow"],"usage":9}

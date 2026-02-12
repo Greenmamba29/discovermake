@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Creator Verification Queue</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13a4ec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101c22",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 antialiased">
+<!-- Main Container (iOS Phone Layout) -->
+<div class="relative flex h-screen w-full flex-col overflow-hidden max-w-md mx-auto border-x border-slate-200 dark:border-slate-800">
+<!-- Header / TopAppBar -->
+<header class="sticky top-0 z-20 flex flex-col bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+<div class="flex items-center p-4 justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">verified_user</span>
+<h2 class="text-lg font-bold leading-tight tracking-tight">Verification Queue</h2>
+<span class="bg-primary/20 text-primary text-[10px] font-bold px-1.5 py-0.5 rounded uppercase">24 Pending</span>
+</div>
+<div class="flex gap-2">
+<button class="flex items-center justify-center size-10 rounded-full bg-slate-200/50 dark:bg-slate-800/50">
+<span class="material-symbols-outlined text-xl">search</span>
+</button>
+<button class="flex items-center justify-center size-10 rounded-full bg-slate-200/50 dark:bg-slate-800/50">
+<span class="material-symbols-outlined text-xl">tune</span>
+</button>
+</div>
+</div>
+<!-- Horizontal Filter Chips -->
+<div class="flex gap-2 p-3 overflow-x-auto hide-scrollbar border-t border-slate-200 dark:border-slate-800">
+<button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-primary text-white px-4">
+<span class="text-xs font-semibold">All Items</span>
+</button>
+<button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-slate-200 dark:bg-slate-800 px-4 border border-slate-300 dark:border-slate-700">
+<span class="text-xs font-medium">High Risk</span>
+<div class="size-2 rounded-full bg-red-500"></div>
+</button>
+<button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-slate-200 dark:bg-slate-800 px-4 border border-slate-300 dark:border-slate-700">
+<span class="text-xs font-medium">Medium Risk</span>
+<div class="size-2 rounded-full bg-yellow-500"></div>
+</button>
+<button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-slate-200 dark:bg-slate-800 px-4 border border-slate-300 dark:border-slate-700">
+<span class="text-xs font-medium">Portfolio Proof</span>
+</button>
+</div>
+</header>
+<!-- Main Content: Queue List -->
+<main class="flex-1 overflow-y-auto p-4 space-y-3">
+<!-- List Header (Table-like labels) -->
+<div class="flex items-center px-4 text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">
+<div class="flex-1">Creator</div>
+<div class="w-16 text-center">Risk</div>
+<div class="w-16 text-right">Viol.</div>
+</div>
+<!-- Item 1 (Selected/Active State Example) -->
+<div class="flex items-center gap-3 bg-white dark:bg-slate-900 p-3 rounded-xl border-2 border-primary shadow-sm">
+<div class="relative">
+<div class="size-12 rounded-full bg-cover bg-center border border-slate-200 dark:border-slate-700" data-alt="Creator profile headshot thumbnail" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAz8POz_2Lp_VNwvv5WBN_2p9nWleMywqTZYnuFzgT2bw8t1OaOeZBrWBDTnbTFxzITIKFZxbnKf-70_voaeiC-5ZANQnAQmAUtPeKJDN16fGHJxJ-0ueuqlW0qDixylpHeewx3o-komJpWEq_uPX4sxl5bRRZoFX8pknCNzPrENwKwRFRcb7Tned5gw16lNT_TPJGMVXj4whft0CpDxaCzbnx18YUzl-U9E3x0OIkh0NyOe041mQVUl7RMB3peMhFMfDNxp57U5EA')"></div>
+<div class="absolute -bottom-1 -right-1 size-5 bg-green-500 rounded-full border-2 border-white dark:border-slate-900 flex items-center justify-center">
+<span class="material-symbols-outlined text-[10px] text-white font-bold">check</span>
+</div>
+</div>
+<div class="flex flex-col flex-1 min-w-0">
+<p class="text-sm font-bold truncate">Alex Rivera</p>
+<p class="text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">link</span>
+                        Portfolio Linked
+                    </p>
+</div>
+<div class="w-16 flex flex-col items-center">
+<span class="text-xs font-bold text-green-500">Low</span>
+<div class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-full mt-1 overflow-hidden">
+<div class="bg-green-500 h-full w-[12%]"></div>
+</div>
+</div>
+<div class="w-12 text-right">
+<span class="text-xs font-bold">0</span>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="flex items-center gap-3 bg-white dark:bg-slate-900 p-3 rounded-xl border border-slate-200 dark:border-slate-800">
+<div class="size-12 rounded-full bg-cover bg-center border border-slate-200 dark:border-slate-700" data-alt="Profile photo of Jordan Smith" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDoAyNgXh4Lae-okrNwMejJP6NM1xrO-FfRkShEoHIMMtyFMH0F9RBT-ZyxKJm4EPvOtsbosNCRnxD0D_6Zlgh3RIxyWsz7TmXnOac0DycERYwThTEG5xEphh0CCnzZRiJH7S23XpZZbSDyAy6lZYDbwHozFdKdL_vnxJTOpdJkdBiJfjbVWuU7qD4oU2JI2kyQKw9ztam5xaRYPahDKvUcGH6h7MYUSWKeCkIPfDtaD7RKU_viwr7s4qZOs7ujQi49pWkt-qAS9xs')"></div>
+<div class="flex flex-col flex-1 min-w-0">
+<p class="text-sm font-bold truncate">Jordan Smith</p>
+<p class="text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px] text-yellow-500">warning</span>
+                        Manual Review Req.
+                    </p>
+</div>
+<div class="w-16 flex flex-col items-center">
+<span class="text-xs font-bold text-red-500">High</span>
+<div class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-full mt-1 overflow-hidden">
+<div class="bg-red-500 h-full w-[84%]"></div>
+</div>
+</div>
+<div class="w-12 text-right">
+<span class="text-xs font-bold text-red-500">3</span>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="flex items-center gap-3 bg-white dark:bg-slate-900 p-3 rounded-xl border border-slate-200 dark:border-slate-800">
+<div class="size-12 rounded-full bg-cover bg-center border border-slate-200 dark:border-slate-700" data-alt="Profile photo of Casey Chen" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD2bWjIApS3jtMEeC7CVhxNm8ocV5YG_qORVZRpKyHtVACbGBx7Av3LUChZXfX1CZ04s3WPnn7NpFnyFqSZxp4_RY0qkIiRnnc2EYzVH4uF80L96qegeHGoznca8QfBO2XFcMnZS789XDmh9cYYthCK0XUqhV8UuSj1GIq9oCGU9SdnRWAYrDzq17ORXeeiN30hlzkAe3U_EAg_xsBOx3983UeicRk9ue8FjxQ8U7EcuTkChV4MSQXrCN2s6Zn0KeWpjtsV3ZUsf6g')"></div>
+<div class="flex flex-col flex-1 min-w-0">
+<p class="text-sm font-bold truncate">Casey Chen</p>
+<p class="text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">schedule</span>
+                        Pending 4h
+                    </p>
+</div>
+<div class="w-16 flex flex-col items-center">
+<span class="text-xs font-bold text-yellow-500">Med</span>
+<div class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-full mt-1 overflow-hidden">
+<div class="bg-yellow-500 h-full w-[45%]"></div>
+</div>
+</div>
+<div class="w-12 text-right">
+<span class="text-xs font-bold">1</span>
+</div>
+</div>
+<!-- Item 4 -->
+<div class="flex items-center gap-3 bg-white dark:bg-slate-900 p-3 rounded-xl border border-slate-200 dark:border-slate-800 opacity-80">
+<div class="size-12 rounded-full bg-cover bg-center border border-slate-200 dark:border-slate-700" data-alt="Profile photo of Morgan Lee" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA0gXO7loO9JCkInfRxWvSKMoTVxJTPRqkT6hI1Tqh6hgtRd-_4uVTW0XyUHwY7rrhdftutsANjKTfRqdDPyv7Gn7VjyzpfdC6Rz5zuviytAN7fL-f19QDKejEwadA6764A5kHqRofde6qOk4mCTbBDm555Jv6I_YVCVvq9Akxa1HenGn1jfIq9iR5Czxl20mlyv509Sw4IgMd39bHO2LnPEw_Uc4z7K3l3lb3m77dmWS5abNO8Q_tUjqYaRzCpAOLOVDLiekCdHCs')"></div>
+<div class="flex flex-col flex-1 min-w-0">
+<p class="text-sm font-bold truncate">Morgan Lee</p>
+<p class="text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">verified</span>
+                        Previously Rejected
+                    </p>
+</div>
+<div class="w-16 flex flex-col items-center">
+<span class="text-xs font-bold text-red-400">High</span>
+<div class="w-full h-1 bg-slate-200 dark:bg-slate-800 rounded-full mt-1 overflow-hidden">
+<div class="bg-red-400 h-full w-[72%]"></div>
+</div>
+</div>
+<div class="w-12 text-right">
+<span class="text-xs font-bold text-red-500">2</span>
+</div>
+</div>
+</main>
+<!-- Side Panel (Overlay) - Semi-open for demo -->
+<div class="absolute inset-y-0 right-0 w-[90%] bg-white dark:bg-slate-900 shadow-2xl z-30 transform translate-x-2 flex flex-col border-l border-slate-200 dark:border-slate-800">
+<!-- Header of Panel -->
+<div class="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-800">
+<button class="flex items-center justify-center size-8 rounded-full bg-slate-100 dark:bg-slate-800">
+<span class="material-symbols-outlined text-xl">chevron_left</span>
+</button>
+<h3 class="font-bold text-sm">Reviewing Alex Rivera</h3>
+<div class="size-8"></div>
+</div>
+<div class="flex-1 overflow-y-auto p-4 space-y-6">
+<!-- ID Proof Section -->
+<section>
+<h4 class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3">Identity Document</h4>
+<div class="relative group aspect-[1.58/1] w-full bg-slate-100 dark:bg-slate-800 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700">
+<div class="absolute inset-0 bg-cover bg-center opacity-40 blur-[1px]" data-alt="Blurred driver license document preview" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBR_ZRRXQJMlApCUWIZbDHbVr-8PrQxEvyspQfdG5NiLjDVUl-5YNU_p4oo5XzUngo-DGCFe8mCJAWFPBUJWf7620lU2vmWnNCHTpebvEF808rD73VzqaNkkRKt9OPIDzPiMHTr4M4IRurLvUjz5YR_c5o74FfTV_fgGgMCIRY6upHcUNWUyaGCgzDSAenGHUKXPeyItMxDl9hWycXPixB9X_NOjXjNqjHNJuTUMKmMs785RJQoR8qRFP0BtJ6BCIkYjCOAnbNRHTE')"></div>
+<div class="absolute inset-0 flex flex-col items-center justify-center gap-2 p-6 text-center">
+<span class="material-symbols-outlined text-4xl text-primary">lock</span>
+<p class="text-xs font-medium px-4">Tap to reveal sensitive government ID</p>
+<button class="bg-primary px-4 py-1.5 rounded-lg text-xs font-bold text-white shadow-lg">View Document</button>
+</div>
+</div>
+<div class="mt-3 flex gap-2">
+<div class="flex-1 bg-green-500/10 border border-green-500/20 rounded-lg p-2 text-center">
+<p class="text-[9px] uppercase text-green-600 dark:text-green-400 font-bold">Face Match</p>
+<p class="text-lg font-bold text-green-600 dark:text-green-400">98%</p>
+</div>
+<div class="flex-1 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-2 text-center">
+<p class="text-[9px] uppercase text-slate-500 font-bold">Doc Type</p>
+<p class="text-xs font-bold">Passport</p>
+</div>
+</div>
+</section>
+<!-- History Timeline -->
+<section>
+<h4 class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3">Verification History</h4>
+<div class="space-y-4">
+<div class="flex gap-3 relative">
+<div class="absolute left-[7px] top-4 bottom-[-20px] w-0.5 bg-slate-200 dark:bg-slate-800"></div>
+<div class="size-4 rounded-full bg-green-500 border-2 border-white dark:border-slate-900 z-10"></div>
+<div class="flex flex-col flex-1">
+<p class="text-[11px] font-bold">Portfolio Link Authenticated</p>
+<p class="text-[10px] text-slate-500">2 hours ago • System</p>
+</div>
+</div>
+<div class="flex gap-3 relative">
+<div class="absolute left-[7px] top-4 bottom-[-20px] w-0.5 bg-slate-200 dark:bg-slate-800"></div>
+<div class="size-4 rounded-full bg-primary border-2 border-white dark:border-slate-900 z-10"></div>
+<div class="flex flex-col flex-1">
+<p class="text-[11px] font-bold">Application Submitted</p>
+<p class="text-[10px] text-slate-500">4 hours ago • Creator</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Audit Log -->
+<section>
+<h4 class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3">Internal Audit Log</h4>
+<div class="bg-slate-50 dark:bg-black/20 rounded-lg p-3 space-y-2 border border-slate-100 dark:border-slate-800">
+<p class="text-[10px] leading-relaxed font-mono">
+<span class="text-slate-400">[14:02:11]</span> Admin (k.chen) viewed profile detail.
+                        </p>
+<p class="text-[10px] leading-relaxed font-mono">
+<span class="text-slate-400">[12:44:05]</span> Fraud engine cleared risk check #A-44.
+                        </p>
+<p class="text-[10px] leading-relaxed font-mono">
+<span class="text-slate-400">[12:43:58]</span> GeoIP validated: New York, US.
+                        </p>
+</div>
+</section>
+</div>
+<!-- Footer Actions -->
+<div class="p-4 bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 space-y-2">
+<div class="grid grid-cols-2 gap-2">
+<button class="flex items-center justify-center gap-2 bg-slate-200 dark:bg-slate-800 text-slate-900 dark:text-slate-100 py-3 rounded-xl font-bold text-xs">
+<span class="material-symbols-outlined text-sm">mail</span>
+                        Request Info
+                    </button>
+<button class="flex items-center justify-center gap-2 bg-slate-200 dark:bg-slate-800 text-red-500 py-3 rounded-xl font-bold text-xs">
+<span class="material-symbols-outlined text-sm">block</span>
+                        Reject
+                    </button>
+</div>
+<button class="w-full flex items-center justify-center gap-2 bg-primary text-white py-4 rounded-xl font-bold text-sm shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-lg">verified</span>
+                    Approve Creator
+                </button>
+</div>
+</div>
+<!-- Tab Bar (iOS style) -->
+<nav class="sticky bottom-0 z-40 flex items-center justify-around bg-background-light/90 dark:bg-background-dark/90 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 h-16 pb-2">
+<button class="flex flex-col items-center gap-0.5 text-primary">
+<span class="material-symbols-outlined">pending_actions</span>
+<span class="text-[10px] font-medium">Queue</span>
+</button>
+<button class="flex flex-col items-center gap-0.5 text-slate-400">
+<span class="material-symbols-outlined">group</span>
+<span class="text-[10px] font-medium">Creators</span>
+</button>
+<button class="flex flex-col items-center gap-0.5 text-slate-400">
+<span class="material-symbols-outlined">analytics</span>
+<span class="text-[10px] font-medium">Stats</span>
+</button>
+<button class="flex flex-col items-center gap-0.5 text-slate-400">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] font-medium">Config</span>
+</button>
+</nav>
+</div>
+</body></html>

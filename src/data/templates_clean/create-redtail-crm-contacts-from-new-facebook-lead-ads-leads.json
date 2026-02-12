@@ -1,0 +1,1 @@
+{"id":9109,"name":"Create Redtail CRM contacts from new Facebook Lead Ads leads","description":"Make will watch for new leads in Facebook Lead Ads at regular intervals and add them to Redtail CRM as contacts.","url":"9109-create-redtail-crm-contacts-from-new-facebook-lead-ads-leads","usedApps":["facebook-lead-ads","redtail-crm"],"usage":2}

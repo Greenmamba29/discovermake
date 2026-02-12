@@ -1,0 +1,1 @@
+{"id":2747,"name":"Add new people from Pipedrive CRM to ClickSend","description":"Every time a new person is added in Pipedrive, Make will automatically create a new contact in ClickSend.","url":"2747-add-new-people-from-pipedrive-crm-to-clicksend","usedApps":["pipedrive","clicksend"],"usage":5}

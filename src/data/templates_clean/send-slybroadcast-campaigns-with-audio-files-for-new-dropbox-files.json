@@ -1,0 +1,1 @@
+{"id":8510,"name":"Send Slybroadcast campaigns with audio files for new Dropbox files","description":"Make will watch your Dropbox files at regular intervals and send campaigns with audio files via your Slybroadcast.","url":"8510-send-slybroadcast-campaigns-with-audio-files-for-new-dropbox-files","usedApps":["dropbox","slybroadcast"],"usage":3}

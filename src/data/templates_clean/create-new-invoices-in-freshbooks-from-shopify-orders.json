@@ -1,0 +1,1 @@
+{"id":6108,"name":"Create new invoices in FreshBooks from Shopify orders","description":"Every time a new order is created in Shopify, a new invoice in FreshBooks will be created.","url":"6108-create-new-invoices-in-freshbooks-from-shopify-orders","usedApps":["shopify","builtin","freshbooks"],"usage":25}

@@ -1,0 +1,1 @@
+{"id":5278,"name":"Add new Typeform form submissions to Podio as new app items","description":"Every time a new Typeform form is submitted, Make will automatically create a Podio app item (or update it if it already exists).","url":"5278-add-new-typeform-form-submissions-to-podio-as-new-app-items","usedApps":["typeform","podio","builtin"],"usage":15}

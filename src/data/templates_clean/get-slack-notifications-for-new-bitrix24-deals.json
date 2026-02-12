@@ -1,0 +1,1 @@
+{"id":7888,"name":"Get Slack notifications for new Bitrix24 deals","description":"Every time a new deal is created in Bitrix24, Make will automatically send a notification message to a specified channel/chat in Slack.","url":"7888-get-slack-notifications-for-new-bitrix24-deals","usedApps":["bitrix24","slack"],"usage":9}

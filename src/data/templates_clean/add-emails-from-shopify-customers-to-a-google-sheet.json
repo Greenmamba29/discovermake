@@ -1,0 +1,1 @@
+{"id":5732,"name":"Add emails from Shopify customers to a Google Sheet","description":"Retrieve new emails and add their data to a Google Sheet if the sender is a customer of your Shopify store.","url":"5732-add-emails-from-shopify-customers-to-a-google-sheet","usedApps":["email","shopify","google-sheets"],"usage":32}

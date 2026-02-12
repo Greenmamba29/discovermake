@@ -1,0 +1,1 @@
+{"id":13838,"name":"Send Telegram messages and download files based on updates","description":"Automatically send Telegram messages and download files from updates, then send data via HTTP and reply on Telegram for streamlined communication.","url":"13838-send-telegram-messages-and-download-files-based-on-updates","usedApps":["telegram","http"],"usage":34}

@@ -1,0 +1,1 @@
+{"id":13649,"name":"Send event data to an external action using Knack and HTTP","description":"Automatically send new event data from Knack to an external action via HTTP, streamlining data transfer and enhancing workflow efficiency.","url":"13649-send-event-data-to-an-external-action-using-knack-and-http","usedApps":["knack","http"],"usage":4}

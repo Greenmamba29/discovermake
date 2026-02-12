@@ -1,0 +1,1 @@
+{"id":2055,"name":"Save new Wufoo form entries to Smartsheet","description":"Every time someone fills out your Wufoo form, Make will automatically add that entry as a new row to a Smartsheet sheet of your choice.","url":"2055-save-new-wufoo-form-entries-to-smartsheet","usedApps":["smartsheet","wufoo"],"usage":0}

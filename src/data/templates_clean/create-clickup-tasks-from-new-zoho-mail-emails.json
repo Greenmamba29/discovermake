@@ -1,0 +1,1 @@
+{"id":2696,"name":"Create ClickUp tasks from new Zoho Mail emails","description":"Every time you receive a new email in a selected Zoho Mail folder, Make will automatically create a new task in ClickUp.","url":"2696-create-clickup-tasks-from-new-zoho-mail-emails","usedApps":["zoho-mail","clickup"],"usage":43}

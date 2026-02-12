@@ -1,0 +1,1 @@
+{"id":8211,"name":"Add Sendlane contacts for new Clio Manage contacts","description":"Every time a new contact is created in your Clio Manage, Make will automatically add them to your Sendlane as a contact.","url":"8211-add-sendlane-contacts-for-new-clio-manage-contacts","usedApps":["clio-manage","sendlane"],"usage":2}

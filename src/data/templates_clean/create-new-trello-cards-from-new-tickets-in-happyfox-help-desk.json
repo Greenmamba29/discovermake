@@ -1,0 +1,1 @@
+{"id":7045,"name":"Create new Trello cards from new tickets in HappyFox Help Desk","description":"Every time a new ticket is created in HappyFox Help Desk, Make will automatically create a new card in Trello.","url":"7045-create-new-trello-cards-from-new-tickets-in-happyfox-help-desk","usedApps":["happyfox-help-desk","trello"],"usage":2}

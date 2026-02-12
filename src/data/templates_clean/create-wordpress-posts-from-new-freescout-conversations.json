@@ -1,0 +1,1 @@
+{"id":8638,"name":"Create Wordpress posts from new FreeScout conversations","description":"Every time a new FreeScout conversation is created, Make will automatically add a corresponding post in your WordPress page.","url":"8638-create-wordpress-posts-from-new-freescout-conversations","usedApps":["freescout","wordpress"],"usage":31}

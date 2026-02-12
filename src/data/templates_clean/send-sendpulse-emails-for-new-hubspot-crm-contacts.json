@@ -1,0 +1,1 @@
+{"id":3506,"name":"Send SendPulse emails for new HubSpot CRM contacts.","description":"Every time a new contact is added to HubSpot CRM, Make will automatically send an email with SendPulse.","url":"3506-send-sendpulse-emails-for-new-hubspot-crm-contacts","usedApps":["hubspotcrm","sendpulse"],"usage":16}

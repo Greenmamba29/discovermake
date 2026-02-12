@@ -1,0 +1,1 @@
+{"id":2451,"name":"Save new Telegram files to Wasabi","description":"Every time a new file is posted to your Telegram channel, Make will automatically save that file to a Wasabi folder you specify.","url":"2451-save-new-telegram-files-to-wasabi","usedApps":["telegram","wasabi"],"usage":11}

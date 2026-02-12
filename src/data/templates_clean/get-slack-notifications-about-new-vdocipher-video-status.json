@@ -1,0 +1,1 @@
+{"id":8187,"name":"Get Slack notifications about new VdoCipher video status","description":"Every time a video status is changed in VdoCipher, Make will automatically send a notification message to a specified channel/chat in Slack.","url":"8187-get-slack-notifications-about-new-vdocipher-video-status","usedApps":["vdocipher","slack"],"usage":1}

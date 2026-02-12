@@ -1,0 +1,1 @@
+{"id":3987,"name":"Send Hootsuite messages to Databox","description":"Everytime a new message is recorded in Hootsuite, that event data are sent to Databox for further analyses.","url":"3987-send-hootsuite-messages-to-databox","usedApps":["hootsuite","databox"],"usage":15}

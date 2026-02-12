@@ -1,0 +1,1 @@
+{"id":2503,"name":"Backup new Google Photos to Dropbox","description":"Every time a new photo is added to your Google Photo album, Integromat will automatically upload that photo to a Dropbox folder you specify.","url":"2503-backup-new-google-photos-to-dropbox","usedApps":["google-photos","dropbox"],"usage":201}

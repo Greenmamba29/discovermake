@@ -1,0 +1,1 @@
+{"id":4913,"name":"Create an Asana task when a submitted Cognito Forms entry is updated","description":"Every time a submitted Cognito Forms entry is updated, Make will create a new Asana task.","url":"4913-create-an-asana-task-when-a-submitted-cognito-forms-entry-is-updated","usedApps":["cognitoforms","asana"],"usage":2}

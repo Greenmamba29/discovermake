@@ -1,0 +1,1 @@
+{"id":18024,"name":"Create a Slack alert when a Salesforge sequence reply is negative","description":"This workflow informs your team immediately when you get a negative reply on a sequence.","url":"17714-create-a-negative-replay-alert","usedApps":["salesforge","slack"],"usage":1}

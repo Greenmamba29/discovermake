@@ -1,0 +1,1 @@
+{"id":6269,"name":"Get emails for new Transcribed Card in Contacts+.","description":"Every time a new Card has been Transcribed in Contacts+, Make will automatically send an email message to a specified email address.","url":"6269-get-emails-for-new-transcribed-card-in-contacts","usedApps":["contactsplus","email"],"usage":3}

@@ -1,0 +1,1 @@
+{"id":8053,"name":"Create ProofHub tasks for new tasks in Todoist","description":"Every time a new task is added to your Todoist, Make will automatically create an identical one in your ProofHub.","url":"8053-create-proofhub-tasks-for-new-tasks-in-todoist","usedApps":["todoist","proofhub"],"usage":4}

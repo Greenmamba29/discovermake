@@ -1,0 +1,1 @@
+{"id":4973,"name":"Create a GitLab issue when a JIRA Server issue is created","description":"Every time a new JIRA Server issue is created, Make will automatically create a GitLab issue.","url":"4973-create-a-gitlab-issue-when-a-jira-server-issue-is-created","usedApps":["jira","gitlab"],"usage":23}

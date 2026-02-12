@@ -1,0 +1,1 @@
+{"id":5597,"name":"Create Facebook Groups posts from new Slack messages","description":"Every time a new message is posted in Slack, Make will automatically post a new entry to a Facebook Group.","url":"5597-create-facebook-groups-posts-from-new-slack-messages","usedApps":["slack","facebook-groups"],"usage":111}

@@ -1,0 +1,1 @@
+{"id":8543,"name":"Create Todoist tasks for new JobNimbus jobs","description":"Every time a new job has been created in JobNimbus, Make will automatically create a new task in Todoist.","url":"8543-create-todoist-tasks-for-new-jobnimbus-jobs","usedApps":["jobnimbus","todoist"],"usage":3}

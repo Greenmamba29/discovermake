@@ -1,0 +1,1 @@
+{"id":5505,"name":"Send Slack messages for new Tumblr posts","description":"Every time a new post is added to a selected Tumblt blog, Make will automatically send a message in Slack with the summary and link.","url":"5505-send-slack-messages-for-new-tumblr-posts","usedApps":["tumblr","slack"],"usage":5}

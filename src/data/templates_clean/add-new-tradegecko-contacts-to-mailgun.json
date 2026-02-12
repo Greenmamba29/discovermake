@@ -1,0 +1,1 @@
+{"id":2054,"name":"Add new Tradegecko contacts to Mailgun","description":"Every time a new contact is created in Tradegecko, Make will automatically add a new member to a Mailgun list of your choice.","url":"2054-add-new-tradegecko-contacts-to-mailgun","usedApps":["tradegecko","mailgun"],"usage":0}

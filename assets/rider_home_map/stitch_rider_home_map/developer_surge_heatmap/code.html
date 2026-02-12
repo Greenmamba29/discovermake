@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Developer Surge Heatmap</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#0B0E14", // Deepened for better contrast
+                        "glass-border": "rgba(255, 255, 255, 0.1)",
+                        "glass-bg": "rgba(17, 25, 40, 0.75)",
+                        "neon-cyan": "#00FFFF",
+                        "neon-magenta": "#FF00FF",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    boxShadow: {
+                        'neon': '0 0 10px rgba(19, 91, 236, 0.5), 0 0 20px rgba(19, 91, 236, 0.3)',
+                        'glow': '0 0 15px rgba(0, 255, 255, 0.3)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>body {
+    font-family: "Space Grotesk", sans-serif;
+    background-color: #0B0E14
+    }
+/* Custom Map Styles to simulate a dark map */
+.map-container {
+    background-color: #111722;
+    background-image: radial-gradient(circle at 50% 50%, rgba(20, 30, 48, 0.8) 0%, #0B0E14 100%), url(https://lh3.googleusercontent.com/aida-public/AB6AXuDh-olJzdipO1sA4INlzKA8ewnJUWmYN0sxV4rsjSqeOmQl3LhRmnsdWsXB04KIVALgR8ssnhou2pVwNt9TQ5TY3aSwhn_vs1BL1_KVfSkkGqAlhpS3VG67_MzbrGUIw4Em3hZhJsu5Xi-OPzQrCt05s6wMXuVdsZ8XZtAXR28OvhzK8TtRZBsK64xCCAAKxuO8yzOlckH24jxGCGIDffymFi8OoKe-SNU9Lu_iZAv6pnyB95mSzCbLW9SYUOgNtCZQ39fdZXFyU_9t);
+    position: relative;
+    overflow: hidden
+    }
+/* Heatmap Pulse Animation */
+@keyframes pulse-glow {
+    0% {
+        opacity: 0.6;
+        transform: scale(1);
+        } 50% {
+        opacity: 0.8;
+        transform: scale(1.05);
+        } 100% {
+        opacity: 0.6;
+        transform: scale(1);
+        }
+    }
+.heatmap-zone {
+    animation: pulse-glow 4s infinite ease-in-out;
+    filter: blur(40px);
+    border-radius: 50%;
+    position: absolute;
+    z-index: 0
+    }
+.glass-panel {
+    background: rgba(17, 23, 33, 0.65);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1)
+    }
+.glass-button {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.1)
+    }
+/* Hide scrollbar for clean UI */
+.no-scrollbar::-webkit-scrollbar {
+    display: none
+    }
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none
+    }</style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-dark text-white h-screen w-full overflow-hidden flex flex-col">
+<!-- Main Map Background -->
+<div class="absolute inset-0 z-0 map-container">
+<!-- Abstract Map Roads / Lines (Simulated with SVGs or CSS for effect) -->
+<svg class="absolute inset-0 w-full h-full opacity-20 pointer-events-none" xmlns="http://www.w3.org/2000/svg">
+<path d="M-100,200 Q150,300 400,100 T900,300" fill="none" stroke="#374151" stroke-width="2"></path>
+<path d="M50,0 V800" fill="none" stroke="#374151" stroke-width="2"></path>
+<path d="M300,0 V800" fill="none" stroke="#374151" stroke-width="2"></path>
+<path d="M0,400 H500" fill="none" stroke="#374151" stroke-width="2"></path>
+<path d="M0,600 H500" fill="none" stroke="#374151" stroke-width="2"></path>
+</svg>
+<!-- Heatmap Zones -->
+<!-- Zone 1: Magenta/Cyan mix -->
+<div class="heatmap-zone w-64 h-64 bg-gradient-to-r from-neon-cyan to-neon-magenta top-1/4 left-1/4 opacity-40 mix-blend-screen"></div>
+<!-- Zone 2: Cyan dominants -->
+<div class="heatmap-zone w-80 h-80 bg-neon-cyan top-1/2 -right-20 opacity-30 mix-blend-screen animation-delay-2000" style="animation-delay: -2s;"></div>
+<!-- Map Markers (Surge Pins) -->
+<div class="absolute top-[32%] left-[35%] z-10 flex flex-col items-center group cursor-pointer">
+<div class="relative flex items-center justify-center">
+<div class="absolute w-12 h-12 bg-neon-magenta rounded-full opacity-20 animate-ping"></div>
+<div class="relative z-10 w-4 h-4 bg-neon-magenta border-2 border-white rounded-full shadow-[0_0_10px_#FF00FF]"></div>
+</div>
+<div class="mt-2 px-3 py-1 glass-panel rounded-full text-xs font-bold text-white tracking-wide border-neon-magenta/30 text-center">
+<span class="text-neon-magenta">AI/ML</span> SURGE
+            </div>
+</div>
+<div class="absolute top-[55%] right-[15%] z-10 flex flex-col items-center group cursor-pointer">
+<div class="relative flex items-center justify-center">
+<div class="absolute w-12 h-12 bg-neon-cyan rounded-full opacity-20 animate-ping" style="animation-delay: 1s;"></div>
+<div class="relative z-10 w-4 h-4 bg-neon-cyan border-2 border-white rounded-full shadow-[0_0_10px_#00FFFF]"></div>
+</div>
+<div class="mt-2 px-3 py-1 glass-panel rounded-full text-xs font-bold text-white tracking-wide border-neon-cyan/30 text-center">
+<span class="text-neon-cyan">REACT</span> PEAK
+            </div>
+</div>
+<!-- User Location -->
+<div class="absolute bottom-[40%] left-[50%] transform -translate-x-1/2 z-10">
+<div class="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center border border-primary/40 backdrop-blur-sm">
+<div class="w-4 h-4 bg-primary rounded-full shadow-neon border-2 border-white"></div>
+</div>
+</div>
+</div>
+<!-- UI Overlay Layer -->
+<div class="relative z-20 flex flex-col h-full pointer-events-none">
+<!-- Header -->
+<header class="pt-12 px-5 pb-4 flex items-center justify-between pointer-events-auto">
+<div class="glass-button w-10 h-10 rounded-full flex items-center justify-center text-white hover:bg-white/10 transition-colors cursor-pointer">
+<span class="material-symbols-outlined">menu</span>
+</div>
+<div class="glass-panel px-4 py-2 rounded-full flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
+<span class="text-sm font-medium tracking-wide">OFFLINE</span>
+</div>
+<div class="glass-button w-10 h-10 rounded-full flex items-center justify-center text-white hover:bg-white/10 transition-colors cursor-pointer relative">
+<span class="absolute top-2 right-2 w-2 h-2 bg-neon-cyan rounded-full border border-gray-900"></span>
+<span class="material-symbols-outlined">tune</span>
+</div>
+</header>
+<!-- Search Bar Floating -->
+<div class="px-5 mt-2 pointer-events-auto">
+<div class="glass-panel rounded-xl p-1 flex items-center">
+<div class="w-10 h-10 flex items-center justify-center text-gray-400">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="bg-transparent border-none text-white placeholder-gray-400 text-sm w-full focus:ring-0" placeholder="Search high-demand zones..." type="text"/>
+</div>
+</div>
+<!-- Spacer to push bottom content down -->
+<div class="flex-1"></div>
+<!-- Floating Info Card (Contextual Popup) -->
+<div class="px-5 mb-4 pointer-events-auto">
+<div class="glass-panel p-4 rounded-2xl border-l-4 border-l-neon-cyan relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-3 opacity-10">
+<span class="material-symbols-outlined text-6xl">code</span>
+</div>
+<div class="flex justify-between items-start mb-3 relative z-10">
+<div>
+<div class="flex items-center gap-1.5 mb-1">
+<span class="text-xs font-bold text-neon-cyan tracking-wider uppercase">High Demand</span>
+<span class="flex h-1.5 w-1.5 relative">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-neon-cyan opacity-75"></span>
+<span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-neon-cyan"></span>
+</span>
+</div>
+<h2 class="text-xl font-bold leading-tight">Downtown Tech Hub</h2>
+<p class="text-gray-400 text-xs mt-0.5">San Francisco, CA</p>
+</div>
+<div class="text-right">
+<div class="text-2xl font-bold text-white tracking-tight tabular-nums">2.5x</div>
+<div class="text-[10px] text-gray-400 uppercase tracking-widest">Rate Boost</div>
+</div>
+</div>
+<div class="flex items-center gap-3 mt-4 relative z-10">
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full border-2 border-gray-800 bg-gray-700 flex items-center justify-center text-[10px] font-bold">JS</div>
+<div class="w-8 h-8 rounded-full border-2 border-gray-800 bg-gray-700 flex items-center justify-center text-[10px] font-bold">PY</div>
+<div class="w-8 h-8 rounded-full border-2 border-gray-800 bg-gray-700 flex items-center justify-center text-[10px] font-bold">+3</div>
+</div>
+<div class="h-8 w-[1px] bg-white/10"></div>
+<div>
+<div class="text-sm font-bold text-white">12 Active Requests</div>
+<div class="text-xs text-gray-400">React • Python • Node.js</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Sheet / Actions -->
+<div class="glass-panel border-b-0 rounded-t-3xl p-6 pb-8 pointer-events-auto backdrop-blur-xl bg-gray-900/80">
+<!-- Draggable Handle -->
+<div class="w-full flex justify-center mb-6">
+<div class="w-12 h-1 bg-white/20 rounded-full"></div>
+</div>
+<!-- Stats Row -->
+<div class="flex justify-between gap-4 mb-6">
+<div class="flex-1 bg-white/5 rounded-xl p-3 border border-white/5">
+<div class="text-gray-400 text-xs mb-1">Avg. Rate</div>
+<div class="text-lg font-bold text-white">$85<span class="text-xs font-normal text-gray-500">/hr</span></div>
+</div>
+<div class="flex-1 bg-white/5 rounded-xl p-3 border border-white/5">
+<div class="text-gray-400 text-xs mb-1">Surge Zones</div>
+<div class="text-lg font-bold text-white">4 <span class="text-xs font-normal text-neon-cyan">Active</span></div>
+</div>
+<div class="flex-1 bg-white/5 rounded-xl p-3 border border-white/5">
+<div class="text-gray-400 text-xs mb-1">Est. Wait</div>
+<div class="text-lg font-bold text-white">2 <span class="text-xs font-normal text-gray-500">min</span></div>
+</div>
+</div>
+<!-- GO ONLINE Button -->
+<button class="w-full bg-primary hover:bg-blue-600 text-white font-bold text-lg py-4 rounded-xl shadow-neon transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 group relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
+<span class="material-symbols-outlined group-hover:rotate-12 transition-transform">bolt</span>
+<span>GO ONLINE</span>
+</button>
+<p class="text-center text-xs text-gray-500 mt-3">You are currently offline. Go online to accept requests.</p>
+</div>
+</div>
+</body></html>

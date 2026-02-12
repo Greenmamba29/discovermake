@@ -1,0 +1,1 @@
+{"id":2053,"name":"Add new Tradegecko contacts to GetResponse","description":"Every time a new contact is created in Tradegecko, Make will automatically add that contact to a GetResponse Campaign of your choice.","url":"2053-add-new-tradegecko-contacts-to-getresponse","usedApps":["tradegecko","getresponse"],"usage":1}

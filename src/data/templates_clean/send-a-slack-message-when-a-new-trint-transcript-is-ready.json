@@ -1,0 +1,1 @@
+{"id":7554,"name":"Send a Slack message when a new Trint transcript is ready","description":"Every time a new Trint transcript is ready, Make will send a message to your Slack.","url":"7554-send-a-slack-message-when-a-new-trint-transcript-is-ready","usedApps":["trint","slack"],"usage":1}

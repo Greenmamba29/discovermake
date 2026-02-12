@@ -1,0 +1,1 @@
+{"id":577,"name":"Update a Gitter room based on change of a Trello board","description":"Every time a board is updated in Trello, Make will automatically update a selected room in Gitter.","url":"577-update-a-gitter-room-based-on-change-of-a-trello-board","usedApps":["trello","gitter"],"usage":0}

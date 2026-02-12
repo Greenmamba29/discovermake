@@ -1,0 +1,1 @@
+{"id":5058,"name":"Execute a Cloud BOT bot when a new GitHub issue is created","description":"Every time a new GitHub issue is created, Make will automatically execute a Cloud BOT bot.","url":"5058-execute-a-cloud-bot-bot-when-a-new-github-issue-is-created","usedApps":["github","cloud-bot"],"usage":2}

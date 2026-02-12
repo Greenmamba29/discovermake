@@ -1,0 +1,1 @@
+{"id":5501,"name":"Send a message to Slack about a new project in Harvest (NEW Slack module)","description":"When a new project is created in Harvest, Make will automatically send a notification via Slack to keep you posted.","url":"5501-send-a-message-to-slack-about-a-new-project-in-harvest-new-slack-module","usedApps":["harvest","slack"],"usage":2}

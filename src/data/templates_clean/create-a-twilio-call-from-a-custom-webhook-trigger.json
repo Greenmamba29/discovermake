@@ -1,0 +1,1 @@
+{"id":12982,"name":"Create a Twilio call from a custom webhook trigger","description":"Trigger Twilio calls from custom webhooks with this Make template. Connect your webhook to Twilio for automated call creation.","url":"12982-create-a-twilio-call-from-a-custom-webhook-trigger","usedApps":["gateway","twilio"],"usage":51}

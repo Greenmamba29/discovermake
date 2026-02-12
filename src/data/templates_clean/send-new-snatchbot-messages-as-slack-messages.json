@@ -1,0 +1,1 @@
+{"id":7161,"name":"Send new Snatchbot messages as Slack messages","description":"Every time there is a new Snatchbot message, Make will automatically send it to the specified Slack channel.","url":"7161-send-new-snatchbot-messages-as-slack-messages","usedApps":["snatchbot","slack"],"usage":1}

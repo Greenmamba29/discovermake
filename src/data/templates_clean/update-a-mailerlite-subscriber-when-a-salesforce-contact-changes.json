@@ -1,0 +1,1 @@
+{"id":1374,"name":"Update a Mailerlite subscriber when a SalesForce contact changes","description":"Every time a contact is updated in SalesForce, Make will automatically update that subscriber in Mailerlite. ","url":"1374-update-a-mailerlite-subscriber-when-a-salesforce-contact-changes","usedApps":["mailerlite","salesforce"],"usage":19}

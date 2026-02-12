@@ -1,0 +1,1 @@
+{"id":4079,"name":"Connect Dux-Soup to ActiveCampaign: Create/Update Contacts","description":"When a webhook from Dux-Soup Turbo is received, a new contact is created or only updated in ActiveCampaign","url":"4079-connect-dux-soup-to-activecampaign-create-update-contacts","usedApps":["dux-soup","activecampaign"],"usage":6}

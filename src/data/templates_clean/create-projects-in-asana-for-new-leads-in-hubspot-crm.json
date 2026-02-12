@@ -1,0 +1,1 @@
+{"id":3388,"name":"Create Projects in Asana for new leads in HubSpot CRM","description":"Every time a new lead is added to HubSpot CRM, Make will automatically create a Project in Asana.","url":"3388-create-projects-in-asana-for-new-leads-in-hubspot-crm","usedApps":["hubspotcrm","asana"],"usage":152}

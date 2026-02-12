@@ -1,0 +1,1 @@
+{"id":10112,"name":"Create a Softr user from a new Mailchimp subscriber and send an email invitation","description":"Use this template to automatically create a Softr user and send an email invitation when a new Mailchimp subscriber is added.","url":"10054-create-a-softr-io-user-from-a-new-mailchimp-subscriber","usedApps":["mailchimp","util","softr","email"],"usage":16}

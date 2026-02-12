@@ -1,0 +1,1 @@
+{"id":8246,"name":"Add Testomato users to a project from new Airtable records","description":"Every time a new record is added in Airtable, Make will automatically add a user to the project in Testomato.","url":"8246-add-testomato-users-to-a-project-from-new-airtable-records","usedApps":["airtable","testomato"],"usage":1}

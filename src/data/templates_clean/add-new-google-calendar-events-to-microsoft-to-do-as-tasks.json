@@ -1,0 +1,1 @@
+{"id":3199,"name":"Add new Google Calendar events to Microsoft To Do as tasks","description":"Every time a new event is added to a selected Google calendar, Make will automatically create a new task in Microsoft To Do.","url":"3199-add-new-google-calendar-events-to-microsoft-to-do-as-tasks","usedApps":["google-calendar","microsoft-to-do"],"usage":330}

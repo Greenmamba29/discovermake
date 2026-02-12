@@ -1,0 +1,1 @@
+{"id":6344,"name":"Create a QuickBooks sales receipt from a Stripe charge","description":"Use this template to automatically create a QuickBooks sales receipt (and a customer if it doesn't already exist) when there's a new successful Stripe charge.","url":"6344-create-a-quickbooks-sales-receipt-from-a-stripe-charge","usedApps":["stripe","quickbooks","builtin"],"usage":244}

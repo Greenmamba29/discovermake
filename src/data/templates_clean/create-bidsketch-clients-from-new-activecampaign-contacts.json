@@ -1,0 +1,1 @@
+{"id":8238,"name":"Create Bidsketch clients from new ActiveCampaign contacts","description":"Every time a new contact is created in ActiveCampaign, Make will automatically add that contact to Bidsketch as a client.","url":"8238-create-bidsketch-clients-from-new-activecampaign-contacts","usedApps":["activecampaign","bidsketch"],"usage":1}

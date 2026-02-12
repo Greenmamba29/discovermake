@@ -1,0 +1,1 @@
+{"id":2628,"name":"Create Yodel.io contacts from new Wufoo form entries","description":"Every time someone fills out your Wufoo form, Make will automatically create a new contact in Yodel.io.","url":"2628-create-yodel-io-contacts-from-new-wufoo-form-entries","usedApps":["wufoo","yodel"],"usage":1}

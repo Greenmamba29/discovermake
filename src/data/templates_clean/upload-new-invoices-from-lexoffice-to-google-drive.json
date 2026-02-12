@@ -1,0 +1,1 @@
+{"id":6442,"name":"Upload new invoices from Lexoffice to Google Drive","description":"Every time a new invoice is created in lexoffice and is available as a PDF document, the PDF version of the invoice will be uploaded to a Google Drive folder.","url":"6442-upload-new-invoices-from-lexoffice-to-google-drive","usedApps":["lexoffice","util","google-drive"],"usage":75}

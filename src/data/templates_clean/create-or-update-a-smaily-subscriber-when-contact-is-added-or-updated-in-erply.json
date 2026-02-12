@@ -1,0 +1,1 @@
+{"id":6205,"name":"Create or update a Smaily subscriber when contact is added or updated in Erply","description":"Every time Erply contact is added or updated, Make will automatically update or create a new Smaily subscriber.","url":"6205-create-or-update-a-smaily-subscriber-when-contact-is-added-or-updated-in-erply","usedApps":["http","builtin","smaily"],"usage":15}

@@ -1,0 +1,1 @@
+{"id":13063,"name":"Get daily weather forecasts and add them to Google Sheets","description":"Automatically fetch daily weather forecasts and add them to Google Sheets. Keep your data organized and up-to-date with this streamlined workflow.","url":"13063-get-daily-weather-forecasts-and-add-them-to-google-sheets","usedApps":["weather","util","google-sheets"],"usage":64}

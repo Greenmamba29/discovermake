@@ -1,0 +1,1 @@
+{"id":1931,"name":"Add new people from Capsule CRM to GetResponse as contacts","description":"Every time a new person is added to Capsule CRM, Make will automatically add a new contact to a GetResponse list of your choice.","url":"1931-add-new-people-from-capsule-crm-to-getresponse-as-contacts","usedApps":["capsule-crm","getresponse"],"usage":5}

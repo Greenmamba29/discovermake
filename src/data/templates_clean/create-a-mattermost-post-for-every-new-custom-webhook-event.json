@@ -1,0 +1,1 @@
+{"id":12962,"name":"Create a Mattermost post for every new custom webhook event","description":"Automatically post updates in Mattermost for every new custom webhook event, ensuring your team stays informed and connected in real-time.","url":"12962-create-a-mattermost-post-for-every-new-custom-webhook-event","usedApps":["gateway","mattermost"],"usage":5}

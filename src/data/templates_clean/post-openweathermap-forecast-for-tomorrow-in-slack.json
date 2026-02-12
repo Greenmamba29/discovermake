@@ -1,0 +1,1 @@
+{"id":106,"name":"Post OpenWeatherMap forecast for tomorrow in Slack ","description":"Make will automatically send a message with the OpenWeatherMap forecast for  tomorrow to a selected channel in Slack.","url":"106-post-openweathermap-forecast-for-tomorrow-in-slack","usedApps":["openweathermap","slack"],"usage":133}

@@ -1,0 +1,1 @@
+{"id":4056,"name":"Create an attendee in HeySummit from a new row in Google Sheets","description":"When a new row is created in Google Sheets spreadsheet, a new attendee is created in HeySummit.","url":"4056-create-an-attendee-in-heysummit-from-a-new-row-in-google-sheets","usedApps":["google-sheets","heysummit"],"usage":2}

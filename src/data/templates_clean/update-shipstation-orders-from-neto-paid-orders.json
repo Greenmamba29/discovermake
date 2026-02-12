@@ -1,0 +1,1 @@
+{"id":4694,"name":"Update ShipStation orders from Neto paid orders","description":"Every time an order is paid in Neto, Make will automatically update the order status in ShipStation.","url":"4694-update-shipstation-orders-from-neto-paid-orders","usedApps":["neto","shipstation"],"usage":2}

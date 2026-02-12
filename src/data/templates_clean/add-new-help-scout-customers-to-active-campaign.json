@@ -1,0 +1,1 @@
+{"id":2770,"name":"Add new Help Scout customers to Active Campaign","description":"Every time a new customer is created in Help Scout, Make will automatically create a new contact in ActiveCampaign.","url":"2770-add-new-help-scout-customers-to-active-campaign","usedApps":["helpscout","activecampaign"],"usage":2}

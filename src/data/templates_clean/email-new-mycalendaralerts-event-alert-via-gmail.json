@@ -1,0 +1,1 @@
+{"id":5980,"name":"Email new MyCalendarAlerts event alert via Gmail","description":"Every time a new MyCalendarAlerts event is posted, Make will automatically send a new Gmail email.","url":"5980-email-new-mycalendaralerts-event-alert-via-gmail","usedApps":["mycalendaralerts","google-email"],"usage":8}

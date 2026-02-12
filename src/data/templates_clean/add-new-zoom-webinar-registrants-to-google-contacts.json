@@ -1,0 +1,1 @@
+{"id":6712,"name":"Add new Zoom webinar registrants to Google Contacts","description":"Every time a new Zoom webinar registrant is added, Make will automatically create a Google Contacts contact.","url":"6712-add-new-zoom-webinar-registrants-to-google-contacts","usedApps":["zoom","google-contacts"],"usage":11}

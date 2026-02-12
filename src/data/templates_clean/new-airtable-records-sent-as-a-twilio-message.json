@@ -1,0 +1,1 @@
+{"id":3523,"name":"New Airtable records sent as a Twilio message","description":"Every time a new record is added in Airtable, you will get a Twilio message with the record details.","url":"3523-new-airtable-records-sent-as-a-twilio-message","usedApps":["airtable","twilio"],"usage":116}

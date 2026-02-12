@@ -1,0 +1,1 @@
+{"id":5231,"name":"Automatically upload videos to Wistia from new files Google Drive","description":"Every time a new file is uploaded to your Google Drive, Make will automatically upload videos to your Wistia account.","url":"5231-automatically-upload-videos-to-wistia-from-new-files-google-drive","usedApps":["google-drive","wistia"],"usage":19}

@@ -1,0 +1,1 @@
+{"id":7717,"name":"Add new Teamleader contacts to Mailchimp as subscribers","description":"Every time there is a new contact added to your Teamleader, Make will automatically add this contact to the specified Mailchimp mailing list.","url":"7717-add-new-teamleader-contacts-to-mailchimp-as-subscribers","usedApps":["teamleader","mailchimp"],"usage":14}

@@ -1,0 +1,1 @@
+{"id":5772,"name":"Send email after ordering to SendOwl customers via Zoho Mail","description":"Every time you get a new order in SendOwl, customer will receive a mail via your Zoho Mail account.","url":"5772-send-email-after-ordering-to-sendowl-customers-via-zoho-mail","usedApps":["sendowl","zoho-mail"],"usage":3}

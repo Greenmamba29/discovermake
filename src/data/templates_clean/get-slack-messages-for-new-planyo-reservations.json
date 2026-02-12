@@ -1,0 +1,1 @@
+{"id":5727,"name":"Get Slack messages for new Planyo reservations","description":"Whenever a reservation is made in your Planyo get a Slack message.","url":"5727-get-slack-messages-for-new-planyo-reservations","usedApps":["planyo","util","slack"],"usage":4}

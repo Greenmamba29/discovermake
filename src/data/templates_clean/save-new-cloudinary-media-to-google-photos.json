@@ -1,0 +1,1 @@
+{"id":6233,"name":"Save new Cloudinary media to Google Photos","description":"Every time there is new tagged media in Cloudinary, Make will automatically upload it to Google Photos.","url":"6233-save-new-cloudinary-media-to-google-photos","usedApps":["cloudinary","http","google-photos"],"usage":17}

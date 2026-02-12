@@ -1,0 +1,1 @@
+{"id":8116,"name":"Create new Asana tasks from new Zistemo tasks","description":"Every time a task is created in Zistemo, Make will automatically create a new task on Asana.","url":"8116-create-new-asana-tasks-from-new-zistemo-tasks","usedApps":["zistemo","asana"],"usage":4}

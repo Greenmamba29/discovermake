@@ -1,0 +1,1 @@
+{"id":6940,"name":"Add the RapidReg registrationts as Mailchimp subscribers","description":"Every time there is a new RapidReg registration, Make will automatically add or update a subscriber to a specified Mailchimp mailing list.","url":"6940-add-the-rapidreg-registrationts-as-mailchimp-subscribers","usedApps":["rapidreg","mailchimp"],"usage":1}

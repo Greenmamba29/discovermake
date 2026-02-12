@@ -1,0 +1,1 @@
+{"id":8008,"name":"Create Slack messages for new Tally responses","description":"Make will watch your Tally responses at regular intervals and create Slack messages.","url":"8008-create-slack-messages-for-new-tally-responses","usedApps":["tally","slack"],"usage":46}

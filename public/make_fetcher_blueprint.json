@@ -1,0 +1,103 @@
+{
+    "name": "DiscoverMake Template Fetcher (Pagination Enabled)",
+    "flow": [
+        {
+            "id": 1,
+            "module": "gateway:CustomWebHook",
+            "version": 1,
+            "parameters": {
+                "hook": "ADD_YOUR_WEBHOOK_ID_HERE"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 0,
+                    "y": 0,
+                    "name": "Webhook (Expects 'offset')"
+                }
+            }
+        },
+        {
+            "id": 2,
+            "module": "make:apiCall",
+            "version": 1,
+            "parameters": {
+                "url": "/v2/templates/public",
+                "method": "GET",
+                "headers": [],
+                "qs": [
+                    {
+                        "name": "limit",
+                        "value": "50"
+                    },
+                    {
+                        "name": "offset",
+                        "value": "{{1.offset}}"
+                    },
+                    {
+                        "name": "includeEn",
+                        "value": "true"
+                    }
+                ],
+                "bodyType": "raw",
+                "parseResponse": true
+            },
+            "metadata": {
+                "designer": {
+                    "x": 300,
+                    "y": 0,
+                    "name": "Fetch Public Templates"
+                }
+            }
+        },
+        {
+            "id": 3,
+            "module": "builtin:BasicIterator",
+            "version": 1,
+            "parameters": {},
+            "mapper": {
+                "array": "{{2.body.templatesPublic}}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 600,
+                    "y": 0,
+                    "name": "Iterate Results"
+                }
+            }
+        },
+        {
+            "id": 4,
+            "module": "json:toJSON",
+            "version": 1,
+            "parameters": {
+                "model": "make-scenario"
+            },
+            "mapper": {
+                "value": "{{3}}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 900,
+                    "y": 0,
+                    "name": "Convert to JSON"
+                }
+            }
+        },
+        {
+            "id": 5,
+            "module": "gateway:CustomWebHookResponse",
+            "version": 1,
+            "parameters": {
+                "status": 200,
+                "body": "{{4.json}}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 1200,
+                    "y": 0,
+                    "name": "Return Data to Admin"
+                }
+            }
+        }
+    ]
+}

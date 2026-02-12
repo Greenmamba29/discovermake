@@ -1,0 +1,1 @@
+{"id":7327,"name":"Send Slack messages for new answered email in Snov.io","description":"Every time an email is answered in Snov.io, Make automatically sends a message to Slack.","url":"7327-send-slack-messages-for-new-answered-email-in-snov-io","usedApps":["snovio","slack"],"usage":22}

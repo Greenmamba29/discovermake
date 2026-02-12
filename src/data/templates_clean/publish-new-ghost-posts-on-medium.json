@@ -1,0 +1,1 @@
+{"id":3627,"name":"Publish new Ghost posts on Medium","description":"Every time a new post is published on your Ghost blog, Make will automatically post it on your Medium account.","url":"3627-publish-new-ghost-posts-on-medium","usedApps":["ghost","medium"],"usage":156}

@@ -1,0 +1,1 @@
+{"id":4910,"name":"Update an Asana task when a Google Forms response is submitted","description":"An Asana task is updated when a field in a submitted Google Forms response (form) contains the task's name. ","url":"4910-update-an-asana-task-when-a-google-forms-response-is-submitted","usedApps":["google-forms","asana"],"usage":7}

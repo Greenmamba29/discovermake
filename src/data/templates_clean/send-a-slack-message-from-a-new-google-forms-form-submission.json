@@ -1,0 +1,1 @@
+{"id":6022,"name":"Send a Slack message from a new Google Forms form submission","description":"Use this template to automatically send a Slack message to a channel or a user when a Google Forms form is submitted.","url":"6022-send-a-slack-message-from-a-new-google-forms-form-submission","usedApps":["google-forms","slack"],"usage":161}

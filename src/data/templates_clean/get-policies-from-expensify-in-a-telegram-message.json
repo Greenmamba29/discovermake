@@ -1,0 +1,1 @@
+{"id":5745,"name":"Get policies from Expensify in a Telegram message","description":"Every time your Telegram bot gets a message with an email of your Expensify user you will get a list with policies of his.","url":"5745-get-policies-from-expensify-in-a-telegram-message","usedApps":["telegram","expensify","util"],"usage":2}

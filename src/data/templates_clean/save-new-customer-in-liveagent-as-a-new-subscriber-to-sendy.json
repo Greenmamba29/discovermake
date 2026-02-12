@@ -1,0 +1,1 @@
+{"id":6994,"name":"Save new customer in LiveAgent as a new subscriber to Sendy","description":"Every time a new customer is created in LiveAgent, Make will automatically add it customer to Sendy as a new subscriber.","url":"6994-save-new-customer-in-liveagent-as-a-new-subscriber-to-sendy","usedApps":["liveagent","sendy"],"usage":1}

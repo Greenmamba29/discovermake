@@ -1,0 +1,1 @@
+{"id":3812,"name":"Send Microsoft Teams messages for new bonuses in Bonusly","description":"Every time a new bonus is given in Bonusly, Make will automatically send a message to a specified Microsoft Teams channel.","url":"3812-send-microsoft-teams-messages-for-new-bonuses-in-bonusly","usedApps":["bonusly","microsoft-teams"],"usage":3}

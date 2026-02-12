@@ -1,0 +1,1 @@
+{"id":10213,"name":"Create a message on Slack from a new enrollment in Coassemble","description":"Every time a new enrollment is recorded in Coassemble, a new message will be instantly sent to Slack.","url":"10213-create-a-message-on-slack-from-a-new-enrollment-in-coassemble","usedApps":["coassemble","slack"],"usage":4}

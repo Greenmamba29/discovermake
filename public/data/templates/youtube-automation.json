@@ -1,0 +1,334 @@
+{
+    "name": "YouTube Automation Agent by DiscoverMake",
+    "description": "Automatically generates YouTube video ideas, scripts, and schedules based on trending topics. Saves 18 hours/month of manual research.",
+    "flow": [
+        {
+            "id": 1,
+            "module": "builtin:BasicNote",
+            "version": 1,
+            "parameters": {},
+            "mapper": {
+                "note": "🚀 WELCOME TO YOUR YOUTUBE AUTOMATION TEMPLATE!\n\nThis template will automatically:\n• Scrape YouTube trending topics\n• Generate video ideas with AI\n• Create detailed scripts\n• Schedule content calendar\n\n📋 SETUP CHECKLIST:\n\n✅ STEP 1: Make.com Pro Account (REQUIRED)\nThis template uses ~400 operations per run.\nFree plan only has 1,000/month (enough for 2 runs).\nPro plan has 10,000/month (enough for 25 runs).\n\n👉 Sign up for Pro: https://www.make.com/en/register?pc=discovermake&affiliateSource=yt_template_import\nCost: $16/month\n\n✅ STEP 2: Apify Account (For Web Scraping)\nWe use Apify to scrape YouTube trending topics.\nFree tier ($5 credit/month) works for testing.\nStarter plan ($49/month) needed for daily automation.\n\n👉 Sign up: https://affiliate.apify.com/DiscoverMakeID\n\n✅ STEP 3: Claude API Key (For AI Script Generation)\nYou'll need an Anthropic account.\n\n👉 Get API key: https://console.anthropic.com\nAdd $20 credit to start (~$15/month usage)\n\n✅ STEP 4: Google Sheets (Free)\nFor storing your content calendar.\n\n👉 Make sure you're logged into Google\n\n---\n\n🎥 WATCH SETUP VIDEO:\nhttps://discovermake.com/tutorials/youtube-automation\n\n📚 READ FULL DOCUMENTATION:\nhttps://discovermake.com/docs/youtube-automation.pdf\n\n💬 NEED HELP?\nsupport@discovermake.com\n\n---\n\n💡 This welcome message will hide after your first successful run.\n\n📢 Affiliate Disclosure: The Make.com and Apify links above are affiliate links. DiscoverMake may earn commission if you sign up, which helps us create more free templates. You pay the same price either way!"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 0,
+                    "y": 0,
+                    "name": "Setup Instructions"
+                },
+                "restore": {},
+                "parameters": [
+                    {
+                        "name": "note",
+                        "type": "text",
+                        "label": "Note",
+                        "required": false
+                    }
+                ]
+            }
+        },
+        {
+            "id": 2,
+            "module": "gateway:CustomWebHook",
+            "version": 1,
+            "parameters": {
+                "hook": "AUTO_GENERATED_WEBHOOK_ID",
+                "maxResults": 1
+            },
+            "mapper": {},
+            "metadata": {
+                "designer": {
+                    "x": 300,
+                    "y": 0,
+                    "name": "Manual Trigger"
+                },
+                "restore": {
+                    "parameters": {
+                        "hook": {
+                            "data": {
+                                "editable": "true"
+                            },
+                            "label": "Custom webhook"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "hook",
+                        "type": "hook",
+                        "label": "Webhook",
+                        "required": true
+                    }
+                ]
+            }
+        },
+        {
+            "id": 3,
+            "module": "datastore:GetVariable",
+            "version": 1,
+            "parameters": {},
+            "mapper": {
+                "key": "yt_template_first_run_complete"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 600,
+                    "y": 0,
+                    "name": "Check First Run"
+                },
+                "restore": {},
+                "parameters": [
+                    {
+                        "name": "key",
+                        "type": "text",
+                        "label": "Key name",
+                        "required": true
+                    }
+                ]
+            }
+        },
+        {
+            "id": 4,
+            "module": "builtin:BasicRouter",
+            "version": 1,
+            "parameters": {},
+            "mapper": null,
+            "metadata": {
+                "designer": {
+                    "x": 900,
+                    "y": 0
+                }
+            },
+            "routes": [
+                {
+                    "flow": [
+                        {
+                            "id": 5,
+                            "module": "email:ActionSendEmailAdvanced",
+                            "version": 3,
+                            "parameters": {},
+                            "mapper": {
+                                "to": "{{user.email}}",
+                                "subject": "Welcome! Setup Your YouTube Automation Template",
+                                "html": "<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"UTF-8\">\n  <style>\n    body { font-family: 'Arial', sans-serif; background-color: #f8fafc; padding: 20px; }\n    .container { max-width: 600px; margin: 0 auto; background: white; border-radius: 12px; overflow: hidden; }\n    .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; text-align: center; }\n    .header h1 { color: white; margin: 0; }\n    .content { padding: 30px; }\n    .button { display: inline-block; background: #667eea; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; margin: 10px 5px; }\n    .service-card { border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin: 15px 0; }\n    .service-card h3 { margin: 0 0 10px 0; color: #1e293b; }\n    .price { color: #667eea; font-weight: 700; font-size: 18px; }\n    .disclosure { background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 20px; font-size: 13px; color: #64748b; }\n  </style>\n</head>\n<body>\n  <div class=\"container\">\n    <div class=\"header\">\n      <h1>🎉 Welcome to Your YouTube Automation!</h1>\n      <p style=\"color: rgba(255,255,255,0.9); margin: 10px 0 0 0;\">Let's get you set up in 5 minutes</p>\n    </div>\n    \n    <div class=\"content\">\n      <h2>Quick Setup Guide</h2>\n      <p>To use this template, you'll need accounts with these services:</p>\n      \n      <div class=\"service-card\">\n        <h3>1️⃣ Make.com Pro</h3>\n        <p>The foundation of this automation. You'll need Pro because:</p>\n        <ul>\n          <li>Free tier only has 1,000 operations/month</li>\n          <li>This template uses ~400 operations per run</li>\n          <li>Pro plan gives you 10,000 operations/month</li>\n        </ul>\n        <p class=\"price\">$16/month</p>\n        <a href=\"https://www.make.com/en/register?pc=discovermake&affiliateSource=welcome_email\" class=\"button\">\n          Sign Up for Make.com Pro →\n        </a>\n      </div>\n      \n      <div class=\"service-card\">\n        <h3>2️⃣ Apify</h3>\n        <p>For scraping YouTube trending topics and video data.</p>\n        <ul>\n          <li>Free tier ($5 credit/month) works for testing</li>\n          <li>Starter plan needed for daily automation</li>\n          <li>20-30% recurring commission for us if you upgrade</li>\n        </ul>\n        <p class=\"price\">Free to start, $49/month for production</p>\n        <a href=\"https://affiliate.apify.com/DiscoverMakeID\" class=\"button\">\n          Sign Up for Apify →\n        </a>\n      </div>\n      \n      <div class=\"service-card\">\n        <h3>3️⃣ Claude API</h3>\n        <p>For generating video scripts and ideas with AI.</p>\n        <ul>\n          <li>Create account at Anthropic</li>\n          <li>Add $20 credit to start</li>\n          <li>Estimated usage: $12-18/month</li>\n        </ul>\n        <p class=\"price\">~$15/month (pay as you go)</p>\n        <a href=\"https://console.anthropic.com\" class=\"button\">\n          Get Claude API Key →\n        </a>\n      </div>\n      \n      <h2 style=\"margin-top: 40px;\">Next Steps:</h2>\n      <ol style=\"line-height: 1.8;\">\n        <li>Create accounts using the buttons above</li>\n        <li>Get your API keys from each service</li>\n        <li>Open your Make.com scenario</li>\n        <li>Click on modules with warning icons</li>\n        <li>Add your API keys</li>\n        <li>Run your first automation!</li>\n      </ol>\n      \n      <div style=\"text-align: center; margin: 30px 0;\">\n        <a href=\"https://discovermake.com/tutorials/youtube-automation\" class=\"button\">\n          📺 Watch Video Tutorial\n        </a>\n        <a href=\"https://discovermake.com/docs/youtube-automation.pdf\" class=\"button\">\n          📚 Read Documentation\n        </a>\n      </div>\n      \n      <div class=\"disclosure\">\n        <strong>📢 Affiliate Disclosure:</strong> The Make.com and Apify links in this email are affiliate links. If you sign up through these links, DiscoverMake may earn a commission at no extra cost to you. This helps us continue creating free templates and tutorials. You'll pay the same price regardless of which link you use.\n      </div>\n      \n      <div style=\"text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e2e8f0;\">\n        <p style=\"color: #64748b;\">Questions? Need help?</p>\n        <a href=\"mailto:support@discovermake.com\" style=\"color: #667eea; text-decoration: none; font-weight: 600;\">\n          support@discovermake.com\n        </a>\n      </div>\n    </div>\n  </div>\n</body>\n</html>",
+                                "from": "DiscoverMake Templates <templates@discovermake.com>",
+                                "fromName": "DiscoverMake"
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 1200,
+                                    "y": -150,
+                                    "name": "Send Setup Email"
+                                }
+                            }
+                        },
+                        {
+                            "id": 6,
+                            "module": "datastore:SetVariable",
+                            "version": 1,
+                            "parameters": {},
+                            "mapper": {
+                                "key": "yt_template_first_run_complete",
+                                "value": "true",
+                                "ttl": "0"
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 1500,
+                                    "y": -150,
+                                    "name": "Mark Setup Complete"
+                                }
+                            }
+                        }
+                    ],
+                    "name": "First Run - Send Setup Email",
+                    "filter": {
+                        "name": "Is First Run",
+                        "conditions": [
+                            [
+                                {
+                                    "a": "{{3.value}}",
+                                    "o": "text:equal",
+                                    "b": ""
+                                }
+                            ]
+                        ]
+                    }
+                },
+                {
+                    "flow": [
+                        {
+                            "id": 7,
+                            "module": "http:ActionSendData",
+                            "version": 3,
+                            "parameters": {},
+                            "mapper": {
+                                "url": "https://apify.com/api/v2/acts/apify~youtube-scraper/runs",
+                                "method": "post",
+                                "headers": [
+                                    {
+                                        "name": "Authorization",
+                                        "value": "Bearer {{YOUR_APIFY_API_KEY}}"
+                                    },
+                                    {
+                                        "name": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "qs": [],
+                                "bodyType": "raw",
+                                "parseResponse": true,
+                                "authPass": "",
+                                "authUser": "",
+                                "timeout": "",
+                                "shareCookies": false,
+                                "ca": "",
+                                "rejectUnauthorized": true,
+                                "followRedirect": true,
+                                "useQuerystring": false,
+                                "followAllRedirects": false,
+                                "body": "{\n  \"searchKeywords\": \"trending\",\n  \"maxResults\": 10,\n  \"uploadDate\": \"today\"\n}"
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 1200,
+                                    "y": 150,
+                                    "name": "Scrape YouTube Trends"
+                                }
+                            }
+                        },
+                        {
+                            "id": 8,
+                            "module": "builtin:BasicIterator",
+                            "version": 1,
+                            "parameters": {},
+                            "mapper": {
+                                "array": "{{7.data.items}}"
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 1500,
+                                    "y": 150,
+                                    "name": "Iterate Videos"
+                                }
+                            }
+                        },
+                        {
+                            "id": 9,
+                            "module": "http:ActionSendData",
+                            "version": 3,
+                            "parameters": {},
+                            "mapper": {
+                                "url": "https://api.anthropic.com/v1/messages",
+                                "method": "post",
+                                "headers": [
+                                    {
+                                        "name": "x-api-key",
+                                        "value": "{{YOUR_CLAUDE_API_KEY}}"
+                                    },
+                                    {
+                                        "name": "anthropic-version",
+                                        "value": "2023-06-01"
+                                    },
+                                    {
+                                        "name": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "qs": [],
+                                "bodyType": "raw",
+                                "parseResponse": true,
+                                "body": "{\n  \"model\": \"claude-sonnet-4-20250514\",\n  \"max_tokens\": 2000,\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Based on this trending YouTube video: {{8.title}}\\n\\nGenerate:\\n1. 3 unique video ideas inspired by this trend\\n2. A detailed script outline for the best idea\\n3. SEO-optimized title and description\\n4. 10 relevant hashtags\\n\\nRespond in JSON format.\"\n    }\n  ]\n}"
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 1800,
+                                    "y": 150,
+                                    "name": "Generate Script with Claude"
+                                }
+                            }
+                        },
+                        {
+                            "id": 10,
+                            "module": "google-sheets:appendRow",
+                            "version": 2,
+                            "parameters": {
+                                "spreadsheetId": "YOUR_GOOGLE_SHEET_ID",
+                                "sheetName": "Content Calendar"
+                            },
+                            "mapper": {
+                                "values": [
+                                    "{{formatDate(now; 'YYYY-MM-DD')}}",
+                                    "{{parseJSON(9.data.content[0].text).title}}",
+                                    "{{parseJSON(9.data.content[0].text).description}}",
+                                    "{{parseJSON(9.data.content[0].text).script}}",
+                                    "{{parseJSON(9.data.content[0].text).hashtags}}",
+                                    "Pending"
+                                ]
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 2100,
+                                    "y": 150,
+                                    "name": "Add to Content Calendar"
+                                }
+                            }
+                        },
+                        {
+                            "id": 11,
+                            "module": "slack:sendMessage",
+                            "version": 1,
+                            "parameters": {
+                                "channel": "#youtube-automation"
+                            },
+                            "mapper": {
+                                "text": "🎥 New YouTube video idea generated!\n\nTitle: {{parseJSON(9.data.content[0].text).title}}\n\nBased on trending video: {{8.title}}\n\nCheck your Content Calendar for the full script!"
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 2400,
+                                    "y": 150,
+                                    "name": "Notify on Slack"
+                                }
+                            }
+                        }
+                    ],
+                    "name": "Normal Run - Execute Automation"
+                }
+            ]
+        }
+    ],
+    "metadata": {
+        "version": 1,
+        "scenario": {
+            "roundtrips": 1,
+            "maxErrors": 3,
+            "autoCommit": false,
+            "sequential": false,
+            "confidential": false,
+            "dataloss": false,
+            "dlq": false
+        },
+        "designer": {
+            "orphans": [],
+            "notes": [
+                {
+                    "text": "AFFILIATE TRACKING:\n\nMake.com affiliate: pc=discovermake\nApify affiliate: DiscoverMakeID\n\nThese links help fund free template development!\n\nTracking sources:\n- template_import (JSON note)\n- welcome_email (setup email)\n- documentation (PDF)\n- video_tutorial (YouTube description)",
+                    "color": "blue",
+                    "position": {
+                        "x": 0,
+                        "y": -300
+                    }
+                },
+                {
+                    "text": "TEMPLATE INFO:\n\nName: YouTube Automation Agent\nVersion: 1.0\nAuthor: DiscoverMake.com\nCategory: Content Creation\nComplexity: Intermediate\nSetup Time: 30 minutes\n\nRequired Services:\n- Make.com Pro ($16/mo)\n- Apify Starter ($49/mo)\n- Claude API (~$15/mo)\n- Google Sheets (Free)\n\nTotal: ~$80/month\nValue: Saves 18 hours/month = $900/month @ $50/hr",
+                    "color": "green",
+                    "position": {
+                        "x": 0,
+                        "y": -500
+                    }
+                }
+            ]
+        }
+    }
+}

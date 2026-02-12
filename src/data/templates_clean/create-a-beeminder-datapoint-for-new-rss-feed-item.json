@@ -1,0 +1,1 @@
+{"id":5016,"name":"Create a Beeminder datapoint for new RSS feed item","description":"Every time a new item is posted to a watched RSS feed, Make will automatically create a datapoint in Beeminder.","url":"5016-create-a-beeminder-datapoint-for-new-rss-feed-item","usedApps":["rss","beeminder"],"usage":7}

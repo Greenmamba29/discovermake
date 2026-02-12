@@ -1,0 +1,1 @@
+{"id":5861,"name":"Create WordPress posts from incoming Webhook data","description":"This automation will grab incoming data from a custom Webhook and create posts on WordPress for you.","url":"5861-create-wordpress-posts-from-incoming-webhook-data","usedApps":["gateway","wordpress"],"usage":998}

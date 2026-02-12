@@ -1,0 +1,1 @@
+{"id":12814,"name":"Send custom webhooks to ClickUp to edit tasks automatically","description":"Automatically update ClickUp tasks by sending custom webhooks. Streamline task management with real-time edits using CustomWebHook and ClickUp integration.","url":"12814-send-custom-webhooks-to-clickup-to-edit-tasks-automatically","usedApps":["gateway","clickup"],"usage":10}

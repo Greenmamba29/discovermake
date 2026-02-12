@@ -1,0 +1,1 @@
+{"id":13975,"name":"Send data from a custom webhook to update rows in Google Sheets","description":"Automatically update Google Sheets rows with data from a custom webhook. Respond to webhooks, filter, and update rows in Google Sheets effortlessly.","url":"13975-send-data-from-a-custom-webhook-to-update-rows-in-google-sheets","usedApps":["gateway","google-sheets"],"usage":10}

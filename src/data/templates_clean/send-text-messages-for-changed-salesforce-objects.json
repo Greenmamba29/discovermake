@@ -1,0 +1,1 @@
+{"id":1446,"name":"Send text messages for changed SalesForce objects","description":"Every time a watched object changes in SalesForce, Make will automatically send a text message to the specified phone numbers of those watching it. ","url":"1446-send-text-messages-for-changed-salesforce-objects","usedApps":["android","salesforce"],"usage":43}

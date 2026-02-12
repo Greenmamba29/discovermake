@@ -1,0 +1,1 @@
+{"id":5985,"name":"Create Trello cards from new created task in Onfleet","description":"Every time a new task is created on the Onfleet account, Make will automatically create a new card in Trello.","url":"5985-create-trello-cards-from-new-created-task-in-onfleet","usedApps":["onfleet","trello"],"usage":1}

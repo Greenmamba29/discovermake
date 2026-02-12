@@ -1,0 +1,1 @@
+{"id":6832,"name":"Send Techulus Push notifications when an order status changes in Shopify","description":"Every time an order changes it's status in Shopify, Make will automatically send a push notification via Techulus Push.","url":"6832-send-techulus-push-notifications-when-an-order-status-changes-in-shopify","usedApps":["shopify","techulus-push"],"usage":4}

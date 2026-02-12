@@ -1,0 +1,1 @@
+{"id":14525,"name":"Update Airtable records with Cloudinary uploaded resources","description":"This template updates Airtable records with resources uploaded to Cloudinary. Trigger updates in Airtable when new resources are uploaded to Cloudinary.","url":"14525-update-airtable-records-with-cloudinary-uploaded-resources","usedApps":["airtable","cloudinary"],"usage":7}

@@ -1,0 +1,1 @@
+{"id":7318,"name":"Create SwiftKanban cards from new Google Calendar events","description":"Every time a new event is added to your Google Calendar, Make will automatically create a new card in SwiftKanban.","url":"7318-create-swiftkanban-cards-from-new-google-calendar-events","usedApps":["google-calendar","swiftkanban"],"usage":1}

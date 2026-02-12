@@ -1,0 +1,1 @@
+{"id":4053,"name":"Create a new project from a new row in Google Spreadsheet","description":"When a new row is added in Google Sheets spreadsheet, a new project is created in Dribbble.","url":"4053-create-a-new-project-from-a-new-row-in-google-spreadsheet","usedApps":["google-sheets","dribbble"],"usage":8}

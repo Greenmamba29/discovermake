@@ -1,0 +1,1 @@
+{"id":4934,"name":"Send a new PandaDoc document to Telegram Bot","description":"Every time a new document is created in PandaDoc, Make automatically will send this document to a channel in Telegram.","url":"4934-send-a-new-pandadoc-document-to-telegram-bot","usedApps":["pandadoc","telegram"],"usage":3}

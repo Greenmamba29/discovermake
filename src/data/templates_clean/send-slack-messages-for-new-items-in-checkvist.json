@@ -1,0 +1,1 @@
+{"id":8078,"name":"Send Slack messages for new items in Checkvist","description":"Every time a new item is created in Checkvist, Make will automatically send a message in Slack.","url":"8078-send-slack-messages-for-new-items-in-checkvist","usedApps":["checkvist","slack"],"usage":1}

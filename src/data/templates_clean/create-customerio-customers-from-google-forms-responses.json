@@ -1,0 +1,1 @@
+{"id":4720,"name":"Create Customer.io customers from Google Forms responses","description":"Every time a new Google Form is submitted, Make will automatically create a new customer in Customer.io.","url":"4720-create-customer-io-customers-from-google-forms-responses","usedApps":["google-forms","customer-io"],"usage":2}

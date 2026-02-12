@@ -1,0 +1,1 @@
+{"id":2674,"name":"Add new Square customers to GetResponse","description":"Every time a new customer is created in Square, Make will automatically create a new contact in GetResponse.","url":"2674-add-new-square-customers-to-getresponse","usedApps":["square","getresponse"],"usage":7}

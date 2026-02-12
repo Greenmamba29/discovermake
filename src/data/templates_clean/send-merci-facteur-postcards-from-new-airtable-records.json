@@ -1,0 +1,1 @@
+{"id":8517,"name":"Send Merci Facteur postcards from new Airtable records","description":"Every time a new record is added to your Airtable base, Make will automatically send a Merci Facteur postcard for it.","url":"8517-send-merci-facteur-postcards-from-new-airtable-records","usedApps":["airtable","merci-facteur"],"usage":2}

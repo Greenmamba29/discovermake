@@ -1,0 +1,1 @@
+{"id":3005,"name":"Send a message to Twist about a new invoice in Harvest","description":"When a new invoice is created in Harvest, a message is sent to specified thread in Twist.","url":"3005-send-a-message-to-twist-about-a-new-invoice-in-harvest","usedApps":["harvest","twist"],"usage":0}

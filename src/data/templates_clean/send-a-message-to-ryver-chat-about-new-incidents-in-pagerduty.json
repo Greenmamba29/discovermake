@@ -1,0 +1,1 @@
+{"id":5116,"name":"Send a message to Ryver chat about new incidents in PagerDuty","description":"Every time a new incident is triggered in PagerDuty, Make will automatically send a  message to Ryver Chat.","url":"5116-send-a-message-to-ryver-chat-about-new-incidents-in-pagerduty","usedApps":["pagerduty","ryver"],"usage":0}

@@ -1,0 +1,1 @@
+{"id":11354,"name":"Summarize emails with OpenAI and send it on Slack","description":"Leverage OpenAI to quickly condense email content and conveniently share concise summaries on Slack, streamlining communication and reducing clutter.","url":"11354-summarize-emails-with-openai-and-send-it-on-slack","usedApps":["email","openai-gpt-3","slack"],"usage":372}

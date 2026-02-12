@@ -1,0 +1,1 @@
+{"id":571,"name":"Create GitHub issues from new SugarCRM 7 campaigns","description":"Every time a new campaign is created in SugarCRM 7, Make will automatically create a new issue in GitHub.","url":"571-create-github-issues-from-new-sugarcrm-7-campaigns","usedApps":["github","sugarcrm7"],"usage":0}

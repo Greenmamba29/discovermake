@@ -1,0 +1,1 @@
+{"id":7754,"name":"Create events in Iterable for new Google Calendar events","description":"Every time a new event is added to your Google Calendar, Make will automatically track a new event in Iterable.","url":"7754-create-events-in-iterable-for-new-google-calendar-events","usedApps":["google-calendar","iterable"],"usage":2}

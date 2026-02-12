@@ -1,0 +1,1 @@
+{"id":6894,"name":"Add a new Mailchimp subscriber to Sensorpro as a new contact","description":"Every time when a new subscriber is added to a Mailchimp, Make will automatically create a new contact on Sensorpro.","url":"6894-add-a-new-mailchimp-subscriber-to-sensorpro-as-a-new-contact","usedApps":["mailchimp","sensorpro"],"usage":0}

@@ -1,0 +1,1 @@
+{"id":4832,"name":"Send new file from OneDrive to a Telegram channel","description":"Every time a new file is uploaded to your OneDrive, Make will automatically send that file to Telegram channel you specify.","url":"4832-send-new-file-from-onedrive-to-a-telegram-channel","usedApps":["onedrive","telegram"],"usage":198}

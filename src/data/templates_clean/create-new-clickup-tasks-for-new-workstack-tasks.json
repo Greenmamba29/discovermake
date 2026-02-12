@@ -1,0 +1,1 @@
+{"id":6837,"name":"Create new ClickUp tasks for new Workstack tasks","description":"Every time a new task is created in Workstack, Make will automatically add that task to ClickUp.","url":"6837-create-new-clickup-tasks-for-new-workstack-tasks","usedApps":["workstack","clickup"],"usage":1}

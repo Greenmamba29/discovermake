@@ -1,0 +1,1 @@
+{"id":2986,"name":"Upload files from Google Drive to Egnyte","description":"List files meeting specified criteria in Google Drive and import them to Egnyte.","url":"2986-upload-files-from-google-drive-to-egnyte","usedApps":["google-drive","egnyte"],"usage":3}

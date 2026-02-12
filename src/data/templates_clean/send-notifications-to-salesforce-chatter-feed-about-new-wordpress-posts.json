@@ -1,0 +1,1 @@
+{"id":6258,"name":"Send notifications to Salesforce chatter feed about new WordPress posts","description":"Use this template to automatically post a Salesforce chatter feed message when a new WordPress post is added.","url":"6258-send-notifications-to-salesforce-chatter-feed-about-new-wordpress-posts","usedApps":["wordpress","salesforce"],"usage":11}

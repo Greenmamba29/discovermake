@@ -1,0 +1,1 @@
+{"id":1915,"name":"Post new Superfaktura invoices (pdf) to Slack","description":"Every time a new invoice is created in Superfaktura, Make will automatically upload that invoice to Slack.","url":"1915-post-new-superfaktura-invoices-pdf-to-slack","usedApps":["superfaktura","slack"],"usage":3}

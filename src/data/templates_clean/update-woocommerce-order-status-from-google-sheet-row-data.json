@@ -1,0 +1,1 @@
+{"id":10870,"name":"Update WooCommerce order status from Google Sheet row data","description":"Retrieve Google Sheet rows with updated order data. Find the orders on WooCommerce (based on their ID) and update their status.","url":"5725-update-woocommerce-order-status-from-google-sheet-row-data","usedApps":["google-sheets","woocommerce"],"usage":469}

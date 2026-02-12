@@ -1,0 +1,1 @@
+{"id":8784,"name":"Create Filestage projects for new Google Forms responses","description":"Every time a new response is entered on your Google Forms, Make will automatically create a new project in Filestage.","url":"8784-create-filestage-projects-for-new-google-forms-responses","usedApps":["google-forms","filestage"],"usage":3}

@@ -1,0 +1,1 @@
+{"id":14599,"name":"Send a Slack message with the Plumsail Forms submission summary","description":"When a new form is submitted in Plumsail, send a message to a Slack channel with a summary of the submission.","url":"14599-send-a-slack-message-with-the-plumsail-forms-submission-summary","usedApps":["plumsail-forms","slack"],"usage":2}

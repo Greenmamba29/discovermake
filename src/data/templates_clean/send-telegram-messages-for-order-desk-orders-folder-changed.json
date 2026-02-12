@@ -1,0 +1,1 @@
+{"id":8627,"name":"Send Telegram messages for Order Desk orders folder changed","description":"Every time an order is moved to a different folder in your Order Desk, Make wil automatically send you a Telegram message.","url":"8627-send-telegram-messages-for-order-desk-orders-folder-changed","usedApps":["order-desk","telegram"],"usage":4}

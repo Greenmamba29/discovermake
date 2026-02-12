@@ -1,0 +1,1 @@
+{"id":12750,"name":"Send SMS notifications using ClickSend from a custom webhook","description":"Trigger SMS notifications via ClickSend from your custom webhook. Automate alerts and updates directly to mobile devices using this streamlined workflow.","url":"12750-send-sms-notifications-using-clicksend-from-a-custom-webhook","usedApps":["gateway","clicksend"],"usage":32}

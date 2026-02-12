@@ -1,0 +1,1 @@
+{"id":4314,"name":"Run a Clockify time entry when a Trello Card is moved","description":"When a card is moved to a specified list in Trello, Make will automatically start a new time entry in Clockify.","url":"4314-run-a-clockify-time-entry-when-a-trello-card-is-moved","usedApps":["trello","clockify"],"usage":63}

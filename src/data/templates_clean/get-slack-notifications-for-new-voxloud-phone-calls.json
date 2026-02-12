@@ -1,0 +1,1 @@
+{"id":8669,"name":"Get Slack notifications for new Voxloud phone calls","description":"Every time a new call is going through Voxloud, Make will automatically send a notification message to a specified channel/chat in Slack.","url":"8669-get-slack-notifications-for-new-voxloud-phone-calls","usedApps":["voxloud","slack"],"usage":1}

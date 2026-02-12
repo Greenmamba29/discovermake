@@ -1,0 +1,1 @@
+{"id":7310,"name":"Add Mailgun mailing list members  for new BambooHR employees","description":"Every time a new employee is added to your BambooHR, Make will add them as a mailing list member.","url":"7310-add-mailgun-mailing-list-members-for-new-bamboohr-employees","usedApps":["bamboohr","mailgun"],"usage":1}

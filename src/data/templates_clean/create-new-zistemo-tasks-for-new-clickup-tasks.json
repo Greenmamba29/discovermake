@@ -1,0 +1,1 @@
+{"id":8122,"name":"Create new Zistemo tasks for new ClickUp tasks","description":"Every time a new task is created in ClickUp, Make will automatically create a new task in Zistemo.","url":"8122-create-new-zistemo-tasks-for-new-clickup-tasks","usedApps":["clickup","zistemo"],"usage":3}

@@ -1,0 +1,1 @@
+{"id":7258,"name":"Send Telegram messages for Tapfiliate affiliates","description":"Every time an affiliate is added to your Tapfiliate, Make will send a message with some information on them to your Telegram.","url":"7258-send-telegram-messages-for-tapfiliate-affiliates","usedApps":["tapfiliate","telegram"],"usage":2}

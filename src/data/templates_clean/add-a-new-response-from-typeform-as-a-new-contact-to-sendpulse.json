@@ -1,0 +1,1 @@
+{"id":3090,"name":"Add a new response from Typeform as a new contact to SendPulse","description":"When a new response is received from Typeform webhook, a new contact with data from just submitted form in Typeform is added to SendPulse.","url":"3090-add-a-new-response-from-typeform-as-a-new-contact-to-sendpulse","usedApps":["typeform","sendpulse"],"usage":1}

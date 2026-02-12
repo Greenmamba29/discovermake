@@ -1,0 +1,1 @@
+{"id":5753,"name":"Send Gmail email for a new Instapage form submission","description":"Every time a new Instapage form is submitted, Make will automatically send a new Gmail email to the specified email address.","url":"5753-send-gmail-email-for-a-new-instapage-form-submission","usedApps":["instapage","google-email"],"usage":1}

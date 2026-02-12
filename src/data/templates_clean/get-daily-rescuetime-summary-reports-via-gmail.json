@@ -1,0 +1,1 @@
+{"id":6686,"name":"Get daily RescueTime summary reports via Gmail","description":"Every morning Make will automatically send an email message to a specified email address with daily summary reports on RecsueTime.","url":"6686-get-daily-rescuetime-summary-reports-via-gmail","usedApps":["rescuetime","email"],"usage":4}

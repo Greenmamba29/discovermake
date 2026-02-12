@@ -1,0 +1,1 @@
+{"id":6806,"name":"Send SMS messages for new waivers in WaiverFile","description":"Every time there is a new waiver signed via WaiverFile, Make will automatically send SMS message using Android app.","url":"6806-send-sms-messages-for-new-waivers-in-waiverfile","usedApps":["waiverfile","android"],"usage":1}

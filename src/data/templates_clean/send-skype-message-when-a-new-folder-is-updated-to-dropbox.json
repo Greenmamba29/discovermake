@@ -1,0 +1,1 @@
+{"id":3325,"name":"Send Skype message when a new folder is updated to Dropbox","description":"Every time a Dropbox folder is updated, Make will automatically send a new message in Skype.","url":"3325-send-skype-message-when-a-new-folder-is-updated-to-dropbox","usedApps":["dropbox","skype"],"usage":9}

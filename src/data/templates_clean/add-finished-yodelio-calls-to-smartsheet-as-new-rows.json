@@ -1,0 +1,1 @@
+{"id":2607,"name":"Add finished Yodel.io calls to Smartsheet as new rows","description":"Every time a call is finished or missed in Yodel.io, Make will automatically add that call's info to a new row in your Smartsheet.","url":"2607-add-finished-yodel-io-calls-to-smartsheet-as-new-rows","usedApps":["yodel","smartsheet"],"usage":1}

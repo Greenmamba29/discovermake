@@ -1,0 +1,1 @@
+{"id":3985,"name":"Send new Vtiger CRM contacts to Databox","description":"Whenever a new contact is created in Vtiger, Make will automatically send data of that contact to Databox so the report with contacts is updated. ","url":"3985-send-new-vtiger-crm-contacts-to-databox","usedApps":["vtiger","databox"],"usage":14}

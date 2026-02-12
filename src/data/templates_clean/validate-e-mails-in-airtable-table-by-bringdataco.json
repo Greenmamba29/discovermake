@@ -1,0 +1,1 @@
+{"id":8948,"name":"Validate e-mails in Airtable table by BringData.co","description":"When a new record is created in Airtable, e-mail from the record is validated by BringData.co. If the e-mail is not valid, it is deleted from the table.\n","url":"8948-validate-e-mails-in-airtable-table-by-bringdata-co","usedApps":["airtable","bringdata"],"usage":3}

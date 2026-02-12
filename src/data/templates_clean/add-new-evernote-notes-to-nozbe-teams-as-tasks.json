@@ -1,0 +1,1 @@
+{"id":7691,"name":"Add new Evernote notes to Nozbe Teams as tasks","description":"Every time a new note is added to a watched notebook in Evernote, Make will automatically create a new task in Nozbe Teams.","url":"7691-add-new-evernote-notes-to-nozbe-teams-as-tasks","usedApps":["evernote","nozbe-teams"],"usage":2}

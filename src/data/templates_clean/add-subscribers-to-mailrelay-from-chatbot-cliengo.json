@@ -1,0 +1,1 @@
+{"id":6719,"name":"Add subscribers to Mailrelay from Chatbot Cliengo","description":"Every time a conversation with the Cliengo ChatBot ends, Make will automatically add the contact information as a new subscriber to Mailrelay.","url":"6719-add-subscribers-to-mailrelay-from-chatbot-cliengo","usedApps":["cliengo","mailrelay"],"usage":2}

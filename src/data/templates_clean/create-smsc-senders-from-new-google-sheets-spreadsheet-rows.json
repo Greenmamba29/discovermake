@@ -1,0 +1,1 @@
+{"id":8072,"name":"Create SMSC senders from new Google Sheets spreadsheet rows","description":"Every time a new row is added to a Google Sheets spreadsheet, Make will automatically create a new sender in SMSC. ","url":"8072-create-smsc-senders-from-new-google-sheets-spreadsheet-rows","usedApps":["google-sheets","smsc"],"usage":1}

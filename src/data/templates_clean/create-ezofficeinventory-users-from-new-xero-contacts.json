@@ -1,0 +1,1 @@
+{"id":8062,"name":"Create EZOfficeInventory users from new Xero contacts","description":"Every time a new contact is created in Xero, Make will automatically add that contact to EZOfficeInventory as a new user.","url":"8062-create-ezofficeinventory-users-from-new-xero-contacts","usedApps":["xero","ezofficeinventory"],"usage":3}

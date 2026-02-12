@@ -1,0 +1,1 @@
+{"id":5730,"name":"Update inventory numbers on Google Sheets based on Shopify orders","description":"Retrieve new order data from Shopify and update your inventory numbers on Google Sheets.","url":"5730-update-inventory-numbers-on-google-sheets-based-on-shopify-orders","usedApps":["shopify","builtin","google-sheets"],"usage":489}

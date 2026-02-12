@@ -1,0 +1,1 @@
+{"id":8253,"name":"Add Sendlane contacts for new Zoho CRM contacts","description":"Make will watch your Zoho CRM contacts at regular intervals and add them to your Sendlane.","url":"8253-add-sendlane-contacts-for-new-zoho-crm-contacts","usedApps":["zohocrm","sendlane"],"usage":1}

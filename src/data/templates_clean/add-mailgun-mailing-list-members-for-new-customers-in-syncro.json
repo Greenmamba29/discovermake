@@ -1,0 +1,1 @@
+{"id":7449,"name":"Add Mailgun mailing list members for new customers in Syncro","description":"Every time a new customer is added to your Syncro, Make will add them to your Mailgun mailing list.","url":"7449-add-mailgun-mailing-list-members-for-new-customers-in-syncro","usedApps":["syncro","mailgun"],"usage":2}

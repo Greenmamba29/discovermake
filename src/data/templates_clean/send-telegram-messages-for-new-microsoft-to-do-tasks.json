@@ -1,0 +1,1 @@
+{"id":3557,"name":"Send Telegram messages for new Microsoft To Do tasks","description":"Every time a new task is added to a Microsoft To Do list, Make will automatically share it to a selected chat in Telegram.","url":"3557-send-telegram-messages-for-new-microsoft-to-do-tasks","usedApps":["microsoft-to-do","telegram"],"usage":48}

@@ -1,0 +1,1 @@
+{"id":5757,"name":"Create a Slack message from a new Viral Loops campaign participant","description":"Every time your Viral Loops campaign gets a new participant, Make will automatically send a Slack message to a selected channel/user.","url":"5757-create-a-slack-message-from-a-new-viral-loops-campaign-participant","usedApps":["viral-loops","slack"],"usage":0}

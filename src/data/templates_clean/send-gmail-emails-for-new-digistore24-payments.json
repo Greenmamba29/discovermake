@@ -1,0 +1,1 @@
+{"id":8233,"name":"Send Gmail emails for new Digistore24 payments","description":"Every time a new payment has been completed in Digistore24, Make will automatically send an email to the customer.","url":"8233-send-gmail-emails-for-new-digistore24-payments","usedApps":["digistore","google-email"],"usage":6}

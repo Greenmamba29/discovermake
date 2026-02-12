@@ -1,0 +1,1 @@
+{"id":6917,"name":"Send SMSFactor messages for Google Calendar events","description":"Every time an event is created in Google Calendar, Make will automatically send an SMS using SMSFactor at the starting time of the event.","url":"6917-send-smsfactor-messages-for-google-calendar-events","usedApps":["google-calendar","smsfactor"],"usage":19}

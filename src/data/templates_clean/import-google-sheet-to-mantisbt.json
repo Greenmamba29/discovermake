@@ -1,0 +1,1 @@
+{"id":7288,"name":"Import Google Sheet to MantisBT","description":"Every time a new row is added to Google Sheets, a new Issue is created in MantisBT.","url":"7288-import-google-sheet-to-mantisbt","usedApps":["google-sheets","mantisbt"],"usage":1}

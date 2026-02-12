@@ -1,0 +1,1 @@
+{"id":1213,"name":"Move completed tasks between Teamwork projects","description":"Every time a task is completed in a specified Teamwork project, Make will automatically move it to another project.","url":"1213-move-completed-tasks-between-teamwork-projects","usedApps":["teamwork","teamwork"],"usage":17}

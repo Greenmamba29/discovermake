@@ -1,0 +1,1 @@
+{"id":4857,"name":"Send Cisco Webex messages for new Facebook Groups posts","description":"Every time a new update is posted to a selected Facebook Group, Make will automatically send it to a selected room in Cisco Webex.","url":"4857-send-cisco-webex-messages-for-new-facebook-groups-posts","usedApps":["facebook-groups","webex-teams"],"usage":2}

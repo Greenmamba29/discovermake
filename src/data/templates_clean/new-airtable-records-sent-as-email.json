@@ -1,0 +1,1 @@
+{"id":3524,"name":"New Airtable records sent as email","description":"Every time a new record is added in Airtable, you will get an email with the record details.","url":"3524-new-airtable-records-sent-as-email","usedApps":["airtable","email"],"usage":600}

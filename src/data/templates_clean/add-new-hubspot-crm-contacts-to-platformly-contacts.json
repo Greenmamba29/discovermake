@@ -1,0 +1,1 @@
+{"id":6338,"name":"Add new HubSpot CRM contacts to Platformly Contacts","description":"Every time a new contact is added to HubSpot CRM, Make will automatically create a new Platformly contact.","url":"6338-add-new-hubspot-crm-contacts-to-platformly-contacts","usedApps":["hubspotcrm","platformly"],"usage":4}

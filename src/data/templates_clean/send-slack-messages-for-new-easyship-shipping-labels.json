@@ -1,0 +1,1 @@
+{"id":8811,"name":"Send Slack messages for new Easyship shipping labels","description":"Every time there is a new shipping label created in Easyship, Make will automatically send a message to a specified chat or channel in Slack.","url":"8811-send-slack-messages-for-new-easyship-shipping-labels","usedApps":["easyship","slack"],"usage":5}

@@ -1,0 +1,1 @@
+{"id":2004,"name":"Create ShipStation orders from QuickBooks invoices","description":"Every time a new order is created in QuickBooks, Make will automatically create a new order in ShipStation.","url":"2004-create-shipstation-orders-from-quickbooks-invoices","usedApps":["quickbooks","builtin","util","shipstation"],"usage":83}

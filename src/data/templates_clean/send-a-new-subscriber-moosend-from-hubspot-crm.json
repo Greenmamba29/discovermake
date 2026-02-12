@@ -1,0 +1,1 @@
+{"id":3106,"name":"Send a new subscriber Moosend from HubSpot CRM","description":"When a new contact is created in HubSpot CRM, a new subscriber is created in Moosend.","url":"3106-send-a-new-subscriber-moosend-from-hubspot-crm","usedApps":["hubspotcrm","moosend"],"usage":8}

@@ -1,0 +1,1 @@
+{"id":2542,"name":"Send Slack messages for new RingCentral incoming SMS messages","description":"Every time you receive a new SMS message in RinCentral, Make will automatically send a message in Slack.","url":"2542-send-slack-messages-for-new-ringcentral-incoming-sms-messages","usedApps":["ringcentral","slack"],"usage":16}

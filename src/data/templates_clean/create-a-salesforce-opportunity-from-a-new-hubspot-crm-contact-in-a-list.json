@@ -1,0 +1,1 @@
+{"id":6000,"name":"Create a Salesforce opportunity from a new HubSpot CRM contact in a list","description":"Use this template to automatically create a Salesforce opportunity when a HubSpot CRM contact is added to a list of your choice.","url":"6000-create-a-salesforce-opportunity-from-a-new-hubspot-crm-contact-in-a-list","usedApps":["hubspotcrm","salesforce"],"usage":6}

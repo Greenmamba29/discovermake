@@ -1,0 +1,1 @@
+{"id":5737,"name":"Add GitHub pull requests as Trello cards","description":"When you have new pull requests in GitHub, this automation will retrieve the requests and creates Trello cards for you.","url":"5737-add-github-pull-requests-as-trello-cards","usedApps":["github","trello"],"usage":29}

@@ -1,0 +1,1 @@
+{"id":6369,"name":"Create Pivotal Tracker story for new email","description":"Every time a new Email is received, Make will automatically create a Pivotal Tracker story.","url":"6369-create-pivotal-tracker-story-for-new-email","usedApps":["email","pivotal-tracker"],"usage":3}

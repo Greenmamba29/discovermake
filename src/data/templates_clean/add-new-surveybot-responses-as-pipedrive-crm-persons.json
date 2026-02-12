@@ -1,0 +1,1 @@
+{"id":6633,"name":"Add new Surveybot responses as Pipedrive CRM persons","description":"Every time there is a new response to your survey in Surveybot, Make will automatically create a new Pipedrive CRM person using information about the respondent.","url":"6633-add-new-surveybot-responses-as-pipedrive-crm-persons","usedApps":["surveybot","pipedrive"],"usage":2}

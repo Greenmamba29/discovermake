@@ -1,0 +1,1 @@
+{"id":8227,"name":"Add Sendlane contacts for new Proofly leads","description":"Every time there is a new lead collected in Proofly, Make will automatically add this lead to your Sendlane as a contact.","url":"8227-add-sendlane-contacts-for-new-proofly-leads","usedApps":["proofly","sendlane"],"usage":1}

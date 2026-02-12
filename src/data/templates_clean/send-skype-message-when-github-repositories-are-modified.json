@@ -1,0 +1,1 @@
+{"id":3323,"name":"Send Skype message when GitHub repositories are modified","description":"Every time a repositories is modified in GitHub, Make will automatically send a message in Skype.\n\n","url":"3323-send-skype-message-when-github-repositories-are-modified","usedApps":["github","skype"],"usage":25}

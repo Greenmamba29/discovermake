@@ -1,0 +1,1 @@
+{"id":1028,"name":"Send push notifications via Google Chrome for new payments on Fio banka account","description":"Every time a new payment is credited to your Fio banka account, Make will automatically send a push notification via Google Chrome.","url":"1028-send-push-notifications-via-google-chrome-for-new-payments-on-fio-banka-account","usedApps":["fio","chrome"],"usage":46}

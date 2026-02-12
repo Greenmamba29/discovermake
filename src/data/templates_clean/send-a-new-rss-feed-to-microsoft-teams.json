@@ -1,0 +1,1 @@
+{"id":3149,"name":"Send a new RSS feed to Microsoft Teams","description":"When a new RSS feed is received, a  new message with the content of the feed is sent to Microsoft Teams channel.","url":"3149-send-a-new-rss-feed-to-microsoft-teams","usedApps":["rss","microsoft-teams"],"usage":157}

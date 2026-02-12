@@ -1,0 +1,1 @@
+{"id":4985,"name":"Share new Discourse posts as messages in a Facebook Group","description":"Whenever you add new posts in Discourse, Make will automatically retrieve the posts and share them in a Facebook group.","url":"4985-share-new-discourse-posts-as-messages-in-a-facebook-group","usedApps":["discourse","facebook-groups"],"usage":11}

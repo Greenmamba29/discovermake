@@ -1,0 +1,1 @@
+{"id":3490,"name":"Create LionDesk contacts from Android contacts","description":"Every time a contact is created on an Android device, Make will automatically create a new contact in LionDesk and send an Android push notification.","url":"3490-create-liondesk-contacts-from-android-contacts","usedApps":["android","liondesk"],"usage":0}

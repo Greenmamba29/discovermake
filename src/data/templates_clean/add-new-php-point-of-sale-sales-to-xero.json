@@ -1,0 +1,1 @@
+{"id":10940,"name":"Add new PHP Point of Sale sales to Xero","description":"Every time a new sale is created in PHP Point of Sale, Make will automatically create a new order in Xero.","url":"5293-add-new-php-point-of-sale-sales-to-xero","usedApps":["php-point-of-sale","xero","builtin"],"usage":10}

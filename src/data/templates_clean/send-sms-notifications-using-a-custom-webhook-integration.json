@@ -1,0 +1,1 @@
+{"id":12973,"name":"Send SMS notifications using a custom webhook integration","description":"Automatically send SMS notifications via a custom webhook integration. Trigger messages using CustomWebHook and deliver them with smsapi's sendTextMessage module.","url":"12973-send-sms-notifications-using-a-custom-webhook-integration","usedApps":["gateway","smsapi"],"usage":9}

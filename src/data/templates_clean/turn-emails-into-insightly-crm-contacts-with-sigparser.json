@@ -1,0 +1,1 @@
+{"id":4044,"name":"Turn emails into Insightly CRM contacts with SigParser","description":"Every time a contact is created or updated in SigParser, Make will automatically update or create a new contact in Insightly CRM.","url":"4044-turn-emails-into-insightly-crm-contacts-with-sigparser","usedApps":["sigparser","util","http","builtin"],"usage":12}

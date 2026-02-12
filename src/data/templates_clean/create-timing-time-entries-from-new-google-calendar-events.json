@@ -1,0 +1,1 @@
+{"id":8928,"name":"Create Timing time entries from new Google Calendar events","description":"Make will watch for new Google Calendar events at regular intervals and create a time entry in Timing using information received.","url":"8928-create-timing-time-entries-from-new-google-calendar-events","usedApps":["google-calendar","timing"],"usage":7}

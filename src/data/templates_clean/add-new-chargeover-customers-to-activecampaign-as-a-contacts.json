@@ -1,0 +1,1 @@
+{"id":7606,"name":"Add new ChargeOver customers to ActiveCampaign as a contacts","description":"Every time a new customer is added in ChargeOver, Make will automatically create a new contact in ActiveCampaign. ","url":"7606-add-new-chargeover-customers-to-activecampaign-as-a-contacts","usedApps":["chargeover","activecampaign"],"usage":1}

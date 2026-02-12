@@ -1,0 +1,1 @@
+{"id":6083,"name":"Create new QuickBooks invoices in FreshBooks","description":"Every time a new invoice is created in QuickBooks, Make will automatically create the same invoice in FreshBooks.","url":"6083-create-new-quickbooks-invoices-in-freshbooks","usedApps":["quickbooks","builtin","freshbooks"],"usage":10}

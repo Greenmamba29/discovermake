@@ -1,0 +1,1 @@
+{"id":13806,"name":"Filter and update Google Sheets rows with parsed JSON data","description":"Automatically filter Google Sheets rows, parse JSON data, and update rows with new information using HTTP actions. Streamline data management effortlessly.","url":"13806-filter-and-update-google-sheets-rows-with-parsed-json-data","usedApps":["google-sheets","http","json"],"usage":23}

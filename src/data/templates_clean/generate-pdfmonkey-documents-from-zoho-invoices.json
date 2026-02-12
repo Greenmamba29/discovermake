@@ -1,0 +1,1 @@
+{"id":4512,"name":"Generate PDFMonkey documents from Zoho invoices","description":"Every time a new Zoho Invoice is created, Make will automatically use the data in that invoice to generate a PDFMonkey document.","url":"4512-generate-pdfmonkey-documents-from-zoho-invoices","usedApps":["zoho-invoice","pdfmonkey"],"usage":5}

@@ -1,0 +1,1 @@
+{"id":7687,"name":"Create Monday items from MantisBT issues","description":"Make will watch new issues in your MantisBT at regular intervals and create items in Monday using the information from MantisBT.","url":"7687-create-monday-items-from-mantisbt-issues","usedApps":["mantisbt","monday"],"usage":10}

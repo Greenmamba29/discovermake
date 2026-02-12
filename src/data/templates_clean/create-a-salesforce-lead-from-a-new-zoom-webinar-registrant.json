@@ -1,0 +1,1 @@
+{"id":6066,"name":"Create a Salesforce lead from a new Zoom webinar registrant","description":"Every time a Zoom webinar registrant is added, Make will automatically create a Salesforce lead.","url":"6066-create-a-salesforce-lead-from-a-new-zoom-webinar-registrant","usedApps":["zoom","salesforce"],"usage":4}

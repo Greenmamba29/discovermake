@@ -1,0 +1,1 @@
+{"id":2507,"name":"Save new Wufoo entries to a Coda doc","description":"Every time someone fills out a selected Wufoo form, Make will automatically add a new row to your Coda table.","url":"2507-save-new-wufoo-entries-to-a-coda-doc","usedApps":["wufoo","coda"],"usage":0}

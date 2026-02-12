@@ -1,0 +1,1 @@
+{"id":2216,"name":"Get Google Chrome notifications for new Zammad tickets","description":"Get notification on Chrome when there is an Open ticket in Zammad.","url":"2216-get-google-chrome-notifications-for-new-zammad-tickets","usedApps":["zammad","chrome"],"usage":34}

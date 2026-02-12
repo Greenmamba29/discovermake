@@ -1,0 +1,1 @@
+{"id":5691,"name":"Send emails when tasks are completed on Asana","description":"Whenever a task status is changed to 'completed' on Asana, an email is sent informing the person/s of the updated task.","url":"5691-send-emails-when-tasks-are-completed-on-asana","usedApps":["asana","google-email"],"usage":108}

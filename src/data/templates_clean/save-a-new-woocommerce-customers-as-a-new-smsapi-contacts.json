@@ -1,0 +1,1 @@
+{"id":7094,"name":"Save a new WooCommerce customers as a new SMSAPI contacts","description":"Every time when a new customer is created in WooCommerce, Make will automatically add that customer to SMSAPI as a new contact.","url":"7094-save-a-new-woocommerce-customers-as-a-new-smsapi-contacts","usedApps":["woocommerce","smsapi"],"usage":4}

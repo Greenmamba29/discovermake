@@ -1,0 +1,1 @@
+{"id":8528,"name":"Add new Quaderno contacts to Mailchimp as a subscribers","description":"Every time a new contact is created in Quaderno, Make will automatically add subscriber to your Mailchimp.","url":"8528-add-new-quaderno-contacts-to-mailchimp-as-a-subscribers","usedApps":["quaderno","mailchimp"],"usage":5}

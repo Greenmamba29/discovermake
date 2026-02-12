@@ -1,0 +1,1 @@
+{"id":5011,"name":"Create a QuickBooks customer when a Shopify order is placed","description":"Every time a new Shopify order is placed, Make will automatically create a QuickBooks customer (provided it doesn't already exist).","url":"5011-create-a-quickbooks-customer-when-a-shopify-order-is-placed","usedApps":["shopify","quickbooks"],"usage":18}

@@ -1,0 +1,1 @@
+{"id":2520,"name":"Add new MeisterTask tasks to a table in a Coda doc","description":"Every time a new task is created in MeisterTask, Make will automatically add that task to a new row in your Coda table.","url":"2520-add-new-meistertask-tasks-to-a-table-in-a-coda-doc","usedApps":["meistertask","coda"],"usage":4}

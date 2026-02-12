@@ -1,0 +1,1 @@
+{"id":5502,"name":"Track the number of new CallRail phone calls in Cyfe","description":"Every time you have a new incoming call on CallRail, Make will automatically increment the value of your Cyfe chart.","url":"5502-track-the-number-of-new-callrail-phone-calls-in-cyfe","usedApps":["callrail","cyfe"],"usage":3}

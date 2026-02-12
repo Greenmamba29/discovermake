@@ -1,0 +1,1 @@
+{"id":2510,"name":"Save new Jotform entries to a Coda doc","description":"Every time someone fills out a selected Jotform form, Make will automatically add a new row to your Coda table.","url":"2510-save-new-jotform-entries-to-a-coda-doc","usedApps":["jotform","coda"],"usage":14}

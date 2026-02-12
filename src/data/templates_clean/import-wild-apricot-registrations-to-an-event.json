@@ -1,0 +1,1 @@
+{"id":2426,"name":"Import Wild Apricot registrations to an event","description":"This template creates registrations in a Wild Apricot event based on the information in Google sheet","url":"2426-import-wild-apricot-registrations-to-an-event","usedApps":["wild-apricot","util","builtin","google-sheets"],"usage":313}

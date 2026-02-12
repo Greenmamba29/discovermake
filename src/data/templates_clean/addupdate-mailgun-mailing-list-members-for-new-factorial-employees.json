@@ -1,0 +1,1 @@
+{"id":7539,"name":"Add/Update Mailgun mailing list members for new Factorial employees","description":"Make will watch your Factorial employees and add them to your Mailgun mailing list.","url":"7539-add-update-mailgun-mailing-list-members-for-new-factorial-employees","usedApps":["factorial","mailgun"],"usage":1}

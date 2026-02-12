@@ -1,0 +1,1 @@
+{"id":3247,"name":"Add new Zoho Inventory sales orders to Trello as cards","description":"Every time a new sales order is created in Zoho Inventory, Make will automatically create a new card in Trello.","url":"3247-add-new-zoho-inventory-sales-orders-to-trello-as-cards","usedApps":["zoho-inventory","trello"],"usage":6}

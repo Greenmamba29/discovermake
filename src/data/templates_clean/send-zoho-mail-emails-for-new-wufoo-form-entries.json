@@ -1,0 +1,1 @@
+{"id":2705,"name":"Send Zoho Mail emails for new Wufoo form entries","description":"Every time someone fills out your Wufoo form, Make will automatically send an email in Zoho Mail.","url":"2705-send-zoho-mail-emails-for-new-wufoo-form-entries","usedApps":["wufoo","zoho-mail"],"usage":2}

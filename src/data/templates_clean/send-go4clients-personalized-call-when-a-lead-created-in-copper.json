@@ -1,0 +1,1 @@
+{"id":4471,"name":"Send Go4Clients personalized Call when a lead created in Copper","description":"When a lead is created in Copper, Go4Clients will send a personalized Call to the lead. You could use your own audio or  use Text2Speech","url":"4471-send-go4clients-personalized-call-when-a-lead-created-in-copper","usedApps":["prosperworks","go4clients"],"usage":1}

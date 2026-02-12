@@ -1,0 +1,1 @@
+{"id":15316,"name":"Add new Plumsail form responses to Google Sheets","description":"Automatically add a new row to a Google Sheets spreadsheet with the submission data when a Plumsail form is submitted.","url":"15316-add-new-plumsail-form-responses-to-google-sheets","usedApps":["plumsail-forms","util","google-sheets"],"usage":4}

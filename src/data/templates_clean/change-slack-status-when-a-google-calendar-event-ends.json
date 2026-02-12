@@ -1,0 +1,1 @@
+{"id":5942,"name":"Change Slack status when a Google Calendar event ends","description":"Use this template to change a Slack status when a Google Calendar event ends.","url":"5942-change-slack-status-when-a-google-calendar-event-ends","usedApps":["google-calendar","slack"],"usage":24}

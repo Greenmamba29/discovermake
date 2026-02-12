@@ -1,0 +1,1 @@
+{"id":8088,"name":"Create Delesign messages for new Telegram messages","description":"Every time your Telegram bot receives a message, Make will automatically forward it to your Delesign.","url":"8088-create-delesign-messages-for-new-telegram-messages","usedApps":["telegram","delesign"],"usage":2}

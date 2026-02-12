@@ -1,0 +1,1 @@
+{"id":8715,"name":"Add new Tars conversations to a Google Sheets spreadsheet","description":"Every time these is a new conversation in Tars, Make will automatically add this conversation to a specified Google Sheets spreadsheet.","url":"8715-add-new-tars-conversations-to-a-google-sheets-spreadsheet","usedApps":["tars","builtin","google-sheets"],"usage":3}

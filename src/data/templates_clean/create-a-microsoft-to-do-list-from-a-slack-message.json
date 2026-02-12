@@ -1,0 +1,1 @@
+{"id":4999,"name":"Create a Microsoft To Do list from a Slack message","description":"Every time there's a new Slack message, Make will automatically create a Microsoft To Do list.","url":"4999-create-a-microsoft-to-do-list-from-a-slack-message","usedApps":["slack","microsoft-to-do"],"usage":10}

@@ -1,0 +1,1 @@
+{"id":1035,"name":"Create Knack records from new Wufoo form entries","description":"Every time someone fills out a selected Wufoo form, Make will automatically create a new record in Knack.","url":"1035-create-knack-records-from-new-wufoo-form-entries","usedApps":["wufoo","knack"],"usage":0}

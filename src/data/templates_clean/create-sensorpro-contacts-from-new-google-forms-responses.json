@@ -1,0 +1,1 @@
+{"id":6896,"name":"Create Sensorpro contacts from new Google Forms responses","description":"Every time a new response is entered on your Google Form, Make will automatically create a new Sensorpro contact.","url":"6896-create-sensorpro-contacts-from-new-google-forms-responses","usedApps":["google-forms","sensorpro"],"usage":0}

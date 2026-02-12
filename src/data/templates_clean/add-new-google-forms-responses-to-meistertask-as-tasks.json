@@ -1,0 +1,1 @@
+{"id":2283,"name":"Add new Google Forms responses to MeisterTask as tasks","description":"Every time someone fills out your Google Form, Make will automatically add a new task to a specific MeisterTask project.","url":"2283-add-new-google-forms-responses-to-meistertask-as-tasks","usedApps":["google-forms","meistertask"],"usage":13}

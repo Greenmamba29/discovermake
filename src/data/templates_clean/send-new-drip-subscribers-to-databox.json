@@ -1,0 +1,1 @@
+{"id":3908,"name":"Send new Drip subscribers to Databox","description":"Every time you a new subscriber is created in Drip, Make will automatically update that information in Databox, enabling you an even more detailed overview of your Drip contacts. ","url":"3908-send-new-drip-subscribers-to-databox","usedApps":["drip","databox"],"usage":25}

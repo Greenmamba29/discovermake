@@ -1,0 +1,1 @@
+{"id":8708,"name":"Create Trello cards from new Tars conversations","description":"Every time these is a new conversation in Tars, Make will automatically create a card on a specified Trello board.","url":"8708-create-trello-cards-from-new-tars-conversations","usedApps":["tars","builtin","util","trello"],"usage":4}

@@ -1,0 +1,1 @@
+{"id":4125,"name":"Send Android push notifications when a KanbanFlow task is moved","description":"Every time a task is moved to another column or swimlane in KanbanFlow, Make will automatically send a Push notification to your Android mobile device.","url":"4125-send-android-push-notifications-when-a-kanbanflow-task-is-moved","usedApps":["kanbanflow","android"],"usage":1}

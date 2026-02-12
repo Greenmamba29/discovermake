@@ -1,0 +1,1 @@
+{"id":5088,"name":"Create a Vision6 contact for new Stripe customer","description":"Every time a new customer is added to Stripe, Make will automatically create a contact in Vision6.","url":"5088-create-a-vision6-contact-for-new-stripe-customer","usedApps":["stripe","vision6"],"usage":1}

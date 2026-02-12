@@ -1,0 +1,1 @@
+{"id":13171,"name":"Fetch new articles from RSS feeds and send data in JSON format","description":"Automatically fetch new articles from RSS feeds, convert them into JSON format, and send the data using HTTP for streamlined content distribution.","url":"13171-fetch-new-articles-from-rss-feeds-and-send-data-in-json-format","usedApps":["rss","json","http"],"usage":41}

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Workflow Pricing Controls</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13a4ec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101c22",
+                        "surface-dark": "#1a2a32",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .ios-bottom-bar {
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
+<!-- Main Container -->
+<div class="relative flex h-screen w-full flex-col overflow-hidden max-w-md mx-auto border-x border-slate-200 dark:border-slate-800">
+<!-- TopAppBar -->
+<header class="flex items-center bg-background-light dark:bg-background-dark p-4 pb-2 justify-between sticky top-0 z-20 border-b border-slate-200 dark:border-slate-800/50">
+<div class="text-primary flex size-10 shrink-0 items-center justify-start cursor-pointer">
+<span class="material-symbols-outlined">arrow_back_ios</span>
+</div>
+<h1 class="text-slate-900 dark:text-white text-base font-bold leading-tight tracking-tight flex-1 text-center">Pricing Controls</h1>
+<div class="flex w-10 items-center justify-end">
+<span class="bg-primary/20 text-primary px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider leading-normal shrink-0 border border-primary/30">Active</span>
+</div>
+</header>
+<!-- Scrollable Content -->
+<main class="flex-1 overflow-y-auto px-4 py-4 space-y-6">
+<!-- License Type Section -->
+<section>
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-primary text-sm">verified_user</span>
+<h2 class="text-slate-900 dark:text-white text-sm font-bold uppercase tracking-wider">License Type</h2>
+</div>
+<div class="flex h-11 w-full items-center justify-center rounded-xl bg-slate-200/50 dark:bg-surface-dark p-1">
+<label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-white dark:has-[:checked]:bg-background-dark has-[:checked]:shadow-sm has-[:checked]:text-primary text-slate-500 dark:text-slate-400 text-xs font-semibold transition-all">
+<span class="truncate">Personal</span>
+<input checked="" class="hidden" name="license-type" type="radio" value="Personal"/>
+</label>
+<label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-white dark:has-[:checked]:bg-background-dark has-[:checked]:shadow-sm has-[:checked]:text-primary text-slate-500 dark:text-slate-400 text-xs font-semibold transition-all">
+<span class="truncate">Team</span>
+<input class="hidden" name="license-type" type="radio" value="Team"/>
+</label>
+<label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-white dark:has-[:checked]:bg-background-dark has-[:checked]:shadow-sm has-[:checked]:text-primary text-slate-500 dark:text-slate-400 text-xs font-semibold transition-all">
+<span class="truncate">Enterprise</span>
+<input class="hidden" name="license-type" type="radio" value="Enterprise"/>
+</label>
+</div>
+</section>
+<!-- Pricing Model Section -->
+<section>
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-primary text-sm">payments</span>
+<h2 class="text-slate-900 dark:text-white text-sm font-bold uppercase tracking-wider">Pricing Model</h2>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<div class="relative flex flex-col gap-3 p-3 rounded-xl border-2 border-primary bg-primary/5 dark:bg-primary/10">
+<div class="absolute top-2 right-2 text-primary">
+<span class="material-symbols-outlined text-lg">check_circle</span>
+</div>
+<span class="material-symbols-outlined text-3xl text-primary">sell</span>
+<div>
+<p class="text-slate-900 dark:text-white text-sm font-bold">One-time</p>
+<p class="text-slate-500 dark:text-slate-400 text-[11px]">Pay once, use forever</p>
+</div>
+</div>
+<div class="flex flex-col gap-3 p-3 rounded-xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-surface-dark/40">
+<span class="material-symbols-outlined text-3xl text-slate-400 dark:text-slate-600">token</span>
+<div>
+<p class="text-slate-900 dark:text-white text-sm font-bold">Credits</p>
+<p class="text-slate-500 dark:text-slate-400 text-[11px]">Pay per execution</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Revenue Share Visualizer -->
+<section class="bg-slate-100 dark:bg-surface-dark rounded-xl p-4 border border-slate-200 dark:border-slate-800">
+<h2 class="text-slate-900 dark:text-white text-sm font-bold mb-4">Revenue Share Breakdown</h2>
+<div class="flex justify-between items-end mb-2">
+<div class="flex flex-col">
+<span class="text-[10px] text-slate-500 uppercase font-bold">Workflow Price</span>
+<span class="text-2xl font-bold text-slate-900 dark:text-white">$49.00</span>
+</div>
+<div class="text-right">
+<span class="text-[10px] text-slate-500 uppercase font-bold">Your Share (85%)</span>
+<span class="block text-lg font-bold text-primary">$41.65</span>
+</div>
+</div>
+<div class="h-4 w-full bg-slate-200 dark:bg-slate-800 rounded-full flex overflow-hidden mb-4">
+<div class="h-full bg-primary" style="width: 85%"></div>
+<div class="h-full bg-primary/30" style="width: 15%"></div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-xs">
+<div class="flex items-center gap-1.5 text-slate-600 dark:text-slate-300">
+<div class="size-2 rounded-full bg-primary"></div>
+<span>Creator Take</span>
+</div>
+<span class="font-medium text-slate-900 dark:text-white">$41.65</span>
+</div>
+<div class="flex justify-between text-xs">
+<div class="flex items-center gap-1.5 text-slate-600 dark:text-slate-300">
+<div class="size-2 rounded-full bg-primary/30"></div>
+<span>Platform Fee (15%)</span>
+</div>
+<span class="font-medium text-slate-900 dark:text-white">$7.35</span>
+</div>
+</div>
+</section>
+<!-- Usage Limits & SLA -->
+<section class="space-y-4">
+<div>
+<div class="flex items-center justify-between mb-2">
+<h3 class="text-slate-900 dark:text-white text-sm font-bold">Monthly Execution Limit</h3>
+<span class="text-primary font-bold text-sm">2,500</span>
+</div>
+<input class="w-full h-1.5 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-primary" max="10000" min="0" step="500" type="range" value="2500"/>
+<div class="flex justify-between text-[10px] text-slate-500 mt-1 uppercase font-bold">
+<span>0</span>
+<span>Unlimited</span>
+</div>
+</div>
+<div class="space-y-2">
+<h3 class="text-slate-900 dark:text-white text-sm font-bold">Support SLA</h3>
+<div class="space-y-2">
+<div class="flex items-center justify-between p-3 rounded-xl border border-primary bg-primary/5">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">support_agent</span>
+<div>
+<p class="text-xs font-bold dark:text-white">Priority Response</p>
+<p class="text-[10px] text-slate-500">Under 4 hours response time</p>
+</div>
+</div>
+<input checked="" class="text-primary focus:ring-primary h-4 w-4" name="sla" type="radio"/>
+</div>
+<div class="flex items-center justify-between p-3 rounded-xl border border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-400">schedule</span>
+<div>
+<p class="text-xs font-bold dark:text-white">Standard Support</p>
+<p class="text-[10px] text-slate-500">24-48 hours response time</p>
+</div>
+</div>
+<input class="text-primary focus:ring-primary h-4 w-4" name="sla" type="radio"/>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Fixed Bottom Actions -->
+<footer class="p-4 bg-white dark:bg-background-dark border-t border-slate-200 dark:border-slate-800 ios-bottom-bar">
+<div class="flex flex-col gap-3">
+<button class="w-full py-3.5 px-4 bg-primary text-white font-bold rounded-xl shadow-lg shadow-primary/20 active:scale-[0.98] transition-all">
+                    Update Listing
+                </button>
+<button class="w-full py-3 px-4 bg-slate-100 dark:bg-surface-dark text-slate-600 dark:text-slate-300 font-bold rounded-xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined text-lg">visibility</span>
+                    Preview Marketplace View
+                </button>
+</div>
+</footer>
+</div>
+</body></html>

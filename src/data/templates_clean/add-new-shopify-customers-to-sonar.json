@@ -1,0 +1,1 @@
+{"id":7455,"name":"Add new Shopify customers to Sonar","description":"Every time a new customer is created in Shopify, Make will automatically create a new customer in Sonar.","url":"7455-add-new-shopify-customers-to-sonar","usedApps":["shopify","sonar"],"usage":1}

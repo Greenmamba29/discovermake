@@ -1,0 +1,1 @@
+{"id":10951,"name":"Add new incoming emails to a Google Sheets spreadsheet as a new row","description":"Every time you receive a new email, Make will automatically add selected data from the email to a new row in a Google Sheets spreadsheet.","url":"2-add-new-incoming-emails-to-a-google-sheets-spreadsheet-as-a-new-row","usedApps":["email","google-sheets"],"usage":20733}

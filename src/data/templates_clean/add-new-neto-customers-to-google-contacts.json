@@ -1,0 +1,1 @@
+{"id":6871,"name":"Add new Neto customers to Google Contacts","description":"Every time a new customer is created in Neto, Make will automatically create a new contact in Google Contacts.","url":"6871-add-new-neto-customers-to-google-contacts","usedApps":["neto","google-contacts"],"usage":2}

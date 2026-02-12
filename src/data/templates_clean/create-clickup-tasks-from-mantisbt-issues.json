@@ -1,0 +1,1 @@
+{"id":7685,"name":"Create ClickUp tasks from MantisBT issues","description":"Make will watch new issues in your MantisBT at regular intervals and create tasks in ClickUp using the information from MantisBT.","url":"7685-create-clickup-tasks-from-mantisbt-issues","usedApps":["mantisbt","clickup"],"usage":11}

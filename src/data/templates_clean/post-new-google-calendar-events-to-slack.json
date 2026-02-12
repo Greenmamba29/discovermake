@@ -1,0 +1,1 @@
+{"id":5943,"name":"Post new Google Calendar events to Slack","description":"Use this template to send a Slack message to a channel or a user when a new Google Calendar event is created.","url":"5943-post-new-google-calendar-events-to-slack","usedApps":["google-calendar","slack"],"usage":283}

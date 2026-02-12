@@ -1,0 +1,1 @@
+{"id":4980,"name":"Create card in Trello for new input from Chatforma","description":"Every time a new user input is received from Chatforma, Make will automatically create a card in Trello.","url":"4980-create-card-in-trello-for-new-input-from-chatforma","usedApps":["chatforma","trello"],"usage":2}

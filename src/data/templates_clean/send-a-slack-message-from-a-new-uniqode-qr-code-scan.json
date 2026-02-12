@@ -1,0 +1,1 @@
+{"id":12208,"name":"Send a Slack message from a new Uniqode QR code scan","description":"Every time a new Uniqode QR code scan happens, Make will automatically send a Slack message.","url":"7524-send-a-slack-message-from-a-new-beaconstac-qr-code-scan","usedApps":["beaconstac","slack"],"usage":4}

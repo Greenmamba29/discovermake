@@ -1,0 +1,1 @@
+{"id":1756,"name":"Add new Copper leads to GetResponse as contacts","description":"Every time a new lead is added on Copper, Make will automatically add a new contact to a GetResponse list you specify.","url":"1756-add-new-copper-leads-to-getresponse-as-contacts","usedApps":["prosperworks","getresponse"],"usage":1}

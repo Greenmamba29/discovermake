@@ -1,0 +1,1 @@
+{"id":4158,"name":"Track new Stripe payments in a Cyfe chart","description":"Every time a new Stripe charge is successfully captured, Make will automatically push the payment value in the Cyfe widget of your choice.","url":"4158-track-new-stripe-payments-in-a-cyfe-chart","usedApps":["stripe","cyfe"],"usage":29}

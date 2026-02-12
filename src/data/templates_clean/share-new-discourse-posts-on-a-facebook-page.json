@@ -1,0 +1,1 @@
+{"id":5000,"name":"Share new Discourse posts on a Facebook Page","description":"Whenever you add new posts in Discourse, Make will automatically retrieve the posts and share them on a Facebook page.","url":"5000-share-new-discourse-posts-on-a-facebook-page","usedApps":["discourse","facebook-pages"],"usage":31}

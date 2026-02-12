@@ -1,0 +1,1 @@
+{"id":7056,"name":"Shorten an RSS link with kutt and send it as a Discord message","description":"Use this template to automatically shorten a new RSS feed item link with kutt and post it as a Discord message.","url":"7056-shorten-an-rss-link-with-kutt-and-send-it-as-a-discord-message","usedApps":["rss","kutt","discord"],"usage":14}

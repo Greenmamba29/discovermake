@@ -1,0 +1,1 @@
+{"id":4828,"name":"Create Sendcloud parcels from new Zoho CRM sales orders","description":"Every time a sales order is created in Zoho CRM, Make will automatically create a new parcel in Sendcloud.","url":"4828-create-sendcloud-parcels-from-new-zoho-crm-sales-orders","usedApps":["zohocrm","sendcloud"],"usage":9}

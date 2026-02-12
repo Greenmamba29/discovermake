@@ -1,0 +1,1 @@
+{"id":8389,"name":"Create a Pushwoosh notification from new Trello cards","description":"Every time a card is created in Trello, Make will automatically create a push notification in Pushwoosh with details of this card.","url":"8389-create-a-pushwoosh-notification-from-new-trello-cards","usedApps":["trello","pushwoosh"],"usage":2}

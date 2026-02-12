@@ -1,0 +1,1 @@
+{"id":6993,"name":"Save new LiveAgent customers as a new Shopify customers","description":"Every time a new customer is created in LiveAgent, Make will automatically create a new customer in Shopify.","url":"6993-save-new-liveagent-customers-as-a-new-shopify-customers","usedApps":["liveagent","shopify"],"usage":1}

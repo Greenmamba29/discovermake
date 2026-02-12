@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Revenue &amp; Take-Rate Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13a4ec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#0b0b0b",
+                        "surface-dark": "#1a1a1a",
+                        "accent-red": "#ff4d4d",
+                        "accent-green": "#0bda57",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 antialiased">
+<!-- Top App Bar -->
+<header class="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+<div class="flex items-center justify-between p-4">
+<button class="flex items-center justify-center p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800">
+<span class="material-symbols-outlined">arrow_back_ios</span>
+</button>
+<h1 class="text-lg font-bold tracking-tight">Financial Overview</h1>
+<button class="flex items-center justify-center p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800">
+<span class="material-symbols-outlined text-primary">calendar_month</span>
+</button>
+</div>
+<!-- Period Tabs -->
+<nav class="flex px-4 overflow-x-auto no-scrollbar gap-6 border-t border-slate-200 dark:border-slate-800">
+<a class="py-3 border-b-2 border-primary text-primary text-sm font-semibold whitespace-nowrap" href="#">Last 30 Days</a>
+<a class="py-3 border-b-2 border-transparent text-slate-500 dark:text-slate-400 text-sm font-semibold whitespace-nowrap" href="#">Quarterly</a>
+<a class="py-3 border-b-2 border-transparent text-slate-500 dark:text-slate-400 text-sm font-semibold whitespace-nowrap" href="#">Yearly</a>
+<a class="py-3 border-b-2 border-transparent text-slate-500 dark:text-slate-400 text-sm font-semibold whitespace-nowrap" href="#">Custom</a>
+</nav>
+</header>
+<main class="p-4 space-y-6 max-w-md mx-auto">
+<!-- Summary Metric Horizontal Scroll -->
+<section class="flex overflow-x-auto gap-4 no-scrollbar pb-2">
+<div class="min-w-[160px] flex-1 flex flex-col gap-2 rounded-xl p-5 bg-white dark:bg-surface-dark shadow-sm border border-slate-200 dark:border-slate-800">
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider">Total Revenue</p>
+<p class="text-2xl font-bold leading-tight">$128,430</p>
+<div class="flex items-center gap-1 text-accent-green text-xs font-bold">
+<span class="material-symbols-outlined text-xs">trending_up</span>
+<span>+12.4%</span>
+</div>
+</div>
+<div class="min-w-[160px] flex-1 flex flex-col gap-2 rounded-xl p-5 bg-white dark:bg-surface-dark shadow-sm border border-slate-200 dark:border-slate-800">
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider">Avg. Take-Rate</p>
+<p class="text-2xl font-bold leading-tight">15.0%</p>
+<div class="flex items-center gap-1 text-slate-400 text-xs font-bold">
+<span class="material-symbols-outlined text-xs">horizontal_rule</span>
+<span>0.0%</span>
+</div>
+</div>
+<div class="min-w-[160px] flex-1 flex flex-col gap-2 rounded-xl p-5 bg-white dark:bg-surface-dark shadow-sm border border-slate-200 dark:border-slate-800">
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider">Active Subs</p>
+<p class="text-2xl font-bold leading-tight">1,240</p>
+<div class="flex items-center gap-1 text-accent-green text-xs font-bold">
+<span class="material-symbols-outlined text-xs">trending_up</span>
+<span>+5.2%</span>
+</div>
+</div>
+</section>
+<!-- Revenue Breakdown Section -->
+<section class="rounded-xl p-5 bg-white dark:bg-surface-dark shadow-sm border border-slate-200 dark:border-slate-800">
+<div class="flex justify-between items-start mb-6">
+<div>
+<h3 class="text-base font-bold">Revenue Breakdown</h3>
+<p class="text-slate-500 dark:text-slate-400 text-xs">Volume by stream source</p>
+</div>
+<span class="material-symbols-outlined text-slate-400">info</span>
+</div>
+<div class="space-y-4">
+<div class="space-y-2">
+<div class="flex justify-between text-xs font-bold uppercase tracking-tight">
+<span class="text-slate-500 dark:text-slate-400">Subscriptions</span>
+<span class="text-white">$102,744 (80%)</span>
+</div>
+<div class="h-2 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+<div class="h-full bg-primary" style="width: 80%;"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-xs font-bold uppercase tracking-tight">
+<span class="text-slate-500 dark:text-slate-400">Platform Fees</span>
+<span class="text-white">$25,686 (20%)</span>
+</div>
+<div class="h-2 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+<div class="h-full bg-primary/60" style="width: 20%;"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-xs font-bold uppercase tracking-tight">
+<span class="text-slate-500 dark:text-slate-400">Credits Issued</span>
+<span class="text-accent-red">-$2,100</span>
+</div>
+<div class="h-2 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+<div class="h-full bg-accent-red/40" style="width: 5%;"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Take-Rate Control (View Only) -->
+<section class="bg-primary/10 border border-primary/20 rounded-xl p-4 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">lock</span>
+</div>
+<div>
+<p class="text-sm font-bold">Global Take-Rate: 15.0%</p>
+<p class="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-bold">Permissions: View Only</p>
+</div>
+</div>
+<button class="text-primary text-xs font-bold uppercase tracking-widest opacity-50 cursor-not-allowed">Edit</button>
+</section>
+<!-- Revenue Forecast Placeholder -->
+<section class="space-y-3">
+<h3 class="text-base font-bold px-1">Revenue Forecast</h3>
+<div class="relative h-48 w-full rounded-xl bg-white dark:bg-surface-dark border border-dashed border-slate-300 dark:border-slate-700 flex flex-col items-center justify-center overflow-hidden">
+<div class="absolute inset-0 opacity-10 flex items-end">
+<!-- Abstract representation of a line chart -->
+<svg class="w-full h-full" viewbox="0 0 400 150">
+<path d="M0,150 L0,120 C50,110 80,140 120,100 C160,60 200,90 250,40 C300,-10 350,20 400,10 L400,150 Z" fill="url(#grad)"></path>
+<defs>
+<lineargradient id="grad" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:var(--primary);stop-opacity:1"></stop>
+<stop offset="100%" style="stop-color:var(--primary);stop-opacity:0"></stop>
+</lineargradient>
+</defs>
+</svg>
+</div>
+<span class="material-symbols-outlined text-slate-400 text-3xl mb-2">analytics</span>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium">Predictive Model Loading...</p>
+</div>
+</section>
+<!-- Top Creators by Revenue -->
+<section class="space-y-3">
+<div class="flex items-center justify-between px-1">
+<h3 class="text-base font-bold">Top Creators</h3>
+<button class="text-primary text-xs font-bold">View All</button>
+</div>
+<div class="bg-white dark:bg-surface-dark rounded-xl border border-slate-200 dark:border-slate-800 divide-y divide-slate-100 dark:divide-slate-800">
+<!-- Creator 1 -->
+<div class="flex items-center justify-between p-4">
+<div class="flex items-center gap-3">
+<img class="size-10 rounded-full object-cover" data-alt="Male portrait with soft lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDV39wmMbSKDbWWnvyKXSGoLHK3H_uUS841qaxWJELK7U78aJQCPUuh9sQVX8Kgr9xvouyOpgO5KoR03lEO0szUJrf6_FGE6dKloH6Sme-5K12Movcj_dZekuja0M82WxCofGHz_Y3aRMUUaLoi7rLcNfIp27GZCaxDmkUz8w5oZlA3G7C4ik-4HZ5HiIDxyViqZIAoOvurw78A65Xhmv4qClNWgmVAtBEuzewG-QMgcacwYXaKm3T7nzHP20_Fu82bZRSj9ykWdMk"/>
+<div>
+<p class="text-sm font-bold">Alex Rivera</p>
+<p class="text-[10px] text-slate-500 font-medium">15% Share Rate</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-sm font-bold">$12,450</p>
+<p class="text-[10px] text-accent-green font-bold">+8.2%</p>
+</div>
+</div>
+<!-- Creator 2 -->
+<div class="flex items-center justify-between p-4">
+<div class="flex items-center gap-3">
+<img class="size-10 rounded-full object-cover" data-alt="Female smiling professional portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGw71Wc7z9Flz5chp3gVGyGs9ZxE_5IyGmWyXjqcUMQnGHTQf_36DaMyjnV7UpjE6zAgbLLGFSswSdCR0JxHAteD7YqoQIQHdabEHupMQF2AIABZn-8EsFX3ZGapV7X0Rvy0bgIvDdnU6dBX_3LlI_Ea4M0j0G_sZKXvtxgdkVitBBCLEQYTPGOrDakTfvbkGgOLFZpg_WKsL86kj2L7w0-mZ39KF7SfmKnOQ3TeB8PR3HalezYsR_D1ZXUQaCqL5JQLlo2_r9xxk"/>
+<div>
+<p class="text-sm font-bold">Sarah Chen</p>
+<p class="text-[10px] text-slate-500 font-medium">12% Share Rate</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-sm font-bold">$10,120</p>
+<p class="text-[10px] text-accent-green font-bold">+15.1%</p>
+</div>
+</div>
+<!-- Creator 3 -->
+<div class="flex items-center justify-between p-4">
+<div class="flex items-center gap-3">
+<img class="size-10 rounded-full object-cover" data-alt="Person with glasses smiling portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPPeA3nFlkaOWClwh_oVVL5OtxTDnaHdYLf1LFJE-VRhXmNMgfKXp8LUSBYi6Z9cK3uEklDvaZ96jY-DDaojyydDm-I5OzZ4zXz1fsaKhBEfmvT9Ky6sHKWiH3D1sq9yZYammyrtZtNKDfoFHDjfnztWccEVT4uqxjLz9ncM_ue575cBdi0E2j14gxYyPwaK8zHpYW74rp5oyBCOvMIWY5-P8T4CUN6aVaG6k4Y2-3UEMulzI4DJOnCKyftkudBRCys9WApRvlZ_A"/>
+<div>
+<p class="text-sm font-bold">Marcus Thorne</p>
+<p class="text-[10px] text-slate-500 font-medium">18% Share Rate</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-sm font-bold">$9,840</p>
+<p class="text-[10px] text-accent-red font-bold">-2.4%</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Refunds & Disputes Panel -->
+<section class="rounded-xl p-5 bg-white dark:bg-surface-dark shadow-sm border border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-2 text-accent-red mb-4">
+<span class="material-symbols-outlined">report</span>
+<h3 class="text-sm font-bold uppercase tracking-wider">Risk &amp; Disputes</h3>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="space-y-1">
+<p class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase">Open Disputes</p>
+<p class="text-xl font-bold">14</p>
+<p class="text-[10px] text-accent-red font-medium">Action Required</p>
+</div>
+<div class="space-y-1">
+<p class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase">Refund Volume</p>
+<p class="text-xl font-bold">$3,842</p>
+<p class="text-[10px] text-slate-500 font-medium">Last 30 days</p>
+</div>
+</div>
+<button class="w-full mt-5 py-3 rounded-lg bg-slate-100 dark:bg-slate-800 text-xs font-bold uppercase tracking-widest hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                Manage Resolutions
+            </button>
+</section>
+<!-- Bottom Spacer for iOS Home Indicator -->
+<div class="h-12"></div>
+</main>
+<!-- Bottom Nav Bar (Simulated) -->
+<nav class="fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-background-dark/90 backdrop-blur-lg border-t border-slate-200 dark:border-slate-800 px-6 py-3 flex justify-between items-center z-50">
+<div class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[10px] font-bold">Home</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-slate-400">
+<span class="material-symbols-outlined">payments</span>
+<span class="text-[10px] font-bold">Payouts</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-slate-400">
+<span class="material-symbols-outlined">group</span>
+<span class="text-[10px] font-bold">Users</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-slate-400">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] font-bold">Admin</span>
+</div>
+</nav>
+</body></html>

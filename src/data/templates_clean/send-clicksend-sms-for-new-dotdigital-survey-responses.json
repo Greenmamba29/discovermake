@@ -1,0 +1,1 @@
+{"id":7174,"name":"Send Clicksend SMS for new dotdigital survey responses","description":"Every time there is a new dotdigital survey response, Make will automatically send an SMS via ClickSend to a phone number that was entered in a survey.","url":"7174-send-clicksend-sms-for-new-dotdigital-survey-responses","usedApps":["dotdigital","regexp","clicksend"],"usage":2}

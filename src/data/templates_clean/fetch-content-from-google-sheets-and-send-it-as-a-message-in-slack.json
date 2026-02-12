@@ -1,0 +1,1 @@
+{"id":12677,"name":"Fetch content from Google Sheets and send it as a message in Slack","description":"Automatically fetch data from Google Sheets and send it as a message in Slack, streamlining communication and data sharing across your team.\n","url":"12677-fetch-content-from-google-sheets-and-send-it-as-a-message-in-slack","usedApps":["google-sheets","slack"],"usage":34}

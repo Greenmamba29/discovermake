@@ -1,0 +1,1 @@
+{"id":6834,"name":"Add new Trello cards to Mavenlink as tasks","description":"Every time a new card is created in a specified Trello board, Make will automatically add a new task to a selected Mavenlink project.","url":"6834-add-new-trello-cards-to-mavenlink-as-tasks","usedApps":["trello","mavenlink"],"usage":2}

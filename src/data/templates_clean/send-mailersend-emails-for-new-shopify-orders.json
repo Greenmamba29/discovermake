@@ -1,0 +1,1 @@
+{"id":6967,"name":"Send MailerSend emails for new Shopify orders","description":"Every time a new Shopify order has been processed, Make will automatically send an email to the customer using MailerSend app.","url":"6967-send-mailersend-emails-for-new-shopify-orders","usedApps":["shopify","mailersend"],"usage":9}

@@ -1,0 +1,1 @@
+{"id":6560,"name":"Get new Telegram messages in Rocket.Chat","description":"Every time you receive a new message on Telegram, Make will automatically send a message in Rocket.Chat.","url":"6560-get-new-telegram-messages-in-rocket-chat","usedApps":["telegram","rocket-chat"],"usage":16}

@@ -1,0 +1,1 @@
+{"id":7901,"name":"Create Xero contacts for new Zoho Recruit clients","description":"Make will watch for new clients in your Zoho Recruit at regular intervals and create Xero contacts using information received.","url":"7901-create-xero-contacts-for-new-zoho-recruit-clients","usedApps":["zoho-recruit","xero"],"usage":4}

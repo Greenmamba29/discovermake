@@ -1,0 +1,1 @@
+{"id":1522,"name":"Add new GetResponse contacts to Freshdesk as new contacts","description":"Every time a new contact is added to GetResponse, Make will automatically create a new contact in Freshdesk.","url":"1522-add-new-getresponse-contacts-to-freshdesk-as-new-contacts","usedApps":["freshdesk","getresponse"],"usage":1}

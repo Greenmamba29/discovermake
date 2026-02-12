@@ -1,0 +1,1 @@
+{"id":10497,"name":"Upload a new invoice from QuickBooks to Box.","description":"When a new invoice is created in QuickBooks, the PDF is downloaded and then uploaded to Box.","url":"8326-upload-a-new-invoice-from-quickbooks-to-box","usedApps":["quickbooks","box"],"usage":14}

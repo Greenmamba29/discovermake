@@ -1,0 +1,1 @@
+{"id":8437,"name":"Create Sorry subscribers from new Google Contacts","description":"Every time a new contact is created in Google Contacts, Make will automatically create subscriber in Sorry.","url":"8437-create-sorry-subscribers-from-new-google-contacts","usedApps":["google-contacts","sorry"],"usage":1}

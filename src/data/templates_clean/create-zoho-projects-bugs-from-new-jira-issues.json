@@ -1,0 +1,1 @@
+{"id":7850,"name":"Create Zoho Projects bugs from new JIRA issues","description":"Every time there is a new issue in your JIRA Cloud Platform, Make will automatically create a bug in a specified Zoho Project.","url":"7850-create-zoho-projects-bugs-from-new-jira-issues","usedApps":["jira","zoho-projects"],"usage":8}

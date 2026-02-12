@@ -1,0 +1,1 @@
+{"id":5109,"name":"Send a QuestionPro survey for a new email","description":"Every time you receive a new email, Make will automatically send a QuestionPro survey to the specified email address.","url":"5109-send-a-questionpro-survey-for-a-new-email","usedApps":["email","questionpro"],"usage":0}

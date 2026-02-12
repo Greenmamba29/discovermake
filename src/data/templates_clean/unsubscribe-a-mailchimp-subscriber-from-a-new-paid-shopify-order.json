@@ -1,0 +1,1 @@
+{"id":5526,"name":"Unsubscribe a Mailchimp subscriber from a new paid Shopify order","description":"Every time a new paid Shopify order is placed, Make will automatically unsubscribe a Mailchimp subscriber.","url":"5526-unsubscribe-a-mailchimp-subscriber-from-a-new-paid-shopify-order","usedApps":["shopify","mailchimp"],"usage":3}

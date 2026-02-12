@@ -1,0 +1,1 @@
+{"id":6026,"name":"Post new GitLab issues to Mattermost","description":"Every time a new GitLab issue is created, Make will automatically send a Mattermost message.","url":"6026-post-new-gitlab-issues-to-mattermost","usedApps":["gitlab","mattermost"],"usage":1}

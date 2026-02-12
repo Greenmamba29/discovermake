@@ -1,0 +1,1 @@
+{"id":6767,"name":"Add new Thinkific user to a Mailchimp mailing list","description":"Every time a new user is added to Thinkific, Make will automatically add this user to the specified Mailchimp mailing list.","url":"6767-add-new-thinkific-user-to-a-mailchimp-mailing-list","usedApps":["thinkific","mailchimp"],"usage":31}

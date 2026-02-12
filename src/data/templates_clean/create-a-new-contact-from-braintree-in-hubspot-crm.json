@@ -1,0 +1,1 @@
+{"id":4262,"name":"Create a new contact from Braintree in HubSpot CRM","description":"When a new contact is created in Braintree, a new contact is created in HubSpot CRM.","url":"4262-create-a-new-contact-from-braintree-in-hubspot-crm","usedApps":["braintree","hubspotcrm"],"usage":1}

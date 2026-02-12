@@ -1,0 +1,1 @@
+{"id":855,"name":"Create Bitbucket issues from new GetResponse campaigns","description":"Every time a new campaign is created in GetResponse, Make will automatically create a new issue in Bitbucket.","url":"855-create-bitbucket-issues-from-new-getresponse-campaigns","usedApps":["getresponse","bitbucket"],"usage":1}

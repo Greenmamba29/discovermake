@@ -1,0 +1,1 @@
+{"id":3733,"name":"Create QuickBooks invoices from new TSheets timesheets","description":"Every time a new timesheet is posted to a specified TSheets organization, Make will automatically create an Invoice in QuickBooks for the corresponding user.","url":"3733-create-quickbooks-invoices-from-new-tsheets-timesheets","usedApps":["tsheets","quickbooks"],"usage":19}

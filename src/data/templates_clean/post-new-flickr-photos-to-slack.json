@@ -1,0 +1,1 @@
+{"id":368,"name":"Post new Flickr photos to Slack","description":"Every time a new photo is added to Flickr, Make will automatically post that photo as a file to Slack.","url":"368-post-new-flickr-photos-to-slack","usedApps":["flickr","slack"],"usage":5}

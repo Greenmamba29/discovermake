@@ -1,0 +1,1 @@
+{"id":8579,"name":"Send a report of Splitwise expenses by Email","description":"This template searches for all Splitwise expenses for a given time period. Then, Make will automatically total all expenses and send an Email to the recipient of your choice.","url":"8579-send-a-report-of-splitwise-expenses-by-email","usedApps":["splitwise","util","email"],"usage":11}

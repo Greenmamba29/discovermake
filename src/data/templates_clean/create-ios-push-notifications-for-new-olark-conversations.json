@@ -1,0 +1,1 @@
+{"id":4424,"name":"Create iOS push notifications for new Olark conversations","description":"Every time a new conversation is started in Olark, Make will automatically send a push notification to the Apple iOS device of your choice.","url":"4424-create-ios-push-notifications-for-new-olark-conversations","usedApps":["olark","ios"],"usage":2}

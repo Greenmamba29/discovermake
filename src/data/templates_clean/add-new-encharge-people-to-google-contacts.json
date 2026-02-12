@@ -1,0 +1,1 @@
+{"id":7586,"name":"Add new Encharge people to Google Contacts","description":"Every time a new person has been added to Encharge, Make will automatically create a new contact in Google Contacts.","url":"7586-add-new-encharge-people-to-google-contacts","usedApps":["encharge","google-contacts","builtin"],"usage":2}

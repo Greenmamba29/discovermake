@@ -1,0 +1,1 @@
+{"id":8709,"name":"Add Mailchimp subscribers from new Tars conversations","description":"Every time these is a new conversation in Tars, Make will automatically add or update a Mailchimp subscriber. The data received from Tars is supposed to be email address.","url":"8709-add-mailchimp-subscribers-from-new-tars-conversations","usedApps":["tars","builtin","mailchimp"],"usage":2}

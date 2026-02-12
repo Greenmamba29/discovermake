@@ -1,0 +1,1 @@
+{"id":8319,"name":"Create HERE Tracking locations from Google Sheets","description":"Every time a new row is submitted in Google Sheets, Make will create a new location in HERE Tracking.","url":"8319-create-here-tracking-locations-from-google-sheets","usedApps":["google-sheets","here"],"usage":3}

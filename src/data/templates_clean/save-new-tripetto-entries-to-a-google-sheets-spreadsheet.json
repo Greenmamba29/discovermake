@@ -1,0 +1,1 @@
+{"id":4665,"name":"Save new Tripetto entries to a Google Sheets spreadsheet","description":"Every time someone fills out your Tripetto form, Make will automatically add the submission to a new row in a Google Sheets spreadsheet.","url":"4665-save-new-tripetto-entries-to-a-google-sheets-spreadsheet","usedApps":["tripetto","google-sheets"],"usage":220}

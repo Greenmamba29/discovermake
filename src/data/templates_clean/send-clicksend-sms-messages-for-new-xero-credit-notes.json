@@ -1,0 +1,1 @@
+{"id":2728,"name":"Send ClickSend SMS messages for new Xero credit notes","description":"Every time a new credit note is issued in Xero, Make will automatically send an SMS message via ClickSend.","url":"2728-send-clicksend-sms-messages-for-new-xero-credit-notes","usedApps":["xero","clicksend"],"usage":7}

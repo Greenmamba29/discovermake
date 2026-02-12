@@ -1,0 +1,1 @@
+{"id":7323,"name":"Create Freshchat users for new BambooHR employees","description":"Every time a new employee is added to your BambooHR, Make will create a Freshchat user.","url":"7323-create-freshchat-users-for-new-bamboohr-employees","usedApps":["bamboohr","freshchat"],"usage":0}

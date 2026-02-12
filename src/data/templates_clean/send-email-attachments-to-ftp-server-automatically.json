@@ -1,0 +1,1 @@
+{"id":13085,"name":"Send email attachments to FTP server automatically","description":"Automatically upload email attachments to your FTP server. Triggered by new emails, attachments are fed and uploaded using email and FTP modules.","url":"13085-send-email-attachments-to-ftp-server-automatically","usedApps":["email","ftp"],"usage":8}

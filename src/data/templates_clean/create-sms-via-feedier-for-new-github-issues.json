@@ -1,0 +1,1 @@
+{"id":6294,"name":"Create SMS via Feedier for new GitHub issues","description":"Every time a new issue is created in GitHub, Make will automatically send a message via Feedier.","url":"6294-create-sms-via-feedier-for-new-github-issues","usedApps":["github","feedier"],"usage":7}

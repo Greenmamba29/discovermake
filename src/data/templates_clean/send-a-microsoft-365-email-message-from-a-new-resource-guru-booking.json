@@ -1,0 +1,1 @@
+{"id":6147,"name":"Send a Microsoft 365 Email message from a new Resource Guru booking","description":"Every time a Resource Guru booking is created, Make will automatically send a Microsoft 365 Email message.","url":"6147-send-a-microsoft-365-email-message-from-a-new-resource-guru-booking","usedApps":["resource-guru","microsoft-email"],"usage":4}

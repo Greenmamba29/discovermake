@@ -1,0 +1,1 @@
+{"id":5587,"name":"Send a Slack message from a new Salesforce account (company)","description":"Use this template to send a Slack message to a channel or a user when a new Salesforce account (a company in Salesforce) is created.","url":"5587-send-a-slack-message-from-a-new-salesforce-account-company","usedApps":["salesforce","slack"],"usage":2}

@@ -1,0 +1,1 @@
+{"id":2625,"name":"Create or update Yodel.io contacts from Copper","description":"Every time a new person is added in Copper, Make will automatically create or update a contact in Yodel.io.","url":"2625-create-or-update-yodel-io-contacts-from-copper","usedApps":["prosperworks","yodel"],"usage":2}

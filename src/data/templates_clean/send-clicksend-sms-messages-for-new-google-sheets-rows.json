@@ -1,0 +1,1 @@
+{"id":2735,"name":"Send ClickSend SMS messages for new Google Sheets rows","description":"Every time a new row is added to your Google Sheets spreadsheet, Make will automatically send an SMS message via ClickSend to a specified number/list of recipients.","url":"2735-send-clicksend-sms-messages-for-new-google-sheets-rows","usedApps":["google-sheets","clicksend"],"usage":273}

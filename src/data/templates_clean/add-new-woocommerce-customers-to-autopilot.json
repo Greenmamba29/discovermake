@@ -1,0 +1,1 @@
+{"id":2756,"name":"Add new WooCommerce customers to Autopilot","description":"Every time a new customer is created in WooCommerce, Make will automatically create/update a contact in Autopilot.","url":"2756-add-new-woocommerce-customers-to-autopilot","usedApps":["woocommerce","autopilot"],"usage":4}

@@ -1,0 +1,1 @@
+{"id":14782,"name":"Send Order Confirmation with Gmail","description":"Sends a confirmation email through Gmail whenever a new order is received via AirMenu. ","url":"14782-send-order-confirmation-with-gmail","usedApps":["airmenu","builtin","util","google-email"],"usage":8}

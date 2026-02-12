@@ -1,0 +1,1 @@
+{"id":12874,"name":"Send an email via Sendinblue for every new row in Google Sheets","description":"Automatically send an email via Sendinblue whenever a new row is added in Google Sheets, streamlining communication and data management.\n","url":"12874-send-an-email-via-sendinblue-for-every-new-row-in-google-sheets","usedApps":["google-sheets","sendinblue"],"usage":111}

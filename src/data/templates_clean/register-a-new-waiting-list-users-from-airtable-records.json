@@ -1,0 +1,1 @@
+{"id":7387,"name":"Register a new Waiting List users from Airtable records","description":"Every time a new record is added in Airtable, Make will automatically register a new user in Waiting List.","url":"7387-register-a-new-waiting-list-users-from-airtable-records","usedApps":["airtable","waiting-list"],"usage":0}

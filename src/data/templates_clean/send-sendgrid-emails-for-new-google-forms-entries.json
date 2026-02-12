@@ -1,0 +1,1 @@
+{"id":2436,"name":"Send SendGrid emails for new Google Forms entries","description":"Every time someone fills out your Google Form, Make will automatically send an email via SendGrid.","url":"2436-send-sendgrid-emails-for-new-google-forms-entries","usedApps":["google-forms","sendgrid"],"usage":36}

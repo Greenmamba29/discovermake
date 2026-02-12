@@ -1,0 +1,1 @@
+{"id":12858,"name":"Send custom email notifications to Discord channels using Make","description":"Automatically send custom email notifications to Discord channels using Make. Trigger emails via Custom MailHook and post messages in Discord.","url":"12858-send-custom-email-notifications-to-discord-channels-using-make","usedApps":["gateway","discord"],"usage":55}

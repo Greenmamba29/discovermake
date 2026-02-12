@@ -1,0 +1,1 @@
+{"id":13265,"name":"Filter and update Google Sheets rows based on incoming data actions","description":"Automatically filter Google Sheets rows based on incoming data actions, send data via HTTP, and update specific cells in Google Sheets.","url":"13265-filter-and-update-google-sheets-rows-based-on-incoming-data-actions","usedApps":["google-sheets","http"],"usage":5}

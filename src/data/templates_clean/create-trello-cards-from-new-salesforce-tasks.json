@@ -1,0 +1,1 @@
+{"id":638,"name":"Create Trello cards from new Salesforce tasks","description":"Every time a new task is created in Salesforce, Make will automatically create a new card in Trello.","url":"638-create-trello-cards-from-new-salesforce-tasks","usedApps":["salesforce","trello"],"usage":54}

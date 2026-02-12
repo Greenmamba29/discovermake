@@ -1,0 +1,1 @@
+{"id":583,"name":"Create Trello cards from new SugarCRM 7 products","description":"Every time a new product is added to SugarCRM 7, Make will automatically create a new card in Trello.","url":"583-create-trello-cards-from-new-sugarcrm-7-products","usedApps":["sugarcrm7","trello"],"usage":1}

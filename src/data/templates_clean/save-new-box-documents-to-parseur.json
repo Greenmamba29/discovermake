@@ -1,0 +1,1 @@
+{"id":8556,"name":"Save new Box documents to Parseur","description":"Every time there is new document files in a specified Box folder, Make will automatically upload it to Parseur.","url":"8556-save-new-box-documents-to-parseur","usedApps":["box","parseur"],"usage":15}

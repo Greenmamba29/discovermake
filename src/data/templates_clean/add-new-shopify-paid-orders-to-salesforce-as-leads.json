@@ -1,0 +1,1 @@
+{"id":5545,"name":"Add new Shopify paid orders to Salesforce as leads","description":"Whenever you have paid orders in Shopify, Make will automatically retrieve the contacts and create leads in Salesforce.","url":"5545-add-new-shopify-paid-orders-to-salesforce-as-leads","usedApps":["shopify","salesforce"],"usage":21}

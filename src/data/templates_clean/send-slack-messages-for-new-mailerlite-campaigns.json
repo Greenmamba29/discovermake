@@ -1,0 +1,1 @@
+{"id":1362,"name":"Send Slack messages for new Mailerlite campaigns","description":"Every time a new campaign is created in Mailerlite, Make will automatically send a message in Slack.","url":"1362-send-slack-messages-for-new-mailerlite-campaigns","usedApps":["mailerlite","slack"],"usage":18}

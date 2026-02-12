@@ -1,0 +1,1 @@
+{"id":7315,"name":"Add new Google Calendar events to Nutshell as activities","description":"Every time a new event is added to your Google Calendar, Make will automatically create a new activity in a Nutshell.","url":"7315-add-new-google-calendar-events-to-nutshell-as-activities","usedApps":["google-calendar","nutshell"],"usage":2}

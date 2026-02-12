@@ -1,0 +1,1 @@
+{"id":4481,"name":"Verify new GetResponse contacts in Clearout","description":"When a new contact is created in GetResponse, that contact is verified in Clearout. If the contact is invalid, it is deleted. Otherwise it is updated.","url":"4481-verify-new-getresponse-contacts-in-clearout","usedApps":["getresponse","clearout","builtin"],"usage":4}

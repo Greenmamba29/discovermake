@@ -1,0 +1,1 @@
+{"id":4000,"name":"Subscribe new RepairShopr users to a Mailchimp list","description":"Every time a new user is created in RepairShopr, Make will automatically add that contact to a Mailchimp list.","url":"4000-subscribe-new-repairshopr-users-to-a-mailchimp-list","usedApps":["repairshopr","mailchimp"],"usage":1}

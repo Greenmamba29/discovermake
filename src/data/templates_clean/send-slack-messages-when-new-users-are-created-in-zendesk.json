@@ -1,0 +1,1 @@
+{"id":5196,"name":"Send Slack messages when new users are created in Zendesk","description":"Whenever new users are added in Zendesk, the users are automatically retrieved and messages containing the details are sent via Slack.","url":"5196-send-slack-messages-when-new-users-are-created-in-zendesk","usedApps":["zendesk","slack"],"usage":1}

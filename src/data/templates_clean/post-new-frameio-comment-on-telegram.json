@@ -1,0 +1,1 @@
+{"id":6863,"name":"Post new Frame.io comment on Telegram.","description":"Every time a new comment is left on the asset in Frame.io, Make will automatically send the details of the comment in the selected Telegram chat.","url":"6863-post-new-frame-io-comment-on-telegram","usedApps":["frame-io","telegram"],"usage":9}

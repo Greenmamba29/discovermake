@@ -1,0 +1,1 @@
+{"id":7958,"name":"Add Mailchimp subscribers for new Amazon SES contacts","description":"Make will watch your Amazon SES contacts and add them to your Mailchimp as subscribers.","url":"7958-add-mailchimp-subscribers-for-new-amazon-ses-contacts","usedApps":["amazon-ses","mailchimp"],"usage":1}

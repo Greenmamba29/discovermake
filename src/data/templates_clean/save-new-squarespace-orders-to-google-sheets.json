@@ -1,0 +1,1 @@
+{"id":10927,"name":"Save new Squarespace orders to Google Sheets","description":"Every time a new order is created in your Squarespace store, Make will automatically record the data in Google Sheets.","url":"4732-save-new-squarespace-orders-to-google-sheets","usedApps":["squarespace","google-sheets"],"usage":605}

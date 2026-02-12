@@ -1,0 +1,1 @@
+{"id":3834,"name":"Send new data from Google Sheets to Facebook Conversions API","description":"When a new row is created in Google Sheets spreadsheet, the data from the row are sent to Facebook Conversions API.","url":"3834-send-new-data-from-google-sheets-to-facebook-conversions-api","usedApps":["google-sheets","facebook-conversions-api"],"usage":360}

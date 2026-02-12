@@ -1,0 +1,1 @@
+{"id":10343,"name":"Send a Slack notification for out-of-stock items in Katana","description":"When an item's inventory is out of stock in Katana, a Slack notification is sent.","url":"10343-send-a-slack-notification-for-out-of-stock-items-in-katana","usedApps":["katana-mrp","builtin","slack"],"usage":22}

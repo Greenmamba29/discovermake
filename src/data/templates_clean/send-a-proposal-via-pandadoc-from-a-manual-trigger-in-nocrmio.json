@@ -1,0 +1,1 @@
+{"id":8419,"name":"Send a proposal via PandaDoc from a Manual Trigger in noCRM.io","description":"Every time a manual lead trigger is received from noCRM.io, a new proposal will be instantly sent to the lead via PandaDoc.","url":"8419-send-a-proposal-via-pandadoc-from-a-manual-trigger-in-nocrm-io","usedApps":["nocrm-io","pandadoc"],"usage":8}

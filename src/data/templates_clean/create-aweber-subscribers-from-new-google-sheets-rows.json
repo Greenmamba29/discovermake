@@ -1,0 +1,1 @@
+{"id":10316,"name":"Create AWeber subscribers from new Google Sheets rows ","description":"When a new row is added to a specific Google Sheet, Make will add a new subscriber to AWeber mailing list. ","url":"2167-create-aweber-subscribers-from-new-google-sheets-rows","usedApps":["google-sheets","aweber"],"usage":188}

@@ -1,0 +1,1 @@
+{"id":8401,"name":"Send Telegram messages for new CallTrackingMetrics calls","description":"Every time a new call is received in your CallTrackingMetrics, Make will automatically create a message in your Telegram.","url":"8401-send-telegram-messages-for-new-calltrackingmetrics-calls","usedApps":["calltrackingmetrics","telegram"],"usage":3}

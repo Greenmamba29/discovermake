@@ -1,0 +1,1 @@
+{"id":4713,"name":"Create Customer.io customers from Google Sheets rows","description":"Every time a new Google Sheets row is added, Inegromat will automatically create a new customer in Customer.io.","url":"4713-create-customer-io-customers-from-google-sheets-rows","usedApps":["google-sheets","customer-io"],"usage":19}

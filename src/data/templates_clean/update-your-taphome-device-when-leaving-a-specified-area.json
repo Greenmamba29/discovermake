@@ -1,0 +1,1 @@
+{"id":3841,"name":"Update your Taphome device when leaving a specified area","description":"Every time your Android device leaves a specified geographic area, Make will automatically update the value of your Taphome IoT device.","url":"3841-update-your-taphome-device-when-leaving-a-specified-area","usedApps":["android","taphome"],"usage":13}

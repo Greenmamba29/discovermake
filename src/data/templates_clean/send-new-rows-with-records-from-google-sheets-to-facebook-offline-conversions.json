@@ -1,0 +1,1 @@
+{"id":3029,"name":"Send new rows with records from Google Sheets to Facebook Offline Conversions","description":"When a new row is made in Google Sheets, the record is sent to Facebook Offline Conversions.","url":"3029-send-new-rows-with-records-from-google-sheets-to-facebook-offline-conversions","usedApps":["google-sheets","facebook-offline-conversions"],"usage":63}

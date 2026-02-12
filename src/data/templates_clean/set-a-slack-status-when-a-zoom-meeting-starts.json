@@ -1,0 +1,1 @@
+{"id":6059,"name":"Set a Slack status when a Zoom meeting starts","description":"Every time a Zoom meeting starts, Make will automatically set a Slack status.","url":"6059-set-a-slack-status-when-a-zoom-meeting-starts","usedApps":["zoom","slack"],"usage":10}

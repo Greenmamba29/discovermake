@@ -1,0 +1,1 @@
+{"id":5023,"name":"Create a card in Trello for new contracts in OfficeRnD","description":"Every time new contracts from OfficeRnD is received, Make will automatically create a card in the specified Trello board.","url":"5023-create-a-card-in-trello-for-new-contracts-in-officernd","usedApps":["officernd","trello"],"usage":0}

@@ -1,0 +1,1 @@
+{"id":2987,"name":"Import the names of folders from Egnyte to Google Drive","description":"List Subfolders in Egnyte and import their names as new folders to Google Drive.","url":"2987-import-the-names-of-folders-from-egnyte-to-google-drive","usedApps":["egnyte","google-drive"],"usage":4}

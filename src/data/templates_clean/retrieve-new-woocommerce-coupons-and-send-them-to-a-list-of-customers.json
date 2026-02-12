@@ -1,0 +1,1 @@
+{"id":5726,"name":"Retrieve new WooCommerce coupons and send them to a list of customers","description":"Retrieve new WooCommerce coupons and send them to a list of customer emails that is retrieved from a Google Sheet.","url":"5726-retrieve-new-woocommerce-coupons-and-send-them-to-a-list-of-customers","usedApps":["woocommerce","google-sheets","email"],"usage":58}

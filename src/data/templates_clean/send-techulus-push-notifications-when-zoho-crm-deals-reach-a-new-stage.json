@@ -1,0 +1,1 @@
+{"id":6826,"name":"Send Techulus Push notifications when Zoho CRM deals reach a new stage","description":"Every time a deal changes it's stage to the specified one in Zoho CRM, Make will automatically send a Techulus Push notification.","url":"6826-send-techulus-push-notifications-when-zoho-crm-deals-reach-a-new-stage","usedApps":["zohocrm","techulus-push"],"usage":2}

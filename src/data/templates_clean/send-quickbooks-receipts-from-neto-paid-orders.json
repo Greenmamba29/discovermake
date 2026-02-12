@@ -1,0 +1,1 @@
+{"id":4682,"name":"Send QuickBooks receipts from Neto paid orders","description":"Every time a new order is paid in Neto, Make will automatically create a QuickBooks sales receipt and send it to an email address.","url":"4682-send-quickbooks-receipts-from-neto-paid-orders","usedApps":["neto","quickbooks"],"usage":1}

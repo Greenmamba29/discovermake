@@ -1,0 +1,1 @@
+{"id":12871,"name":"Update Zendesk tickets with data from a custom webhook","description":"Automatically update Zendesk tickets with data from a custom webhook. Streamline ticket management by integrating real-time data updates directly into Zendesk.","url":"12871-update-zendesk-tickets-with-data-from-a-custom-webhook","usedApps":["gateway","zendesk"],"usage":16}

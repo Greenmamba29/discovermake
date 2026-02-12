@@ -1,0 +1,1 @@
+{"id":4756,"name":"Retrieve messages instantly from your website and send a notification on Slack","description":"Every time a new chat is started on your website using Intercom, a notification is sent on Slack to the intended channel.","url":"4756-retrieve-messages-instantly-from-your-website-and-send-a-notification-on-slack","usedApps":["intercom","slack"],"usage":85}

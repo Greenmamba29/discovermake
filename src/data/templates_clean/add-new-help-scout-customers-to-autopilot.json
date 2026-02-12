@@ -1,0 +1,1 @@
+{"id":2780,"name":"Add new Help Scout customers to Autopilot","description":"Every time a new customer is added in Help Scout, Make will automatically create a new contact in Autopilot.","url":"2780-add-new-help-scout-customers-to-autopilot","usedApps":["helpscout","autopilot"],"usage":1}

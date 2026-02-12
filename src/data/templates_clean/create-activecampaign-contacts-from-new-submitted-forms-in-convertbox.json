@@ -1,0 +1,1 @@
+{"id":7580,"name":"Create ActiveCampaign contacts from new submitted forms in ConvertBox","description":"Every time a new form is submitted in ConvertBox, Make will automatically create a new contact in ActiveCampaign.","url":"7580-create-activecampaign-contacts-from-new-submitted-forms-in-convertbox","usedApps":["convertbox","activecampaign"],"usage":4}

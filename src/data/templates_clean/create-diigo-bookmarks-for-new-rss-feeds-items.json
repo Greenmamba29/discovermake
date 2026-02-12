@@ -1,0 +1,1 @@
+{"id":8189,"name":"Create Diigo bookmarks for new RSS feeds items","description":"Every time a new item is posted to a watched RSS feed, Make will automatically create a new bookmark in Diigo.","url":"8189-create-diigo-bookmarks-for-new-rss-feeds-items","usedApps":["rss","diigo"],"usage":10}

@@ -1,0 +1,1 @@
+{"id":12894,"name":"Send email notifications with content from Google Sheets","description":"Automatically send email notifications using content from Google Sheets. Extract data from Google Sheets and trigger email alerts for streamlined communication.","url":"12894-send-email-notifications-with-content-from-google-sheets","usedApps":["google-sheets","email"],"usage":86}

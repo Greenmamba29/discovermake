@@ -1,0 +1,1 @@
+{"id":5720,"name":"Shopify abandoned cart Information to Google Sheets","description":"Retrieve abandoned cart data from Shopify and add them to a Google Sheet for further analysis.","url":"5720-shopify-abandoned-cart-information-to-google-sheets","usedApps":["shopify","builtin","util","google-sheets"],"usage":390}

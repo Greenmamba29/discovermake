@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Live Development Tracker</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3713ec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#0a0814",
+                        "glass-white": "rgba(255, 255, 255, 0.05)",
+                        "glass-border": "rgba(255, 255, 255, 0.12)",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .neon-glow {
+            text-shadow: 0 0 8px #3713ec, 0 0 12px rgba(55, 19, 236, 0.4);
+        }
+        .pulse-ring {
+            box-shadow: 0 0 0 0 rgba(55, 19, 236, 0.7);
+        }
+        .milestone-line {
+            background: linear-gradient(180deg, #3713ec 0%, #3713ec 60%, rgba(55, 19, 236, 0.2) 100%);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen">
+<div class="relative flex h-full min-h-screen w-full flex-col overflow-x-hidden">
+<!-- Top App Bar -->
+<div class="sticky top-0 z-50 flex items-center bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md px-4 py-4 justify-between">
+<div class="flex size-10 items-center justify-center rounded-full glass cursor-pointer">
+<span class="material-symbols-outlined text-white text-[24px]">arrow_back_ios_new</span>
+</div>
+<div class="flex flex-col items-center">
+<h2 class="text-white text-base font-bold leading-tight tracking-[-0.015em]">Live Development</h2>
+<p class="text-primary text-[10px] font-bold tracking-widest uppercase">Project: Nexus Pro</p>
+</div>
+<div class="flex size-10 items-center justify-center rounded-full glass cursor-pointer">
+<span class="material-symbols-outlined text-white text-[24px]">more_vert</span>
+</div>
+</div>
+<!-- Live Developer Status Card -->
+<div class="px-4 py-2">
+<div class="relative glass rounded-xl p-5 overflow-hidden group">
+<!-- Background visual -->
+<div class="absolute -right-10 -top-10 size-40 bg-primary/20 blur-[60px] rounded-full"></div>
+<div class="flex justify-between items-start">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<span class="relative flex h-3 w-3">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
+</span>
+<p class="text-primary text-xs font-bold tracking-widest uppercase">Currently Coding</p>
+</div>
+<h3 class="text-white text-2xl font-bold mt-1">Lead Dev: Alex R.</h3>
+<p class="text-slate-400 text-sm font-medium">Session duration: 02:45:12</p>
+</div>
+<div class="h-14 w-14 rounded-full border-2 border-primary/30 p-1">
+<img alt="Developer" class="h-full w-full rounded-full object-cover" data-alt="Professional portrait of a male developer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAXXQT_NyuIRUqIYqciN9tbSc2Ekj6WWLcioHrAZvggxhoQkgZ41LDKu6H3ngW8hzQSqo3j-V7-ztMaBSpWgqkIlMZ6IR0JXjyK-_l96xkcQVr2GaFiF8hkXUWF0pO6JAAjgbEr8OmvSC8OwRGzncX4jA0X06HTUJAWjgPFnRi0oZyXdn_5BzvnbYkWQ-xm42X1OtO9Oqg7IRixNmiYPbECM8GeruTnoR365ulYdG-lUFQK8JD2Xbsga0UjbH4U2crWcKcxoS71dY0d"/>
+</div>
+</div>
+<!-- Live Commit Feed (Mini) -->
+<div class="mt-4 pt-4 border-t border-white/5">
+<div class="flex items-center gap-3 bg-black/40 rounded-lg px-3 py-2">
+<span class="material-symbols-outlined text-primary text-sm">terminal</span>
+<p class="text-[11px] font-mono text-slate-300 truncate">git commit -m "feat: implement auth middleware..."</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Milestones Section -->
+<div class="px-6 py-8 flex-1">
+<h4 class="text-white text-lg font-bold mb-8">Milestones</h4>
+<div class="relative">
+<!-- Vertical Line -->
+<div class="absolute left-[15px] top-2 bottom-2 w-[2px] milestone-line opacity-30"></div>
+<!-- Milestone 1: Completed -->
+<div class="relative flex gap-6 mb-10 items-start">
+<div class="z-10 flex size-8 items-center justify-center rounded-full bg-primary shadow-[0_0_15px_rgba(55,19,236,0.6)]">
+<span class="material-symbols-outlined text-white text-[18px] font-bold">check</span>
+</div>
+<div class="flex-1 glass rounded-lg p-4 -mt-1">
+<div class="flex justify-between items-center mb-1">
+<p class="text-white text-base font-bold">UI Design &amp; Prototyping</p>
+<span class="text-[10px] bg-primary/20 text-primary font-bold px-2 py-0.5 rounded-full">DONE</span>
+</div>
+<p class="text-slate-400 text-sm leading-relaxed">High-fidelity screens, components, and design system finalized.</p>
+</div>
+</div>
+<!-- Milestone 2: Active -->
+<div class="relative flex gap-6 mb-10 items-start">
+<div class="z-10 flex size-8 items-center justify-center rounded-full bg-background-dark border-2 border-primary shadow-[0_0_20px_rgba(55,19,236,0.4)]">
+<span class="material-symbols-outlined text-primary text-[20px] animate-pulse">developer_mode_tv</span>
+</div>
+<div class="flex-1 glass border-primary/40 rounded-lg p-4 -mt-1 bg-primary/5">
+<div class="flex justify-between items-center mb-1">
+<p class="text-white text-base font-bold">API Development</p>
+<span class="text-[10px] bg-primary text-white font-bold px-2 py-0.5 rounded-full animate-pulse">ACTIVE</span>
+</div>
+<p class="text-slate-400 text-sm leading-relaxed mb-3">Building secure RESTful endpoints and database architecture.</p>
+<div class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full w-[65%] shadow-[0_0_8px_#3713ec]"></div>
+</div>
+<div class="flex justify-between mt-2">
+<span class="text-[10px] text-slate-500 font-bold uppercase">Progress</span>
+<span class="text-[10px] text-primary font-bold">65%</span>
+</div>
+</div>
+</div>
+<!-- Milestone 3: Pending -->
+<div class="relative flex gap-6 mb-10 items-start opacity-50">
+<div class="z-10 flex size-8 items-center justify-center rounded-full bg-slate-800 border-2 border-slate-700">
+<span class="material-symbols-outlined text-slate-500 text-[18px]">verified_user</span>
+</div>
+<div class="flex-1 glass rounded-lg p-4 -mt-1">
+<div class="flex justify-between items-center mb-1">
+<p class="text-white text-base font-bold">QA Testing</p>
+<span class="text-[10px] bg-slate-800 text-slate-400 font-bold px-2 py-0.5 rounded-full uppercase">Pending</span>
+</div>
+<p class="text-slate-400 text-sm leading-relaxed">End-to-end testing, bug squashing, and performance optimization.</p>
+</div>
+</div>
+<!-- Milestone 4: Future -->
+<div class="relative flex gap-6 items-start opacity-30">
+<div class="z-10 flex size-8 items-center justify-center rounded-full bg-slate-800 border-2 border-slate-700">
+<span class="material-symbols-outlined text-slate-500 text-[18px]">rocket_launch</span>
+</div>
+<div class="flex-1 glass rounded-lg p-4 -mt-1">
+<p class="text-white text-base font-bold">Production Launch</p>
+<p class="text-slate-400 text-sm leading-relaxed">Deployment to cloud infrastructure and store submission.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Sticky Bottom Menu (DoorDash-Style Glass Navigation) -->
+<div class="sticky bottom-0 p-4 w-full">
+<div class="glass flex items-center justify-between px-2 py-2 rounded-xl border border-white/20 shadow-2xl">
+<button class="flex-1 flex flex-col items-center gap-1 py-2 rounded-lg text-primary">
+<span class="material-symbols-outlined">track_changes</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Track</span>
+</button>
+<button class="flex-1 flex flex-col items-center gap-1 py-2 rounded-lg text-slate-400">
+<span class="material-symbols-outlined">chat_bubble</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Message</span>
+</button>
+<!-- Central Action Button -->
+<div class="relative -top-4 px-2">
+<button class="flex size-14 items-center justify-center rounded-full bg-primary shadow-[0_4px_20px_rgba(55,19,236,0.6)] border-4 border-background-dark">
+<span class="material-symbols-outlined text-white text-[28px]">code</span>
+</button>
+</div>
+<button class="flex-1 flex flex-col items-center gap-1 py-2 rounded-lg text-slate-400">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Assets</span>
+</button>
+<button class="flex-1 flex flex-col items-center gap-1 py-2 rounded-lg text-slate-400">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Settings</span>
+</button>
+</div>
+</div>
+<!-- iOS Home Indicator -->
+<div class="h-1 w-32 bg-white/20 rounded-full self-center mb-2 mt-1"></div>
+</div>
+</body></html>

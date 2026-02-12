@@ -1,0 +1,1 @@
+{"id":4215,"name":"Create Noticeable posts when Trello cards are moved","description":"Every time a card is moved to a specified Trello list, Make will automatically create a post in Noticeable.","url":"4215-create-noticeable-posts-when-trello-cards-are-moved","usedApps":["trello","noticeable"],"usage":0}

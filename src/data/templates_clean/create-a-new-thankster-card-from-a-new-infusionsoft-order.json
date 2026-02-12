@@ -1,0 +1,1 @@
+{"id":4800,"name":"Create a new Thankster card from a new Infusionsoft order","description":"This scenario will trigger the mailing of a Thankster card when an order is placed.","url":"4800-create-a-new-thankster-card-from-a-new-infusionsoft-order","usedApps":["infusionsoft","thankster"],"usage":6}

@@ -1,0 +1,1 @@
+{"id":5848,"name":"Create a QuickFile client for new Mailchimp subscriber","description":"Every time a new Mailchimp subscriber is received , Make will automatically create a client in QuickFile.","url":"5848-create-a-quickfile-client-for-new-mailchimp-subscriber","usedApps":["mailchimp","quickfile"],"usage":3}

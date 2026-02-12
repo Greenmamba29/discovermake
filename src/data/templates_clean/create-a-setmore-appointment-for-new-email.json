@@ -1,0 +1,1 @@
+{"id":5037,"name":"Create a Setmore appointment for new email","description":"Every time a new email is received, Make will automatically create an appointment in Setmore.","url":"5037-create-a-setmore-appointment-for-new-email","usedApps":["email","setmore"],"usage":2}

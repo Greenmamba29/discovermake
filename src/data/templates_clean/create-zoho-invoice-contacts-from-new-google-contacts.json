@@ -1,0 +1,1 @@
+{"id":3661,"name":"Create Zoho Invoice contacts from new Google Contacts","description":"Every time a new Google Contact is created, Make will automatically create a new contact in Zoho Invoice.","url":"3661-create-zoho-invoice-contacts-from-new-google-contacts","usedApps":["google-contacts","zoho-invoice"],"usage":8}

@@ -1,0 +1,1 @@
+{"id":3424,"name":"Retrieve data from Snowflake and save them into Data Store","description":"Retrieve data from Snowflake database and save them into Data Store.","url":"3424-retrieve-data-from-snowflake-and-save-them-into-data-store","usedApps":["snowflake","builtin","datastore"],"usage":78}

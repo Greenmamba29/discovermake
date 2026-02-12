@@ -1,0 +1,1 @@
+{"id":12295,"name":"Save new WooCommerce orders to a Google Sheets spreadsheet","description":"Every time a new order is created in WooCommerce, Make will automatically add it to a new row in a Google Sheet spreadsheet. ","url":"10257-save-new-woocommerce-orders-to-a-google-sheets-spreadsheet","usedApps":["woocommerce","google-sheets"],"usage":4364}

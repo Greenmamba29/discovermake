@@ -1,0 +1,1 @@
+{"id":6321,"name":"Launch Pneumatic process for new Typeform response","description":"Every time a new Typeform response is received, Make will automatically launch a process in Pneumatic.","url":"6321-launch-pneumatic-process-for-new-typeform-response","usedApps":["typeform","pneumatic"],"usage":1}

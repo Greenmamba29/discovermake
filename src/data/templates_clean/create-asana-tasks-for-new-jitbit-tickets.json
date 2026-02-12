@@ -1,0 +1,1 @@
+{"id":7430,"name":"Create Asana tasks for new Jitbit tickets","description":"Every time a new ticket is created in Jitbit, Make will automatically create a new task on Asana.","url":"7430-create-asana-tasks-for-new-jitbit-tickets","usedApps":["jitbit","asana"],"usage":2}

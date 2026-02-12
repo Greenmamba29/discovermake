@@ -1,0 +1,1 @@
+{"id":8555,"name":"Save new Google Docs documents to Parseur","description":"Every time a new Google Docs document is added, Make will automatically upload it to Parseur.","url":"8555-save-new-google-docs-documents-to-parseur","usedApps":["google-docs","parseur"],"usage":9}

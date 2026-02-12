@@ -1,0 +1,1 @@
+{"id":8070,"name":"Create SMSC contacts from new ActiveCampaign contacts","description":"Every time a new contact is created in ActiveCampaign, Make will automatically add that contact to SMSC.","url":"8070-create-smsc-contacts-from-new-activecampaign-contacts","usedApps":["activecampaign","smsc"],"usage":1}

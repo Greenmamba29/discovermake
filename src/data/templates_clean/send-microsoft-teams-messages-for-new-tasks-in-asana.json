@@ -1,0 +1,1 @@
+{"id":3387,"name":"Send Microsoft Teams messages for new tasks in Asana","description":"Every time a new task is created in Asana, Make will automatically send a message in Microsoft Teams.","url":"3387-send-microsoft-teams-messages-for-new-tasks-in-asana","usedApps":["asana","microsoft-teams"],"usage":60}

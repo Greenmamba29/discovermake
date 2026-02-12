@@ -1,0 +1,1 @@
+{"id":8316,"name":"Create HERE Tracking locations from Google Forms","description":"Every time a new entry is submitted in a Google Form, Make will create a new location in HERE Tracking.","url":"8316-create-here-tracking-locations-from-google-forms","usedApps":["google-forms","here"],"usage":4}

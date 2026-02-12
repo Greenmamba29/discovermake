@@ -1,0 +1,1 @@
+{"id":6296,"name":"Post new Feedier Feedback on Discord channel","description":"Every time a new Feedback is received on Feedier, Make will automatically post it on your Discord server.","url":"6296-post-new-feedier-feedback-on-discord-channel","usedApps":["feedier","discord"],"usage":1}

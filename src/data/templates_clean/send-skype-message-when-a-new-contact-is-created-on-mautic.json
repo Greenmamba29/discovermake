@@ -1,0 +1,1 @@
+{"id":3406,"name":"Send Skype message when a new contact is created on Mautic","description":"Every time a new contact is created in Mautic, Make will automatically send a message on Skype.","url":"3406-send-skype-message-when-a-new-contact-is-created-on-mautic","usedApps":["mautic","skype"],"usage":5}

@@ -1,0 +1,1 @@
+{"id":555,"name":"Add new Magento customers to Fakturoid as contacts","description":"Every time a new customer is created in Magento, Make will automatically create a new contact in Fakturoid.","url":"555-add-new-magento-customers-to-fakturoid-as-contacts","usedApps":["fakturoid","magento"],"usage":0}

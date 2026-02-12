@@ -1,0 +1,1 @@
+{"id":17899,"name":"Parse email to Stood CRM lead","description":"Not all webform lead management tools have appropriate connectors. This makes the bridge from email notifications down to lead generation in Stood CRM.","url":"17899-email-form-to-stood-crm-lead","usedApps":["gateway","regexp","stood-crm"],"usage":2}

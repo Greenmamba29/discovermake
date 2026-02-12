@@ -1,0 +1,1 @@
+{"id":7092,"name":"Send SMSAPI messages from new Textlocal messages","description":"Every time a new Textlocal message is created,  Make will automatically send a message in SMSAPI.","url":"7092-send-smsapi-messages-from-new-textlocal-messages","usedApps":["textlocal","smsapi"],"usage":4}

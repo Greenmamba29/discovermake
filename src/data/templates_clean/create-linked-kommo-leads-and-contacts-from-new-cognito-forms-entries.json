@@ -1,0 +1,1 @@
+{"id":10426,"name":"Create linked Kommo leads and contacts from new Cognito Forms entries","description":"Every time someone fills out your Cognito Form, Make will automatically create a new lead and contact in Kommo.","url":"2390-create-linked-amocrm-leads-and-contacts-from-new-cognito-forms-entries","usedApps":["cognitoforms","amo-crm"],"usage":23}

@@ -1,0 +1,1 @@
+{"id":5170,"name":"Add new Alegra invoices to Google Calendar as events","description":"Whenever you have a new invoice on your Alegra account, Make will automatically create a new event in a selected Google Calendar.","url":"5170-add-new-alegra-invoices-to-google-calendar-as-events","usedApps":["alegra","google-calendar"],"usage":11}

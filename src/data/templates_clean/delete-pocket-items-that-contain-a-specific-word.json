@@ -1,0 +1,1 @@
+{"id":1564,"name":"Delete Pocket items that contain a specific word","description":"Every time this scenario is run, Make will automatically delete Podio items that contain the word you specify.","url":"1564-delete-pocket-items-that-contain-a-specific-word","usedApps":["pocket","pocket"],"usage":11}

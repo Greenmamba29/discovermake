@@ -1,0 +1,1 @@
+{"id":6415,"name":"Add new Cliengo contacts to Capsule CRM as tasks","description":"Every time a new contact is created in Cliengo, Make will automatically create a new task in Capsule CRM.","url":"6415-add-new-cliengo-contacts-to-capsule-crm-as-tasks","usedApps":["cliengo","capsule-crm"],"usage":0}

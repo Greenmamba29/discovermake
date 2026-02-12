@@ -1,0 +1,1 @@
+{"id":6279,"name":"Create a QuickBooks customer from a PayPal payment","description":"Every time there's a new PayPal payment, Make will automatically create a QuickBooks customer (provided it doesn't already exist).","url":"6279-create-a-quickbooks-customer-from-a-paypal-payment","usedApps":["paypal","quickbooks"],"usage":56}

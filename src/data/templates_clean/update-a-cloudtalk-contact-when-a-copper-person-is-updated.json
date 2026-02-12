@@ -1,0 +1,1 @@
+{"id":5378,"name":"Update a CloudTalk contact when a Copper person is updated","description":"Every time a Copper person is updated, Make will automatically update a CloudTalk contact.","url":"5378-update-a-cloudtalk-contact-when-a-copper-person-is-updated","usedApps":["prosperworks","cloudtalk"],"usage":0}

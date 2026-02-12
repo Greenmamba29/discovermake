@@ -1,0 +1,1 @@
+{"id":12813,"name":"Send Slack messages for new messages in Slack","description":"Automatically forward new Slack messages to another Slack channel, ensuring team members stay informed and connected without missing important updates.","url":"12813-send-slack-messages-for-new-messages-in-slack","usedApps":["slack","slack"],"usage":19}

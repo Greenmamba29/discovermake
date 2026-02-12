@@ -1,0 +1,1 @@
+{"id":5647,"name":"Create contacts in Mailvio from records in Airtable","description":"This scenario lets you create contacts in Mailvio from records in Airtable. In order to use this scenario your table has to look like [this](https://airtable.com/shrNGBDaJr7vNLcDR).","url":"5647-create-contacts-in-mailvio-from-records-in-airtable","usedApps":["airtable","mailvio"],"usage":2}

@@ -1,0 +1,1 @@
+{"id":4547,"name":"Add Mailchimp subscribers from new Tabidoo records","description":"Every time a new record is added to Tabidoo, Make will automatically add a new subscriber to a selected Mailchimp list.","url":"4547-add-mailchimp-subscribers-from-new-tabidoo-records","usedApps":["tabidoo","mailchimp"],"usage":1}

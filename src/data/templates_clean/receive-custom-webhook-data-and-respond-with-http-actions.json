@@ -1,0 +1,1 @@
+{"id":13110,"name":"Receive custom webhook data and respond with HTTP actions","description":"Automatically send data to a custom webhook, respond with specific HTTP actions using Make's Custom WebHook, Webhook Respond, and HTTP modules.","url":"13110-receive-custom-webhook-data-and-respond-with-http-actions","usedApps":["gateway","http"],"usage":31}

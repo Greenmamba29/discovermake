@@ -1,0 +1,1 @@
+{"id":8674,"name":"Create Microsoft 365 Calendar events for new LiveWebinar webinars","description":"Every time a new LiveWebinar webinar is created, Make will create a Microsoft 365 Calendar event for it.","url":"8674-create-microsoft-365-calendar-events-for-new-livewebinar-webinars","usedApps":["livewebinar","microsoft-calendar"],"usage":8}

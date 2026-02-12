@@ -1,0 +1,1 @@
+{"id":4326,"name":"Send Android push notifications for new Inoreader articles","description":"Every time a new article is published on your Inoreader feed, Make will automatically send a push notification to the Android device of your choice.","url":"4326-send-android-push-notifications-for-new-inoreader-articles","usedApps":["inoreader","android"],"usage":19}

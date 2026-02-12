@@ -1,0 +1,1 @@
+{"id":8093,"name":"Send Telegram messages for accepted pages in Qwilr","description":"Every time a page is accepted in your Qwilr, Make will automatically send a Telegram message.","url":"8093-send-telegram-messages-for-accepted-pages-in-qwilr","usedApps":["qwilr","telegram"],"usage":3}

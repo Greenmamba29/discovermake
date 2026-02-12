@@ -1,0 +1,1 @@
+{"id":3202,"name":"Add new Todoist tasks to Microsoft To Do","description":"Every time a new task is created in Todoist, Make will automatically add that task to your Microsoft To Do list.","url":"3202-add-new-todoist-tasks-to-microsoft-to-do","usedApps":["todoist","microsoft-to-do"],"usage":228}

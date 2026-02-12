@@ -1,0 +1,1 @@
+{"id":4188,"name":"Create Colligso TextIn customers from Freshsales contacts","description":"Every time a new Freshsales contact is created, Make will automatically create a new Colligso TextIn customer.","url":"4188-create-colligso-textin-customers-from-freshsales-contacts","usedApps":["freshsales","colligso-textin"],"usage":0}

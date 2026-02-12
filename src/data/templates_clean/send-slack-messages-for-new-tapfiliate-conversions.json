@@ -1,0 +1,1 @@
+{"id":6623,"name":"Send Slack messages for new Tapfiliate conversions","description":"Every time a new Tapfiliate conversion is generated, post a new message to a Slack channel.","url":"6623-send-slack-messages-for-new-tapfiliate-conversions","usedApps":["tapfiliate","slack"],"usage":1}

@@ -1,0 +1,1 @@
+{"id":1968,"name":"Create QuickBooks sales receipts for completed WooCommerce orders","description":"Every time a new order is completed in WooCommerce, Make will automatically create a new sales receipt in QuickBooks.","url":"1968-create-quickbooks-sales-receipts-for-completed-woocommerce-orders","usedApps":["woocommerce","quickbooks","builtin","util"],"usage":324}

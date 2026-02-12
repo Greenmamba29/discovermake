@@ -1,0 +1,1 @@
+{"id":8192,"name":"Create Diigo bookmarks for new Facebook posts","description":"Every time a new post is added to a Facebook page, Make will automatically create a new bookmark in Diigo.","url":"8192-create-diigo-bookmarks-for-new-facebook-posts","usedApps":["facebook-pages","diigo"],"usage":4}

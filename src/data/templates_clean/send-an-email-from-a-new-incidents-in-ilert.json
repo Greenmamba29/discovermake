@@ -1,0 +1,1 @@
+{"id":12022,"name":"Send an Email from a new incidents in ilert.","description":"Every time a new incident is submitted in ilert, Make will automatically send an email message.","url":"7893-send-an-email-from-a-new-incidents-in-ilert","usedApps":["ilert","email"],"usage":3}

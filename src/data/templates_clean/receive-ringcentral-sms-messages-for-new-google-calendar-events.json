@@ -1,0 +1,1 @@
+{"id":2559,"name":"Receive RingCentral SMS messages for new Google Calendar events","description":"Every time a new event is added to a watched Google Calendar, Make will automatically send an SMS message via RingCentral.","url":"2559-receive-ringcentral-sms-messages-for-new-google-calendar-events","usedApps":["google-calendar","ringcentral"],"usage":10}

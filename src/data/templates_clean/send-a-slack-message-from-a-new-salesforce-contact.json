@@ -1,0 +1,1 @@
+{"id":5590,"name":"Send a Slack message from a new Salesforce contact","description":"Use this template to send a Slack message to a channel or a user when a new Salesforce contact is created.","url":"5590-send-a-slack-message-from-a-new-salesforce-contact","usedApps":["salesforce","slack"],"usage":3}

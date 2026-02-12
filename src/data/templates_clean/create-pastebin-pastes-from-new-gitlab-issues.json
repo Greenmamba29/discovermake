@@ -1,0 +1,1 @@
+{"id":8514,"name":"Create Pastebin pastes from new GitLab issues","description":"Every time a new Gitlab issue is created, Make will automatically create a paste for it (privately or publicly, depending on the confidentiality).","url":"8514-create-pastebin-pastes-from-new-gitlab-issues","usedApps":["gitlab","builtin","pastebin"],"usage":5}

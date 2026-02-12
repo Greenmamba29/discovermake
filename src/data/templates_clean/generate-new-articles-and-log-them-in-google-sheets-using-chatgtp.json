@@ -1,0 +1,1 @@
+{"id":13719,"name":"Generate new articles and log them in Google Sheets using ChatGTP","description":"Automatically generate new articles using ChatGPT and log them in Google Sheets whenever a new article is triggered via RSS feed.","url":"13719-generate-new-articles-and-log-them-in-google-sheets-using-chatgtp","usedApps":["rss","openai-gpt-3","google-sheets"],"usage":140}

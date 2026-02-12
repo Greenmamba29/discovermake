@@ -1,0 +1,1 @@
+{"id":96,"name":"Save your Foursquare data to a Google Sheets spreadsheet","description":"This scenario will add every Foursquare venue you visit to a Google Sheets spreadsheet as a new row. The template uses this [example spreadsheet](https://goo.gl/vrVmg8).","url":"96-save-your-foursquare-data-to-a-google-sheets-spreadsheet","usedApps":["foursquare","google-sheets"],"usage":26}

@@ -1,0 +1,1 @@
+{"id":7857,"name":"Get Slack notifications about new Ganttic tasks","description":"Every time a new task is created in Ganttic, Make will automatically send a notification message to a specified channel/chat in Slack.","url":"7857-get-slack-notifications-about-new-ganttic-tasks","usedApps":["ganttic","slack"],"usage":1}

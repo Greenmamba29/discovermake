@@ -1,0 +1,1 @@
+{"id":8370,"name":"Save contracts from Signi to new Dropbox folder","description":"Every time a document in a Signi meets special criteria, Make will automatically save this file to a new Dropbox folder with the date this scenario was run.","url":"8370-save-contracts-from-signi-to-new-dropbox-folder","usedApps":["signi","builtin","dropbox"],"usage":3}

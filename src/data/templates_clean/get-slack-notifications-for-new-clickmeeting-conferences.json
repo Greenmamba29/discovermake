@@ -1,0 +1,1 @@
+{"id":8699,"name":"Get Slack notifications for new ClickMeeting conferences","description":"Every time a new conference is created in ClickMeeting, Make will automatically send a notification message to a specified channel/chat in Slack.","url":"8699-get-slack-notifications-for-new-clickmeeting-conferences","usedApps":["clickmeeting","slack"],"usage":2}

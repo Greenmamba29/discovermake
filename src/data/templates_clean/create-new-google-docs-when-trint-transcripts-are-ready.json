@@ -1,0 +1,1 @@
+{"id":7553,"name":"Create new Google Docs when Trint transcripts are ready","description":"Every time a new Trint transcript is ready, Make will automatically create a Google Docs document.","url":"7553-create-new-google-docs-when-trint-transcripts-are-ready","usedApps":["trint","google-docs"],"usage":21}

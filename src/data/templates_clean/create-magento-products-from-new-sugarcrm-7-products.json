@@ -1,0 +1,1 @@
+{"id":589,"name":"Create Magento products from new SugarCRM 7 products","description":"Every time a new product is created in SugarCRM 7, Make will automatically create a new product in Magento.","url":"589-create-magento-products-from-new-sugarcrm-7-products","usedApps":["magento","sugarcrm7"],"usage":2}

@@ -1,0 +1,1 @@
+{"id":2807,"name":"Create Salesflare contacts from new Wufoo Forms responses","description":"Every time someone fills out your Wufoo form, Make will automatically create a new contact in Salesflare.","url":"2807-create-salesflare-contacts-from-new-wufoo-forms-responses","usedApps":["wufoo","salesflare"],"usage":2}

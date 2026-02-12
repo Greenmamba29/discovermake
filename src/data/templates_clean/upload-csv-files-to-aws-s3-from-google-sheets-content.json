@@ -1,0 +1,1 @@
+{"id":13305,"name":"Upload CSV files to AWS S3 from Google Sheets content","description":"Automatically upload Google Sheets data as CSV files to AWS S3, streamlining data management and storage across platforms with this Make template.","url":"13305-upload-csv-files-to-aws-s3-from-google-sheets-content","usedApps":["google-sheets","csv","aws-s3"],"usage":36}

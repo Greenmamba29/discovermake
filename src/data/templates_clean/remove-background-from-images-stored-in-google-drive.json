@@ -1,0 +1,1 @@
+{"id":3856,"name":"Remove background from images stored in Google Drive","description":"When a new image is stored in watched folder in Google Drive, the background of the image is removed by Remove.bg and the image is then uploaded to Google Drive.","url":"3856-remove-background-from-images-stored-in-google-drive","usedApps":["google-drive","removebg"],"usage":386}

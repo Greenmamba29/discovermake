@@ -1,0 +1,1 @@
+{"id":5429,"name":"Send a Thanks.io postcard to a new Zoho CRM contact","description":"Every time a new Zoho CRM contact is created, Make will automatically send a Thanks.io postcard.","url":"5429-send-a-thanks-io-postcard-to-a-new-zoho-crm-contact","usedApps":["zohocrm","thanks-io"],"usage":4}

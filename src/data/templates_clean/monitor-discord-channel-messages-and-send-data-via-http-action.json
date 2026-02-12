@@ -1,0 +1,1 @@
+{"id":12863,"name":"Monitor Discord channel messages and send data via HTTP action","description":"Monitor Discord channel messages and automatically send the data via HTTP action. Ideal for tracking and integrating Discord interactions with external systems.","url":"12863-monitor-discord-channel-messages-and-send-data-via-http-action","usedApps":["discord","http"],"usage":66}

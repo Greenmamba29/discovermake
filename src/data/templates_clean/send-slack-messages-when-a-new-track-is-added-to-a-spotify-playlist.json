@@ -1,0 +1,1 @@
+{"id":6583,"name":"Send Slack messages when a new track is added to a Spotify playlist","description":"Retrieve the new tracks added to Spotify playlist and post a Slack message.","url":"6583-send-slack-messages-when-a-new-track-is-added-to-a-spotify-playlist","usedApps":["spotify","slack"],"usage":30}

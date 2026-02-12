@@ -1,0 +1,1 @@
+{"id":7009,"name":"Send Shopify Orders to ScanOrders as new orders to fulfill","description":"When a new order is created in Shopify, new line items to be Picked, will be created in ScanOrders.","url":"7009-send-shopify-orders-to-scanorders-as-new-orders-to-fulfill","usedApps":["shopify","builtin","scanorders"],"usage":77}

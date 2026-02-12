@@ -1,0 +1,1 @@
+{"id":4031,"name":"Add new Agile CRM companies to Pipedrive CRM","description":"Every time a new company is added to Agile CRM, Make will automatically add that company as an organization in Pipedrive CRM.","url":"4031-add-new-agile-crm-companies-to-pipedrive-crm","usedApps":["agile-crm","pipedrive"],"usage":0}

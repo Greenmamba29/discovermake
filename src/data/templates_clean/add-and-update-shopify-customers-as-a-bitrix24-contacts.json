@@ -1,0 +1,1 @@
+{"id":7882,"name":"Add and Update Shopify customers as a Bitrix24 contacts","description":"Every time a new customer is added to a Shopify, Make will automatically add that customer to Bitrix24 as a new contact or update existing contact.","url":"7882-add-and-update-shopify-customers-as-a-bitrix24-contacts","usedApps":["shopify","bitrix24","builtin"],"usage":26}

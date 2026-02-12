@@ -1,0 +1,1 @@
+{"id":7157,"name":"Send Slack messages for new Recruitee candidates","description":"Every time a candidate aplied for a job in Recruitee, Make will automatically send a message to the specified channel in Slack.","url":"7157-send-slack-messages-for-new-recruitee-candidates","usedApps":["recruitee","slack"],"usage":1}

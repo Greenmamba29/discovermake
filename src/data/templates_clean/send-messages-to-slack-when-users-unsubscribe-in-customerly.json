@@ -1,0 +1,1 @@
+{"id":6880,"name":"Send messages to Slack when users unsubscribe in Customerly","description":"When user or lead unsubscribe in Customerly, Make will automatically send a notification message via Slack.","url":"6880-send-messages-to-slack-when-users-unsubscribe-in-customerly","usedApps":["customerly","slack"],"usage":2}

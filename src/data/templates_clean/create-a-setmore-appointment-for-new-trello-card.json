@@ -1,0 +1,1 @@
+{"id":5031,"name":"Create a Setmore appointment for new Trello card","description":"Every time a new card is added to the Trello board, Make will automatically create an appointment in Setmore.","url":"5031-create-a-setmore-appointment-for-new-trello-card","usedApps":["trello","setmore"],"usage":2}

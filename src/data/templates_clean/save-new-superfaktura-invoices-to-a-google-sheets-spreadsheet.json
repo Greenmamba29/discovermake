@@ -1,0 +1,1 @@
+{"id":1785,"name":"Save new Superfaktura invoices to a Google Sheets spreadsheet","description":"Every time a new invoice is created in Superfaktura, Make will automatically add a new row to your Google Sheets spreadsheet.","url":"1785-save-new-superfaktura-invoices-to-a-google-sheets-spreadsheet","usedApps":["superfaktura","google-sheets"],"usage":22}

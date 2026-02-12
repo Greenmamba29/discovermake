@@ -1,0 +1,1 @@
+{"id":2051,"name":"Add new Tradegecko contacts to ActiveCampaign","description":"Every time a new contact is created in Tradegecko, Make will automatically add that contact to an ActiveCampaign list of your choice.","url":"2051-add-new-tradegecko-contacts-to-activecampaign","usedApps":["activecampaign","tradegecko"],"usage":0}

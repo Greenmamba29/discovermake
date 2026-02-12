@@ -1,0 +1,1 @@
+{"id":705,"name":"Send Twilio SMS messages for new SuiteCRM 7 projects","description":"Every time a new project is created in SuiteCRM 7, Make will automatically send an SMS message via Twilio.","url":"705-send-twilio-sms-messages-for-new-suitecrm-7-projects","usedApps":["suitecrm7","twilio"],"usage":16}

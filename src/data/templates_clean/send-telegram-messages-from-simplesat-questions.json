@@ -1,0 +1,1 @@
+{"id":7114,"name":"Send Telegram messages from Simplesat questions","description":"Every time a answer is created or updated in Simplesat,  Make will automatically send a message to a selected chat in Telegram with question from Simplesat.","url":"7114-send-telegram-messages-from-simplesat-questions","usedApps":["simplesat","telegram"],"usage":0}

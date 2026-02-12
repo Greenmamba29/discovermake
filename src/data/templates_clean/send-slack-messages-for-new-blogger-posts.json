@@ -1,0 +1,1 @@
+{"id":5503,"name":"Send Slack messages for new Blogger posts","description":"Every time a new post is added to a selected blog on Blogger, Make will automatically post a new message to Slack.","url":"5503-send-slack-messages-for-new-blogger-posts","usedApps":["blogger","slack"],"usage":6}

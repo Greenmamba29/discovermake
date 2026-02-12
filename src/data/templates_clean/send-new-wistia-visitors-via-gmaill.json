@@ -1,0 +1,1 @@
+{"id":5230,"name":"Send new Wistia visitors via Gmaill","description":"Every time a new visitor is created in Wistia, Make will automatically send an email message to a specified email address.","url":"5230-send-new-wistia-visitors-via-gmaill","usedApps":["wistia","email"],"usage":1}

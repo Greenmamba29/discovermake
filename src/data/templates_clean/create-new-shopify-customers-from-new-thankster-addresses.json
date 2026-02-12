@@ -1,0 +1,1 @@
+{"id":8791,"name":"Create new Shopify customers from new Thankster addresses","description":"Every time a new address is created in Thankster, Make will automatically create a new customer in Shopify.","url":"8791-create-new-shopify-customers-from-new-thankster-addresses","usedApps":["thankster","shopify"],"usage":2}

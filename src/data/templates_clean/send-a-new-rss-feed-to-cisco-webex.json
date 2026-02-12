@@ -1,0 +1,1 @@
+{"id":4855,"name":"Send a new RSS feed to Cisco Webex","description":"Every time a new item is posted to a watched RSS feed, Make will automatically send a message to a selected room in Cisco Webex.","url":"4855-send-a-new-rss-feed-to-cisco-webex","usedApps":["rss","webex-teams"],"usage":4}

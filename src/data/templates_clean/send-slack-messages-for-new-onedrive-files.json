@@ -1,0 +1,1 @@
+{"id":10277,"name":"Send Slack messages for new OneDrive files","description":"Every time a new file is saved to OneDrive, Make will automatically post a message to Slack.","url":"244-send-slack-messages-for-new-onedrive-files","usedApps":["onedrive","slack"],"usage":25}

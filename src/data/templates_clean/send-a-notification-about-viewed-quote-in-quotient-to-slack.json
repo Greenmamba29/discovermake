@@ -1,0 +1,1 @@
+{"id":4275,"name":"Send a notification about viewed quote in Quotient to Slack","description":"When a quote in Quotioent is viewed by a customer, a notification about this event is sent to Slack.","url":"4275-send-a-notification-about-viewed-quote-in-quotient-to-slack","usedApps":["quotient","slack"],"usage":6}

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Admin Dispute Center</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glass-dark {
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        body {
+            background: radial-gradient(circle at top right, #1a2a4a, #101622);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white min-h-screen">
+<div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden max-w-[430px] mx-auto shadow-2xl bg-background-dark">
+<!-- Top App Bar -->
+<div class="sticky top-0 z-50 glass-dark px-4 pt-12 pb-4">
+<div class="flex items-center justify-between mb-6">
+<div class="flex items-center gap-3">
+<div class="p-2 rounded-lg glass text-white">
+<span class="material-symbols-outlined">arrow_back_ios_new</span>
+</div>
+<h1 class="text-2xl font-bold tracking-tight">Dispute Center</h1>
+</div>
+<div class="p-2 rounded-lg glass text-white">
+<span class="material-symbols-outlined">search</span>
+</div>
+</div>
+<!-- Segmented Control -->
+<div class="flex p-1 bg-white/5 rounded-xl border border-white/10">
+<button class="flex-1 py-2 text-sm font-semibold rounded-lg bg-primary text-white shadow-lg shadow-primary/20">
+                    Ride Disputes
+                </button>
+<button class="flex-1 py-2 text-sm font-semibold text-white/50 hover:text-white transition-colors">
+                    Bug Reports
+                </button>
+</div>
+</div>
+<!-- Scrollable Content -->
+<div class="flex flex-col gap-4 p-4 pb-24">
+<!-- Stats Row -->
+<div class="grid grid-cols-2 gap-4 mb-2">
+<div class="glass p-4 rounded-xl">
+<p class="text-white/50 text-xs font-medium uppercase tracking-wider mb-1">Active</p>
+<p class="text-2xl font-bold">24</p>
+</div>
+<div class="glass p-4 rounded-xl">
+<p class="text-white/50 text-xs font-medium uppercase tracking-wider mb-1">Urgent</p>
+<p class="text-2xl font-bold text-red-400">08</p>
+</div>
+</div>
+<!-- Dispute Card 1 - High Priority -->
+<div class="glass p-5 rounded-2xl relative overflow-hidden group border-l-4 border-l-primary">
+<div class="absolute top-0 right-0 p-4">
+<span class="flex h-2 w-2 rounded-full bg-primary animate-pulse"></span>
+</div>
+<div class="flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<div>
+<span class="text-primary text-[10px] font-bold uppercase tracking-[0.2em]">High Priority</span>
+<h3 class="text-lg font-bold mt-0.5">Fare Dispute #DS-9042</h3>
+</div>
+<span class="text-white/40 text-xs">2m ago</span>
+</div>
+<div class="flex items-center gap-3 glass-dark p-3 rounded-lg">
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full border-2 border-[#1a2a4a] bg-cover" data-alt="Avatar of user Alex M." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDH_-7JWDt2aYinUtpPKBChsgc0DoKbLi7hbGmFqfzOQgj8eEavakTd2yBsoTu3KuNnbZuXBkk5gEbvVDd4e3eWiM9DxPQ_YLPR4oKdLA752GXeJ9eLR13XM_2Veid1JgmvZW0l8NwDCYUm9SFo3KnuRYg0wOnBQ22DZzLw1_OoKap6CwKwr6mHr1hoWBN7s2g9u_LeOnnD6lKMjSaO9k32p9f2XFSl6Y87LVgNc3ImXYRv3_kSw--cTMfIo1FLjXRY1PSzzWBRBk4F')"></div>
+<div class="w-8 h-8 rounded-full border-2 border-[#1a2a4a] bg-cover" data-alt="Avatar of driver Sarah K." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCcPrMk5mME5bHulR5ddqjL1wl70eCCROpyGheEU7lQdxhMel1_4yx2xrzCZ9Y3N7ZFhxMnjBnI9ewRtCKjPzKXLIAJngAj8BTt54rAWAs742tvQ2j7lwthZbeJbNhjDYPvs31S8S9YLODTiYfhrYVWRFmnjneIJ84l9tWuMzJvQGG2ZSak1F9AYfe5-JX2xuTkomrLp6XCtUmQS-Vyecazhu4Of5tHr8vZ1T-ss1p1A9HRVSOycM3jzLSrejfxjFkf2oQFKtFeIZ-8')"></div>
+</div>
+<div class="flex flex-col">
+<span class="text-xs font-medium">Alex M. vs Sarah K.</span>
+<span class="text-[10px] text-white/50">Reported fare: $42.50</span>
+</div>
+</div>
+<p class="text-sm text-white/70 line-clamp-2 leading-relaxed">
+                        User claims the driver took a significantly longer route than suggested by GPS, leading to a 35% surcharge...
+                    </p>
+<div class="flex items-center justify-between mt-2">
+<div class="flex items-center gap-2 text-white/40">
+<span class="material-symbols-outlined text-sm">location_on</span>
+<span class="text-[10px] uppercase font-bold tracking-widest" data-location="San Francisco">San Francisco</span>
+</div>
+<button class="bg-primary hover:bg-primary/80 text-white px-6 py-2.5 rounded-lg text-sm font-bold shadow-lg shadow-primary/30 flex items-center gap-2 transition-all active:scale-95">
+                            Review Case
+                            <span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Dispute Card 2 -->
+<div class="glass p-5 rounded-2xl border-l-4 border-l-orange-400/50">
+<div class="flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<div>
+<span class="text-orange-400 text-[10px] font-bold uppercase tracking-[0.2em]">Pending Review</span>
+<h3 class="text-lg font-bold mt-0.5">Route Deviation #DS-8821</h3>
+</div>
+<span class="text-white/40 text-xs">14m ago</span>
+</div>
+<div class="flex items-center gap-3 glass-dark p-3 rounded-lg">
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full border-2 border-[#1a2a4a] bg-cover" data-alt="Avatar of user Jordan P." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDD8v6hMzRxNJyqr2Rzv1hmAOCbaPYJJEcQlWQ0ZvqFuT2MBVJqujLxvc8Sc0U8K2IOaqUCjp39hhHz7A06us1fF_75r2CuKthsEJ9m8S7kCkYuuqrEcHHSPj94GGb_TRp24qFQh9mEX2v8x70D2CKkhmGaXzICvMPBuz3aoce088YWJvGUr0VSZzK-tILeRBZJkjqpi3LIG_C_II7sZJN4_t83YGia-sxKdjbcqADTv2SfWmcMjzRLzMUjxCX5_6_YnmoiUMA653R_')"></div>
+<div class="w-8 h-8 rounded-full border-2 border-[#1a2a4a] bg-cover" data-alt="Avatar of driver Mike R." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDZkq6xBEBtw8sY2bqhTyE7IfhnB2mjF7g_JAMEbL4LrUJoRern6SPTicVl0ewlhILs7TrOAnKwpCw7UUQZFTLYDwuG3bkfFI_Y27pAv-OQ5CKqvzeyo8kuQ-dOWlI85gaAcQCmzfHWpJ9rgOgCi6hL0vIR3Pvvi8Vyrrh5PL86vadA9CzIJSEdJt6MvSLYlizaqETRqR27Hth3E5q4eie3_sAmO4o6EbVsRxygi_Tu9s-aP077jUzAaSb8_e8pf8G6mf_iz-YHUMLA')"></div>
+</div>
+<div class="flex flex-col">
+<span class="text-xs font-medium">Jordan P. vs Mike R.</span>
+<span class="text-[10px] text-white/50">Incident during Night Shift</span>
+</div>
+</div>
+<p class="text-sm text-white/70 line-clamp-2 leading-relaxed">
+                        "The driver made several unscheduled stops in unfamiliar neighborhoods without explanation..."
+                    </p>
+<div class="flex items-center justify-between mt-2">
+<div class="flex items-center gap-2 text-white/40">
+<span class="material-symbols-outlined text-sm">location_on</span>
+<span class="text-[10px] uppercase font-bold tracking-widest" data-location="Chicago">Chicago, IL</span>
+</div>
+<button class="glass border-white/20 hover:bg-white/10 text-white px-6 py-2.5 rounded-lg text-sm font-bold flex items-center gap-2 transition-all">
+                            Review Case
+                            <span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Bug Report Item -->
+<div class="glass p-5 rounded-2xl border-l-4 border-l-purple-500/50">
+<div class="flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<div>
+<span class="text-purple-400 text-[10px] font-bold uppercase tracking-[0.2em]">Bug Bounty</span>
+<h3 class="text-lg font-bold mt-0.5">Payment Gateway Timeout</h3>
+</div>
+<span class="text-white/40 text-xs">1h ago</span>
+</div>
+<div class="flex items-center gap-3 bg-purple-500/10 p-3 rounded-lg border border-purple-500/20">
+<div class="w-8 h-8 rounded-lg bg-purple-500/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-purple-400 text-lg">bug_report</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xs font-medium">Reporter: Dev_Guru</span>
+<span class="text-[10px] text-purple-400 font-bold uppercase">Reward: $250</span>
+</div>
+</div>
+<p class="text-sm text-white/70 line-clamp-2 leading-relaxed">
+                        Critical timeout error during Stripe 3D Secure verification on iOS 17.4. Repro rate: 15%.
+                    </p>
+<div class="flex items-center justify-between mt-2">
+<div class="flex items-center gap-2 text-white/40">
+<span class="material-symbols-outlined text-sm">terminal</span>
+<span class="text-[10px] uppercase font-bold tracking-widest">Platform: iOS</span>
+</div>
+<button class="bg-purple-500/80 hover:bg-purple-500 text-white px-6 py-2.5 rounded-lg text-sm font-bold shadow-lg shadow-purple-500/20 flex items-center gap-2 transition-all">
+                            Review Bug
+                            <span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Dispute Card 3 -->
+<div class="glass p-5 rounded-2xl border-l-4 border-l-white/20">
+<div class="flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<div>
+<span class="text-white/40 text-[10px] font-bold uppercase tracking-[0.2em]">Completed</span>
+<h3 class="text-lg font-bold mt-0.5 text-white/60 line-through">Cleaning Fee #DS-8750</h3>
+</div>
+<span class="material-symbols-outlined text-green-400">check_circle</span>
+</div>
+<p class="text-xs text-white/40 italic">
+                        Resolved: Refund processed to driver. Case closed by Admin #442.
+                    </p>
+</div>
+</div>
+</div>
+<!-- Bottom Navigation (iOS Style) -->
+<div class="fixed bottom-0 w-full max-w-[430px] glass-dark border-t border-white/10 px-8 pt-4 pb-8 flex items-center justify-between">
+<div class="flex flex-col items-center gap-1 text-white/40">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[10px] font-medium uppercase tracking-tighter">Home</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined fill-[1]">warning</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Disputes</span>
+</div>
+<div class="relative -top-6">
+<div class="w-14 h-14 bg-primary rounded-full shadow-xl shadow-primary/40 flex items-center justify-center border-4 border-[#101622]">
+<span class="material-symbols-outlined text-white text-3xl">add</span>
+</div>
+</div>
+<div class="flex flex-col items-center gap-1 text-white/40">
+<span class="material-symbols-outlined">analytics</span>
+<span class="text-[10px] font-medium uppercase tracking-tighter">Reports</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-white/40">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] font-medium uppercase tracking-tighter">Config</span>
+</div>
+</div>
+</div>
+</body></html>

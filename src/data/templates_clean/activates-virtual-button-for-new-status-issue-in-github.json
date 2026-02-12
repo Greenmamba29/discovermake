@@ -1,0 +1,1 @@
+{"id":7074,"name":"Activates Virtual button for new status issue in GitHub","description":"Every time the status of the issue is changed in GitHub, Make will automatically activate the button in Virtual Buttons.","url":"7074-activates-virtual-button-for-new-status-issue-in-github","usedApps":["github","virtual-buttons"],"usage":1}

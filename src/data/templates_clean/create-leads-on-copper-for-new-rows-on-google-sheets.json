@@ -1,0 +1,1 @@
+{"id":1751,"name":"Create leads on Copper for new rows on Google Sheets","description":"Every time a new row is added on Google Sheets, Make will automatically create a new lead on Copper. The template uses this [example spreadsheet](https://goo.gl/AZdaPd).","url":"1751-create-leads-on-copper-for-new-rows-on-google-sheets","usedApps":["google-sheets","prosperworks"],"usage":25}

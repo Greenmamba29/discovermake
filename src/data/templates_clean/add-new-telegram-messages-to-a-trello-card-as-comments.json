@@ -1,0 +1,1 @@
+{"id":2118,"name":"Add new Telegram messages to a Trello card as comments","description":"Every time a new message is received in Telegram, Make will automatically add a new comment to a Trello card of your choice.","url":"2118-add-new-telegram-messages-to-a-trello-card-as-comments","usedApps":["telegram","trello"],"usage":99}

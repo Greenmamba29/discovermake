@@ -1,0 +1,1 @@
+{"id":6539,"name":"Add new Shopify customers as new subscribers to Mailrelay","description":"When a new customer is created in Shopify, a new Subscriber is created in Mailrelay.","url":"6539-add-new-shopify-customers-as-new-subscribers-to-mailrelay","usedApps":["shopify","mailrelay"],"usage":13}

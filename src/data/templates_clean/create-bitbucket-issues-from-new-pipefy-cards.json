@@ -1,0 +1,1 @@
+{"id":2653,"name":"Create Bitbucket issues from new Pipefy cards","description":"Every time a new card is created in Pipefy, Make will automatically create a new issue in Bitbucket.","url":"2653-create-bitbucket-issues-from-new-pipefy-cards","usedApps":["pipefy","bitbucket"],"usage":1}

@@ -1,0 +1,1 @@
+{"id":3315,"name":"Watching for new attachments sent on Skype and uploading it to Egnyte","description":"Every time a new Skype message is sent with an attachment, Make will automatically save that as a file to Egnyte.","url":"3315-watching-for-new-attachments-sent-on-skype-and-uploading-it-to-egnyte","usedApps":["skype","builtin","egnyte"],"usage":3}

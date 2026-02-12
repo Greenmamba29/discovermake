@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Driver Main Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#0A0A0A",
+                        "glass-border": "rgba(255, 255, 255, 0.15)",
+                        "glass-bg": "rgba(255, 255, 255, 0.05)",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .neon-glow {
+            box-shadow: 0 0 20px rgba(19, 91, 236, 0.4);
+        }
+        .ios-tab-bar {
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen overflow-x-hidden">
+<!-- Top App Bar -->
+<div class="fixed top-0 left-0 right-0 z-50 glass border-b-0 px-6 py-4 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full border border-primary/50 overflow-hidden bg-cover bg-center" data-alt="Professional driver profile headshot portrait" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBYBC68U1heVkpvcm1X-dpBT8Hu9Z7UCP8UpXTfzpn5VrD8xwMW7-IcwxpiEv8VgCbhYSW9Kp50xxDiE_bkaYFsEW9xKTRCuwzmQU_X6gm7ntc3MGlJD3NaIzEg6OZQ0e1ZY4op7SKNF28pK2pxdsuM98Ize5tgTCwIWGaWVD_3oFaGS9a_O8HZJ6b5wP8Zbz28xHi1qRRp3UAUI9ikYYKa-ivptVeCf1FbYOs0yiB5HIYTEDaQTmYaw83DirrxaH8CJgBhhVLHiAmx')"></div>
+<div>
+<p class="text-[10px] text-primary font-bold tracking-widest uppercase">Operator</p>
+<h2 class="text-sm font-bold leading-tight">Zero-One</h2>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="size-10 rounded-full glass flex items-center justify-center relative">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="absolute top-2 right-2 size-2 bg-primary rounded-full neon-glow"></span>
+</button>
+</div>
+</div>
+<!-- Main Content Area -->
+<main class="pt-24 pb-32 px-5 space-y-6">
+<!-- Earnings Glass Card -->
+<div class="glass rounded-xl p-5 relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-10">
+<span class="material-symbols-outlined text-6xl">account_balance_wallet</span>
+</div>
+<div class="relative z-10">
+<p class="text-slate-400 text-xs font-medium uppercase tracking-wider mb-1">Total Earnings Today</p>
+<div class="flex items-baseline gap-2">
+<h1 class="text-4xl font-bold tracking-tight">$428.50</h1>
+<span class="text-emerald-400 text-sm font-medium flex items-center">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+                        14%
+                    </span>
+</div>
+<!-- Daily Revenue Graph -->
+<div class="mt-6 h-32 w-full relative">
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 400 120">
+<defs>
+<lineargradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#135bec" stop-opacity="0.3"></stop>
+<stop offset="100%" stop-color="#135bec" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<path d="M0,80 Q40,75 80,95 T160,40 T240,60 T320,20 T400,50 L400,120 L0,120 Z" fill="url(#chartGradient)"></path>
+<path d="M0,80 Q40,75 80,95 T160,40 T240,60 T320,20 T400,50" fill="none" stroke="#135bec" stroke-linecap="round" stroke-width="3"></path>
+</svg>
+<div class="flex justify-between mt-2 text-[10px] text-slate-500 font-medium px-1">
+<span>06:00</span>
+<span>12:00</span>
+<span>18:00</span>
+<span>00:00</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Quick Stats Row -->
+<div class="grid grid-cols-2 gap-4">
+<div class="glass rounded-lg p-4 flex items-center gap-3">
+<div class="size-10 rounded-lg bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">grade</span>
+</div>
+<div>
+<p class="text-[10px] text-slate-400 uppercase tracking-tighter">Rating</p>
+<p class="font-bold">4.98</p>
+</div>
+</div>
+<div class="glass rounded-lg p-4 flex items-center gap-3">
+<div class="size-10 rounded-lg bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">verified</span>
+</div>
+<div>
+<p class="text-[10px] text-slate-400 uppercase tracking-tighter">Accepted</p>
+<p class="font-bold">96%</p>
+</div>
+</div>
+</div>
+<!-- Go Online Toggle Section -->
+<div class="py-4 flex flex-col items-center justify-center">
+<p class="text-xs font-medium text-slate-400 mb-4 uppercase tracking-[0.2em]">System Status</p>
+<label class="relative inline-flex items-center cursor-pointer group">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-64 h-20 glass rounded-full peer-checked:bg-primary/5 peer-checked:border-primary/50 transition-all duration-500 relative flex items-center px-2">
+<!-- Text Indicator -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none transition-all duration-300">
+<span class="text-lg font-bold tracking-widest text-slate-500 peer-checked:hidden">GO ONLINE</span>
+<span class="text-lg font-bold tracking-widest text-primary hidden peer-checked:block neon-glow">ON DUTY</span>
+</div>
+<!-- Handle -->
+<div class="w-16 h-16 bg-slate-800 rounded-full border border-slate-700 peer-checked:translate-x-44 peer-checked:bg-primary peer-checked:border-white transition-all duration-500 flex items-center justify-center shadow-xl peer-checked:neon-glow">
+<span class="material-symbols-outlined text-white text-3xl">power_settings_new</span>
+</div>
+</div>
+</label>
+<div class="mt-4 flex items-center gap-2">
+<div class="size-2 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_8px_#10b981]"></div>
+<p class="text-[10px] text-emerald-500 font-bold uppercase tracking-widest">Searching for bounties...</p>
+</div>
+</div>
+<!-- Recent Activity Feed -->
+<div class="space-y-4">
+<div class="flex items-center justify-between px-1">
+<h3 class="text-sm font-bold uppercase tracking-wider text-slate-400">Recent Bounties</h3>
+<button class="text-xs font-bold text-primary">View All</button>
+</div>
+<!-- Trip Card 1 -->
+<div class="glass rounded-xl p-4 flex items-center justify-between border-l-4 border-l-primary">
+<div class="flex items-center gap-4">
+<div class="size-12 rounded-lg bg-white/5 flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover opacity-60" data-alt="San Francisco Golden Gate Bridge Cityscape view" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgw1aMyDvpf2Do1p2GQYiYLEO0JZ1UL_6bFT54rC7XMvOeO7Y7nXXBk1uHYbnoAPfeMRjnH3qeWpA6aOYueuGIJZx1h6bUGcVz3BTflYKoxBhnY4da1HJ40IPPxCBJlwRtcaaaGPOsWBPq8HS7X28287EPM1zk1jhxHpMCMfMHi6-sPd83ag8X_UhcYNwTEfTORBE2kGJFpHgxBf2gwG8Z4N4RzHOrIa2Q2p_wmbsdAYhJKhf-H540JCSO3UwCofDaVYQUtdVihpMV"/>
+</div>
+<div>
+<h4 class="text-sm font-bold">Downtown CyberHub</h4>
+<p class="text-[11px] text-slate-500 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+                            14:30 • 4.2 miles
+                        </p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-sm font-bold text-white">+$24.00</p>
+<span class="material-symbols-outlined text-slate-600 text-[20px]">chevron_right</span>
+</div>
+</div>
+<!-- Trip Card 2 -->
+<div class="glass rounded-xl p-4 flex items-center justify-between border-l-4 border-l-primary/30">
+<div class="flex items-center gap-4">
+<div class="size-12 rounded-lg bg-white/5 flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover opacity-60" data-alt="High-tech futuristic city skyscrapers at night" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAsjp0tH3zW6ULBdUiGtvNckpFidcjha7pTiNdU7nU0Lj-FRgfbDa10XHFl7VFUQhTezM_d8Weh6lFZxaPLVWJzuIIuSefXPj0VAF9HpdAw9Ej_tnq4eZQ3s5A1Ku1ToTUblh5VnwTZ-i1sepxE6Ye8qThLjE2pBLRG5_7YSLyTea9s-VHlraMRHNuDHBRzJJSS2hFfcqj-2lf6vrFlxJ3MpFAIFSTrQnPKKPuF9lIq95PQrOpmZKo0UUBMMMb67nvFwQW5B-JSCJyZ"/>
+</div>
+<div>
+<h4 class="text-sm font-bold">Neo-Sector 7 Transit</h4>
+<p class="text-[11px] text-slate-500 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+                            12:15 • 12.8 miles
+                        </p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-sm font-bold text-white">+$68.50</p>
+<span class="material-symbols-outlined text-slate-600 text-[20px]">chevron_right</span>
+</div>
+</div>
+<!-- Trip Card 3 -->
+<div class="glass rounded-xl p-4 flex items-center justify-between border-l-4 border-l-primary/30">
+<div class="flex items-center gap-4">
+<div class="size-12 rounded-lg bg-white/5 flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover opacity-60" data-alt="Abstract dark city lights long exposure" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDHkhjTpoRUK7OJSdSFALfeK40xWV0PKF4fYzVBjtPphlXiKssout2w5RpiwKe91ANoGn-Edv9qjWya1L0i7dliCWimSOWyO7Y0-o9GfNiw82cPSbDc7ov631cI2SuOsef_ATWXuHb0P2GA-SJpuXBCWoV32w_SU08l4ynenHRLpmiInFvVn0PApdrb1F69jLSdXdWa3hlnwc1GfdbRSaQmnPe98e6tBfi1q6EiU_G_h1M9cua5WMGzJGRNpc_eMcsXq54eE8Rmf6Zu"/>
+</div>
+<div>
+<h4 class="text-sm font-bold">Port 80 Security Drop</h4>
+<p class="text-[11px] text-slate-500 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+                            09:40 • 2.1 miles
+                        </p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-sm font-bold text-white">+$18.20</p>
+<span class="material-symbols-outlined text-slate-600 text-[20px]">chevron_right</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar (iOS Style) -->
+<nav class="fixed bottom-0 left-0 right-0 glass border-t-0 ios-tab-bar z-50">
+<div class="flex justify-around items-center h-20 px-6">
+<button class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined fill-1 text-[28px]">dashboard</span>
+<span class="text-[10px] font-bold uppercase tracking-widest">Main</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-500">
+<span class="material-symbols-outlined text-[28px]">rocket_launch</span>
+<span class="text-[10px] font-bold uppercase tracking-widest">Bounties</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-500">
+<span class="material-symbols-outlined text-[28px]">account_balance_wallet</span>
+<span class="text-[10px] font-bold uppercase tracking-widest">Wallet</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-500">
+<span class="material-symbols-outlined text-[28px]">settings_accessibility</span>
+<span class="text-[10px] font-bold uppercase tracking-widest">Profile</span>
+</button>
+</div>
+</nav>
+<!-- Map Context Hint (Background Layer) -->
+<div class="fixed inset-0 -z-10 opacity-20 pointer-events-none">
+<div class="w-full h-full bg-cover bg-center grayscale contrast-125" data-alt="Monochrome overhead dark city map view" data-location="Tokyo" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAT15jXsGjw1rlFfjtAlEW3psXgei4OKHLkEFWxPbrkJOC-jE4zMH7Q93XRhpQzvCeGqJuEUMAICXbioztLU-Tr9lB11F3zwBJdjw9rvVO6CN48wGWfL58ktGw9mWKf051phV5xn0y760dbenQhvdrglpCVjdXTC6t1v8LDxNlg1BcHFyhLUMc4f86hr7irUDz4AfP_o2F3RSd45jRjqsDvIcx5JYiQNSjddRNPqvMA5l-9_o4YTl-YBQ8E-i2-ri7tmXzBGbO6bOAZ')"></div>
+<div class="absolute inset-0 bg-gradient-to-b from-background-dark via-transparent to-background-dark"></div>
+</div>
+</body></html>

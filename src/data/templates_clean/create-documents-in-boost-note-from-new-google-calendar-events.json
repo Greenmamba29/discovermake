@@ -1,0 +1,1 @@
+{"id":7518,"name":"Create documents in Boost Note from new Google Calendar events","description":"Every time a new event is added to your Google Calendar, Make will automatically create a new documents in Boost Note.","url":"7518-create-documents-in-boost-note-from-new-google-calendar-events","usedApps":["google-calendar","boost-hub"],"usage":2}

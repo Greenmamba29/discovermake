@@ -1,0 +1,1 @@
+{"id":5370,"name":"Send information about new response in Textit to Telegram Bot","description":"Every time you receive a new response in Textit, Make will automatically send a message in Telegram Bot.","url":"5370-send-information-about-new-response-in-textit-to-telegram-bot","usedApps":["textit","telegram"],"usage":1}

@@ -1,0 +1,1 @@
+{"id":5420,"name":"Add a new WooCommerce customer to a Thanks.io mailing list","description":"Every time a new WooCommerce customer is created, Make will automatically add a recipient to a Thanks.io mailing list.","url":"5420-add-a-new-woocommerce-customer-to-a-thanks-io-mailing-list","usedApps":["woocommerce","thanks-io"],"usage":3}

@@ -1,0 +1,1 @@
+{"id":4320,"name":"Update HubSpot CRM contacts from sent emails in Woodpecker","description":"Every time a new email is sent to a contact in Woodpecker, Make will automatically create or update a contact in HubSpot CRM and add them to a list.","url":"4320-update-hubspot-crm-contacts-from-sent-emails-in-woodpecker","usedApps":["woodpecker","hubspotcrm"],"usage":5}

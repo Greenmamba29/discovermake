@@ -1,0 +1,1 @@
+{"id":8089,"name":"Create Delesign projects for new FogBugz projects","description":"Make will watch your FogBugz projects at regular intervals and create identical Delesing projects.","url":"8089-create-delesign-projects-for-new-fogbugz-projects","usedApps":["fogbugz","delesign"],"usage":3}

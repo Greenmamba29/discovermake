@@ -1,0 +1,1 @@
+{"id":10948,"name":"Save email attachments to Google Drive","description":"Every time you receive an email with an attachment, Make will automatically save that attachment to a specified  folder in Google Drive.  The attachment will be saved in its original format.","url":"83-save-email-attachments-to-google-drive","usedApps":["email","builtin","google-drive"],"usage":9237}

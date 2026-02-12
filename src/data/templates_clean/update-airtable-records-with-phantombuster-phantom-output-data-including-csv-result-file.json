@@ -1,0 +1,1 @@
+{"id":6305,"name":"Update Airtable records with Phantombuster phantom output data (including CSV result file)","description":"https://hook.make.com/generic-webhook-placeholder","url":"6305-update-airtable-records-with-phantombuster-phantom-output-data-including-csv-result-file","usedApps":["phantombuster","regexp","http","airtable"],"usage":457}

@@ -1,0 +1,1 @@
+{"id":2528,"name":"Add info about new Google Drive files to a table in a Coda doc","description":"Every time a new file is uploaded to a watched Google Drive folder, Make will automatically add that file's info to a new row in your Coda table.","url":"2528-add-info-about-new-google-drive-files-to-a-table-in-a-coda-doc","usedApps":["google-drive","coda"],"usage":42}

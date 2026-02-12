@@ -1,0 +1,1 @@
+{"id":2571,"name":"Create new ClickUp tasks from new Acuity Scheduling appointments","description":"Every time a new appointment is scheduled in Acuity Scheduling, Make will automatically create a new task in ClickUp.","url":"2571-create-new-clickup-tasks-from-new-acuity-scheduling-appointments","usedApps":["acuity-scheduling","clickup"],"usage":33}

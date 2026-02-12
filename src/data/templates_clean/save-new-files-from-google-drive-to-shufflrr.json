@@ -1,0 +1,1 @@
+{"id":7067,"name":"Save new files from Google Drive to Shufflrr","description":"Every time a new file is uploaded to your Google Drive, Make will automatically upload that file to Shufflrr folder you specify.","url":"7067-save-new-files-from-google-drive-to-shufflrr","usedApps":["google-drive","shufflrr"],"usage":2}

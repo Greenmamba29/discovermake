@@ -1,0 +1,1 @@
+{"id":4150,"name":"Create Teamwork Desk tickets from Google Calendar events","description":"Every time a new Google Calendar event is created, Make will automatically create a new Teamwork Desk ticket.","url":"4150-create-teamwork-desk-tickets-from-google-calendar-events","usedApps":["google-calendar","teamwork-desk"],"usage":1}

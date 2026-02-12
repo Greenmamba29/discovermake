@@ -1,0 +1,1 @@
+{"id":2265,"name":"Create a Trello card for new Chatfuel messages","description":"Every time there is a new message in a specific block in Chatfuel, Make will automatically create a new Trello card.","url":"2265-create-a-trello-card-for-new-chatfuel-messages","usedApps":["chatfuel","trello"],"usage":20}

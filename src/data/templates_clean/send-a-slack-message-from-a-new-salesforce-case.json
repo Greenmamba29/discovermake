@@ -1,0 +1,1 @@
+{"id":5589,"name":"Send a Slack message from a new Salesforce case","description":"Use this template to send a Slack message to a channel or a user when a new Salesforce case is created.","url":"5589-send-a-slack-message-from-a-new-salesforce-case","usedApps":["salesforce","slack"],"usage":37}

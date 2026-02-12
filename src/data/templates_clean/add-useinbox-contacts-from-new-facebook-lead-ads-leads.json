@@ -1,0 +1,1 @@
+{"id":7867,"name":"Add UseINBOX contacts from new Facebook Lead Ads leads","description":"Make will watch for new Facebook Lead Ads leads at regular intervals and add contacts to a UseINBOX mailing list using the information received.","url":"7867-add-useinbox-contacts-from-new-facebook-lead-ads-leads","usedApps":["facebook-lead-ads","useinbox"],"usage":1}

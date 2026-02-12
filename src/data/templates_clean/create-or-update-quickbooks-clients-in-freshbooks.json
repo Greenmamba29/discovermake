@@ -1,0 +1,1 @@
+{"id":6084,"name":"Create or update QuickBooks clients in FreshBooks","description":"Every time a client is created or updated in QuickBooks, the clients is created or gets updated in FreshBooks.","url":"6084-create-or-update-quickbooks-clients-in-freshbooks","usedApps":["quickbooks","freshbooks","builtin"],"usage":11}

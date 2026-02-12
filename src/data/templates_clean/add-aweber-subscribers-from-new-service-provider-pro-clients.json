@@ -1,0 +1,1 @@
+{"id":8050,"name":"Add AWeber subscribers from new Service Provider Pro clients","description":"Every time there is a new client in Service Provider Pro, Make will automatically add a subscriber to AWeber using information received.","url":"8050-add-aweber-subscribers-from-new-service-provider-pro-clients","usedApps":["service-provider-pro","aweber"],"usage":3}

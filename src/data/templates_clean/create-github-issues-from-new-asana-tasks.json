@@ -1,0 +1,1 @@
+{"id":5559,"name":"Create GitHub issues from new Asana tasks","description":"This template retrieves your new Asana tasks and creates issues on Github automatically.","url":"5559-create-github-issues-from-new-asana-tasks","usedApps":["asana","github"],"usage":25}

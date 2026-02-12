@@ -1,0 +1,1 @@
+{"id":8375,"name":"Get Pushover notifications for new Gmail e-mails","description":"Every time a new email is received in your Gmail inbox, Make will automatically send a notification message in Pushover.","url":"8375-get-pushover-notifications-for-new-gmail-e-mails","usedApps":["google-email","builtin","pushover"],"usage":6}

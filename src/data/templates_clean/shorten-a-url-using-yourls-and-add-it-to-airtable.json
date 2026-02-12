@@ -1,0 +1,1 @@
+{"id":8055,"name":"Shorten a URL using YOURLS and add it to Airtable","description":"Use this template to automatically shorten a new link in Airtable table with YOURLS. The template uses this [example table](https://airtable.com/shr4wgIr0jf7cWH3d).","url":"8055-shorten-a-url-using-yourls-and-add-it-to-airtable","usedApps":["airtable","yourls"],"usage":7}

@@ -1,0 +1,1 @@
+{"id":6612,"name":"Add new Zoom registrants to a Google Sheet","description":"When you have new registrants for a Zoom meeting, the details of the registrants are instantly received in this scenario and added to a Google Sheet.","url":"6612-add-new-zoom-registrants-to-a-google-sheet","usedApps":["zoom","google-sheets"],"usage":210}

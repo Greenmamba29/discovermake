@@ -1,0 +1,1 @@
+{"id":8424,"name":"Upload completed DocuSign document to Dropbox","description":"Every time a document status is changed to Completed in DocuSign, the document will be uploaded to Dropbox. ","url":"8424-upload-completed-docusign-document-to-dropbox","usedApps":["docusign","builtin","dropbox"],"usage":163}

@@ -1,0 +1,1 @@
+{"id":5054,"name":"Create a text file in Dropbox when a Cloud BOT bot is executed","description":"Every time a Cloud BOT bot is executed, Make will automatically create a text file in Dropbox.","url":"5054-create-a-text-file-in-dropbox-when-a-cloud-bot-bot-is-executed","usedApps":["cloud-bot","dropbox"],"usage":3}

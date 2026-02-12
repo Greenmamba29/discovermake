@@ -1,0 +1,1 @@
+{"id":6709,"name":"Send message for changed status item in KissFlow","description":"Every time status of item are changed in KiSSFLOW, Make will automatically post a message to Slack.","url":"6709-send-message-for-changed-status-item-in-kissflow","usedApps":["kissflow","slack"],"usage":3}

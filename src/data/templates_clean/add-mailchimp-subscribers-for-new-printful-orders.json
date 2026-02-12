@@ -1,0 +1,1 @@
+{"id":8767,"name":"Add Mailchimp subscribers for new Printful orders","description":"Make will watch for new Printful orders at regular intervals and add customers as subscribers to a specified Mailchimp mailing list.","url":"8767-add-mailchimp-subscribers-for-new-printful-orders","usedApps":["printful","mailchimp"],"usage":3}

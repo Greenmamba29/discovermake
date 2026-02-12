@@ -1,0 +1,1 @@
+{"id":4495,"name":"Import Memberstack members to Google Sheets spreadsheet","description":"List all members in Memberstack and send them to Google Sheets spreadsheet.","url":"4495-import-memberstack-members-to-google-sheets-spreadsheet","usedApps":["memberstack","google-sheets"],"usage":29}

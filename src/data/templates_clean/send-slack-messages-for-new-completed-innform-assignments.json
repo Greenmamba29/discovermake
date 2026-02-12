@@ -1,0 +1,1 @@
+{"id":6817,"name":"Send Slack messages for new completed Innform assignments","description":"Every time there is a new assignment completed in Innform, Make will automatically send a notification message via Slack.","url":"6817-send-slack-messages-for-new-completed-innform-assignments","usedApps":["innform","slack"],"usage":0}

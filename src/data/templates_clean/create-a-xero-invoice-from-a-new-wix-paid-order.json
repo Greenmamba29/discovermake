@@ -1,0 +1,1 @@
+{"id":5705,"name":"Create a Xero invoice from a new Wix paid order","description":"Every time there's a new Wix paid order, Make will automatically create a Xero invoice (and a Xero contact if it doesn't already exist).","url":"5705-create-a-xero-invoice-from-a-new-wix-paid-order","usedApps":["wix","builtin","xero"],"usage":47}

@@ -1,0 +1,1 @@
+{"id":6840,"name":"Add new Google Calendar events to Workstack as projects","description":"Every time a new event is added to your Google Calendar, Make will automatically create a new project in a Workstack.","url":"6840-add-new-google-calendar-events-to-workstack-as-projects","usedApps":["google-calendar","workstack"],"usage":1}

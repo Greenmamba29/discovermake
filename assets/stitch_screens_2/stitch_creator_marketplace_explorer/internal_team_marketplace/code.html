@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Internal Team Marketplace</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13a4ec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101c22",
+                        "surface-dark": "#192b33",
+                        "surface-light": "#ffffff",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-white antialiased overflow-x-hidden">
+<div class="relative flex h-full min-h-screen w-full flex-col max-w-md mx-auto shadow-2xl overflow-hidden bg-background-light dark:bg-background-dark">
+<!-- Header -->
+<header class="sticky top-0 z-20 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-800">
+<div class="flex items-center justify-between px-4 py-3">
+<div class="flex items-center gap-2">
+<div class="text-primary flex size-8 shrink-0 items-center justify-center rounded bg-primary/20">
+<span class="material-symbols-outlined text-[20px]">globe</span>
+</div>
+<h1 class="text-lg font-bold tracking-tight">DiscoverMake</h1>
+</div>
+<button class="relative flex size-9 items-center justify-center overflow-hidden rounded-full bg-surface-dark/10 dark:bg-surface-light/10">
+<img alt="User Profile" class="h-full w-full object-cover" data-alt="User profile avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqN1y-27EdWpEX4PmivtaU9zMw9XAahU7i61i2ckosHWkj6Un_5Oz0JGj6euUMEMUyB1bmTdpaN0x7kCkxyoCkOYYbiotLIr2st3VQIRJULBzxAcqUOcFF-tYC_rcfUUMwrbS3L-unteXzJ6mXQI2mE3BOFenIvTJf4J_TnqY27PeCb3WzsP8oTsy8YZQmKJJDkzuRAO3kuYByHB3VuiNEQtrrpbcprxldALaSuIvgYoJ-pGWUkwsdwOkhrr0R6W7pOe0GKwIKiss"/>
+</button>
+</div>
+<!-- Search Bar -->
+<div class="px-4 pb-3">
+<div class="relative flex items-center w-full h-10 rounded-lg focus-within:ring-2 focus-within:ring-primary/50 bg-white dark:bg-surface-dark border border-gray-200 dark:border-gray-700 overflow-hidden">
+<div class="grid place-items-center h-full w-10 text-gray-400">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</div>
+<input class="peer h-full w-full outline-none text-sm text-gray-700 dark:text-gray-200 pr-2 bg-transparent placeholder-gray-400 dark:placeholder-gray-500" id="search" placeholder="Search workflows, tools, people..." type="text"/>
+</div>
+</div>
+<!-- Category Filter Chips -->
+<div class="flex gap-2 px-4 pb-3 overflow-x-auto no-scrollbar mask-gradient-r">
+<button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-primary text-white px-4 text-xs font-semibold whitespace-nowrap shadow-sm">
+                    All
+                </button>
+<button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-gray-200 dark:bg-surface-dark border border-transparent hover:border-gray-300 dark:hover:border-gray-600 px-4 text-xs font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap transition-colors">
+                    Engineering
+                </button>
+<button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-gray-200 dark:bg-surface-dark border border-transparent hover:border-gray-300 dark:hover:border-gray-600 px-4 text-xs font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap transition-colors">
+                    HR
+                </button>
+<button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-gray-200 dark:bg-surface-dark border border-transparent hover:border-gray-300 dark:hover:border-gray-600 px-4 text-xs font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap transition-colors">
+                    Sales
+                </button>
+<button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-gray-200 dark:bg-surface-dark border border-transparent hover:border-gray-300 dark:hover:border-gray-600 px-4 text-xs font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap transition-colors">
+                    Marketing
+                </button>
+<button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-gray-200 dark:bg-surface-dark border border-transparent hover:border-gray-300 dark:hover:border-gray-600 px-4 text-xs font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap transition-colors">
+                    Finance
+                </button>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-1 overflow-y-auto pb-24">
+<!-- Hero Section: Essentials -->
+<section class="mt-4 px-4">
+<div class="flex items-center justify-between mb-3">
+<h2 class="text-xl font-bold text-gray-900 dark:text-white tracking-tight">DiscoverMake Essentials</h2>
+</div>
+<!-- Hero Card -->
+<div class="group relative flex flex-col overflow-hidden rounded-xl bg-white dark:bg-surface-dark shadow-sm border border-gray-200 dark:border-gray-800">
+<div class="h-32 w-full bg-gradient-to-r from-blue-600 to-primary relative">
+<div class="absolute inset-0 bg-black/10"></div>
+<div class="absolute bottom-3 left-3 flex items-center gap-1.5 bg-black/30 backdrop-blur-md px-2 py-1 rounded text-xs font-medium text-white">
+<span class="material-symbols-outlined text-[14px] filled">verified</span>
+                            Verified for Org
+                         </div>
+</div>
+<div class="p-4">
+<div class="mb-1 flex items-start justify-between">
+<div>
+<p class="text-xs font-medium text-primary uppercase tracking-wider mb-1">Featured Tool</p>
+<h3 class="text-lg font-bold text-gray-900 dark:text-white leading-tight">Q3 Sales Forecaster</h3>
+</div>
+<div class="flex h-10 w-10 items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400">
+<span class="material-symbols-outlined text-[24px]">trending_up</span>
+</div>
+</div>
+<p class="mt-2 text-sm text-gray-500 dark:text-gray-400 line-clamp-2">Automated revenue projection model using latest SQL data from warehouse.</p>
+<div class="mt-4 flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-700/50">
+<div class="flex items-center gap-2">
+<img alt="Sarah" class="h-6 w-6 rounded-full object-cover" data-alt="Creator avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA96Vguu7F261jtGa_gu3uZEFj3udtOrlt0bcJRZETlFIFEFhTd8qaV5lMzzihBkMs2j2E3IZvNhDqhsIiqtTllfHI9cGdm3u5N6CcAz7KHp9Y1ZgIkNuXahXaTpTflH7DtIAw5hdxAaIDsMOzC-P7jIEXNfNKO3Xu9XjAboPtUUQlnqK56ZJvufM2rhbooNMeixK9E1OFQrARzEDmguOseV-ot04u8znuSa9emg0iJLrlHv5iAb0qer7o4zdzZ0wR5K65BZbxqWGw"/>
+<span class="text-xs text-gray-500 dark:text-gray-400">@Sarah • Finance</span>
+</div>
+<button class="flex items-center justify-center rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-primary/90 transition-colors">
+                                Open Tool
+                            </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 2: Verified for Engineering (Horizontal Scroll) -->
+<section class="mt-8">
+<div class="px-4 flex items-center justify-between mb-3">
+<h2 class="text-lg font-bold text-gray-900 dark:text-white tracking-tight">Verified for Engineering</h2>
+<a class="text-xs font-medium text-primary hover:text-primary/80" href="#">See All</a>
+</div>
+<div class="flex gap-4 overflow-x-auto px-4 pb-4 no-scrollbar">
+<!-- Card 1 -->
+<div class="min-w-[240px] w-[240px] flex-shrink-0 rounded-xl bg-white dark:bg-surface-dark border border-gray-200 dark:border-gray-800 shadow-sm p-4">
+<div class="flex items-start justify-between mb-3">
+<div class="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400">
+<span class="material-symbols-outlined">deployed_code</span>
+</div>
+<span class="material-symbols-outlined text-primary text-[20px] filled" title="Verified">verified_user</span>
+</div>
+<h3 class="text-base font-bold text-gray-900 dark:text-white mb-1">Deploy Log Viewer</h3>
+<p class="text-xs text-gray-500 dark:text-gray-400 line-clamp-2 mb-3">Real-time log streaming for production clusters.</p>
+<button class="w-full flex items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 px-3 py-2 text-xs font-semibold text-gray-900 dark:text-white transition-colors">
+                            Request Access
+                        </button>
+</div>
+<!-- Card 2 -->
+<div class="min-w-[240px] w-[240px] flex-shrink-0 rounded-xl bg-white dark:bg-surface-dark border border-gray-200 dark:border-gray-800 shadow-sm p-4">
+<div class="flex items-start justify-between mb-3">
+<div class="flex h-10 w-10 items-center justify-center rounded-lg bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400">
+<span class="material-symbols-outlined">api</span>
+</div>
+<span class="material-symbols-outlined text-primary text-[20px] filled" title="Verified">verified_user</span>
+</div>
+<h3 class="text-base font-bold text-gray-900 dark:text-white mb-1">API Doc Generator</h3>
+<p class="text-xs text-gray-500 dark:text-gray-400 line-clamp-2 mb-3">Auto-generate swagger docs from code comments.</p>
+<button class="w-full flex items-center justify-center rounded-lg bg-primary/10 hover:bg-primary/20 text-primary px-3 py-2 text-xs font-semibold transition-colors">
+                            Open
+                        </button>
+</div>
+<!-- Card 3 -->
+<div class="min-w-[240px] w-[240px] flex-shrink-0 rounded-xl bg-white dark:bg-surface-dark border border-gray-200 dark:border-gray-800 shadow-sm p-4">
+<div class="flex items-start justify-between mb-3">
+<div class="flex h-10 w-10 items-center justify-center rounded-lg bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400">
+<span class="material-symbols-outlined">bug_report</span>
+</div>
+<span class="material-symbols-outlined text-primary text-[20px] filled" title="Verified">verified_user</span>
+</div>
+<h3 class="text-base font-bold text-gray-900 dark:text-white mb-1">Jira Bug Sync</h3>
+<p class="text-xs text-gray-500 dark:text-gray-400 line-clamp-2 mb-3">Sync Zendesk tickets to Jira automatically.</p>
+<button class="w-full flex items-center justify-center rounded-lg bg-primary/10 hover:bg-primary/20 text-primary px-3 py-2 text-xs font-semibold transition-colors">
+                            Open
+                        </button>
+</div>
+</div>
+</section>
+<!-- Section 3: Recent Uploads (Vertical List) -->
+<section class="mt-6 px-4">
+<div class="flex items-center justify-between mb-3">
+<h2 class="text-lg font-bold text-gray-900 dark:text-white tracking-tight">Recent Uploads</h2>
+</div>
+<div class="flex flex-col gap-3">
+<!-- List Item 1 -->
+<div class="flex items-center gap-3 rounded-xl bg-white dark:bg-surface-dark p-3 border border-gray-200 dark:border-gray-800 shadow-sm">
+<div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400">
+<span class="material-symbols-outlined">calculate</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center gap-1.5 mb-0.5">
+<h4 class="text-sm font-bold text-gray-900 dark:text-white truncate">Tax Calculator 2024</h4>
+<span class="material-symbols-outlined text-[14px] text-gray-400 dark:text-gray-600" title="Community Built">public</span>
+</div>
+<p class="text-xs text-gray-500 dark:text-gray-400 truncate">Updated tax brackets for internal audits.</p>
+<div class="mt-1 flex items-center gap-2">
+<span class="inline-flex items-center rounded bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 text-[10px] font-medium text-gray-600 dark:text-gray-400">Finance</span>
+<span class="text-[10px] text-gray-400">2h ago</span>
+</div>
+</div>
+<button class="shrink-0 flex items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800 p-2 text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700">
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</div>
+<!-- List Item 2 -->
+<div class="flex items-center gap-3 rounded-xl bg-white dark:bg-surface-dark p-3 border border-gray-200 dark:border-gray-800 shadow-sm">
+<div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400">
+<span class="material-symbols-outlined">event_available</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center gap-1.5 mb-0.5">
+<h4 class="text-sm font-bold text-gray-900 dark:text-white truncate">Team Offsite Planner</h4>
+</div>
+<p class="text-xs text-gray-500 dark:text-gray-400 truncate">Polls and scheduling for Q4 retreat.</p>
+<div class="mt-1 flex items-center gap-2">
+<span class="inline-flex items-center rounded bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 text-[10px] font-medium text-gray-600 dark:text-gray-400">HR</span>
+<span class="text-[10px] text-gray-400">5h ago</span>
+</div>
+</div>
+<button class="shrink-0 flex items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800 p-2 text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700">
+<span class="material-symbols-outlined text-[20px]">lock</span>
+</button>
+</div>
+<!-- List Item 3 -->
+<div class="flex items-center gap-3 rounded-xl bg-white dark:bg-surface-dark p-3 border border-gray-200 dark:border-gray-800 shadow-sm">
+<div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-teal-50 dark:bg-teal-900/20 text-teal-600 dark:text-teal-400">
+<span class="material-symbols-outlined">campaign</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center gap-1.5 mb-0.5">
+<h4 class="text-sm font-bold text-gray-900 dark:text-white truncate">Brand Assets V3</h4>
+<span class="material-symbols-outlined text-[14px] text-primary" title="Verified">verified</span>
+</div>
+<p class="text-xs text-gray-500 dark:text-gray-400 truncate">Official logo pack and fonts for 2024.</p>
+<div class="mt-1 flex items-center gap-2">
+<span class="inline-flex items-center rounded bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 text-[10px] font-medium text-gray-600 dark:text-gray-400">Marketing</span>
+<span class="text-[10px] text-gray-400">1d ago</span>
+</div>
+</div>
+<button class="shrink-0 flex items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800 p-2 text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700">
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation -->
+<nav class="absolute bottom-0 w-full z-30 bg-background-light dark:bg-background-dark border-t border-gray-200 dark:border-gray-800 pb-5 pt-2">
+<div class="flex justify-around items-center px-2">
+<button class="flex flex-col items-center gap-1 p-2 text-primary">
+<span class="material-symbols-outlined text-[24px] filled">storefront</span>
+<span class="text-[10px] font-medium">Market</span>
+</button>
+<button class="flex flex-col items-center gap-1 p-2 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200">
+<span class="material-symbols-outlined text-[24px]">workspaces</span>
+<span class="text-[10px] font-medium">Workspace</span>
+</button>
+<button class="flex flex-col items-center gap-1 p-2 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200">
+<span class="material-symbols-outlined text-[24px]">move_to_inbox</span>
+<span class="text-[10px] font-medium">Requests</span>
+</button>
+<button class="flex flex-col items-center gap-1 p-2 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200">
+<span class="material-symbols-outlined text-[24px]">settings</span>
+<span class="text-[10px] font-medium">Settings</span>
+</button>
+</div>
+</nav>
+</div>
+<style>
+        /* Custom scrollbar hiding for horizontal scroll areas */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        /* Filled icon variant class */
+        .material-symbols-outlined.filled {
+          font-variation-settings:
+          'FILL' 1,
+          'wght' 400,
+          'GRAD' 0,
+          'opsz' 24
+        }
+    </style>
+</body></html>

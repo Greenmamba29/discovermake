@@ -1,0 +1,1 @@
+{"id":2555,"name":"Send RingCentral SMS messages for new WooCommerce orders","description":"Every time a new order is created in WooCommerce, Make will automatically send an SMS message via RingCentral.","url":"2555-send-ringcentral-sms-messages-for-new-woocommerce-orders","usedApps":["woocommerce","ringcentral"],"usage":3}

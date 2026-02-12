@@ -1,0 +1,1 @@
+{"id":6475,"name":"Add Crisp users from new Airtable records","description":"Every time a new record is added to your Airtable table, Make will automatically create a new contact in Crisp. The template uses this [example table](https://airtable.com/shrvWg7ObTPChwehk).","url":"6475-add-crisp-users-from-new-airtable-records","usedApps":["airtable","crisp"],"usage":1}

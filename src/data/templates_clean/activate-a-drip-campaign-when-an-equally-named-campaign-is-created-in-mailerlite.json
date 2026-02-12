@@ -1,0 +1,1 @@
+{"id":1459,"name":"Activate a Drip campaign when an equally-named campaign is created in MailerLite","description":"Every time a new campaign is created in Mailer Lite, Make will automatically activate a campaign with the same name in Drip.","url":"1459-activate-a-drip-campaign-when-an-equally-named-campaign-is-created-in-mailerlite","usedApps":["drip","mailerlite"],"usage":2}

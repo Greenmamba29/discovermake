@@ -1,0 +1,1 @@
+{"id":7106,"name":"Send Delighted surveys to new employees in BambooHR","description":"Every time a new employee appears in BambooHR, Make will automatically send a Delighted survey to this employee.","url":"7106-send-delighted-surveys-to-new-employees-in-bamboohr","usedApps":["bamboohr","delighted"],"usage":1}

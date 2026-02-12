@@ -1,0 +1,1 @@
+{"id":2640,"name":"Create Pipefy cards new Google Calendar events","description":"Every time a new event is added in your Google calendar, Make will automatically create a new card in Pipefy.","url":"2640-create-pipefy-cards-new-google-calendar-events","usedApps":["google-calendar","pipefy"],"usage":6}

@@ -1,0 +1,1 @@
+{"id":684,"name":"Send Gitter messages for new Google+ activities","description":"Every time a new activity appears on a selected Google+ profile, Make will automatically send a message to a Gitter room of your choosing.","url":"684-send-gitter-messages-for-new-google-activities","usedApps":["gitter","google-plus"],"usage":3}

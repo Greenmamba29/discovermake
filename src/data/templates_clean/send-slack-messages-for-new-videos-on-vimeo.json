@@ -1,0 +1,1 @@
+{"id":148,"name":"Send Slack messages for new videos on Vimeo","description":"Every time a new video is published in a Vimeo album being watched, Make will automatically send a message to Slack.","url":"148-send-slack-messages-for-new-videos-on-vimeo","usedApps":["vimeo","slack"],"usage":15}

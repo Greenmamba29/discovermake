@@ -1,0 +1,1 @@
+{"id":13363,"name":"Send automated email sequences based on custom webhook triggers","description":"Trigger automated email sequences with custom webhook events. Use Custom WebHook to initiate and the Send an Email to deliver targeted messages efficiently.","url":"13363-send-automated-email-sequences-based-on-custom-webhook-triggers","usedApps":["gateway","email"],"usage":19}

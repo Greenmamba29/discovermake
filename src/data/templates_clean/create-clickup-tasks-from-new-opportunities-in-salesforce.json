@@ -1,0 +1,1 @@
+{"id":1911,"name":"Create ClickUp tasks from new opportunities in SalesForce","description":"Every time a new opportunity is created in SalesForce, Make will automatically create a new task in a ClickUp list of your choice.","url":"1911-create-clickup-tasks-from-new-opportunities-in-salesforce","usedApps":["salesforce","clickup"],"usage":104}

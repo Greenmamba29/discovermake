@@ -1,0 +1,1 @@
+{"id":6432,"name":"Send Flock messages for new Facebook Groups posts","description":"Every time a new update is posted to a selected Facebook Group, Make will automatically send a message in Flock.","url":"6432-send-flock-messages-for-new-facebook-groups-posts","usedApps":["facebook-groups","flock"],"usage":2}

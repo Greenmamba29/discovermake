@@ -1,0 +1,1 @@
+{"id":176,"name":"Create Basecamp2 to-dos from new Slack messages","description":"Every time a new message is posted in a specific channel in Slack, Make will automatically create a new todo in a selected  Basecamp 2 organization and project .","url":"176-create-basecamp2-to-dos-from-new-slack-messages","usedApps":["slack","basecamp"],"usage":4}

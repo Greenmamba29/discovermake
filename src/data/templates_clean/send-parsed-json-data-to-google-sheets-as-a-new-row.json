@@ -1,0 +1,1 @@
+{"id":13116,"name":"Send parsed JSON data to Google Sheets as a new row","description":"Automatically send parsed JSON data to Google Sheets as a new row. Use HTTP to send data, parse JSON, and update Google Sheets.","url":"13116-send-parsed-json-data-to-google-sheets-as-a-new-row","usedApps":["http","json","google-sheets"],"usage":146}

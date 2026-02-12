@@ -1,0 +1,1 @@
+{"id":8554,"name":"Save new Google Drive documents to Parseur","description":"Every time there is new document files in a specified Google Drive folder, Make will automatically upload it to Parseur.","url":"8554-save-new-google-drive-documents-to-parseur","usedApps":["google-drive","parseur"],"usage":17}

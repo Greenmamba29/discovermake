@@ -1,0 +1,1 @@
+{"id":11385,"name":"Get Telegram messages for new Google Sheets rows","description":"Instantly send Telegram messages with Make whenever a new row is added to your Google Sheets spreadsheet","url":"2128-get-telegram-messages-for-new-google-sheets-rows","usedApps":["google-sheets","telegram"],"usage":11597}

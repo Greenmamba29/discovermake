@@ -1,0 +1,1 @@
+{"id":3107,"name":"Update a deal in Pipedrive CRM according to data from Moosend webhook","description":"When a webhook is received from Moosend automation, the deal from the e-mail is gotten and then updated according to event_name of the webhook.","url":"3107-update-a-deal-in-pipedrive-crm-according-to-data-from-moosend-webhook","usedApps":["moosend","pipedrive"],"usage":4}

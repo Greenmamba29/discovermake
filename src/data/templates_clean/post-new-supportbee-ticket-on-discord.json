@@ -1,0 +1,1 @@
+{"id":7138,"name":"Post new SupportBee ticket on Discord","description":"Every time a new ticket is received on SupportBee, Make will automatically post it on your Discord server.","url":"7138-post-new-supportbee-ticket-on-discord","usedApps":["supportbee","discord"],"usage":3}

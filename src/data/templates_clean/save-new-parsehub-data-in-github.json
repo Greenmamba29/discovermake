@@ -1,0 +1,1 @@
+{"id":4162,"name":"Save new ParseHub data in GitHub","description":"This scenario can be run at specific intervals to retrieve the latest data of a ParseHub project. Make will automatically extract, convert and save the data in specified GitHub repository.","url":"4162-save-new-parsehub-data-in-github","usedApps":["parsehub","cloudconvert","archive","github"],"usage":19}

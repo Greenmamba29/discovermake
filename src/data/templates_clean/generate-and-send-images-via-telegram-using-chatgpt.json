@@ -1,0 +1,1 @@
+{"id":15173,"name":"Generate and send images via Telegram using ChatGPT","description":"Automatically generate and send AI-created images via Telegram. Triggered by Telegram updates, ChatGPT crafts images, instantly shared through Telegram.","url":"15173-generate-and-send-images-via-telegram-using-chatgpt","usedApps":["telegram","openai-gpt-3"],"usage":90}

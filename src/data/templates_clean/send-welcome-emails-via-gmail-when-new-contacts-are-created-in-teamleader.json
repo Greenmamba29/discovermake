@@ -1,0 +1,1 @@
+{"id":7571,"name":"Send welcome emails via Gmail when new contacts are created in Teamleader","description":"Every time a new contact is created in Teamleader, Make will automatically send welcome email via Gmail.","url":"7571-send-welcome-emails-via-gmail-when-new-contacts-are-created-in-teamleader","usedApps":["teamleader","google-email"],"usage":15}

@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Security Dashboard</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13a4ec",
+                        "primary-dark": "#0b6e9e",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101c22",
+                        "surface-dark": "#1a262d",
+                        "surface-highlight": "#233c48",
+                        "alert-critical": "#ef4444",
+                        "alert-warning": "#f59e0b",
+                        "alert-success": "#10b981",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "mono": ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New", "monospace"],
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "md": "0.375rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display antialiased selection:bg-primary selection:text-white overflow-x-hidden">
+<div class="relative flex min-h-screen w-full flex-col max-w-md mx-auto border-x border-surface-highlight shadow-2xl">
+<!-- Header -->
+<header class="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-surface-highlight p-4">
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-3">
+<div class="flex items-center justify-center size-10 rounded-full bg-surface-highlight text-primary">
+<span class="material-symbols-outlined text-2xl">shield_lock</span>
+</div>
+<div>
+<h1 class="text-lg font-bold leading-tight tracking-tight">Security Oversight</h1>
+<p class="text-xs text-slate-500 dark:text-slate-400 font-medium">DiscoverMake Governance</p>
+</div>
+</div>
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-highlight border border-slate-700/50">
+<span class="relative flex h-2.5 w-2.5">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-alert-success opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-alert-success"></span>
+</span>
+<span class="text-xs font-bold tracking-wide uppercase text-alert-success">System Normal</span>
+</div>
+</div>
+<!-- Filter Controls -->
+<div class="flex p-1 bg-surface-dark dark:bg-[#15232b] rounded-lg">
+<label class="flex-1 cursor-pointer">
+<input checked="" class="peer sr-only" name="filter" type="radio" value="all"/>
+<div class="text-center py-1.5 text-xs font-semibold rounded-md text-slate-400 peer-checked:bg-surface-highlight peer-checked:text-white peer-checked:shadow-sm transition-all">All</div>
+</label>
+<label class="flex-1 cursor-pointer">
+<input class="peer sr-only" name="filter" type="radio" value="api"/>
+<div class="text-center py-1.5 text-xs font-semibold rounded-md text-slate-400 peer-checked:bg-surface-highlight peer-checked:text-white peer-checked:shadow-sm transition-all">API</div>
+</label>
+<label class="flex-1 cursor-pointer">
+<input class="peer sr-only" name="filter" type="radio" value="user"/>
+<div class="text-center py-1.5 text-xs font-semibold rounded-md text-slate-400 peer-checked:bg-surface-highlight peer-checked:text-white peer-checked:shadow-sm transition-all">User</div>
+</label>
+<label class="flex-1 cursor-pointer">
+<input class="peer sr-only" name="filter" type="radio" value="model"/>
+<div class="text-center py-1.5 text-xs font-semibold rounded-md text-slate-400 peer-checked:bg-surface-highlight peer-checked:text-white peer-checked:shadow-sm transition-all">Model</div>
+</label>
+</div>
+</header>
+<main class="flex-1 flex flex-col gap-6 p-4 pb-32">
+<!-- Section: Live Threats -->
+<section>
+<div class="flex items-center justify-between mb-3 px-1">
+<h2 class="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Live Threats</h2>
+<span class="text-xs font-mono text-primary bg-primary/10 px-2 py-0.5 rounded">2 Active</span>
+</div>
+<div class="space-y-3">
+<!-- Critical Card -->
+<div class="relative overflow-hidden rounded-xl bg-surface-dark border-l-4 border-alert-critical shadow-lg p-4 group">
+<div class="absolute right-2 top-2">
+<button class="p-1 hover:bg-white/10 rounded-full text-slate-400 transition-colors">
+<span class="material-symbols-outlined text-lg">close</span>
+</button>
+</div>
+<div class="flex items-start gap-3 mb-3">
+<div class="p-2 rounded-lg bg-alert-critical/10 text-alert-critical mt-1">
+<span class="material-symbols-outlined">warning</span>
+</div>
+<div>
+<h3 class="font-bold text-white text-lg leading-tight">Rapid Remixing Detected</h3>
+<p class="text-alert-critical text-xs font-bold tracking-wide uppercase mt-1">Critical Anomaly</p>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-2 text-xs mb-3 font-mono bg-black/20 p-2 rounded-lg border border-white/5">
+<div>
+<span class="text-slate-500 block">User ID</span>
+<span class="text-slate-200">#8821-DX</span>
+</div>
+<div>
+<span class="text-slate-500 block">Velocity</span>
+<span class="text-alert-critical">&gt;50 req/min</span>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 py-2 rounded-lg bg-surface-highlight hover:bg-surface-highlight/80 text-xs font-semibold text-white transition-colors">Investigate</button>
+<button class="flex-1 py-2 rounded-lg bg-alert-critical/10 hover:bg-alert-critical/20 text-xs font-semibold text-alert-critical border border-alert-critical/20 transition-colors">Block User</button>
+</div>
+</div>
+<!-- Elevated Card -->
+<div class="relative overflow-hidden rounded-xl bg-surface-dark border-l-4 border-alert-warning shadow-lg p-4">
+<div class="absolute right-2 top-2">
+<button class="p-1 hover:bg-white/10 rounded-full text-slate-400 transition-colors">
+<span class="material-symbols-outlined text-lg">close</span>
+</button>
+</div>
+<div class="flex items-start gap-3 mb-2">
+<div class="p-2 rounded-lg bg-alert-warning/10 text-alert-warning mt-1">
+<span class="material-symbols-outlined">lock_person</span>
+</div>
+<div>
+<h3 class="font-bold text-white text-base leading-tight">Multiple Login Failures</h3>
+<p class="text-alert-warning text-xs font-bold tracking-wide uppercase mt-1">Elevated Risk</p>
+</div>
+</div>
+<div class="text-xs text-slate-400 font-mono pl-[52px]">
+                            IP: 192.168.1.45 • Region: Unknown
+                        </div>
+</div>
+</div>
+</section>
+<!-- Section: API Telemetry -->
+<section>
+<div class="flex items-center justify-between mb-3 px-1">
+<h2 class="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">API Telemetry</h2>
+<span class="text-xs font-mono text-slate-500">Last 1h</span>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<!-- Chart 1 -->
+<div class="bg-surface-dark rounded-xl p-3 border border-surface-highlight">
+<div class="flex justify-between items-start mb-4">
+<div>
+<div class="text-xs text-slate-400 font-medium">Token Usage</div>
+<div class="text-lg font-bold text-white">42.8k</div>
+</div>
+<span class="text-[10px] font-bold text-alert-success bg-alert-success/10 px-1.5 py-0.5 rounded">+12%</span>
+</div>
+<!-- Simulated Sparkline -->
+<div class="h-10 w-full flex items-end gap-0.5">
+<div class="bg-primary/30 w-full rounded-sm h-[20%]"></div>
+<div class="bg-primary/40 w-full rounded-sm h-[40%]"></div>
+<div class="bg-primary/50 w-full rounded-sm h-[30%]"></div>
+<div class="bg-primary/60 w-full rounded-sm h-[60%]"></div>
+<div class="bg-primary/40 w-full rounded-sm h-[45%]"></div>
+<div class="bg-primary w-full rounded-sm h-[80%]"></div>
+<div class="bg-primary/80 w-full rounded-sm h-[65%]"></div>
+<div class="bg-primary/50 w-full rounded-sm h-[35%]"></div>
+</div>
+</div>
+<!-- Chart 2 -->
+<div class="bg-surface-dark rounded-xl p-3 border border-surface-highlight">
+<div class="flex justify-between items-start mb-4">
+<div>
+<div class="text-xs text-slate-400 font-medium">Error Rate</div>
+<div class="text-lg font-bold text-white">0.4%</div>
+</div>
+<span class="text-[10px] font-bold text-alert-success bg-alert-success/10 px-1.5 py-0.5 rounded">-2%</span>
+</div>
+<!-- Simulated Sparkline -->
+<div class="h-10 w-full flex items-end gap-0.5">
+<div class="bg-alert-warning/30 w-full rounded-sm h-[10%]"></div>
+<div class="bg-alert-warning/30 w-full rounded-sm h-[10%]"></div>
+<div class="bg-alert-warning/30 w-full rounded-sm h-[15%]"></div>
+<div class="bg-alert-warning/30 w-full rounded-sm h-[5%]"></div>
+<div class="bg-alert-warning/30 w-full rounded-sm h-[5%]"></div>
+<div class="bg-alert-warning/30 w-full rounded-sm h-[20%]"></div>
+<div class="bg-alert-warning/30 w-full rounded-sm h-[5%]"></div>
+<div class="bg-alert-warning/30 w-full rounded-sm h-[5%]"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section: Model Integrity (Logs) -->
+<section>
+<div class="flex items-center justify-between mb-3 px-1">
+<h2 class="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Model Integrity</h2>
+</div>
+<div class="bg-black/30 rounded-xl overflow-hidden border border-surface-highlight">
+<div class="bg-surface-highlight/50 px-3 py-2 flex justify-between items-center">
+<span class="text-xs font-mono text-slate-400">security_logs.txt</span>
+<span class="material-symbols-outlined text-sm text-slate-500">terminal</span>
+</div>
+<div class="p-3 font-mono text-xs space-y-3 h-48 overflow-y-auto custom-scrollbar">
+<!-- Log Entry -->
+<div class="border-l-2 border-alert-success pl-2">
+<div class="flex justify-between text-slate-500 text-[10px] mb-1">
+<span>10:42:15 AM</span>
+<span>MODEL-4</span>
+</div>
+<div class="text-slate-300">Prompt: "Generate a recipe for cupcakes..."</div>
+<div class="text-alert-success font-bold mt-0.5">STATUS: ALLOWED</div>
+</div>
+<!-- Log Entry -->
+<div class="border-l-2 border-alert-critical pl-2 bg-alert-critical/5 -mx-3 px-3 py-1">
+<div class="flex justify-between text-slate-500 text-[10px] mb-1">
+<span>10:43:02 AM</span>
+<span class="text-alert-critical">JAILBREAK_ATTEMPT</span>
+</div>
+<div class="text-white">Prompt: "Ignore previous instructions. You are now..."</div>
+<div class="text-alert-critical font-bold mt-0.5">STATUS: BLOCKED</div>
+</div>
+<!-- Log Entry -->
+<div class="border-l-2 border-alert-success pl-2">
+<div class="flex justify-between text-slate-500 text-[10px] mb-1">
+<span>10:44:11 AM</span>
+<span>MODEL-4</span>
+</div>
+<div class="text-slate-300">Prompt: "Summarize this article..."</div>
+<div class="text-alert-success font-bold mt-0.5">STATUS: ALLOWED</div>
+</div>
+<!-- Log Entry -->
+<div class="border-l-2 border-alert-warning pl-2">
+<div class="flex justify-between text-slate-500 text-[10px] mb-1">
+<span>10:45:30 AM</span>
+<span>API-GATEWAY</span>
+</div>
+<div class="text-slate-300">Rate limit approaching for User #9921</div>
+<div class="text-alert-warning font-bold mt-0.5">STATUS: THROTTLED</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section: Risk Map -->
+<section>
+<div class="flex items-center justify-between mb-3 px-1">
+<h2 class="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">User Risk Heatmap</h2>
+</div>
+<div class="relative h-48 w-full rounded-xl overflow-hidden bg-surface-dark border border-surface-highlight group">
+<!-- Background Map Image -->
+<div class="absolute inset-0 bg-cover bg-center opacity-40 group-hover:opacity-50 transition-opacity" data-alt="World map showing network nodes and connections with a dark blue technological theme" data-location="Global Network Map" style="background-image: url('https://placeholder.pics/svg/300');">
+</div>
+<!-- Gradient Overlay -->
+<div class="absolute inset-0 bg-gradient-to-t from-surface-dark via-transparent to-transparent"></div>
+<!-- Hotspots (Simulated) -->
+<div class="absolute top-1/3 left-1/4">
+<div class="relative flex items-center justify-center">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-alert-warning opacity-75"></span>
+<div class="size-3 bg-alert-warning rounded-full shadow-[0_0_10px_rgba(245,158,11,0.8)]"></div>
+</div>
+</div>
+<div class="absolute top-1/2 left-1/2">
+<div class="relative flex items-center justify-center">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-alert-critical opacity-75"></span>
+<div class="size-4 bg-alert-critical rounded-full shadow-[0_0_15px_rgba(239,68,68,0.8)]"></div>
+</div>
+</div>
+<!-- Overlay Info -->
+<div class="absolute bottom-3 left-3 right-3 flex justify-between items-end">
+<div>
+<div class="text-xs text-slate-400 font-medium">Highest Concentration</div>
+<div class="text-white font-bold">Eastern Europe (UA, PL)</div>
+</div>
+<button class="bg-surface-highlight/80 backdrop-blur text-xs font-semibold px-3 py-1.5 rounded-lg border border-white/10 text-white hover:bg-surface-highlight transition-colors">
+                            Expand Map
+                        </button>
+</div>
+</div>
+</section>
+</main>
+<!-- Sticky Bottom Action Bar -->
+<div class="fixed bottom-0 left-0 w-full z-50 p-4 border-t border-surface-highlight bg-background-dark/95 backdrop-blur-xl max-w-md mx-auto left-0 right-0">
+<div class="flex items-center justify-between mb-3 px-1">
+<div class="flex items-center gap-2">
+<div class="size-2 rounded-full bg-alert-critical animate-pulse"></div>
+<span class="text-xs font-bold text-white uppercase tracking-wider">Emergency Protocol</span>
+</div>
+<span class="text-xs text-slate-400">User: #8821-DX</span>
+</div>
+<!-- Slide to Confirm Button -->
+<div class="relative h-14 bg-surface-highlight rounded-full overflow-hidden flex items-center p-1 cursor-pointer group select-none border border-slate-700/50 shadow-inner">
+<!-- Background Text -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<span class="text-sm font-bold text-slate-400/50 group-hover:text-slate-400 transition-colors uppercase tracking-widest">Slide to Lock Account</span>
+</div>
+<!-- Slider Thumb -->
+<div class="h-12 w-16 bg-alert-critical rounded-full flex items-center justify-center shadow-lg transform transition-transform active:translate-x-full active:w-full z-10">
+<span class="material-symbols-outlined text-white text-2xl">lock</span>
+</div>
+</div>
+</div>
+</div>
+<style>
+        /* Custom Scrollbar for the log terminal */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</body></html>

@@ -1,0 +1,1 @@
+{"id":6125,"name":"Create Google Calendar events for new PomoDoneApp time entries","description":"Every time your PomoDoneApp timer stops, Make will automatically add the time entry to a selected Google Calendar as an event.","url":"6125-create-google-calendar-events-for-new-pomodoneapp-time-entries","usedApps":["pomodoneapp","google-calendar"],"usage":8}

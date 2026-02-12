@@ -1,0 +1,1 @@
+{"id":40,"name":"Get 3 day weather forecast via email","description":"Every time this scenario is run, Make will automatically send the most current 3-days weather forecast for a selected location to a specified email address.","url":"40-get-3-day-weather-forecast-via-email","usedApps":["weather","util","email"],"usage":649}

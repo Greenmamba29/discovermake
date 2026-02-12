@@ -1,0 +1,1 @@
+{"id":6519,"name":"Get a message in Discord when a new GoToMeeting meeting created","description":"Every time there is a new GoToMeeting meeting created, meeting link is shortened and Make will automatically post a Discord message.","url":"6519-get-a-message-in-discord-when-a-new-gotomeeting-meeting-created","usedApps":["gotomeeting","short-cm","discord"],"usage":3}

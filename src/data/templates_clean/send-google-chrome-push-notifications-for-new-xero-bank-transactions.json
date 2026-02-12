@@ -1,0 +1,1 @@
+{"id":1312,"name":"Send Google Chrome push notifications for new Xero bank transactions","description":"Every time a new bank transaction is created in Xero, Make will automatically send a push notification via Google Chrome.","url":"1312-send-google-chrome-push-notifications-for-new-xero-bank-transactions","usedApps":["xero","chrome"],"usage":47}

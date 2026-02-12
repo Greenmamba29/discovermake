@@ -1,0 +1,1 @@
+{"id":1440,"name":"Send Telegram messages for new Facebook Groups posts","description":"Every time a new entry is posted to your Facebook group, Make will automatically send a message to a selected chat in Telegram.","url":"1440-send-telegram-messages-for-new-facebook-groups-posts","usedApps":["facebook-groups","telegram"],"usage":2231}

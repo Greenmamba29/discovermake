@@ -1,0 +1,1 @@
+{"id":2981,"name":"Send a new file from Google Drive to Egnyte","description":"When a new file is saved in Google Drive, the file is imported to Egnyte.","url":"2981-send-a-new-file-from-google-drive-to-egnyte","usedApps":["google-drive","egnyte"],"usage":3}

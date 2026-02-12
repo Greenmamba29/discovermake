@@ -1,0 +1,1 @@
+{"id":6456,"name":"Create a Google Docs document for new AX Semantics generated content","description":"Every time an AX Semantics generated content is received, Make will automatically create a Google Docs document.","url":"6456-create-a-google-docs-document-for-new-ax-semantics-generated-content","usedApps":["ax-semantics","google-docs"],"usage":13}

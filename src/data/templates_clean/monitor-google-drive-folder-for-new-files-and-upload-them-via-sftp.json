@@ -1,0 +1,1 @@
+{"id":13447,"name":"Monitor Google Drive folder for new files and upload them via SFTP","description":"Monitor your Google Drive folder for new files and automatically upload them to an SFTP server. Keep your files organized and accessible.","url":"13447-monitor-google-drive-folder-for-new-files-and-upload-them-via-sftp","usedApps":["google-drive","sftp"],"usage":26}

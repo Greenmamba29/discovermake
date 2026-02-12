@@ -1,0 +1,1 @@
+{"id":3463,"name":"Create new SmartTask task from Github issues","description":"When there is a new GitHub task, create a new SmartTask task with corresponding details.","url":"3463-create-new-smarttask-task-from-github-issues","usedApps":["github","smarttask"],"usage":1}

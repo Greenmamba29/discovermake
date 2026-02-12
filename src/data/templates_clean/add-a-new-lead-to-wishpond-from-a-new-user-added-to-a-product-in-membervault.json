@@ -1,0 +1,1 @@
+{"id":7875,"name":"Add a new lead to Wishpond from a new user added to a product in MemberVault","description":"Every time a new user is added to a product in MemberVault, Make will automatically create a new lead to Wishpond.","url":"7875-add-a-new-lead-to-wishpond-from-a-new-user-added-to-a-product-in-membervault","usedApps":["membervault","wishpond"],"usage":1}

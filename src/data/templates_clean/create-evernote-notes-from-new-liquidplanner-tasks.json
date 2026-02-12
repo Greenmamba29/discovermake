@@ -1,0 +1,1 @@
+{"id":8269,"name":"Create Evernote notes from new LiquidPlanner tasks","description":"Every time there is a new task in LiquidPlanner, Make will automatically create a new note on Evernote.","url":"8269-create-evernote-notes-from-new-liquidplanner-tasks","usedApps":["liquidplanner","evernote"],"usage":2}

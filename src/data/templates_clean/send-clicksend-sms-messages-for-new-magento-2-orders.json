@@ -1,0 +1,1 @@
+{"id":2736,"name":"Send ClickSend SMS messages for new Magento 2 orders","description":"Every time a new order is created in Magento 2, Make will automatically send an SMS message via ClickSend.","url":"2736-send-clicksend-sms-messages-for-new-magento-2-orders","usedApps":["magento2","clicksend"],"usage":1}

@@ -1,0 +1,1 @@
+{"id":5780,"name":"Shorten an RSS link with Bitly and send it as a Discord message","description":"Use this template to automatically shorten a new RSS feed item link with Bitly and post it as a Discord message.","url":"5780-shorten-an-rss-link-with-bitly-and-send-it-as-a-discord-message","usedApps":["rss","bitly","discord"],"usage":182}

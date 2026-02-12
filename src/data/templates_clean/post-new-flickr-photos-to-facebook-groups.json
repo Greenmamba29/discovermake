@@ -1,0 +1,1 @@
+{"id":190,"name":"Post new Flickr photos to Facebook Groups","description":"Every time a new photo is uploaded to Flickr, Make will automatically post that photo to a specified Facebook group.","url":"190-post-new-flickr-photos-to-facebook-groups","usedApps":["flickr","facebook-groups"],"usage":36}

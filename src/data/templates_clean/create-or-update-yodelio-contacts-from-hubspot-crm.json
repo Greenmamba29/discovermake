@@ -1,0 +1,1 @@
+{"id":2618,"name":"Create or update Yodel.io contacts from HubSpot CRM","description":"Every time a new contact is added in HubSpot CRM, Make will automatically create or update a contact in Yodel.io.","url":"2618-create-or-update-yodel-io-contacts-from-hubspot-crm","usedApps":["hubspotcrm","yodel"],"usage":30}

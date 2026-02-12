@@ -1,0 +1,1 @@
+{"id":9024,"name":"Add WhatConverts leads from Magento 2 orders","description":"Every time there is a new order in Magento 2, Make will create a lead in your WhatConverts using information received.","url":"9024-add-whatconverts-leads-from-magento-2-orders","usedApps":["magento2","builtin","util","whatconverts"],"usage":7}

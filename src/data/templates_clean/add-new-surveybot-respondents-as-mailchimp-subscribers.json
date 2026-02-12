@@ -1,0 +1,1 @@
+{"id":6642,"name":"Add new Surveybot respondents as Mailchimp subscribers","description":"Every time there is a new response to a Surveybot survey, Make will automatically add a respondent to Mailchimp as a subscriber.","url":"6642-add-new-surveybot-respondents-as-mailchimp-subscribers","usedApps":["surveybot","mailchimp"],"usage":1}

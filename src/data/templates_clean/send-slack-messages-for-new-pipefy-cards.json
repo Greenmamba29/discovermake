@@ -1,0 +1,1 @@
+{"id":2657,"name":"Send Slack messages for new Pipefy cards","description":"Every time a new card is created in Pipefy, Make will automatically send a message in Slack.","url":"2657-send-slack-messages-for-new-pipefy-cards","usedApps":["pipefy","slack"],"usage":23}

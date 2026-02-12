@@ -1,0 +1,1 @@
+{"id":1759,"name":"Add new Copper leads to Mailgun as recipients","description":"Every time a new lead is added on Copper, Make will automatically add a new recipient to a Mailgun mailing list you specify.","url":"1759-add-new-copper-leads-to-mailgun-as-recipients","usedApps":["prosperworks","mailgun"],"usage":0}

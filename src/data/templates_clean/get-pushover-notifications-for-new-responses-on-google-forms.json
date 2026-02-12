@@ -1,0 +1,1 @@
+{"id":8376,"name":"Get Pushover notifications for new responses on Google Forms","description":"Every time a new response is entered on your Google Forms, Make will automatically send a notification message in Pushover.","url":"8376-get-pushover-notifications-for-new-responses-on-google-forms","usedApps":["google-forms","pushover"],"usage":4}

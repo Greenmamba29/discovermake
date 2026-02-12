@@ -1,0 +1,1 @@
+{"id":7423,"name":"Add a new Pipedrive persons to SendMe as a new contacts","description":"Every time a new person is created in Pipedrive, Make will automatically add that person to SendMe as a new contact.","url":"7423-add-a-new-pipedrive-persons-to-sendme-as-a-new-contacts","usedApps":["pipedrive","sendme123"],"usage":1}

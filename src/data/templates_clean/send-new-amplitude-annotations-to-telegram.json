@@ -1,0 +1,1 @@
+{"id":8914,"name":"Send new Amplitude annotations to Telegram","description":"Make will watch for new Amplitude annotations at regular intervals and send them to a specified channel/chat in Telegram.","url":"8914-send-new-amplitude-annotations-to-telegram","usedApps":["amplitude","telegram"],"usage":9}

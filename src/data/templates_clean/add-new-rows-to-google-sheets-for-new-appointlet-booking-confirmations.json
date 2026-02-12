@@ -1,0 +1,1 @@
+{"id":5567,"name":"Add new rows to Google Sheets for new Appointlet booking confirmations","description":"Every time a new Appointlet booking confirmation is created, Make will automatically add new rows to Google Sheets spreadsheet.","url":"5567-add-new-rows-to-google-sheets-for-new-appointlet-booking-confirmations","usedApps":["appointlet","google-sheets"],"usage":16}

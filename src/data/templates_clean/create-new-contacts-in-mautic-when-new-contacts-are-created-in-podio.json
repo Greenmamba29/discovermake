@@ -1,0 +1,1 @@
+{"id":3386,"name":"Create new contacts in Mautic when new contacts are created in Podio","description":"Every time a new contact is created in Podio, Make will automatically create a new contact in Mautic.","url":"3386-create-new-contacts-in-mautic-when-new-contacts-are-created-in-podio","usedApps":["podio","util","mautic"],"usage":1}

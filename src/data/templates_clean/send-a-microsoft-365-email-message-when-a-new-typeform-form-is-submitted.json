@@ -1,0 +1,1 @@
+{"id":5277,"name":"Send a Microsoft 365 Email message when a new Typeform form is submitted","description":"Every time a new Typeform form is submitted, Make will automatically send an email message via Microsoft 365 Email.","url":"5277-send-a-microsoft-365-email-message-when-a-new-typeform-form-is-submitted","usedApps":["typeform","microsoft-email"],"usage":66}

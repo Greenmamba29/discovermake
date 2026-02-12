@@ -1,0 +1,1 @@
+{"id":4493,"name":"Send new Memberstack members to Google Sheets spreadsheet","description":"When a new member is created in Google Sheets, a new row with the member's data is created in Google Sheets.","url":"4493-send-new-memberstack-members-to-google-sheets-spreadsheet","usedApps":["memberstack","google-sheets"],"usage":60}

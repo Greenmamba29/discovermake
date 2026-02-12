@@ -1,0 +1,1 @@
+{"id":6537,"name":"Add new Mailrelay subscribers from HubSpot CRM contacts","description":"When a new contact is created in HubSpot CRM, a new subscriber is created in Mailrelay.","url":"6537-add-new-mailrelay-subscribers-from-hubspot-crm-contacts","usedApps":["hubspotcrm","mailrelay"],"usage":13}

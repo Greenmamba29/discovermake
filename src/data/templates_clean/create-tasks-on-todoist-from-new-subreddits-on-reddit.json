@@ -1,0 +1,1 @@
+{"id":6006,"name":"Create tasks on Todoist from new subreddits on Reddit","description":"This automation retrieves new subreddits from Reddit and creates tasks on Todoist for you.","url":"6006-create-tasks-on-todoist-from-new-subreddits-on-reddit","usedApps":["reddit","todoist"],"usage":15}

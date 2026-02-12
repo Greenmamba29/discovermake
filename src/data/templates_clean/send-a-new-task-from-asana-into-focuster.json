@@ -1,0 +1,1 @@
+{"id":2908,"name":"Send a new task from Asana into Focuster","description":"When a new task in Asana is assigned to a specified user, a new action is added into Focuster. ","url":"2908-send-a-new-task-from-asana-into-focuster","usedApps":["asana","focuster"],"usage":1}

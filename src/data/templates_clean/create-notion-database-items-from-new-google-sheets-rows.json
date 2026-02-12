@@ -1,0 +1,1 @@
+{"id":11383,"name":"Create Notion database items from new Google Sheets rows","description":"Automatically generate new Notion database items each time a row is added to your Google Sheets spreadsheet","url":"5832-create-notion-database-items-from-new-google-sheets-rows","usedApps":["google-sheets","notion"],"usage":11673}

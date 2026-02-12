@@ -1,0 +1,1 @@
+{"id":6520,"name":"Get a Telegram notification for new GoToMeeting meeting","description":"Every time there is a new GoToMeeting meeting, link to the meeting is shortened and Make will automatically post a message in Telegram.","url":"6520-get-a-telegram-notification-for-new-gotomeeting-meeting","usedApps":["gotomeeting","short-cm","telegram"],"usage":1}

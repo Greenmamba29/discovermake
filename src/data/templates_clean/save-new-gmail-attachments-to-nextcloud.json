@@ -1,0 +1,1 @@
+{"id":6883,"name":"Save new Gmail attachments to Nextcloud","description":"Every time you receive a new email in Gmail with an attachment, Make will save that attachment in Nextcloud.","url":"6883-save-new-gmail-attachments-to-nextcloud","usedApps":["google-email","builtin","nextcloud"],"usage":71}

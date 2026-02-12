@@ -1,0 +1,1 @@
+{"id":1964,"name":"Add new SalesForce accounts to QuickBooks as customers","description":"Every time a new account is created in SalesForce, Make will automatically create a new customer in QuickBooks.","url":"1964-add-new-salesforce-accounts-to-quickbooks-as-customers","usedApps":["salesforce","quickbooks"],"usage":77}

@@ -1,0 +1,1 @@
+{"id":5446,"name":"Send a Slack message on a new GitLab merge request","description":"Every time a new GitLab merge request is created, Make will automatically send a Slack message.","url":"5446-send-a-slack-message-on-a-new-gitlab-merge-request","usedApps":["gitlab","slack"],"usage":36}

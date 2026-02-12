@@ -1,0 +1,1 @@
+{"id":8352,"name":"Create Drip subscribers from new Outgrow leads","description":"Every time a new lead is created in Outgrow, Make will automatically add that lead to Drip as a new subscriber.","url":"8352-create-drip-subscribers-from-new-outgrow-leads","usedApps":["outgrow","drip"],"usage":1}

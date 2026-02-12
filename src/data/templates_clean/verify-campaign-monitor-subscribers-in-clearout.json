@@ -1,0 +1,1 @@
+{"id":4480,"name":"Verify Campaign Monitor subscribers in Clearout","description":"When a new subscriber is created in Campaign Monitor, the subscriber's email address is verified in Clearout. If the address is invalid, it is unsubscribed from Campaign Monitor.","url":"4480-verify-campaign-monitor-subscribers-in-clearout","usedApps":["campaign-monitor","clearout"],"usage":1}

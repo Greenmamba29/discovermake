@@ -1,0 +1,1 @@
+{"id":6968,"name":"Send MailerSend emails for new WooCommerce orders","description":"Every time a new WooCommerce order has been processed, Make will automatically send an email to the customer using MailerSend app.","url":"6968-send-mailersend-emails-for-new-woocommerce-orders","usedApps":["woocommerce","mailersend"],"usage":8}

@@ -1,0 +1,1 @@
+{"id":8382,"name":"Create new Pushwoosh notification from incoming emails","description":"Every time you receive a new email from a specific user, Make will automatically create a push notification in Pushwoosh with details of this email.","url":"8382-create-new-pushwoosh-notification-from-incoming-emails","usedApps":["email","pushwoosh"],"usage":3}

@@ -1,0 +1,1 @@
+{"id":1907,"name":"Create ClickUp tasks from new Trello cards","description":"Every time a new card is added in Trello, Make will automatically create a new task in a ClickUp list of your choice.","url":"1907-create-clickup-tasks-from-new-trello-cards","usedApps":["trello","clickup"],"usage":555}

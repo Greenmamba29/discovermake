@@ -1,0 +1,1 @@
+{"id":7550,"name":"Save new files from Dropbox to Trint","description":"Every time a new file is uploaded to your Dropbox, Make will automatically upload that file to Trint folder you specify.","url":"7550-save-new-files-from-dropbox-to-trint","usedApps":["dropbox","trint"],"usage":6}

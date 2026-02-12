@@ -1,0 +1,1 @@
+{"id":13277,"name":"Send data to an HTTP endpoint and add a new row in Google Sheets","description":"Automatically send data to two HTTP endpoints and add a new row in Google Sheets for streamlined data management and record-keeping.","url":"13277-send-data-to-an-http-endpoint-and-add-a-new-row-in-google-sheets","usedApps":["http","google-sheets"],"usage":8}

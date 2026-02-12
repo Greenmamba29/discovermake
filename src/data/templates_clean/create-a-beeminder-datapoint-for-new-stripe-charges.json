@@ -1,0 +1,1 @@
+{"id":4418,"name":"Create a Beeminder datapoint for new Stripe charges","description":"Every time a new charge is created in Stripe, Make will automatically add the corresponding datapoint to Beeminder.","url":"4418-create-a-beeminder-datapoint-for-new-stripe-charges","usedApps":["stripe","beeminder"],"usage":2}

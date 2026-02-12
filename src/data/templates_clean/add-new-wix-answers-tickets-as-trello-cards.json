@@ -1,0 +1,1 @@
+{"id":3569,"name":"Add new Wix Answers tickets as Trello cards","description":"Every time a new ticket is added to your Wix Answers domain, Make will automatically add it as a card in the Trello board of your choice.","url":"3569-add-new-wix-answers-tickets-as-trello-cards","usedApps":["wix-answers","trello"],"usage":1}

@@ -1,0 +1,1 @@
+{"id":1423,"name":"Send push notifications via Google Chrome for new MessageBird SMS messages","description":"Every time a new SMS message is received in MessageBird, Make will automatically send a notification via Google Chrome.","url":"1423-send-push-notifications-via-google-chrome-for-new-messagebird-sms-messages","usedApps":["message-bird","chrome"],"usage":5}

@@ -1,0 +1,1 @@
+{"id":6173,"name":"Add new Textline customers as a new Google Contacts contacts","description":"Every time a customer is created in a Textline, Make will  automatically add that customer as a new contact to Google Contacts.","url":"6173-add-new-textline-customers-as-a-new-google-contacts-contacts","usedApps":["textline","google-contacts"],"usage":0}

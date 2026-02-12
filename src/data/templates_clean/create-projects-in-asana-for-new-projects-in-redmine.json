@@ -1,0 +1,1 @@
+{"id":6934,"name":"Create Projects in Asana for new projects in Redmine","description":"Every time a new project is created in Redmine, Make will automatically create a Project in Asana","url":"6934-create-projects-in-asana-for-new-projects-in-redmine","usedApps":["redmine","asana"],"usage":3}

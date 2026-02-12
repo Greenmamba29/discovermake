@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Remix Configuration Checkout</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "primary": "#13a4ec",
+                "primary-dark": "#0e8bc7",
+                "background-light": "#f6f7f8",
+                "background-dark": "#101c22",
+                "surface-dark": "#192b33",
+                "surface-light": "#ffffff",
+                "success": "#22c55e",
+              },
+              fontFamily: {
+                "display": ["Inter", "sans-serif"]
+              },
+              borderRadius: {"DEFAULT": "0.375rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+            },
+          },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }.custom-radio:checked + div {
+            border-color: #13a4ec;
+            background-color: rgba(19, 164, 236, 0.1);
+        }
+        .custom-radio:checked + div .radio-indicator {
+            border-color: #13a4ec;
+            background-color: #13a4ec;
+        }
+        .custom-radio:checked + div .radio-indicator::after {
+            content: '';
+            display: block;
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen text-slate-900 dark:text-white overflow-x-hidden font-display flex flex-col">
+<header class="sticky top-0 z-50 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 transition-colors">
+<div class="flex items-center justify-between px-4 py-3">
+<button class="flex items-center justify-center p-2 rounded-full hover:bg-gray-200 dark:hover:bg-surface-dark transition-colors">
+<span class="material-symbols-outlined text-gray-900 dark:text-white" style="font-size: 24px;">arrow_back</span>
+</button>
+<h1 class="text-lg font-bold tracking-tight">Configure Remix</h1>
+<div class="w-10"></div> 
+</div>
+</header>
+<main class="flex-1 pb-32">
+<section class="p-6 pb-2">
+<div class="flex gap-4">
+<div class="h-20 w-20 flex-shrink-0 rounded-xl bg-cover bg-center shadow-md relative overflow-hidden" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC05BBdmkqA1g996mTBM8XyTaFhDaI_IyVgy2bzXjltGFFhcpeg_jZA1FDx7LWv674eGz8AMo0IheciZfB2dQnwtepKeVA8NLqgfI7c0pAEOzPPLD1m8J_RxhKCPRAIUvSIyOXCQxK3Cu5nuDvkKoBuBJ59lEhpAnwgr9duTUDNZcM095mm45p8IwaBYi6SvOS-cEdFztyPZBwOaUUcBpod01f3ryo-IN77YE497US5WXxW_NPw6FDkfJrAl7ZaMChpAoImekIewRY');">
+<div class="absolute inset-0 bg-black/10"></div>
+</div>
+<div class="flex-1">
+<div class="flex items-center gap-2 mb-1">
+<span class="bg-purple-500/20 text-purple-400 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">Remixing</span>
+</div>
+<h2 class="text-xl font-bold">Project Alpha v2</h2>
+<p class="text-sm text-gray-500 dark:text-gray-400">Forked from @alex_dev</p>
+</div>
+</div>
+</section>
+<div class="px-4 mt-6 space-y-8">
+<div>
+<div class="flex items-center justify-between mb-3">
+<label class="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider">AI Model</label>
+<span class="text-xs text-primary font-medium">Recommends GPT-4o</span>
+</div>
+<div class="grid grid-cols-1 gap-3">
+<label class="cursor-pointer relative group">
+<input checked="" class="custom-radio sr-only" name="model" type="radio"/>
+<div class="flex items-center p-4 rounded-xl border border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-surface-dark hover:border-gray-300 dark:hover:border-gray-600 transition-all">
+<div class="h-10 w-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600 dark:text-green-400 mr-4">
+<span class="material-symbols-outlined">smart_toy</span>
+</div>
+<div class="flex-1">
+<h3 class="font-semibold text-sm">GPT-4o</h3>
+<p class="text-xs text-gray-500 dark:text-gray-400">Best for complex logic &amp; code</p>
+</div>
+<div class="radio-indicator h-5 w-5 rounded-full border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center"></div>
+</div>
+</label>
+<label class="cursor-pointer relative group">
+<input class="custom-radio sr-only" name="model" type="radio"/>
+<div class="flex items-center p-4 rounded-xl border border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-surface-dark hover:border-gray-300 dark:hover:border-gray-600 transition-all">
+<div class="h-10 w-10 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-orange-600 dark:text-orange-400 mr-4">
+<span class="material-symbols-outlined">psychology</span>
+</div>
+<div class="flex-1">
+<h3 class="font-semibold text-sm">Claude 3.5 Sonnet</h3>
+<p class="text-xs text-gray-500 dark:text-gray-400">Faster, larger context window</p>
+</div>
+<div class="radio-indicator h-5 w-5 rounded-full border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center"></div>
+</div>
+</label>
+</div>
+</div>
+<div>
+<div class="flex items-center justify-between mb-3">
+<label class="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider">Deployment Target</label>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<label class="cursor-pointer relative">
+<input checked="" class="custom-radio sr-only" name="deploy" type="radio"/>
+<div class="flex flex-col items-center justify-center p-4 rounded-xl border border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-surface-dark hover:border-gray-300 dark:hover:border-gray-600 transition-all text-center h-32">
+<span class="material-symbols-outlined text-3xl mb-2 text-gray-700 dark:text-gray-300">cloud_upload</span>
+<span class="font-semibold text-sm">Vercel</span>
+<div class="radio-indicator absolute top-3 right-3 h-4 w-4 rounded-full border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center"></div>
+</div>
+</label>
+<label class="cursor-pointer relative">
+<input class="custom-radio sr-only" name="deploy" type="radio"/>
+<div class="flex flex-col items-center justify-center p-4 rounded-xl border border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-surface-dark hover:border-gray-300 dark:hover:border-gray-600 transition-all text-center h-32">
+<span class="material-symbols-outlined text-3xl mb-2 text-gray-700 dark:text-gray-300">dns</span>
+<span class="font-semibold text-sm">Netlify</span>
+<div class="radio-indicator absolute top-3 right-3 h-4 w-4 rounded-full border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center"></div>
+</div>
+</label>
+</div>
+</div>
+<div>
+<div class="flex items-center justify-between mb-3">
+<label class="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider">Automation Level</label>
+<span class="text-xs text-primary font-bold">High (Autonomous)</span>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark p-5 rounded-xl border border-gray-200 dark:border-gray-700">
+<input class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700 accent-primary" max="3" min="1" type="range" value="3"/>
+<div class="flex justify-between text-[10px] text-gray-500 mt-2 font-medium uppercase tracking-wide">
+<span>Manual</span>
+<span>Assisted</span>
+<span>Autonomous</span>
+</div>
+</div>
+<p class="text-xs text-gray-500 mt-2 px-1">
+<span class="material-symbols-outlined align-middle text-sm mr-1">info</span>
+                    Autonomous mode will auto-merge PRs that pass CI checks.
+                </p>
+</div>
+</div>
+</main>
+<div class="fixed bottom-0 z-50 w-full bg-surface-light dark:bg-surface-dark border-t border-gray-200 dark:border-gray-800 pb-safe shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
+<div class="p-4 space-y-4">
+<div class="flex items-center justify-between bg-background-light dark:bg-background-dark p-3 rounded-lg border border-gray-200 dark:border-gray-700">
+<div class="flex items-center gap-2">
+<div class="bg-success/20 text-success p-1 rounded-md">
+<span class="material-symbols-outlined" style="font-size: 20px;">check_circle</span>
+</div>
+<span class="text-sm font-medium">Estimated Success</span>
+</div>
+<span class="text-lg font-bold text-success">94%</span>
+</div>
+<button class="w-full bg-primary hover:bg-primary-dark text-white font-bold py-4 px-4 rounded-xl flex items-center justify-center gap-2 transition-transform active:scale-[0.98] shadow-lg shadow-primary/25">
+<span class="material-symbols-outlined">rocket_launch</span>
+                Launch Remix
+            </button>
+</div>
+<div class="h-6 w-full"></div>
+</div>
+
+</body></html>

@@ -1,0 +1,1 @@
+{"id":5493,"name":"Get new emails in Slack","description":"Every time you receive a new email, Make will automatically post that email to Slack.","url":"5493-get-new-emails-in-slack","usedApps":["email","slack"],"usage":251}

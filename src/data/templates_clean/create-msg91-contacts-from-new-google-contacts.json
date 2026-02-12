@@ -1,0 +1,1 @@
+{"id":8333,"name":"Create MSG91 contacts from new Google Contacts","description":"Every time a new contact is created in Google Contacts, Make will automatically add that contact to MSG91.","url":"8333-create-msg91-contacts-from-new-google-contacts","usedApps":["google-contacts","msg91"],"usage":1}

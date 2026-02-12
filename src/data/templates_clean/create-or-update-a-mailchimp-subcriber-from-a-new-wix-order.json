@@ -1,0 +1,1 @@
+{"id":5576,"name":"Create (or update) a Mailchimp subcriber from a new Wix order","description":"Every time a new Wix order is created, Make will automatically create (or update) a Mailchimp subscriber.","url":"5576-create-or-update-a-mailchimp-subcriber-from-a-new-wix-order","usedApps":["wix","mailchimp"],"usage":12}

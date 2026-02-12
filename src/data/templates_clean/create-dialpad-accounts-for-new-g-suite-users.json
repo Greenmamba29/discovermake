@@ -1,0 +1,1 @@
+{"id":4383,"name":"Create Dialpad accounts for new G Suite users","description":"Every time a new user is added to G Suite, Make will automatically create a Dialpad account for the user.","url":"4383-create-dialpad-accounts-for-new-g-suite-users","usedApps":["google-g-suite","dialpad"],"usage":4}

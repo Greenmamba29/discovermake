@@ -1,0 +1,1 @@
+{"id":7832,"name":"Create new LimbleCMMS tasks for new Google Calendar events","description":"Every time a new event is added to your Google Calendar, Make will automatically create a new task in LimbleCMMS.","url":"7832-create-new-limblecmms-tasks-for-new-google-calendar-events","usedApps":["google-calendar","limble-cmms"],"usage":1}

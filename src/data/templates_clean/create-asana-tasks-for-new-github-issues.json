@@ -1,0 +1,1 @@
+{"id":3390,"name":"Create Asana tasks for new GitHub issues","description":"Every time a new issue is created in GitHub, Make will automatically create a new task in Asana.","url":"3390-create-asana-tasks-for-new-github-issues","usedApps":["github","asana"],"usage":36}

@@ -1,0 +1,1 @@
+{"id":6558,"name":"Send Rocket.Chat messages for new Facebook Groups posts","description":"Every time a new update is posted to a selected Facebook Group, Make will automatically send a message in Rocket.Chat.","url":"6558-send-rocket-chat-messages-for-new-facebook-groups-posts","usedApps":["facebook-groups","rocket-chat"],"usage":4}

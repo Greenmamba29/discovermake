@@ -1,0 +1,1 @@
+{"id":2136,"name":"Get new Slack messages on Telegram","description":"Every time you receive a new message in Slack, Make will automatically send a message on Telegram.","url":"2136-get-new-slack-messages-on-telegram","usedApps":["slack","telegram"],"usage":675}

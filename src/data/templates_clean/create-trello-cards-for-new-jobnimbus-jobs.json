@@ -1,0 +1,1 @@
+{"id":8542,"name":"Create Trello cards for new JobNimbus jobs","description":"Every time a new job has been created in JobNimbus, Make will automatically create a new card in Trello.","url":"8542-create-trello-cards-for-new-jobnimbus-jobs","usedApps":["jobnimbus","trello"],"usage":3}

@@ -1,0 +1,1 @@
+{"id":5365,"name":"Add new YouCanBook.me customers to your HubSpot CRM contact list","description":"Every time a new booking is created in YouCanBook.me, Make will automatically add the person info to your HubSpot CRM contact list.","url":"5365-add-new-youcanbook-me-customers-to-your-hubspot-crm-contact-list","usedApps":["youcanbookme","builtin","util","hubspotcrm"],"usage":11}

@@ -1,0 +1,1 @@
+{"id":13095,"name":"Send data to a datastore and trigger a custom webhook action","description":"Automatically send data to your datastore and trigger a custom webhook action using Make's modules: CustomWebHook, ActionSendData, and AddRecord.","url":"13095-send-data-to-a-datastore-and-trigger-a-custom-webhook-action","usedApps":["gateway","http","datastore"],"usage":11}

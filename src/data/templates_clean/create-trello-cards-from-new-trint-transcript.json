@@ -1,0 +1,1 @@
+{"id":7551,"name":"Create Trello cards from new Trint transcript","description":"Every time a new Trint transcript is ready, Make will automatically create a new card in Trello.","url":"7551-create-trello-cards-from-new-trint-transcript","usedApps":["trint","trello"],"usage":7}

@@ -1,0 +1,1 @@
+{"id":773,"name":"Create Trello cards from new Insightly CRM opportunities","description":"Every time a new opportunity is added in Insightly CRM, Make will automatically create a new card in Trello.","url":"773-create-trello-cards-from-new-insightly-crm-opportunities","usedApps":["insightly","trello"],"usage":5}

@@ -1,0 +1,1 @@
+{"id":4565,"name":"Send Notification from Salesforce leads to a Go4Clients Email","description":"Every time new lead is created in Salesforce, Make will automatically add the email address of the lead to your Go4Clients Email Campaign","url":"4565-send-notification-from-salesforce-leads-to-a-go4clients-email","usedApps":["salesforce","go4clients"],"usage":1}

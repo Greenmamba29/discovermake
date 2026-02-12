@@ -1,0 +1,1 @@
+{"id":567,"name":" Buffer new Gitter messages","description":"Every time a new message is posted to a Gitter chat room being watched, Make will automatically add it to your Buffer queue.","url":"567-buffer-new-gitter-messages","usedApps":["buffer","gitter"],"usage":1}

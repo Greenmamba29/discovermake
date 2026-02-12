@@ -1,0 +1,1 @@
+{"id":4260,"name":"Create a new contact in Drift from new contacts in Google Sheets spreadsheet","description":"When a new row with a contact is created in Google Sheets spreadsheet, a new contact is created in Drift.","url":"4260-create-a-new-contact-in-drift-from-new-contacts-in-google-sheets-spreadsheet","usedApps":["google-sheets","drift"],"usage":0}

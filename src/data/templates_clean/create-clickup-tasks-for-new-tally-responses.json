@@ -1,0 +1,1 @@
+{"id":8005,"name":"Create ClickUp tasks for new Tally responses","description":"Make will watch your Tally responses at regular intervals and create Clickup tasks.","url":"8005-create-clickup-tasks-for-new-tally-responses","usedApps":["tally","clickup"],"usage":55}

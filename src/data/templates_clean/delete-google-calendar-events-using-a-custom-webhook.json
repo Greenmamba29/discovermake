@@ -1,0 +1,1 @@
+{"id":12819,"name":"Delete Google Calendar events using a custom webhook","description":"Automatically delete Google Calendar events using a custom webhook trigger. Streamline calendar management by integrating Google Calendar with your custom webhook.","url":"12819-delete-google-calendar-events-using-a-custom-webhook","usedApps":["gateway","google-calendar"],"usage":35}

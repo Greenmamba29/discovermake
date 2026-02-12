@@ -1,0 +1,1 @@
+{"id":6897,"name":"Send new Dropbox files to Discord using public URL","description":"Use this template to automatically create a share link for a new Dropbox file and post it to Discord.","url":"6897-send-new-dropbox-files-to-discord-using-public-url","usedApps":["dropbox","discord"],"usage":32}

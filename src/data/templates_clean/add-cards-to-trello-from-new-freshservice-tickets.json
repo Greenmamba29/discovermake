@@ -1,0 +1,1 @@
+{"id":6677,"name":"Add cards to Trello from new Freshservice tickets","description":"Every time a ticket meets certain criteria in Freshservice, Make will automatically create a new card with the details in Trello.","url":"6677-add-cards-to-trello-from-new-freshservice-tickets","usedApps":["freshservice","trello"],"usage":5}

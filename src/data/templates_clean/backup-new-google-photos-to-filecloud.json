@@ -1,0 +1,1 @@
+{"id":6867,"name":"Backup new Google Photos to FileCloud","description":"Every time a new photo is added to your Google Photo album, Make will automatically upload that photo to a FileCloud folder you specify.","url":"6867-backup-new-google-photos-to-filecloud","usedApps":["google-photos","filecloud"],"usage":12}

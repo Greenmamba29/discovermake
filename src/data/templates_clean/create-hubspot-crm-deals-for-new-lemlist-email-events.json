@@ -1,0 +1,1 @@
+{"id":3990,"name":"Create HubSpot CRM deals for new Lemlist email events","description":"Every time a specified Lemlist email event occurs, Make will automatically add the contact and create a deal in HubSpot CRM.","url":"3990-create-hubspot-crm-deals-for-new-lemlist-email-events","usedApps":["lemlist","hubspotcrm"],"usage":53}

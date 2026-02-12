@@ -1,0 +1,1 @@
+{"id":4365,"name":"Add Mailchimp subscribers from Gravity Forms entries","description":"Every time a new entry is submitted to Gravity, Make will automatically add the contact to a Mailchimp mailing list.","url":"4365-add-mailchimp-subscribers-from-gravity-forms-entries","usedApps":["gravity-forms","mailchimp"],"usage":10}

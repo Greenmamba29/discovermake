@@ -1,0 +1,1 @@
+{"id":5875,"name":"Send emails when there are new activities in Trello","description":"When you have new activities in Trello, Make will instantly retrieve the activities that occurred and send notification emails via Gmail.","url":"5875-send-emails-when-there-are-new-activities-in-trello","usedApps":["trello","google-email"],"usage":49}

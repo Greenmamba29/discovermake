@@ -1,0 +1,1 @@
+{"id":5375,"name":"Create a CloudTalk contact from a new noCRM.io lead","description":"Every time a new noCRM.io lead is created, Make will automatically create a CloudTalk contact.","url":"5375-create-a-cloudtalk-contact-from-a-new-nocrm-io-lead","usedApps":["nocrm-io","cloudtalk"],"usage":0}

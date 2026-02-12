@@ -1,0 +1,1 @@
+{"id":7153,"name":"Creates Weekdone item from new Jenkins Job Notification","description":"Every time a new Job Notification is created in Jenkins, Make will automatically create a new item in Weekdone.","url":"7153-creates-weekdone-item-from-new-jenkins-job-notification","usedApps":["jenkins","weekdone"],"usage":0}

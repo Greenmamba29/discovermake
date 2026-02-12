@@ -1,0 +1,1 @@
+{"id":6729,"name":"Add a new Google Contact to CompanyHub","description":"Every time a new contact is created in Google Contacts, Make will automatically create a new contact in CompanyHub.","url":"6729-add-a-new-google-contact-to-companyhub","usedApps":["google-contacts","companyhub"],"usage":1}

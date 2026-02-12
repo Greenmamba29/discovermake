@@ -1,0 +1,1 @@
+{"id":13463,"name":"Trigger new email notifications and save attachments to SFTP server","description":"Automatically trigger new email notifications with Google Email, feed attachments, and save them to an SFTP server for secure storage.","url":"13463-trigger-new-email-notifications-and-save-attachments-to-sftp-server","usedApps":["google-email","sftp"],"usage":11}

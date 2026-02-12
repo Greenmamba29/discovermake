@@ -1,0 +1,1 @@
+{"id":7856,"name":"Create new Ganttic tasks for new ClickUp tasks","description":"Every time a new task is created in ClickUp, Make will automatically create a new task in Ganttic.","url":"7856-create-new-ganttic-tasks-for-new-clickup-tasks","usedApps":["clickup","ganttic"],"usage":1}

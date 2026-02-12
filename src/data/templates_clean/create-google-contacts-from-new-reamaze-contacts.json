@@ -1,0 +1,1 @@
+{"id":6713,"name":"Create Google Contacts from new Reamaze contacts","description":"Every time there is a new Reamaze contact, Make will automatically search Google Contacts with the same name, then create a new one or update the existing one.","url":"6713-create-google-contacts-from-new-reamaze-contacts","usedApps":["reamaze","google-contacts","builtin"],"usage":12}

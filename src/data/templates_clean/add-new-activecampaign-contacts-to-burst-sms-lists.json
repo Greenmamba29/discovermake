@@ -1,0 +1,1 @@
+{"id":7269,"name":"Add new ActiveCampaign contacts to Burst SMS lists","description":"Every time a new contact is created in ActiveCampaign, Make will automatically create a new contact in Burst SMS and add it to list.","url":"7269-add-new-activecampaign-contacts-to-burst-sms-lists","usedApps":["activecampaign","burst-sms"],"usage":0}

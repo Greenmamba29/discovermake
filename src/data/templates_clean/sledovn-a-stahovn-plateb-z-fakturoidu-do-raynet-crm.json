@@ -1,0 +1,1 @@
+{"id":3102,"name":"Sledování a stahování plateb z Fakturoidu do RAYNET CRM","description":"Ihned po spárování platby za fakturu ve Fakturoidu je načtena příslušná faktura v RAYNET CRM a záznam o platbě je u této faktury rovněž aktualizován.","url":"3102-sledovani-a-stahovani-plateb-z-fakturoidu-do-raynet-crm","usedApps":["fakturoid","raynetcrm"],"usage":11}

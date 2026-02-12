@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Predictive Demand Analytics</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                        "neon-cyan": "#00f5ff",
+                        "neon-green": "#00ff87",
+                        "neon-purple": "#bd00ff"
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .mesh-gradient {
+            background-color: #101622;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(19, 91, 236, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(189, 0, 255, 0.1) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(0, 245, 255, 0.05) 0px, transparent 50%);
+        }
+        .chart-glow-primary { filter: drop-shadow(0 0 8px rgba(19, 91, 236, 0.5)); }
+        .chart-glow-cyan { filter: drop-shadow(0 0 8px rgba(0, 245, 255, 0.5)); }
+        .chart-glow-green { filter: drop-shadow(0 0 8px rgba(0, 255, 135, 0.5)); }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white overflow-x-hidden">
+<div class="relative flex min-h-screen flex-col mesh-gradient">
+<!-- Header -->
+<header class="flex items-center justify-between p-6 pb-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full border border-white/20 overflow-hidden glass flex items-center justify-center">
+<img class="w-full h-full object-cover" data-alt="User profile avatar close up portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnmqP90wi228OIzPlb1a8-fG0498x2IPsPzg1MjrV4-KC4upgGSPJFRMXxS0yDgxp-vJsHOFAIEEiTTOM2S5SMNKWg65UoG6V_10hVL7JRTdmFsR9vcMe1-LkPDtQjcKZ6h0kLxCOpa9kITtgC0kHeKutB9jRRZwshXMj4WqjV_po1vyPQTGsPW_WDaEz8NsYok4KVDD-qAq7URfGowZAbdFYRPwOxT1D9lm_aKudvGs_dhTestrUJEQClAYo7_5q0JDPH5CLkA0iM"/>
+</div>
+<div>
+<h1 class="text-sm font-medium text-white/60">Welcome back, Dev</h1>
+<p class="text-xs text-primary flex items-center gap-1 font-bold">
+<span class="size-1.5 bg-primary rounded-full animate-pulse"></span>
+                        High Demand in San Francisco
+                    </p>
+</div>
+</div>
+<button class="glass p-2.5 rounded-xl text-white">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</header>
+<!-- Time Range Picker -->
+<div class="px-6 mb-6">
+<div class="flex bg-white/5 p-1 rounded-xl border border-white/10 glass">
+<button class="flex-1 py-2 text-xs font-bold rounded-lg text-white/40">6h</button>
+<button class="flex-1 py-2 text-xs font-bold rounded-lg text-white/40">12h</button>
+<button class="flex-1 py-2 text-xs font-bold rounded-lg bg-primary text-white shadow-lg shadow-primary/30">24h</button>
+</div>
+</div>
+<!-- Hero Prediction Section -->
+<div class="px-6 space-y-2 mb-6">
+<div class="flex justify-between items-end">
+<div>
+<p class="text-sm font-medium text-white/60">Projected Peak Surge</p>
+<h2 class="text-5xl font-bold tracking-tight text-white mt-1">2.5<span class="text-primary">x</span></h2>
+</div>
+<div class="glass px-3 py-1.5 rounded-full flex items-center gap-1 border-neon-green/30">
+<span class="material-symbols-outlined text-neon-green text-sm">trending_up</span>
+<span class="text-neon-green text-xs font-bold">+18.4%</span>
+</div>
+</div>
+</div>
+<!-- Sophisticated Chart Container -->
+<div class="relative w-full h-64 px-2 overflow-visible">
+<!-- Glass Overlay Multiplier Tags -->
+<div class="absolute left-[65%] top-[10%] z-20">
+<div class="glass px-3 py-1 rounded-lg border-primary/40 flex flex-col items-center">
+<span class="text-[10px] uppercase font-bold text-primary tracking-widest">Peak</span>
+<span class="text-sm font-bold">2.5x</span>
+<div class="w-px h-12 bg-gradient-to-b from-primary to-transparent mt-1"></div>
+</div>
+</div>
+<!-- SVG Multi-Line Chart -->
+<svg class="w-full h-full drop-shadow-2xl" viewbox="0 0 400 200">
+<defs>
+<lineargradient id="grad-primary" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#135bec" stop-opacity="0.2"></stop>
+<stop offset="100%" stop-color="#135bec" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<!-- Grid Lines -->
+<line stroke="white" stroke-opacity="0.05" x1="0" x2="400" y1="50" y2="50"></line>
+<line stroke="white" stroke-opacity="0.05" x1="0" x2="400" y1="100" y2="100"></line>
+<line stroke="white" stroke-opacity="0.05" x1="0" x2="400" y1="150" y2="150"></line>
+<!-- Prediction Shaded Area -->
+<rect fill="white" fill-opacity="0.03" height="200" width="160" x="240" y="0"></rect>
+<text fill="white" fill-opacity="0.3" font-size="8" font-weight="bold" x="245" y="15">FORECAST</text>
+<!-- React Line (Cyan) -->
+<path class="chart-glow-cyan" d="M0,160 Q50,150 100,100 T200,80 T300,40 T400,120" fill="none" stroke="#00f5ff" stroke-width="3"></path>
+<!-- Python Line (Green) -->
+<path class="chart-glow-green" d="M0,180 Q60,160 120,130 T240,110 T400,30" fill="none" stroke="#00ff87" stroke-width="3"></path>
+<!-- AWS Line (Primary Blue) -->
+<path class="chart-glow-primary" d="M0,140 Q80,130 150,170 T300,100 T400,60" fill="none" stroke="#135bec" stroke-width="4"></path>
+<path d="M0,140 Q80,130 150,170 T300,100 T400,60 V200 H0 Z" fill="url(#grad-primary)"></path>
+</svg>
+<div class="flex justify-between px-6 mt-4">
+<span class="text-[10px] text-white/40 font-bold uppercase tracking-widest">08:00</span>
+<span class="text-[10px] text-white/40 font-bold uppercase tracking-widest">14:00</span>
+<span class="text-[10px] text-primary font-bold uppercase tracking-widest">Now</span>
+<span class="text-[10px] text-white/40 font-bold uppercase tracking-widest">20:00</span>
+<span class="text-[10px] text-white/40 font-bold uppercase tracking-widest">02:00</span>
+</div>
+</div>
+<!-- Tech Stack Legend -->
+<div class="flex gap-3 px-6 py-8 overflow-x-auto no-scrollbar">
+<button class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-xl glass px-4 border-l-4 border-l-primary">
+<span class="material-symbols-outlined text-primary text-lg">cloud</span>
+<p class="text-white text-sm font-bold">AWS</p>
+</button>
+<button class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-xl glass px-4 border-l-4 border-l-neon-cyan/50">
+<span class="material-symbols-outlined text-neon-cyan text-lg">cyclone</span>
+<p class="text-white text-sm font-bold">React</p>
+</button>
+<button class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-xl glass px-4 border-l-4 border-l-neon-green/50">
+<span class="material-symbols-outlined text-neon-green text-lg">code</span>
+<p class="text-white text-sm font-bold">Python</p>
+</button>
+<button class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-xl glass px-4 border-l-4 border-l-neon-purple/50">
+<span class="material-symbols-outlined text-neon-purple text-lg">database</span>
+<p class="text-white text-sm font-bold">Node.js</p>
+</button>
+</div>
+<!-- Smart Recommendations -->
+<div class="px-6 flex-1 pb-32">
+<h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">auto_awesome</span>
+                Smart Recommendations
+            </h3>
+<div class="space-y-4">
+<!-- Card 1 -->
+<div class="glass p-5 rounded-2xl relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 size-24 bg-primary/10 rounded-full blur-2xl transition-all group-hover:bg-primary/20"></div>
+<div class="flex items-start gap-4">
+<div class="bg-primary/20 p-3 rounded-xl">
+<span class="material-symbols-outlined text-primary">schedule</span>
+</div>
+<div class="flex-1">
+<h4 class="text-base font-bold text-white">Go online at 2:00 PM</h4>
+<p class="text-sm text-white/50 mt-1 leading-snug">Demand for <span class="text-neon-cyan">React</span> and <span class="text-neon-purple">Node</span> is predicted to spike 30% in your area.</p>
+<div class="mt-3 flex items-center gap-4">
+<span class="text-xs font-bold text-primary">+2.2x Surge</span>
+<span class="text-xs font-bold text-white/30">$45 - $80 / hr</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="glass p-5 rounded-2xl relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 size-24 bg-neon-green/10 rounded-full blur-2xl"></div>
+<div class="flex items-start gap-4">
+<div class="bg-neon-green/10 p-3 rounded-xl">
+<span class="material-symbols-outlined text-neon-green">bolt</span>
+</div>
+<div class="flex-1">
+<h4 class="text-base font-bold text-white">Python Rush Hour</h4>
+<p class="text-sm text-white/50 mt-1 leading-snug">Backend optimization tasks are stacking up. 12 active requests near you.</p>
+<div class="mt-3 flex items-center gap-4">
+<span class="text-xs font-bold text-neon-green">High Conversion</span>
+<span class="text-xs font-bold text-white/30">98% Match</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Navigation Bar -->
+<nav class="fixed bottom-0 inset-x-0 glass border-t border-white/5 px-8 pt-4 pb-10 flex justify-between items-center z-50">
+<button class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined">analytics</span>
+<span class="text-[10px] font-bold">Analytics</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-white/40">
+<span class="material-symbols-outlined">work</span>
+<span class="text-[10px] font-bold">Tasks</span>
+</button>
+<button class="flex flex-col items-center gap-1 -mt-12 bg-primary size-14 rounded-full shadow-2xl shadow-primary/40 border-4 border-background-dark flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-2xl">power_settings_new</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-white/40">
+<span class="material-symbols-outlined">wallet</span>
+<span class="text-[10px] font-bold">Earnings</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-white/40">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] font-bold">Profile</span>
+</button>
+</nav>
+</div>
+</body></html>

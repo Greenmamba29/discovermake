@@ -1,0 +1,1 @@
+{"id":1893,"name":"Create Monday Item from Google Form Entries","description":"Every time a new response is received in Google Forms, Make automatically creates a new item on the Monday account.","url":"1893-create-monday-item-from-google-form-entries","usedApps":["google-forms","monday"],"usage":1169}

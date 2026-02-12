@@ -1,0 +1,1 @@
+{"id":3753,"name":"Send a notification to Slack about new recorded event in your project in QuickCapture","description":"When a new event is recorded in your project in QuickCapture, a new message is sent to Slack's channel.","url":"3753-send-a-notification-to-slack-about-new-recorded-event-in-your-project-in-quickcapture","usedApps":["quickcapture","slack"],"usage":3}

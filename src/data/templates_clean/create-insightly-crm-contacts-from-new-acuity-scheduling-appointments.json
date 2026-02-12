@@ -1,0 +1,1 @@
+{"id":2588,"name":"Create Insightly CRM contacts from new Acuity Scheduling appointments","description":"Every time a new appointment is scheduled in Acuity Scheduling, Make will automatically create a new contact in Insightly CRM.","url":"2588-create-insightly-crm-contacts-from-new-acuity-scheduling-appointments","usedApps":["acuity-scheduling","insightly"],"usage":3}

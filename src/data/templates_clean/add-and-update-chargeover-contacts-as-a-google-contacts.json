@@ -1,0 +1,1 @@
+{"id":7604,"name":"Add and Update ChargeOver contacts as a Google Contacts","description":"Every time a new contact is added to a ChargeOver, Make will automatically add that contact to Google Contacts as a new contact or update existing contact.","url":"7604-add-and-update-chargeover-contacts-as-a-google-contacts","usedApps":["chargeover","google-contacts","builtin"],"usage":4}

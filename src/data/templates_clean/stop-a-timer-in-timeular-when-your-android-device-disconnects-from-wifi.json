@@ -1,0 +1,1 @@
+{"id":7042,"name":"Stop a timer in Timeular when your Android device disconnects from WiFi","description":"Every time an Android device being watched disconnects from a specified WiFi network, Make will automatically stop a tracking in Timeular.","url":"7042-stop-a-timer-in-timeular-when-your-android-device-disconnects-from-wifi","usedApps":["android","timeular"],"usage":1}

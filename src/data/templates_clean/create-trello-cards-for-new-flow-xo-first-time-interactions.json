@@ -1,0 +1,1 @@
+{"id":7203,"name":"Create Trello cards for new Flow XO first time interactions","description":"When a person interacts with your Flow XO bot for the first time, Make will automatically create a card in Trello.","url":"7203-create-trello-cards-for-new-flow-xo-first-time-interactions","usedApps":["flow-xo","trello"],"usage":2}

@@ -1,0 +1,1 @@
+{"id":8587,"name":"Import new attachments from Gmail to PowerOffice","description":"Make will watch for new emails received in Gmail and import emails' attachments of specified format to PowerOffice.","url":"8587-import-new-attachments-from-gmail-to-poweroffice","usedApps":["google-email","poweroffice"],"usage":4}

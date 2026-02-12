@@ -1,0 +1,1 @@
+{"id":4500,"name":"Create Shopify coupon codes for new GrowSurf participants","description":"Every time a new participant is added to GrowSurf, Make will automatically create a discount code in Shopify.","url":"4500-create-shopify-coupon-codes-for-new-growsurf-participants","usedApps":["growsurf","shopify"],"usage":9}

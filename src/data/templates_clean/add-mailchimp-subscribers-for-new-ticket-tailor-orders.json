@@ -1,0 +1,1 @@
+{"id":8289,"name":"Add Mailchimp subscribers for new Ticket Tailor orders","description":"Make will watch your Ticket Tailor orders at regular intervals and add your buyers to your Mailchimp as subscribers.","url":"8289-add-mailchimp-subscribers-for-new-ticket-tailor-orders","usedApps":["ticket-tailor","mailchimp"],"usage":10}

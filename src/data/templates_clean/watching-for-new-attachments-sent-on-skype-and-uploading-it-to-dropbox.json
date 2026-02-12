@@ -1,0 +1,1 @@
+{"id":3316,"name":"Watching for new attachments sent on Skype and uploading it to Dropbox","description":"Every time a new Skype message is sent with an attachment, Make will automatically save that as a file to Dropbox.","url":"3316-watching-for-new-attachments-sent-on-skype-and-uploading-it-to-dropbox","usedApps":["skype","builtin","dropbox"],"usage":6}

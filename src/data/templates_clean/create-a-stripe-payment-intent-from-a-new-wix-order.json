@@ -1,0 +1,1 @@
+{"id":5680,"name":"Create a Stripe payment intent from a new Wix order","description":"Every time a new Wix order is created, Make will automatically create a Stripe payment intent.","url":"5680-create-a-stripe-payment-intent-from-a-new-wix-order","usedApps":["wix","stripe"],"usage":57}

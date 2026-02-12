@@ -1,0 +1,1 @@
+{"id":5701,"name":"Create new ReviewStudio project for new Asana projects","description":"Every time a new Asana project is created, Make will automatically create a project in ReviewStudio. ","url":"5701-create-new-reviewstudio-project-for-new-asana-projects","usedApps":["asana","reviewstudio"],"usage":2}

@@ -1,0 +1,1 @@
+{"id":4037,"name":"Send Gmail messages for new LiveWebinar leads","description":"Every time a new lead is created in LiveWebinar, Make will automatically send an email via Gmail.","url":"4037-send-gmail-messages-for-new-livewebinar-leads","usedApps":["livewebinar","google-email"],"usage":2}

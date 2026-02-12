@@ -1,0 +1,1 @@
+{"id":467,"name":"Move a Trello card to a different board when a new comment is added","description":"When a new comment is added to a selected card in Trello, Make will automatically move that card to a different board.","url":"467-move-a-trello-card-to-a-different-board-when-a-new-comment-is-added","usedApps":["trello","trello"],"usage":87}

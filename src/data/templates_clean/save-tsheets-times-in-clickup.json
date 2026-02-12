@@ -1,0 +1,1 @@
+{"id":3740,"name":"Save TSheets times in ClickUp","description":"Every time a new timesheet is posted for a specified job/customer code in TSheets, Make will automatically add the tracked time to a specified ClickUp task. ","url":"3740-save-tsheets-times-in-clickup","usedApps":["tsheets","clickup"],"usage":26}

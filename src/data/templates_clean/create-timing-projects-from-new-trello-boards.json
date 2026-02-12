@@ -1,0 +1,1 @@
+{"id":8930,"name":"Create Timing projects from new Trello boards","description":"Make will watch for new Trello boards at regular intervals and create time projects in Timing using information received.","url":"8930-create-timing-projects-from-new-trello-boards","usedApps":["trello","timing"],"usage":3}

@@ -1,0 +1,1 @@
+{"id":1524,"name":"Create Freshdesk responses from new Slack messages","description":"Every time a new message is posted to a Slack channel being watched, Make will automatically reply to a selected Freshdesk ticket.","url":"1524-create-freshdesk-responses-from-new-slack-messages","usedApps":["slack","freshdesk"],"usage":25}

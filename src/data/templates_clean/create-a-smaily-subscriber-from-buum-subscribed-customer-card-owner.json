@@ -1,0 +1,1 @@
+{"id":6308,"name":"Create a Smaily subscriber from BUUM subscribed customer card owner","description":"Every time a customer issues a customer card and subscribes to a newsletter, Make automatically adds a Smaily subscriber.","url":"6308-create-a-smaily-subscriber-from-buum-subscribed-customer-card-owner","usedApps":["mysql","smaily"],"usage":72}

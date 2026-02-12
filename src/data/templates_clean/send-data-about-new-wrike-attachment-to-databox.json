@@ -1,0 +1,1 @@
+{"id":3923,"name":"Send data about new Wrike attachment to Databox","description":"Whenever an attachment is added to your Wrike tasks, Make will automatically update that information in Databox. ","url":"3923-send-data-about-new-wrike-attachment-to-databox","usedApps":["wrike","databox"],"usage":2}

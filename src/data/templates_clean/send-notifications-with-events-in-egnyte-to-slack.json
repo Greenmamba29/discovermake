@@ -1,0 +1,1 @@
+{"id":2989,"name":"Send notifications with events in Egnyte to Slack","description":"When a new event happens in Egnyte, a notification as message is sent to Slack.","url":"2989-send-notifications-with-events-in-egnyte-to-slack","usedApps":["egnyte","slack"],"usage":3}

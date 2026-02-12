@@ -1,0 +1,1 @@
+{"id":4253,"name":"Send a document from DocuSign to sign to a person from Pipedrive","description":"When a deal meets specified criteria, a document from a template is sent to them via DocuSign.","url":"4253-send-a-document-from-docusign-to-sign-to-a-person-from-pipedrive","usedApps":["pipedrive","builtin","docusign"],"usage":85}

@@ -1,0 +1,1 @@
+{"id":5591,"name":"Send a Slack message from a new Salesforce event","description":"Use this template to send a Slack message to a channel or a user when a new Salesforce event is created.","url":"5591-send-a-slack-message-from-a-new-salesforce-event","usedApps":["salesforce","slack"],"usage":18}

@@ -1,0 +1,1 @@
+{"id":6420,"name":"Create Trello cards from Signority Documents","description":"Every time a new Signority Document is created, Make will filter these documents based on their signature status and add new cards to different Trello lists.","url":"6420-create-trello-cards-from-signority-documents","usedApps":["signority","builtin","trello"],"usage":1}

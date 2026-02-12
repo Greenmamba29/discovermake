@@ -1,0 +1,1 @@
+{"id":1974,"name":"Send message to Outlook (Office 365 Email) for new users in Monday","description":"Every time a new user is created in the Monday account, Make automatically creates emails for the assigned person from Outlook (Office 365 Email).","url":"1974-send-message-to-outlook-office-365-email-for-new-users-in-monday","usedApps":["monday","microsoft-email"],"usage":184}

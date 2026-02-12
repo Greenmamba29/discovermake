@@ -1,0 +1,1 @@
+{"id":3295,"name":"Save completed Zoho Sign documents to Google Drive.","description":"Every time a Zoho Sign document is completed, Make will automatically save the final document to a specified folder in Google Drive.","url":"3295-save-completed-zoho-sign-documents-to-google-drive","usedApps":["zoho-sign","builtin","google-drive"],"usage":42}

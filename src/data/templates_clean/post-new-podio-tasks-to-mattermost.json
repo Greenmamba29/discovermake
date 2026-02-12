@@ -1,0 +1,1 @@
+{"id":1615,"name":"Post new Podio tasks to Mattermost","description":"Every time a new task is created in Podio, Make will automatically post a message to a selected channel on Mattermost.","url":"1615-post-new-podio-tasks-to-mattermost","usedApps":["mattermost","podio"],"usage":2}

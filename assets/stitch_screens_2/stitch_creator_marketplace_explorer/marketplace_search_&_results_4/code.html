@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Build Success &amp; Launch</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13a4ec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#0a0f12",
+                        "surface-dark": "#162229",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "3xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .ios-blur { backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+        .success-glow {
+            box-shadow: 0 0 40px -10px rgba(34, 197, 94, 0.3);
+        }
+        .celebration-bg {
+            background: radial-gradient(circle at 50% 30%, rgba(19, 164, 236, 0.15) 0%, transparent 70%);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-dark font-display text-white min-h-screen overflow-x-hidden selection:bg-primary/30">
+<div class="fixed inset-0 celebration-bg pointer-events-none"></div>
+<nav class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between p-4 pointer-events-none">
+<button class="pointer-events-auto size-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white border border-white/10">
+<span class="material-symbols-outlined">close</span>
+</button>
+<button class="pointer-events-auto size-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white border border-white/10">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</nav>
+<main class="relative px-6 pt-20 pb-40 flex flex-col items-center">
+<section class="relative w-full aspect-[4/5] max-w-sm rounded-3xl overflow-hidden shadow-2xl success-glow border border-white/10 group">
+<img alt="Live tool outcome preview" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeOmHCcF-imom74dV_TPQVN1cYFmcausQNo4oR9NYyxi0rUfYqmr93ajneqvRTRunAPODqt-yDp2vtPmhWPflh56StSEuCKR1bJ018mi82U8ofU8C4lx9_tbdnQrz9iGId9QBdOHcX3QgQi5kz4rxGlx58F_AUhbdQnW4RrI90QbWIldtnI6vp1cAx9EpHTcJ_M_37rMBCP-TGGlocEeBnGrUmSWDMkWE_3w_GlN4Ui4wIMoQVhUUxXLQlr7GE1RPDPK6d3bRgYvc"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+<div class="absolute bottom-4 left-4 right-4 bg-white/10 backdrop-blur-xl border border-white/20 p-4 rounded-2xl flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-lg bg-primary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-xl">auto_awesome</span>
+</div>
+<div>
+<p class="text-xs font-bold text-white/60 uppercase tracking-tighter">Live Interface</p>
+<p class="text-sm font-semibold">Support Weaver v2</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-green-400">check_circle</span>
+</div>
+</section>
+<div class="mt-8 text-center space-y-2">
+<div class="inline-flex items-center justify-center size-16 rounded-full bg-green-500/20 mb-2">
+<span class="material-symbols-outlined text-4xl text-green-500 fill-1">check_circle</span>
+</div>
+<h1 class="text-3xl font-bold tracking-tight">Build Successful</h1>
+<p class="text-slate-400 text-sm max-w-[280px] mx-auto leading-relaxed">Your workflow has been optimized and deployed to the cloud.</p>
+</div>
+<section class="w-full mt-10 grid grid-cols-1 gap-3">
+<div class="bg-surface-dark/50 border border-white/5 p-4 rounded-2xl flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">psychology</span>
+<span class="text-sm font-medium">Model Engine</span>
+</div>
+<span class="text-sm font-bold bg-white/5 px-3 py-1 rounded-full text-slate-300">Optimized for GPT-4o</span>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<div class="bg-surface-dark/50 border border-white/5 p-4 rounded-2xl">
+<p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest mb-1">Performance</p>
+<div class="flex items-center gap-2">
+<span class="text-xl font-bold text-green-400">98%</span>
+<div class="flex-1 h-1 bg-white/10 rounded-full overflow-hidden">
+<div class="w-[98%] h-full bg-green-400"></div>
+</div>
+</div>
+</div>
+<div class="bg-surface-dark/50 border border-white/5 p-4 rounded-2xl">
+<p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest mb-1">Usage Cost</p>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-amber-500 text-sm">token</span>
+<span class="text-xl font-bold">4 Credits</span>
+</div>
+</div>
+</div>
+</section>
+<section class="w-full mt-12 space-y-4">
+<h3 class="text-xs font-bold text-slate-500 uppercase tracking-widest text-center">More Actions</h3>
+<div class="grid grid-cols-3 gap-3">
+<button class="flex flex-col items-center gap-2 p-3 rounded-2xl bg-white/5 border border-white/10 active:scale-95 transition-all">
+<div class="size-10 rounded-full bg-white/5 flex items-center justify-center">
+<span class="material-symbols-outlined text-xl">group_add</span>
+</div>
+<span class="text-[10px] font-bold text-center">Share with Team</span>
+</button>
+<button class="flex flex-col items-center gap-2 p-3 rounded-2xl bg-white/5 border border-white/10 active:scale-95 transition-all">
+<div class="size-10 rounded-full bg-white/5 flex items-center justify-center">
+<span class="material-symbols-outlined text-xl">history_edu</span>
+</div>
+<span class="text-[10px] font-bold text-center">Decision Logs</span>
+</button>
+<button class="flex flex-col items-center gap-2 p-3 rounded-2xl bg-white/5 border border-white/10 active:scale-95 transition-all">
+<div class="size-10 rounded-full bg-white/5 flex items-center justify-center">
+<span class="material-symbols-outlined text-xl">rebase_edit</span>
+</div>
+<span class="text-[10px] font-bold text-center">Remix Again</span>
+</button>
+</div>
+</section>
+</main>
+<footer class="fixed bottom-0 left-0 right-0 z-40 bg-background-dark/80 ios-blur border-t border-white/10 p-6 pb-10">
+<div class="max-w-md mx-auto">
+<button class="w-full h-16 rounded-2xl bg-primary text-white font-bold text-lg shadow-2xl shadow-primary/40 flex items-center justify-center gap-3 active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined fill-1">rocket_launch</span>
+                Launch Live Tool
+            </button>
+</div>
+</footer>
+<div class="fixed bottom-1 left-1/2 -translate-x-1/2 w-32 h-1.5 bg-white/20 rounded-full z-50 pointer-events-none"></div>
+
+</body></html>

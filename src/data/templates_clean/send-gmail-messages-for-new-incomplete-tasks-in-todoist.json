@@ -1,0 +1,1 @@
+{"id":6656,"name":"Send Gmail messages for new incomplete tasks in Todoist","description":"Retrieve incomplete tasks in Todoist and send an e-mail in Gmail.","url":"6656-send-gmail-messages-for-new-incomplete-tasks-in-todoist","usedApps":["todoist","google-email"],"usage":27}

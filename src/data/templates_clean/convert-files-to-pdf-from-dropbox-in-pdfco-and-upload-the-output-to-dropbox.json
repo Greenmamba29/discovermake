@@ -1,0 +1,1 @@
+{"id":6113,"name":"Convert files to PDF from Dropbox in PDF.co and upload the output to Dropbox","description":"Get files meeting specified criteria in Dropbox, convert them to PDF and upload the converted files back to Dropbox.","url":"6113-convert-files-to-pdf-from-dropbox-in-pdf-co-and-upload-the-output-to-dropbox","usedApps":["dropbox","pdf-co"],"usage":79}

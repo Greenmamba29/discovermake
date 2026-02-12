@@ -1,0 +1,1 @@
+{"id":14596,"name":"Create a record in Knack from a Plumsail form submission","description":"Automatically create a record in Knack from new Plumsail form submissions. The record is added to your database using the submission information.","url":"14596-create-a-record-in-knack-from-a-plumsail-form-submission","usedApps":["plumsail-forms","knack"],"usage":2}

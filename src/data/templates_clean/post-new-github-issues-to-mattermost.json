@@ -1,0 +1,1 @@
+{"id":6087,"name":"Post new GitHub issues to Mattermost","description":"Every time a GitHub issue is created, Make will automatically post a Mattermost message.","url":"6087-post-new-github-issues-to-mattermost","usedApps":["github","mattermost"],"usage":1}

@@ -1,0 +1,1 @@
+{"id":7509,"name":"Create Asana tasks from Yeeflow list items","description":"Every time there is a new item created in a specified Yeeflow list, Make will automatically create a new Asana task.","url":"7509-create-asana-tasks-from-yeeflow-list-items","usedApps":["yeeflow","asana"],"usage":2}

@@ -1,0 +1,1 @@
+{"id":4124,"name":"Send iOS push notifications for new KanbanFlow tasks","description":"Every time a new task is created in KanbanFlow, Make will automatically send a Push notification to the Apple iOS iPhone of your choice.","url":"4124-send-ios-push-notifications-for-new-kanbanflow-tasks","usedApps":["kanbanflow","ios"],"usage":4}

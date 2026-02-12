@@ -1,0 +1,1 @@
+{"id":5465,"name":"Add Mailchimp subscribers from new Survey Anyplace responses","description":"Every time you receive a new response in Survey Anyplace, Make will automatically add the person info to your Mailchimp contact list.","url":"5465-add-mailchimp-subscribers-from-new-survey-anyplace-responses","usedApps":["survey-anyplace","mailchimp"],"usage":2}

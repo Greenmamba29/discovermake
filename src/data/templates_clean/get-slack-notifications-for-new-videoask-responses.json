@@ -1,0 +1,1 @@
+{"id":8940,"name":"Get Slack notifications for new VideoAsk responses","description":"Every time a new response is added to the form in VideoAsk, Make will automatically send a notification message to a specified channel/chat in Slack.","url":"8940-get-slack-notifications-for-new-videoask-responses","usedApps":["videoask","slack"],"usage":2}

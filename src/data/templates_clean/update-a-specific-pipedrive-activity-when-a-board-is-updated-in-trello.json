@@ -1,0 +1,1 @@
+{"id":1194,"name":"Update a specific Pipedrive activity when a board is updated in Trello","description":"Every time a board is updated in Trello, Make will automatically update a specified activity in Pipedrive.","url":"1194-update-a-specific-pipedrive-activity-when-a-board-is-updated-in-trello","usedApps":["trello","pipedrive"],"usage":33}

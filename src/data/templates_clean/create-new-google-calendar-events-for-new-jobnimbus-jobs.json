@@ -1,0 +1,1 @@
+{"id":8544,"name":"Create new Google Calendar events for new JobNimbus jobs","description":"Every time a new job has been created in JobNimbus, Make will automatically create a new event in your Google Calendar.","url":"8544-create-new-google-calendar-events-for-new-jobnimbus-jobs","usedApps":["jobnimbus","google-calendar"],"usage":3}

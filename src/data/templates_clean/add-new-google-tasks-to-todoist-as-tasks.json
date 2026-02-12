@@ -1,0 +1,1 @@
+{"id":3637,"name":"Add new Google tasks to Todoist as tasks","description":"Every time a new task is added to a specified Google Task list, Make will automatically add that task to a selected Todoist project as a new task.","url":"3637-add-new-google-tasks-to-todoist-as-tasks","usedApps":["google-tasks","todoist"],"usage":692}

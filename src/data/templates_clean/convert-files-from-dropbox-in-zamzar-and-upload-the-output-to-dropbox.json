@@ -1,0 +1,1 @@
+{"id":5403,"name":"Convert files from Dropbox in Zamzar and upload the output to Dropbox","description":"Get files meeting specified criteria in Dropbox, convert them to a specified format and upload the converted files back to Dropbox.","url":"5403-convert-files-from-dropbox-in-zamzar-and-upload-the-output-to-dropbox","usedApps":["dropbox","zamzar","builtin"],"usage":4}

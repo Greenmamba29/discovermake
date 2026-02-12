@@ -1,0 +1,1 @@
+{"id":1397,"name":"Send SMS messages via Textbelt for new Teamwork Projects tasks","description":"Every time a new task is added in Teamwork Projects, Make will automatically send a message via Textbelt.","url":"1397-send-sms-messages-via-textbelt-for-new-teamwork-projects-tasks","usedApps":["teamwork","textbelt"],"usage":4}

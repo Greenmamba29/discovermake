@@ -1,0 +1,1 @@
+{"id":5042,"name":"Send email notifications for new accounts in Salesforce","description":"Whenever new accounts are added in Salesforce, Make retrieves the account details and sends notifications to the selected recipient/s.","url":"5042-send-email-notifications-for-new-accounts-in-salesforce","usedApps":["salesforce","google-email"],"usage":42}

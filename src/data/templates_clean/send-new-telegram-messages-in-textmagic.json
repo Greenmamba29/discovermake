@@ -1,0 +1,1 @@
+{"id":6166,"name":"Send new Telegram messages in TextMagic","description":"Every time a new message is received on Telegram, Make will automatically send that message to TextMagic.","url":"6166-send-new-telegram-messages-in-textmagic","usedApps":["telegram","textmagic"],"usage":5}

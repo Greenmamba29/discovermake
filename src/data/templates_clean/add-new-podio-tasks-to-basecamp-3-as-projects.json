@@ -1,0 +1,1 @@
+{"id":1567,"name":"Add new Podio tasks to Basecamp 3 as projects","description":"Every time a new task is created in Podio, Make will automatically create a new project in Basecamp 3.","url":"1567-add-new-podio-tasks-to-basecamp-3-as-projects","usedApps":["basecamp3","podio"],"usage":1}

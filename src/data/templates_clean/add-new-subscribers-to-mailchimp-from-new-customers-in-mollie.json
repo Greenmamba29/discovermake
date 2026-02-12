@@ -1,0 +1,1 @@
+{"id":10395,"name":"Add new subscribers to Mailchimp from new customers in Mollie","description":"Every time a new customer is added to your Mollie account, Make will add it as a subscriber to your Mailchimp mailing list. Creator: mollie@wemakefuture.com.","url":"10340-add-new-customer-to-mailchimp-as-subscriber","usedApps":["mollie","builtin","mailchimp"],"usage":5}

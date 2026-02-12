@@ -1,0 +1,1 @@
+{"id":12685,"name":"Send emails through Sendinblue when a custom webhook is triggered","description":"Trigger personalized email campaigns via Sendinblue whenever a custom webhook event occurs, automating your communication strategy effortlessly.","url":"12685-send-emails-through-sendinblue-when-a-custom-webhook-is-triggered","usedApps":["gateway","sendinblue"],"usage":23}

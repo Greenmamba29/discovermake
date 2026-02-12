@@ -1,0 +1,1 @@
+{"id":5871,"name":"Send a Telegram Bot notification about new Revolut draft payments","description":"Use this template to send a Telegram Bot notification when a new Revolut Business draft payment is created.","url":"5871-send-a-telegram-bot-notification-about-new-revolut-draft-payments","usedApps":["revolut","telegram"],"usage":11}

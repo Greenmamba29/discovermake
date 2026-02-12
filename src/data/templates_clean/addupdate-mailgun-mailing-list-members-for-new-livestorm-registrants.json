@@ -1,0 +1,1 @@
+{"id":8562,"name":"Add/Update Mailgun mailing list members for new Livestorm registrants","description":"Every time a new registrant appears in your Livestorm, Make will automatically add him to your Mailgun mailing list as a member.","url":"8562-add-update-mailgun-mailing-list-members-for-new-livestorm-registrants","usedApps":["livestorm","mailgun"],"usage":1}

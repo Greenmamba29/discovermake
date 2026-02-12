@@ -1,0 +1,1 @@
+{"id":3619,"name":"Create Asana tasks from Zoho Invoices","description":"Every time a new Zoho Invoice is created, Make will automatically create a new Asana task.","url":"3619-create-asana-tasks-from-zoho-invoices","usedApps":["zoho-invoice","asana"],"usage":4}

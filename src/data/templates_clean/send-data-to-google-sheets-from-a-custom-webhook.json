@@ -1,0 +1,1 @@
+{"id":13071,"name":"Send data to Google Sheets from a custom webhook","description":"Automatically send data from a custom webhook to Google Sheets. Capture and log information in two separate rows for organized data management.","url":"13071-send-data-to-google-sheets-from-a-custom-webhook","usedApps":["gateway","google-sheets"],"usage":17}

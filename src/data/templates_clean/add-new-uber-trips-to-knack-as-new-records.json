@@ -1,0 +1,1 @@
+{"id":1045,"name":"Add new Uber trips to Knack as new records","description":"Every time a new ride appears in your Uber account, Make will automatically create a new record in Knack.","url":"1045-add-new-uber-trips-to-knack-as-new-records","usedApps":["uber","knack"],"usage":2}

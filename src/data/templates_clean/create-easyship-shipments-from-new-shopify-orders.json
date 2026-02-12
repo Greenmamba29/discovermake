@@ -1,0 +1,1 @@
+{"id":8807,"name":"Create Easyship shipments from new Shopify orders","description":"Make will watch for new Shopify orders at regular intervals and create shipments in Easyship using information received.","url":"8807-create-easyship-shipments-from-new-shopify-orders","usedApps":["shopify","builtin","easyship"],"usage":15}

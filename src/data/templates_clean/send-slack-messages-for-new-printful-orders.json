@@ -1,0 +1,1 @@
+{"id":8769,"name":"Send Slack messages for new Printful orders","description":"Make will watch for new Printful orders at regular intervals and send Slack messages containing information about the order.","url":"8769-send-slack-messages-for-new-printful-orders","usedApps":["printful","builtin","util","slack"],"usage":3}

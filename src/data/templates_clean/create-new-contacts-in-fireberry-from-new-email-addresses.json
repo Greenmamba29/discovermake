@@ -1,0 +1,1 @@
+{"id":12075,"name":"Create new contacts in Fireberry from new email addresses","description":"This template regularly checks for new email addresses in your mailbox and uses the retrieved information to create a new contacts in Fireberry.","url":"10208-create-new-contacts-in-powerlink-from-new-email-addresses","usedApps":["email","powerlink"],"usage":12}

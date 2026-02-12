@@ -1,0 +1,1 @@
+{"id":8074,"name":"Send SMSC messages from new Gmail emails","description":"Every time a new message arrives in a selected Gmail folder, Make will automatically send a message in SMSC.","url":"8074-send-smsc-messages-from-new-gmail-emails","usedApps":["google-email","smsc"],"usage":5}

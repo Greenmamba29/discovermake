@@ -1,0 +1,1 @@
+{"id":5261,"name":"Add a Status Hero status activity when an Asana project is created","description":"Every time a new Asana project is created, Make will automatically add a Status Hero status activity.","url":"5261-add-a-status-hero-status-activity-when-an-asana-project-is-created","usedApps":["asana","status-hero"],"usage":1}

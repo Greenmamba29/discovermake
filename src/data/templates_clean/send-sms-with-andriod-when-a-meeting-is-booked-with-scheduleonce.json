@@ -1,0 +1,1 @@
+{"id":3337,"name":"Send SMS with Andriod when a meeting is booked with ScheduleOnce","description":"Every time an appointment is scheduled with ScheduleOnce, Make will automatically send a text message to Android device.","url":"3337-send-sms-with-andriod-when-a-meeting-is-booked-with-scheduleonce","usedApps":["scheduleonce","android"],"usage":4}

@@ -1,0 +1,1 @@
+{"id":6194,"name":"Add contacts from Salesforce to Smaily","description":"Whenever you add or update contacts in Salesforce, Make will automatically retrieve the contacts and add/update them in Smaily.","url":"6194-add-contacts-from-salesforce-to-smaily","usedApps":["salesforce","smaily"],"usage":5}

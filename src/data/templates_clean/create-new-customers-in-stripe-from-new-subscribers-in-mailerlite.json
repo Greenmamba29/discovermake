@@ -1,0 +1,1 @@
+{"id":10879,"name":"Create new customers in Stripe from new subscribers in MailerLite","description":"Every time a new customer is created in Stripe, a new subscriber will be instantly created in MailerLite.","url":"10879-create-new-customers-in-stripe-from-new-subscribers-in-mailerlite","usedApps":["stripe","mailerlite2"],"usage":147}

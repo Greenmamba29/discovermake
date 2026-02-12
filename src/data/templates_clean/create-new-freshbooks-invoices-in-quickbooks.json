@@ -1,0 +1,1 @@
+{"id":6104,"name":"Create new FreshBooks invoices in QuickBooks","description":"Periodically extract invoices from FreshBooks and replicate them in QuickBooks. Schedule this scenario to run daily shortly after midnight.","url":"6104-create-new-freshbooks-invoices-in-quickbooks","usedApps":["freshbooks","builtin","quickbooks"],"usage":29}

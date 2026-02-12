@@ -1,0 +1,1 @@
+{"id":7576,"name":"Add new Evernote notes as feedback notes to Productboard","description":"Every time a new note is added to a watched notebook in Evernote, Make will automatically create a new note in Productboard.","url":"7576-add-new-evernote-notes-as-feedback-notes-to-productboard","usedApps":["evernote","productboard"],"usage":1}

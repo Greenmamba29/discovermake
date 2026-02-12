@@ -1,0 +1,1 @@
+{"id":4674,"name":"Add new Stripe events to ClickUp as tasks","description":"Every time a new event occurs in Stripe, Make will automatically create a new task in a ClickUp list of your choice.\n\n","url":"4674-add-new-stripe-events-to-clickup-as-tasks","usedApps":["stripe","clickup"],"usage":93}

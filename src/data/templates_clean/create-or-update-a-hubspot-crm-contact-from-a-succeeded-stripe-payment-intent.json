@@ -1,0 +1,1 @@
+{"id":6925,"name":"Create (or update) a HubSpot CRM contact from a succeeded Stripe payment intent","description":"Use this template to automatically create (or update) a HubSpot CRM contact when a Stripe payment intent has succeeded.","url":"6925-create-or-update-a-hubspot-crm-contact-from-a-succeeded-stripe-payment-intent","usedApps":["stripe","hubspotcrm"],"usage":248}

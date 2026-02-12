@@ -1,0 +1,1 @@
+{"id":5696,"name":"Create Trello cards from new JIRA issues","description":"When new issues are created on JIRA, Make will instantly receive the issues and create Trello cards automatically.","url":"5696-create-trello-cards-from-new-jira-issues","usedApps":["jira","trello"],"usage":78}

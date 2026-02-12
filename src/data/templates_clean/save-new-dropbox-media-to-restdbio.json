@@ -1,0 +1,1 @@
+{"id":8532,"name":"Save new Dropbox media to Restdb.io","description":"Every time there is new media files in a specified Dropbox folder, Make will automatically upload it to Restdb.io.","url":"8532-save-new-dropbox-media-to-restdb-io","usedApps":["dropbox","restdb-io"],"usage":2}

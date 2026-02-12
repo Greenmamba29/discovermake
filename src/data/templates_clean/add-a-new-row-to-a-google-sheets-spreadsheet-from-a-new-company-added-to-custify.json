@@ -1,0 +1,1 @@
+{"id":10321,"name":"Add a new row to a Google Sheets spreadsheet from a new company added to Custify","description":"Every time a new company is created in Custify, Make will automatically add a new row to a Google Sheets spreadsheet.","url":"10321-add-a-new-row-to-a-google-sheets-spreadsheet-from-a-new-company-added-to-custify","usedApps":["custify","google-sheets"],"usage":4}

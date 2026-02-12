@@ -1,0 +1,1 @@
+{"id":8458,"name":"Get Slack notifications for new call logs in NetHunt","description":"Every time a new call log is created in NetHunt, Make will automatically send a notification message to a specified channel/chat in Slack.","url":"8458-get-slack-notifications-for-new-call-logs-in-nethunt","usedApps":["nethunt","slack"],"usage":1}

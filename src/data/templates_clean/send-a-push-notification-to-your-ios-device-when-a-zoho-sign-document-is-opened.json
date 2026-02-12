@@ -1,0 +1,1 @@
+{"id":3303,"name":"Send a push notification to your iOS device when a Zoho Sign document is opened.","description":"Every time a Zoho Sign document is viewed, Make will automatically send a push notification to your iOS Apple device.","url":"3303-send-a-push-notification-to-your-ios-device-when-a-zoho-sign-document-is-opened","usedApps":["zoho-sign","ios"],"usage":5}

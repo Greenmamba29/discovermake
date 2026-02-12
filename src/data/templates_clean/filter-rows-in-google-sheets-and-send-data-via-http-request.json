@@ -1,0 +1,1 @@
+{"id":13244,"name":"Filter rows in Google Sheets and send data via HTTP request","description":"Automatically filter rows in Google Sheets, convert data to JSON, and send it via HTTP request for streamlined data processing and integration.","url":"13244-filter-rows-in-google-sheets-and-send-data-via-http-request","usedApps":["google-sheets","json","http"],"usage":16}

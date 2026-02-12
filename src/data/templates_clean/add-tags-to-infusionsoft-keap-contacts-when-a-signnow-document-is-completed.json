@@ -1,0 +1,1 @@
+{"id":6514,"name":"Add tags to Infusionsoft (Keap) contacts when a signNow document is completed","description":"Every time a signNow document is completed, Make will automatically add a tag to Infusionsoft (Keap) contact.","url":"6514-add-tags-to-infusionsoft-keap-contacts-when-a-signnow-document-is-completed","usedApps":["signnow","builtin","infusionsoft"],"usage":4}

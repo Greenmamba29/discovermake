@@ -1,0 +1,1 @@
+{"id":3525,"name":"Record all SendFox campaigns in Airtable","description":"When you create or update a SendFox campaign, all the details will be recorded in Airtable. [Here](https://airtable.com/shrTrcEMyeTP1uAC8) is the table used in this scenario.","url":"3525-record-all-sendfox-campaigns-in-airtable","usedApps":["sendfox","airtable"],"usage":5}

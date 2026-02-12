@@ -1,0 +1,1 @@
+{"id":5978,"name":"Send a Slack message when a HubSpot CRM contact is added to a list","description":"Use this template to automatically send a Slack message to a channel or a user when a HubSpot CRM contact is added to a specified list.","url":"5978-send-a-slack-message-when-a-hubspot-crm-contact-is-added-to-a-list","usedApps":["hubspotcrm","slack"],"usage":14}

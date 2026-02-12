@@ -1,0 +1,1 @@
+{"id":10423,"name":"Create Kommo notes for incoming Yodel.io calls","description":"Every time you receive a call from a specific phone number via Yodel.io, Make will automatically create a note in Kommo.","url":"2599-create-amocrm-notes-for-incoming-yodel-io-calls","usedApps":["yodel","amo-crm"],"usage":6}

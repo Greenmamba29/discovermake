@@ -1,0 +1,1 @@
+{"id":2514,"name":"Send Telegram messages for new rows in a Coda table","description":"Every time a new row is added in your Coda table, Make will automatically send a message in Telegram.","url":"2514-send-telegram-messages-for-new-rows-in-a-coda-table","usedApps":["coda","telegram"],"usage":46}

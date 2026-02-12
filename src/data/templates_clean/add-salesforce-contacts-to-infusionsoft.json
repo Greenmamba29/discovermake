@@ -1,0 +1,1 @@
+{"id":1869,"name":"Add SalesForce contacts to Infusionsoft","description":"Every time a new contact is created in SalesForce, Make will automatically create a new contact in Infusionsoft.","url":"1869-add-salesforce-contacts-to-infusionsoft","usedApps":["infusionsoft","salesforce"],"usage":2}

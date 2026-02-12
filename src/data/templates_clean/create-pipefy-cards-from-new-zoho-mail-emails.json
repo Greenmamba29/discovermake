@@ -1,0 +1,1 @@
+{"id":2698,"name":"Create Pipefy cards from new Zoho Mail emails","description":"Every time you receive a new email in a Zoho Mail folder, Make will automatically create a new card in Pipefy.","url":"2698-create-pipefy-cards-from-new-zoho-mail-emails","usedApps":["zoho-mail","pipefy"],"usage":1}

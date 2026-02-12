@@ -1,0 +1,1 @@
+{"id":13101,"name":"Send automated replies on Telegram for new data submissions via HTTP","description":"Automatically send Telegram replies for new data submissions via HTTP. Triggered by Telegram updates, data is sent and replied instantly.","url":"13101-send-automated-replies-on-telegram-for-new-data-submissions-via-http","usedApps":["telegram","http"],"usage":46}

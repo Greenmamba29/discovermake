@@ -1,0 +1,1 @@
+{"id":2726,"name":"Send ClickSend SMS messages for WooCommerce orders","description":"Every time a new order is created in WooCommerce, Make will automatically send an SMS via ClickSend.","url":"2726-send-clicksend-sms-messages-for-woocommerce-orders","usedApps":["woocommerce","clicksend"],"usage":60}

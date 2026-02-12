@@ -1,0 +1,1 @@
+{"id":8533,"name":"Save new Google Drive media to Restdb.io","description":"Every time there is new media files in a specified Google Drive folder, Make will automatically upload it to Restdb.io.","url":"8533-save-new-google-drive-media-to-restdb-io","usedApps":["google-drive","restdb-io"],"usage":4}

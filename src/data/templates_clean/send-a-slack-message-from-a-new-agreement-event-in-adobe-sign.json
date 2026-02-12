@@ -1,0 +1,1 @@
+{"id":10225,"name":"Send a slack message from a new agreement event in Adobe Sign","description":"Every time a new event is happened with agreement in Adobe Sign, a message will be instantly sent to Slack.","url":"10225-send-a-slack-message-from-a-new-agreement-event-in-adobe-sign","usedApps":["adobe-sign","slack"],"usage":16}

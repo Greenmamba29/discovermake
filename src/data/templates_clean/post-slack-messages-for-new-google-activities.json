@@ -1,0 +1,1 @@
+{"id":97,"name":"Post Slack messages for new Google+ activities","description":"Every time a new activity appears on a selected Google+ profile, Make will automatically send a message in Slack.","url":"97-post-slack-messages-for-new-google-activities","usedApps":["google-plus","slack"],"usage":13}

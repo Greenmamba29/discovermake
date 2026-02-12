@@ -1,0 +1,1 @@
+{"id":8135,"name":"Add new Stripe customers to Clover POS","description":"Every time there is a new Stripe customer, Make will automatically create a new customer in Clover POS.","url":"8135-add-new-stripe-customers-to-clover-pos","usedApps":["stripe","clover-pos","builtin"],"usage":17}

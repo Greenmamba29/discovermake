@@ -1,0 +1,1 @@
+{"id":7686,"name":"Create Trello cards from MantisBT issues","description":"Make will watch new issues in your MantisBT at regular intervals and create cards in Trello using the information from MantisBT.","url":"7686-create-trello-cards-from-mantisbt-issues","usedApps":["mantisbt","trello"],"usage":2}

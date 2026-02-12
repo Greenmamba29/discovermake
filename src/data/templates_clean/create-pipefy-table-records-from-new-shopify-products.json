@@ -1,0 +1,1 @@
+{"id":2651,"name":"Create Pipefy table records from new Shopify products","description":"Every time a new product is added in Shopify, Make will automatically create a new record in your Pipefy table.","url":"2651-create-pipefy-table-records-from-new-shopify-products","usedApps":["shopify","pipefy"],"usage":3}

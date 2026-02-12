@@ -1,0 +1,1 @@
+{"id":5663,"name":"Create a contractor in Finolog for every new WooCommerce customer","description":"Every time a new WooCommerce customer is created, Make will automatically create a contractor in Finolog.","url":"5663-create-a-contractor-in-finolog-for-every-new-woocommerce-customer","usedApps":["woocommerce","finolog"],"usage":3}

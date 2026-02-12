@@ -1,0 +1,1 @@
+{"id":313,"name":"Send Twilio SMS messages for new Wufoo forms entries","description":"Every time someone fills out a selected Wufoo form, Make will automatically send an SMS message via Twilio.","url":"313-send-twilio-sms-messages-for-new-wufoo-forms-entries","usedApps":["wufoo","twilio"],"usage":3}

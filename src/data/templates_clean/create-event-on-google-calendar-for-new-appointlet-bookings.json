@@ -1,0 +1,1 @@
+{"id":5569,"name":"Create event on Google Calendar for new Appointlet bookings","description":"Every time a new Appointlet booking is created, Make will automatically create an event on Google Calendar.","url":"5569-create-event-on-google-calendar-for-new-appointlet-bookings","usedApps":["appointlet","google-calendar"],"usage":66}

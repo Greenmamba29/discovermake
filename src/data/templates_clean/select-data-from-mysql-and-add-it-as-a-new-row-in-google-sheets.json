@@ -1,0 +1,1 @@
+{"id":12916,"name":"Select data from MySQL and add it as a new row in Google Sheets","description":"Automatically transfer selected data from MySQL to Google Sheets as a new row, streamlining data management and enhancing accessibility across platforms.","url":"12916-select-data-from-mysql-and-add-it-as-a-new-row-in-google-sheets","usedApps":["mysql","google-sheets"],"usage":232}

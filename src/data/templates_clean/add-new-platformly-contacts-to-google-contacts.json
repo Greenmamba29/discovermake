@@ -1,0 +1,1 @@
+{"id":6337,"name":"Add new Platformly contacts to Google Contacts","description":"Every time a new contact is added to Platformly, Make will automatically add it to Google contacts.","url":"6337-add-new-platformly-contacts-to-google-contacts","usedApps":["platformly","google-contacts"],"usage":0}

@@ -1,0 +1,1 @@
+{"id":7401,"name":"Save new Telegram files to lexoffice","description":"Every time a new file is posted to your Telegram channel, Make will automatically save that file to lexoffice. Only png, jpg and pdf files can be saved.","url":"7401-save-new-telegram-files-to-lexoffice","usedApps":["telegram","lexoffice"],"usage":12}

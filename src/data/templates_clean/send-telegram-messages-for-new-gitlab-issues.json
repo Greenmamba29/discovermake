@@ -1,0 +1,1 @@
+{"id":2159,"name":"Send Telegram messages for new GitLab issues","description":"Every time a new issue is created in GitLab, Make will automatically send a message in a specified Telegram chat.","url":"2159-send-telegram-messages-for-new-gitlab-issues","usedApps":["gitlab","telegram"],"usage":133}

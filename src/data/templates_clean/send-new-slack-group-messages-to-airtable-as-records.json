@@ -1,0 +1,1 @@
+{"id":12967,"name":"Send new Slack group messages to Airtable as records","description":"Automatically log new Slack group messages into Airtable as records, ensuring all team communications are systematically archived and easily accessible for future reference.","url":"12967-send-new-slack-group-messages-to-airtable-as-records","usedApps":["slack","airtable"],"usage":6}

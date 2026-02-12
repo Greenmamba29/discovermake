@@ -1,0 +1,1 @@
+{"id":4098,"name":"Send Apple push notifications from Netlify site deploys","description":"Every time a new deploy event occurs on Netlify, Make will automatically send a push notification to an Apple device.","url":"4098-send-apple-push-notifications-from-netlify-site-deploys","usedApps":["netlify","ios"],"usage":6}

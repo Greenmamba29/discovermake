@@ -1,0 +1,1 @@
+{"id":5540,"name":"Add a meeting registrant in Zoom from a new Calendly event","description":"Every time a new Calendly event is scheduled, Make will automatically add a meeting registrant in Zoom.\n\nYou need to have a paid Zoom account to create this integration.","url":"5540-add-a-meeting-registrant-in-zoom-from-a-new-calendly-event","usedApps":["calendly","zoom"],"usage":16}

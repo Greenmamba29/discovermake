@@ -1,0 +1,1 @@
+{"id":1529,"name":"Add new Freshdesk tickets to Toodledo as tasks","description":"Every time a new ticket is created in Freshdesk, Make will automatically create a new task in Toodledo.","url":"1529-add-new-freshdesk-tickets-to-toodledo-as-tasks","usedApps":["freshdesk","toodledo"],"usage":22}

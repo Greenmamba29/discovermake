@@ -1,0 +1,1 @@
+{"id":2759,"name":"Get Google Chrome notifications for new Help Scout conversations","description":"Every time a new conversation is created in Help Scout, Make will automatically send a notification via Google Chrome.","url":"2759-get-google-chrome-notifications-for-new-help-scout-conversations","usedApps":["helpscout","chrome"],"usage":5}

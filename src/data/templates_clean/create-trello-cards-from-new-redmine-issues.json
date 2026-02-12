@@ -1,0 +1,1 @@
+{"id":6933,"name":"Create Trello cards from new Redmine issues","description":"Every time a new issue is created in Redmine, Make will automatically create a new card in Trello.","url":"6933-create-trello-cards-from-new-redmine-issues","usedApps":["redmine","trello"],"usage":10}

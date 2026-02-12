@@ -1,0 +1,1 @@
+{"id":3703,"name":"Execute commands on a remote device via SSH for new G Suite users","description":"Every time a user is added to a specific G Suite domain, Make will automatically execute a command on a remote device via SSH connection.","url":"3703-execute-commands-on-a-remote-device-via-ssh-for-new-g-suite-users","usedApps":["google-g-suite","ssh"],"usage":40}

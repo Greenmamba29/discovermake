@@ -1,0 +1,1 @@
+{"id":7973,"name":"Create Amazon SES contacts for new Tally responses validated via Clearout","description":"Make will watch your Tally responses  validated via Clearout at regular intervals and create Amazon SES contacts.","url":"7973-create-amazon-ses-contacts-for-new-tally-responses-validated-via-clearout","usedApps":["tally","clearout","amazon-ses"],"usage":2}

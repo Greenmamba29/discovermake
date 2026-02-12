@@ -1,0 +1,1 @@
+{"id":7367,"name":"Create SleekFlow contacts from new Mailchimp subscribers","description":"Every time a new subscriber added to your specified Mailchimp mailing list, Make will automatically create a new contact in SleekFlow.","url":"7367-create-sleekflow-contacts-from-new-mailchimp-subscribers","usedApps":["mailchimp","sleekflow"],"usage":0}

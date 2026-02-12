@@ -1,0 +1,1 @@
+{"id":3719,"name":"Add records to Data Store from Front conversations","description":"Every time a new conversation is triggered on Front, Make will automatically add a new record to Data Store.","url":"3719-add-records-to-data-store-from-front-conversations","usedApps":["front","datastore"],"usage":11}

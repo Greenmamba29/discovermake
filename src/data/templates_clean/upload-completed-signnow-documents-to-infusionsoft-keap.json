@@ -1,0 +1,1 @@
+{"id":6516,"name":"Upload completed signNow documents to Infusionsoft (Keap)","description":"Every time a signNow document is completed, Make will automatically upload it to Infusionsoft (Keap) and associate it with a contact.","url":"6516-upload-completed-signnow-documents-to-infusionsoft-keap","usedApps":["signnow","builtin","infusionsoft"],"usage":5}

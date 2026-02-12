@@ -1,0 +1,1 @@
+{"id":2656,"name":"Send Google Chrome notifications for overdue Pipefy cards","description":"Every time a card gets overdue in Pipefy, Make will automatically send a notification via Google Chrome.","url":"2656-send-google-chrome-notifications-for-overdue-pipefy-cards","usedApps":["pipefy","chrome"],"usage":4}

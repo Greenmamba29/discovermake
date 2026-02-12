@@ -1,0 +1,1 @@
+{"id":702,"name":"Create GitHub issues from new SuiteCRM 7 campaigns","description":"Every time a new campaign is created in SuiteCRM 7, Make will automatically create a new issue in GitHub.","url":"702-create-github-issues-from-new-suitecrm-7-campaigns","usedApps":["github","suitecrm7"],"usage":3}

@@ -1,0 +1,1 @@
+{"id":13246,"name":"Watch and update Notion database items automatically","description":"Automatically monitor Notion database items and update them with the latest information. This template uses Notion's watch, get, and update modules.","url":"13246-watch-and-update-notion-database-items-automatically","usedApps":["notion","notion"],"usage":188}

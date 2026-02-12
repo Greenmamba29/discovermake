@@ -1,0 +1,1 @@
+{"id":4542,"name":"Send Go4Clients SMS messages for new Knack records","description":"Every time a new record is created in Knack automatically send an SMS message via Go4Clients","url":"4542-send-go4clients-sms-messages-for-new-knack-records","usedApps":["knack","go4clients"],"usage":3}

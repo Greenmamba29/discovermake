@@ -1,0 +1,1 @@
+{"id":8630,"name":"Add new Intercom leads to Call Assist","description":"Every time there is a new lead created in Intercom, Make will automatically add this lead to Call Assist.","url":"8630-add-new-intercom-leads-to-call-assist","usedApps":["intercom","call-assist"],"usage":9}

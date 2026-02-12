@@ -1,0 +1,1 @@
+{"id":3326,"name":"Send a Skype message when a new Email is received on Gmail","description":"Every time a new email is received on Gmail, Make will automatically send a new message in Skype.","url":"3326-send-a-skype-message-when-a-new-email-is-received-on-gmail","usedApps":["google-email","skype"],"usage":38}

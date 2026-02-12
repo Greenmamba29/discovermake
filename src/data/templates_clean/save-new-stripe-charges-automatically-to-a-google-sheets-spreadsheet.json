@@ -1,0 +1,1 @@
+{"id":10546,"name":"Save new Stripe charges automatically to a Google Sheets spreadsheet","description":"Every time a new charge is created in Stripe, Make will automatically add that charge to a Google Sheet spreadsheet.","url":"3209-save-automatically-new-stripe-charges-to-a-google-sheets-spreadsheet","usedApps":["stripe","google-sheets"],"usage":1879}

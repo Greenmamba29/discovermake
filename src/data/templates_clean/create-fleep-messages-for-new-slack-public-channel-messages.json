@@ -1,0 +1,1 @@
+{"id":6596,"name":"Create Fleep messages for new Slack public channel messages","description":"Every time a message is created in a designated public channel in Slack, Make will send it to your Fleep.","url":"6596-create-fleep-messages-for-new-slack-public-channel-messages","usedApps":["slack","fleep"],"usage":0}

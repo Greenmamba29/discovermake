@@ -1,0 +1,1 @@
+{"id":10247,"name":"Store Newly Created Invoices in OneDrive Automatically","description":"Whenever a new invoice is created in Apaleo, this automation will pick up the PDF file and store it in a OneDrive folder of your choice.","url":"10195-automation-store-newly-created-invoices-in-onedrive-automatically","usedApps":["apaleo","onedrive"],"usage":30}

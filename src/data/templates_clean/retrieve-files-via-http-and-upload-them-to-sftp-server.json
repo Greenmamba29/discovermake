@@ -1,0 +1,1 @@
+{"id":12741,"name":"Retrieve files via HTTP and upload them to SFTP server","description":"Automatically retrieve files via HTTP and upload them to an SFTP server. Streamline file transfers between HTTP and SFTP with this Make template.","url":"12741-retrieve-files-via-http-and-upload-them-to-sftp-server","usedApps":["http","sftp"],"usage":20}

@@ -1,0 +1,1 @@
+{"id":3849,"name":"Send personalized SMS for new Shopify orders with D7SMS","description":"Every time a new order is created in Shopify, Make will automatically send a personalized sms to the customer via D7SMS.","url":"3849-send-personalized-sms-for-new-shopify-orders-with-d7sms","usedApps":["shopify","d7-sms"],"usage":2}

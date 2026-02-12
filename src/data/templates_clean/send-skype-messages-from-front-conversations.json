@@ -1,0 +1,1 @@
+{"id":3770,"name":"Send Skype messages from Front conversations","description":"Every time a new conversation is created on Front, Make will automatically send a new Skype message.","url":"3770-send-skype-messages-from-front-conversations","usedApps":["front","skype"],"usage":1}

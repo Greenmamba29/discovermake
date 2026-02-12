@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Disputes &amp; Policy Console</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13a4ec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101c22",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white transition-colors duration-200">
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-background-light dark:bg-background-dark group/design-root overflow-x-hidden">
+<!-- Header Section -->
+<div class="flex items-center bg-background-light dark:bg-background-dark p-4 pb-2 justify-between sticky top-0 z-50 border-b border-slate-200 dark:border-slate-800">
+<div class="text-slate-900 dark:text-white flex size-12 shrink-0 items-center justify-start cursor-pointer">
+<span class="material-symbols-outlined">arrow_back</span>
+</div>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center">Disputes &amp; Policy</h2>
+<div class="flex w-12 items-center justify-end">
+<button class="flex size-10 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-transparent text-slate-900 dark:text-white p-0 hover:bg-slate-100 dark:hover:bg-slate-800">
+<span class="material-symbols-outlined">search</span>
+</button>
+</div>
+</div>
+<!-- Navigation Tabs -->
+<div class="pb-0 bg-background-light dark:bg-background-dark sticky top-[64px] z-40">
+<div class="flex border-b border-slate-200 dark:border-slate-800 px-4 gap-8 overflow-x-auto no-scrollbar">
+<a class="flex flex-col items-center justify-center border-b-[3px] border-primary text-primary pb-[13px] pt-4 shrink-0" href="#">
+<p class="text-sm font-bold leading-normal tracking-[0.015em]">Priority Queue</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[3px] border-transparent text-slate-500 dark:text-[#92b7c9] pb-[13px] pt-4 shrink-0" href="#">
+<p class="text-sm font-bold leading-normal tracking-[0.015em]">Mediation</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[3px] border-transparent text-slate-500 dark:text-[#92b7c9] pb-[13px] pt-4 shrink-0" href="#">
+<p class="text-sm font-bold leading-normal tracking-[0.015em]">Policy Engine</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[3px] border-transparent text-slate-500 dark:text-[#92b7c9] pb-[13px] pt-4 shrink-0" href="#">
+<p class="text-sm font-bold leading-normal tracking-[0.015em]">Audit Log</p>
+</a>
+</div>
+</div>
+<!-- Priority Dispute Queue Section -->
+<section class="p-4">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">Priority Dispute Queue</h3>
+<span class="bg-primary/10 text-primary text-xs font-bold px-2.5 py-1 rounded-full">4 Active</span>
+</div>
+<div class="space-y-4">
+<!-- Case Item 1: Critical -->
+<div class="flex flex-col gap-4 rounded-xl bg-white dark:bg-[#192b33] p-4 shadow-sm border border-slate-200 dark:border-slate-800">
+<div class="flex items-start justify-between">
+<div class="flex flex-col gap-1">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400 w-fit">
+                                Critical • IP Theft
+                            </span>
+<p class="text-slate-900 dark:text-white text-base font-bold leading-tight mt-1">Project X - Source Leak</p>
+<p class="text-slate-500 dark:text-[#92b7c9] text-xs font-normal">Case #8829 • Opened 2h ago</p>
+</div>
+<div class="w-16 h-16 bg-center bg-no-repeat bg-cover rounded-lg" data-alt="Abstract digital source code visual representation" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA_skeGeqKx0TUaSJDUjz76qJo1osVw5jRY4uW0GOs8fudtOe7AuTVH0Exk-JvC252J4nrInKVgW_fh9ZvHgH_skIlxr_3aLoFR5HHEcY_U0LRgx4N8EyRi3fnilO6G_MSc3wDKJWTXx-5M9t0FS5ruOnT7MIWLkfFknl8Hfn9fSg5kToMXf8G7z4O_D69ChYeRCVa8gsNPDiNObcq67bXcdr7_rcQGrivZ1DMJV3vPLAiVi6SAUpzfq54X7SQBgbqjoi-8BI_qz1s");'></div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 flex cursor-pointer items-center justify-center overflow-hidden rounded-lg h-9 bg-primary text-white gap-2 text-sm font-bold px-4">
+<span class="material-symbols-outlined text-[18px]">gavel</span>
+<span class="truncate">Review Case</span>
+</button>
+</div>
+</div>
+<!-- Case Item 2: High -->
+<div class="flex flex-col gap-4 rounded-xl bg-white dark:bg-[#192b33] p-4 shadow-sm border border-slate-200 dark:border-slate-800">
+<div class="flex items-start justify-between">
+<div class="flex flex-col gap-1">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400 w-fit">
+                                High • Refund
+                            </span>
+<p class="text-slate-900 dark:text-white text-base font-bold leading-tight mt-1">Logic Pro Template Bundle</p>
+<p class="text-slate-500 dark:text-[#92b7c9] text-xs font-normal">Case #8827 • Opened 5h ago</p>
+</div>
+<div class="w-16 h-16 bg-center bg-no-repeat bg-cover rounded-lg" data-alt="Thumbnail of a digital music production template" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBRxe9UJw-o0y27QUo1McTbX5CEPmfb54v8PWnX1pDAgD-CnooMlJv2bCQVs-xy-Snb5Tz4AI-b1AXnPqsV4loVHnsv-EVSzNJkkDYvN_C2SqzIbMDMXjS7FQuhUwoFcLecsLogArZHOLU105zLEYxjWw9d40SClVwBKs6XMy96lJIVB7sP8wrdxNE6XAXEXYDHpw2_blnPc8Py5pFxBVw2pGJPtwqZqC0VO8H80uR7HYog2HxwXs98Spm1OT0BbvILfo3yjyK7w90");'></div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 flex cursor-pointer items-center justify-center overflow-hidden rounded-lg h-9 bg-slate-100 dark:bg-[#233c48] text-slate-900 dark:text-white gap-2 text-sm font-bold px-4 hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined text-[18px]">history</span>
+<span class="truncate">Mediation Timeline</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Active Mediation Section -->
+<section class="p-4 bg-slate-50 dark:bg-[#15232a] border-y border-slate-200 dark:border-slate-800">
+<h3 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] mb-4">Mediation Timeline</h3>
+<div class="relative pl-8 space-y-6 before:absolute before:left-[15px] before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-200 dark:before:bg-slate-700">
+<!-- Timeline Item 1 -->
+<div class="relative">
+<span class="absolute -left-[23px] top-0 flex size-4 items-center justify-center rounded-full bg-primary ring-4 ring-slate-50 dark:ring-[#15232a]"></span>
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-center">
+<span class="text-xs font-bold text-primary uppercase">Creator Response</span>
+<span class="text-[10px] text-slate-400">10:45 AM</span>
+</div>
+<div class="bg-white dark:bg-[#1c2e36] p-3 rounded-lg border border-slate-200 dark:border-slate-700">
+<p class="text-sm text-slate-700 dark:text-slate-300">"The user downloaded the files 3 times before requesting a refund. This violates the digital goods policy."</p>
+</div>
+</div>
+</div>
+<!-- Timeline Item 2 -->
+<div class="relative">
+<span class="absolute -left-[23px] top-0 flex size-4 items-center justify-center rounded-full bg-slate-400 ring-4 ring-slate-50 dark:ring-[#15232a]"></span>
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-center">
+<span class="text-xs font-bold text-slate-500 uppercase">System Log</span>
+<span class="text-[10px] text-slate-400">11:02 AM</span>
+</div>
+<div class="bg-slate-100/50 dark:bg-[#192b33]/50 p-2 rounded-lg italic">
+<p class="text-xs text-slate-500 dark:text-slate-400">Log: Workflow #LK-99 automated policy check initiated.</p>
+</div>
+</div>
+</div>
+<!-- Timeline Item 3 -->
+<div class="relative">
+<span class="absolute -left-[23px] top-0 flex size-4 items-center justify-center rounded-full bg-amber-500 ring-4 ring-slate-50 dark:ring-[#15232a]"></span>
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-center">
+<span class="text-xs font-bold text-amber-500 uppercase">Admin Action Pending</span>
+<span class="text-[10px] text-slate-400">12:30 PM</span>
+</div>
+<div class="bg-amber-50 dark:bg-amber-900/10 p-3 rounded-lg border border-amber-200/50 dark:border-amber-900/30">
+<p class="text-sm text-amber-800 dark:text-amber-200">Waiting for final ruling on Case #8827.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Policy Engine & Rulings -->
+<section class="p-4">
+<h3 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] mb-4">Policy Engine: Final Ruling</h3>
+<div class="grid grid-cols-2 gap-3 mb-6">
+<button class="flex flex-col items-center justify-center p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#192b33] hover:border-primary transition-all">
+<span class="material-symbols-outlined text-primary mb-2">payments</span>
+<span class="text-xs font-bold">Partial Refund</span>
+</button>
+<button class="flex flex-col items-center justify-center p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#192b33] hover:border-red-500 transition-all">
+<span class="material-symbols-outlined text-red-500 mb-2">block</span>
+<span class="text-xs font-bold">Full Ban</span>
+</button>
+<button class="flex flex-col items-center justify-center p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#192b33] hover:border-amber-500 transition-all">
+<span class="material-symbols-outlined text-amber-500 mb-2">warning</span>
+<span class="text-xs font-bold">Issue Warning</span>
+</button>
+<button class="flex flex-col items-center justify-center p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#192b33] hover:border-primary transition-all">
+<span class="material-symbols-outlined text-primary mb-2">verified_user</span>
+<span class="text-xs font-bold">Dismiss Dispute</span>
+</button>
+</div>
+<div class="p-4 bg-primary/10 rounded-xl border border-primary/20">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary text-sm">info</span>
+<p class="text-xs font-bold text-primary uppercase">Content Policy Reference</p>
+</div>
+<p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                    Rule 4.2: Digital products downloaded &gt;2 times are ineligible for full refunds unless source files are proven corrupt.
+                </p>
+</div>
+</section>
+<!-- Content Policy Management & Audit Log -->
+<section class="p-4 mb-10">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">Global Policy Admin</h3>
+<button class="text-primary text-sm font-bold">Edit All</button>
+</div>
+<div class="bg-white dark:bg-[#192b33] rounded-xl border border-slate-200 dark:border-slate-800 divide-y divide-slate-100 dark:divide-slate-800">
+<div class="p-4 flex items-center justify-between">
+<div>
+<p class="text-sm font-semibold">Terms of Service v2.4</p>
+<p class="text-xs text-slate-500">Updated 4d ago by Admin_Sarah</p>
+</div>
+<span class="material-symbols-outlined text-slate-400">chevron_right</span>
+</div>
+<div class="p-4">
+<p class="text-xs font-bold text-slate-400 uppercase mb-3">Recent Audit Log</p>
+<div class="space-y-3">
+<div class="flex gap-3">
+<div class="size-6 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[10px] font-bold">JD</div>
+<div class="flex-1">
+<p class="text-xs text-slate-900 dark:text-white"><span class="font-bold">John Doe</span> updated Refund Policy (4.2)</p>
+<p class="text-[10px] text-slate-500">Yesterday, 4:20 PM</p>
+</div>
+</div>
+<div class="flex gap-3">
+<div class="size-6 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[10px] font-bold">SM</div>
+<div class="flex-1">
+<p class="text-xs text-slate-900 dark:text-white"><span class="font-bold">System</span> auto-archived Case #8820</p>
+<p class="text-[10px] text-slate-500">2 days ago</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- iOS Style Bottom Safe Area -->
+<div class="h-8 bg-background-light dark:bg-background-dark"></div>
+</div>
+</body></html>

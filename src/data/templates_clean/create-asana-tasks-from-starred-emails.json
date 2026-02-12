@@ -1,0 +1,1 @@
+{"id":5694,"name":"Create Asana tasks from starred emails","description":"If you have starred emails in your Gmail inbox, Make will retrieve the emails and create tasks on Asana with the information.","url":"5694-create-asana-tasks-from-starred-emails","usedApps":["google-email","asana"],"usage":35}

@@ -1,0 +1,1 @@
+{"id":8448,"name":"Create BigQuery tables from new Google Form responses","description":"Every time a new response is entered on your Google Form, Make will automatically create a table with the related data in BigQuery.","url":"8448-create-bigquery-tables-from-new-google-form-responses","usedApps":["google-forms","google-bigquery"],"usage":24}

@@ -1,0 +1,1 @@
+{"id":7378,"name":"Post Discord messages for new successful ThriveCart orders","description":"Every time an order is successfully completed in your ThriveCart, Make will post a Discord message with some information on it.","url":"7378-post-discord-messages-for-new-successful-thrivecart-orders","usedApps":["thrivecart","discord"],"usage":15}

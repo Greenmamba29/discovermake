@@ -1,0 +1,1 @@
+{"id":4206,"name":"Add new MailChimp subscribers to Salesmate CRM","description":"Every time a new subscriber is added to a selected Mailchimp list, Make will automatically add that subscriber as an Salesmate CRM contact.","url":"4206-add-new-mailchimp-subscribers-to-salesmate-crm","usedApps":["mailchimp","salesmate"],"usage":1}

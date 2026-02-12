@@ -1,0 +1,1 @@
+{"id":4692,"name":"Create Stripe charges from Neto completed orders","description":"Every time an order is completed in Neto, Make will automatically create a charge in Stripe.","url":"4692-create-stripe-charges-from-neto-completed-orders","usedApps":["neto","stripe"],"usage":8}

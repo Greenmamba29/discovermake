@@ -1,0 +1,1 @@
+{"id":2707,"name":"Send Zoho Mail emails for new Jotform entries","description":"Every time someone fills out your Jotform form, Make will automatically send an email in Zoho Mail.","url":"2707-send-zoho-mail-emails-for-new-jotform-entries","usedApps":["jotform","zoho-mail"],"usage":16}

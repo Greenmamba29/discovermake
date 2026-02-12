@@ -1,0 +1,1 @@
+{"id":2800,"name":"Send Telegram messages when Salesflare opportunities reach a certain stage","description":"Every time a Salesflare opportunity reaches a certain stage, Make will automatically send a message in Telegram.","url":"2800-send-telegram-messages-when-salesflare-opportunities-reach-a-certain-stage","usedApps":["salesflare","telegram"],"usage":0}

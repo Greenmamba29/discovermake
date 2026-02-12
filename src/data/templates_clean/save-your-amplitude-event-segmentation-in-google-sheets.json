@@ -1,0 +1,1 @@
+{"id":8917,"name":"Save your Amplitude event segmentation in Google Sheets","description":"Make will watch for your Amplitude event segmentation at regular intervals and send it to a specified Google Sheets spreadsheet.","url":"8917-save-your-amplitude-event-segmentation-in-google-sheets","usedApps":["amplitude","google-sheets"],"usage":14}

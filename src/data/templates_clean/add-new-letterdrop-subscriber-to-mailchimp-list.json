@@ -1,0 +1,1 @@
+{"id":6371,"name":"Add new Letterdrop subscriber to Mailchimp list","description":"Every time a new Letterdrop subscriber is added, Make will automatically add him to the specified Mailchimp list.","url":"6371-add-new-letterdrop-subscriber-to-mailchimp-list","usedApps":["letterdrop","mailchimp"],"usage":1}

@@ -1,0 +1,1 @@
+{"id":5345,"name":"Create BigQuery tables from Excel 365 worksheets","description":"Every time a new worksheet row is added to Excel 365, Make will automatically create a table with the related data. ","url":"5345-create-bigquery-tables-from-excel-365-worksheets","usedApps":["microsoft-excel","google-bigquery"],"usage":59}

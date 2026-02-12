@@ -1,0 +1,1 @@
+{"id":4981,"name":"Create event in Google Calendar for new input from Chatforma","description":"Every time a new user input is received from Chatforma, Make will automatically create an event in Google Calendar.","url":"4981-create-event-in-google-calendar-for-new-input-from-chatforma","usedApps":["chatforma","google-calendar"],"usage":2}

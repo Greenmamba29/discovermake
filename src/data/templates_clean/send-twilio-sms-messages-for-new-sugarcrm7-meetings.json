@@ -1,0 +1,1 @@
+{"id":582,"name":"Send Twilio SMS messages for new SugarCRM7 meetings","description":"Every time a new meeting is created in SugarCRM7, Make will automatically send an SMS via Twilio.","url":"582-send-twilio-sms-messages-for-new-sugarcrm7-meetings","usedApps":["sugarcrm7","twilio"],"usage":1}

@@ -1,0 +1,1 @@
+{"id":1960,"name":"Add new QuickBooks customers to Zoho CRM as contacts","description":"Every time a new customer is created in QuickBooks, Make will automatically create a new contact in Zoho CRM.","url":"1960-add-new-quickbooks-customers-to-zoho-crm-as-contacts","usedApps":["quickbooks","zohocrm"],"usage":25}

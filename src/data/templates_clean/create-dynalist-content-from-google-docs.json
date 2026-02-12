@@ -1,0 +1,1 @@
+{"id":4292,"name":"Create Dynalist content from Google Docs","description":"Every time a new Google Docs document is added, Make will automatically get the content of that document and insert it into a Dynalist document.","url":"4292-create-dynalist-content-from-google-docs","usedApps":["google-docs","dynalist"],"usage":19}

@@ -1,0 +1,1 @@
+{"id":3755,"name":"Create Front messages from Evernote notes","description":"Every time a new note is created on Evernote, Make will send a Front message to the email address in the title of the note.","url":"3755-create-front-messages-from-evernote-notes","usedApps":["evernote","front"],"usage":0}

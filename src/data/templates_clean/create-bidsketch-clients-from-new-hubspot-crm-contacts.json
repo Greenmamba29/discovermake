@@ -1,0 +1,1 @@
+{"id":8236,"name":"Create Bidsketch clients from new HubSpot CRM contacts","description":"Every time a new contact is created in HubSpot CRM, Make will automatically add that contact to Bidsketch as a client.","url":"8236-create-bidsketch-clients-from-new-hubspot-crm-contacts","usedApps":["hubspotcrm","bidsketch"],"usage":2}

@@ -1,0 +1,1 @@
+{"id":3528,"name":"Connect Dux-Soup to Google Contacts","description":"When a webhook from Dux-Soup Turbo is received, a new contact is created in Google Contacts.","url":"3528-connect-dux-soup-to-google-contacts","usedApps":["dux-soup","google-contacts"],"usage":11}

@@ -1,0 +1,1 @@
+{"id":7109,"name":"Create HubSpot CRM contacts from new Delighted survey responses","description":"Every time you there is a new Delighted survey response, Make will automatically create a new HubSpot CRM contact or update an existing one.","url":"7109-create-hubspot-crm-contacts-from-new-delighted-survey-responses","usedApps":["delighted","hubspotcrm"],"usage":0}

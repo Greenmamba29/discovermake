@@ -1,0 +1,1 @@
+{"id":8009,"name":"Send Telegram messages for new Tally responses","description":"Make will watch your Tally responses at regular intervals and send Telegram text messages.","url":"8009-send-telegram-messages-for-new-tally-responses","usedApps":["tally","telegram"],"usage":94}

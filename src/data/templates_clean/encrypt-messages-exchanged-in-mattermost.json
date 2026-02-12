@@ -1,0 +1,1 @@
+{"id":1611,"name":"Encrypt messages exchanged in Mattermost","description":"Every time a new message is received to a specified channel on Mattermost, Make will automatically encrypt that message and post it to another channel of your choice. ","url":"1611-encrypt-messages-exchanged-in-mattermost","usedApps":["mattermost","crypto"],"usage":14}

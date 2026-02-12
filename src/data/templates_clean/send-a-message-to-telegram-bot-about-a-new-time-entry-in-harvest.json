@@ -1,0 +1,1 @@
+{"id":2997,"name":"Send a message to Telegram Bot about a new time entry in Harvest","description":"When a new time entry is created in Harvest, a new message about this event is sent to Telegram Bot.","url":"2997-send-a-message-to-telegram-bot-about-a-new-time-entry-in-harvest","usedApps":["harvest","telegram"],"usage":3}

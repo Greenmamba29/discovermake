@@ -1,0 +1,1 @@
+{"id":8311,"name":"Send new messages in a Slack channel to Relatel group","description":"Every time a new message is posted in Slack, Make will automatically send a text message to Relatel Group.","url":"8311-send-new-messages-in-a-slack-channel-to-relatel-group","usedApps":["slack","relatel"],"usage":1}

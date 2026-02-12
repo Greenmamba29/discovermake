@@ -1,0 +1,1 @@
+{"id":8628,"name":"Create jobs in Detrack from new WooCommerce orders","description":"Make will watch for new orders in WooCommerce at regular intervals and create a job in Detrack.","url":"8628-create-jobs-in-detrack-from-new-woocommerce-orders","usedApps":["woocommerce","builtin","detrack"],"usage":4}

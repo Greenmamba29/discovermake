@@ -1,0 +1,1 @@
+{"id":6168,"name":"Add new CloudTalk contacts to Google Contacts","description":"Every time a new contact is added to CloudTalk, Make will automatically create a new Google contact.","url":"6168-add-new-cloudtalk-contacts-to-google-contacts","usedApps":["cloudtalk","google-contacts"],"usage":1}

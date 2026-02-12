@@ -1,0 +1,1 @@
+{"id":8693,"name":"Create Trello cards for new ClickMeeting conferences","description":"Every time a new conference is created in ClickMeeting, Make will automatically create a new card in Trello.","url":"8693-create-trello-cards-for-new-clickmeeting-conferences","usedApps":["clickmeeting","trello"],"usage":3}

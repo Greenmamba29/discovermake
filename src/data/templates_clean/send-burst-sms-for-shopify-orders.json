@@ -1,0 +1,1 @@
+{"id":4702,"name":"Send Burst SMS for Shopify orders","description":"Every time a new Shopify order is created, Make will automatically send an SMS using Burst SMS.","url":"4702-send-burst-sms-for-shopify-orders","usedApps":["shopify","burst-sms"],"usage":4}

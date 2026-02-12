@@ -1,0 +1,1 @@
+{"id":17818,"name":"Track All Contact Signals Automatically","description":"Contact enrichment flow that automatically enhances HubSpot CRM records with real-time buyer intent signals from Lusha.","url":"17818-hubspot-contact-enrichment-with-signals","usedApps":["hubspotcrm","lusha"],"usage":1}

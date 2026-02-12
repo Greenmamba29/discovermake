@@ -1,0 +1,1 @@
+{"id":3640,"name":"Send Telegram messages for new Google Tasks","description":"Every time a new task is added to a specified Google Tasks List, Make will automatically share it to a selected chat in Telegram.","url":"3640-send-telegram-messages-for-new-google-tasks","usedApps":["google-tasks","telegram"],"usage":133}

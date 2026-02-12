@@ -1,0 +1,1 @@
+{"id":4259,"name":"Create a new conversation in Drift when a checkout is abandoned in Shopify","description":"When a new abandoned checkout is created in Shopify, a new conversation is created in Drift.","url":"4259-create-a-new-conversation-in-drift-when-a-checkout-is-abandoned-in-shopify","usedApps":["shopify","drift"],"usage":2}

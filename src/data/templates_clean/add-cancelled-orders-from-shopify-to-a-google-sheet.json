@@ -1,0 +1,1 @@
+{"id":5814,"name":"Add cancelled orders from Shopify to a Google Sheet","description":"Keep track of your cancelled orders by using this automation to retrieve these orders and add them to a Google Sheet.","url":"5814-add-cancelled-orders-from-shopify-to-a-google-sheet","usedApps":["shopify","google-sheets"],"usage":44}

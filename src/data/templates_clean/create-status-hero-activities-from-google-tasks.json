@@ -1,0 +1,1 @@
+{"id":3830,"name":"Create Status Hero activities from Google Tasks","description":"Every time a new Google Task is submitted, Make will automatically check for a specific phrase in the title of the task and create a status activity for Status Hero members.","url":"3830-create-status-hero-activities-from-google-tasks","usedApps":["google-tasks","status-hero"],"usage":1}

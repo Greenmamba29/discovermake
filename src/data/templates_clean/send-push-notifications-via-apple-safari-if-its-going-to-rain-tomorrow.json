@@ -1,0 +1,1 @@
+{"id":1069,"name":"Send push notifications via Apple Safari if it's going to rain tomorrow","description":"Whenever the OpenWeatherMap forecast predicts rain for the next day, Make will send a push notification via Apple Safari.","url":"1069-send-push-notifications-via-apple-safari-if-it-s-going-to-rain-tomorrow","usedApps":["openweathermap","safari"],"usage":32}

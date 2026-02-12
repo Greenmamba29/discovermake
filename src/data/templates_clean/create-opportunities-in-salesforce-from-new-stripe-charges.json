@@ -1,0 +1,1 @@
+{"id":6780,"name":"Create opportunities in Salesforce from new Stripe charges","description":"This scenario instantly receives new charges from Stripe and creates opportunities in Salesforce automatically.","url":"6780-create-opportunities-in-salesforce-from-new-stripe-charges","usedApps":["stripe","salesforce"],"usage":60}

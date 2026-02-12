@@ -1,0 +1,1 @@
+{"id":5979,"name":"Add new MyCalendarAlerts notification to Google Calendar","description":"Every time a new MyCalendarAlerts event is posted, Make will automatically create an event in Google Calendar.","url":"5979-add-new-mycalendaralerts-notification-to-google-calendar","usedApps":["mycalendaralerts","google-calendar"],"usage":5}

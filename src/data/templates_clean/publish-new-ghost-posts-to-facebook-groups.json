@@ -1,0 +1,1 @@
+{"id":3271,"name":"Publish new Ghost posts to Facebook Groups","description":"Every time a new post is added to your Ghost blog, Make will automatically publish a post on the Facebook Group of your choice.","url":"3271-publish-new-ghost-posts-to-facebook-groups","usedApps":["ghost","facebook-groups"],"usage":19}

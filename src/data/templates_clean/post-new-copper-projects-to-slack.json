@@ -1,0 +1,1 @@
+{"id":1763,"name":"Post new Copper projects to Slack","description":"Every time a new project is created on Copper, Make will automatically send a message in Slack.","url":"1763-post-new-copper-projects-to-slack","usedApps":["prosperworks","slack"],"usage":3}

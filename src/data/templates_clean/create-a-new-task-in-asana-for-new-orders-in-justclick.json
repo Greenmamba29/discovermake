@@ -1,0 +1,1 @@
+{"id":5923,"name":"Create a new task in Asana for new orders in JustClick","description":"When a new order is created in JustClick, Make will automatically add a task to the Asana project of your choice.","url":"5923-create-a-new-task-in-asana-for-new-orders-in-justclick","usedApps":["justclick","asana"],"usage":2}

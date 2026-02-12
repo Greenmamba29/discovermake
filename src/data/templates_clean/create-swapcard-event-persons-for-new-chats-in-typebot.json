@@ -1,0 +1,1 @@
+{"id":7560,"name":"Create Swapcard event persons for new chats in Typebot","description":"Every time a chat ends in your Typebot, Make will create an event person in your Swapcard. Your bot should be of Event Registration type, or have First name, Last name and Email.","url":"7560-create-swapcard-event-persons-for-new-chats-in-typebot","usedApps":["typebot","swapcard"],"usage":2}

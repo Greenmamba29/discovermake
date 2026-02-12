@@ -1,0 +1,1 @@
+{"id":7103,"name":"Create Fleep messages for new tasks in Google Tasks","description":"Every time a task is created or updated in your Google Tasks, Make will send a message to your Fleep.","url":"7103-create-fleep-messages-for-new-tasks-in-google-tasks","usedApps":["google-tasks","fleep"],"usage":1}

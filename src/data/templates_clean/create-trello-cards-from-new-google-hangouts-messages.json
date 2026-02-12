@@ -1,0 +1,1 @@
+{"id":2175,"name":"Create Trello cards from new Google Hangouts messages","description":"Every time you receive a new message in Google Hangouts, Make will automatically add a new card to a Trello board of your choice.","url":"2175-create-trello-cards-from-new-google-hangouts-messages","usedApps":["google-hangouts-chat","trello"],"usage":27}

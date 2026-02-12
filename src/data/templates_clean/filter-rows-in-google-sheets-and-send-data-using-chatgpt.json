@@ -1,0 +1,1 @@
+{"id":13665,"name":"Filter rows in Google Sheets and send data using ChatGPT","description":"Automatically filter Google Sheets rows and send data using ChatGPT. Set variables and send data via HTTP for streamlined processing.","url":"13665-filter-rows-in-google-sheets-and-send-data-using-chatgpt","usedApps":["google-sheets","openai-gpt-3","util","http"],"usage":53}

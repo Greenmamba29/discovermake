@@ -1,0 +1,1 @@
+{"id":8165,"name":"Create Evernote notes from new Clio Manage matters","description":"Every time there is a new matter in Clio Manage, Make will automatically create a new note in Evernote using information received.","url":"8165-create-evernote-notes-from-new-clio-manage-matters","usedApps":["clio-manage","evernote"],"usage":4}

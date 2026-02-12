@@ -1,0 +1,1 @@
+{"id":6120,"name":"Create new quotes in Xero from new FreshBooks estimates","description":"Periodically check for new estimates in FreshBooks and replicate them as quotes in Xero. Schedule this template to run daily shortly after midnight.","url":"6120-create-new-quotes-in-xero-from-new-freshbooks-estimates","usedApps":["freshbooks","builtin","xero"],"usage":17}

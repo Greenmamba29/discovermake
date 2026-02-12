@@ -1,0 +1,1 @@
+{"id":12884,"name":"Watch messages in Line and add new rows to Google Sheets","description":"Automatically log new Line messages into Google Sheets. Keep track of conversations by adding each message as a new row in your spreadsheet.","url":"12884-watch-messages-in-line-and-add-new-rows-to-google-sheets","usedApps":["line","google-sheets"],"usage":399}

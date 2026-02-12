@@ -1,0 +1,1 @@
+{"id":10634,"name":"Send Paperform submissions to a Google Sheets spreadsheet","description":"Any new Paperform submissions will add a new row to a Google Sheets spreadsheet.","url":"10634-send-paperform-submissions-to-a-google-sheets-spreadsheet","usedApps":["paperform","google-sheets"],"usage":233}

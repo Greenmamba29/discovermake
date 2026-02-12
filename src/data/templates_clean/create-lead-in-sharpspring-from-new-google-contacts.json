@@ -1,0 +1,1 @@
+{"id":7249,"name":"Create Lead in SharpSpring from new Google Contacts","description":"Every time a new contact is created in Google Contacts, Make will automatically create a lead in SharpSpring.","url":"7249-create-lead-in-sharpspring-from-new-google-contacts","usedApps":["google-contacts","sharpspring"],"usage":1}

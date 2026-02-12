@@ -1,0 +1,1 @@
+{"id":1452,"name":"Unsubscribe subscribers from Drip when they fill out a specific Wufoo form","description":"Every time someone fills out your Wufoo form, Make will automatically unsubscribe that subscriber from all mailings in Drip.","url":"1452-unsubscribe-subscribers-from-drip-when-they-fill-out-a-specific-wufoo-form","usedApps":["drip","wufoo"],"usage":1}

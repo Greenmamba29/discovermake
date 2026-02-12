@@ -1,0 +1,1 @@
+{"id":5504,"name":"Create deals on Pipedrive CRM for new calls on CallRail","description":"Every time you have a new incoming call on CallRail, Make will automatically create a new deal in Pipedrive.","url":"5504-create-deals-on-pipedrive-crm-for-new-calls-on-callrail","usedApps":["callrail","pipedrive"],"usage":8}

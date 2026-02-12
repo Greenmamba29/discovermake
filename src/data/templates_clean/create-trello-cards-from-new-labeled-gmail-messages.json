@@ -1,0 +1,1 @@
+{"id":1656,"name":"Create Trello cards from new labeled Gmail messages","description":"Every time one of two specific labels is added to an email in a selected Gmail folder, Make will automatically create a new card on a corresponding Trello board.","url":"1656-create-trello-cards-from-new-labeled-gmail-messages","usedApps":["google-email","builtin","trello"],"usage":262}

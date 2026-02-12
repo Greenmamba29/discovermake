@@ -1,0 +1,1 @@
+{"id":4877,"name":"Create Plutio task for new HubSpot Deals","description":"Every time a new deal is added to HubSpot CRM, Make will automatically create a task in Plutio.","url":"4877-create-plutio-task-for-new-hubspot-deals","usedApps":["hubspotcrm","plutio"],"usage":12}

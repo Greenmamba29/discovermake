@@ -1,0 +1,1 @@
+{"id":8566,"name":"Send Mailgun emails for Livestorm registrants that has not attended a session","description":"Every time a webinar ends and there are registrants who did not attend it, Make will automatically send them an email via Mailgun.","url":"8566-send-mailgun-emails-for-livestorm-registrants-that-has-not-attended-a-session","usedApps":["livestorm","mailgun"],"usage":5}

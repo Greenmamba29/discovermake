@@ -1,0 +1,1 @@
+{"id":5982,"name":"Upload a new HubSpot CRM file to Slack","description":"Use this template to automatically send new HubSpot CRM files to Slack channels or users.","url":"5982-upload-a-new-hubspot-crm-file-to-slack","usedApps":["hubspotcrm","http","slack"],"usage":6}

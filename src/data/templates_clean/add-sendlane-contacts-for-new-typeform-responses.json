@@ -1,0 +1,1 @@
+{"id":8219,"name":"Add Sendlane contacts for new Typeform responses","description":"Every time a new response is given in your Typeform, Make will automatically add the respondent as a contact to your Sendlane.","url":"8219-add-sendlane-contacts-for-new-typeform-responses","usedApps":["typeform","sendlane"],"usage":1}

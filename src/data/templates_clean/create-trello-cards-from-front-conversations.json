@@ -1,0 +1,1 @@
+{"id":3768,"name":"Create Trello cards from Front conversations","description":"Every time a new conversation is created on Front, Make will automatically create a new card on Trello.","url":"3768-create-trello-cards-from-front-conversations","usedApps":["front","trello"],"usage":0}

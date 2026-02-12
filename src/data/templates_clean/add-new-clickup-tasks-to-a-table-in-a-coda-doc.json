@@ -1,0 +1,1 @@
+{"id":2521,"name":"Add new Clickup tasks to a table in a Coda doc","description":"Every time a new task is created in Click Up, Make will automatically add that task to a new row in your Coda table.","url":"2521-add-new-clickup-tasks-to-a-table-in-a-coda-doc","usedApps":["clickup","coda"],"usage":22}

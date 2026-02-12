@@ -1,0 +1,1 @@
+{"id":1421,"name":"Send Telegram messages for new Magento orders","description":"Every time a new order is received in Magento, Make will automatically send a message to a selected chat in Telegram.","url":"1421-send-telegram-messages-for-new-magento-orders","usedApps":["telegram","magento"],"usage":11}

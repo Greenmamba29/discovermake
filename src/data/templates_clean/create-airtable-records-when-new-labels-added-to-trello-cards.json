@@ -1,0 +1,1 @@
+{"id":6365,"name":"Create Airtable records when new labels added to Trello cards","description":"This automation watches your Trello cards for new labels and creates records on Airtable with the data.","url":"6365-create-airtable-records-when-new-labels-added-to-trello-cards","usedApps":["trello","airtable"],"usage":94}

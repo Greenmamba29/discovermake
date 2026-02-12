@@ -1,0 +1,1 @@
+{"id":10553,"name":"Save your daily Stripe balances to a database","description":"Get your Stripe daily balances stored conveniently on a Google Spreadsheet and also sent as a notification to the relevant person/team on Slack.","url":"10549-stripe-daily-balances","usedApps":["stripe","google-sheets","slack"],"usage":79}

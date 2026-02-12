@@ -1,0 +1,1 @@
+{"id":3330,"name":"Save Skype messages to a Google Sheets spreadsheet","description":"Every time a new Skype message is sent, Make will automatically add a new row to a Google Sheet.","url":"3330-save-skype-messages-to-a-google-sheets-spreadsheet","usedApps":["skype","google-sheets"],"usage":166}

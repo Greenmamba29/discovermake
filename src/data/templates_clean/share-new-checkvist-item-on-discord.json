@@ -1,0 +1,1 @@
+{"id":8080,"name":"Share new Checkvist item on Discord","description":"Every time a new item is created in Checkvist, Make will automatically share it on your Discord channel.","url":"8080-share-new-checkvist-item-on-discord","usedApps":["checkvist","discord"],"usage":1}

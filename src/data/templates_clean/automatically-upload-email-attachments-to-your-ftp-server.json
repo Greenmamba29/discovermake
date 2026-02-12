@@ -1,0 +1,1 @@
+{"id":329,"name":"Automatically upload email attachments to your FTP server","description":"Every time you receive an email with an attachment, Make will automatically save the attachment to a selected FTP folder.","url":"329-automatically-upload-email-attachments-to-your-ftp-server","usedApps":["email","builtin","ftp"],"usage":2601}

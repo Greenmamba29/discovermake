@@ -1,0 +1,1 @@
+{"id":6342,"name":"Add Stripe customers to QuickBooks","description":"Every time a new Stripe customer is created, Make will automatically create a QuickBooks customer (provided it doesn't already exist).","url":"6342-add-stripe-customers-to-quickbooks","usedApps":["stripe","quickbooks"],"usage":49}

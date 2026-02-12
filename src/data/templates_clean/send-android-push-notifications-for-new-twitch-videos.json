@@ -1,0 +1,1 @@
+{"id":3269,"name":"Send Android push notifications for new Twitch videos","description":"Every time a new video is posted on a Twitch channel you follow, Make will automatically send a Push notification to your Android device.","url":"3269-send-android-push-notifications-for-new-twitch-videos","usedApps":["twitch","android"],"usage":14}

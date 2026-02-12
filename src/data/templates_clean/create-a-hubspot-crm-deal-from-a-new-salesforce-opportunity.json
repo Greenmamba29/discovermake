@@ -1,0 +1,1 @@
+{"id":5996,"name":"Create a HubSpot CRM deal from a new Salesforce opportunity","description":"Use this template to automatically create a HubSpot CRM deal when a new Salesforce opportunity is created.","url":"5996-create-a-hubspot-crm-deal-from-a-new-salesforce-opportunity","usedApps":["salesforce","hubspotcrm"],"usage":6}

@@ -1,0 +1,1 @@
+{"id":11419,"name":"Send Slack messages for new Gmail emails matching specified criteria","description":"Every time you receive a Gmail email matching specified criteria Make will automatically post it on Slack.","url":"1695-send-slack-messages-for-new-gmail-emails-matching-specified-criteria","usedApps":["google-email","slack"],"usage":2351}

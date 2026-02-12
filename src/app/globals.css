@@ -1,0 +1,85 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Premium Dark Mode Foundation - "Deep Space" */
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+
+    --card: 240 10% 9%;
+    /* Slightly lighter than bg */
+    --card-foreground: 0 0% 98%;
+
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+
+    /* "Neon" Primary - A vibrant indigo/violet */
+    --primary: 263 70% 50%;
+    --primary-foreground: 210 40% 98%;
+
+    /* "Electric" Secondary - A sharp teal/cyan for accents */
+    --secondary: 180 100% 50%;
+    --secondary-foreground: 240 5.9% 10%;
+
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 263 70% 50%;
+
+    --radius: 0.75rem;
+
+    /* Glassmorphism Variables */
+    --glass-border: 240 5% 20%;
+    --glass-bg: 240 10% 9% / 0.6;
+    --glass-blur: 12px;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+/* Custom Utilities for that "Wow" factor */
+@layer utilities {
+  .glass {
+    @apply bg-[hsl(var(--glass-bg))] backdrop-blur-[var(--glass-blur)] border border-[hsl(var(--glass-border))];
+  }
+
+  .glass-hover {
+    @apply hover:bg-[hsl(var(--glass-bg))/0.8] transition-all duration-300;
+  }
+
+  .text-glow {
+    text-shadow: 0 0 20px hsl(var(--primary)/0.5);
+  }
+
+  .border-glow {
+    box-shadow: 0 0 20px -5px hsl(var(--primary)/0.3);
+  }
+
+  /* Gradient text utility */
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-gray-500;
+  }
+
+  .text-gradient-primary {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--secondary))];
+  }
+}

@@ -1,0 +1,1 @@
+{"id":8808,"name":"Create Easyship shipments from new WooCommerce orders","description":"Make will watch for new WooCommerce orders at regular intervals and create shipments in Easyship using information received.","url":"8808-create-easyship-shipments-from-new-woocommerce-orders","usedApps":["woocommerce","builtin","easyship"],"usage":12}

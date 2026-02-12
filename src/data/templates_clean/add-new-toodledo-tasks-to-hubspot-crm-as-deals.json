@@ -1,0 +1,1 @@
+{"id":1576,"name":"Add new Toodledo tasks to HubSpot CRM  as deals","description":"Every time a new task is created in Toodledo, Make will automatically create a new deal in HubSpot CRM.","url":"1576-add-new-toodledo-tasks-to-hubspot-crm-as-deals","usedApps":["hubspotcrm","toodledo"],"usage":3}

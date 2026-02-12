@@ -1,0 +1,1 @@
+{"id":5523,"name":"Create (or update) a Mailchimp subscriber from a new paid Shopify order","description":"Every time a new paid Shopify order is placed, Make will automatically add (or update) a Mailchimp subscriber.","url":"5523-create-or-update-a-mailchimp-subscriber-from-a-new-paid-shopify-order","usedApps":["shopify","mailchimp"],"usage":10}

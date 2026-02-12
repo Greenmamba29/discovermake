@@ -1,0 +1,1 @@
+{"id":7044,"name":"Create new Asana tasks from new HappyFox tickets","description":"Every time a new ticket is created in HappyFox Help Desk, Make will automatically create a new task in Asana.","url":"7044-create-new-asana-tasks-from-new-happyfox-tickets","usedApps":["happyfox-help-desk","asana"],"usage":1}

@@ -1,0 +1,1 @@
+{"id":3187,"name":"Send records from Google Sheets to Facebook Custom Audiences","description":"Retrieve the rows in Google Sheets spreadsheet which meet specified criteria and send them to Facebook Custom Audiences.","url":"3187-send-records-from-google-sheets-to-facebook-custom-audiences","usedApps":["google-sheets","builtin","facebook-custom-audiences"],"usage":278}

@@ -1,0 +1,1 @@
+{"id":7271,"name":"Update Orders in Shopify as fulfilled when picked in ScanOrders","description":"When an Order has been fulfilled in ScanOrders, the order will be marked as fulfilled in Shopify","url":"7271-update-orders-in-shopify-as-fulfilled-when-picked-in-scanorders","usedApps":["scanorders","shopify"],"usage":24}

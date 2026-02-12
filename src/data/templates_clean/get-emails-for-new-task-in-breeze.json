@@ -1,0 +1,1 @@
+{"id":6013,"name":"Get emails for new Task in Breeze","description":"Every time a Task is created in Breeze, Make will automatically send an email message to a specified email address","url":"6013-get-emails-for-new-task-in-breeze","usedApps":["breeze","email"],"usage":5}

@@ -1,0 +1,1 @@
+{"id":8455,"name":"Create Google Tasks for new NetHunt comments","description":"Every time a new comment is created in NetHunt, Make will automatically create a new task in Google Tasks.","url":"8455-create-google-tasks-for-new-nethunt-comments","usedApps":["nethunt","google-tasks"],"usage":4}

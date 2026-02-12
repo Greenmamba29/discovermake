@@ -1,0 +1,1 @@
+{"id":6317,"name":"Create Pipedrive deal for new GatherContent project","description":"Every time a new GatherContent project is created, Make will automatically create a deal in Pipedrive.","url":"6317-create-pipedrive-deal-for-new-gathercontent-project","usedApps":["gathercontent","pipedrive"],"usage":0}

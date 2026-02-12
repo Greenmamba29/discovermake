@@ -1,0 +1,1 @@
+{"id":3560,"name":"Post new Discord messages on Telegram.","description":"Every time a new message is posted on your Discord server, Make will automatically repost the content to a selected chat on Telegram.","url":"3560-post-new-discord-messages-on-telegram","usedApps":["discord","telegram"],"usage":5387}

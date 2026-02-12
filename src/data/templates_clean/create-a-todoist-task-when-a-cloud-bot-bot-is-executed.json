@@ -1,0 +1,1 @@
+{"id":5056,"name":"Create a Todoist task when a Cloud BOT bot is executed","description":"Every time a Cloud BOT bot is executed, Make will automatically create a Todoist task.","url":"5056-create-a-todoist-task-when-a-cloud-bot-bot-is-executed","usedApps":["cloud-bot","todoist"],"usage":1}

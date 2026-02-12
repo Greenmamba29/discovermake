@@ -1,0 +1,1 @@
+{"id":1948,"name":"Post new ShipStation orders to a Mattermost channel","description":"Every time a new order is created in ShipStation, Make will automatically post that order's info to a Mattermost channel of your choice.","url":"1948-post-new-shipstation-orders-to-a-mattermost-channel","usedApps":["mattermost","shipstation"],"usage":3}

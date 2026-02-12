@@ -1,0 +1,1 @@
+{"id":7097,"name":"Create Fleep messages for new records in Airtable","description":"Every time a record is added in your Airtable, Make will send a message to your Fleep.","url":"7097-create-fleep-messages-for-new-records-in-airtable","usedApps":["airtable","fleep"],"usage":0}

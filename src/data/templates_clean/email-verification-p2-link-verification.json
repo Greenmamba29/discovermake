@@ -1,0 +1,1 @@
+{"id":2470,"name":"Email Verification P2 - Link verification","description":"Email Verification P2 - It will verify whether the link has been clicked by the right person or not. ","url":"2470-email-verification-p2-link-verification","usedApps":["gateway","datastore","builtin"],"usage":125}

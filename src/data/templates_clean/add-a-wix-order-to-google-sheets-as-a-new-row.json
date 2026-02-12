@@ -1,0 +1,1 @@
+{"id":5673,"name":"Add a Wix order to Google Sheets as a new row","description":"Every time a new Wix order is created, Make will automatically add order details to your Google Sheets spreadsheet as a row.","url":"5673-add-a-wix-order-to-google-sheets-as-a-new-row","usedApps":["wix","google-sheets"],"usage":125}

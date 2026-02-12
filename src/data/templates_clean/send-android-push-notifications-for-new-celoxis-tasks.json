@@ -1,0 +1,1 @@
+{"id":4201,"name":"Send Android push notifications for new Celoxis tasks","description":"Every time a new Celoxis task is created, Make will automatically send a push notification on your mobile device (Android).","url":"4201-send-android-push-notifications-for-new-celoxis-tasks","usedApps":["celoxis","android"],"usage":1}

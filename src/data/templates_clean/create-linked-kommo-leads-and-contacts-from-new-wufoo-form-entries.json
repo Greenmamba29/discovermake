@@ -1,0 +1,1 @@
+{"id":10428,"name":"Create linked Kommo leads and contacts from new Wufoo form entries","description":"Every time someone fills out your Wufoo form, Make will aumatically create a new lead&contact in Kommo.","url":"2387-create-linked-amocrm-leads-and-contacts-from-new-wufoo-form-entries","usedApps":["wufoo","amo-crm"],"usage":15}

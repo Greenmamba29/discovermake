@@ -1,0 +1,1 @@
+{"id":4300,"name":"Add new MailChimp subscribers to EspoCRM","description":"Every time a new subscriber is added to a selected MailChimp list, Make will automatically add that subscriber as an EspoCRM lead.","url":"4300-add-new-mailchimp-subscribers-to-espocrm","usedApps":["mailchimp","espo-crm"],"usage":3}

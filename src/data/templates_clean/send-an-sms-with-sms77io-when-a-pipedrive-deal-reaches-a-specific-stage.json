@@ -1,0 +1,1 @@
+{"id":4040,"name":"Send an SMS with sms77.io when a Pipedrive deal reaches a specific stage","description":"Every time a Deal is moved to a particular stage on Pipedrive CRM, Make will automatically send a personalized SMS with sms77.io","url":"4040-send-an-sms-with-sms77-io-when-a-pipedrive-deal-reaches-a-specific-stage","usedApps":["pipedrive","sms77"],"usage":10}

@@ -1,0 +1,1 @@
+{"id":6293,"name":"New Feedier Feedback sent as email","description":"Every time you received a new feedback , Make will automatically send information from Feedier Feedback to a specified email address","url":"6293-new-feedier-feedback-sent-as-email","usedApps":["feedier","email"],"usage":1}

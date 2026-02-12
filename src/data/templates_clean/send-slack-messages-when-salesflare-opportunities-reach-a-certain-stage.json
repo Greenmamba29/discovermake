@@ -1,0 +1,1 @@
+{"id":2799,"name":"Send Slack messages when Salesflare opportunities reach a certain stage","description":"Every time a Salesflare opportunity reaches a certain stage, Make will automatically send a message in Slack.","url":"2799-send-slack-messages-when-salesflare-opportunities-reach-a-certain-stage","usedApps":["salesflare","slack"],"usage":4}

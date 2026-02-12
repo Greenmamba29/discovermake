@@ -1,0 +1,1 @@
+{"id":4911,"name":"Create an Asana subtask when a Google Forms response is submitted","description":"An Asana subtask is created when a field in a submitted Google Forms response (form) contains the task's name. ","url":"4911-create-an-asana-subtask-when-a-google-forms-response-is-submitted","usedApps":["google-forms","asana"],"usage":20}

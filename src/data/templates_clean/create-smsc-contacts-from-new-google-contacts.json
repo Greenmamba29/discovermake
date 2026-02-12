@@ -1,0 +1,1 @@
+{"id":8067,"name":"Create SMSC contacts from new Google Contacts","description":"Every time a new contact is created in Google Contacts, Make will automatically add that contact to SMSC.","url":"8067-create-smsc-contacts-from-new-google-contacts","usedApps":["google-contacts","smsc"],"usage":1}

@@ -1,0 +1,1 @@
+{"id":8017,"name":"Add new Sellsy opportunities to Corymbus","description":"Every time a new opportunity has been added to Sellsy, Make will automatically find this opportunity in Sellsy internal systems and create a new opportunity in Corymbus.","url":"8017-add-new-sellsy-opportunities-to-corymbus","usedApps":["sellsy","corymbus"],"usage":3}

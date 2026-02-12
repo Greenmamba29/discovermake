@@ -1,0 +1,1 @@
+{"id":7334,"name":"Send Telegram messages for new replied Email in Snov.io","description":"Every time you receive a reply to a new email in Snov.io, Make will automatically send a message to a selected chat in Telegram.","url":"7334-send-telegram-messages-for-new-replied-email-in-snov-io","usedApps":["snovio","telegram"],"usage":3}

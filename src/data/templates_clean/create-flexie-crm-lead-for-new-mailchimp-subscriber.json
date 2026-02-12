@@ -1,0 +1,1 @@
+{"id":5916,"name":"Create Flexie CRM lead for new Mailchimp subscriber","description":"Every time a new Mailchimp subscriber is added, Make will automatically create a lead in Flexie CRM.","url":"5916-create-flexie-crm-lead-for-new-mailchimp-subscriber","usedApps":["mailchimp","flexie-crm"],"usage":0}

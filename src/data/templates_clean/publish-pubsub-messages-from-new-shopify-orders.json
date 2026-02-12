@@ -1,0 +1,1 @@
+{"id":4656,"name":"Publish Pub/Sub messages from new Shopify orders","description":"Every time a new order is created in Shopify, Make will automatically publish a new message in Google Cloud Pub/Sub for every line item.","url":"4656-publish-pub-sub-messages-from-new-shopify-orders","usedApps":["shopify","builtin","google-cloud-pubsub"],"usage":1}

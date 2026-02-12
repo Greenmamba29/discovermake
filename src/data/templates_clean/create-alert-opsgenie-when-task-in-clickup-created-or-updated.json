@@ -1,0 +1,1 @@
+{"id":5584,"name":"Create Alert Opsgenie when task in ClickUp created or updated","description":"Every time a new task is created or updated in ClickUp, Make will automatically creates a new Alert in Opsgenie.","url":"5584-create-alert-opsgenie-when-task-in-clickup-created-or-updated","usedApps":["clickup","opsgenie"],"usage":2}

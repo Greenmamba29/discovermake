@@ -1,0 +1,1 @@
+{"id":4343,"name":"Send Apple iOS notifications for new Breeze.pm tasks","description":"Every time a new task is created in Breeze.pm, Make will automatically send a push notification to your iOS mobile device.","url":"4343-send-apple-ios-notifications-for-new-breeze-pm-tasks","usedApps":["breeze","ios"],"usage":8}

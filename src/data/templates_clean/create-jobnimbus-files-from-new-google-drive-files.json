@@ -1,0 +1,1 @@
+{"id":8546,"name":"Create JobNimbus files from new Google Drive files","description":"When you upload files to a specific folder in Google Drive, Make will automatically download the files and upload them to JobNimbus for an entity this files relates to.","url":"8546-create-jobnimbus-files-from-new-google-drive-files","usedApps":["google-drive","jobnimbus"],"usage":6}

@@ -1,0 +1,1 @@
+{"id":1562,"name":"Create Trello cards from new Pocket items","description":"Every time a new item is saved to Pocket, Make will automatically add a new card to a selected board in Trello.","url":"1562-create-trello-cards-from-new-pocket-items","usedApps":["pocket","trello"],"usage":45}

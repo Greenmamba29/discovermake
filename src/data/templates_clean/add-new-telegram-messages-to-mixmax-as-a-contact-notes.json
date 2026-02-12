@@ -1,0 +1,1 @@
+{"id":7920,"name":"Add new Telegram messages to Mixmax as a contact notes","description":"Every time a new message is received on Telegram, Make will automatically create a new contact note in Mixmax.","url":"7920-add-new-telegram-messages-to-mixmax-as-a-contact-notes","usedApps":["telegram","mixmax"],"usage":1}

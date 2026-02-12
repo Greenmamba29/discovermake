@@ -1,0 +1,1 @@
+{"id":4042,"name":"Send new contact from HubSpot CRM to Facebook Conversions API","description":"When a new contact is retrieved in HubSpot CRM, a new event \"contact\" is sent to Facebook Conversions API.","url":"4042-send-new-contact-from-hubspot-crm-to-facebook-conversions-api","usedApps":["hubspotcrm","facebook-conversions-api"],"usage":120}

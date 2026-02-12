@@ -1,0 +1,1 @@
+{"id":6836,"name":"Add Mavenlink tasks to a Microsoft 365 Calendar","description":"Every time there is a new task in Mavenlink, Make will automatically create a new event in a specified Microsoft 365 Calendar. Notice that Mavenlink task has to have a due date.","url":"6836-add-mavenlink-tasks-to-a-microsoft-365-calendar","usedApps":["mavenlink","microsoft-calendar"],"usage":8}

@@ -1,0 +1,1 @@
+{"id":4479,"name":"Verify Salesforce deal e-mail in Clearout","description":"When a new deal is created in Salesforce, the deal's e-mail address is verified in Clearout, then the deal is updated.","url":"4479-verify-salesforce-deal-e-mail-in-clearout","usedApps":["salesforce","clearout","builtin"],"usage":4}

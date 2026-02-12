@@ -1,0 +1,1 @@
+{"id":13507,"name":"Send Salesforce records via email using Google Email","description":"Automatically email Salesforce records using Google Email. Extract data from Salesforce, send via HTTP, and deliver directly to your inbox.","url":"13507-send-salesforce-records-via-email-using-google-email","usedApps":["salesforce","google-email"],"usage":9}

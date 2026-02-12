@@ -1,0 +1,1 @@
+{"id":7746,"name":"Add new Shopify customers to UniSender contact list","description":"Every time a new customer is created in Shopify, Make will automatically add that customer to UniSender contact list.","url":"7746-add-new-shopify-customers-to-unisender-contact-list","usedApps":["shopify","unisender"],"usage":1}

@@ -1,0 +1,1 @@
+{"id":9153,"name":"Add new customers to Paystack from WooCommerce","description":"Make will watch for new WooCommerce customers at regular intervals and add them to Paystack using information received.","url":"9153-add-new-customers-to-paystack-from-woocommerce","usedApps":["woocommerce","paystack"],"usage":4}

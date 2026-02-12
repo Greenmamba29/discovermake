@@ -1,0 +1,1 @@
+{"id":3639,"name":"Create new Google Tasks for new Click Up tasks","description":"Every time a new task is created in ClickUp, Make will automatically add that task to Google Tasks.","url":"3639-create-new-google-tasks-for-new-click-up-tasks","usedApps":["clickup","google-tasks"],"usage":218}

@@ -1,0 +1,1 @@
+{"id":2761,"name":"Create ClickUp tasks from new Help Scout conversations","description":"Every time a new conversation is created in Help Scout, Make will automatically create a new task in ClickUp.","url":"2761-create-clickup-tasks-from-new-help-scout-conversations","usedApps":["helpscout","clickup"],"usage":12}

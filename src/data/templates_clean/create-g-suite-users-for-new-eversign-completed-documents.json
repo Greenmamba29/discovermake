@@ -1,0 +1,1 @@
+{"id":3809,"name":"Create G Suite users for new Eversign completed documents","description":"Every time a new Eversign document is completed, Make will automatically create new G Suite users and send them a welcome message via Gmail.","url":"3809-create-g-suite-users-for-new-eversign-completed-documents","usedApps":["eversign","google-g-suite","google-email"],"usage":1}

@@ -1,0 +1,1 @@
+{"id":6809,"name":"Create Google Calendar events when PomoDoneApp timers stop","description":"Every time a PomoDoneApp timer is stopped, Make will automatically create a new event in Google Calendar.","url":"6809-create-google-calendar-events-when-pomodoneapp-timers-stop","usedApps":["pomodoneapp","google-calendar"],"usage":7}

@@ -1,0 +1,1 @@
+{"id":15617,"name":"Extract any data from PDFs in AWS S3","description":"Extract tables, lines, and other complex data from your PDF or image documents and get XLSX, JSON or XLS","url":"15617-extract-any-data-from-pdfs-in-aws-s3","usedApps":["aws-s3","koncile-advanced-ocr"],"usage":26}

@@ -1,0 +1,1 @@
+{"id":7577,"name":"Create Productboard notes for new Slack messages","description":"Every time a new message is received on a specified Slack channel, Make will automatically create a new note in Productboard.","url":"7577-create-productboard-notes-for-new-slack-messages","usedApps":["slack","productboard"],"usage":21}

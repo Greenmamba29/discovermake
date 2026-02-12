@@ -1,0 +1,1 @@
+{"id":5263,"name":"Get a Microsoft Teams notification on a completed PandaDoc document","description":"Every time a PandaDoc document is completed, Make will automatically send a Microsoft Teams message.","url":"5263-get-a-microsoft-teams-notification-on-a-completed-pandadoc-document","usedApps":["pandadoc","microsoft-teams"],"usage":14}

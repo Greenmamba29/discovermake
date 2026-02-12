@@ -1,0 +1,1 @@
+{"id":4179,"name":"Connect Dux-Soup to Mailchimp: Create/Update Subscriber and add to List","description":"When a webhook from Dux-Soup Turbo is received, a new contact is created or updated in MailChimp and assigned to the selected List","url":"4179-connect-dux-soup-to-mailchimp-create-update-subscriber-and-add-to-list","usedApps":["dux-soup","mailchimp"],"usage":3}

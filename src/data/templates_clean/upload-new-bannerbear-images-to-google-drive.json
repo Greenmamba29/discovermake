@@ -1,0 +1,1 @@
+{"id":9019,"name":"Upload new Bannerbear images to Google Drive","description":"Every time a new image is created in Bannerbear, Make will automatically upload that image to a Google Drive folder you specify.","url":"9019-upload-new-bannerbear-images-to-google-drive","usedApps":["bannerbear","http","google-drive"],"usage":49}

@@ -1,0 +1,1 @@
+{"id":4966,"name":"Create a new Slack message when an Asana task (or subtask) is completed","description":"Every time an Asana task or subtask is completed, a Slack message is created.","url":"4966-create-a-new-slack-message-when-an-asana-task-or-subtask-is-completed","usedApps":["asana","builtin","slack"],"usage":75}

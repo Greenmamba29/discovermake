@@ -1,0 +1,1 @@
+{"id":8327,"name":"Transfer files from Dropbox to Box","description":"When you upload files to a specific folder in Dropbox, Make will automatically download the files and upload them to a folder in Box.","url":"8327-transfer-files-from-dropbox-to-box","usedApps":["dropbox","box"],"usage":31}

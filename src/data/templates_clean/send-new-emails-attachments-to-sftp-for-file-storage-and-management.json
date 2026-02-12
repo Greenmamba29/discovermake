@@ -1,0 +1,1 @@
+{"id":13240,"name":"Send new emails attachments to SFTP for file storage and management","description":"Automatically store new email attachments in SFTP for organized file management. Triggered by new emails, files are securely saved using SFTP integration.","url":"13240-send-new-emails-attachments-to-sftp-for-file-storage-and-management","usedApps":["email","sftp"],"usage":37}

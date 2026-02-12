@@ -1,0 +1,1 @@
+{"id":358,"name":"Send Slack messages for new Fakturoid invoices","description":"Every time a new invoice is created in Fakturoid, Make will automatically post a message to Slack.","url":"358-send-slack-messages-for-new-fakturoid-invoices","usedApps":["fakturoid","slack"],"usage":20}

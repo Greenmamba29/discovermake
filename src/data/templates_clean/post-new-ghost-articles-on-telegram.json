@@ -1,0 +1,1 @@
+{"id":3563,"name":"Post new Ghost articles on Telegram","description":"Every time a new post is published on your Ghost blog, Make will automatically share it to a selected chat on Telegram.","url":"3563-post-new-ghost-articles-on-telegram","usedApps":["ghost","telegram"],"usage":49}

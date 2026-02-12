@@ -1,0 +1,1 @@
+{"id":7982,"name":"Create Trello cards for new Deployment in New Relic","description":"Every time a new deployment is received in New Relic, Make will automatically create a Trello card on a specified board.","url":"7982-create-trello-cards-for-new-deployment-in-new-relic","usedApps":["new-relic","trello"],"usage":1}

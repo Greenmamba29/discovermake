@@ -1,0 +1,1 @@
+{"id":5272,"name":"Add new Typeform entries to Trello as new cards","description":"Every time someone answers a selected Typeform question, Make will automatically create a new card in Trello.","url":"5272-add-new-typeform-entries-to-trello-as-new-cards","usedApps":["typeform","trello"],"usage":32}

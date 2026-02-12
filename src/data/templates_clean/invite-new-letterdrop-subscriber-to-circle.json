@@ -1,0 +1,1 @@
+{"id":6373,"name":"Invite new Letterdrop subscriber to Circle","description":"Every time a new Letterdrop subscriber is added, Make will automatically invite him as a member to the specified Circle community.","url":"6373-invite-new-letterdrop-subscriber-to-circle","usedApps":["letterdrop","circle-so"],"usage":0}

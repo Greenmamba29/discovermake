@@ -1,0 +1,1 @@
+{"id":7082,"name":"Add a new Drip subscriber to Outseta as a new person","description":"Every time there's a new subscriber in Drip, Make will automatically create a new person in Outseta.","url":"7082-add-a-new-drip-subscriber-to-outseta-as-a-new-person","usedApps":["drip","outseta"],"usage":1}

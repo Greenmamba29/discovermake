@@ -1,0 +1,1 @@
+{"id":4084,"name":"Send an e-mail to Pipedrive deals using SparkPost","description":"When new deals are created and meet specified criteria, an e-mail is sent to the customer's of the deals using SparkPost.","url":"4084-send-an-e-mail-to-pipedrive-deals-using-sparkpost","usedApps":["pipedrive","builtin","sparkpost"],"usage":2}

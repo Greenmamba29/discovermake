@@ -1,0 +1,1 @@
+{"id":8645,"name":"Send ClickSend SMSes for new Site24x7 alerts","description":"Every time there is a new alert appeared in Site24x7, Make will automatically send Clicksend SMS containing info about the alert.","url":"8645-send-clicksend-smses-for-new-site24x7-alerts","usedApps":["site24x7","clicksend"],"usage":2}

@@ -1,0 +1,1 @@
+{"id":4499,"name":"Trigger GrowSurf referrals from new Braintree transactions","description":"Every time a new transaction is created in Braintree, Make will automatically trigger a new referral in GrowSurf.","url":"4499-trigger-growsurf-referrals-from-new-braintree-transactions","usedApps":["braintree","growsurf"],"usage":1}

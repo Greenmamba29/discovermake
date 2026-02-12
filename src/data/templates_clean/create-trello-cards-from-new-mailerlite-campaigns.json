@@ -1,0 +1,1 @@
+{"id":1363,"name":"Create Trello cards from new Mailerlite campaigns","description":"Every time a new campaign is created in Mailerlite, Make will automatically create a new card in Trello.","url":"1363-create-trello-cards-from-new-mailerlite-campaigns","usedApps":["mailerlite","trello"],"usage":14}

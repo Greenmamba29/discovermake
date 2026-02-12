@@ -1,0 +1,1 @@
+{"id":8108,"name":"Send Telegram Bot messages for new leads collected in Proofly","description":"Every time there is a new lead collected in Proofly, Make will automatically send a message to a Telegram Bot channel/chat containing the information received.","url":"8108-send-telegram-bot-messages-for-new-leads-collected-in-proofly","usedApps":["proofly","telegram"],"usage":2}

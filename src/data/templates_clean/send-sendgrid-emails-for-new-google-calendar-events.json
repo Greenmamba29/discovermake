@@ -1,0 +1,1 @@
+{"id":2457,"name":"Send SendGrid emails for new Google Calendar events","description":"Every time a new event is added to a selected Google Calendar, Make will automatically send an email via SendGrid to a specified recipient group.","url":"2457-send-sendgrid-emails-for-new-google-calendar-events","usedApps":["google-calendar","sendgrid"],"usage":6}

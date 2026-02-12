@@ -1,0 +1,1 @@
+{"id":12702,"name":"Fetch Google Sheets data and send it via HTTP request","description":"Automatically fetch data from Google Sheets and send it via HTTP request. Streamline data transfer between Google Sheets and your desired endpoint effortlessly.","url":"12702-fetch-google-sheets-data-and-send-it-via-http-request","usedApps":["google-sheets","http"],"usage":53}

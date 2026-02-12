@@ -1,0 +1,1 @@
+{"id":3629,"name":"Publish new Ghost posts on Facebook Pages","description":"Every time a new post is published on a Ghost blog, Make will automatically post it on the Facebook Page of your choice.","url":"3629-publish-new-ghost-posts-on-facebook-pages","usedApps":["ghost","facebook-pages"],"usage":52}

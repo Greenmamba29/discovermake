@@ -1,0 +1,1 @@
+{"id":3011,"name":"Delete a specified line item in a new invoice in Harvest","description":"When a new invoice is created in Harvest and meets specified criteria, invoice line items are iterated and those lines which meet specified criteria are deleted.","url":"3011-delete-a-specified-line-item-in-a-new-invoice-in-harvest","usedApps":["harvest","builtin"],"usage":0}

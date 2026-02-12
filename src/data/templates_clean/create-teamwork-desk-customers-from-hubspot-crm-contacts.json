@@ -1,0 +1,1 @@
+{"id":4146,"name":"Create Teamwork Desk customers from HubSpot CRM contacts","description":"Every time a new HubSpot CRM contact is created, Make will automatically create a new customer in Teamwork Desk and create a ticket for them.","url":"4146-create-teamwork-desk-customers-from-hubspot-crm-contacts","usedApps":["hubspotcrm","teamwork-desk"],"usage":3}

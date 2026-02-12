@@ -1,0 +1,1 @@
+{"id":5330,"name":"Create a JIRA Server task from a new Retently survey response","description":"This template allows you to automatically create a JIRA Server task when a new Retently survey response is submitted.","url":"5330-create-a-jira-server-task-from-a-new-retently-survey-response","usedApps":["retently","jira"],"usage":3}

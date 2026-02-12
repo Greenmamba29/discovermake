@@ -1,0 +1,1 @@
+{"id":5386,"name":"Create a HubSpot CRM contact from a new SendX contact","description":"Every time a new SendX contact is created from a landing page, Make will automatically create a HubSpot CRM contact.","url":"5386-create-a-hubspot-crm-contact-from-a-new-sendx-contact","usedApps":["sendx","hubspotcrm"],"usage":2}

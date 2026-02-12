@@ -1,0 +1,1 @@
+{"id":8381,"name":"Get Pushover notifications for new Instagram photos","description":"Every time a new photo is added to Instagram, Make will automatically send a notification message in Pushover.","url":"8381-get-pushover-notifications-for-new-instagram-photos","usedApps":["instagram","pushover"],"usage":12}

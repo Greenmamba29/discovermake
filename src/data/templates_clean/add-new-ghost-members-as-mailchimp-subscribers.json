@@ -1,0 +1,1 @@
+{"id":3289,"name":"Add new Ghost members as MailChimp subscribers","description":"Every time a new member is added to Ghost, Make will automatically add this member to a selected MailChimp list.","url":"3289-add-new-ghost-members-as-mailchimp-subscribers","usedApps":["ghost","mailchimp"],"usage":12}

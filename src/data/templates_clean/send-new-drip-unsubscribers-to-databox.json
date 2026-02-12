@@ -1,0 +1,1 @@
+{"id":3904,"name":"Send new Drip unsubscribers to Databox","description":"Whenever a person unsubscribers from your emails in Drip, Make will automatically update the number of unsubscribers in Databox.","url":"3904-send-new-drip-unsubscribers-to-databox","usedApps":["drip","databox"],"usage":6}

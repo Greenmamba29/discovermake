@@ -1,0 +1,1 @@
+{"id":3352,"name":"Create a new MeisterTask task from new ScheduleOnce appointments","description":"Every time an appointment is scheduled with ScheduleOnce, Make will automatically create a task in MeisterTask.","url":"3352-create-a-new-meistertask-task-from-new-scheduleonce-appointments","usedApps":["scheduleonce","meistertask"],"usage":0}

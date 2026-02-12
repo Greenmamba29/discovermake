@@ -1,0 +1,1 @@
+{"id":3130,"name":"Send an SMS message to each new row in a Google Sheets spreadsheet","description":"A text message will automatically be sent to each new row in Google Sheets Spreadsheet. Input the number and the message content. ","url":"3130-send-an-sms-message-to-each-new-row-in-a-google-sheets-spreadsheet","usedApps":["google-sheets","gatewayapi"],"usage":145}

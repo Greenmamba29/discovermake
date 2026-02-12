@@ -1,0 +1,1 @@
+{"id":5006,"name":"Create a Workask task for new Google Sheets rows","description":"Every time a new row is added to your Google Sheets spreadsheet, Make will automatically create a Workask task.","url":"5006-create-a-workask-task-for-new-google-sheets-rows","usedApps":["google-sheets","workast"],"usage":1}

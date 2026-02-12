@@ -1,0 +1,1 @@
+{"id":8720,"name":"Send Pushover messages for new Microsoft 365 Calendar events","description":"Make will watch your Microsoft 365 Calendar events at regular intervals and send Pushover messages for them.","url":"8720-send-pushover-messages-for-new-microsoft-365-calendar-events","usedApps":["microsoft-calendar","pushover"],"usage":18}

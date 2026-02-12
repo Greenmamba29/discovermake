@@ -1,0 +1,1 @@
+{"id":6765,"name":"Add new Thinkific user to ActiveCampaign as contact","description":"Every time a new user is added to Thinkific, Make will automatically add this user to ActiveCampaign as contact.","url":"6765-add-new-thinkific-user-to-activecampaign-as-contact","usedApps":["thinkific","activecampaign"],"usage":7}

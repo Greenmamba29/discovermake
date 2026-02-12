@@ -1,0 +1,1 @@
+{"id":8672,"name":"Create Textline customers for new Voxloud phone calls","description":"Every time a new call is going through Voxloud, Make will automatically create a new customer in Textline.","url":"8672-create-textline-customers-for-new-voxloud-phone-calls","usedApps":["voxloud","textline"],"usage":1}

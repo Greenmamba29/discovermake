@@ -1,0 +1,1 @@
+{"id":7668,"name":"Send Gmail emails for new documents signed in Revv Documents","description":"Every time a new document is signed in Revv Documents, Make will automatically send an email via Gmail with that document.","url":"7668-send-gmail-emails-for-new-documents-signed-in-revv-documents","usedApps":["revv-documents","http","google-email"],"usage":2}

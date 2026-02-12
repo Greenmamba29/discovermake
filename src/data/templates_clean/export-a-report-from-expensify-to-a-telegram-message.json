@@ -1,0 +1,1 @@
+{"id":5744,"name":"Export a report from Expensify to a Telegram message","description":"Every time you text your Telegram bot a date it sends you reports from your Expensify. ","url":"5744-export-a-report-from-expensify-to-a-telegram-message","usedApps":["telegram","expensify"],"usage":3}

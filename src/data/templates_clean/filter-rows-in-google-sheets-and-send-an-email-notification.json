@@ -1,0 +1,1 @@
+{"id":12634,"name":"Filter rows in Google Sheets and send an email notification","description":"Automatically filter rows in Google Sheets based on specific criteria and send an email notification using Google Email whenever a match is found.","url":"12634-filter-rows-in-google-sheets-and-send-an-email-notification","usedApps":["google-sheets","google-email"],"usage":67}

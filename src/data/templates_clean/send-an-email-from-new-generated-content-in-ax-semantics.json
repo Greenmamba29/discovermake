@@ -1,0 +1,1 @@
+{"id":7614,"name":"Send an email from new generated content in AX Semantics","description":"Every time new content is generated in AX Semantics, an email containing the content information will be instantly sent.","url":"7614-send-an-email-from-new-generated-content-in-ax-semantics","usedApps":["ax-semantics","email"],"usage":3}

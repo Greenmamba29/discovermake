@@ -1,0 +1,1 @@
+{"id":1761,"name":"Post new Copper opportunities to a channel on Mattermost","description":"Every time a new opportunity is created on Copper, Make will automatically post that opportunity to a Mattermost channel of your choice.","url":"1761-post-new-copper-opportunities-to-a-channel-on-mattermost","usedApps":["prosperworks","mattermost"],"usage":1}

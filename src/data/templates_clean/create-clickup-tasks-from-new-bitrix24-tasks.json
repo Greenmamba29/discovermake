@@ -1,0 +1,1 @@
+{"id":7908,"name":"Create ClickUp tasks from new Bitrix24 tasks","description":"Every time a new task is created in Bitrix24, Make will automatically create a new task in a specified ClickUp folder.","url":"7908-create-clickup-tasks-from-new-bitrix24-tasks","usedApps":["bitrix24","clickup"],"usage":25}

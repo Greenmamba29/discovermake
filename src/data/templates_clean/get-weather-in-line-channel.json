@@ -1,0 +1,1 @@
+{"id":5483,"name":"Get Weather in LINE channel","description":"You can get a current weather in any city by typingcode word \\weather and the city name (you can add country code as well) in your LINE message. For instance \"\\weather London, UK\"","url":"5483-get-weather-in-line-channel","usedApps":["line","weather"],"usage":357}

@@ -1,0 +1,1 @@
+{"id":3400,"name":"Create contacts on Mautic from Formstack responses","description":"Every time a new response is submitted on Formstack, Make will automatically create a new contact in Mautic based on the response of the form.","url":"3400-create-contacts-on-mautic-from-formstack-responses","usedApps":["formstack","mautic"],"usage":4}

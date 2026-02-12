@@ -1,0 +1,1 @@
+{"id":8130,"name":"Get Slack notifications about new Authvia merchants","description":"Every time a new merchant is created in Authvia, Make will automatically send a notification message to a specified channel/chat in Slack.","url":"8130-get-slack-notifications-about-new-authvia-merchants","usedApps":["authvia","slack"],"usage":2}

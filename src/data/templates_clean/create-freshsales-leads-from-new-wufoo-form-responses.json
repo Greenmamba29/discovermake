@@ -1,0 +1,1 @@
+{"id":2023,"name":"Create Freshsales leads from new Wufoo form responses","description":"Every time someone fills out your Wufoo form, Make will automatically create a new lead in Freshsales.","url":"2023-create-freshsales-leads-from-new-wufoo-form-responses","usedApps":["wufoo","freshsales"],"usage":5}

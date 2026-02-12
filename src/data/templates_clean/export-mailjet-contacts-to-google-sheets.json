@@ -1,0 +1,1 @@
+{"id":7296,"name":"Export Mailjet contacts to Google Sheets","description":"Export all Mailjet contacts to Google sheets.(Limit 3200 records applies).","url":"7296-export-mailjet-contacts-to-google-sheets","usedApps":["mailjet","google-sheets"],"usage":24}

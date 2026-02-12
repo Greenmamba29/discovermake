@@ -1,0 +1,1 @@
+{"id":8694,"name":"Create new Google Calendar events for new ClickMeeting conferences","description":"Every time a new conference is created in ClickMeeting, Make will automatically create a new event in your Google Calendar.","url":"8694-create-new-google-calendar-events-for-new-clickmeeting-conferences","usedApps":["clickmeeting","google-calendar"],"usage":4}

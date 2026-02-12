@@ -1,0 +1,1 @@
+{"id":2662,"name":"Create GetResponse contacts from new Pipefy cards","description":"Every time a new card is created in Pipefy, Make will automatically add a new contact to your GetResponse list.","url":"2662-create-getresponse-contacts-from-new-pipefy-cards","usedApps":["pipefy","getresponse"],"usage":1}

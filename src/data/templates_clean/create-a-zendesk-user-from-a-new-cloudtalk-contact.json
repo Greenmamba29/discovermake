@@ -1,0 +1,1 @@
+{"id":5439,"name":"Create a Zendesk user from a new CloudTalk contact","description":"This template allows you to create a Zendesk user when a new CloudTalk contact is created.","url":"5439-create-a-zendesk-user-from-a-new-cloudtalk-contact","usedApps":["cloudtalk","zendesk"],"usage":0}

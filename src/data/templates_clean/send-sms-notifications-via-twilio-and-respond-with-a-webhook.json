@@ -1,0 +1,1 @@
+{"id":13184,"name":"Send SMS notifications via Twilio and respond with a webhook","description":"Automatically send SMS notifications via Twilio and respond with a custom webhook. Ideal for real-time communication and instant feedback integration.","url":"13184-send-sms-notifications-via-twilio-and-respond-with-a-webhook","usedApps":["gateway","twilio"],"usage":30}

@@ -1,0 +1,1 @@
+{"id":12085,"name":"Send an Email via Brevo from a new SMS received in Plivo","description":"Every time a new sms is received in Plivo, a new email will be sent via Brevo.","url":"8405-send-an-email-via-sendinblue-from-a-new-sms-received-in-plivo","usedApps":["plivo","sendinblue"],"usage":11}

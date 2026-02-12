@@ -1,0 +1,1 @@
+{"id":3797,"name":"Watch New Zoho CRM Deals Amount by Stage in Databox","description":"Every time a new deals amount is modified in any stage, Make will automatically update that data in Databox.","url":"3797-duplicate-watch-new-zoho-crm-deals-amount-by-stage-in-databox","usedApps":["zohocrm","builtin","databox"],"usage":8}

@@ -1,0 +1,1 @@
+{"id":10217,"name":"Add new rows in a Google Sheets spreadsheet from sold items in Gumroad","description":"Every time an item is sold in Gumroad, a new row will be instantly added to a Google Sheets spreadsheet.","url":"10217-add-new-rows-in-a-google-sheets-spreadsheet-from-sold-items-in-gumroad","usedApps":["gumroad","google-sheets"],"usage":61}

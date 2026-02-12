@@ -1,0 +1,1 @@
+{"id":2463,"name":"Upload new Slack files to Wasabi","description":"Every time a new file is posted to your Slack channel, Make will automatically upload that file to Wasabi,","url":"2463-upload-new-slack-files-to-wasabi","usedApps":["slack","wasabi"],"usage":15}

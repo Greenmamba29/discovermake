@@ -1,0 +1,1 @@
+{"id":13248,"name":"Transfer files from SFTP to FTP with automated actions","description":"Automatically transfer new files from SFTP to FTP. Trigger file upload on SFTP, read, and upload to FTP for streamlined file management.","url":"13248-transfer-files-from-sftp-to-ftp-with-automated-actions","usedApps":["sftp","ftp"],"usage":20}

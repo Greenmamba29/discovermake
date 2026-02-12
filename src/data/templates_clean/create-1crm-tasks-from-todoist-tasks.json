@@ -1,0 +1,1 @@
+{"id":4024,"name":"Create 1CRM tasks from Todoist tasks","description":"Every time a new task is created on Todoist, Make will automatically create a new task in 1CRM.","url":"4024-create-1crm-tasks-from-todoist-tasks","usedApps":["todoist","onecrm"],"usage":10}

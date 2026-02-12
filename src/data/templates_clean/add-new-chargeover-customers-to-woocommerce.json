@@ -1,0 +1,1 @@
+{"id":7605,"name":"Add new ChargeOver customers to WooCommerce","description":"Every time a new customer is added in ChargeOver, Make will automatically check if the customer already exists in WooCommerce. If it does not, Make will create a new customer in WooCommerce.","url":"7605-add-new-chargeover-customers-to-woocommerce","usedApps":["chargeover","woocommerce"],"usage":1}

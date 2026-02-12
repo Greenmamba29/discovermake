@@ -1,0 +1,1 @@
+{"id":4693,"name":"Update Neto products from Zoho Inventory items","description":"Every time an item quantity is updated in Zoho Inventory, Make will automatically update the warehouse quantity for that product in Neto using the SKU of the product.","url":"4693-update-neto-products-from-zoho-inventory-items","usedApps":["zoho-inventory","neto"],"usage":10}

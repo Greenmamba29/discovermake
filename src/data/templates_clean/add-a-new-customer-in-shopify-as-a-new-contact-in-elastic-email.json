@@ -1,0 +1,1 @@
+{"id":5711,"name":"Add a new customer in Shopify as a new contact in Elastic Email","description":"Every time a new customer is added to Shopify, Make will automatically create a new contact in Elastic Email.","url":"5711-add-a-new-customer-in-shopify-as-a-new-contact-in-elastic-email","usedApps":["shopify","elastic-email"],"usage":7}

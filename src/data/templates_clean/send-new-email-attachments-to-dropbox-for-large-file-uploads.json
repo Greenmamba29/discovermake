@@ -1,0 +1,1 @@
+{"id":13323,"name":"Send new email attachments to Dropbox for large file uploads","description":"Automatically upload large email attachments to Dropbox. When a new email arrives, Make uploads files to Dropbox, freeing up your inbox.","url":"13323-send-new-email-attachments-to-dropbox-for-large-file-uploads","usedApps":["email","builtin","dropbox"],"usage":23}

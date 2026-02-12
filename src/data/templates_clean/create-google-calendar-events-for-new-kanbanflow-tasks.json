@@ -1,0 +1,1 @@
+{"id":4129,"name":"Create Google Calendar events for new KanbanFlow tasks","description":"Every time a new task is created in KanbanFlow, Make will automatically create an event in Google Calendar based on the due date.","url":"4129-create-google-calendar-events-for-new-kanbanflow-tasks","usedApps":["kanbanflow","google-calendar"],"usage":10}

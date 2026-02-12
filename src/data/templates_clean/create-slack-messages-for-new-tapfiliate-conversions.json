@@ -1,0 +1,1 @@
+{"id":7219,"name":"Create Slack messages for new Tapfiliate conversions","description":"Every time a conversion is added in your Tapfiliate, Make will send a message to your Slack.","url":"7219-create-slack-messages-for-new-tapfiliate-conversions","usedApps":["tapfiliate","slack"],"usage":2}

@@ -1,0 +1,1 @@
+{"id":5557,"name":"Save new users from Files.com to Airtable","description":"Every time a new user is created in Files.com, Make will automatically add a record with the username and email to specified Airtable with 'Name' and 'Email' columns. ","url":"5557-save-new-users-from-files-com-to-airtable","usedApps":["files-com","airtable"],"usage":0}

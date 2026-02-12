@@ -1,0 +1,1 @@
+{"id":5785,"name":"Add new ClickUp tasks to Kanbanize and comment it","description":"Every time a new task is created in ClickUp, Make will automatically add that task to Kanbanize and create a comment for that task.","url":"5785-add-new-clickup-tasks-to-kanbanize-and-comment-it","usedApps":["clickup","kanbanize"],"usage":3}

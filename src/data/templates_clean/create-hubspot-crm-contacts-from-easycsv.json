@@ -1,0 +1,1 @@
+{"id":4100,"name":"Create HubSpot CRM contacts from EasyCSV","description":"Every time a new CSV import is performed via EasyCSV, Make will automatically create a new contact in HubSpot CRM.","url":"4100-create-hubspot-crm-contacts-from-easycsv","usedApps":["easycsv","hubspotcrm"],"usage":14}

@@ -1,0 +1,1 @@
+{"id":3642,"name":"Create Microsoft To Do tasks for new Google Tasks","description":"Every time a new task is created in Google Tasks, Make will automatically create a new task in Microsoft To Do.","url":"3642-create-microsoft-to-do-tasks-for-new-google-tasks","usedApps":["google-tasks","microsoft-to-do"],"usage":369}

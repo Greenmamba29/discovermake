@@ -1,0 +1,1 @@
+{"id":5650,"name":"Create a request from a Telegram message","description":"This scenario lets you create requests with just one message in telegram.","url":"5650-create-a-request-from-a-telegram-message","usedApps":["telegram","atspoke"],"usage":27}

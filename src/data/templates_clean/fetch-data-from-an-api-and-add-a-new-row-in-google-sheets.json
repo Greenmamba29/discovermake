@@ -1,0 +1,1 @@
+{"id":13369,"name":"Fetch data from an API and add a new row in Google Sheets","description":"Automatically fetch data from an API and add a new row in Google Sheets. Streamline data management with HTTP and Google Sheets integration.","url":"13369-fetch-data-from-an-api-and-add-a-new-row-in-google-sheets","usedApps":["http","builtin","google-sheets"],"usage":24}

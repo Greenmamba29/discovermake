@@ -1,0 +1,1 @@
+{"id":2486,"name":"Add new Campaign Monitor contacts to Google Contacts","description":"Every time a new subscriber is added to a selected Campaign Monitor list, Make will automatically create a new contact in Google Contacts.","url":"2486-add-new-campaign-monitor-contacts-to-google-contacts","usedApps":["campaign-monitor","google-contacts"],"usage":1}

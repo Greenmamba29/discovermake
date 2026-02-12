@@ -1,0 +1,1 @@
+{"id":11685,"name":"Upload a new invoice from QuickBooks to Nextcloud.","description":"When a new invoice is created in QuickBooks, the PDF is downloaded and then uploaded to Nextcloud.","url":"6881-upload-a-new-invoice-from-quickbooks-to-nextcloud","usedApps":["quickbooks","nextcloud"],"usage":19}

@@ -1,0 +1,1 @@
+{"id":6536,"name":"Create new messages in Chatwork for new messages in Telegram","description":"Every time a message is sent in your Telegram group where your Telegram bot is an admin Make will send this message to your Chatwork. ","url":"6536-create-new-messages-in-chatwork-for-new-messages-in-telegram","usedApps":["telegram","chatwork"],"usage":3}

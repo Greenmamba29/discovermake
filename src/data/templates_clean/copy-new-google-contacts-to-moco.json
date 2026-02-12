@@ -1,0 +1,1 @@
+{"id":5864,"name":"Copy new Google Contacts to MOCO","description":"Every time a new contact is added to Google Contacts, Make will automatically add them to MOCO.","url":"5864-copy-new-google-contacts-to-moco","usedApps":["google-contacts","moco"],"usage":20}

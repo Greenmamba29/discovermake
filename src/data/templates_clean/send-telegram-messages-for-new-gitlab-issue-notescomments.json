@@ -1,0 +1,1 @@
+{"id":2160,"name":"Send Telegram messages for new Gitlab issue notes/comments","description":"Every time a new note (comment) is added to an issue in a specific GitLab project, Make will automatically send a message in Telegram.","url":"2160-send-telegram-messages-for-new-gitlab-issue-notes-comments","usedApps":["gitlab","telegram"],"usage":36}

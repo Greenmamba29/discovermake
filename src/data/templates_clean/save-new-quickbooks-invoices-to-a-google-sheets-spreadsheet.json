@@ -1,0 +1,1 @@
+{"id":1965,"name":"Save new QuickBooks invoices to a Google Sheets spreadsheet","description":"Every time a new invoice is created or updated in QuickBooks, Make will automatically add that invoice's info to a new row in your Google Sheets spreadsheet.","url":"1965-save-new-quickbooks-invoices-to-a-google-sheets-spreadsheet","usedApps":["quickbooks","google-sheets"],"usage":875}

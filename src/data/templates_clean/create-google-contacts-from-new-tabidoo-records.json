@@ -1,0 +1,1 @@
+{"id":4545,"name":"Create Google Contacts from new Tabidoo records","description":"Every time a new record is added to Tabidoo, Make will automatically create a new contact in Google Contacts.","url":"4545-create-google-contacts-from-new-tabidoo-records","usedApps":["tabidoo","google-contacts"],"usage":14}

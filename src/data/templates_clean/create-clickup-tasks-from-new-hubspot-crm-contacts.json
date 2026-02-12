@@ -1,0 +1,1 @@
+{"id":1906,"name":"Create ClickUp tasks from new HubSpot CRM contacts","description":"Every time a new contact is created in HubSpot CRM, Make will automatically create a new task in a ClickUp list of your choice.","url":"1906-create-clickup-tasks-from-new-hubspot-crm-contacts","usedApps":["hubspotcrm","clickup"],"usage":385}

@@ -1,0 +1,1 @@
+{"id":3312,"name":"Send a Skype message when a new file is added to Google Drive","description":"Every time a new file is added to Google Drive, Make will automatically send a new message in Skype.","url":"3312-send-a-skype-message-when-a-new-file-is-added-to-google-drive","usedApps":["google-drive","skype"],"usage":7}

@@ -1,0 +1,1 @@
+{"id":5573,"name":"Add a new Wix contact to Google Sheets as a row","description":"Every time a new Wix contact is created, Make will automatically add it to your Google Sheets spreadsheet as a row.","url":"5573-add-a-new-wix-contact-to-google-sheets-as-a-row","usedApps":["wix","google-sheets"],"usage":101}

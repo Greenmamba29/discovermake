@@ -1,0 +1,1 @@
+{"id":4983,"name":"Send specified message based on new input from Chatforma","description":"Every time a new user input is received from Chatforma, Make will automatically send a specified message to the user depends on his input.","url":"4983-send-specified-message-based-on-new-input-from-chatforma","usedApps":["chatforma","builtin"],"usage":2}

@@ -1,0 +1,1 @@
+{"id":6733,"name":"Send messages in Slack for new payments in Ronin","description":"Every time a payments is created in Ronin, Make will send a message in your Slack with chosen information.","url":"6733-send-messages-in-slack-for-new-payments-in-ronin","usedApps":["ronin","slack"],"usage":1}

@@ -1,0 +1,1 @@
+{"id":4082,"name":"Upload files from Google Drive to Docparser","description":"When a file is uploaded to Google Drive that meets specified criteria, it is uploaded to Docparser","url":"4082-upload-files-from-google-drive-to-docparser","usedApps":["google-drive","docparser"],"usage":77}

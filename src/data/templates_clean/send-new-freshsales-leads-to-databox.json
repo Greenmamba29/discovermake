@@ -1,0 +1,1 @@
+{"id":3959,"name":"Send new Freshsales leads to Databox","description":"Whenever a new lead is created in Freshsales, Make will automatically push that information to Databox. ","url":"3959-send-new-freshsales-leads-to-databox","usedApps":["freshsales","databox"],"usage":4}

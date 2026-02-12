@@ -1,0 +1,1 @@
+{"id":4289,"name":"Add new Google Sheets rows as TimeCamp tasks","description":"When you add new rows to your Google Sheets sheet, a corresponding TimeCamp task will be created.","url":"4289-add-new-google-sheets-rows-as-timecamp-tasks","usedApps":["google-sheets","timecamp"],"usage":10}

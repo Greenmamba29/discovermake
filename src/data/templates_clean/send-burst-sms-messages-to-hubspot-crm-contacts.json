@@ -1,0 +1,1 @@
+{"id":4701,"name":"Send Burst SMS messages to HubSpot CRM contacts","description":"Every time a new HubSpot CRM contact is created, Make will automatically use Burst SMS to send a welcome message to that contact.","url":"4701-send-burst-sms-messages-to-hubspot-crm-contacts","usedApps":["hubspotcrm","burst-sms"],"usage":3}

@@ -1,0 +1,1 @@
+{"id":10938,"name":"Send Slack messages for new Shopify paid orders","description":"Every time someone pays for an order on Shopify, Make will automatically send a message in Slack.","url":"187-send-slack-messages-for-new-shopify-paid-orders","usedApps":["shopify","slack"],"usage":251}

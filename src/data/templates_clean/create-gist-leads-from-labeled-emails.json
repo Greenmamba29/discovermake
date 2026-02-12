@@ -1,0 +1,1 @@
+{"id":4372,"name":"Create Gist leads from labeled emails","description":"Every time a new email is received in Gmail with a specific label, Make will automatically look that lead up using the email in Gist. If no result is found it will create a new lead in Gist.","url":"4372-create-gist-leads-from-labeled-emails","usedApps":["google-email","gist"],"usage":3}

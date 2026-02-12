@@ -1,0 +1,1 @@
+{"id":7971,"name":"Create Amazon SES contacts for new Xero contacts","description":"Make will watch your Xero contacts at regular intervals and create Amazon SES contacts.","url":"7971-create-amazon-ses-contacts-for-new-xero-contacts","usedApps":["xero","amazon-ses"],"usage":2}

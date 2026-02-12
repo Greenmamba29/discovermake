@@ -1,0 +1,1 @@
+{"id":1080,"name":"Send notifications via Apple Safari for new Disqus comments","description":"Every time a new comment is added to a watched forum on Disqus, Make will automatically send a notification via Apple Safari.","url":"1080-send-notifications-via-apple-safari-for-new-disqus-comments","usedApps":["disqus","safari"],"usage":2}

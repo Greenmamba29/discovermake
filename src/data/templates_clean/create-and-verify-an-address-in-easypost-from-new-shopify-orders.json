@@ -1,0 +1,1 @@
+{"id":8756,"name":"Create and Verify an Address in EasyPost from new Shopify orders","description":"Every time a new order is created in Shopify, Make will automatically create and verify a new address in EasyPost.","url":"8756-create-and-verify-an-address-in-easypost-from-new-shopify-orders","usedApps":["shopify","easypost"],"usage":14}

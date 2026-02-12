@@ -1,0 +1,1 @@
+{"id":6924,"name":"Create (or update) a HubSpot CRM contact from a new Stripe customer","description":"Use this template to automatically create (or update) a HubSpot CRM contact when a new Stripe customer is created.","url":"6924-create-or-update-a-hubspot-crm-contact-from-a-new-stripe-customer","usedApps":["stripe","hubspotcrm"],"usage":113}

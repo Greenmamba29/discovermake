@@ -1,0 +1,1 @@
+{"id":5877,"name":"Send email notifications when new comments are added in Trello","description":"Keep track of your Trello comments with this automation that grabs new comments and sends email notifications via Gmail.","url":"5877-send-email-notifications-when-new-comments-are-added-in-trello","usedApps":["trello","google-email"],"usage":12}

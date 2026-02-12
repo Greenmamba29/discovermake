@@ -1,0 +1,1 @@
+{"id":8084,"name":"Get emails for new Drupal Content","description":"Every time new content is created in Drupal,  Make will automatically send an email message to a specified email address.","url":"8084-get-emails-for-new-drupal-content","usedApps":["drupal","email"],"usage":5}

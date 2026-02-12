@@ -1,0 +1,1 @@
+{"id":3043,"name":"Send a notification about new event in Shopify to Slack","description":"When a new event is made in Shopify, a notification is sent to Slack. In this template the webhook for a new paid order was used.","url":"3043-send-a-notification-about-new-event-in-shopify-to-slack","usedApps":["shopify","slack"],"usage":88}

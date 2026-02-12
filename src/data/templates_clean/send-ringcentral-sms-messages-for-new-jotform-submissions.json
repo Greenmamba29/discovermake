@@ -1,0 +1,1 @@
+{"id":2544,"name":"Send RingCentral SMS messages for new Jotform submissions","description":"Every time someone fills out your Jotform form, Make will automatically send an SMS message via RingCentral.","url":"2544-send-ringcentral-sms-messages-for-new-jotform-submissions","usedApps":["jotform","ringcentral"],"usage":7}

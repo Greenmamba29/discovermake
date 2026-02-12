@@ -1,0 +1,1 @@
+{"id":3286,"name":"Add new Ghost members to a SendPulse mailing list.","description":"Every time a new member is added to Ghost, Make will automatically create a new contact in SendPulse and add it to a specified mailing list.","url":"3286-add-new-ghost-members-to-a-sendpulse-mailing-list","usedApps":["ghost","sendpulse"],"usage":2}

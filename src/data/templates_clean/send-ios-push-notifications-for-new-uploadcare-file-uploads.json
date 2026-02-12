@@ -1,0 +1,1 @@
+{"id":4232,"name":"Send iOS Push Notifications for new Uploadcare file uploads","description":"Every time a new file is uploaded to Uploadcare, Make will automatically send a push notification to your Apple iOS device.","url":"4232-send-ios-push-notifications-for-new-uploadcare-file-uploads","usedApps":["uploadcare","ios"],"usage":5}

@@ -1,0 +1,1 @@
+{"id":4290,"name":"Add new TimeCamp tasks as new Trello cards","description":"When you add a new TimeCamp task, a corresponding Trello card will be created.","url":"4290-add-new-timecamp-tasks-as-new-trello-cards","usedApps":["timecamp","trello"],"usage":3}

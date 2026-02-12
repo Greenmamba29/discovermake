@@ -1,0 +1,1 @@
+{"id":5055,"name":"Run a Cloud BOT bot when another bot is executed","description":"Every time a Cloud BOT bot is executed, Make will automatically run another Cloud BOT bot.","url":"5055-run-a-cloud-bot-bot-when-another-bot-is-executed","usedApps":["cloud-bot","cloud-bot"],"usage":2}

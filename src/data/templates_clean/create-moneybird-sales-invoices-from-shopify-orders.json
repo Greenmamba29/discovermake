@@ -1,0 +1,1 @@
+{"id":4644,"name":"Create Moneybird sales invoices from Shopify orders","description":"Every time a new Shopify order is created, Make will automatically create a sales invoice in Moneybird.","url":"4644-create-moneybird-sales-invoices-from-shopify-orders","usedApps":["shopify","moneybird"],"usage":21}

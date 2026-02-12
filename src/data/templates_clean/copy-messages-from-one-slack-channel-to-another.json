@@ -1,0 +1,1 @@
+{"id":882,"name":"Copy messages from one Slack channel to another","description":"Every time a new message is posted to a selected Slack channel, Make will automatically copy that message to another channel in Slack.","url":"882-copy-messages-from-one-slack-channel-to-another","usedApps":["slack","slack"],"usage":1147}

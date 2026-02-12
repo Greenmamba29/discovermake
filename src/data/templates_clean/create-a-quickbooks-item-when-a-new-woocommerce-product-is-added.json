@@ -1,0 +1,1 @@
+{"id":5077,"name":"Create a QuickBooks item when a new WooCommerce product is added","description":"Whenever a new WooCommerce product is added, Make will automatically create a QuickBooks item.","url":"5077-create-a-quickbooks-item-when-a-new-woocommerce-product-is-added","usedApps":["woocommerce","builtin","util","quickbooks"],"usage":49}

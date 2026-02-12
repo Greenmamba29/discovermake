@@ -1,0 +1,1 @@
+{"id":4651,"name":"Upload new Dropbox files to Google Cloud Storage","description":"Every time a new file is added to your Dropbox account, Make will automatically upload the object to a specified Google Cloud Storage bucket.","url":"4651-upload-new-dropbox-files-to-google-cloud-storage","usedApps":["dropbox","google-cloud-storage"],"usage":31}

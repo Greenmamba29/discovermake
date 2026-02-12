@@ -1,0 +1,1 @@
+{"id":2731,"name":"Send ClickSend SMS messages when someone completes your Wufoo form","description":"Every time someone fills out your Wufoo form, Make will automatically send an SMS messagevia ClickSend to a specified number.","url":"2731-send-clicksend-sms-messages-when-someone-completes-your-wufoo-form","usedApps":["wufoo","clicksend"],"usage":2}

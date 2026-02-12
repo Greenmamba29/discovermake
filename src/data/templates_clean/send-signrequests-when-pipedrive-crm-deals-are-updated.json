@@ -1,0 +1,1 @@
+{"id":7681,"name":"Send SignRequests when Pipedrive CRM deals are updated","description":"Make will watch at regular intervals when your Pipedrive CRM deals are updated (reach the specified stage) and send SignRequests to them.","url":"7681-send-signrequests-when-pipedrive-crm-deals-are-updated","usedApps":["pipedrive","signrequest"],"usage":2}

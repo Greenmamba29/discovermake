@@ -1,0 +1,1 @@
+{"id":1725,"name":"Create Active Campaign contacts from new Google Form responses","description":"Every time a new response is entered on your Google Form, Make will automatically create a new contact in ActiveCampaign.","url":"1725-create-active-campaign-contacts-from-new-google-form-responses","usedApps":["google-forms","activecampaign"],"usage":97}

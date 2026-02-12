@@ -1,0 +1,1 @@
+{"id":3006,"name":"Send a message to Twist about a new project in Harvest","description":"When a new project is created in Harvest, a new message is sent to specified thread in Twist.","url":"3006-send-a-message-to-twist-about-a-new-project-in-harvest","usedApps":["harvest","twist"],"usage":0}

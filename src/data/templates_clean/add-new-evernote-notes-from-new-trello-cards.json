@@ -1,0 +1,1 @@
+{"id":5789,"name":"Add new Evernote notes from new Trello cards","description":"This automation watches for new Trello cards, retrieves them and creates Evernote notes for you.","url":"5789-add-new-evernote-notes-from-new-trello-cards","usedApps":["trello","evernote"],"usage":4}

@@ -1,0 +1,1 @@
+{"id":8486,"name":"Watch for new WP imports and add them to a G Sheet and send an email about it","description":"This automation will add new imports details from WP Import to the desired G Sheet and send an email about it. ","url":"8486-watch-for-new-wp-imports-and-add-them-to-a-g-sheet-and-send-an-email-about-it","usedApps":["wp-all-import","google-sheets","email"],"usage":27}

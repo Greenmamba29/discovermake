@@ -1,0 +1,1 @@
+{"id":4089,"name":"Validate e-mails in Pipedrive's deals","description":"When a new deal is created in Pipedrive, the e-mail is validated using NeverBounce app. When it is not valid, the deal is updated, e.g. moved to another stage.","url":"4089-validate-e-mails-in-pipedrive-s-deals","usedApps":["pipedrive","neverbounce"],"usage":3}

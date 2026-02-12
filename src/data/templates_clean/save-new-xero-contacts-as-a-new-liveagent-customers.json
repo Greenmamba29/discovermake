@@ -1,0 +1,1 @@
+{"id":6995,"name":"Save new Xero contacts as a new LiveAgent customers","description":"Every time a new contact is created in Xero, Make will automatically create a new customer in LiveAgent.","url":"6995-save-new-xero-contacts-as-a-new-liveagent-customers","usedApps":["xero","liveagent"],"usage":2}

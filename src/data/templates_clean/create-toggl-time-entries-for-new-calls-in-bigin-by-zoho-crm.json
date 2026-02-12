@@ -1,0 +1,1 @@
+{"id":7146,"name":"Create Toggl time entries for new calls in Bigin by Zoho CRM","description":"Every time a call is added in your Bigin by Zoho CRM, Make will create a time entry in your Toggl out of it.","url":"7146-create-toggl-time-entries-for-new-calls-in-bigin-by-zoho-crm","usedApps":["bigin-by-zoho","toggl"],"usage":5}

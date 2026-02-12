@@ -1,0 +1,1 @@
+{"id":8147,"name":"Add new Braintree customers to Clover POS","description":"Make will watch new Braintree customers at regular intervals and create Clover POS customers using information received.","url":"8147-add-new-braintree-customers-to-clover-pos","usedApps":["braintree","clover-pos","builtin"],"usage":3}

@@ -1,0 +1,1 @@
+{"id":4859,"name":"Sends message with photo to Telegram from posts in VK.com","description":"When new post is published on VK.com, Make will automatically send message with attachment to Telegram channel","url":"4859-sends-message-with-photo-to-telegram-from-posts-in-vk-com","usedApps":["vk-com","builtin","telegram"],"usage":209}

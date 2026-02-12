@@ -1,0 +1,1 @@
+{"id":8796,"name":"Get Slack notifications for new Thankster addresses","description":"Every time a new address is created in Thankster, Make will automatically send a notification message to a specified channel/chat in Slack.","url":"8796-get-slack-notifications-for-new-thankster-addresses","usedApps":["thankster","slack"],"usage":1}

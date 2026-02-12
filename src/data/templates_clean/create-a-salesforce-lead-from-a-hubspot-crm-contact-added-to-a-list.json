@@ -1,0 +1,1 @@
+{"id":5998,"name":"Create a Salesforce lead from a HubSpot CRM contact added to a list","description":"Use this template to automatically create a Salesforce lead when a HubSpot CRM contact is added to a list of your choice.","url":"5998-create-a-salesforce-lead-from-a-hubspot-crm-contact-added-to-a-list","usedApps":["hubspotcrm","salesforce"],"usage":34}

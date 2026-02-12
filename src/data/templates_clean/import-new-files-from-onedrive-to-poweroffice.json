@@ -1,0 +1,1 @@
+{"id":8585,"name":"Import new files from OneDrive to PowerOffice","description":"Make will watch for new files in a specified OneDrive folder at regular intervals, download it, and import to PowerOffice.","url":"8585-import-new-files-from-onedrive-to-poweroffice","usedApps":["onedrive","poweroffice"],"usage":28}

@@ -1,0 +1,1 @@
+{"id":4175,"name":"Save new Etsy transactions in Wave","description":"Every time a new Etsy shop receipt is created, Make will automatically record a new accounting transaction in Wave.","url":"4175-save-new-etsy-transactions-in-wave","usedApps":["etsy","wave"],"usage":584}

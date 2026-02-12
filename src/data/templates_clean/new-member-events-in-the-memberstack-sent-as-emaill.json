@@ -1,0 +1,1 @@
+{"id":6478,"name":"New member events in the Memberstack sent as emaill","description":"Every time an event occurs on the member in Memberstack, you will get an email with the member details.","url":"6478-new-member-events-in-the-memberstack-sent-as-emaill","usedApps":["memberstack","email"],"usage":19}

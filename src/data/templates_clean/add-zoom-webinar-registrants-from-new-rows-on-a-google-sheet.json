@@ -1,0 +1,1 @@
+{"id":6631,"name":"Add Zoom Webinar registrants from new rows on a Google Sheet","description":"This automation adds registrants to a Zoom webinar automatically from the details entered on a Google Sheet.","url":"6631-add-zoom-webinar-registrants-from-new-rows-on-a-google-sheet","usedApps":["google-sheets","zoom"],"usage":43}

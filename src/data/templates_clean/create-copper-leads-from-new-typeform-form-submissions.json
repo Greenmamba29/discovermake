@@ -1,0 +1,1 @@
+{"id":5297,"name":"Create Copper leads from new Typeform form submissions","description":"Every time your Typeform form is filled out, Make will automatically create a new Copper lead.\n\nYou have to enable leads in the \"Lead Statuses\" settings in Copper.","url":"5297-create-copper-leads-from-new-typeform-form-submissions","usedApps":["typeform","prosperworks"],"usage":1}

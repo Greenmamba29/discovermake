@@ -1,0 +1,1 @@
+{"id":12129,"name":"Cloudonix - HelloWorld Announcement","description":"This template will create a simple voice application that uses Text-To-Speech, a short pause then another announcement and hangs up the call.","url":"12129-cloudonix-helloworld-announcement","usedApps":["cloudonix","cloudonix"],"usage":2}

@@ -1,0 +1,1 @@
+{"id":6557,"name":"Send Rocket.Chat messages for new Gmail emails","description":"Every time you receive a Gmail email matching specified criteria, Make will automatically post link to that message to Rocket.Chat.","url":"6557-send-rocket-chat-messages-for-new-gmail-emails","usedApps":["google-email","rocket-chat"],"usage":1}

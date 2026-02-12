@@ -1,0 +1,1 @@
+{"id":7211,"name":"Add Mailgun mailing list members for new Dux-Soup events","description":"Every time an event happens in your Dux-Soup, Make will add an email from the event to your Mailgun mailing list.","url":"7211-add-mailgun-mailing-list-members-for-new-dux-soup-events","usedApps":["dux-soup","mailgun"],"usage":0}

@@ -1,0 +1,1 @@
+{"id":4932,"name":"Save a new PandaDoc document in Google Drive","description":"When a new document is created in PandaDoc, the document is uploaded in Google Drive.","url":"4932-save-a-new-pandadoc-document-in-google-drive","usedApps":["pandadoc","google-drive"],"usage":42}

@@ -1,0 +1,1 @@
+{"id":10323,"name":"Create new tasks in Asana from new companies in Custify","description":"Every time a new company is created in Custify, Make will automatically create a new task in Asana.","url":"10323-create-new-tasks-in-asana-from-new-companies-in-custify","usedApps":["custify","asana"],"usage":6}

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Marketplace Moderation Feed</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13a4ec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101c22",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display min-h-screen pb-24">
+<!-- Header -->
+<div class="sticky top-0 z-50 bg-background-light dark:bg-background-dark/95 backdrop-blur-sm border-b border-slate-200 dark:border-slate-800">
+<div class="flex items-center justify-between px-4 py-3">
+<h1 class="text-xl font-bold tracking-tight">Moderation Queue</h1>
+<div class="flex gap-2">
+<button class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 transition-colors">
+<span class="material-symbols-outlined">filter_list</span>
+</button>
+<button class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 transition-colors">
+<span class="material-symbols-outlined">history</span>
+</button>
+</div>
+</div>
+<!-- Filter Tabs -->
+<div class="flex gap-3 px-4 pb-3 overflow-x-auto no-scrollbar">
+<button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-primary text-white px-4">
+<span class="text-sm font-medium">All</span>
+</button>
+<button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-4">
+<span class="text-sm font-medium text-slate-600 dark:text-slate-300">Critical</span>
+</button>
+<button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-4">
+<span class="text-sm font-medium text-slate-600 dark:text-slate-300">Reported</span>
+</button>
+<button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-4">
+<span class="text-sm font-medium text-slate-600 dark:text-slate-300">Resolved</span>
+</button>
+</div>
+</div>
+<!-- Stats Overview -->
+<div class="px-4 py-4 space-y-4">
+<div class="flex gap-4 overflow-x-auto no-scrollbar pb-2">
+<div class="flex min-w-[140px] flex-col gap-1 rounded-xl p-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Pending</p>
+<div class="flex items-baseline gap-2">
+<p class="text-2xl font-bold">12</p>
+<p class="text-emerald-500 text-xs font-medium">+2%</p>
+</div>
+</div>
+<div class="flex min-w-[140px] flex-col gap-1 rounded-xl p-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Critical</p>
+<div class="flex items-baseline gap-2">
+<p class="text-2xl font-bold">3</p>
+<p class="text-red-500 text-xs font-medium">+15%</p>
+</div>
+</div>
+<div class="flex min-w-[140px] flex-col gap-1 rounded-xl p-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Resolved</p>
+<div class="flex items-baseline gap-2">
+<p class="text-2xl font-bold">45</p>
+<p class="text-emerald-500 text-xs font-medium">+5%</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Feed Content -->
+<div class="px-4 space-y-4">
+<h3 class="text-lg font-bold tracking-tight px-1">New Reports</h3>
+<!-- Card 1 -->
+<div class="bg-white dark:bg-[#1E1E1E] rounded-xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-800">
+<div class="p-4 space-y-4">
+<!-- Reporter Header -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD7Zzv42Qh1-IDRJJVdtBRNQbfHkVoSf59CExbF106RYtZlwXG2jFXuh2M-E0REoE17G6u5QVUKl67rd8n7LnwnAO_K82JBEd1-diIOlMggzW-HWYK3AkClL6UaI3E1K3EEMgxk4kHxuKZtaore6Ahzra4D357jpKPSXuD6xzQBtOl5rU8Xf_XHlQ4hVF-o9sieJ2OkPss73bpPSzKj9KA1sFYbmdwInmfwPoFMElhVPKV5Y88IktWMb_7-8q0T8uB6kvE4sA7M1AE'); background-size: cover; background-position: center;"></div>
+<div class="flex flex-col">
+<span class="text-sm font-semibold text-slate-900 dark:text-white">@alex_dev</span>
+<span class="text-xs text-slate-500 dark:text-slate-400">2h ago</span>
+</div>
+</div>
+<span class="px-2 py-1 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 text-xs font-bold rounded uppercase tracking-wide">Critical</span>
+</div>
+<!-- Report Reason -->
+<div>
+<p class="text-base font-bold text-slate-900 dark:text-white mb-1">Broken Logic: Infinite Loop</p>
+<p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                        The workflow enters an infinite loop when the user selects "Skip" on step 3. It crashes the browser tab immediately.
+                    </p>
+</div>
+<!-- Workflow Preview -->
+<div class="flex gap-3 bg-slate-50 dark:bg-[#252525] p-3 rounded-lg border border-slate-100 dark:border-slate-700/50">
+<div class="w-16 h-16 rounded-lg bg-cover bg-center shrink-0" data-alt="Abstract code interface thumbnail" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBPcR0Viw82YEza3SZlgaf8H_QkIC2jz3Wvo_fiJ6F24qjsbWbihWT9ooTsz1mcDURpxVvzbHGwh_1I0nu_MSaCX3aQoHpdSf26P14yzigbCzGJsm0SF9UD5erSjEfgVRpElfsGLaX_T4lkCbs_V-rzZRd1o5ydzkZYycnyAUYd-tIqhQuT5i2l00UDO5nC3oZ-7PUaLUEYcWKOzUp9R2SMysd3905dn4HaDohYanoDtXcm-0GXcJCwNIQ7YTe2yarGzfNTPPKtrr0');"></div>
+<div class="flex flex-col justify-center">
+<h4 class="text-sm font-semibold text-slate-900 dark:text-white">Email Drip Campaign v2</h4>
+<p class="text-xs text-slate-500 dark:text-slate-400">by @marketing_guru</p>
+<div class="flex items-center gap-1 mt-1 text-xs text-primary font-medium">
+<span>View Workflow</span>
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</div>
+</div>
+</div>
+<!-- Action Bar -->
+<div class="grid grid-cols-3 gap-2 pt-2 border-t border-slate-100 dark:border-slate-800">
+<button class="flex flex-col items-center justify-center gap-1 py-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-red-500">delete</span>
+<span class="text-xs font-medium text-slate-500 group-hover:text-red-500">Remove</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-1 py-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group">
+<span class="material-symbols-outlined text-primary">mail</span>
+<span class="text-xs font-medium text-primary">Contact</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-1 py-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-emerald-500">check_circle</span>
+<span class="text-xs font-medium text-slate-500 group-hover:text-emerald-500">Dismiss</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-white dark:bg-[#1E1E1E] rounded-xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-800">
+<div class="p-4 space-y-4">
+<!-- Reporter Header -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCPweKh9WKXLv2rq8LecW2nKKcpHgAdsQMrkNUTtnVnXRN9fkWrbdxiNkFv5n3OCW0LjQRp3WufV91APWAkfyYu-vSxCr0NF0FOfhT332AsjbGahstbYx7BXc0jU7L_C0pi24yorP8O7nhPgcESB6Q5-32LKtAZam-xl7xnkxST9wXqlf-I-dUzZeq60PEO7Uu7r2PxIqOq4XunRMky7Wk_qiVmuKrp4ewAKUkGQZV5N1Fl8EvLLvMHq9queU-XB_S-kLxafsLB41o'); background-size: cover; background-position: center;"></div>
+<div class="flex flex-col">
+<span class="text-sm font-semibold text-slate-900 dark:text-white">@sarah_design</span>
+<span class="text-xs text-slate-500 dark:text-slate-400">5h ago</span>
+</div>
+</div>
+<span class="px-2 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-xs font-bold rounded uppercase tracking-wide">Review</span>
+</div>
+<!-- Report Reason -->
+<div>
+<p class="text-base font-bold text-slate-900 dark:text-white mb-1">Inappropriate Content</p>
+<p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                        The generated images contain watermark from a competitor service which violates TOS section 4.2.
+                    </p>
+</div>
+<!-- Workflow Preview -->
+<div class="flex gap-3 bg-slate-50 dark:bg-[#252525] p-3 rounded-lg border border-slate-100 dark:border-slate-700/50">
+<div class="w-16 h-16 rounded-lg bg-cover bg-center shrink-0" data-alt="Abstract colorful generative art" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA5rEKLziTNm3BERcMUauFHtWmoHRACE0VhaKaFu6g7aJ6E0RyOw42DpF0dR4PmyXeN1xovdZoCCYcj0b_peplYaV-TM9wqOl_JT43wZu5aS7EjIybctox9gj5OEfo0e6Rs0A7qUy4BcsGGZ6s3YRuu-N5-Xiu7pkTqNH3ZiBDpMCFekN2yma5TO9EEv6aZ3yRurw_OIC5CAih9i0p002I7J4V6QNKld_gG1ejVk4Be3YlAu2ZXR5fezy_xvrxAnwbBDuBtpNLXrmE');"></div>
+<div class="flex flex-col justify-center">
+<h4 class="text-sm font-semibold text-slate-900 dark:text-white">Image Generator Pro</h4>
+<p class="text-xs text-slate-500 dark:text-slate-400">by @pixel_artist</p>
+<div class="flex items-center gap-1 mt-1 text-xs text-primary font-medium">
+<span>View Workflow</span>
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</div>
+</div>
+</div>
+<!-- Action Bar -->
+<div class="grid grid-cols-3 gap-2 pt-2 border-t border-slate-100 dark:border-slate-800">
+<button class="flex flex-col items-center justify-center gap-1 py-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-red-500">delete</span>
+<span class="text-xs font-medium text-slate-500 group-hover:text-red-500">Remove</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-1 py-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group">
+<span class="material-symbols-outlined text-primary">mail</span>
+<span class="text-xs font-medium text-primary">Contact</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-1 py-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-emerald-500">check_circle</span>
+<span class="text-xs font-medium text-slate-500 group-hover:text-emerald-500">Dismiss</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-white dark:bg-[#1E1E1E] rounded-xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-800 opacity-60">
+<div class="p-4 space-y-4">
+<!-- Reporter Header -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCt_L5WYb8lnVMfyKs7S0yNX-zMroPBPDgX1E7N7BY7C1Y9xw8oockE4rcCVhucclYTVbcsReOuZp2BFd3YXK2k9qqlEhllNmIA11JUzI_o9QXJbrRcwJT-cR-lf_smqZLmcY1ZYIXOqqhf9M4hQbe9UdpJCFJnZLOREOIR1QPsrD9J2m8EzyjivfTPvzqg-3Yl1xa7-wnoKj0oYovzzMciYI0T3akETHc2BUMHffIf4v31MRf6Oc86e-hAO455jsnigwUqgTaama8'); background-size: cover; background-position: center;"></div>
+<div class="flex flex-col">
+<span class="text-sm font-semibold text-slate-900 dark:text-white">@mike_systems</span>
+<span class="text-xs text-slate-500 dark:text-slate-400">Yesterday</span>
+</div>
+</div>
+<span class="px-2 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs font-bold rounded uppercase tracking-wide">Pending</span>
+</div>
+<!-- Report Reason -->
+<div>
+<p class="text-base font-bold text-slate-900 dark:text-white mb-1">Inaccurate Outcome</p>
+<p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed truncate">
+                        Output variables don't match the input schema defined in...
+                    </p>
+</div>
+<!-- Workflow Preview -->
+<div class="flex gap-3 bg-slate-50 dark:bg-[#252525] p-3 rounded-lg border border-slate-100 dark:border-slate-700/50">
+<div class="w-16 h-16 rounded-lg bg-cover bg-center shrink-0" data-alt="Dark computer code on screen" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBgDKExKtI5xKH_oEkft_fXCeZYa2B9jAFR5qgCMsKWGdDsTLMJmAySLW50l6AOgkv-SEjxR8wnJWUr3o3356u-7IIp76sjunxM8Kc-ZZ8pcMTkOlvte7VRLYD1Yg7i_2je2iJ1qdmM7e88v8F8i73D3srkYkSEEaSdkjk87h6-ARBOvy8OvvQWQp25SDvo6BTUiS6ago3HDGijsl0j_Whu7JIkBVIw2zzY-OFNrIDLMOthQ4jfJXhht0dNlH-zzBAWt_BAQG6H0K4');"></div>
+<div class="flex flex-col justify-center">
+<h4 class="text-sm font-semibold text-slate-900 dark:text-white">Data Scraper V1</h4>
+<p class="text-xs text-slate-500 dark:text-slate-400">by @data_miner</p>
+<div class="flex items-center gap-1 mt-1 text-xs text-primary font-medium">
+<span>View Workflow</span>
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</div>
+</div>
+</div>
+<!-- Action Bar -->
+<div class="grid grid-cols-3 gap-2 pt-2 border-t border-slate-100 dark:border-slate-800">
+<button class="flex flex-col items-center justify-center gap-1 py-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-red-500">delete</span>
+<span class="text-xs font-medium text-slate-500 group-hover:text-red-500">Remove</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-1 py-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group">
+<span class="material-symbols-outlined text-primary">mail</span>
+<span class="text-xs font-medium text-primary">Contact</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-1 py-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-emerald-500">check_circle</span>
+<span class="text-xs font-medium text-slate-500 group-hover:text-emerald-500">Dismiss</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Navigation -->
+<div class="fixed bottom-0 w-full bg-white dark:bg-[#101c22] border-t border-slate-200 dark:border-slate-800 pb-safe">
+<div class="flex justify-around items-center h-16">
+<button class="flex flex-col items-center gap-1 w-full text-primary">
+<span class="material-symbols-outlined fill-1">dashboard</span>
+<span class="text-[10px] font-medium">Queue</span>
+</button>
+<button class="flex flex-col items-center gap-1 w-full text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+<span class="material-symbols-outlined">group</span>
+<span class="text-[10px] font-medium">Users</span>
+</button>
+<button class="flex flex-col items-center gap-1 w-full text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+<span class="material-symbols-outlined">analytics</span>
+<span class="text-[10px] font-medium">Logs</span>
+</button>
+<button class="flex flex-col items-center gap-1 w-full text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] font-medium">Settings</span>
+</button>
+</div>
+</div>
+<!-- Safe area spacing for bottom nav -->
+<div class="h-6 w-full"></div>
+</body></html>

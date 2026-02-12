@@ -1,0 +1,1 @@
+{"id":8575,"name":"Create GitHub issues from Jira Service Desk","description":"Every time a new request is added to your JIRA Service Desk, Make will automatically create the corresponding issue in GitHub.","url":"8575-create-github-issues-from-jira-service-desk","usedApps":["jira-service-desk","builtin","github"],"usage":2}

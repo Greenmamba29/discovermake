@@ -1,0 +1,1 @@
+{"id":4060,"name":"Create tasks from e-mails in Nimble","description":"When a new e-mail is received in Gmail, a new task is created in Nimble.","url":"4060-create-tasks-from-e-mails-in-nimble","usedApps":["google-email","nimble"],"usage":3}

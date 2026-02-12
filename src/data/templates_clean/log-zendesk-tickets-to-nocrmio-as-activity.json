@@ -1,0 +1,1 @@
+{"id":7223,"name":"Log Zendesk tickets to noCRM.io as activity","description":"Use this template to automatically create a noCRM.io lead activity when a new Zendesk ticket is created.","url":"7223-log-zendesk-tickets-to-nocrm-io-as-activity","usedApps":["zendesk","nocrm-io"],"usage":1}

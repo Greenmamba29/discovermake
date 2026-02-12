@@ -1,0 +1,1 @@
+{"id":4086,"name":"Create Tasks from e-mails in Tallyfy","description":"When an e-mail is received in Gmail, a new task with content of the e-mail is created in Tallyfy.","url":"4086-create-tasks-from-e-mails-in-tallyfy","usedApps":["google-email","tallyfy"],"usage":4}

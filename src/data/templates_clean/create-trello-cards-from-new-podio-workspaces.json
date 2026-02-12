@@ -1,0 +1,1 @@
+{"id":163,"name":"Create Trello cards from new Podio workspaces","description":"Every time a new workspace is created in Podio, Make will automatically create a new card in a specific Trello board.","url":"163-create-trello-cards-from-new-podio-workspaces","usedApps":["podio","trello"],"usage":12}

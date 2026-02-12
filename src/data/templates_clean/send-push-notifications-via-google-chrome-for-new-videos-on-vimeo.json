@@ -1,0 +1,1 @@
+{"id":1061,"name":"Send push notifications via Google Chrome for new videos on Vimeo","description":"Every time a new video is added to a watched album on Vimeo, Make will automatically send a push notification via Google Chrome.","url":"1061-send-push-notifications-via-google-chrome-for-new-videos-on-vimeo","usedApps":["chrome","vimeo"],"usage":4}

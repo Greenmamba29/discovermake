@@ -1,0 +1,1 @@
+{"id":7275,"name":"Create Stripe customers for new contacts in HubSpot CRM","description":"Every time a new contact is created in your HubSpot CRM, Make will automatically create a customer in your Stripe.","url":"7275-create-stripe-customers-for-new-contacts-in-hubspot-crm","usedApps":["hubspotcrm","stripe"],"usage":13}

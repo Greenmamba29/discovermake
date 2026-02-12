@@ -1,0 +1,1 @@
+{"id":1812,"name":"Create Zoom meetings from new Todoist tasks","description":"Every time a new task is created in Zoom, Make will automatically schedule a new meeting in Zoom.","url":"1812-create-zoom-meetings-from-new-todoist-tasks","usedApps":["todoist","zoom"],"usage":20}

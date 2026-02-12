@@ -1,0 +1,1 @@
+{"id":5034,"name":"Create a Setmore appointment for new Google Sheets rows","description":"Every time a new row is added to your Google Sheets spreadsheet,, Make will automatically create an appointment in Setmore.","url":"5034-create-a-setmore-appointment-for-new-google-sheets-rows","usedApps":["google-sheets","setmore"],"usage":3}

@@ -1,0 +1,1 @@
+{"id":6941,"name":"Create Google Calendar events from new RapidReg registrations","description":"Every time there is a new RapidReg registration, Make will automatically create a new Google Calendar event.","url":"6941-create-google-calendar-events-from-new-rapidreg-registrations","usedApps":["rapidreg","google-calendar"],"usage":2}

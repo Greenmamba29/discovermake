@@ -1,0 +1,1 @@
+{"id":4074,"name":"Create Slack messages from new eSignatures.io contracts","description":"Every time a new eSignatures.io contract is sent, Make will automatically send a message to the Slack channel of your choice. ","url":"4074-create-slack-messages-from-new-esignatures-io-contracts","usedApps":["esignatures-io","slack"],"usage":6}

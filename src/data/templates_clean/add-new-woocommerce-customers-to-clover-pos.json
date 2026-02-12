@@ -1,0 +1,1 @@
+{"id":8146,"name":"Add new WooCommerce customers to Clover POS","description":"Make will watch new WooCommerce customers at regular intervals and create Clover POS customers using information received.","url":"8146-add-new-woocommerce-customers-to-clover-pos","usedApps":["woocommerce","clover-pos","builtin"],"usage":13}

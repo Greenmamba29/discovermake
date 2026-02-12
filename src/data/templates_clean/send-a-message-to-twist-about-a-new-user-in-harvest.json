@@ -1,0 +1,1 @@
+{"id":3008,"name":"Send a message to Twist about a new user in Harvest","description":"When a new user is created or a current user is updated, a notification about this event is sent to specified thread in Twist.","url":"3008-send-a-message-to-twist-about-a-new-user-in-harvest","usedApps":["harvest","twist"],"usage":0}

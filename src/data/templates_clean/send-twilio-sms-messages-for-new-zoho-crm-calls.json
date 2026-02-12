@@ -1,0 +1,1 @@
+{"id":625,"name":"Send Twilio SMS messages for new Zoho CRM calls","description":"Every time a new call is logged in Zoho CRM, Make will automatically send an SMS message via Twilio.","url":"625-send-twilio-sms-messages-for-new-zoho-crm-calls","usedApps":["zohocrm","twilio"],"usage":50}

@@ -1,0 +1,1 @@
+{"id":8443,"name":"Get Slack notifications for new pages in Sorry","description":"Every time a new page is created in Sorry, Make will automatically send a notification message to a specified channel/chat in Slack.","url":"8443-get-slack-notifications-for-new-pages-in-sorry","usedApps":["sorry","slack"],"usage":1}

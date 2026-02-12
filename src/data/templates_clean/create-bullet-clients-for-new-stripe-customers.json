@@ -1,0 +1,1 @@
+{"id":7946,"name":"Create Bullet clients for new Stripe customers","description":"Every time a new customer is added to your Stripe, Make will create an identical Bullet client. You should trigger the webhook once before running the scenario for the mappable parameters to load.","url":"7946-create-bullet-clients-for-new-stripe-customers","usedApps":["stripe","bullet"],"usage":1}

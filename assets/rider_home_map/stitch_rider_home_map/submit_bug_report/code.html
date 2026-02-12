@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Submit Bug Report</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .glass {
+            background: rgba(25, 34, 51, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glass-pill {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -1;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white min-h-screen overflow-x-hidden relative">
+<!-- Background Decorative Elements -->
+<div class="orb bg-primary/20 w-80 h-80 -top-20 -right-20"></div>
+<div class="orb bg-purple-600/10 w-64 h-64 top-1/2 -left-32"></div>
+<!-- Top Navigation Bar -->
+<nav class="sticky top-0 z-50 glass px-4 py-4 flex items-center justify-between border-b border-white/10">
+<button class="text-white/70 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[24px]">close</span>
+</button>
+<h1 class="text-lg font-bold tracking-tight">Submit Bug Report</h1>
+<button class="text-primary font-bold text-sm">Help</button>
+</nav>
+<main class="p-5 space-y-6 max-w-[480px] mx-auto pb-32">
+<header>
+<h2 class="text-3xl font-bold text-white mb-2">New Submission</h2>
+<p class="text-white/50 text-sm">Provide details about the issue you encountered during your ride.</p>
+</header>
+<!-- Form Section -->
+<div class="space-y-5">
+<!-- Bug Title Input -->
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-white/80 ml-1">Bug Title</label>
+<div class="glass rounded-xl p-1 focus-within:ring-2 focus-within:ring-primary/50 transition-all">
+<input class="w-full bg-transparent border-none focus:ring-0 text-white placeholder:text-white/30 py-3 px-4 text-base" placeholder="e.g., Map pin jumping after update" type="text"/>
+</div>
+</div>
+<!-- Severity Pills -->
+<div class="flex flex-col gap-3">
+<label class="text-sm font-semibold text-white/80 ml-1">Severity Level</label>
+<div class="flex flex-wrap gap-2">
+<button class="glass-pill rounded-full px-5 py-2 text-xs font-bold border-l-4 border-l-blue-400 text-blue-400 flex items-center gap-1.5 hover:bg-white/10 transition-all">
+<span class="size-1.5 rounded-full bg-blue-400"></span>
+                        LOW
+                    </button>
+<button class="glass-pill rounded-full px-5 py-2 text-xs font-bold border-l-4 border-l-yellow-400 text-yellow-400 flex items-center gap-1.5 hover:bg-white/10 transition-all">
+<span class="size-1.5 rounded-full bg-yellow-400"></span>
+                        MEDIUM
+                    </button>
+<button class="glass rounded-full px-5 py-2 text-xs font-bold border-l-4 border-l-orange-500 text-white bg-primary/20 ring-1 ring-primary/40 flex items-center gap-1.5 shadow-[0_0_15px_rgba(19,91,236,0.3)]">
+<span class="size-1.5 rounded-full bg-orange-500 animate-pulse"></span>
+                        HIGH
+                    </button>
+<button class="glass-pill rounded-full px-5 py-2 text-xs font-bold border-l-4 border-l-red-500 text-red-500 flex items-center gap-1.5 hover:bg-white/10 transition-all">
+<span class="size-1.5 rounded-full bg-red-500"></span>
+                        CRITICAL
+                    </button>
+</div>
+</div>
+<!-- Description -->
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-white/80 ml-1">Detailed Description</label>
+<div class="glass rounded-xl p-1 focus-within:ring-2 focus-within:ring-primary/50 transition-all">
+<textarea class="w-full bg-transparent border-none focus:ring-0 text-white placeholder:text-white/30 py-3 px-4 text-base resize-none" placeholder="Step-by-step reproduction guide..." rows="4"></textarea>
+</div>
+</div>
+<!-- Upload Section -->
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-white/80 ml-1">Evidence &amp; Logs</label>
+<div class="glass rounded-xl border-dashed border-2 border-white/20 p-8 flex flex-col items-center justify-center gap-3 hover:border-primary/50 transition-all cursor-pointer group">
+<div class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[28px]">add_a_photo</span>
+</div>
+<div class="text-center">
+<p class="text-sm font-bold text-white">Upload Screenshots</p>
+<p class="text-xs text-white/40">PNG, JPG or MP4 (Max 20MB)</p>
+</div>
+</div>
+</div>
+<!-- Map Preview (Contextual Ride Info) -->
+<div class="glass rounded-xl overflow-hidden mt-2 relative">
+<div class="h-32 w-full relative">
+<img alt="Map showing ride route" class="w-full h-full object-cover opacity-50" data-alt="Abstract dark map with glowing blue ride path" data-location="San Francisco" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfYvRYumS1FXMxKhax92AXHCfeCXGZNaeTIqd-4uIGCVRjDWhb1Byco4QJFLu1-VeGwvuAUtEIIfwhv8e8zVqK-oU6D5oxfGjNoAcdTg1-vOg5zsvrN1I-jwj2FftLC6rysOzm3Wg8T2yWJ4cYvq67sLThk5aVerQGFtnwYG1geoNNSIuXNQbxKHEifbQLSyXosvjbXwpDm5ZY0ardbJSf6Y_fWwchHB6C8ZNp86vBEIYRqQoOCX-yw1mAZzZ7Okg_PrCPizKP7NFa"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background-dark/80 to-transparent"></div>
+<div class="absolute bottom-3 left-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">location_on</span>
+<span class="text-xs font-medium text-white/70 tracking-wide uppercase">Ride ID: #RD-88210</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Fixed Submit Button Area -->
+<footer class="fixed bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-background-dark via-background-dark/90 to-transparent backdrop-blur-sm z-50 max-w-[480px] mx-auto">
+<button class="w-full py-4 bg-primary hover:bg-primary/90 rounded-xl font-bold text-lg shadow-[0_8px_25px_rgba(19,91,236,0.4)] transition-all flex items-center justify-center gap-2 group">
+            Submit Bug Report
+            <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">send</span>
+</button>
+<p class="text-center text-[10px] text-white/30 mt-3 uppercase tracking-[2px] font-medium">Verified Security Researcher Portal</p>
+</footer>
+</body></html>

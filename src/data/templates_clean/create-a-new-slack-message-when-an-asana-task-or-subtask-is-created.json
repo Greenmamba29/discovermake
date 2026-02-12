@@ -1,0 +1,1 @@
+{"id":4964,"name":"Create a new Slack message when an Asana task (or subtask) is created","description":"Every time an Asana task or subtask is created, a Slack message is created.","url":"4964-create-a-new-slack-message-when-an-asana-task-or-subtask-is-created","usedApps":["asana","builtin","slack"],"usage":70}

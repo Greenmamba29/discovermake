@@ -1,0 +1,1 @@
+{"id":6598,"name":"Send ClickSend SMS messages when new files are received on Slack","description":"When new files are received via Slack, this automation will send an SMS on ClickSend SMS to a specific number or list of your choice.","url":"6598-send-clicksend-sms-messages-when-new-files-are-received-on-slack","usedApps":["slack","clicksend"],"usage":2}

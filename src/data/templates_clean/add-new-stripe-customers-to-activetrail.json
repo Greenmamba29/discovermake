@@ -1,0 +1,1 @@
+{"id":1992,"name":"Add new Stripe customers to ActiveTrail","description":"Every time a new customer is created in Stripe, Make will automatically add that customer to ActiveTrail.","url":"1992-add-new-stripe-customers-to-activetrail","usedApps":["stripe","activetrail"],"usage":17}

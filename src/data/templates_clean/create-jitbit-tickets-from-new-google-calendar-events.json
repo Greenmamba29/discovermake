@@ -1,0 +1,1 @@
+{"id":7427,"name":"Create Jitbit tickets from new Google Calendar events","description":"Every time a new event is created in Google Calendar, Make will automatically create a new  ticket on Jitbit.","url":"7427-create-jitbit-tickets-from-new-google-calendar-events","usedApps":["google-calendar","jitbit"],"usage":0}

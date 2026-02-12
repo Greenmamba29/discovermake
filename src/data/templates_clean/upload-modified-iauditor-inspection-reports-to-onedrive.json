@@ -1,0 +1,1 @@
+{"id":7734,"name":"Upload modified iAuditor inspection reports to OneDrive","description":"Make will watch your iAuditor inspections at regular intervals and upload reports of these inspections to a specified folder in OneDrive. ","url":"7734-upload-modified-iauditor-inspection-reports-to-onedrive","usedApps":["iauditor","http","onedrive"],"usage":17}

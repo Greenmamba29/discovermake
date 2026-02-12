@@ -1,0 +1,1 @@
+{"id":7063,"name":"Create Xero Projects tasks for new tasks in Asana","description":"Every time a new task appears in your Asana, Make will crate a task in Xero Projects.","url":"7063-create-xero-projects-tasks-for-new-tasks-in-asana","usedApps":["asana","xero-projects"],"usage":16}

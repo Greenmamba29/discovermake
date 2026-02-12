@@ -1,0 +1,1 @@
+{"id":8037,"name":"Create Pipedrive CRM persons for new Nussii clients","description":"Every time a new client is created in your Nusii, Make will automatically create an identical person in your Pipedrive CRM.","url":"8037-create-pipedrive-crm-persons-for-new-nussii-clients","usedApps":["nusii","pipedrive"],"usage":1}

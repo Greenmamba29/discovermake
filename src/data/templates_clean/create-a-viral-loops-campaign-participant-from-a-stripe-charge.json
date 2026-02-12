@@ -1,0 +1,1 @@
+{"id":5760,"name":"Create a Viral Loops campaign participant from a Stripe charge","description":"Every time a Stripe charge has succeeded, Make will automatically create a participant in your Viral Loops campaign.","url":"5760-create-a-viral-loops-campaign-participant-from-a-stripe-charge","usedApps":["stripe","viral-loops"],"usage":3}

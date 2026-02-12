@@ -1,0 +1,1 @@
+{"id":7722,"name":"Add new contacts from ActiveCampaign to Customer.io","description":"Make will watch new contacts from ActiveCampaign at regular intervals and create or update Customer.io customers.","url":"7722-add-new-contacts-from-activecampaign-to-customer-io","usedApps":["activecampaign","customer-io"],"usage":1}

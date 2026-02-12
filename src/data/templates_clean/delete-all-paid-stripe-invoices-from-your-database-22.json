@@ -1,0 +1,1 @@
+{"id":10556,"name":"Delete all paid Stripe invoices from your database 2/2","description":"In the first scenario the customers were added to a sheet when they have unpaid invoices. This scenario deletes them from the sheet once their invoices are paid in Stripe.","url":"10556-delete-all-paid-stripe-invoices-from-your-database-2-2","usedApps":["stripe","google-sheets"],"usage":26}

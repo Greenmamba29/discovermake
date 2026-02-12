@@ -1,0 +1,1 @@
+{"id":8103,"name":"Send an SMS via Twilio from a new project event in QuickCapture","description":"Every time a new event appears in your project in QuickCapture, an SMS will be instantly sent via Twilio.","url":"8103-send-an-sms-via-twilio-from-a-new-project-event-in-quickcapture","usedApps":["quickcapture","twilio"],"usage":6}

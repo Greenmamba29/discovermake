@@ -1,0 +1,1 @@
+{"id":3835,"name":"Send new records from Airtable to Facebook Conversions API","description":"When new records are created in Airtable, they are sent as new events to Facebook Conversions API.","url":"3835-send-new-records-from-airtable-to-facebook-conversions-api","usedApps":["airtable","facebook-conversions-api"],"usage":19}

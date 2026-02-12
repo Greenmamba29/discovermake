@@ -1,0 +1,1 @@
+{"id":13260,"name":"Upload images to Lexoffice using a custom mailhook","description":"Automatically upload images to Lexoffice by sending them via a custom email hook, processed through the Iterator for streamlined document management.","url":"13260-upload-images-to-lexoffice-using-a-custom-mailhook","usedApps":["gateway","builtin","lexoffice"],"usage":23}

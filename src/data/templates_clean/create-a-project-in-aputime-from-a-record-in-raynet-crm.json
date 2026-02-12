@@ -1,0 +1,1 @@
+{"id":3775,"name":"Create a project in ApuTime from a record in RAYNET CRM","description":"When there is a new RAYNET CRM business case, create a new ApuTime project.","url":"3775-create-a-project-in-aputime-from-a-record-in-raynet-crm","usedApps":["raynetcrm","datastore","aputime","builtin"],"usage":10}

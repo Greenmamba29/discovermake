@@ -1,0 +1,1 @@
+{"id":3760,"name":"Add Google Group members from Google Form responses","description":"Every time someone fills out your Google Form, Make will automatically add them as members of a specified Google Group.","url":"3760-add-google-group-members-from-google-form-responses","usedApps":["google-forms","google-groups"],"usage":88}

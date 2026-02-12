@@ -1,0 +1,1 @@
+{"id":5968,"name":"Create tasks on Todoist with Slack messages that contain a specific word","description":"When you receive Slack messages that contain a specific word you watching for, Make will automatically create tasks on Todoist for you.","url":"5968-create-tasks-on-todoist-with-slack-messages-that-contain-a-specific-word","usedApps":["slack","todoist"],"usage":9}

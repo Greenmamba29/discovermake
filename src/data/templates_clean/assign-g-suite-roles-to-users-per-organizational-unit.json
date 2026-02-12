@@ -1,0 +1,1 @@
+{"id":3702,"name":"Assign G Suite roles to users per organizational unit","description":"Every time a user is added to your G Suite organization, Make will automatically assign this user into a specific role depending on their organizational unit.","url":"3702-assign-g-suite-roles-to-users-per-organizational-unit","usedApps":["google-g-suite","builtin"],"usage":9}

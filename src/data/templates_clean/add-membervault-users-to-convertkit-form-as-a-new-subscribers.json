@@ -1,0 +1,1 @@
+{"id":7379,"name":"Add MemberVault users to ConvertKit form as a new subscribers","description":"Every time a new user is added to a product in MemberVault, Make will automatically add that user to ConvertKit form as a new subscriber.","url":"7379-add-membervault-users-to-convertkit-form-as-a-new-subscribers","usedApps":["membervault","convertkit"],"usage":3}

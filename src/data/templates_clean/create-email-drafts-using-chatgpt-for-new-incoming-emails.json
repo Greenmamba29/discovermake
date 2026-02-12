@@ -1,0 +1,1 @@
+{"id":13416,"name":"Create email drafts using ChatGPT for new incoming emails","description":"Automatically draft email responses for new incoming emails using ChatGPT. Triggered by new emails, drafts are created in your email app.","url":"13416-create-email-drafts-using-chatgpt-for-new-incoming-emails","usedApps":["email","openai-gpt-3"],"usage":414}

@@ -1,0 +1,1 @@
+{"id":2567,"name":"Export Wild Apricot registrations into Google sheet","description":"This template exports registrations from an event into Google sheet.","url":"2567-export-wild-apricot-registrations-into-google-sheet","usedApps":["wild-apricot","util","google-sheets","builtin"],"usage":112}

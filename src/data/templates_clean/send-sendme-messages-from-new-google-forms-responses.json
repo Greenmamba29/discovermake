@@ -1,0 +1,1 @@
+{"id":7426,"name":"Send SendMe messages from new Google Forms responses","description":"Every time a new response is received in Google Forms, Make will automatically send a new message to SendMe contact.","url":"7426-send-sendme-messages-from-new-google-forms-responses","usedApps":["google-forms","sendme123"],"usage":1}

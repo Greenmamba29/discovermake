@@ -1,0 +1,1 @@
+{"id":13695,"name":"Parse phone numbers and send data using Shopify and HTTP actions","description":"Automatically parse phone numbers from new Shopify events and send the data via HTTP actions for streamlined communication and data management.","url":"13695-parse-phone-numbers-and-send-data-using-shopify-and-http-actions","usedApps":["shopify","phonenumber","http"],"usage":9}

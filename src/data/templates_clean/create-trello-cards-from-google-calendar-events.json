@@ -1,0 +1,1 @@
+{"id":5859,"name":"Create Trello cards from Google Calendar events","description":"Use this automation to retrieve your new Google Calendar events and create Trello cards with the information.","url":"5859-create-trello-cards-from-google-calendar-events","usedApps":["google-calendar","trello"],"usage":348}

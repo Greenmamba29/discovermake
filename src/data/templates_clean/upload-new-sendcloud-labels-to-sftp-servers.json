@@ -1,0 +1,1 @@
+{"id":4825,"name":"Upload new Sendcloud labels to SFTP servers","description":"Every time a Sendcloud parcel status is updated, Make will automatically create a label for the package and upload it to the SFTP server of your choice.","url":"4825-upload-new-sendcloud-labels-to-sftp-servers","usedApps":["sendcloud","sftp"],"usage":35}

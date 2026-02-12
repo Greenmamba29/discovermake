@@ -1,0 +1,1 @@
+{"id":8690,"name":"Send Layerise experience information for Telegram experience title sent","description":"Every time you send a Layerise experience title to your Telegram bot, Make will send you a product image that's affiliated to the experience.","url":"8690-send-layerise-experience-information-for-telegram-experience-title-sent","usedApps":["telegram","layerise"],"usage":2}

@@ -1,0 +1,1 @@
+{"id":560,"name":"Send Gitter messages for new Runkeeper activities","description":"Every time you add a new activity on the Runkeeper app, Make will automatically send a new message to a selected Gitter room.","url":"560-send-gitter-messages-for-new-runkeeper-activities","usedApps":["gitter","runkeeper"],"usage":0}

@@ -1,0 +1,1 @@
+{"id":3876,"name":"Send new ShipStation Orders to Databox","description":"Whenever a new order comes through in your Shipstation account, Make will automatically update the number of new orders in Databox, helping you stay on track with your sales funnel. ","url":"3876-send-new-shipstation-orders-to-databox","usedApps":["shipstation","databox"],"usage":13}

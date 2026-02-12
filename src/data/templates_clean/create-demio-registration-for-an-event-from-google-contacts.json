@@ -1,0 +1,1 @@
+{"id":4601,"name":"Create Demio registration for an event from Google Contacts","description":"Every time a new Google Contact is created, Make will automatically create a registration for an event in Demio.","url":"4601-create-demio-registration-for-an-event-from-google-contacts","usedApps":["google-contacts","demio"],"usage":1}

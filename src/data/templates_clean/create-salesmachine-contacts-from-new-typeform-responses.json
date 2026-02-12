@@ -1,0 +1,1 @@
+{"id":9091,"name":"Create Salesmachine contacts from new Typeform responses","description":"Make will watch for new Typeform responses at regular intervals and create contacts in Salesmachine using information received.","url":"9091-create-salesmachine-contacts-from-new-typeform-responses","usedApps":["typeform","salesmachine"],"usage":2}

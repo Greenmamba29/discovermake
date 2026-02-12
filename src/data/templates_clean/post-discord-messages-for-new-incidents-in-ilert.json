@@ -1,0 +1,1 @@
+{"id":12016,"name":"Post Discord messages for new Incidents in ilert","description":"Every time a new Incident is received in your iLert account, Integromat will automatically post it on your Discord server.","url":"7896-post-discord-messages-for-new-incidents-in-ilert","usedApps":["ilert","discord"],"usage":3}

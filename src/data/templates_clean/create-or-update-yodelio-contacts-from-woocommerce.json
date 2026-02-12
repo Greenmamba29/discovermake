@@ -1,0 +1,1 @@
+{"id":2623,"name":"Create or update Yodel.io contacts from WooCommerce","description":"Every time a new customer is created in WooCommerce, Make will automatically create or update a customer in Yodel.io.","url":"2623-create-or-update-yodel-io-contacts-from-woocommerce","usedApps":["woocommerce","yodel"],"usage":1}

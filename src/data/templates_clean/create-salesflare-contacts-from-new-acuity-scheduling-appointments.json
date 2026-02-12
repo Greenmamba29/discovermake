@@ -1,0 +1,1 @@
+{"id":2813,"name":"Create Salesflare contacts from new Acuity Scheduling appointments","description":"Every time a new appointment is scheduled in Acuity Scheduling, Make will automatically create a new contact in Salesflare.","url":"2813-create-salesflare-contacts-from-new-acuity-scheduling-appointments","usedApps":["acuity-scheduling","salesflare"],"usage":1}

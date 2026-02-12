@@ -1,0 +1,1 @@
+{"id":4410,"name":"Create GitHub issues for new Kanbanize tasks","description":"Every time a new task is created in Kanbanize, Make will automatically create a new issue in GitHub.","url":"4410-create-github-issues-for-new-kanbanize-tasks","usedApps":["kanbanize","github"],"usage":3}

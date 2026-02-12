@@ -1,0 +1,1 @@
+{"id":8345,"name":"Create HubSpot CRM contacts from new Shift4Shop customer","description":"Every time a new customer is created in Shift4Shop, Make will automatically create (or update if it already exists) a HubSpot CRM contact.","url":"8345-create-hubspot-crm-contacts-from-new-shift4shop-customer","usedApps":["a3dcart","hubspotcrm"],"usage":3}

@@ -1,0 +1,1 @@
+{"id":2459,"name":"Add new SendGrid contacts to Google Contacts","description":"Every time a new contact is added to your SendGrid list, Make will automatically create a new contact in Google Contacts.","url":"2459-add-new-sendgrid-contacts-to-google-contacts","usedApps":["sendgrid","google-contacts"],"usage":4}

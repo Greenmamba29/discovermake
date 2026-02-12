@@ -1,0 +1,1 @@
+{"id":7243,"name":"Convert new Slack files in Aspose","description":"Every time there is a new file in a watched channel in Slack, Make will automatically convert that file using Aspose.","url":"7243-convert-new-slack-files-in-aspose","usedApps":["slack","aspose"],"usage":0}

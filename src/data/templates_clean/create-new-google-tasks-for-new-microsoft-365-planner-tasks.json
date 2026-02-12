@@ -1,0 +1,1 @@
+{"id":6842,"name":"Create new Google Tasks for new Microsoft 365 Planner tasks","description":"Every time a new task is created in Microsoft 365 Planner, Make will automatically add that task to Google Tasks.","url":"6842-create-new-google-tasks-for-new-microsoft-365-planner-tasks","usedApps":["microsoft-planner","google-tasks"],"usage":61}

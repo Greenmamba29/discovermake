@@ -1,0 +1,1 @@
+{"id":6937,"name":"Send Slack messages for new Redmine Issues","description":"Every time a new issue is created in Redmine, Make will automatically send a message in Slack.","url":"6937-send-slack-messages-for-new-redmine-issues","usedApps":["redmine","slack"],"usage":8}

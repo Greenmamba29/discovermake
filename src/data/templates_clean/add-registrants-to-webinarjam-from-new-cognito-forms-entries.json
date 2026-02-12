@@ -1,0 +1,1 @@
+{"id":2417,"name":"Add registrants to WebinarJam from new Cognito Forms entries","description":"Every time someone fills out a specific Cognito Form form, Make will automatically add a new registrant to your WebinarJam webinar.","url":"2417-add-registrants-to-webinarjam-from-new-cognito-forms-entries","usedApps":["cognitoforms","webinarjam"],"usage":17}

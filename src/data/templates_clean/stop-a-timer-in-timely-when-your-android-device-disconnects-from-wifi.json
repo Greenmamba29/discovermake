@@ -1,0 +1,1 @@
+{"id":6923,"name":"Stop a timer in Timely when your Android device disconnects from WiFi","description":"Every time an Android device being watched disconnects from a specified WiFi network, Make will automatically stop a timer in Timely.","url":"6923-stop-a-timer-in-timely-when-your-android-device-disconnects-from-wifi","usedApps":["android","timelyapp"],"usage":1}

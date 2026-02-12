@@ -1,0 +1,1 @@
+{"id":7392,"name":"Add and Update a new Simvoly contacts to GetResponse","description":"Every time a new contact is created in Simvoly, Make will automatically add that contact to GetResponse as a new contact or update existing contact.","url":"7392-add-and-update-a-new-simvoly-contacts-to-getresponse","usedApps":["simvoly2","getresponse","builtin"],"usage":9}

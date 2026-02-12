@@ -1,0 +1,1 @@
+{"id":5614,"name":"Create noCRM leads from Trello cards","description":"Every time a new card in Trello is created, Make will automatically create a lead contact in noCRM.","url":"5614-create-nocrm-leads-from-trello-cards","usedApps":["trello","nocrm-io"],"usage":3}

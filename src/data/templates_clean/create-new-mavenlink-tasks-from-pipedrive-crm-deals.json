@@ -1,0 +1,1 @@
+{"id":6846,"name":"Create new Mavenlink tasks from Pipedrive CRM deals","description":"Every time there is a new deal created in Pipedrive CRM, Make will automatically create a new task in Mavenlink using information about the deal. ","url":"6846-create-new-mavenlink-tasks-from-pipedrive-crm-deals","usedApps":["pipedrive","mavenlink"],"usage":2}

@@ -1,0 +1,1 @@
+{"id":10332,"name":"Create Katana sales orders from deals in HubSpot CRM","description":"When a deal is won in HubSpot, a new sales order is created in Katana. If a matching customer or product is not found from Katana, a new one is created.","url":"6494-create-katana-sales-orders-from-deals-in-hubspot-crm","usedApps":["hubspotcrm","katana-mrp","builtin","util"],"usage":287}

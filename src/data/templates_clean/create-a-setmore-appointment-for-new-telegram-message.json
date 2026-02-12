@@ -1,0 +1,1 @@
+{"id":5032,"name":"Create a Setmore appointment for new Telegram message","description":"Every time a new message is received on Telegram, Make will automatically create an appointment in Setmore.","url":"5032-create-a-setmore-appointment-for-new-telegram-message","usedApps":["telegram","setmore"],"usage":1}

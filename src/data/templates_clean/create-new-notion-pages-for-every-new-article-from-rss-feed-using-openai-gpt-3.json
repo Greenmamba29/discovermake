@@ -1,0 +1,1 @@
+{"id":13362,"name":"Create new Notion pages for every new article from RSS feed using OpenAI GPT-3","description":"Automatically create new Notion pages for each article from your RSS feed using ChatGPT to generate content.","url":"13362-create-new-notion-pages-for-every-new-article-from-rss-feed-using-openai-gpt-3","usedApps":["rss","openai-gpt-3","notion"],"usage":260}

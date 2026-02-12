@@ -1,0 +1,1 @@
+{"id":6015,"name":"Send push notifications via Google Chrome for new created task in Breeze","description":"Every time a new task is created in Breeze, Make will automatically send a push notification via Google Chrome.","url":"6015-send-push-notifications-via-google-chrome-for-new-created-task-in-breeze","usedApps":["breeze","chrome"],"usage":4}

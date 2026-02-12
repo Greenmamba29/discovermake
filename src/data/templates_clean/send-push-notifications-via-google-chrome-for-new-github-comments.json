@@ -1,0 +1,1 @@
+{"id":1074,"name":"Send push notifications via Google Chrome for new GitHub comments","description":"Every time a new comment is added to GitHub, Make will automatically send a push notification via Google Chrome.","url":"1074-send-push-notifications-via-google-chrome-for-new-github-comments","usedApps":["github","chrome"],"usage":16}

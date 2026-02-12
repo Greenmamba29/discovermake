@@ -1,0 +1,1 @@
+{"id":4189,"name":"Create new Colligso TextIn customers from Typeform responses","description":"Every time a new Typeform response is submitted, Make will automatically create a new Colligso TextIn customer.","url":"4189-create-new-colligso-textin-customers-from-typeform-responses","usedApps":["typeform","colligso-textin"],"usage":0}

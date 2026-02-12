@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Org Governance &amp; Audit Logs</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+            extend: {
+                colors: {
+                "primary": "#13a4ec",
+                "background-light": "#f6f7f8",
+                "background-dark": "#101c22",
+                "surface-dark": "#192b33",
+                "surface-light": "#ffffff",
+                "border-dark": "#233c48",
+                },
+                fontFamily: {
+                "display": ["Inter", "sans-serif"]
+                },
+                borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+            },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar for audit logs if needed */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen flex justify-center">
+<div class="relative flex h-full min-h-screen w-full max-w-md flex-col overflow-x-hidden bg-background-light dark:bg-background-dark shadow-2xl">
+<!-- Top App Bar -->
+<div class="sticky top-0 z-20 flex items-center bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md p-4 pb-2 justify-between border-b border-gray-200 dark:border-border-dark">
+<div class="text-slate-900 dark:text-white flex size-10 shrink-0 items-center justify-center cursor-pointer hover:bg-black/5 dark:hover:bg-white/10 rounded-full transition-colors">
+<span class="material-symbols-outlined text-2xl">arrow_back</span>
+</div>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-tight flex-1 text-center">Governance Queue</h2>
+<div class="flex size-10 items-center justify-center cursor-pointer hover:bg-black/5 dark:hover:bg-white/10 rounded-full transition-colors">
+<span class="material-symbols-outlined text-2xl">filter_list</span>
+</div>
+</div>
+<!-- Scrollable Content -->
+<div class="flex-1 overflow-y-auto pb-24">
+<!-- Dashboard Summary -->
+<div class="flex gap-3 p-4 overflow-x-auto no-scrollbar snap-x">
+<div class="flex min-w-[140px] flex-1 flex-col gap-1 rounded-xl p-4 bg-white dark:bg-surface-dark shadow-sm border border-gray-100 dark:border-border-dark snap-center">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary text-xl">pending_actions</span>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider">Pending</p>
+</div>
+<p class="text-slate-900 dark:text-white tracking-tight text-3xl font-bold leading-tight">3</p>
+<p class="text-emerald-500 text-xs font-medium leading-normal flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">arrow_upward</span>
+                        1 new today
+                    </p>
+</div>
+<div class="flex min-w-[140px] flex-1 flex-col gap-1 rounded-xl p-4 bg-white dark:bg-surface-dark shadow-sm border border-gray-100 dark:border-border-dark snap-center">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-emerald-500 text-xl">health_and_safety</span>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider">Health</p>
+</div>
+<p class="text-slate-900 dark:text-white tracking-tight text-3xl font-bold leading-tight">98%</p>
+<p class="text-emerald-500 text-xs font-medium leading-normal flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">check_circle</span>
+                        System Stable
+                    </p>
+</div>
+<div class="flex min-w-[140px] flex-1 flex-col gap-1 rounded-xl p-4 bg-white dark:bg-surface-dark shadow-sm border border-gray-100 dark:border-border-dark snap-center">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-orange-400 text-xl">warning</span>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider">Avg Risk</p>
+</div>
+<p class="text-slate-900 dark:text-white tracking-tight text-3xl font-bold leading-tight">Low</p>
+<p class="text-slate-400 dark:text-slate-500 text-xs font-medium leading-normal flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">remove</span>
+                        No change
+                    </p>
+</div>
+</div>
+<div class="flex items-center justify-between px-4 pt-2 pb-2">
+<h3 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-tight">Pending Approvals</h3>
+<span class="text-xs font-medium text-primary cursor-pointer">View All</span>
+</div>
+<!-- Card 1: High Priority / Standard -->
+<div class="p-4 pt-0">
+<div class="flex flex-col gap-0 rounded-xl bg-white dark:bg-surface-dark shadow-md border border-gray-100 dark:border-border-dark overflow-hidden">
+<!-- Header of Card -->
+<div class="p-4 pb-3 border-b border-gray-100 dark:border-border-dark flex justify-between items-start">
+<div class="flex items-center gap-3">
+<div class="h-10 w-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">calculate</span>
+</div>
+<div>
+<h4 class="text-slate-900 dark:text-white text-base font-bold leading-tight">Q3 Sales Forecaster</h4>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-normal mt-0.5">Sarah Jenks (Sales Ops)</p>
+</div>
+</div>
+<span class="inline-flex items-center rounded-full bg-blue-50 dark:bg-blue-900/20 px-2 py-1 text-xs font-medium text-blue-700 dark:text-blue-300 ring-1 ring-inset ring-blue-700/10 dark:ring-blue-400/20">
+                            GPT-4-Turbo
+                        </span>
+</div>
+<!-- Main Body of Card -->
+<div class="p-4 flex flex-col gap-4">
+<!-- Score & Image Layout -->
+<div class="flex gap-4 items-start">
+<!-- Visual Indicator Image -->
+<div class="w-16 h-16 rounded-lg bg-cover bg-center shrink-0 border border-gray-100 dark:border-border-dark" data-alt="Abstract data visualization showing growth" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAVDaif1Io05StmbNd3Rzy0In269pMtyMwnM2UoTEidbiKI994iHM4_xRPGgqoZvgi6DLs8mJ59ECl385i9fR3W7vud7Hx5T_maOhuG3TQRSWlVD2gVss2namyuhfsyWbakVUqyPZW_k_1WLa7d1Gf6J2S-vVlW_I_HcjnFr8UUH-QQTZdIUb8m3IuwRFq8vdiy2V7tuG_qXTgRNPoz5AnosCm34OfZF-Aiam7e7NS7GSyFgKYc-OOfvIoPO_ijuGWLikds42fbKWY');"></div>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-1">
+<span class="text-sm font-medium text-slate-700 dark:text-slate-200">Data Safety Score</span>
+<span class="text-sm font-bold text-emerald-500">92/100</span>
+</div>
+<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+<div class="bg-emerald-500 h-2 rounded-full" style="width: 92%"></div>
+</div>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1.5 flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-emerald-500">verified_user</span>
+                                    PII Scan Passed • Internal Data Only
+                                </p>
+</div>
+</div>
+<!-- Audit Log Preview -->
+<div class="bg-slate-50 dark:bg-[#111c22] rounded-lg p-3 text-xs text-slate-600 dark:text-slate-400 flex flex-col gap-2 border border-slate-100 dark:border-border-dark">
+<div class="flex justify-between items-center">
+<span class="font-semibold uppercase tracking-wider text-[10px] text-slate-400 dark:text-slate-500">Audit Trail</span>
+<span class="text-primary cursor-pointer hover:underline">Full Log</span>
+</div>
+<div class="flex gap-2 items-start relative pl-2 border-l border-slate-200 dark:border-slate-700">
+<div class="absolute -left-[3px] top-1 w-1.5 h-1.5 rounded-full bg-slate-300 dark:bg-slate-600"></div>
+<span class="opacity-70">2h ago</span>
+<span>External API integration added</span>
+</div>
+<div class="flex gap-2 items-start relative pl-2 border-l border-slate-200 dark:border-slate-700">
+<div class="absolute -left-[3px] top-1 w-1.5 h-1.5 rounded-full bg-slate-300 dark:bg-slate-600"></div>
+<span class="opacity-70">4h ago</span>
+<span>Tool created by S. Jenks</span>
+</div>
+</div>
+</div>
+<!-- Footer Actions -->
+<div class="p-4 pt-0 flex gap-3">
+<button class="flex-1 py-2.5 px-4 rounded-lg border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-white font-medium text-sm hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">Reject</button>
+<button class="flex-1 py-2.5 px-4 rounded-lg bg-primary text-white font-medium text-sm hover:bg-sky-600 shadow-sm shadow-sky-500/20 transition-colors">Approve</button>
+</div>
+</div>
+</div>
+<!-- Card 2: Warning State -->
+<div class="p-4 pt-2">
+<div class="flex flex-col gap-0 rounded-xl bg-white dark:bg-surface-dark shadow-md border border-gray-100 dark:border-border-dark overflow-hidden">
+<!-- Header -->
+<div class="p-4 pb-3 border-b border-gray-100 dark:border-border-dark flex justify-between items-start">
+<div class="flex items-center gap-3">
+<div class="h-10 w-10 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600 dark:text-purple-400">
+<span class="material-symbols-outlined">support_agent</span>
+</div>
+<div>
+<h4 class="text-slate-900 dark:text-white text-base font-bold leading-tight">Customer Support Bot</h4>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-normal mt-0.5">Mike Ross (CX)</p>
+</div>
+</div>
+<span class="inline-flex items-center rounded-full bg-purple-50 dark:bg-purple-900/20 px-2 py-1 text-xs font-medium text-purple-700 dark:text-purple-300 ring-1 ring-inset ring-purple-700/10 dark:ring-purple-400/20">
+                            Llama-2
+                        </span>
+</div>
+<!-- Body -->
+<div class="p-4 flex flex-col gap-4">
+<div class="flex gap-4 items-start">
+<div class="w-16 h-16 rounded-lg bg-cover bg-center shrink-0 border border-gray-100 dark:border-border-dark" data-alt="Abstract mesh gradient representing neural networks" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBXvE5mjO15n9tgXkg0IvenrXIXhhXCs1I7hO93weIn5YX3n7m4coVLtaac0Itfqp4JJUL8sek-deN3PaPpQinyCfKLmOsA-E7Dtb9oMk1BxUOf_AQJfGEHRuNqxRD_3nQ7X4D3qiiZAR_thXA3gXPMJmRzglnqgEu9wKYuF3MrvanxRYwgNSIUFx27ZeM2i_C2Qo5L-9QtSj3DsV8FLzOfmDXQj-dg4cex8Nl425SgKgI858HcqaAzw7CvWYzCG995UXLKYlNakE0');"></div>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-1">
+<span class="text-sm font-medium text-slate-700 dark:text-slate-200">Data Safety Score</span>
+<span class="text-sm font-bold text-amber-500">65/100</span>
+</div>
+<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+<div class="bg-amber-500 h-2 rounded-full" style="width: 65%"></div>
+</div>
+<p class="text-xs text-amber-600 dark:text-amber-500 mt-1.5 flex items-start gap-1">
+<span class="material-symbols-outlined text-sm shrink-0">warning</span>
+<span>Warning: Potential PII Leak in Prompt injection test</span>
+</p>
+</div>
+</div>
+<!-- Detailed Compliance Section -->
+<div class="bg-amber-50 dark:bg-amber-900/10 rounded-lg p-3 text-xs border border-amber-100 dark:border-amber-900/30">
+<p class="font-semibold text-amber-800 dark:text-amber-200 mb-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">gavel</span> Compliance Check
+                            </p>
+<div class="space-y-2">
+<div class="flex items-center justify-between text-slate-600 dark:text-slate-300">
+<span>Model Approved</span>
+<span class="material-symbols-outlined text-emerald-500 text-sm">check_circle</span>
+</div>
+<div class="flex items-center justify-between text-slate-600 dark:text-slate-300">
+<span>Data Encryption</span>
+<span class="material-symbols-outlined text-emerald-500 text-sm">check_circle</span>
+</div>
+<div class="flex items-center justify-between text-slate-600 dark:text-slate-300">
+<span>Prompt Sanitization</span>
+<span class="material-symbols-outlined text-amber-500 text-sm">error</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Actions -->
+<div class="p-4 pt-0 flex gap-3">
+<button class="flex-1 py-2.5 px-4 rounded-lg border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-white font-medium text-sm hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">Reject</button>
+<button class="flex-1 py-2.5 px-4 rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-400 dark:text-slate-400 font-medium text-sm cursor-not-allowed" disabled="">Approve</button>
+</div>
+</div>
+</div>
+<!-- Card 3: Compact / History -->
+<div class="p-4 pt-2 pb-24">
+<div class="flex flex-col gap-0 rounded-xl bg-white dark:bg-surface-dark shadow-md border border-gray-100 dark:border-border-dark opacity-60">
+<div class="p-4 flex justify-between items-center">
+<div class="flex items-center gap-3">
+<div class="h-10 w-10 rounded-lg bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
+<span class="material-symbols-outlined">check</span>
+</div>
+<div>
+<h4 class="text-slate-900 dark:text-white text-base font-bold leading-tight line-through decoration-slate-400">Inventory Tracker</h4>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-normal mt-0.5">Approved 1d ago by You</p>
+</div>
+</div>
+<button class="text-primary text-sm font-medium">Details</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Floating Action Button (Optional for context but typical in mobile) -->
+<div class="absolute bottom-6 right-6 z-10">
+<button class="h-14 w-14 rounded-full bg-primary text-white shadow-lg shadow-blue-500/40 flex items-center justify-center hover:bg-blue-500 transition-colors">
+<span class="material-symbols-outlined text-2xl">add_task</span>
+</button>
+</div>
+<!-- Bottom Navigation Mockup -->
+<div class="absolute bottom-0 w-full bg-white dark:bg-surface-dark border-t border-gray-200 dark:border-border-dark pb-6 pt-3 px-6 flex justify-between items-center z-20">
+<div class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined">gavel</span>
+<span class="text-[10px] font-medium">Governance</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500">
+<span class="material-symbols-outlined">dataset</span>
+<span class="text-[10px] font-medium">Tools</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500">
+<span class="material-symbols-outlined">history</span>
+<span class="text-[10px] font-medium">Logs</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] font-medium">Settings</span>
+</div>
+</div>
+</div>
+</body></html>

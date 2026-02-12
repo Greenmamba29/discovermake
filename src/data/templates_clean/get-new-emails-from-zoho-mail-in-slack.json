@@ -1,0 +1,1 @@
+{"id":2693,"name":"Get new emails from Zoho Mail in Slack","description":"Every time a new email is received in a selected Zoho Mail folder, Make will automatically send a message in Slack.","url":"2693-get-new-emails-from-zoho-mail-in-slack","usedApps":["zoho-mail","slack"],"usage":38}

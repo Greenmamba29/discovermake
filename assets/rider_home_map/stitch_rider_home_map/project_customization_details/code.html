@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Project Customization Details</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Space Grotesk', sans-serif; }
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glass-darker {
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen flex flex-col font-display">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-50 glass-darker px-4 py-3 flex items-center justify-between">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-white">arrow_back_ios_new</span>
+</button>
+<div class="flex flex-col items-center">
+<h1 class="text-white text-sm font-bold uppercase tracking-widest">Customize Project</h1>
+<p class="text-xs text-white/50 font-medium">Variant 3 of 7</p>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-white text-[24px]">info</span>
+</button>
+</header>
+<main class="flex-1 overflow-y-auto px-4 pb-40">
+<!-- Progress Stepper -->
+<div class="flex w-full flex-row items-center justify-center gap-2 py-6">
+<div class="h-1.5 w-6 rounded-full bg-primary/30"></div>
+<div class="h-1.5 w-6 rounded-full bg-primary/30"></div>
+<div class="h-1.5 w-12 rounded-full bg-primary shadow-[0_0_10px_rgba(19,91,236,0.5)]"></div>
+<div class="h-1.5 w-6 rounded-full bg-white/10"></div>
+<div class="h-1.5 w-6 rounded-full bg-white/10"></div>
+<div class="h-1.5 w-6 rounded-full bg-white/10"></div>
+</div>
+<!-- Project Overview Card -->
+<div class="glass rounded-xl p-5 mb-8 relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-primary/10 rounded-full blur-2xl group-hover:bg-primary/20 transition-all duration-500"></div>
+<div class="flex items-center gap-4">
+<div class="w-14 h-14 rounded-lg bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center shadow-lg">
+<span class="material-symbols-outlined text-white text-3xl">shopping_bag</span>
+</div>
+<div>
+<h2 class="text-white text-xl font-bold">E-commerce Mobile App</h2>
+<p class="text-white/60 text-sm">Base Package • 10 Core Screens</p>
+</div>
+</div>
+</div>
+<!-- Section: Security -->
+<div class="mb-8">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-white text-lg font-bold tracking-tight">Security &amp; Auth</h3>
+<span class="text-primary text-xs font-bold px-2 py-1 bg-primary/10 rounded-lg uppercase">Required (1)</span>
+</div>
+<div class="space-y-3">
+<!-- Option 1 -->
+<label class="flex items-center gap-4 p-4 rounded-xl glass border-primary/20 cursor-pointer hover:bg-white/5 transition-all">
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h4 class="text-white font-semibold">User Authentication</h4>
+<span class="text-white/40 text-sm">+$800</span>
+</div>
+<p class="text-white/50 text-xs mt-1">Email, Google, and Apple ID social login</p>
+</div>
+<input checked="" class="h-6 w-6 rounded-lg border-white/20 bg-transparent text-primary focus:ring-primary focus:ring-offset-0 checked:bg-primary transition-all" type="checkbox"/>
+</label>
+<!-- Option 2 -->
+<label class="flex items-center gap-4 p-4 rounded-xl glass border-transparent cursor-pointer hover:bg-white/5 transition-all">
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h4 class="text-white font-semibold">Two-Factor Auth (2FA)</h4>
+<span class="text-white/40 text-sm">+$450</span>
+</div>
+<p class="text-white/50 text-xs mt-1">SMS and TOTP authenticator support</p>
+</div>
+<input class="h-6 w-6 rounded-lg border-white/20 bg-transparent text-primary focus:ring-primary focus:ring-offset-0 checked:bg-primary transition-all" type="checkbox"/>
+</label>
+</div>
+</div>
+<!-- Section: Integrations -->
+<div class="mb-8">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-white text-lg font-bold tracking-tight">Payment Integrations</h3>
+<span class="text-white/30 text-xs font-bold uppercase">Optional</span>
+</div>
+<div class="space-y-3">
+<label class="flex items-center gap-4 p-4 rounded-xl glass border-transparent cursor-pointer hover:bg-white/5 transition-all">
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h4 class="text-white font-semibold">Stripe Checkout</h4>
+<span class="text-white/40 text-sm">+$1,200</span>
+</div>
+<p class="text-white/50 text-xs mt-1">Cards, Apple Pay, Google Pay support</p>
+</div>
+<input class="h-6 w-6 rounded-lg border-white/20 bg-transparent text-primary focus:ring-primary focus:ring-offset-0 checked:bg-primary transition-all" type="checkbox"/>
+</label>
+<label class="flex items-center gap-4 p-4 rounded-xl glass border-transparent cursor-pointer hover:bg-white/5 transition-all">
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h4 class="text-white font-semibold">Subscription Billing</h4>
+<span class="text-white/40 text-sm">+$1,500</span>
+</div>
+<p class="text-white/50 text-xs mt-1">Recurring revenue and plan management</p>
+</div>
+<input class="h-6 w-6 rounded-lg border-white/20 bg-transparent text-primary focus:ring-primary focus:ring-offset-0 checked:bg-primary transition-all" type="checkbox"/>
+</label>
+</div>
+</div>
+<!-- Section: Infrastructure -->
+<div class="mb-8">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-white text-lg font-bold tracking-tight">Cloud &amp; Hosting</h3>
+<span class="text-white/30 text-xs font-bold uppercase">Optional</span>
+</div>
+<div class="space-y-3">
+<label class="flex items-center gap-4 p-4 rounded-xl glass border-transparent cursor-pointer hover:bg-white/5 transition-all">
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h4 class="text-white font-semibold">AWS Scalable Cloud</h4>
+<span class="text-white/40 text-sm">+$900</span>
+</div>
+<p class="text-white/50 text-xs mt-1">High-availability setup with auto-scaling</p>
+</div>
+<input checked="" class="h-6 w-6 rounded-lg border-white/20 bg-transparent text-primary focus:ring-primary focus:ring-offset-0 checked:bg-primary transition-all" type="checkbox"/>
+</label>
+<label class="flex items-center gap-4 p-4 rounded-xl glass border-transparent cursor-pointer hover:bg-white/5 transition-all">
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h4 class="text-white font-semibold">Automated Backups</h4>
+<span class="text-white/40 text-sm">+$300</span>
+</div>
+<p class="text-white/50 text-xs mt-1">Daily database and asset snapshots</p>
+</div>
+<input class="h-6 w-6 rounded-lg border-white/20 bg-transparent text-primary focus:ring-primary focus:ring-offset-0 checked:bg-primary transition-all" type="checkbox"/>
+</label>
+</div>
+</div>
+</main>
+<!-- Fixed Live Updating Bottom Bar -->
+<footer class="fixed bottom-0 left-0 right-0 glass-darker pb-10 pt-4 px-6 z-50">
+<div class="flex flex-col gap-4">
+<!-- Stats -->
+<div class="flex justify-between items-end">
+<div class="flex flex-col">
+<p class="text-white/50 text-[10px] uppercase font-bold tracking-widest">Est. Budget Range</p>
+<p class="text-white text-2xl font-bold leading-none">$4,200 - $5,500</p>
+</div>
+<div class="flex flex-col items-end">
+<p class="text-white/50 text-[10px] uppercase font-bold tracking-widest">Timeline</p>
+<div class="flex items-center gap-1 text-white font-semibold">
+<span class="material-symbols-outlined text-[18px] text-primary">schedule</span>
+<span>18 - 24 Days</span>
+</div>
+</div>
+</div>
+<!-- CTA -->
+<button class="w-full bg-primary hover:bg-blue-600 text-white font-bold py-4 rounded-xl shadow-[0_4px_20px_rgba(19,91,236,0.3)] transition-all active:scale-[0.98] flex items-center justify-center gap-2">
+                Review &amp; Confirm
+                <span class="material-symbols-outlined text-[20px]">chevron_right</span>
+</button>
+</div>
+</footer>
+<!-- Safe area spacing for mobile -->
+<div class="h-6 bg-transparent"></div>
+</body></html>

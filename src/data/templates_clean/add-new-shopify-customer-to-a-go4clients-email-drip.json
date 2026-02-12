@@ -1,0 +1,1 @@
+{"id":4525,"name":"Add new Shopify customer to a Go4clients Email Drip","description":"Every time new customer is created in Shopify, Make will automatically trigger a Go4clients Email Drip. ","url":"4525-add-new-shopify-customer-to-a-go4clients-email-drip","usedApps":["shopify","go4clients"],"usage":1}

@@ -1,0 +1,1 @@
+{"id":15185,"name":"Update blog posts in WordPress using ChatGPT completions from a custom webhook","description":"This template updates blog posts in WordPress using ChatGPT completions triggered by a custom webhook.","url":"15185-update-blog-posts-in-wordpress-using-chatgpt-completions-from-a-custom-webhook","usedApps":["gateway","openai-gpt-3","wordpress"],"usage":45}

@@ -1,0 +1,1 @@
+{"id":1680,"name":"Translate Telegram messages with Google Translate and forward them to Slack","description":"When a message is received from Telegram Bot, the message is translated by Google Translate and then sent to Slack.","url":"1680-translate-telegram-messages-with-google-translate-and-forward-them-to-slack","usedApps":["telegram","google-translate","slack"],"usage":22}

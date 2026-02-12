@@ -1,0 +1,1 @@
+{"id":7364,"name":"Create Sleekflow contacts from Pipedrive CRM deals","description":"Every time a new deal has been created in your Pipedrive CRM, Make will automatically create a new contact in SleekFlow.","url":"7364-create-sleekflow-contacts-from-pipedrive-crm-deals","usedApps":["pipedrive","sleekflow"],"usage":0}

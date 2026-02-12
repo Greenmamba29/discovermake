@@ -1,0 +1,1 @@
+{"id":3267,"name":"Send new customer from a new order in Magento 2 to Smaily","description":"When a new order is created in Magento 2, the customer is sent to Smaily and an automation workflow is triggered.","url":"3267-send-new-customer-from-a-new-order-in-magento-2-to-smaily","usedApps":["magento2","smaily"],"usage":3}

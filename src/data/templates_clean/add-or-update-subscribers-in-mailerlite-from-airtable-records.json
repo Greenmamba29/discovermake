@@ -1,0 +1,1 @@
+{"id":12897,"name":"Add or update subscribers in MailerLite from Airtable records","description":"Automatically update or add subscribers in MailerLite whenever new records are detected in Airtable, ensuring your email list is always current.","url":"12897-add-or-update-subscribers-in-mailerlite-from-airtable-records","usedApps":["airtable","mailerlite2"],"usage":24}

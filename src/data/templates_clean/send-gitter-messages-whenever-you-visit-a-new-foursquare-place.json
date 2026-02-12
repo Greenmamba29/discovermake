@@ -1,0 +1,1 @@
+{"id":565,"name":"Send Gitter messages whenever you visit a new Foursquare place","description":"Every time you visit a new Foursquare place, Make will automatically send a message to a selected room in Gitter.","url":"565-send-gitter-messages-whenever-you-visit-a-new-foursquare-place","usedApps":["foursquare","gitter"],"usage":0}

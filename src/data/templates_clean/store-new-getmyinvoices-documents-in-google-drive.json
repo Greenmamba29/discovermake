@@ -1,0 +1,1 @@
+{"id":4769,"name":"Store new GetMyInvoices documents in Google Drive","description":"When a new document is stored in GetMyInvoices, that document is uploaded to Google Drive.","url":"4769-store-new-getmyinvoices-documents-in-google-drive","usedApps":["getmyinvoices","google-drive"],"usage":64}

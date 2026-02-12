@@ -1,0 +1,1 @@
+{"id":5405,"name":"Convert files from OneDrive in Zamzar and upload the output to OneDrive","description":"Get files meeting specified criteria in OneDrive, convert them to a specified format and upload the converted files back to OneDrive.","url":"5405-convert-files-from-onedrive-in-zamzar-and-upload-the-output-to-onedrive","usedApps":["onedrive","zamzar","builtin"],"usage":11}

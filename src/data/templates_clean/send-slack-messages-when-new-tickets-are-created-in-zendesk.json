@@ -1,0 +1,1 @@
+{"id":5200,"name":"Send Slack messages when new tickets are created in Zendesk","description":"Whenever new tickets are added in Zendesk, the tickets are automatically retrieved and messages containing the tickets URL are sent via Slack.","url":"5200-send-slack-messages-when-new-tickets-are-created-in-zendesk","usedApps":["zendesk","slack"],"usage":43}

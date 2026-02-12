@@ -1,0 +1,1 @@
+{"id":7447,"name":"Create Hubstaff clients for new Syncro customers","description":"Every time a new customer is added to your Syncro, Make will create an identical Hubstaff client.","url":"7447-create-hubstaff-clients-for-new-syncro-customers","usedApps":["syncro","hubstaff"],"usage":2}

@@ -1,0 +1,1 @@
+{"id":3281,"name":"Qualify new leads from Intercom based on Clearbit metrics","description":"Every time a user is created in Intercom, Make will automatically search for data with Clearbit and create new leads based on the user's company metrics.","url":"3281-qualify-new-leads-from-intercom-based-on-clearbit-metrics","usedApps":["intercom","clearbit"],"usage":9}

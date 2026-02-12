@@ -1,0 +1,1 @@
+{"id":4392,"name":"Create Time Doctor tasks from labeled emails","description":"Every time a new email is received with a specific label, Make will automatically create a new task in Time Doctor and reply with an email to the sender.","url":"4392-create-time-doctor-tasks-from-labeled-emails","usedApps":["google-email","time-doctor"],"usage":3}

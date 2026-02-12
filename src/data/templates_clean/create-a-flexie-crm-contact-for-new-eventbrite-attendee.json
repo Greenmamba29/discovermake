@@ -1,0 +1,1 @@
+{"id":5914,"name":"Create a Flexie CRM contact for new Eventbrite attendee","description":"Every time a new Eventbrite attendee is added, Make will automatically create a contact in Flexie CRM.","url":"5914-create-a-flexie-crm-contact-for-new-eventbrite-attendee","usedApps":["eventbrite","flexie-crm"],"usage":8}

@@ -1,0 +1,1 @@
+{"id":1150,"name":"Send push notitications via Google Chrome for new Teamwork files","description":"Every time a new file is added to a watched project in Teamwork, Make will automatically send a push notification via Google Chrome.","url":"1150-send-push-notitications-via-google-chrome-for-new-teamwork-files","usedApps":["teamwork","chrome"],"usage":1}

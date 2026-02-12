@@ -1,0 +1,1 @@
+{"id":6088,"name":"Post new GitHub push actions to Mattermost","description":"Every time a GitHub push action (with commits) is created, Make will automatically post a Mattermost message.","url":"6088-post-new-github-push-actions-to-mattermost","usedApps":["github","mattermost"],"usage":11}

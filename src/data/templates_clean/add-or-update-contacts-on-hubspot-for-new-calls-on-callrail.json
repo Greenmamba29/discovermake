@@ -1,0 +1,1 @@
+{"id":5496,"name":"Add or update contacts on HubSpot for new calls on CallRail","description":"When you have a new incoming call on CallRail, Make automatically created a new contact in HubSpot CRM.","url":"5496-add-or-update-contacts-on-hubspot-for-new-calls-on-callrail","usedApps":["callrail","hubspotcrm"],"usage":10}

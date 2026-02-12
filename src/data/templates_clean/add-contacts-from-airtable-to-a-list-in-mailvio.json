@@ -1,0 +1,1 @@
+{"id":5648,"name":"Add contacts from Airtable to a list in Mailvio","description":"This scenario lets you transfer contacts to a list in Mailvio with the help of Airtable and Make. Please make sure your table looks like [this](https://airtable.com/shrQX1C2D16zGeftu).","url":"5648-add-contacts-from-airtable-to-a-list-in-mailvio","usedApps":["airtable","mailvio"],"usage":0}

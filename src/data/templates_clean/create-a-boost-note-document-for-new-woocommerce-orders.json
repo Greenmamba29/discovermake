@@ -1,0 +1,1 @@
+{"id":7515,"name":"Create a Boost Note document for new WooCommerce orders","description":"Every time a new order is created in WooCommerce, Make will automatically create a new document in Boost Note. ","url":"7515-create-a-boost-note-document-for-new-woocommerce-orders","usedApps":["woocommerce","builtin","util","boost-hub"],"usage":8}

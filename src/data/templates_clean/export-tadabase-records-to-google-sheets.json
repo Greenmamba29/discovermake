@@ -1,0 +1,1 @@
+{"id":6403,"name":"Export Tadabase records to Google Sheets","description":"This template helps you export your Tadabase records to a Google Sheets spreadsheet. You can setup this scenario to run automatically at regular intervals (every hour, day, week, etc...)","url":"6403-export-tadabase-records-to-google-sheets","usedApps":["tadabase","google-sheets"],"usage":8}

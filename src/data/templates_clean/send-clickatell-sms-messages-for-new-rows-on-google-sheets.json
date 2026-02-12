@@ -1,0 +1,1 @@
+{"id":5316,"name":"Send Clickatell SMS messages for new rows on Google Sheets","description":"When a new row is created in a Google Sheets spreadsheet, Make will automatically send a new message to a recipient via Clickatell.","url":"5316-send-clickatell-sms-messages-for-new-rows-on-google-sheets","usedApps":["google-sheets","clickatell"],"usage":3}

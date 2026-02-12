@@ -1,0 +1,1 @@
+{"id":5396,"name":"Create a SendX contact from a new Shopify order","description":"Every time a new Shopify order is created, Make will automatically create a SendX contact.","url":"5396-create-a-sendx-contact-from-a-new-shopify-order","usedApps":["shopify","sendx"],"usage":4}

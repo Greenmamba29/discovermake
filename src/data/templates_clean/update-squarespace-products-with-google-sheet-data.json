@@ -1,0 +1,1 @@
+{"id":5749,"name":"Update Squarespace products with Google Sheet data","description":"Search through a list of existing Squarespace products on Google Sheets and update all their fields on Squarespace with the latest data.","url":"5749-update-squarespace-products-with-google-sheet-data","usedApps":["squarespace","google-sheets"],"usage":61}

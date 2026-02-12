@@ -1,0 +1,1 @@
+{"id":8367,"name":"Create Signi Contract from new Google Contacts","description":"Every time a new contact is added in Google Contacts, Make will automatically create a new contract in Signi with this contact.","url":"8367-create-signi-contract-from-new-google-contacts","usedApps":["google-contacts","signi"],"usage":4}

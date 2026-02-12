@@ -1,0 +1,1 @@
+{"id":8523,"name":"Add/Update Mailchimp subscribers for new Livestorm registrants","description":"Every time a new registrant appears in your Livestorm, Make will automatically add them to your Mailchimp as a subscriber.","url":"8523-add-update-mailchimp-subscribers-for-new-livestorm-registrants","usedApps":["livestorm","mailchimp"],"usage":7}

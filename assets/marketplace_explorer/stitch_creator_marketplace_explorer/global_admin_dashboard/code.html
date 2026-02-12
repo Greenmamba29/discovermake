@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Global Admin Dashboard - DiscoverMake</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13a4ec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101c22",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .tabular-nums {
+            font-variant-numeric: tabular-nums;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<!-- Top AppBar -->
+<header class="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 px-4 py-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="bg-primary/10 p-1.5 rounded-lg text-primary">
+<span class="material-symbols-outlined text-2xl">monitoring</span>
+</div>
+<div>
+<h1 class="text-sm font-bold leading-none tracking-tight">DiscoverMake</h1>
+<p class="text-[10px] text-slate-500 font-medium uppercase tracking-wider">Admin Overview</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="relative text-slate-500 dark:text-slate-400">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500 border-2 border-background-dark"></span>
+</button>
+<div class="h-8 w-8 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden border border-slate-300 dark:border-slate-600">
+<img alt="Admin Profile" class="h-full w-full object-cover" data-alt="Close up of a professional male headshot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA7USuhoyM9k1hVMXupqjrK172aopj6WaN9Fcn23_yZfZWCjsRs5zeipM9tiCY0pjA-2Ilb9F4x3AN3qhSKvbFybaVdZwFUkluprXo6eRqhT4-8YO2_bzNgu4vDRnCwtPvGLV47hnKCMuYuovmENzANs8HIjf06lf_UQPeoM5zU2c4AZ_oHkTnA6NwCVg8x8DRMbQd17Uwe53HIvHeSrZZ1Wj_n4tfHQ3UXrxKRSZxooI0hTLUHPeDDauFyBGC7KG3FEClc2fVw4fM"/>
+</div>
+</div>
+</div>
+<!-- Filter Tabs -->
+<div class="flex gap-2 mt-4 overflow-x-auto no-scrollbar pb-1">
+<button class="bg-primary text-white text-[11px] font-bold px-3 py-1 rounded-full whitespace-nowrap">Real-time</button>
+<button class="bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-[11px] font-bold px-3 py-1 rounded-full whitespace-nowrap">24 Hours</button>
+<button class="bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-[11px] font-bold px-3 py-1 rounded-full whitespace-nowrap">7 Days</button>
+<button class="bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-[11px] font-bold px-3 py-1 rounded-full whitespace-nowrap">30 Days</button>
+</div>
+</header>
+<main class="p-4 space-y-4 max-w-md mx-auto">
+<!-- KPI Grid -->
+<div class="grid grid-cols-2 gap-3">
+<!-- GMV Card -->
+<div class="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 p-3 rounded-xl">
+<div class="flex justify-between items-start mb-1">
+<span class="text-[10px] font-bold text-slate-500 uppercase tracking-tight">GMV</span>
+<span class="text-[10px] font-bold text-green-500 flex items-center">
+<span class="material-symbols-outlined text-[12px]">trending_up</span> 12.4%
+                    </span>
+</div>
+<div class="text-xl font-bold tabular-nums">$4,284k</div>
+<div class="mt-2 h-8 w-full">
+<svg class="h-full w-full overflow-visible" viewbox="0 0 100 30">
+<path d="M0 25 Q 25 20, 40 10 T 80 5 T 100 15" fill="none" stroke="#13a4ec" stroke-width="2"></path>
+</svg>
+</div>
+</div>
+<!-- Take-Rate Card -->
+<div class="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 p-3 rounded-xl">
+<div class="flex justify-between items-start mb-1">
+<span class="text-[10px] font-bold text-slate-500 uppercase tracking-tight">Take-Rate</span>
+<span class="text-[10px] font-bold text-red-500 flex items-center">
+<span class="material-symbols-outlined text-[12px]">trending_down</span> 0.8%
+                    </span>
+</div>
+<div class="text-xl font-bold tabular-nums">12.5%</div>
+<div class="text-[10px] text-slate-500 mt-1">Rev: $535,500</div>
+<div class="mt-2 h-1 w-full bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
+<div class="h-full bg-primary" style="width: 12.5%"></div>
+</div>
+</div>
+<!-- Creators Card -->
+<div class="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 p-3 rounded-xl">
+<div class="flex justify-between items-start mb-1">
+<span class="text-[10px] font-bold text-slate-500 uppercase tracking-tight">Creators</span>
+<span class="text-[10px] font-bold text-green-500 flex items-center">
+<span class="material-symbols-outlined text-[12px]">add</span> 422
+                    </span>
+</div>
+<div class="text-xl font-bold tabular-nums">18,492</div>
+<div class="mt-2 flex -space-x-1.5">
+<div class="w-4 h-4 rounded-full border border-slate-900 bg-slate-700"></div>
+<div class="w-4 h-4 rounded-full border border-slate-900 bg-slate-600"></div>
+<div class="w-4 h-4 rounded-full border border-slate-900 bg-slate-500"></div>
+<div class="text-[8px] flex items-center justify-center bg-slate-800 rounded-full px-1 border border-slate-900 font-bold">+12</div>
+</div>
+</div>
+<!-- Dispute Card -->
+<div class="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 p-3 rounded-xl">
+<div class="flex justify-between items-start mb-1">
+<span class="text-[10px] font-bold text-slate-500 uppercase tracking-tight">Disputes</span>
+<span class="text-[10px] font-bold text-amber-500 flex items-center">
+                        CRITICAL
+                    </span>
+</div>
+<div class="text-xl font-bold tabular-nums text-amber-500">0.82%</div>
+<div class="text-[10px] text-slate-500 mt-1">Threshold: 0.90%</div>
+<div class="mt-2 h-1 w-full bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
+<div class="h-full bg-amber-500" style="width: 82%"></div>
+</div>
+</div>
+</div>
+<!-- Trend Section -->
+<section class="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 p-4 rounded-xl">
+<h3 class="text-sm font-bold mb-4 flex justify-between items-center">
+                Volume Analysis
+                <span class="text-[10px] text-primary font-medium">VIEW DETAILS</span>
+</h3>
+<div class="h-40 relative">
+<!-- Simple SVG Area Chart -->
+<svg height="100%" preserveaspectratio="none" viewbox="0 0 400 150" width="100%">
+<defs>
+<lineargradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#13a4ec" stop-opacity="0.3"></stop>
+<stop offset="100%" stop-color="#13a4ec" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<path d="M0,150 L0,110 C40,105 80,130 120,90 C160,50 200,70 240,40 C280,10 320,60 360,30 L400,20 L400,150 Z" fill="url(#chartGradient)"></path>
+<path d="M0,110 C40,105 80,130 120,90 C160,50 200,70 240,40 C280,10 320,60 360,30 L400,20" fill="none" stroke="#13a4ec" stroke-linecap="round" stroke-width="3"></path>
+</svg>
+<div class="absolute inset-0 flex justify-between items-end pointer-events-none pb-1 px-1">
+<span class="text-[9px] text-slate-500 font-medium">00:00</span>
+<span class="text-[9px] text-slate-500 font-medium">08:00</span>
+<span class="text-[9px] text-slate-500 font-medium">16:00</span>
+<span class="text-[9px] text-slate-500 font-medium">23:59</span>
+</div>
+</div>
+<div class="mt-4 grid grid-cols-3 gap-2">
+<div class="text-center p-2 bg-slate-50 dark:bg-slate-800/40 rounded-lg">
+<p class="text-[8px] text-slate-500 font-bold uppercase">Peak</p>
+<p class="text-xs font-bold">$124k</p>
+</div>
+<div class="text-center p-2 bg-slate-50 dark:bg-slate-800/40 rounded-lg">
+<p class="text-[8px] text-slate-500 font-bold uppercase">Average</p>
+<p class="text-xs font-bold">$82k</p>
+</div>
+<div class="text-center p-2 bg-slate-50 dark:bg-slate-800/40 rounded-lg">
+<p class="text-[8px] text-slate-500 font-bold uppercase">Forecast</p>
+<p class="text-xs font-bold text-primary">$860k</p>
+</div>
+</div>
+</section>
+<!-- Management Queues Shortcuts -->
+<section>
+<h3 class="text-sm font-bold mb-3 px-1 tracking-tight">Management Queues</h3>
+<div class="grid grid-cols-3 gap-3">
+<button class="flex flex-col items-center justify-center gap-2 p-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl relative group">
+<div class="absolute -top-1.5 -right-1.5 bg-primary text-white text-[9px] font-black h-5 w-5 flex items-center justify-center rounded-full border-2 border-background-dark">48</div>
+<span class="material-symbols-outlined text-primary">verified_user</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Verification</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-2 p-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl relative group">
+<div class="absolute -top-1.5 -right-1.5 bg-slate-700 text-white text-[9px] font-black h-5 w-5 flex items-center justify-center rounded-full border-2 border-background-dark">12</div>
+<span class="material-symbols-outlined text-amber-500">gavel</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Moderation</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-2 p-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl relative group">
+<div class="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[9px] font-black h-5 w-5 flex items-center justify-center rounded-full border-2 border-background-dark">07</div>
+<span class="material-symbols-outlined text-red-500">report_problem</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Disputes</span>
+</button>
+</div>
+</section>
+<!-- Alerts Panel -->
+<section class="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden mb-6">
+<div class="bg-slate-100 dark:bg-slate-800/60 px-4 py-2 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-red-500">bolt</span>
+<h3 class="text-xs font-bold tracking-tight">System Alerts</h3>
+</div>
+<span class="bg-slate-200 dark:bg-slate-700 text-[8px] font-bold px-1.5 py-0.5 rounded text-slate-500">LIVE</span>
+</div>
+<div class="divide-y divide-slate-100 dark:divide-slate-800/50">
+<!-- Alert 1 -->
+<div class="p-3 flex gap-3 items-start">
+<div class="mt-1 w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-0.5">
+<span class="text-[11px] font-bold text-red-500 uppercase tracking-tighter">High Severity</span>
+<span class="text-[9px] text-slate-500">2m ago</span>
+</div>
+<p class="text-xs font-medium leading-snug">Spike in unauthorized login attempts from region: EU-West-1.</p>
+</div>
+</div>
+<!-- Alert 2 -->
+<div class="p-3 flex gap-3 items-start">
+<div class="mt-1 w-2 h-2 rounded-full bg-amber-500"></div>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-0.5">
+<span class="text-[11px] font-bold text-amber-500 uppercase tracking-tighter">Warning</span>
+<span class="text-[9px] text-slate-500">14m ago</span>
+</div>
+<p class="text-xs font-medium leading-snug">API Latency increased by 140ms in checkout services.</p>
+</div>
+</div>
+<!-- Alert 3 -->
+<div class="p-3 flex gap-3 items-start">
+<div class="mt-1 w-2 h-2 rounded-full bg-primary"></div>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-0.5">
+<span class="text-[11px] font-bold text-primary uppercase tracking-tighter">Security Update</span>
+<span class="text-[9px] text-slate-500">1h ago</span>
+</div>
+<p class="text-xs font-medium leading-snug">SSL Certificates for dev.discovermake.com successfully renewed.</p>
+</div>
+</div>
+</div>
+<button class="w-full py-2 text-[10px] font-bold text-slate-500 uppercase border-t border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/40">
+                Show All History
+            </button>
+</section>
+</main>
+<!-- Navigation Bar (iOS Style) -->
+<nav class="fixed bottom-0 left-0 right-0 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-lg border-t border-slate-200 dark:border-slate-800 pb-safe px-6 py-2">
+<div class="flex justify-between items-center max-w-md mx-auto">
+<button class="flex flex-col items-center gap-0.5 text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="text-[9px] font-bold">Health</span>
+</button>
+<button class="flex flex-col items-center gap-0.5 text-slate-400">
+<span class="material-symbols-outlined">payments</span>
+<span class="text-[9px] font-bold">Revenue</span>
+</button>
+<button class="flex flex-col items-center gap-0.5 text-slate-400">
+<span class="material-symbols-outlined">group</span>
+<span class="text-[9px] font-bold">Users</span>
+</button>
+<button class="flex flex-col items-center gap-0.5 text-slate-400">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[9px] font-bold">Setup</span>
+</button>
+</div>
+<!-- iOS Home Indicator -->
+<div class="w-32 h-1 bg-slate-300 dark:bg-slate-700 mx-auto mt-4 rounded-full"></div>
+</nav>
+</body></html>

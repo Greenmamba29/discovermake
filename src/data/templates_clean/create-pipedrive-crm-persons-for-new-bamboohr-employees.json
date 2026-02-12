@@ -1,0 +1,1 @@
+{"id":7308,"name":"Create Pipedrive CRM persons for new BambooHR employees","description":"Every time an employee is added to your BambooHR, Make will create a person in your Pipedrive CRM.","url":"7308-create-pipedrive-crm-persons-for-new-bamboohr-employees","usedApps":["bamboohr","pipedrive"],"usage":2}

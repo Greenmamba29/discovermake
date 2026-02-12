@@ -1,0 +1,1 @@
+{"id":2026,"name":"Send new Freshsales contacts to Google Contacts","description":"Every time a new contact is created in Freshsales, Make will automatically add that contact to Google Contacts.","url":"2026-send-new-freshsales-contacts-to-google-contacts","usedApps":["freshsales","google-contacts"],"usage":38}

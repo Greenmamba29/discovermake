@@ -1,0 +1,1 @@
+{"id":3155,"name":"Google Analytics - send a report with outputs from yesterday to Slack","description":"Get a report for the last day in Google Analytics and send it to Slack.","url":"3155-google-analytics-send-a-report-with-outputs-from-yesterday-to-slack","usedApps":["google-analytics","slack"],"usage":487}

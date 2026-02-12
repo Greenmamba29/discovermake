@@ -1,0 +1,1 @@
+{"id":5930,"name":"Automatically send new voicemails from JustCall to a Telegram chat","description":"Every time a new voicemail is sent to a JustCall, Make will automatically add that voicemail to a specified Telegram chat/channel as an audio file.","url":"5930-automatically-send-new-voicemails-from-justcall-to-a-telegram-chat","usedApps":["justcall","telegram"],"usage":3}

@@ -1,0 +1,1 @@
+{"id":5950,"name":"Create Mailchimp users from new Billsby customers","description":"Every time a new Billsby user is created, Make will automatically add a subscriber to Mailchimp. ","url":"5950-create-mailchimp-users-from-new-billsby-customers","usedApps":["billsby","mailchimp"],"usage":1}

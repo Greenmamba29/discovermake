@@ -1,0 +1,1 @@
+{"id":7132,"name":"Create Xero Projects tasks for new offline messages in HappyFox Chat","description":"Every time an offline message is received in your HappyFox Chat, Make will create a task in your Xero Projects.","url":"7132-create-xero-projects-tasks-for-new-offline-messages-in-happyfox-chat","usedApps":["happyfox-chat","xero-projects"],"usage":2}

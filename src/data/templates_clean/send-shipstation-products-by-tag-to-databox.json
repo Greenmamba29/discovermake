@@ -1,0 +1,1 @@
+{"id":3880,"name":"Send ShipStation Products by Tag to Databox","description":"List all your ShipStation products by tag and send them to Databox.","url":"3880-send-shipstation-products-by-tag-to-databox","usedApps":["shipstation","builtin","databox"],"usage":5}

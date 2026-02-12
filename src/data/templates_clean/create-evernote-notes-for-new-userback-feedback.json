@@ -1,0 +1,1 @@
+{"id":7079,"name":"Create Evernote notes for new Userback feedback","description":"Every time there is a new feedback sent via Userback, Make will automatically create a new note in Evernote.","url":"7079-create-evernote-notes-for-new-userback-feedback","usedApps":["userback","builtin","http","evernote"],"usage":3}

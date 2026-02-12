@@ -1,0 +1,1 @@
+{"id":3773,"name":"Track a Mixpanel event with custom properties","description":"This template shows how Make can automatically populate custom properties when tracking a Mixpanel event.","url":"3773-track-a-mixpanel-event-with-custom-properties","usedApps":["json","mixpanel"],"usage":50}

@@ -1,0 +1,1 @@
+{"id":6057,"name":"Send a Slack message for a new Zoom recording","description":"Every time a Zoom recording is available (completed), Make will automatically send a Slack message to a channel or a user.","url":"6057-send-a-slack-message-for-a-new-zoom-recording","usedApps":["zoom","slack"],"usage":30}

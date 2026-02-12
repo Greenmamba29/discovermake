@@ -1,0 +1,1 @@
+{"id":7658,"name":"Send SignRequests from templates for new Google Forms responses","description":"Make will watch your Google Forms responses at regular intervals and create SignRequests from templates.","url":"7658-send-signrequests-from-templates-for-new-google-forms-responses","usedApps":["google-forms","signrequest"],"usage":10}

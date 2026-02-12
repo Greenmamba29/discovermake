@@ -1,0 +1,1 @@
+{"id":7309,"name":"Create HubSpot CRM contacts for new BambooHR employees","description":"Every time a new employee is added to your BambooHR, Make will create a HubSpot CRM contact.","url":"7309-create-hubspot-crm-contacts-for-new-bamboohr-employees","usedApps":["bamboohr","hubspotcrm"],"usage":5}

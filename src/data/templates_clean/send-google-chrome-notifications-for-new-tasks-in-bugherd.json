@@ -1,0 +1,1 @@
+{"id":6310,"name":"Send Google Chrome notifications for new tasks in BugHerd","description":"Every time a new task in BugHerd is created, Make will automatically notify you about this task via a Google Chrome notification.","url":"6310-send-google-chrome-notifications-for-new-tasks-in-bugherd","usedApps":["bugherd","chrome"],"usage":2}

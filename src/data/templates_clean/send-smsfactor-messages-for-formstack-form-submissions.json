@@ -1,0 +1,1 @@
+{"id":6918,"name":"Send SMSFactor messages for Formstack form submissions","description":"Every time a new form is submitted in Formstack, Make will automatically send an SMS using SMSFactor.","url":"6918-send-smsfactor-messages-for-formstack-form-submissions","usedApps":["formstack","smsfactor"],"usage":1}

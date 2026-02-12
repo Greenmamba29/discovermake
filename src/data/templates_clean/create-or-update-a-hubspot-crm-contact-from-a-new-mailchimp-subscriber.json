@@ -1,0 +1,1 @@
+{"id":5354,"name":"Create or update a HubSpot CRM contact from a new Mailchimp subscriber","description":"Every time a Mailchimp subscriber is added, Make will automatically create or update a HubSpot CRM contact.","url":"5354-create-or-update-a-hubspot-crm-contact-from-a-new-mailchimp-subscriber","usedApps":["mailchimp","hubspotcrm"],"usage":102}

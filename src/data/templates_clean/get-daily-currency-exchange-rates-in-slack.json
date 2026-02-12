@@ -1,0 +1,1 @@
+{"id":6593,"name":"Get daily currency exchange rates in Slack","description":"Every day get an actual currency exchange rate of specified currency in Slack using Mallabe Currencies.","url":"6593-get-daily-currency-exchange-rates-in-slack","usedApps":["mallabe-currencies","slack"],"usage":2}

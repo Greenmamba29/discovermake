@@ -1,0 +1,1 @@
+{"id":5521,"name":"Create Clicfans contact for new ActiveCampaign contact","description":"Every time a new contact is created in ActiveCampaign, Make will automatically create a contact in Clicfans.","url":"5521-create-clicfans-contact-for-new-activecampaign-contact","usedApps":["activecampaign","clicfans"],"usage":0}

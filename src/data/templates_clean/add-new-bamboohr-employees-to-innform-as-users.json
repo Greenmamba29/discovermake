@@ -1,0 +1,1 @@
+{"id":6816,"name":"Add new BambooHR employees to Innform as users","description":"Every time there is a new employee added to BambooHR, Make will automatically create a new Innform user.","url":"6816-add-new-bamboohr-employees-to-innform-as-users","usedApps":["bamboohr","innform"],"usage":7}

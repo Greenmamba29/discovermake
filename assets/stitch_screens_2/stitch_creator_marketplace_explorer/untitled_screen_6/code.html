@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Compliance + Data Controls</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13a4ec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101c22",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #13a4ec;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #13a4ec;
+        }
+        .ios-switch {
+            appearance: none;
+            width: 3.25rem;
+            height: 2rem;
+            background: #374151;
+            border-radius: 9999px;
+            position: relative;
+            cursor: pointer;
+            outline: none;
+            transition: background-color 0.2s ease-in-out;
+        }
+        .ios-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: calc(2rem - 4px);
+            height: calc(2rem - 4px);
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.2s ease-in-out;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .ios-switch:checked {
+            background-color: #13a4ec;
+        }
+        .ios-switch:checked::after {
+            transform: translateX(1.25rem);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased text-slate-900 dark:text-white">
+<div class="relative flex h-full min-h-screen w-full max-w-md mx-auto flex-col overflow-x-hidden border-x border-slate-200 dark:border-slate-800 shadow-xl">
+<!-- Header -->
+<div class="sticky top-0 z-50 flex items-center bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md p-4 border-b border-slate-200 dark:border-slate-800 justify-between">
+<h2 class="text-slate-900 dark:text-white text-xl font-bold leading-tight tracking-[-0.015em] flex-1">Data Controls</h2>
+<button class="flex items-center justify-end text-primary hover:text-primary/80 transition-colors">
+<span class="material-symbols-outlined mr-1 text-[20px]">download</span>
+<span class="text-base font-semibold leading-normal tracking-[0.015em]">Export</span>
+</button>
+</div>
+<!-- Compliance Health Section -->
+<div class="px-4 pt-6 pb-2">
+<h2 class="text-slate-900 dark:text-white tracking-tight text-[28px] font-bold leading-tight mb-4">Compliance Health</h2>
+<div class="@container">
+<div class="flex flex-col rounded-xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#192b33]">
+<div class="relative h-40 w-full overflow-hidden">
+<!-- Abstract data visualization background -->
+<div class="absolute inset-0 bg-gradient-to-r from-blue-900 via-[#13a4ec]/40 to-blue-900"></div>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="relative w-32 h-32 flex items-center justify-center">
+<svg class="transform -rotate-90 w-32 h-32">
+<circle class="text-slate-200 dark:text-slate-700" cx="64" cy="64" fill="transparent" r="56" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-primary" cx="64" cy="64" fill="transparent" r="56" stroke="currentColor" stroke-dasharray="351.86" stroke-dashoffset="14" stroke-width="8"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center text-slate-900 dark:text-white">
+<span class="text-3xl font-bold">96%</span>
+</div>
+</div>
+</div>
+</div>
+<div class="flex w-full flex-col p-4">
+<div class="flex items-center justify-between mb-2">
+<p class="text-slate-900 dark:text-white text-lg font-bold leading-tight">Excellent Standing</p>
+<span class="inline-flex items-center rounded-full bg-green-100 dark:bg-green-900/30 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:text-green-400">
+                                Secure
+                            </span>
+</div>
+<div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
+<span class="material-symbols-outlined text-[18px] text-primary">trending_up</span>
+<span>+2% vs last week</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Stats Ticker -->
+<div class="flex gap-3 overflow-x-auto px-4 pb-6 pt-2 scrollbar-hide">
+<div class="flex min-w-[140px] flex-col justify-between gap-1 rounded-xl p-4 bg-white dark:bg-[#1f2e36] border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">security</span>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">Data Leaks</p>
+</div>
+<p class="text-slate-900 dark:text-white text-2xl font-bold">0</p>
+</div>
+<div class="flex min-w-[140px] flex-col justify-between gap-1 rounded-xl p-4 bg-white dark:bg-[#1f2e36] border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">dataset</span>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">Workflows</p>
+</div>
+<p class="text-slate-900 dark:text-white text-2xl font-bold">12</p>
+</div>
+<div class="flex min-w-[140px] flex-col justify-between gap-1 rounded-xl p-4 bg-white dark:bg-[#1f2e36] border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">public</span>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">Region</p>
+</div>
+<p class="text-slate-900 dark:text-white text-xl font-bold truncate">EU Locked</p>
+</div>
+</div>
+<!-- Privacy Controls Section -->
+<div class="px-4 mt-2">
+<h3 class="text-slate-900 dark:text-white text-lg font-bold leading-tight mb-3">Privacy Controls</h3>
+<div class="bg-white dark:bg-[#1f2e36] rounded-xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-800">
+<!-- Toggle Item -->
+<div class="flex items-center justify-between p-4 border-b border-slate-100 dark:border-slate-700/50">
+<div class="flex flex-col pr-4">
+<span class="text-slate-900 dark:text-white font-medium text-base">PII Auto-Redaction</span>
+<span class="text-slate-500 dark:text-slate-400 text-sm mt-0.5">Detect and mask SSNs, emails, and phones automatically.</span>
+</div>
+<input checked="" class="ios-switch shrink-0" type="checkbox"/>
+</div>
+<!-- Dropdown Item -->
+<div class="flex items-center justify-between p-4 active:bg-slate-50 dark:active:bg-slate-800/50 transition-colors cursor-pointer">
+<div class="flex flex-col">
+<span class="text-slate-900 dark:text-white font-medium text-base">Data Retention</span>
+<span class="text-slate-500 dark:text-slate-400 text-sm mt-0.5">Period before logs are purged</span>
+</div>
+<div class="flex items-center gap-2 text-slate-500 dark:text-slate-400">
+<span class="text-slate-900 dark:text-white font-medium">30 Days</span>
+<span class="material-symbols-outlined">chevron_right</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Model Governance Section -->
+<div class="px-4 mt-6">
+<h3 class="text-slate-900 dark:text-white text-lg font-bold leading-tight mb-3">Model Governance</h3>
+<div class="bg-white dark:bg-[#1f2e36] rounded-xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-800">
+<!-- Toggle Item -->
+<div class="flex items-center justify-between p-4 border-b border-slate-100 dark:border-slate-700/50">
+<div class="flex flex-col pr-4">
+<span class="text-slate-900 dark:text-white font-medium text-base">Private Endpoint Only</span>
+<span class="text-slate-500 dark:text-slate-400 text-sm mt-0.5">Restrict traffic to private Azure OpenAI instances.</span>
+</div>
+<input checked="" class="ios-switch shrink-0" type="checkbox"/>
+</div>
+<!-- Toggle Item -->
+<div class="flex items-center justify-between p-4">
+<div class="flex flex-col pr-4">
+<span class="text-slate-900 dark:text-white font-medium text-base">Block Public Models</span>
+<span class="text-slate-500 dark:text-slate-400 text-sm mt-0.5">Prevent usage of GPT-4 Public API keys.</span>
+</div>
+<input class="ios-switch shrink-0" type="checkbox"/>
+</div>
+</div>
+</div>
+<!-- Infrastructure Section -->
+<div class="px-4 mt-6 mb-8">
+<h3 class="text-slate-900 dark:text-white text-lg font-bold leading-tight mb-3">Infrastructure</h3>
+<div class="bg-white dark:bg-[#1f2e36] rounded-xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-800">
+<!-- Location Item -->
+<div class="flex items-center justify-between p-4 border-b border-slate-100 dark:border-slate-700/50 active:bg-slate-50 dark:active:bg-slate-800/50 transition-colors cursor-pointer">
+<div class="flex flex-col">
+<span class="text-slate-900 dark:text-white font-medium text-base">Data Residency</span>
+<span class="text-slate-500 dark:text-slate-400 text-sm mt-0.5">Storage location for compliance</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="h-6 w-6 rounded-full overflow-hidden bg-slate-200 relative" data-alt="EU Flag Icon">
+<!-- Simplified visual for EU flag -->
+<div class="absolute inset-0 bg-blue-600 flex items-center justify-center">
+<span class="text-[8px] text-yellow-400">★</span>
+</div>
+</div>
+<span class="text-slate-900 dark:text-white font-medium text-sm">Frankfurt (EU)</span>
+<span class="material-symbols-outlined text-slate-400">chevron_right</span>
+</div>
+</div>
+<!-- Toggle Item -->
+<div class="flex items-center justify-between p-4">
+<div class="flex flex-col pr-4">
+<span class="text-slate-900 dark:text-white font-medium text-base">Audit Logging</span>
+<span class="text-slate-500 dark:text-slate-400 text-sm mt-0.5">Log all prompts and completions for review.</span>
+</div>
+<input checked="" class="ios-switch shrink-0" type="checkbox"/>
+</div>
+</div>
+</div>
+<!-- Bottom padding for scroll -->
+<div class="h-10"></div>
+</div>
+</body></html>

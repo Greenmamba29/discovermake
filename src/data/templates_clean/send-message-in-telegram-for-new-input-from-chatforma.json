@@ -1,0 +1,1 @@
+{"id":4982,"name":"Send message in Telegram for new input from Chatforma","description":"Every time a new user input is received from Chatforma, Make will automatically send a message to a specified Telegram channel/group.","url":"4982-send-message-in-telegram-for-new-input-from-chatforma","usedApps":["chatforma","telegram"],"usage":2}

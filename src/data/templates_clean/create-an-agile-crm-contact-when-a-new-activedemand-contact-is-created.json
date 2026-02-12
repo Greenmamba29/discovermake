@@ -1,0 +1,1 @@
+{"id":5209,"name":"Create an Agile CRM contact when a new ActiveDEMAND contact is created","description":"Every time a new ActiveDEMAND contact is created, Make will automatically create an Agile CRM contact (if it doesn't already exist).","url":"5209-create-an-agile-crm-contact-when-a-new-activedemand-contact-is-created","usedApps":["activedemand","agile-crm"],"usage":2}

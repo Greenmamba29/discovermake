@@ -1,0 +1,1 @@
+{"id":5079,"name":"Create a WooCommerce customer from a new QuickBooks customer","description":"Every time a new QuickBooks customer is created, Make will automatically create a WooCommerce customer.","url":"5079-create-a-woocommerce-customer-from-a-new-quickbooks-customer","usedApps":["quickbooks","woocommerce"],"usage":20}

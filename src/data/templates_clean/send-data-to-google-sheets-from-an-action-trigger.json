@@ -1,0 +1,1 @@
+{"id":13434,"name":"Send data to Google Sheets from an action trigger","description":"Trigger an action to send data to Google Sheets from an app. Automatically add a new row with HTTP.","url":"13434-send-data-to-google-sheets-from-an-action-trigger","usedApps":["http","builtin","google-sheets"],"usage":9}

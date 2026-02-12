@@ -1,0 +1,1 @@
+{"id":2753,"name":"Get Google Chrome notifications for incoming ClickSend SMS messages","description":"Every time a new SMS message is received in ClickSend, Make will automatically send a push notification via Google Chrome.","url":"2753-get-google-chrome-notifications-for-incoming-clicksend-sms-messages","usedApps":["clicksend","chrome"],"usage":11}

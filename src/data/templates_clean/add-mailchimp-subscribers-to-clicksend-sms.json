@@ -1,0 +1,1 @@
+{"id":6688,"name":"Add Mailchimp subscribers to ClickSend SMS","description":"Use this template to automatically create a ClickSend SMS contact when a new Mailchimp subscriber is created.","url":"6688-add-mailchimp-subscribers-to-clicksend-sms","usedApps":["mailchimp","clicksend"],"usage":0}

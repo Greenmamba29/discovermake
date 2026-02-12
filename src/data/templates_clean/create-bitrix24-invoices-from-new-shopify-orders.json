@@ -1,0 +1,1 @@
+{"id":4192,"name":"Create Bitrix24 invoices from new Shopify orders","description":"When you get a new Shopify order, an invoice will be created in Bitrix24.","url":"4192-create-bitrix24-invoices-from-new-shopify-orders","usedApps":["shopify","bitrix24"],"usage":19}

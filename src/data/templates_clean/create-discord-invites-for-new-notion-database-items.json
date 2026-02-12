@@ -1,0 +1,1 @@
+{"id":5834,"name":"Create Discord invites for new Notion database items","description":"Every time a new row is added to your Notion database, Make will automatically create a new Discord invite.","url":"5834-create-discord-invites-for-new-notion-database-items","usedApps":["notion","discord"],"usage":275}

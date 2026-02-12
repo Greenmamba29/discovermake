@@ -1,0 +1,1 @@
+{"id":2508,"name":"Save new Google Forms responses to a Coda doc","description":"Every time someone fills out your Google Form, Make will automatically add a new row to your Coda table.","url":"2508-save-new-google-forms-responses-to-a-coda-doc","usedApps":["google-forms","coda"],"usage":34}

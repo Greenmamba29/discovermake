@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Set Governance Policies - DiscoverMake</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style type="text/tailwindcss">
+        :root {
+            --primary: #2563eb;
+            --ios-bg: #f2f2f7;
+            --ios-card: #ffffff;
+        }
+        .dark {
+            --ios-bg: #000000;
+            --ios-card: #1c1c1e;
+        }
+    </style>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "var(--primary)",
+                        "ios-bg": "var(--ios-bg)",
+                        "ios-card": "var(--ios-card)",
+                    },
+                    fontFamily: {
+                        sans: ["Inter", "sans-serif"],
+                    },
+                },
+            },
+        };
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        .ios-toggle:checked + .ios-toggle-bg { background-color: #34c759; }
+        .ios-toggle:checked + .ios-toggle-bg .ios-toggle-dot { transform: translateX(20px); }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-ios-bg dark:text-white min-h-screen flex flex-col">
+<header class="pt-14 pb-4 px-6 sticky top-0 bg-ios-bg/80 backdrop-blur-xl z-30">
+<div class="flex items-center justify-between mb-2">
+<button class="text-primary flex items-center gap-1">
+<span class="material-symbols-outlined">chevron_left</span>
+<span class="text-lg">Step 2</span>
+</button>
+<div class="flex gap-1">
+<div class="h-1.5 w-6 rounded-full bg-slate-300 dark:bg-slate-700"></div>
+<div class="h-1.5 w-6 rounded-full bg-slate-300 dark:bg-slate-700"></div>
+<div class="h-1.5 w-10 rounded-full bg-primary"></div>
+</div>
+</div>
+<h1 class="text-3xl font-bold tracking-tight">Set Governance</h1>
+<p class="text-slate-500 dark:text-slate-400 mt-1">Step 3 of 3: Finalize workspace policies</p>
+</header>
+<main class="flex-1 px-4 space-y-6 pb-40">
+<section class="space-y-3">
+<h2 class="px-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Internal Marketplace</h2>
+<div class="bg-ios-card rounded-2xl overflow-hidden divide-y divide-slate-100 dark:divide-slate-800">
+<div class="p-4 flex items-center justify-between">
+<div class="pr-4">
+<p class="font-semibold">Private Marketplace</p>
+<p class="text-sm text-slate-500">Only team members can see published workflows.</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only ios-toggle" type="checkbox"/>
+<div class="ios-toggle-bg w-11 h-6 bg-slate-200 dark:bg-slate-700 rounded-full transition-colors duration-200">
+<div class="ios-toggle-dot w-5 h-5 bg-white rounded-full shadow-md absolute left-0.5 top-0.5 transition-transform duration-200"></div>
+</div>
+</label>
+</div>
+<div class="p-4 flex items-center justify-between">
+<div class="pr-4">
+<p class="font-semibold">Mandatory Admin Review</p>
+<p class="text-sm text-slate-500">All internal publishes require approval.</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only ios-toggle" type="checkbox"/>
+<div class="ios-toggle-bg w-11 h-6 bg-slate-200 dark:bg-slate-700 rounded-full transition-colors duration-200">
+<div class="ios-toggle-dot w-5 h-5 bg-white rounded-full shadow-md absolute left-0.5 top-0.5 transition-transform duration-200"></div>
+</div>
+</label>
+</div>
+</div>
+</section>
+<section class="space-y-3">
+<h2 class="px-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Approved AI Models</h2>
+<div class="bg-ios-card rounded-2xl overflow-hidden divide-y divide-slate-100 dark:divide-slate-800">
+<div class="p-4 flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">shield_lock</span>
+</div>
+<div class="flex-1">
+<p class="font-semibold">Private Azure OpenAI</p>
+<p class="text-xs text-emerald-500 font-medium">Enterprise Grade Security</p>
+</div>
+<div class="text-primary">
+<span class="material-symbols-outlined">check_circle</span>
+</div>
+</div>
+<div class="p-4 flex items-center gap-3 opacity-50">
+<div class="w-10 h-10 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400">
+<span class="material-symbols-outlined">cloud_done</span>
+</div>
+<div class="flex-1">
+<p class="font-semibold">Public GPT-4</p>
+<p class="text-xs text-slate-400">Restricted for this workspace</p>
+</div>
+<div class="w-6 h-6 rounded-full border border-slate-300 dark:border-slate-700"></div>
+</div>
+<div class="p-4 flex items-center gap-3 opacity-50">
+<div class="w-10 h-10 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400">
+<span class="material-symbols-outlined">token</span>
+</div>
+<div class="flex-1">
+<p class="font-semibold">Claude 3 Opus</p>
+<p class="text-xs text-slate-400">Requires additional whitelist</p>
+</div>
+<div class="w-6 h-6 rounded-full border border-slate-300 dark:border-slate-700"></div>
+</div>
+</div>
+<p class="px-2 text-[11px] text-slate-500">Only whitelisted providers can be used in internal workflows to ensure data compliance.</p>
+</section>
+<div class="bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900 rounded-2xl p-4 flex gap-3">
+<span class="material-symbols-outlined text-blue-600 dark:text-blue-400">verified_user</span>
+<div>
+<p class="text-sm font-semibold text-blue-900 dark:text-blue-100">Governance Active</p>
+<p class="text-xs text-blue-700 dark:text-blue-300 mt-0.5">These settings will apply to all 250+ initial user seats.</p>
+</div>
+</div>
+</main>
+<div class="fixed bottom-0 left-0 right-0 bg-ios-bg/90 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800 px-6 pt-4 pb-10">
+<button class="w-full bg-primary text-white py-4 rounded-2xl font-bold text-lg shadow-xl shadow-blue-500/30 active:scale-[0.98] transition-all">
+            Launch Enterprise Workspace
+        </button>
+<div class="mt-4 mx-auto w-32 h-1 bg-slate-300 dark:bg-slate-700 rounded-full"></div>
+</div>
+
+</body></html>

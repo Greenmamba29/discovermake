@@ -1,0 +1,1 @@
+{"id":8353,"name":"Create Google Contacts from new Outgrow leads","description":"Every time a new lead is created in Outgrow, Make will automatically add that lead to Google Contacts as a new contact.","url":"8353-create-google-contacts-from-new-outgrow-leads","usedApps":["outgrow","google-contacts"],"usage":2}

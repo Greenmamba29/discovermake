@@ -1,0 +1,1 @@
+{"id":5344,"name":"Execute scheduled queries in BigQuery","description":"This template helps you schedule BigQuery SQL queries. The scenario can be set up to run at regular intervals (every hour, day, week or on a specific date).","url":"5344-execute-scheduled-queries-in-bigquery","usedApps":["google-bigquery","google-email"],"usage":28}

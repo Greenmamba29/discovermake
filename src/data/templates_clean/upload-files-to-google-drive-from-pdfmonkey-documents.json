@@ -1,0 +1,1 @@
+{"id":4505,"name":"Upload files to Google Drive from PDFMonkey documents","description":"Every time a new PDFMonkey document is created, Make will automatically upload the file to Google Drive.","url":"4505-upload-files-to-google-drive-from-pdfmonkey-documents","usedApps":["pdfmonkey","http","google-drive"],"usage":52}

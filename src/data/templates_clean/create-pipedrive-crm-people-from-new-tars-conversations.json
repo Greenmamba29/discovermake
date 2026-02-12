@@ -1,0 +1,1 @@
+{"id":8712,"name":"Create Pipedrive CRM people from new Tars conversations","description":"Every time these is a new conversation in Tars, Make will automatically create Pipedrive CRM contact. The data received from Tars is supposed to be name.","url":"8712-create-pipedrive-crm-people-from-new-tars-conversations","usedApps":["tars","builtin","pipedrive"],"usage":2}

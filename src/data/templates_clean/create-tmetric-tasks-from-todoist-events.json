@@ -1,0 +1,1 @@
+{"id":4455,"name":"Create TMetric tasks from Todoist events","description":"Every time a new event occurs on Todoist, Make will automatically create a new task in TMetric.","url":"4455-create-tmetric-tasks-from-todoist-events","usedApps":["todoist","tmetric"],"usage":10}

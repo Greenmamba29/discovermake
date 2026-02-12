@@ -1,0 +1,1 @@
+{"id":4122,"name":"Create KanbanFlow tasks from new GitHub issues","description":"Every time a new issue is created in GitHub, Make will automatically create a new task in KanbanFlow.","url":"4122-create-kanbanflow-tasks-from-new-github-issues","usedApps":["github","kanbanflow"],"usage":3}

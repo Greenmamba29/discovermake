@@ -1,0 +1,1 @@
+{"id":3621,"name":"Create FreshBooks invoice from Zoho Invoices","description":"Every time a new Zoho Invoice is created, Make will automatically create a new invoice on FreshBooks.","url":"3621-create-freshbooks-invoice-from-zoho-invoices","usedApps":["zoho-invoice","freshbooks"],"usage":2}

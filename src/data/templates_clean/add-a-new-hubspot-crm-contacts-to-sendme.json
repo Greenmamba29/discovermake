@@ -1,0 +1,1 @@
+{"id":7425,"name":"Add a new HubSpot CRM contacts to SendMe","description":"Every time a new contact is created in HubSpot CRM, Make will automatically create a new contact in SendMe.","url":"7425-add-a-new-hubspot-crm-contacts-to-sendme","usedApps":["hubspotcrm","sendme123"],"usage":0}

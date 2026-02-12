@@ -1,0 +1,1 @@
+{"id":4496,"name":"Create a new Memberstack member from a new response in Typeform","description":"When a new form is submitted in Typeform, a new member is created in Memberstack.","url":"4496-create-a-new-memberstack-member-from-a-new-response-in-typeform","usedApps":["typeform","memberstack"],"usage":19}

@@ -1,0 +1,1 @@
+{"id":10223,"name":"Forward newly received Telnyx SMS to Slack Channel","description":"When a new message is received in Telnyx, it is automatically forwarded to Slack.","url":"10223-forward-newly-received-telnyx-sms-to-slack-channel","usedApps":["telnyx","slack"],"usage":10}

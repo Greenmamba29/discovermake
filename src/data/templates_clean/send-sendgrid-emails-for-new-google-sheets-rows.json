@@ -1,0 +1,1 @@
+{"id":2441,"name":"Send SendGrid emails for new Google Sheets rows","description":"Every time a new row is added in your Google Sheets spreadsheet, Make will automatically send an email via SendGrid to a specified recipient group.","url":"2441-send-sendgrid-emails-for-new-google-sheets-rows","usedApps":["google-sheets","sendgrid"],"usage":71}

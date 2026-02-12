@@ -1,0 +1,1 @@
+{"id":10322,"name":"Send a slack message from a new company in Custify","description":"Every time a new company is created in Custify, Make will automatically send a notification to Slack.","url":"10322-send-a-slack-message-from-a-new-company-in-custify","usedApps":["custify","slack"],"usage":4}

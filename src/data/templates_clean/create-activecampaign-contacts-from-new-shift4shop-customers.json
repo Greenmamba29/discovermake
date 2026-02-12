@@ -1,0 +1,1 @@
+{"id":8344,"name":"Create ActiveCampaign contacts from new Shift4Shop customers","description":"Every time a new customer is created in Shift4Shop, Make will automatically add that customer to ActiveCampaign as a new contact.","url":"8344-create-activecampaign-contacts-from-new-shift4shop-customers","usedApps":["a3dcart","activecampaign"],"usage":3}

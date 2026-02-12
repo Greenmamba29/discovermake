@@ -1,0 +1,1 @@
+{"id":6424,"name":"Send Telegram messages when chats are finished in Jivochat","description":"Every time a chat is finished in your JivoChat, Make will send a message via your Telegram Bot.","url":"6424-send-telegram-messages-when-chats-are-finished-in-jivochat","usedApps":["jivochat","telegram"],"usage":0}

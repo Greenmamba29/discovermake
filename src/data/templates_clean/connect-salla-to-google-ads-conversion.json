@@ -1,0 +1,1 @@
+{"id":10314,"name":"Connect Salla to Google Ads Conversion","description":"When a new order is created in Salla, a new conversion enhancement is uploaded to Google Ads Conversions.","url":"10314-salla-google-ads-conversion","usedApps":["salla","google-ads-conversions"],"usage":62}

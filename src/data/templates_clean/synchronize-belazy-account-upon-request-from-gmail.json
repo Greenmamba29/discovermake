@@ -1,0 +1,1 @@
+{"id":3120,"name":"Synchronize BeLazy account upon request from Gmail","description":"When a new e-mail is received and meets specified criteria, a specified connection in BeLazy is synchronized.","url":"3120-synchronize-belazy-account-upon-request-from-gmail","usedApps":["google-email","belazy"],"usage":3}

@@ -1,0 +1,1 @@
+{"id":2692,"name":"Get new emails from Zoho Mail in Telegram","description":"Every time a new email is received in a selected Zoho Mail folder, Make will automatically send a message in Telegram.","url":"2692-get-new-emails-from-zoho-mail-in-telegram","usedApps":["zoho-mail","telegram"],"usage":58}

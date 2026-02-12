@@ -1,0 +1,1 @@
+{"id":5783,"name":"Send a Gmail email from a completed Todoist task","description":"Every time a Todoist task is completed, Make will automatically send a Gmail email.","url":"5783-send-a-gmail-email-from-a-completed-todoist-task","usedApps":["todoist","google-email"],"usage":34}

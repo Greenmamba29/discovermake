@@ -1,0 +1,1 @@
+{"id":6681,"name":"Send Slack messages for new Freshservice release","description":"Every time a new response is created or updated on your Freshservice, Make will automatically send a message in Slack.","url":"6681-send-slack-messages-for-new-freshservice-release","usedApps":["freshservice","slack"],"usage":8}

@@ -1,0 +1,1 @@
+{"id":6824,"name":"Add new Shopify customers as a FreeAgent contracts","description":"Every time a new customer is added to a Shopify, Make will automatically add that customer to FreeAgent as a new contact.","url":"6824-add-new-shopify-customers-as-a-freeagent-contracts","usedApps":["shopify","freeagent"],"usage":9}

@@ -1,0 +1,1 @@
+{"id":6063,"name":"Create a Salesforce event from a new Zoom meeting","description":"Every time a Zoom meeting is created, Make will automatically create a new Salesforce event.","url":"6063-create-a-salesforce-event-from-a-new-zoom-meeting","usedApps":["zoom","salesforce"],"usage":9}

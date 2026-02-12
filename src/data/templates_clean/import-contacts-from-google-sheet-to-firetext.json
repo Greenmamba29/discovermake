@@ -1,0 +1,1 @@
+{"id":7311,"name":"Import contacts from Google Sheet to Firetext","description":"Add new contacts from Google Sheets to Firetext. Your sheet should have a Cell phone number in column A, First name in column B and Last name in column C.","url":"7311-import-contacts-from-google-sheet-to-firetext","usedApps":["google-sheets","firetext"],"usage":1}

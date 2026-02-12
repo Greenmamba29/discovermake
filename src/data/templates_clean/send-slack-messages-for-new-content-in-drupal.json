@@ -1,0 +1,1 @@
+{"id":8040,"name":"Send Slack messages for new Content in Drupal","description":"Every time new content is created in Drupal, Make will automatically send a message in Slack.","url":"8040-send-slack-messages-for-new-content-in-drupal","usedApps":["drupal","slack"],"usage":2}

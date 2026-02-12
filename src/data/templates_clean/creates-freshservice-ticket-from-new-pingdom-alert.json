@@ -1,0 +1,1 @@
+{"id":5695,"name":"Creates Freshservice ticket from new Pingdom alert","description":"Every time you received a new alert in Pingdom, Make automatically creates a Ticket in Freshservice ","url":"5695-creates-freshservice-ticket-from-new-pingdom-alert","usedApps":["pingdom","freshservice"],"usage":4}

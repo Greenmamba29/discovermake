@@ -1,0 +1,1 @@
+{"id":2272,"name":"Add new Google Calendar events to MeisterTask as tasks","description":"Every time a new event is added to a selected Google Calendar, Make will automatically add a new task to a specific project in MeisterTask.","url":"2272-add-new-google-calendar-events-to-meistertask-as-tasks","usedApps":["google-calendar","meistertask"],"usage":28}

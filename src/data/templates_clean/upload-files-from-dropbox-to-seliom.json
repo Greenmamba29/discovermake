@@ -1,0 +1,1 @@
+{"id":8500,"name":"Upload files from Dropbox to Seliom","description":"When you upload files to a specific folder in Dropbox, Make will automatically upload them to Seliom.\n\nThe template is scheduled to run every 15 minutes. You can change the schedule after you set up the template. ","url":"8500-upload-files-from-dropbox-to-seliom","usedApps":["dropbox","seliom"],"usage":7}

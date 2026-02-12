@@ -1,0 +1,1 @@
+{"id":2985,"name":"Send notification about a new file in Egnyte to Slack","description":"When a new file is saved in Egnyte, a notification is sent to Slack.","url":"2985-send-notification-about-a-new-file-in-egnyte-to-slack","usedApps":["egnyte","slack"],"usage":9}

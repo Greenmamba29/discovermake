@@ -1,0 +1,1 @@
+{"id":6278,"name":"Create a QuickBooks invoice from a PayPal invoice","description":"Every time a PayPal invoice is created, Make will automatically create a QuickBooks invoice.","url":"6278-create-a-quickbooks-invoice-from-a-paypal-invoice","usedApps":["paypal","builtin","quickbooks"],"usage":88}

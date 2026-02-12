@@ -1,0 +1,1 @@
+{"id":3890,"name":"Push new Autopilot accounts data to Databox","description":"When a new contact is added in your Autopilot account, Make will automatically recognize that and push that account's data to Databox. Reports about accounts are up to date.","url":"3890-push-new-autopilot-accounts-data-to-databox","usedApps":["autopilot","databox"],"usage":1}

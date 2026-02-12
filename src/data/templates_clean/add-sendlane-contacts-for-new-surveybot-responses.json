@@ -1,0 +1,1 @@
+{"id":8218,"name":"Add Sendlane contacts for new Surveybot responses","description":"Make will watch your Surveybot responses at regular intervals and add respondents to your Sendlane as contacts.","url":"8218-add-sendlane-contacts-for-new-surveybot-responses","usedApps":["surveybot","sendlane"],"usage":1}

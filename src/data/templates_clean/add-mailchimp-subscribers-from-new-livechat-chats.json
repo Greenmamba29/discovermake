@@ -1,0 +1,1 @@
+{"id":8217,"name":"Add Mailchimp subscribers from new LiveChat chats","description":"Every time a new chat incoming in Livechat, Make will automatically add or update a subscriber in a specified Mailchimp mailing list.","url":"8217-add-mailchimp-subscribers-from-new-livechat-chats","usedApps":["livechat","mailchimp"],"usage":2}

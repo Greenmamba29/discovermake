@@ -1,0 +1,1 @@
+{"id":5925,"name":"Adds new customers from JustClick to Google Contacts","description":"Every time a new subscription is created in JustClick, Make will automatically create a new Google contact for this client.","url":"5925-adds-new-customers-from-justclick-to-google-contacts","usedApps":["justclick","google-contacts"],"usage":1}

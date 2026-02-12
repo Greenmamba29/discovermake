@@ -1,0 +1,1 @@
+{"id":7862,"name":"Get new Telegram messages in Kaleyra","description":"Every time a new message is received in Telegram, Make will automatically send a message in Kaleyra.","url":"7862-get-new-telegram-messages-in-kaleyra","usedApps":["telegram","kaleyra"],"usage":1}

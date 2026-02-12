@@ -1,0 +1,1 @@
+{"id":8214,"name":"Create HubSpot CRM contact from new LiveChat chats","description":"Every time a new chat incoming in Livechat, Make will automatically create or update a contact in HubSpot CRM. ","url":"8214-create-hubspot-crm-contact-from-new-livechat-chats","usedApps":["livechat","hubspotcrm"],"usage":2}

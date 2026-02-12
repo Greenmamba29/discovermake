@@ -1,0 +1,1 @@
+{"id":2745,"name":"Add new Insightly CRM leads to ClickSend","description":"Every time a new lead is created in Insightly, Make will automatically create a new contact in ClickSend.","url":"2745-add-new-insightly-crm-leads-to-clicksend","usedApps":["insightly","clicksend"],"usage":2}

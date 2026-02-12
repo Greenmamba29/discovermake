@@ -1,0 +1,1 @@
+{"id":5352,"name":"Create a HubSpot CRM note when a Mailchimp contact unsubscribes","description":"Every time a Mailchimp contact unsubscribes, Make will automatically create a HubSpot CRM engagement.","url":"5352-create-a-hubspot-crm-note-when-a-mailchimp-contact-unsubscribes","usedApps":["mailchimp","hubspotcrm"],"usage":10}

@@ -1,0 +1,1 @@
+{"id":6107,"name":"Create or update FreshBooks contacts in Xero","description":"Periodically extract new or updated clients from FreshBooks and transfer the changes to Xero. Schedule this scenario to run at least daily.","url":"6107-create-or-update-freshbooks-contacts-in-xero","usedApps":["freshbooks","xero","builtin"],"usage":17}

@@ -1,0 +1,1 @@
+{"id":5984,"name":"Create tasks on Asana from new emails","description":"When you receive new emails, Make will automatically retrieve the information from the emails and create tasks on Asana for you.","url":"5984-create-tasks-on-asana-from-new-emails","usedApps":["email","asana"],"usage":86}

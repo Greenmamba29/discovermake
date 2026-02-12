@@ -1,0 +1,1 @@
+{"id":6161,"name":"Add new Magento 2 customers as a new Omnisend contacts","description":"Every time a new customer is created in Magento 2, Make will automatically add that customer as a new Omnisend contact.","url":"6161-add-new-magento-2-customers-as-a-new-omnisend-contacts","usedApps":["magento2","omnisend"],"usage":6}

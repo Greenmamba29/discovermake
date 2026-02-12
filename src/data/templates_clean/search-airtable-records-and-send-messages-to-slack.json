@@ -1,0 +1,1 @@
+{"id":13428,"name":"Search Airtable records and send messages to Slack","description":"Automatically search Airtable records and send relevant messages to Slack. Streamline communication by integrating Airtable data directly into your Slack channels.","url":"13428-search-airtable-records-and-send-messages-to-slack","usedApps":["airtable","builtin","slack"],"usage":7}

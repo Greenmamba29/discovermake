@@ -1,0 +1,1 @@
+{"id":3607,"name":"Create subscribers on PipeDrive CRM from Emercury subscribers","description":"Make will automatically create new persons on Pipedrive CRM from existing subscribers in a specific list in Emercury.","url":"3607-create-subscribers-on-pipedrive-crm-from-emercury-subscribers","usedApps":["emercury","builtin","pipedrive"],"usage":1}

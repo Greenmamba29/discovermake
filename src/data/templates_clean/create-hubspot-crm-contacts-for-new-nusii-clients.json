@@ -1,0 +1,1 @@
+{"id":8038,"name":"Create HubSpot CRM contacts for new Nusii clients","description":"Every time a new client is created in your Nusii, Make will automatically create an identical contact in your HubSpot CRM.","url":"8038-create-hubspot-crm-contacts-for-new-nusii-clients","usedApps":["nusii","hubspotcrm"],"usage":1}

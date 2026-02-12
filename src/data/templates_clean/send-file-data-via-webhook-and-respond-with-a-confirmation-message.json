@@ -1,0 +1,1 @@
+{"id":13291,"name":"Send file data via webhook and respond with a confirmation message","description":"Automatically send file data via a custom webhook and receive a confirmation message. Integrate with Custom WebHook, HTTP, and Webhook Response modules.","url":"13291-send-file-data-via-webhook-and-respond-with-a-confirmation-message","usedApps":["gateway","http"],"usage":32}

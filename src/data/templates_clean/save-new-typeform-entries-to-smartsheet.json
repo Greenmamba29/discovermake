@@ -1,0 +1,1 @@
+{"id":5273,"name":"Save new Typeform entries to Smartsheet","description":"Every time someone fills out your Typeform form, Make will automatically add that entry to a new row in a Smartsheet sheet of your choice.","url":"5273-save-new-typeform-entries-to-smartsheet","usedApps":["typeform","smartsheet"],"usage":2}

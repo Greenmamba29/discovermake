@@ -1,0 +1,1 @@
+{"id":8557,"name":"Save new Gmail attachments to Parseur","description":"Every time you receive a new email in Gmail with an document files, Make will automatically upload it to Parseur.","url":"8557-save-new-gmail-attachments-to-parseur","usedApps":["google-email","parseur"],"usage":16}

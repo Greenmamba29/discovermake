@@ -1,0 +1,1 @@
+{"id":8436,"name":"Create Sorry subscribers from new ActiveCampaign contacts","description":"Every time a new contact is created in ActiveCampaign, Make will automatically create subscriber in Sorry.","url":"8436-create-sorry-subscribers-from-new-activecampaign-contacts","usedApps":["activecampaign","sorry"],"usage":1}

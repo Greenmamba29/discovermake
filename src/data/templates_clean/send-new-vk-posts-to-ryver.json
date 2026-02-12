@@ -1,0 +1,1 @@
+{"id":5115,"name":"Send new VK posts to Ryver","description":"Every time a new post is published on VK.com, Make will send automatically the message to Ryver chat.","url":"5115-send-new-vk-posts-to-ryver","usedApps":["vk-com","ryver"],"usage":3}

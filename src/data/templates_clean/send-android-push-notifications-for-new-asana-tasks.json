@@ -1,0 +1,1 @@
+{"id":3393,"name":"Send Android push notifications for new Asana tasks","description":"Every time a new task is created in Asana, Make will automatically send a Push notification to your Android device.","url":"3393-send-android-push-notifications-for-new-asana-tasks","usedApps":["asana","android"],"usage":15}

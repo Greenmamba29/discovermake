@@ -1,0 +1,1 @@
+{"id":12761,"name":"Add subscribers to MailerLite from a custom webhook","description":"Automatically add new subscribers to MailerLite whenever a custom webhook is triggered, streamlining your email marketing efforts with this integration.","url":"12761-add-subscribers-to-mailerlite-from-a-custom-webhook","usedApps":["gateway","mailerlite"],"usage":7}

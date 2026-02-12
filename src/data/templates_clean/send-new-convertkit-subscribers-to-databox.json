@@ -1,0 +1,1 @@
+{"id":3902,"name":"Send new ConvertKit Subscribers to Databox","description":"Every time you update a subscriber's status, Make will automatically update that data in Databox. ","url":"3902-send-new-convertkit-subscribers-to-databox","usedApps":["convertkit","databox"],"usage":14}

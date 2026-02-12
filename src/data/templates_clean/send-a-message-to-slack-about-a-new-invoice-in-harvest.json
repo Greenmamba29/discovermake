@@ -1,0 +1,1 @@
+{"id":3000,"name":"Send a message to Slack about a new invoice in Harvest","description":"When a new invoice is created in Harvest, a notification is sent to Slack.","url":"3000-send-a-message-to-slack-about-a-new-invoice-in-harvest","usedApps":["harvest","slack"],"usage":4}

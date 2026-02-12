@@ -1,0 +1,1 @@
+{"id":4965,"name":"Create a Slack message when an Asana task (or subtask) is tagged","description":"Every time an Asana task (or subtask) is tagged with a tag of your choice, a new Slack message is created.","url":"4965-create-a-slack-message-when-an-asana-task-or-subtask-is-tagged","usedApps":["asana","slack"],"usage":36}

@@ -1,0 +1,1 @@
+{"id":7512,"name":"Add items to a Yeeflow list from new Typeform responses","description":"Every time there is a new Typeform response submitted, Make will automatically add a new item to a specified Yeeflow list.","url":"7512-add-items-to-a-yeeflow-list-from-new-typeform-responses","usedApps":["typeform","yeeflow"],"usage":1}

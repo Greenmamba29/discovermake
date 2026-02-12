@@ -1,0 +1,1 @@
+{"id":7910,"name":"Create new Asana tasks from new Bitrix24 tasks","description":"Every time a task is created in Bitrix24, Make will automatically create a new task on Asana.","url":"7910-create-new-asana-tasks-from-new-bitrix24-tasks","usedApps":["bitrix24","asana"],"usage":7}

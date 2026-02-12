@@ -1,0 +1,1 @@
+{"id":6838,"name":"Create Workstack tasks from new Trello cards","description":"Every time a new card is added in Trello, Make will automatically create a new task in a Workstack.","url":"6838-create-workstack-tasks-from-new-trello-cards","usedApps":["trello","workstack"],"usage":1}

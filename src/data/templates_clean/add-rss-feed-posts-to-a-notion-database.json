@@ -1,0 +1,1 @@
+{"id":11431,"name":"Add RSS feed posts to a Notion database","description":"Create a new page on a Notion database and add the RSS post description as page content every time there is a new RSS feed item.","url":"6315-add-rss-feed-posts-to-a-notion-database","usedApps":["rss","notion"],"usage":4218}

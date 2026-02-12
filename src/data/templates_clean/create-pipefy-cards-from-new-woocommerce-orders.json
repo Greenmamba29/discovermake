@@ -1,0 +1,1 @@
+{"id":2643,"name":"Create Pipefy cards from new WooCommerce orders","description":"Every time a new order is created in WooCommerce, Make will automatically create a new card in Pipefy.","url":"2643-create-pipefy-cards-from-new-woocommerce-orders","usedApps":["woocommerce","pipefy"],"usage":6}

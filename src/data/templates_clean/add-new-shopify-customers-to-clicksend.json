@@ -1,0 +1,1 @@
+{"id":2741,"name":"Add new Shopify customers to ClickSend","description":"Every time a new customer is added in Shopify, Make will automatically create a new contact in ClickSend.","url":"2741-add-new-shopify-customers-to-clicksend","usedApps":["shopify","clicksend"],"usage":12}

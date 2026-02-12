@@ -1,0 +1,1 @@
+{"id":3109,"name":"Create a new subscriber in Moosend with e-mail of a sender from Gmail","description":"When a new e-mail in Gmail is received and meets specified criteria, the sender of the e-mail is transformed to a subscriber in Moosend.","url":"3109-create-a-new-subscriber-in-moosend-with-e-mail-of-a-sender-from-gmail","usedApps":["google-email","moosend"],"usage":1}

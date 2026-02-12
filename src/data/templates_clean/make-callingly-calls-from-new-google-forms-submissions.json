@@ -1,0 +1,1 @@
+{"id":8623,"name":"Make Callingly calls from new Google Forms submissions","description":"Every time a new response is entered in Google Forms, Make will automatically make a call in Callingly.","url":"8623-make-callingly-calls-from-new-google-forms-submissions","usedApps":["google-forms","callingly"],"usage":16}

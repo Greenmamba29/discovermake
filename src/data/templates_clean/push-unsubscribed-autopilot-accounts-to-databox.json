@@ -1,0 +1,1 @@
+{"id":3892,"name":"Push unsubscribed Autopilot accounts to Databox","description":"When an account is unsubscribed in Autopilot, Make will send the account info to Databox for future analyses.","url":"3892-push-unsubscribed-autopilot-accounts-to-databox","usedApps":["autopilot","databox"],"usage":1}

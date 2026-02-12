@@ -1,0 +1,1 @@
+{"id":7225,"name":"Create Trello cards from FogBugz milestones","description":"Every time a new milestone is created in FogBugz Make will automatically create a new card in Trello.","url":"7225-create-trello-cards-from-fogbugz-milestones","usedApps":["fogbugz","trello"],"usage":1}

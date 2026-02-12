@@ -1,0 +1,1 @@
+{"id":6075,"name":"Send a Discord message for a new Zoom webinar registrant","description":"Every time a Zoom webinar registrant is added, Make will automatically post a Discord message.","url":"6075-send-a-discord-message-for-a-new-zoom-webinar-registrant","usedApps":["zoom","discord"],"usage":1}

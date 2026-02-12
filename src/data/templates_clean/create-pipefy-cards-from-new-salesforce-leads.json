@@ -1,0 +1,1 @@
+{"id":2668,"name":"Create Pipefy cards from new SalesForce leads","description":"Every time a new lead is created in SalesForce, Make will automatically create a new card in Pipefy.","url":"2668-create-pipefy-cards-from-new-salesforce-leads","usedApps":["salesforce","pipefy"],"usage":1}

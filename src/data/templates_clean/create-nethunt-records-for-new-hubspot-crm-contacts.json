@@ -1,0 +1,1 @@
+{"id":8452,"name":"Create NetHunt records for new HubSpot CRM contacts","description":"Every time a new contact is created in HubSpot CRM, Make will automatically create a new record in NetHunt.","url":"8452-create-nethunt-records-for-new-hubspot-crm-contacts","usedApps":["hubspotcrm","nethunt"],"usage":1}

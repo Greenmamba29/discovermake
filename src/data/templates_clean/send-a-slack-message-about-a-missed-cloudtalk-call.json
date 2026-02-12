@@ -1,0 +1,1 @@
+{"id":6187,"name":"Send a Slack message about a missed CloudTalk call","description":"Use this template to automatically send a Slack message to a channel or a user when a new CloudTalk call is registered.","url":"6187-send-a-slack-message-about-a-missed-cloudtalk-call","usedApps":["cloudtalk","slack"],"usage":7}

@@ -1,0 +1,1 @@
+{"id":5889,"name":"Send email notifications when cards are moved to a list in Trello","description":"This automation watches cards that are moved to a list in Trello and sends email notifications via Gmail.","url":"5889-send-email-notifications-when-cards-are-moved-to-a-list-in-trello","usedApps":["trello","google-email"],"usage":168}

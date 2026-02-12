@@ -1,0 +1,1 @@
+{"id":3924,"name":"Send new Wrike tasks by priority to Databox","description":"Whenever you update the status of a task in Wrike, Make will automatically push the updated status to Databox. ","url":"3924-send-new-wrike-tasks-by-priority-to-databox","usedApps":["wrike","builtin","databox"],"usage":4}

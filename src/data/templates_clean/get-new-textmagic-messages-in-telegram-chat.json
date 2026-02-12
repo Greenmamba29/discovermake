@@ -1,0 +1,1 @@
+{"id":6165,"name":"Get new TextMagic messages in Telegram chat","description":"Every time you receive a new message on TextMagic, Make will automatically send a message in Telegram chat.","url":"6165-get-new-textmagic-messages-in-telegram-chat","usedApps":["textmagic","util","telegram"],"usage":1}

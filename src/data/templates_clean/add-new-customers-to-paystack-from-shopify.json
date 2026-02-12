@@ -1,0 +1,1 @@
+{"id":9154,"name":"Add new customers to Paystack from Shopify","description":"Make will watch for new Shopify customers at regular intervals and add them to Paystack using information received.","url":"9154-add-new-customers-to-paystack-from-shopify","usedApps":["shopify","paystack"],"usage":6}

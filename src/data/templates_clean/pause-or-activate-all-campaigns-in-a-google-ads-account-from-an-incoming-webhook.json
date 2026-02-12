@@ -1,0 +1,1 @@
+{"id":9125,"name":"Pause or activate all campaigns in a Google Ads account from an incoming webhook","description":"https://hook.make.com/generic-webhook-placeholder","url":"9125-pause-or-activate-all-campaigns-in-a-google-ads-account-from-an-incoming-webhook","usedApps":["gateway","util","google-ads-campaign-management","builtin","email"],"usage":84}

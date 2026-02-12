@@ -1,0 +1,1 @@
+{"id":3872,"name":"Send new Freshdesk tickets to Databox by their priority","description":"Some tickets are more urgent than others. Every time you add a ticket under a certain priority-level, Make will automatically update that level in Databox. ","url":"3872-send-new-freshdesk-tickets-to-databox-by-their-priority","usedApps":["freshdesk","builtin","databox"],"usage":15}

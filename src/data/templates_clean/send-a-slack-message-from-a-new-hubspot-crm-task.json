@@ -1,0 +1,1 @@
+{"id":5974,"name":"Send a Slack message from a new HubSpot CRM task","description":"Use this template to automatically send a Slack message to a channel or a user when a new HubSpot CRM task is created.","url":"5974-send-a-slack-message-from-a-new-hubspot-crm-task","usedApps":["hubspotcrm","slack"],"usage":21}

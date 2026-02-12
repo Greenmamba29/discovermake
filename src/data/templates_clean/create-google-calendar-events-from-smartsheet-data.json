@@ -1,0 +1,1 @@
+{"id":5219,"name":"Create Google Calendar events from Smartsheet data","description":"This integration automatically retrieves data from your Spreadsheets and creates events on your Google Calendar.","url":"5219-create-google-calendar-events-from-smartsheet-data","usedApps":["smartsheet","google-calendar"],"usage":49}

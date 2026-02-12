@@ -1,0 +1,1 @@
+{"id":70,"name":"Create Google Calendar events from new Trello cards","description":"Every time a new card is created in Trello, Make will automatically create a new event in a selected Google Calendar.","url":"70-create-google-calendar-events-from-new-trello-cards","usedApps":["trello","google-calendar"],"usage":2732}

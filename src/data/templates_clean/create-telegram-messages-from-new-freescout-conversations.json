@@ -1,0 +1,1 @@
+{"id":8639,"name":"Create Telegram messages from new FreeScout conversations","description":"Every time a new FreeScout conversation is created, Make will automatically post a new message in a specified Telegram channel.","url":"8639-create-telegram-messages-from-new-freescout-conversations","usedApps":["freescout","telegram"],"usage":17}

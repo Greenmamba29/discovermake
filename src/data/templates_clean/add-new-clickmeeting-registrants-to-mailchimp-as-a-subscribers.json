@@ -1,0 +1,1 @@
+{"id":8697,"name":"Add new ClickMeeting registrants to Mailchimp as a subscribers","description":"Every time a new attendee registets to an event in ClickMeeting, Make will automatically add subscriber to your Mailchimp.","url":"8697-add-new-clickmeeting-registrants-to-mailchimp-as-a-subscribers","usedApps":["clickmeeting","mailchimp"],"usage":2}

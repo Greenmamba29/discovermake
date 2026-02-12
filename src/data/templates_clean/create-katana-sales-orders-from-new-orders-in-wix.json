@@ -1,0 +1,1 @@
+{"id":6657,"name":"Create Katana sales orders from new orders in Wix","description":"When a new order is created in Wix, a new sales order is created in Katana. If a matching customer, tax rate, or product is not found from Katana, a new one is created.","url":"6657-create-katana-sales-orders-from-new-orders-in-wix","usedApps":["wix","katana-mrp","builtin","util"],"usage":57}

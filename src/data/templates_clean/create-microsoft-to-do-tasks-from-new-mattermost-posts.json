@@ -1,0 +1,1 @@
+{"id":1639,"name":"Create Microsoft To Do tasks from new Mattermost posts","description":"Every time a new post is posted to a selected channel on Mattermost, Make will automatically create a new task in Microsoft To Do.","url":"1639-create-microsoft-to-do-tasks-from-new-mattermost-posts","usedApps":["mattermost","microsoft-to-do"],"usage":11}

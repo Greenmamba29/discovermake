@@ -1,0 +1,1 @@
+{"id":7575,"name":"Create new notes in Productboard from new Google Forms responses","description":"Every time a new response is entered on your Google Form, Make will automatically create a new note in Productboard.","url":"7575-create-new-notes-in-productboard-from-new-google-forms-responses","usedApps":["google-forms","productboard"],"usage":4}

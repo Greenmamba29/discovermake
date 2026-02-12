@@ -1,0 +1,1 @@
+{"id":4295,"name":"Create Paymo invoices and tasks from Shopify orders","description":"Every time a new Shopify order is created, Make will automatically create an invoice and a task in Paymo.","url":"4295-create-paymo-invoices-and-tasks-from-shopify-orders","usedApps":["shopify","paymo"],"usage":2}

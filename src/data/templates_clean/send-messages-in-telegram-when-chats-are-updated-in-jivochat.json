@@ -1,0 +1,1 @@
+{"id":6425,"name":"Send messages in telegram when chats are updated in JivoChat","description":"Every time a visitor updates information about himself Make will send a message with this information via your Telegram Bot. ","url":"6425-send-messages-in-telegram-when-chats-are-updated-in-jivochat","usedApps":["jivochat","telegram"],"usage":6}

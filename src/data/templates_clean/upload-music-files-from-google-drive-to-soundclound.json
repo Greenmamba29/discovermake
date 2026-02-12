@@ -1,0 +1,1 @@
+{"id":10274,"name":"Upload music files from Google Drive to SoundClound","description":"Whenever a new audio file is added to a selected Google Drive folder, Make will automatically upload it SoundCloud.","url":"28-upload-music-files-from-google-drive-to-soundclound","usedApps":["google-drive","soundcloud"],"usage":200}

@@ -1,0 +1,1 @@
+{"id":5120,"name":"Send new files from OneDrive to Magentrix","description":"Every time the OneDrive file is received, Make will automatically upload the document to Magentrix.","url":"5120-send-new-files-from-onedrive-to-magentrix","usedApps":["onedrive","magentrix"],"usage":9}

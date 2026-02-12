@@ -1,0 +1,1 @@
+{"id":6441,"name":"Post a message to Slack from a new Lexoffice invoice","description":"Every time a new invoice is created in lexoffice, a new message will be posted to Slack along with basic invoice details.","url":"6441-post-a-message-to-slack-from-a-new-lexoffice-invoice","usedApps":["lexoffice","slack"],"usage":24}

@@ -1,0 +1,1 @@
+{"id":2263,"name":"Add new Slack messages to a MeisterTask task as comments","description":"Every time a new message is posted in Slack, Make will automatically add a new comment to a selected task in MeisterTask.","url":"2263-add-new-slack-messages-to-a-meistertask-task-as-comments","usedApps":["slack","meistertask"],"usage":5}

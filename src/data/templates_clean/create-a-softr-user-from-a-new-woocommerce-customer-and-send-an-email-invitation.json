@@ -1,0 +1,1 @@
+{"id":10102,"name":"Create a Softr user from a new WooCommerce customer and send an email invitation","description":"Use this template to automatically create a Softr user and send an email invitation when a new WooCommerce customer is created.","url":"10053-create-a-softr-io-user-from-a-new-woocommerce-customer","usedApps":["woocommerce","util","softr","email"],"usage":15}

@@ -1,0 +1,1 @@
+{"id":3114,"name":"Send a message about a new record in Airtable to Microsoft Teams","description":"When a new record is created in Airtable, a new message about this event is sent to Microsoft Teams Channel.","url":"3114-send-a-message-about-a-new-record-in-airtable-to-microsoft-teams","usedApps":["airtable","microsoft-teams"],"usage":76}

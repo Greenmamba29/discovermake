@@ -1,0 +1,1 @@
+{"id":4809,"name":"Save Strava Ride Activities to Google Sheets","description":"This scenario will watch for new ride activities on your Strava \"My Activities\" feed and transfer the activity data to a Google sheet.","url":"4809-save-strava-ride-activities-to-google-sheets","usedApps":["google-sheets","strava"],"usage":358}

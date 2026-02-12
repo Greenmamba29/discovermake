@@ -1,0 +1,1 @@
+{"id":13338,"name":"Send data to Vybit using a custom webhook and trigger actions in Make","description":"Send data to Vybit using a custom webhook and trigger actions in Make with HTTP.","url":"13338-send-data-to-vybit-using-a-custom-webhook-and-trigger-actions-in-make","usedApps":["gateway","http","vybit"],"usage":3}

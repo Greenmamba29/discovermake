@@ -1,0 +1,1 @@
+{"id":12777,"name":"Create a Google Docs document from a custom webhook trigger","description":"Trigger a Google Docs document creation from a custom webhook event. Automate document generation directly from your custom webhook to Google Docs.","url":"12777-create-a-google-docs-document-from-a-custom-webhook-trigger","usedApps":["gateway","google-docs"],"usage":68}

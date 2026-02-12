@@ -1,0 +1,1 @@
+{"id":3236,"name":"Send WooCommerce Order Confirmations to Smaily Automation Workflows","description":"When a new order is created in WooCommerce, an automation workflow is triggered in Smaily.","url":"3236-send-woocommerce-order-confirmations-to-smaily-automation-workflows","usedApps":["woocommerce","smaily"],"usage":14}

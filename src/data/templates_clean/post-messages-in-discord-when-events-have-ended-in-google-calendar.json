@@ -1,0 +1,1 @@
+{"id":5579,"name":"Post messages in Discord when events have ended in Google Calendar","description":"Us this automation to retrieve all your Google Calendar events that have ended and send Discord messages with the details.","url":"5579-post-messages-in-discord-when-events-have-ended-in-google-calendar","usedApps":["google-calendar","discord"],"usage":106}

@@ -1,0 +1,1 @@
+{"id":1996,"name":"Add new Stripe customers to Mailgun","description":"Every time a new customer is created in Stripe, Make will automatically add that customer to a Mailgun list of your choice.","url":"1996-add-new-stripe-customers-to-mailgun","usedApps":["stripe","mailgun"],"usage":10}

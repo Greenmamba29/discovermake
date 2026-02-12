@@ -1,0 +1,1 @@
+{"id":5050,"name":"Execute a Cloud BOT bot when a new Google Calendar event is created","description":"Every time a specific Google Calendar event is created, Make will automatically execute a Cloud BOT bot.","url":"5050-execute-a-cloud-bot-bot-when-a-new-google-calendar-event-is-created","usedApps":["google-calendar","cloud-bot"],"usage":1}

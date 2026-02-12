@@ -1,0 +1,1 @@
+{"id":6935,"name":"Send new Redmine Users contacts to Google Contacts","description":"Every time a new contact is created in Redmine, Make will automatically add that contact to Google Contacts.","url":"6935-send-new-redmine-users-contacts-to-google-contacts","usedApps":["redmine","google-contacts"],"usage":1}

@@ -1,0 +1,1 @@
+{"id":10083,"name":"Forward Telnyx SMS to Slack","description":"Forward SMS from Telnyx to Slack.","url":"10083-send-sms-messages-to-slack","usedApps":["telnyx","slack"],"usage":15}

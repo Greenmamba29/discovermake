@@ -1,0 +1,1 @@
+{"id":2645,"name":"Add new GitHub issues to Pipefy as cards","description":"Every time a new issue is created in GitHub, Make will automatically create a new card in Pipefy.","url":"2645-add-new-github-issues-to-pipefy-as-cards","usedApps":["github","pipefy"],"usage":2}

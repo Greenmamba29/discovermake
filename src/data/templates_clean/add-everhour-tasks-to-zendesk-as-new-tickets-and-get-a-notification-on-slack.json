@@ -1,0 +1,1 @@
+{"id":6241,"name":"Add Everhour tasks to Zendesk as new tickets and get a notification on Slack","description":"This template adds new Everhour tasks to Zendesk as new tickets and also posts the task information to Slack. ","url":"6241-add-everhour-tasks-to-zendesk-as-new-tickets-and-get-a-notification-on-slack","usedApps":["everhour","zendesk","slack"],"usage":1}

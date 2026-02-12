@@ -1,0 +1,1 @@
+{"id":7838,"name":"Create ServiceWorks customers from Mailchimp subscribers","description":"Every time a new Mailchimp subscriber is created, Make will automatically create a new customer in ServiceWorks.","url":"7838-create-serviceworks-customers-from-mailchimp-subscribers","usedApps":["mailchimp","serviceworks"],"usage":1}

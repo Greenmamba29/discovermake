@@ -1,0 +1,1 @@
+{"id":13165,"name":"Aggregate Google Sheets data to JSON and send via HTTP action","description":"Automatically convert Google Sheets data to JSON and send it via HTTP. Streamline data processing with Google Sheets, JSON, and HTTP integration.","url":"13165-aggregate-google-sheets-data-to-json-and-send-via-http-action","usedApps":["google-sheets","json","http"],"usage":35}

@@ -1,0 +1,1 @@
+{"id":8673,"name":"Send Shipday order updates to Shopify","description":"Automatically create a fulfillment event for an order in Shopify.\nIn this case, update the status of a delivery from a notification from Shipday.","url":"8673-send-shipday-order-updates-to-shopify","usedApps":["shipday","shopify"],"usage":24}

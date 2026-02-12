@@ -1,0 +1,1 @@
+{"id":6025,"name":"Post GitLab push events to Mattermost","description":"Every time a new GitLab push event is created, Make will automatically send a Mattermost message.","url":"6025-post-gitlab-push-events-to-mattermost","usedApps":["gitlab","mattermost"],"usage":0}

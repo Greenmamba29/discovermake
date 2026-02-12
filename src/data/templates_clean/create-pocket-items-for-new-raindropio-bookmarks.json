@@ -1,0 +1,1 @@
+{"id":6602,"name":"Create Pocket items for new Raindrop.io bookmarks","description":"Every time there is a new Raindrop.io bookmark, Make will automatically create a Pocket item with provided information from Raindrop.io.","url":"6602-create-pocket-items-for-new-raindrop-io-bookmarks","usedApps":["raindrop-io","pocket"],"usage":68}

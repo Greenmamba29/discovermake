@@ -1,0 +1,1 @@
+{"id":8698,"name":"Create Pipedrive CRM contacts from new registrants in ClickMeeting","description":"Every time a new attendee registets to an event in ClickMeeting, Make will automatically create a new contact in Pipedrive CRM.","url":"8698-create-pipedrive-crm-contacts-from-new-registrants-in-clickmeeting","usedApps":["clickmeeting","pipedrive"],"usage":4}

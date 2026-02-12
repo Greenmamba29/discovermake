@@ -1,0 +1,1 @@
+{"id":7022,"name":"Create Trello cards from new offline messages in HappyFox Chat","description":"Every time a new offline message is sent in HappyFox Chat, Make will automatically create a new card in Trello.","url":"7022-create-trello-cards-from-new-offline-messages-in-happyfox-chat","usedApps":["happyfox-chat","trello"],"usage":1}

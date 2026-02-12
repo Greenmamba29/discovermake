@@ -1,0 +1,1 @@
+{"id":3030,"name":"Send new deals from Teamgate CRM to Facebook Offline Conversions","description":"When new deals are made in Teamgate CRM, the credentials are sent to Facebook Offline Conversions.","url":"3030-send-new-deals-from-teamgate-crm-to-facebook-offline-conversions","usedApps":["teamgate-crm","builtin","facebook-offline-conversions"],"usage":0}

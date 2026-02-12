@@ -1,0 +1,1 @@
+{"id":4161,"name":"Save new ParseHub data in Dropbox","description":"This scenario can be run at specific intervals to retrieve the latest data of a ParseHub project. Make will automatically extract, convert and save the data in specified Dropbox folder.","url":"4161-save-new-parsehub-data-in-dropbox","usedApps":["parsehub","cloudconvert","archive","dropbox"],"usage":14}

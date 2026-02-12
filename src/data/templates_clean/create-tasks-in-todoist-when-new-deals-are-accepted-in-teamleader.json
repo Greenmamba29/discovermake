@@ -1,0 +1,1 @@
+{"id":7574,"name":"Create tasks in Todoist when new deals are accepted in Teamleader","description":"Every time a new deal are accepted in Teamleader, Make will automatically create a new task in Todoist.","url":"7574-create-tasks-in-todoist-when-new-deals-are-accepted-in-teamleader","usedApps":["teamleader","todoist"],"usage":16}

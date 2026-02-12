@@ -1,0 +1,1 @@
+{"id":2650,"name":"Create Pipefy table records from new Google Sheets rows","description":"Every time a new row is added in a Google Sheets spreadsheet, Make will automatically create a new record in your Pipefy table.","url":"2650-create-pipefy-table-records-from-new-google-sheets-rows","usedApps":["google-sheets","pipefy"],"usage":30}

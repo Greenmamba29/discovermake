@@ -1,0 +1,1 @@
+{"id":5517,"name":"Send information about new rows on Google Sheets with Infobip SMS","description":"Every time a new Google Sheets row is created, Make will automatically send a message from Infobip.","url":"5517-send-information-about-new-rows-on-google-sheets-with-infobip-sms","usedApps":["google-sheets","infobip"],"usage":10}

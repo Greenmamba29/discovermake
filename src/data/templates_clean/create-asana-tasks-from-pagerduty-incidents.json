@@ -1,0 +1,1 @@
+{"id":4739,"name":"Create Asana tasks from PagerDuty incidents","description":"Every time a new incident is triggered in PagerDuty, Make will automatically create a task in Asana.","url":"4739-create-asana-tasks-from-pagerduty-incidents","usedApps":["pagerduty","asana"],"usage":2}

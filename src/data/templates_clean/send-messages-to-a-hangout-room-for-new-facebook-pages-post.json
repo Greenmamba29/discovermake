@@ -1,0 +1,1 @@
+{"id":2009,"name":"Send messages to a Hangout room for new Facebook pages post","description":"Every time a new post is published on a Facebook page, Make will automatically send a message to a Hangout chat room.","url":"2009-send-messages-to-a-hangout-room-for-new-facebook-pages-post","usedApps":["facebook-pages","google-hangouts-chat"],"usage":44}

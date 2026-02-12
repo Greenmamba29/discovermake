@@ -1,0 +1,1 @@
+{"id":6318,"name":"Create GatherContent item for new trello card","description":"Every time a new Trello card is created, Make will automatically create an item in GatherContent.","url":"6318-create-gathercontent-item-for-new-trello-card","usedApps":["trello","gathercontent"],"usage":1}

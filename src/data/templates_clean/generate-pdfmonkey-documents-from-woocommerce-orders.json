@@ -1,0 +1,1 @@
+{"id":4513,"name":"Generate PDFMonkey documents from WooCommerce orders","description":"Every time a new WooCommerce order is created, Make will automatically use the data from that order to generate a PDFMonkey document.","url":"4513-generate-pdfmonkey-documents-from-woocommerce-orders","usedApps":["woocommerce","pdfmonkey"],"usage":45}

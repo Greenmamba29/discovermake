@@ -1,0 +1,1 @@
+{"id":2708,"name":"Send Zoho Mail emails for new Google Forms entries","description":"Every time someone fills out your Google Form, Make will automatically send an email in Zoho Mail.","url":"2708-send-zoho-mail-emails-for-new-google-forms-entries","usedApps":["google-forms","zoho-mail"],"usage":57}

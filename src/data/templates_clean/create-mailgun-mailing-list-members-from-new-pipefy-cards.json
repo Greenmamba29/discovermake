@@ -1,0 +1,1 @@
+{"id":2664,"name":"Create Mailgun mailing list members from new Pipefy cards","description":"Every time a new card is created in Pipefy, Make will automatically add a new member to your Mailgun mailing list.","url":"2664-create-mailgun-mailing-list-members-from-new-pipefy-cards","usedApps":["pipefy","mailgun"],"usage":1}

@@ -1,0 +1,1 @@
+{"id":7298,"name":"Send Slack message when user unsubscribes","description":"Every time a user unsubscribes, a Slack message is sent to a selected channel.","url":"7298-send-slack-message-when-user-unsubscribes","usedApps":["mailjet","slack"],"usage":3}

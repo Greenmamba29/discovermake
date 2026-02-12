@@ -1,0 +1,1 @@
+{"id":8792,"name":"Create Pipedrive CRM contacts from new Thankster addresses","description":"Every time a new address is created in Thankster, Make will automatically create a new contact in Pipedrive CRM.","url":"8792-create-pipedrive-crm-contacts-from-new-thankster-addresses","usedApps":["thankster","pipedrive"],"usage":1}

@@ -1,0 +1,1 @@
+{"id":3769,"name":"Send Gmail emails from Front conversations","description":"Every time a new conversation is created on Front, Make will automatically send a new email with Gmail.","url":"3769-send-gmail-emails-from-front-conversations","usedApps":["front","google-email"],"usage":4}

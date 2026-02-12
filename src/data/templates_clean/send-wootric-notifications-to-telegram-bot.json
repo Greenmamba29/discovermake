@@ -1,0 +1,1 @@
+{"id":5105,"name":"Send Wootric notifications to Telegram Bot","description":"Every time when you have a new response in Wootric, Make will automatically send a message to the specified Telegram channel/group.","url":"5105-send-wootric-notifications-to-telegram-bot","usedApps":["wootric","telegram"],"usage":0}

@@ -1,0 +1,1 @@
+{"id":6074,"name":"Send a Discord message for a new Zoom recording","description":"Every time a Zoom recording is available (completed), Make will automatically post a Discord message.","url":"6074-send-a-discord-message-for-a-new-zoom-recording","usedApps":["zoom","discord"],"usage":9}

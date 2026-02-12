@@ -1,0 +1,1 @@
+{"id":4872,"name":"Verify phone number for new contact in Close CRM","description":"Every time a new contact added in Close CRM, Make will automatically verify the contact phone number and add a note to Lead in Close CRM if the phone number is invalid.","url":"4872-verify-phone-number-for-new-contact-in-close-crm","usedApps":["close-crm","veriphone"],"usage":20}

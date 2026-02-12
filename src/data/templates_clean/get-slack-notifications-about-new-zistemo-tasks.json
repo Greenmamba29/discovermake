@@ -1,0 +1,1 @@
+{"id":8119,"name":"Get Slack notifications about new Zistemo tasks","description":"Every time a new task is created in Zistemo, Make will automatically send a notification message to a specified channel/chat in Slack.","url":"8119-get-slack-notifications-about-new-zistemo-tasks","usedApps":["zistemo","slack"],"usage":3}

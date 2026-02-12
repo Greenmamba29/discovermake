@@ -1,0 +1,1 @@
+{"id":5111,"name":"Create a QuestionPro survey for a new Google Sheets row","description":"Every time a new row is added to the Google Sheets spreadsheet, Make will automatically create a QuestionPro survey.","url":"5111-create-a-questionpro-survey-for-a-new-google-sheets-row","usedApps":["google-sheets","questionpro"],"usage":3}

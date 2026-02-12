@@ -1,0 +1,1 @@
+{"id":5040,"name":"Create new cases in Salesforce from new emails received in Gmail","description":"If you have an email address dedicated to new cases, Make will retrieve new emails received and create new cases in Salesforce with the contents.","url":"5040-create-new-cases-in-salesforce-from-new-emails-received-in-gmail","usedApps":["google-email","salesforce"],"usage":43}

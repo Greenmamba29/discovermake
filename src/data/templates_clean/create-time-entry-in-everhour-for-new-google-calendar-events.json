@@ -1,0 +1,1 @@
+{"id":5494,"name":"Create time entry in Everhour for new Google Calendar events","description":"Every time a new event is added to your Google Calendar, Make will create a time entry in Everhour.","url":"5494-create-time-entry-in-everhour-for-new-google-calendar-events","usedApps":["google-calendar","everhour"],"usage":13}

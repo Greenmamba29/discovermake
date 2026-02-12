@@ -1,0 +1,1 @@
+{"id":2271,"name":"Create MeisterTask tasks from new Evernote notes","description":"Every time a new note is added to a selected notebook in Evernote, Make will automatically add a new task to a specific MeisterTask project.","url":"2271-create-meistertask-tasks-from-new-evernote-notes","usedApps":["evernote","meistertask"],"usage":14}

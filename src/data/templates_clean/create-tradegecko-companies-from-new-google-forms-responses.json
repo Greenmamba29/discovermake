@@ -1,0 +1,1 @@
+{"id":2013,"name":"Create Tradegecko companies from new Google Forms responses","description":"Every time you receive a new response on your Google Form, Make will automatically create a new company on Tradegecko.","url":"2013-create-tradegecko-companies-from-new-google-forms-responses","usedApps":["google-forms","tradegecko"],"usage":0}

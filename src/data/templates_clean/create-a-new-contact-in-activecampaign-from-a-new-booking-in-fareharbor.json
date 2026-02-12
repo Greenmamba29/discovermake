@@ -1,0 +1,1 @@
+{"id":7540,"name":"Create a new contact in ActiveCampaign from a new booking in FareHarbor","description":"Every time a new booking is created in FareHarbor, Make will automatically create a new contact in ActiveCampaign.","url":"7540-create-a-new-contact-in-activecampaign-from-a-new-booking-in-fareharbor","usedApps":["fareharbor","activecampaign"],"usage":2}

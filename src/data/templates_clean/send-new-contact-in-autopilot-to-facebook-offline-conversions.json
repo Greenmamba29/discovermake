@@ -1,0 +1,1 @@
+{"id":3026,"name":"Send new contact in Autopilot to Facebook Offline Conversions","description":"When a new contact is created in Autopilot, the record with the contact is sent to Facebook Offline Conversions.","url":"3026-send-new-contact-in-autopilot-to-facebook-offline-conversions","usedApps":["autopilot","facebook-offline-conversions"],"usage":1}

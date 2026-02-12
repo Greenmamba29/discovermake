@@ -1,0 +1,1 @@
+{"id":2203,"name":"Post new Magento 2 orders to Slack","description":"Every time a new order is created in Magento 2, Make will automatically send a message in Slack.","url":"2203-post-new-magento-2-orders-to-slack","usedApps":["magento2","slack"],"usage":26}

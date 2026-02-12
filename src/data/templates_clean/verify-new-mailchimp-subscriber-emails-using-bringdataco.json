@@ -1,0 +1,1 @@
+{"id":8949,"name":"Verify new Mailchimp subscriber emails using BringData.co","description":"When a new subscriber is created in Mailchimp, that subscriber is validated by BringData.co. If the e-mail is not valid, it is unsubscribed.","url":"8949-verify-new-mailchimp-subscriber-emails-using-bringdata-co","usedApps":["mailchimp","bringdata"],"usage":1}

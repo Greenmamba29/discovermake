@@ -1,0 +1,1 @@
+{"id":8442,"name":"Create Trello cards for new Sorry components","description":"Every time a new component is created in Sorry, Make will automatically create a new card in Trello.","url":"8442-create-trello-cards-for-new-sorry-components","usedApps":["sorry","trello"],"usage":2}

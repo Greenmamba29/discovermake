@@ -1,0 +1,1 @@
+{"id":3147,"name":"Send a detailed message about a new event in QuickBooks to Microsoft Teams","description":"When a new object is created in QuickBooks, a detailed message about this event is sent to Microsoft Teams.","url":"3147-send-a-detailed-message-about-a-new-event-in-quickbooks-to-microsoft-teams","usedApps":["quickbooks","builtin","microsoft-teams"],"usage":13}

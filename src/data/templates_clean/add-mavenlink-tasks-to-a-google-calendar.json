@@ -1,0 +1,1 @@
+{"id":6835,"name":"Add Mavenlink tasks to a Google Calendar","description":"Every time there is a new task in Mavenlink, Make will automatically create a new event in a specified Google Calendar. Notice that Mavenlink task has to have a due date.","url":"6835-add-mavenlink-tasks-to-a-google-calendar","usedApps":["mavenlink","google-calendar"],"usage":4}

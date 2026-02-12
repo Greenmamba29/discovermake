@@ -1,0 +1,1 @@
+{"id":3966,"name":"Send new ClickUp tasks to Databox","description":"Every time a new task is created in ClickUp, Make will automatically update the number of tasks created in Databox. ","url":"3966-send-new-clickup-tasks-to-databox","usedApps":["clickup","databox"],"usage":45}

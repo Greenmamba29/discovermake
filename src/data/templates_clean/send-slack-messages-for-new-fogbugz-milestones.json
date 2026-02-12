@@ -1,0 +1,1 @@
+{"id":7226,"name":"Send Slack messages for new FogBugz milestones","description":"Every time a new FogBugz milestones is created,  Make will automatically send a message in Slack.","url":"7226-send-slack-messages-for-new-fogbugz-milestones","usedApps":["fogbugz","slack"],"usage":1}

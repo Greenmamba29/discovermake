@@ -1,0 +1,1 @@
+{"id":3581,"name":"Send Android push notifications for new Discord messages","description":"Every time a new message is posted on your Discord server, Make will automatically send a push notification to the Android device of your choice.","url":"3581-send-android-push-notifications-for-new-discord-messages","usedApps":["discord","android"],"usage":105}

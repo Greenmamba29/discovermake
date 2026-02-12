@@ -1,0 +1,1 @@
+{"id":7692,"name":"Create Google Calendar events for new Nozbe Teams tasks","description":"Every time a new task is created in Nozbe Teams, Make will automatically add that task to a selected Google Calendar as an event.","url":"7692-create-google-calendar-events-for-new-nozbe-teams-tasks","usedApps":["nozbe-teams","google-calendar"],"usage":7}

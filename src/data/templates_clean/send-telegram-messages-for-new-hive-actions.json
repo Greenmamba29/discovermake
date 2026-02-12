@@ -1,0 +1,1 @@
+{"id":4591,"name":"Send Telegram messages for new Hive actions","description":"Every time a new action is created in Hive, Make will automatically send a message to a selected chat in Telegram.","url":"4591-send-telegram-messages-for-new-hive-actions","usedApps":["hive","telegram"],"usage":3}

@@ -1,0 +1,1 @@
+{"id":4198,"name":"Create Celoxis tasks from new JIRA issues","description":"Every time a new JIRA issue is created, Make will automatically create a task in Celoxis.","url":"4198-create-celoxis-tasks-from-new-jira-issues","usedApps":["jira","celoxis"],"usage":6}

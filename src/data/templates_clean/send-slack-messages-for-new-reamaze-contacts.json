@@ -1,0 +1,1 @@
+{"id":6717,"name":"Send Slack messages for new Reamaze contacts","description":"Every time a new contact is created in Reamaze, a message is sent on Slack to the intended channel.","url":"6717-send-slack-messages-for-new-reamaze-contacts","usedApps":["reamaze","slack"],"usage":4}

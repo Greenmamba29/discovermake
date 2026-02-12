@@ -1,0 +1,1 @@
+{"id":4492,"name":"Delete Memberstack members with invalid email","description":"When a new member is created in Memberstack, their email address is verified in Clearout. If the email address is invalid, the member is deleted in Memberstack.","url":"4492-delete-memberstack-members-with-invalid-email","usedApps":["memberstack","clearout"],"usage":10}

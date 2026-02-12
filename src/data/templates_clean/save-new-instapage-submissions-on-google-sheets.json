@@ -1,0 +1,1 @@
+{"id":5656,"name":"Save new Instapage submissions on Google Sheets","description":"Every time a new Instapage submission, Make will automatically add a row in the Google Sheets spreadsheet.","url":"5656-save-new-instapage-submissions-on-google-sheets","usedApps":["instapage","google-sheets"],"usage":18}

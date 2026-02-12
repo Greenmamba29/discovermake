@@ -1,0 +1,1 @@
+{"id":6848,"name":"Send Telegram messages for new tickets in tawk.to","description":"Every time a ticket is created in your tawk.to, Make will send a message with information on it to your Telegram.","url":"6848-send-telegram-messages-for-new-tickets-in-tawk-to","usedApps":["tawkto","telegram"],"usage":5}

@@ -1,0 +1,1 @@
+{"id":5486,"name":"Share new playlist tracks on Spotify as Slack messages","description":"This template watches a playlist of your choice on Spotify for new tracks and automatically sends the names of the tracks as messages on Slack. ","url":"5486-share-new-playlist-tracks-on-spotify-as-slack-messages","usedApps":["spotify","slack"],"usage":34}

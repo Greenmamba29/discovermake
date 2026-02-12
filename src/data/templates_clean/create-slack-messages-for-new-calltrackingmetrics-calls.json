@@ -1,0 +1,1 @@
+{"id":8400,"name":"Create Slack messages for new CallTrackingMetrics calls","description":"Every time a new call is received in your CallTrackingMetrics, Make will automatically create a message in your Slack.","url":"8400-create-slack-messages-for-new-calltrackingmetrics-calls","usedApps":["calltrackingmetrics","slack"],"usage":3}

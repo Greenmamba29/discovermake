@@ -1,0 +1,1 @@
+{"id":7599,"name":"Get Slack notifications about new completed Signority documents","description":"Every time there is a new completed Signority document, Make will automatically send a notification message to a specified channel/chat in Slack.","url":"7599-get-slack-notifications-about-new-completed-signority-documents","usedApps":["signority","slack"],"usage":1}

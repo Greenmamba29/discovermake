@@ -1,0 +1,1 @@
+{"id":16702,"name":"Create a new Close Lead for every new Aimfox Lead","description":"Automatically add new leads from Aimfox into Close as Leads. Whenever a new lead appears in Aimfox, this workflow will create the Lead in Close, ensuring your CRM always stays up to date.","url":"16702-add-new-aimfox-leads-to-close-leads","usedApps":["aimfox","close-crm"],"usage":1}

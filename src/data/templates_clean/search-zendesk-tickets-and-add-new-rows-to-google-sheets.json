@@ -1,0 +1,1 @@
+{"id":12885,"name":"Search Zendesk tickets and add new rows to Google Sheets","description":"Automatically search Zendesk tickets and add relevant data to Google Sheets, streamlining ticket management and data organization for enhanced productivity.","url":"12885-search-zendesk-tickets-and-add-new-rows-to-google-sheets","usedApps":["zendesk","google-sheets"],"usage":25}

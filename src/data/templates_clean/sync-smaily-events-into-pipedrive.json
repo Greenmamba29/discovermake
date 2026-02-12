@@ -1,0 +1,1 @@
+{"id":3238,"name":"Sync Smaily Events into Pipedrive","description":"The subscriber event history is listed in Smaily and for each subscriber, an activity is created in Pipedrive CRM.","url":"3238-sync-smaily-events-into-pipedrive","usedApps":["smaily","pipedrive"],"usage":1}

@@ -1,0 +1,1 @@
+{"id":5924,"name":"Sends Slack messages about a new JustClick order","description":"Every time a new order is created in JustClick, Make will automatically send a message in Slack.","url":"5924-sends-slack-messages-about-a-new-justclick-order","usedApps":["justclick","slack"],"usage":0}

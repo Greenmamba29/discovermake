@@ -1,0 +1,1 @@
+{"id":8470,"name":"Send a message to Slack when a new Prestashop Cart is created","description":"Every time a new Prestashop cart is created, a message to Slack will be automatically sent.","url":"8470-send-a-message-to-slack-when-a-new-prestashop-cart-is-created","usedApps":["prestashop","slack"],"usage":43}

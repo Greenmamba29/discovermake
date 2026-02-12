@@ -1,0 +1,1 @@
+{"id":8527,"name":"Create Drip subscribers from new Quaderno contacts","description":"Every time a new contact is created in Quaderno, Make will automatically add that contact to Drip as a new subscriber.","url":"8527-create-drip-subscribers-from-new-quaderno-contacts","usedApps":["quaderno","drip"],"usage":3}

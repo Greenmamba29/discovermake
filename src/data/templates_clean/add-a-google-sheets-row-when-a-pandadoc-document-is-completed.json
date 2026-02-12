@@ -1,0 +1,1 @@
+{"id":5264,"name":"Add a Google Sheets row when a PandaDoc document is completed","description":"Every time a PandaDoc document is completed, Make will automatically add a new row to your Google Sheets spreadsheet.","url":"5264-add-a-google-sheets-row-when-a-pandadoc-document-is-completed","usedApps":["pandadoc","google-sheets"],"usage":27}

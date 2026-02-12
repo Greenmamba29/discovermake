@@ -1,0 +1,1 @@
+{"id":7863,"name":"Send Kaleyra messagess from new Google Sheets spreadsheet rows","description":"Every time a new row is added to a Google Sheets spreadsheet, Make will automatically send a message in Kaleyra.","url":"7863-send-kaleyra-messagess-from-new-google-sheets-spreadsheet-rows","usedApps":["google-sheets","kaleyra"],"usage":1}

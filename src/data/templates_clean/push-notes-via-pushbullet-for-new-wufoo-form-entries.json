@@ -1,0 +1,1 @@
+{"id":1083,"name":"Push notes via Pushbullet for new Wufoo form entries","description":"Every time someone fills out a selected Wufoo form, Make will automatically push a note via Pushbullet.","url":"1083-push-notes-via-pushbullet-for-new-wufoo-form-entries","usedApps":["pushbullet","wufoo"],"usage":3}

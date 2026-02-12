@@ -1,0 +1,1 @@
+{"id":8865,"name":"Create new ActiveCampaign contacts for new customers in AmeriCommerce","description":"Every time a new customer is created in AmeriCommerce, Make will automatically create a new contact in ActiveCampaign.","url":"8865-create-new-activecampaign-contacts-for-new-customers-in-americommerce","usedApps":["americommerce","activecampaign"],"usage":2}

@@ -1,0 +1,1 @@
+{"id":9035,"name":"Send Vonage SMS messages for new Typeform responses","description":"Make will watch for new Typeform responses at regular intervals and send Vonage SMS messages to the specified number.","url":"9035-send-vonage-sms-messages-for-new-typeform-responses","usedApps":["typeform","vonage"],"usage":4}

@@ -1,0 +1,1 @@
+{"id":6136,"name":"Create Notion database pages for new Pocket items","description":"Retrieve new Pocket items and create a new database page for each one of them and also assign the Pocket item Title and URL as property values to the page.","url":"6136-create-notion-database-pages-for-new-pocket-items","usedApps":["pocket","notion"],"usage":594}

@@ -1,0 +1,1 @@
+{"id":6728,"name":"Save new paid Shopify orders as a new CompanyHub company","description":"When a new order is paid in Shopify, the data from Shopify order are sent to CompanyHub new company. ","url":"6728-save-new-paid-shopify-orders-as-a-new-companyhub-company","usedApps":["shopify","companyhub"],"usage":2}

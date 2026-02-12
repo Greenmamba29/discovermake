@@ -1,0 +1,1 @@
+{"id":12636,"name":"Send new articles from RSS feed to an HTTP endpoint","description":"Automatically send new articles from your RSS feed to a specified HTTP endpoint, ensuring real-time updates and streamlined content distribution.","url":"12636-send-new-articles-from-rss-feed-to-an-http-endpoint","usedApps":["rss","http"],"usage":27}

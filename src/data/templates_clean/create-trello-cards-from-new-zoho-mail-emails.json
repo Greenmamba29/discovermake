@@ -1,0 +1,1 @@
+{"id":2699,"name":"Create Trello cards from new Zoho Mail emails","description":"Every time you receive a new email in a selected Zoho Mail folder, Make will automatically create a new card in Trello.","url":"2699-create-trello-cards-from-new-zoho-mail-emails","usedApps":["zoho-mail","trello"],"usage":20}

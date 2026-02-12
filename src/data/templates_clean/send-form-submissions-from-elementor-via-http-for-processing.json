@@ -1,0 +1,1 @@
+{"id":12984,"name":"Send form submissions from Elementor via HTTP for processing","description":"Every time a form is submitted via Elementor, Make will send the data to via an HTTP request for further processing.","url":"12984-send-form-submissions-from-elementor-via-http-for-processing","usedApps":["elementor","http"],"usage":25}

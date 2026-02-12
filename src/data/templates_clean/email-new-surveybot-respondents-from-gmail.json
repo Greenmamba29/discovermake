@@ -1,0 +1,1 @@
+{"id":6634,"name":"Email new Surveybot respondents from Gmail","description":"Every time there is a new response to a survey in Surveybot, Make will automatically send an  email to the respondent via Gmail.","url":"6634-email-new-surveybot-respondents-from-gmail","usedApps":["surveybot","google-email"],"usage":1}

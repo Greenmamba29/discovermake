@@ -1,0 +1,1 @@
+{"id":5035,"name":"Create a Setmore appointment for new Google Form response","description":"Every time a new Google Form response is received, Make will automatically create an appointment in Setmore.","url":"5035-create-a-setmore-appointment-for-new-google-form-response","usedApps":["google-forms","setmore"],"usage":3}

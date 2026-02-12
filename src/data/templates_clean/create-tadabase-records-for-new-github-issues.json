@@ -1,0 +1,1 @@
+{"id":6402,"name":"Create Tadabase records for new Github issues","description":"Every time a new issue is added to Github, Make will automatically create a record in Tadabase.","url":"6402-create-tadabase-records-for-new-github-issues","usedApps":["github","builtin","tadabase"],"usage":6}

@@ -1,0 +1,1 @@
+{"id":5995,"name":"Create a HubSpot CRM company from a new Salesforce account","description":"Use this template to automatically create a HubSpot CRM company when a new Salesforce account (i.e. company) is created.","url":"5995-create-a-hubspot-crm-company-from-a-new-salesforce-account","usedApps":["salesforce","hubspotcrm"],"usage":9}

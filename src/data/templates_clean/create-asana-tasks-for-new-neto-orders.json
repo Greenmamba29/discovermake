@@ -1,0 +1,1 @@
+{"id":6872,"name":"Create Asana tasks for new Neto Orders","description":"Every time a new order is created in Neto, Make will automatically create a new task in Asana.","url":"6872-create-asana-tasks-for-new-neto-orders","usedApps":["neto","asana"],"usage":5}

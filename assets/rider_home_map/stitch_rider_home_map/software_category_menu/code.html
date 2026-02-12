@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Software Category Menu</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glass-nav {
+            background: rgba(16, 22, 34, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .vibrant-glow {
+            box-shadow: 0 0 20px rgba(19, 91, 236, 0.15);
+        }
+        body {
+            -webkit-tap-highlight-color: transparent;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white min-h-screen pb-24">
+<!-- Top AppBar & Search -->
+<div class="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md px-4 pt-6 pb-4">
+<div class="flex items-center justify-between mb-6">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-primary/20 flex items-center justify-center border border-primary/30 overflow-hidden">
+<img class="size-full object-cover" data-alt="User profile avatar circle" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBR2Ecuk-k95fxwTh0ii1pQK4CNkY3xpTYBInTPsvV9ZljOwgTLyqFAWs2xtvqGfq1u5JWx_N1-iiZXP_VpT-j6gClN5IpWJEV7IeA6sq5KMM0fWavruiCC3jLpjF6pjLZRdViUBM2M40xqirjz6scPVA-hcTpn8hY3lD00vr6rh_VcSXJ3-6ood2ezYOK-KqDKhprrlg68gZpa6npvHjVElHOHKqeNUgPjP2skBAnFrAo-OsVDQlaLfMpjWlm9fqH49ndd5MhsR2sa"/>
+</div>
+<div>
+<p class="text-xs text-slate-500 dark:text-slate-400 font-medium uppercase tracking-wider">Project Hub</p>
+<h1 class="text-lg font-bold leading-tight">Hello, Alex</h1>
+</div>
+</div>
+<button class="relative p-2 rounded-full hover:bg-slate-200 dark:hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 size-2 bg-primary rounded-full border-2 border-background-dark"></span>
+</button>
+</div>
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-primary transition-colors">
+<span class="material-symbols-outlined text-xl">search</span>
+</div>
+<input class="w-full bg-slate-200/50 dark:bg-white/5 border-none rounded-xl py-4 pl-12 pr-4 text-base focus:ring-2 focus:ring-primary/50 placeholder:text-slate-500 transition-all" placeholder="What are we building today?" type="text"/>
+</div>
+</div>
+<!-- Main Content -->
+<main class="px-4 space-y-8">
+<!-- Categories Grid -->
+<section>
+<div class="flex items-center justify-between mb-4">
+<h2 class="text-xl font-bold tracking-tight">Software Categories</h2>
+<button class="text-primary text-sm font-semibold">See All</button>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<!-- Category Card: Mobile -->
+<div class="glass-card vibrant-glow rounded-xl p-5 flex flex-col gap-4 relative overflow-hidden group cursor-pointer">
+<div class="absolute -top-4 -right-4 size-20 bg-primary/10 rounded-full blur-2xl group-hover:bg-primary/20 transition-colors"></div>
+<div class="size-12 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white shadow-lg">
+<span class="material-symbols-outlined text-2xl">smartphone</span>
+</div>
+<div>
+<h3 class="font-bold text-base">Mobile Apps</h3>
+<p class="text-xs text-slate-400 mt-1">iOS &amp; Android</p>
+</div>
+</div>
+<!-- Category Card: Web -->
+<div class="glass-card vibrant-glow rounded-xl p-5 flex flex-col gap-4 relative overflow-hidden group cursor-pointer">
+<div class="absolute -top-4 -right-4 size-20 bg-emerald-500/10 rounded-full blur-2xl group-hover:bg-emerald-500/20 transition-colors"></div>
+<div class="size-12 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white shadow-lg">
+<span class="material-symbols-outlined text-2xl">language</span>
+</div>
+<div>
+<h3 class="font-bold text-base">Web Platforms</h3>
+<p class="text-xs text-slate-400 mt-1">Full-stack solutions</p>
+</div>
+</div>
+<!-- Category Card: AI -->
+<div class="glass-card vibrant-glow rounded-xl p-5 flex flex-col gap-4 relative overflow-hidden group cursor-pointer">
+<div class="absolute -top-4 -right-4 size-20 bg-purple-500/10 rounded-full blur-2xl group-hover:bg-purple-500/20 transition-colors"></div>
+<div class="size-12 rounded-lg bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center text-white shadow-lg">
+<span class="material-symbols-outlined text-2xl">psychology</span>
+</div>
+<div>
+<h3 class="font-bold text-base">AI Integration</h3>
+<p class="text-xs text-slate-400 mt-1">LLMs &amp; Agents</p>
+</div>
+</div>
+<!-- Category Card: Cloud -->
+<div class="glass-card vibrant-glow rounded-xl p-5 flex flex-col gap-4 relative overflow-hidden group cursor-pointer">
+<div class="absolute -top-4 -right-4 size-20 bg-orange-500/10 rounded-full blur-2xl group-hover:bg-orange-500/20 transition-colors"></div>
+<div class="size-12 rounded-lg bg-gradient-to-br from-orange-500 to-yellow-600 flex items-center justify-center text-white shadow-lg">
+<span class="material-symbols-outlined text-2xl">cloud_queue</span>
+</div>
+<div>
+<h3 class="font-bold text-base">Cloud Infra</h3>
+<p class="text-xs text-slate-400 mt-1">AWS, GCP, Azure</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Featured Developers -->
+<section>
+<div class="flex items-center justify-between mb-4">
+<h2 class="text-xl font-bold tracking-tight">Featured Developers</h2>
+</div>
+<div class="flex gap-4 overflow-x-auto pb-4 -mx-4 px-4 scrollbar-hide">
+<!-- Dev Card 1 -->
+<div class="min-w-[280px] glass-card rounded-xl p-4 flex gap-4 items-center">
+<div class="relative">
+<img class="size-16 rounded-lg object-cover" data-alt="Developer profile portrait photo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuATCIs8CyjU1nqbzoUl4E5ysjTl8SB2E1ZIBT3cb_qMxmyiL_d42-PwqBLeJRckRCWcvevv8KcA-3ZzLCNmaqWltcR5qV_1lZvtTmp6mllmZIkmL5pzgtveqZycps-6Qpi2GWoTeuystBnG0YS7-i5hjN0DX1pmWFEipOunhp1vPSgrnvg2DPxEgU6oCe1He_MDcAtEXIwJQbHa6kU7sOCQa01-xondBcQ74Rs2NVMj2XA6xAGkFCSHmCLRHQhf-Era-OAAqhj_EuW-"/>
+<div class="absolute -bottom-1 -right-1 size-4 bg-green-500 border-2 border-background-dark rounded-full"></div>
+</div>
+<div class="flex-1">
+<div class="flex items-center justify-between mb-1">
+<h4 class="font-bold text-sm">Elena Rodriguez</h4>
+<span class="text-[10px] bg-primary/20 text-primary px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter">Pro</span>
+</div>
+<p class="text-xs text-slate-400 mb-2">Senior iOS Engineer</p>
+<div class="flex items-center gap-1 text-xs">
+<span class="material-symbols-outlined text-yellow-500 text-sm fill-current">star</span>
+<span class="font-bold">4.9</span>
+<span class="text-slate-500 font-medium text-[10px] ml-1">(120 projects)</span>
+</div>
+</div>
+</div>
+<!-- Dev Card 2 -->
+<div class="min-w-[280px] glass-card rounded-xl p-4 flex gap-4 items-center">
+<div class="relative">
+<img class="size-16 rounded-lg object-cover" data-alt="Professional developer avatar portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEhXNtnOM9sFMSfL6pL69a3k9lNx9G8nmW8j7cKrYV14uCI7_zwQb-pj2dqEPxyHusbHOxiAffnfhJqd0DeT5Ai_kxXebyg5hWupV7prIn5pzyPj0WbCzf0AiwMZh0RQ1aP8Ki5okO9V7dE2_V53WarcBvtzAC5g7NwRd9LTDJp7KqHW3Pu_-F6l0WfNcQU1j7wOInKdUIR18RfNk7ssazOja0tUj3MPmEKzdISvEClhhJ8WfauURyk0M56M_lW8aB4Z51wAWBTzvR"/>
+<div class="absolute -bottom-1 -right-1 size-4 bg-green-500 border-2 border-background-dark rounded-full"></div>
+</div>
+<div class="flex-1">
+<div class="flex items-center justify-between mb-1">
+<h4 class="font-bold text-sm">Marcus Chen</h4>
+<span class="text-[10px] bg-primary/20 text-primary px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter">Pro</span>
+</div>
+<p class="text-xs text-slate-400 mb-2">Cloud Architect</p>
+<div class="flex items-center gap-1 text-xs">
+<span class="material-symbols-outlined text-yellow-500 text-sm fill-current">star</span>
+<span class="font-bold">5.0</span>
+<span class="text-slate-500 font-medium text-[10px] ml-1">(85 projects)</span>
+</div>
+</div>
+</div>
+<!-- Dev Card 3 -->
+<div class="min-w-[280px] glass-card rounded-xl p-4 flex gap-4 items-center">
+<div class="relative">
+<img class="size-16 rounded-lg object-cover" data-alt="Young developer avatar portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPg2F0dW0Wk33yIyt1CewISHW9Ik8RCrGLHATufPE-jy87VUIK-QmjwknDsDf3hCreG-HfytRuIoS8s6NBCUD6uJzxij0Wz9aBQlCg7ia5FdDXeA4-St28SW0ZOXmFYe6Jra2NZTKLwRXjCp4GA0NrcsNNBIruBuBgl6S2xlIjGV7L1HjfcpeXO5Fhg8haOLRVSPofrNWM-9yPAVSLcoJq-Y_4kk3ij230s1vlpf5oP8sAFQjEEQ31gzjLHqBam-ZEmPXcaNhVVIa0"/>
+<div class="absolute -bottom-1 -right-1 size-4 bg-yellow-500 border-2 border-background-dark rounded-full"></div>
+</div>
+<div class="flex-1">
+<div class="flex items-center justify-between mb-1">
+<h4 class="font-bold text-sm">Sarah Jenkins</h4>
+<span class="text-[10px] bg-primary/20 text-primary px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter">Pro</span>
+</div>
+<p class="text-xs text-slate-400 mb-2">Web3 Specialist</p>
+<div class="flex items-center gap-1 text-xs">
+<span class="material-symbols-outlined text-yellow-500 text-sm fill-current">star</span>
+<span class="font-bold">4.8</span>
+<span class="text-slate-500 font-medium text-[10px] ml-1">(42 projects)</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Promotions / New Services -->
+<section class="pb-8">
+<div class="bg-gradient-to-r from-primary to-indigo-700 rounded-xl p-6 text-white relative overflow-hidden shadow-2xl shadow-primary/20">
+<div class="relative z-10 flex flex-col gap-2">
+<span class="text-[10px] font-bold uppercase tracking-widest bg-white/20 w-fit px-2 py-1 rounded">Launch Special</span>
+<h3 class="text-2xl font-bold leading-tight">Zero Platform Fees<br/>on your first MVP</h3>
+<button class="mt-4 bg-white text-primary px-6 py-2.5 rounded-lg font-bold text-sm w-fit shadow-lg shadow-black/20">
+                        Claim Offer
+                    </button>
+</div>
+<!-- Abstract circles for decor -->
+<div class="absolute top-0 right-0 size-32 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/4 blur-2xl"></div>
+<div class="absolute bottom-0 right-10 size-16 bg-white/5 rounded-full translate-y-1/2 blur-xl"></div>
+<span class="material-symbols-outlined absolute top-4 right-4 text-7xl opacity-20 pointer-events-none">auto_awesome</span>
+</div>
+</section>
+</main>
+<!-- Navigation Bar -->
+<nav class="fixed bottom-0 left-0 right-0 glass-nav h-20 px-6 flex items-center justify-between z-50">
+<div class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-2xl fill-current">home</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Explore</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-slate-500">
+<span class="material-symbols-outlined text-2xl">rocket_launch</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Projects</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-slate-500">
+<span class="material-symbols-outlined text-2xl">forum</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Messages</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-slate-500">
+<span class="material-symbols-outlined text-2xl">person</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Profile</span>
+</div>
+</nav>
+</body></html>

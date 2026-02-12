@@ -1,0 +1,1 @@
+{"id":8372,"name":"Get Pushover notifications for new Evernote notes","description":"Every time a new note is created in Evernote, Make will automatically send a notification message in Pushover.","url":"8372-get-pushover-notifications-for-new-evernote-notes","usedApps":["evernote","pushover"],"usage":1}

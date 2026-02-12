@@ -1,0 +1,1 @@
+{"id":4123,"name":"Create KanbanFlow tasks from new Trello cards","description":"Every time a new card is created in Trello, Make will automatically create a new task in KanbanFlow.","url":"4123-create-kanbanflow-tasks-from-new-trello-cards","usedApps":["trello","kanbanflow"],"usage":1}

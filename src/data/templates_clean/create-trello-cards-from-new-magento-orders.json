@@ -1,0 +1,1 @@
+{"id":427,"name":"Create Trello cards from new Magento orders","description":"Every time a new order is created in Magento, Make will automatically create a new card in Trello.","url":"427-create-trello-cards-from-new-magento-orders","usedApps":["magento","trello"],"usage":1}

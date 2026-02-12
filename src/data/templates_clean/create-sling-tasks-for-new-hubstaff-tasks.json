@@ -1,0 +1,1 @@
+{"id":7727,"name":"Create Sling tasks for new Hubstaff tasks","description":"Make will watch your Hubstaff tasks at regular intervals and create identical ones in your Sling.","url":"7727-create-sling-tasks-for-new-hubstaff-tasks","usedApps":["hubstaff","sling"],"usage":2}

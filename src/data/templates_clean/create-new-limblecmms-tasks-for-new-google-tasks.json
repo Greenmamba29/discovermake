@@ -1,0 +1,1 @@
+{"id":7833,"name":"Create new LimbleCMMS tasks for new Google Tasks","description":"Every time a new task is created in Google Tasks, Make will automatically create a new task in LimbleCMMS.","url":"7833-create-new-limblecmms-tasks-for-new-google-tasks","usedApps":["google-tasks","limble-cmms"],"usage":1}

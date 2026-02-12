@@ -1,0 +1,1 @@
+{"id":7957,"name":"Create Zoho Sheet records for new Pipedrive CRM persons","description":"Make will watch your Pipedrive persons at regular intervals and create records in Zoho Sheet. ","url":"7957-create-zoho-sheet-records-for-new-pipedrive-crm-persons","usedApps":["pipedrive","util","zoho-sheet"],"usage":7}

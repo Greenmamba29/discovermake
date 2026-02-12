@@ -1,0 +1,1 @@
+{"id":3912,"name":"Send new Twilio Messages to Databox","description":"When a new message is received or sent in Twilio, Make will send that message to Databox for further analyses.","url":"3912-send-new-twilio-messages-to-databox","usedApps":["twilio","databox"],"usage":11}

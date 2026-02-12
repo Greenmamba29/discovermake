@@ -1,0 +1,1 @@
+{"id":4226,"name":"Create new EmailOctopus contacts from Google Sheets","description":"Every time a new Google Sheets row is added, Make will automatically create a new contact in EmailOctopus.","url":"4226-create-new-emailoctopus-contacts-from-google-sheets","usedApps":["google-sheets","email-octopus"],"usage":30}

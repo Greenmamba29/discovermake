@@ -1,0 +1,1 @@
+{"id":8632,"name":"Add new Zoho CRM leads to Call Assist","description":"Make will watch for new Zoho CRM leads at regular intervals and add these leads to Call Assist.","url":"8632-add-new-zoho-crm-leads-to-call-assist","usedApps":["zohocrm","call-assist"],"usage":6}

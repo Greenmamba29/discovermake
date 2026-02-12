@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Creator Storefront</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "primary": "#13a4ec",
+                "background-light": "#f6f7f8",
+                "background-dark": "#101c22",
+                "surface-dark": "#192b33",
+                "surface-light": "#ffffff",
+              },
+              fontFamily: {
+                "display": ["Inter", "sans-serif"]
+              },
+              borderRadius: {"DEFAULT": "0.375rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+            },
+          },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        body {
+          min-height: max(884px, 100dvh);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen text-slate-900 dark:text-white overflow-x-hidden font-display flex flex-col">
+<header class="sticky top-0 z-50 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 transition-colors">
+<div class="px-4 py-3">
+<div class="flex items-center justify-between mb-4">
+<button class="flex items-center justify-center h-8 w-8 rounded-full bg-gray-200 dark:bg-surface-dark hover:bg-gray-300 transition-colors">
+<span class="material-symbols-outlined text-gray-900 dark:text-white" style="font-size: 20px;">arrow_back</span>
+</button>
+<div class="flex gap-2">
+<button class="flex items-center justify-center h-8 w-8 rounded-full hover:bg-gray-200 dark:hover:bg-surface-dark transition-colors">
+<span class="material-symbols-outlined text-gray-900 dark:text-white" style="font-size: 20px;">search</span>
+</button>
+<button class="flex items-center justify-center h-8 w-8 rounded-full hover:bg-gray-200 dark:hover:bg-surface-dark transition-colors">
+<span class="material-symbols-outlined text-gray-900 dark:text-white" style="font-size: 20px;">more_horiz</span>
+</button>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<h1 class="text-2xl font-bold tracking-tight">Alex Chen</h1>
+<div class="flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400">
+<span class="text-primary font-medium">4.9</span>
+<span class="material-symbols-outlined text-primary text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span>•</span>
+<span>Top Creator</span>
+<span>•</span>
+<span>DevOps &amp; Marketing</span>
+</div>
+</div>
+<div class="h-12 w-12 rounded-full overflow-hidden border-2 border-primary/20">
+<div class="h-full w-full bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBmAHBT0WYfAeNHwAvBpWcY2BtLkJE7zJGzbKbpaN1DnSREogjzKqqCy4roFciVehNYqegaq3_9DnfCcAi4zwEy3QEYEjsDda2JY_GJ6Vl1SmSHDK-J4cYcHh2OHE4BgKyo4pXo3HMfQ6bXke-WGN55blXjKAkkPqFFU4a6hUMv46Tsny7NWsuPlN-HbMyiaqdumZeY3gR8bub1NVuU_DETPZ9-yGzV_hMmFj1bE0x5TpOn78U6frdv4XQDVErVvTe5dueAoFQyoSA');"></div>
+</div>
+</div>
+<div class="mt-4 flex items-center justify-between gap-4">
+<button class="flex-1 bg-primary hover:bg-primary/90 text-white font-semibold py-2 px-4 rounded-full text-sm transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">person_add</span>
+                Follow for drops
+            </button>
+<div class="flex gap-4 text-sm font-medium">
+<div class="text-center">
+<div class="text-gray-900 dark:text-white font-bold">12.5k</div>
+<div class="text-xs text-gray-500">Followers</div>
+</div>
+<div class="text-center">
+<div class="text-gray-900 dark:text-white font-bold">48</div>
+<div class="text-xs text-gray-500">Tools</div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex overflow-x-auto hide-scrollbar gap-6 px-4 py-3 border-t border-gray-200 dark:border-gray-800">
+<a class="whitespace-nowrap text-sm font-bold text-gray-900 dark:text-white border-b-2 border-gray-900 dark:border-white pb-1" href="#">Marketing Tools</a>
+<a class="whitespace-nowrap text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors" href="#">DevOps Automations</a>
+<a class="whitespace-nowrap text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors" href="#">Design Systems</a>
+<a class="whitespace-nowrap text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors" href="#">Data Pipelines</a>
+</div>
+</header>
+<main class="flex-1 pb-24">
+<section class="py-2">
+<div class="px-4 py-3 sticky top-[138px] z-40 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-sm">
+<h2 class="text-xl font-bold tracking-tight">Marketing Tools</h2>
+</div>
+<div class="flex flex-col">
+<div class="group flex items-start gap-4 p-4 border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-surface-dark/50 transition-colors cursor-pointer">
+<div class="flex-1 min-w-0">
+<h3 class="text-base font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors">Growth Hacking Suite v2</h3>
+<p class="text-sm text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">Automated social media scheduling and analytics dashboard template using Next.js and Tailwind.</p>
+<div class="flex items-center gap-3 mt-3">
+<span class="text-xs font-medium text-gray-900 dark:text-white">$29.00</span>
+<span class="text-xs text-gray-400">•</span>
+<div class="flex items-center gap-1 text-xs text-gray-500">
+<span class="material-symbols-outlined text-[14px]">favorite</span>
+                            1.2k
+                        </div>
+</div>
+</div>
+<div class="relative h-24 w-24 flex-shrink-0 rounded-lg overflow-hidden bg-surface-dark">
+<div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAaI13NoN9VHe_Ijh26hXsTKb4LfxF8v3QAIXweTCyJ9B0Uj3hveH5S6zv0xf0Wv1mPuZ7BEfHeKfS1rkJ3_YUHZEFhZhcvPtm8-llmle0so2NQzHr8aDQeayflSv6przFZXfT_hOPtWweFMOCvGo3ZMI66_tz4n6bdQJNx6f4Foi2NTINf3AoOZEjrTy6tWc6Day_AdPktkMQgVPZYr3-JGWASDs1558RELSM72t5FYiCoMKiSZx4PPh2CNgC7iNVWlZrQHR34EDs');"></div>
+<button class="absolute bottom-1 right-1 h-7 w-7 bg-white dark:bg-surface-dark/90 backdrop-blur rounded-full flex items-center justify-center shadow-sm hover:bg-primary hover:text-white transition-colors text-primary dark:text-white">
+<span class="material-symbols-outlined text-[16px]">sync_alt</span>
+</button>
+</div>
+</div>
+<div class="group flex items-start gap-4 p-4 border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-surface-dark/50 transition-colors cursor-pointer">
+<div class="flex-1 min-w-0">
+<h3 class="text-base font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors">Email Campaign Builder</h3>
+<p class="text-sm text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">Drag-and-drop email builder with MJML support. Export to HTML ready for any ESP.</p>
+<div class="flex items-center gap-3 mt-3">
+<span class="text-xs font-medium text-gray-900 dark:text-white">Free</span>
+<span class="text-xs text-gray-400">•</span>
+<div class="flex items-center gap-1 text-xs text-gray-500">
+<span class="material-symbols-outlined text-[14px]">favorite</span>
+                            850
+                        </div>
+</div>
+</div>
+<div class="relative h-24 w-24 flex-shrink-0 rounded-lg overflow-hidden bg-surface-dark">
+<div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDkPNLRdL9KAzl8lwujLwuLXSWCEN8ai6VTYAsxoSF9lnLRZLbSaMlFuIdgV1btB2Cocr6G7jOozNMKvWyHI6FRR4VtexNhPKx6_SW6FnfG3hDDF7Fieb7RELWj2DiT_xyUwYyhe5NuL6qVTOINjnLgl86bg2_Zv9nrQSG9v3_pLIbLoExO9hc8qG62NKbMMsXHnrgZfQOXBzwDZA1OL4XmtgB1QfQRDKzRtcm7W9A4meJfV75mkOhmu446hsrXZueNVup_TxyA9Uc');"></div>
+<button class="absolute bottom-1 right-1 h-7 w-7 bg-white dark:bg-surface-dark/90 backdrop-blur rounded-full flex items-center justify-center shadow-sm hover:bg-primary hover:text-white transition-colors text-primary dark:text-white">
+<span class="material-symbols-outlined text-[16px]">sync_alt</span>
+</button>
+</div>
+</div>
+<div class="group flex items-start gap-4 p-4 border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-surface-dark/50 transition-colors cursor-pointer">
+<div class="flex-1 min-w-0">
+<div class="flex items-center gap-2 mb-1">
+<span class="bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-[10px] font-bold px-1.5 py-0.5 rounded">POPULAR</span>
+</div>
+<h3 class="text-base font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors">SEO Content Analyzer</h3>
+<p class="text-sm text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">Real-time keyword analysis and readability scoring for blog posts.</p>
+<div class="flex items-center gap-3 mt-3">
+<span class="text-xs font-medium text-gray-900 dark:text-white">$15.00</span>
+<span class="text-xs text-gray-400">•</span>
+<div class="flex items-center gap-1 text-xs text-gray-500">
+<span class="material-symbols-outlined text-[14px]">favorite</span>
+                            2.4k
+                        </div>
+</div>
+</div>
+<div class="relative h-24 w-24 flex-shrink-0 rounded-lg overflow-hidden bg-surface-dark">
+<div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAhn1VHr88n9eQ1L9nxmC4De6wXZ5khfoqpuoJm6oMUbWISgnHw5fbv17YXFMDQo4grLf8KxcYtpYq25m7wDUckus23M_zns48jyWPzPiWOnYZ4YvhehUbPApjtA1XqG45y0bK7kFSwGxhYXt7eXH93QUsXkk3FMwZ4Ot4L6Q5ujwTTYIMrzwRax-OvOnxCb1tsMPrI3eSmnOqqku71VOop3XDkSAbTQJ01S_dBkmUqdePUEP6mwXI65oKsnRbNJ_-d6Gw_Zo3D_zE');"></div>
+<button class="absolute bottom-1 right-1 h-7 w-7 bg-white dark:bg-surface-dark/90 backdrop-blur rounded-full flex items-center justify-center shadow-sm hover:bg-primary hover:text-white transition-colors text-primary dark:text-white">
+<span class="material-symbols-outlined text-[16px]">sync_alt</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<section class="py-2">
+<div class="px-4 py-3 sticky top-[138px] z-40 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-sm">
+<h2 class="text-xl font-bold tracking-tight">DevOps Automations</h2>
+</div>
+<div class="flex flex-col">
+<div class="group flex items-start gap-4 p-4 border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-surface-dark/50 transition-colors cursor-pointer">
+<div class="flex-1 min-w-0">
+<h3 class="text-base font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors">AWS Lambda Starter Kit</h3>
+<p class="text-sm text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">Serverless framework template configured for TypeScript and AWS Lambda.</p>
+<div class="flex items-center gap-3 mt-3">
+<span class="text-xs font-medium text-gray-900 dark:text-white">$45.00</span>
+<span class="text-xs text-gray-400">•</span>
+<div class="flex items-center gap-1 text-xs text-gray-500">
+<span class="material-symbols-outlined text-[14px]">favorite</span>
+                            900
+                        </div>
+</div>
+</div>
+<div class="relative h-24 w-24 flex-shrink-0 rounded-lg overflow-hidden bg-surface-dark">
+<div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBPcVePbt69OJvDBXIex_NW5v28W8rCQ72mBu_YSGaLf7RN_dGBgf8AAoSLH1_gGVh9wl3RI9A89QMlgClDiSbJZ1q6Y7BcG1SH-DaTrwnfWaL1QlrdG4cRwG88Kd6L23zlov82MVTECUxMKus_1_lojK8mOJS4eNOWc4XwSrQR6UdlVj15HJ-oY89wTXPA98em5iq6a0CABiYlFxVOitOoESzrg8QRdlUfHoqeKA3r4gxSvUI2gjOrfWfTSYja4PcuiIK61i25KUI');"></div>
+<button class="absolute bottom-1 right-1 h-7 w-7 bg-white dark:bg-surface-dark/90 backdrop-blur rounded-full flex items-center justify-center shadow-sm hover:bg-primary hover:text-white transition-colors text-primary dark:text-white">
+<span class="material-symbols-outlined text-[16px]">sync_alt</span>
+</button>
+</div>
+</div>
+<div class="group flex items-start gap-4 p-4 border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-surface-dark/50 transition-colors cursor-pointer">
+<div class="flex-1 min-w-0">
+<h3 class="text-base font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors">CI/CD Pipeline Generator</h3>
+<p class="text-sm text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">GitHub Actions workflow generator for Node.js, Python, and Go projects.</p>
+<div class="flex items-center gap-3 mt-3">
+<span class="text-xs font-medium text-gray-900 dark:text-white">Free</span>
+<span class="text-xs text-gray-400">•</span>
+<div class="flex items-center gap-1 text-xs text-gray-500">
+<span class="material-symbols-outlined text-[14px]">favorite</span>
+                            3.5k
+                        </div>
+</div>
+</div>
+<div class="relative h-24 w-24 flex-shrink-0 rounded-lg overflow-hidden bg-surface-dark">
+<div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCKlN-FgwEJRcMmICAPFNgoQ9Ukstjo_MJvmanrxZqVQ06lnx5QSAyD7gaHOoYS_mJcntYoeL67tnYNSAi3KJj6-51GMRs5z5kBPm6EWnZh3iiVEcaUAkVh7wlrS7BG-pjeQtVmoOK99UBaaqBjCvc5CAokUmGWVO4KhY0gp40hSHd4wFC8fG2LLMA48oy4D6I0brBCkxxxh7_wbrelnTh7HpJn1oB9hJ5FMPgP_HFqnny6xxXaLAf7J48IzSoMMNLIPqrSKRLHRE0');"></div>
+<button class="absolute bottom-1 right-1 h-7 w-7 bg-white dark:bg-surface-dark/90 backdrop-blur rounded-full flex items-center justify-center shadow-sm hover:bg-primary hover:text-white transition-colors text-primary dark:text-white">
+<span class="material-symbols-outlined text-[16px]">sync_alt</span>
+</button>
+</div>
+</div>
+<div class="group flex items-start gap-4 p-4 border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-surface-dark/50 transition-colors cursor-pointer">
+<div class="flex-1 min-w-0">
+<h3 class="text-base font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors">Docker Compose Recipes</h3>
+<p class="text-sm text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">A collection of production-ready Docker Compose files for common stacks.</p>
+<div class="flex items-center gap-3 mt-3">
+<span class="text-xs font-medium text-gray-900 dark:text-white">$12.00</span>
+<span class="text-xs text-gray-400">•</span>
+<div class="flex items-center gap-1 text-xs text-gray-500">
+<span class="material-symbols-outlined text-[14px]">favorite</span>
+                            1.8k
+                        </div>
+</div>
+</div>
+<div class="relative h-24 w-24 flex-shrink-0 rounded-lg overflow-hidden bg-surface-dark">
+<div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC05BBdmkqA1g996mTBM8XyTaFhDaI_IyVgy2bzXjltGFFhcpeg_jZA1FDx7LWv674eGz8AMo0IheciZfB2dQnwtepKeVA8NLqgfI7c0pAEOzPPLD1m8J_RxhKCPRAIUvSIyOXCQxK3Cu5nuDvkKoBuBJ59lEhpAnwgr9duTUDNZcM095mm45p8IwaBYi6SvOS-cEdFztyPZBwOaUUcBpod01f3ryo-IN77YE497US5WXxW_NPw6FDkfJrAl7ZaMChpAoImekIewRY');"></div>
+<button class="absolute bottom-1 right-1 h-7 w-7 bg-white dark:bg-surface-dark/90 backdrop-blur rounded-full flex items-center justify-center shadow-sm hover:bg-primary hover:text-white transition-colors text-primary dark:text-white">
+<span class="material-symbols-outlined text-[16px]">sync_alt</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<nav class="fixed bottom-0 z-50 w-full border-t border-gray-200 dark:border-gray-800 bg-background-light dark:bg-background-dark pb-safe">
+<div class="flex h-16 items-center justify-between px-2">
+<a class="group flex flex-1 flex-col items-center justify-center gap-1 text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">home</span>
+<span class="text-[10px] font-medium">Home</span>
+</a>
+<a class="group flex flex-1 flex-col items-center justify-center gap-1 text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">storefront</span>
+<span class="text-[10px] font-medium">Marketplace</span>
+</a>
+<a class="group relative flex flex-1 flex-col items-center justify-center gap-1 text-primary" href="#">
+<div class="absolute -top-[2px] h-[2px] w-8 rounded-b-full bg-primary"></div>
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">construction</span>
+<span class="text-[10px] font-bold">Build</span>
+</a>
+<a class="group flex flex-1 flex-col items-center justify-center gap-1 text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">insights</span>
+<span class="text-[10px] font-medium">Activity</span>
+</a>
+<a class="group flex flex-1 flex-col items-center justify-center gap-1 text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">person</span>
+<span class="text-[10px] font-medium">Account</span>
+</a>
+</div>
+<div class="h-6 w-full bg-background-light dark:bg-background-dark"></div>
+</nav>
+
+</body></html>

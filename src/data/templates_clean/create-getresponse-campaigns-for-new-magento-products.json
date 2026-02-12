@@ -1,0 +1,1 @@
+{"id":859,"name":"Create GetResponse campaigns for new Magento products","description":"Every time a new product is added to Magento, Make will automatically create a new campaign in GetResponse.","url":"859-create-getresponse-campaigns-for-new-magento-products","usedApps":["getresponse","magento"],"usage":0}

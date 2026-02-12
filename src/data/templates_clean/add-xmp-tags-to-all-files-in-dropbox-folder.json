@@ -1,0 +1,1 @@
+{"id":8427,"name":"Add XMP tags to all files in Dropbox folder","description":"Get all files from specified Dropbox folder, add an XMP tag and save the file to another folder. Files that cannot be tagged (e.g. DOCX) will be ignored.","url":"8427-add-xmp-tags-to-all-files-in-dropbox-folder","usedApps":["dropbox","xmp"],"usage":7}

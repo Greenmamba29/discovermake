@@ -1,0 +1,1 @@
+{"id":10224,"name":"Send Telnyx SMS on New Pipedrive Deals","description":"When a new deal is created in Pipedrive CRM, a new message is sent via Telnyx.","url":"10224-send-telnyx-sms-on-new-pipedrive-deals","usedApps":["pipedrive","telnyx"],"usage":6}

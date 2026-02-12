@@ -1,0 +1,1 @@
+{"id":1709,"name":"Create Evernote notes from new Google Calendar events","description":"Every time a new event is added to your Google Calendar, Make will automatically add that event as a new note to a selected notebook in Evernote.","url":"1709-create-evernote-notes-from-new-google-calendar-events","usedApps":["google-calendar","evernote"],"usage":154}

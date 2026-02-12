@@ -1,0 +1,1 @@
+{"id":6045,"name":"Save new ClickUp tasks as a Printavo tasks","description":"Every time a new task with due date is created in ClickUp, Make will automatically add that as a Printavo task.","url":"6045-save-new-clickup-tasks-as-a-printavo-tasks","usedApps":["clickup","printavo"],"usage":2}

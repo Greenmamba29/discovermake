@@ -1,0 +1,1 @@
+{"id":2783,"name":"Add new Pipedrive CRM people to Autopilot","description":"Every time a new person is added in Pipedrive CRM, Make will automatically add a new contact to your Autopilot list.","url":"2783-add-new-pipedrive-crm-people-to-autopilot","usedApps":["pipedrive","autopilot"],"usage":2}

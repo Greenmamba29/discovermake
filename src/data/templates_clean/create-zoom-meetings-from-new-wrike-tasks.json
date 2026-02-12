@@ -1,0 +1,1 @@
+{"id":1817,"name":"Create Zoom meetings from new Wrike tasks","description":"Every time a new task is created in Wrike, Make will automatically create a new meeting in Zoom.","url":"1817-create-zoom-meetings-from-new-wrike-tasks","usedApps":["wrike","zoom"],"usage":7}

@@ -1,0 +1,1 @@
+{"id":6724,"name":"Backup Cliengo contacts to Google Sheets","description":"Search Cliengo for the latest contacts entered, and Make will automatically add a row with a new contact in Google Spreadsheets.","url":"6724-backup-cliengo-contacts-to-google-sheets","usedApps":["cliengo","google-sheets"],"usage":4}

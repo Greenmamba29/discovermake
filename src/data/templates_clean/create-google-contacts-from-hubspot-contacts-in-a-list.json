@@ -1,0 +1,1 @@
+{"id":5854,"name":"Create Google Contacts from HubSpot contacts in a list","description":"When you have new contacts in a HubSpot list, this automation will grab the contacts and send them over to Google Contacts for you.","url":"5854-create-google-contacts-from-hubspot-contacts-in-a-list","usedApps":["hubspotcrm","google-contacts"],"usage":64}

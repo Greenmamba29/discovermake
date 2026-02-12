@@ -1,0 +1,1 @@
+{"id":6017,"name":"Create Asana tasks for new Task in Breeze","description":"Every time a new Task is created in Breeze, Make will automatically add a task to the Asana project of your choice.","url":"6017-create-asana-tasks-for-new-task-in-breeze","usedApps":["breeze","asana"],"usage":2}

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Governance Console</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13a4ec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101c22",
+                        "surface-dark": "#1a262d",
+                        "surface-light": "#ffffff",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        /* Custom scrollbar for chat area */
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen flex justify-center">
+<!-- Mobile Container -->
+<div class="w-full max-w-md bg-background-light dark:bg-background-dark min-h-screen relative flex flex-col shadow-2xl overflow-hidden">
+<!-- Header -->
+<div class="sticky top-0 z-30 bg-background-light dark:bg-background-dark border-b border-gray-200 dark:border-[#325567]">
+<div class="flex items-center p-4 pb-2 justify-between">
+<button class="text-slate-900 dark:text-white flex size-10 shrink-0 items-center justify-center hover:bg-slate-200 dark:hover:bg-white/10 rounded-full transition-colors">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-tight flex-1 text-center">Governance Console</h2>
+<button class="flex size-10 items-center justify-center text-slate-900 dark:text-white hover:bg-slate-200 dark:hover:bg-white/10 rounded-full transition-colors">
+<span class="material-symbols-outlined">history</span>
+</button>
+</div>
+<!-- Tabs -->
+<div class="px-4 pb-0 pt-2">
+<div class="flex">
+<button class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-slate-500 dark:text-[#92b7c9] pb-3 pt-2 flex-1 hover:text-primary dark:hover:text-white transition-colors">
+<span class="text-sm font-bold tracking-wide">Policy</span>
+</button>
+<button class="flex flex-col items-center justify-center border-b-[3px] border-b-primary text-primary dark:text-white pb-3 pt-2 flex-1">
+<span class="text-sm font-bold tracking-wide">Disputes</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Scrollable Content -->
+<div class="flex-1 overflow-y-auto scrollbar-hide pb-24">
+<!-- Filters -->
+<div class="sticky top-0 z-20 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-sm pt-4 pb-2 px-4 border-b border-transparent dark:border-transparent">
+<h2 class="text-slate-900 dark:text-white text-2xl font-bold mb-4">Active Disputes</h2>
+<div class="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+<button class="flex h-8 shrink-0 items-center px-4 rounded-full bg-slate-200 dark:bg-[#233c48] text-slate-700 dark:text-white text-sm font-medium whitespace-nowrap">All</button>
+<button class="flex h-8 shrink-0 items-center px-4 rounded-full bg-primary text-white text-sm font-medium whitespace-nowrap shadow-lg shadow-primary/30">Action Required</button>
+<button class="flex h-8 shrink-0 items-center px-4 rounded-full bg-slate-200 dark:bg-[#233c48] text-slate-700 dark:text-white text-sm font-medium whitespace-nowrap">Escalated</button>
+<button class="flex h-8 shrink-0 items-center px-4 rounded-full bg-slate-200 dark:bg-[#233c48] text-slate-700 dark:text-white text-sm font-medium whitespace-nowrap">Resolved</button>
+</div>
+</div>
+<!-- Main Dispute Item (Detailed View context) -->
+<div class="px-4 py-4 space-y-6">
+<!-- Expanded Ticket Card -->
+<div class="bg-white dark:bg-surface-dark rounded-xl p-4 shadow-sm border border-slate-200 dark:border-white/5 relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-primary/10 to-transparent rounded-bl-full -mr-4 -mt-4"></div>
+<div class="flex justify-between items-start mb-4 relative z-10">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="bg-red-100 dark:bg-red-500/20 text-red-600 dark:text-red-300 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider border border-red-200 dark:border-red-500/30">Action Required</span>
+<span class="text-slate-400 dark:text-slate-500 text-xs font-mono">#8942</span>
+</div>
+<h3 class="text-slate-900 dark:text-white font-bold text-lg leading-snug">Item not as described</h3>
+<p class="text-slate-500 dark:text-[#92b7c9] text-sm">Amount in dispute: <span class="text-slate-900 dark:text-white font-semibold">$450.00</span></p>
+</div>
+<div class="flex -space-x-3">
+<div class="size-10 rounded-full ring-2 ring-white dark:ring-surface-dark bg-gray-200 bg-cover bg-center" data-alt="Buyer avatar male" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDxwCJfHrVMckKFkxi8Sxo6swTmp148noXiFubnc702Ju7gsM0cAA1zG-UEEnpTvike5caB9wWLhNaEM6umwYTUUE5xmjVrprIgj8wgaUwdblXF_bX7Xb-ONV5fF89P9JIQnop_t7teAtRxM-N_ZnozMRod30oMeEFzmr9gq4BNBObMf6_tk9-R8zjBTTa0250K0bJ3AYDtDztLoyx-8wikQ481W34wYDiBeC4tGeJBUgE1It1kX8kzZ5LR6oLqxO9JsAvpUjp5ZO4');"></div>
+<div class="size-10 rounded-full ring-2 ring-white dark:ring-surface-dark bg-gray-200 bg-cover bg-center" data-alt="Seller avatar female" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBexg0_o5F0Nt8Rah80v4aWxJX006OxEDJP90--q7GIFMG-tMcAxrrl7XMLSHyQS1_knp1u7qPHCyeZqOm3M9a0iKuq6iP4sbcTEp_MK2vKuFSLkK-POx3aHKhS0pkwUlso_Ic01NlsGWqJHIXjbrzAfZ4x1aPSccAf_cwlEYU33obe-FzQqffd7RiHiepxxHQ01nmviYfIWYvYdwVYWmHn2QLr0asZsTwFSP0yjXDLq-mkc9aJPbZdZgb5lBj5ekR1DM6g8zjNPT8');"></div>
+</div>
+</div>
+<!-- Mediation Chat Thread -->
+<div class="bg-slate-50 dark:bg-[#111c22]/50 rounded-lg p-3 space-y-3 mb-4 max-h-64 overflow-y-auto border border-slate-100 dark:border-white/5">
+<div class="text-center">
+<span class="text-[10px] text-slate-400 font-medium uppercase tracking-widest">Today, 10:23 AM</span>
+</div>
+<!-- Buyer Message -->
+<div class="flex gap-3">
+<div class="size-8 rounded-full bg-cover bg-center shrink-0" data-alt="Buyer avatar small" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDJKo-7GiburkU4vpyYM6EPK1YESNB_CgNkl5lMrth0dDXvm8ENErmA6XMtGb6Ms-1cHlXL2c9xRAmZgfqcjbR0Xpj8y4uf_m5JX9DrJSPuhCFlScQr7mFeNyWRnUwXu8xjjt_GFIGpTsmy0M0-3EM37VkYuqN1jd6kxgkzbbOtjQDXBD9Wkua0jh9VWaK_AbpDFbAg41vwFvHU_jFibAXdskLOtoZ8KHLI35pZ84DE2CzvwFmIx4umNpYztr9OkLOGOpVMMXkQFQ0');"></div>
+<div class="flex flex-col gap-1 max-w-[85%]">
+<span class="text-xs text-slate-500 dark:text-slate-400 font-medium ml-1">Buyer @jdoe</span>
+<div class="bg-white dark:bg-[#233c48] p-2.5 rounded-2xl rounded-tl-none shadow-sm text-sm text-slate-700 dark:text-slate-200">
+                                    The vase arrived broken. It wasn't packed properly at all. I want a full refund.
+                                </div>
+</div>
+</div>
+<!-- Seller Message -->
+<div class="flex gap-3 flex-row-reverse">
+<div class="size-8 rounded-full bg-cover bg-center shrink-0" data-alt="Seller avatar small" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC_7XXYQAxWNTVIf97SXlAdZpfvCLtKMXn8qB1gBrjMYZ1mTHGL1AQrjORWxuIHLfSaKOIBlhBm--g3qoFhOZW0rM_nQsp_HgzuTr3Udcca7crxvxr961EoN-TUAL8lV8cfIX15B9bjvH3bMkjJyv1RN6JbEM_SByJnu_CUCkRWWuLRah2SXfIRE9eOlO7plvOCzq0slOdg2kiTCgRdSczBdP2xl6PL8UhHWgPUnex5Vk0yn_bovKqYqnE6rguqV9XTAriDM1KiaVY');"></div>
+<div class="flex flex-col gap-1 items-end max-w-[85%]">
+<span class="text-xs text-slate-500 dark:text-slate-400 font-medium mr-1">Seller @artmaker</span>
+<div class="bg-blue-50 dark:bg-[#1d3344] p-2.5 rounded-2xl rounded-tr-none shadow-sm text-sm text-slate-700 dark:text-slate-200">
+                                    I packed it with double bubble wrap! The shipping company must have dropped it.
+                                </div>
+</div>
+</div>
+<!-- Admin Message -->
+<div class="flex gap-3 justify-center">
+<div class="bg-primary/10 dark:bg-primary/20 border border-primary/20 px-4 py-2 rounded-xl text-xs text-primary dark:text-primary-300 font-medium flex items-center gap-2">
+<span class="material-symbols-outlined text-base">gavel</span>
+                                System: Mediation started by Admin
+                             </div>
+</div>
+</div>
+<!-- Chat Input Area -->
+<div class="relative">
+<input class="w-full bg-slate-50 dark:bg-[#111c22] border-slate-200 dark:border-[#325567] rounded-lg text-sm px-4 py-3 pr-12 focus:ring-2 focus:ring-primary focus:border-primary text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500" placeholder="Type a message to mediate..." type="text"/>
+<button class="absolute right-2 top-1/2 -translate-y-1/2 text-primary hover:text-primary/80 p-1">
+<span class="material-symbols-outlined">send</span>
+</button>
+</div>
+</div>
+<!-- Final Resolution Tool -->
+<div class="bg-white dark:bg-surface-dark rounded-xl p-5 shadow-sm border border-slate-200 dark:border-white/5">
+<div class="flex items-center gap-2 mb-4 text-slate-900 dark:text-white">
+<span class="material-symbols-outlined text-primary">balance</span>
+<h3 class="font-bold text-lg">Final Resolution</h3>
+</div>
+<p class="text-xs text-slate-500 dark:text-slate-400 mb-4">
+                        Decisions are final and irreversible. Funds will be transferred immediately upon confirmation.
+                    </p>
+<div class="grid grid-cols-2 gap-3 mb-4">
+<button class="flex flex-col items-center justify-center p-3 rounded-lg border border-slate-200 dark:border-[#325567] hover:border-primary/50 hover:bg-primary/5 dark:hover:bg-primary/10 transition-all group">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-primary mb-1">currency_exchange</span>
+<span class="text-xs font-bold text-slate-700 dark:text-slate-300 group-hover:text-primary">Refund Buyer</span>
+</button>
+<button class="flex flex-col items-center justify-center p-3 rounded-lg border border-slate-200 dark:border-[#325567] hover:border-primary/50 hover:bg-primary/5 dark:hover:bg-primary/10 transition-all group">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-primary mb-1">check_circle</span>
+<span class="text-xs font-bold text-slate-700 dark:text-slate-300 group-hover:text-primary">Release to Seller</span>
+</button>
+</div>
+<button class="w-full bg-slate-100 dark:bg-[#233c48] hover:bg-slate-200 dark:hover:bg-[#2f4d5c] text-slate-700 dark:text-slate-300 py-3 rounded-lg text-sm font-semibold transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-lg">call_split</span>
+                        Split Funds (Custom Amount)
+                    </button>
+</div>
+<!-- Other Tickets (Collapsed) -->
+<h3 class="text-slate-900 dark:text-white font-bold text-lg pt-2">Pending Review</h3>
+<div class="bg-white dark:bg-surface-dark rounded-xl p-4 shadow-sm border border-slate-200 dark:border-white/5 flex gap-4 items-center opacity-70 hover:opacity-100 transition-opacity cursor-pointer">
+<div class="bg-slate-100 dark:bg-[#111c22] size-12 rounded-lg flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-slate-400">local_shipping</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start">
+<p class="text-slate-900 dark:text-white text-base font-semibold truncate">Shipping delay &gt; 30 days</p>
+<span class="text-xs font-medium text-slate-500 dark:text-slate-400">1h ago</span>
+</div>
+<p class="text-slate-500 dark:text-[#92b7c9] text-sm font-normal truncate">Ticket #8945 • $25.00</p>
+</div>
+<div class="shrink-0">
+<span class="material-symbols-outlined text-slate-300 dark:text-slate-600">chevron_right</span>
+</div>
+</div>
+<div class="bg-white dark:bg-surface-dark rounded-xl p-4 shadow-sm border border-slate-200 dark:border-white/5 flex gap-4 items-center opacity-70 hover:opacity-100 transition-opacity cursor-pointer">
+<div class="bg-slate-100 dark:bg-[#111c22] size-12 rounded-lg flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-slate-400">copyright</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start">
+<p class="text-slate-900 dark:text-white text-base font-semibold truncate">Copyright Infringement</p>
+<span class="text-xs font-medium text-slate-500 dark:text-slate-400">3h ago</span>
+</div>
+<p class="text-slate-500 dark:text-[#92b7c9] text-sm font-normal truncate">Ticket #8911 • Takedown Req</p>
+</div>
+<div class="shrink-0">
+<span class="material-symbols-outlined text-slate-300 dark:text-slate-600">chevron_right</span>
+</div>
+</div>
+</div>
+<!-- Bottom Spacer -->
+<div class="h-8"></div>
+</div>
+<!-- Sticky Action Bar (Simulating Floating Action Button or Bottom Nav area) -->
+<div class="absolute bottom-6 right-6 z-40">
+<button class="bg-primary hover:bg-primary/90 text-white size-14 rounded-full shadow-xl shadow-primary/40 flex items-center justify-center transition-transform hover:scale-105 active:scale-95">
+<span class="material-symbols-outlined text-2xl">add</span>
+</button>
+</div>
+</div>
+</body></html>

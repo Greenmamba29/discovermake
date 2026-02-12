@@ -1,0 +1,1 @@
+{"id":7977,"name":"Create Odoo CRM leads from new Typeform responses","description":"Make will watch for new responses on your Typeform form at regular intervals and create a lead in Odoo CRM using information received.","url":"7977-create-odoo-crm-leads-from-new-typeform-responses","usedApps":["typeform","odoo"],"usage":55}

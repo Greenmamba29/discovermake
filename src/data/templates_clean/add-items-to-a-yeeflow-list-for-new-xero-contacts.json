@@ -1,0 +1,1 @@
+{"id":7513,"name":"Add items to a Yeeflow list for new Xero contacts","description":"Every time there is a new contact added to Xero, Make will automatically add a new item to a specified Yeeflow list.","url":"7513-add-items-to-a-yeeflow-list-for-new-xero-contacts","usedApps":["xero","yeeflow"],"usage":2}

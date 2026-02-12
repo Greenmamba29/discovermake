@@ -1,0 +1,1 @@
+{"id":7968,"name":"Create Amazon SES contacts for new Zendesk users","description":"Make will watch your Zendesk users at regular intervals and create Amazon SES contacs.","url":"7968-create-amazon-ses-contacts-for-new-zendesk-users","usedApps":["zendesk","amazon-ses"],"usage":1}

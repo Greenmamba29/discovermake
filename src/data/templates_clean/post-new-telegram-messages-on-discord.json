@@ -1,0 +1,1 @@
+{"id":11440,"name":"Post new Telegram messages on Discord","description":"Every time a new message is received on Telegram, Make will automatically post it on your Discord server.","url":"3559-post-new-telegram-messages-on-discord","usedApps":["telegram","discord"],"usage":8203}

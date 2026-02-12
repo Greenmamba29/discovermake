@@ -1,0 +1,1 @@
+{"id":7395,"name":"Create Google Calendar events for new Simvoly bookings","description":"Every time a new booking is created in Simvoly, Make will automatically add that booking to a selected Google Calendar as an event.","url":"7395-create-google-calendar-events-for-new-simvoly-bookings","usedApps":["simvoly2","google-calendar"],"usage":11}

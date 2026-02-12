@@ -1,0 +1,1 @@
+{"id":3603,"name":"Create Chrome notifications for new Microsoft To Do tasks","description":"Every time a new task is added to a Microsoft To Do list, Make will automatically send a notification to the Google Chrome browser of your choice.","url":"3603-create-chrome-notifications-for-new-microsoft-to-do-tasks","usedApps":["microsoft-to-do","chrome"],"usage":9}

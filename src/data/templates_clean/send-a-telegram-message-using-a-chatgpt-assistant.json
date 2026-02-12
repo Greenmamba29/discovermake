@@ -1,0 +1,1 @@
+{"id":15090,"name":"Send a Telegram message using a ChatGPT assistant","description":"This automation sends a Telegram message  using a ChatGPT assistant for personalized communication.","url":"15090-send-a-telegram-message-using-a-chatgpt-assistant","usedApps":["openai-gpt-3","telegram"],"usage":21}

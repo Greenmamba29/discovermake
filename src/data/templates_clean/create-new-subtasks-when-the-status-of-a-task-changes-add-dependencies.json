@@ -1,0 +1,1 @@
+{"id":3169,"name":"Create new subtasks when the status of a task changes, add dependencies","description":"When the status of a task in changes in a specific way, new subtasks are created and the dependencies are added.","url":"3169-create-new-subtasks-when-the-status-of-a-task-changes-add-dependencies","usedApps":["clickup","clickup"],"usage":172}

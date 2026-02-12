@@ -1,0 +1,1 @@
+{"id":5652,"name":"Create Okta users from records in Airtable","description":"This scenario lets you create new users via Airtable databases. In order for it to work your table in airtable has to have the same fields as [here](https://airtable.com/shrpiMqNg2IIGbdGH).","url":"5652-create-okta-users-from-records-in-airtable","usedApps":["airtable","okta"],"usage":1}

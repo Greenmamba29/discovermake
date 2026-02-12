@@ -1,0 +1,1 @@
+{"id":12803,"name":"Filter rows in Google Sheets and send data via HTTP action","description":"Automatically filter rows in Google Sheets based on specific criteria and send the filtered data via HTTP action for seamless data integration.","url":"12803-filter-rows-in-google-sheets-and-send-data-via-http-action","usedApps":["google-sheets","http"],"usage":19}

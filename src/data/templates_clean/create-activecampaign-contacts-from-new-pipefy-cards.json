@@ -1,0 +1,1 @@
+{"id":2659,"name":"Create ActiveCampaign contacts from new Pipefy cards","description":"Every time a new card is created in Pipefy, Make will automatically create a new contact in ActiveCampaign.","url":"2659-create-activecampaign-contacts-from-new-pipefy-cards","usedApps":["pipefy","activecampaign"],"usage":7}

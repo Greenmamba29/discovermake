@@ -1,0 +1,1 @@
+{"id":559,"name":"Create Facebook Groups posts from new Gitter messages","description":"Every time a new message is posted to a selected Gitter room, Make will automatically create a new Facebook Group post.","url":"559-create-facebook-groups-posts-from-new-gitter-messages","usedApps":["gitter","facebook-groups"],"usage":4}

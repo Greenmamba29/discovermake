@@ -1,0 +1,1 @@
+{"id":7286,"name":"Watch MantisBT New Issues and send Slack message when new issue is created","description":"Schedule the MantisBT Watch New Issues module and get a new message in a Slack channel for every new MantisBT Issue.","url":"7286-watch-mantisbt-new-issues-and-send-slack-message-when-new-issue-is-created","usedApps":["mantisbt","slack"],"usage":1}

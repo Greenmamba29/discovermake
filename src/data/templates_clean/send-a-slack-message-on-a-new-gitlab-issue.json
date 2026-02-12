@@ -1,0 +1,1 @@
+{"id":5445,"name":"Send a Slack message on a new GitLab issue","description":"Every time a new GitLab issue is created, Make will automatically send a Slack message.","url":"5445-send-a-slack-message-on-a-new-gitlab-issue","usedApps":["gitlab","slack"],"usage":10}

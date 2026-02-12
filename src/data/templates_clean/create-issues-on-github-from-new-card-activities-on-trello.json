@@ -1,0 +1,1 @@
+{"id":5740,"name":"Create issues on GitHub from new card activities on Trello","description":"Whenever there are new card activities in Trello, Make will automatically retrieve the activities and create issues on GitHub.","url":"5740-create-issues-on-github-from-new-card-activities-on-trello","usedApps":["trello","github"],"usage":4}

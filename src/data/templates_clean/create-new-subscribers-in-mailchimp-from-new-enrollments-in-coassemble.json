@@ -1,0 +1,1 @@
+{"id":10221,"name":"Create new subscribers in Mailchimp from new enrollments in Coassemble","description":"Every time a new enrollment is captured in Coassemble, a new subscriber will be instantly created in Mailchimp.","url":"10221-create-new-subscribers-in-mailchimp-from-new-enrollments-in-coassemble","usedApps":["coassemble","mailchimp"],"usage":3}

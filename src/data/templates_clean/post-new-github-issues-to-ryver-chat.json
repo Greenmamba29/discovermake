@@ -1,0 +1,1 @@
+{"id":5112,"name":"Post new GitHub Issues to Ryver chat","description":"Every time a new issue is created in GitHub, Make will automatically send the message to Ryver chat.","url":"5112-post-new-github-issues-to-ryver-chat","usedApps":["github","ryver"],"usage":1}

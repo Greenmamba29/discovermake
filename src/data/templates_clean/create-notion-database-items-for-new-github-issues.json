@@ -1,0 +1,1 @@
+{"id":5831,"name":"Create Notion database items for new GitHub issues","description":"Every time a new issue is posted on a GitHub repository, Make will automatically create a new item in your Notion database.","url":"5831-create-notion-database-items-for-new-github-issues","usedApps":["github","notion"],"usage":277}

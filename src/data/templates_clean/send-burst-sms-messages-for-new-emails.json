@@ -1,0 +1,1 @@
+{"id":4703,"name":"Send Burst SMS messages for new emails","description":"Every time a new email is received in Gmail, Make will automatically check for emails with specific labels and send an SMS using Burst SMS.","url":"4703-send-burst-sms-messages-for-new-emails","usedApps":["google-email","burst-sms"],"usage":9}

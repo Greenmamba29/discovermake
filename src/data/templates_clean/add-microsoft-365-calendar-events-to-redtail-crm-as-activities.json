@@ -1,0 +1,1 @@
+{"id":9116,"name":"Add Microsoft 365 Calendar events to Redtail CRM as activities","description":"Make will watch for new events in your specified Microsoft 365 Calendar and create  activities in Redtail CRM using information received.","url":"9116-add-microsoft-365-calendar-events-to-redtail-crm-as-activities","usedApps":["microsoft-calendar","builtin","redtail-crm"],"usage":9}

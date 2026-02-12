@@ -1,0 +1,1 @@
+{"id":12021,"name":"Create Trello cards from new ilert incidents","description":"Every time a new incident is received in ilert, Make will automatically add a new card to a Trello board of your choice.","url":"7895-create-trello-cards-from-new-ilert-incidents","usedApps":["ilert","trello"],"usage":2}

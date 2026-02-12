@@ -1,0 +1,1 @@
+{"id":1190,"name":"Add new Xero orders to Trello as cards","description":"Every time a new order is created in Xero, Make will automatically create a new card in Trello.","url":"1190-add-new-xero-orders-to-trello-as-cards","usedApps":["xero","builtin","util","trello"],"usage":46}

@@ -1,0 +1,1 @@
+{"id":12860,"name":"Send data to Google Sheets and update a cell with new information","description":"Automatically send data to Google Sheets and update a specific cell with new information using HTTP and Google Sheets modules.","url":"12860-send-data-to-google-sheets-and-update-a-cell-with-new-information","usedApps":["http","google-sheets"],"usage":12}

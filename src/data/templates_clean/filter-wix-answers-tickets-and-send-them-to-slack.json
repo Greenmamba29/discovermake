@@ -1,0 +1,1 @@
+{"id":3567,"name":"Filter Wix Answers tickets and send them to Slack","description":"Every time a new ticket is added to your Wix Answers domain, Make will automatically filter it by language and send it to a specific Slack channel.","url":"3567-filter-wix-answers-tickets-and-send-them-to-slack","usedApps":["wix-answers","builtin","slack"],"usage":3}

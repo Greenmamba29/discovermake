@@ -1,0 +1,1 @@
+{"id":6690,"name":"Send ClickSend SMS messages to new Mailchimp subscribers","description":"Every time there's a new Mailchimp subscriber with a phone number, Make will automatically send him/her a ClickSend SMS message.","url":"6690-send-clicksend-sms-messages-to-new-mailchimp-subscribers","usedApps":["mailchimp","clicksend"],"usage":2}

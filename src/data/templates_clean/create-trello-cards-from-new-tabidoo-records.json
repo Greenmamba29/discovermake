@@ -1,0 +1,1 @@
+{"id":4549,"name":"Create Trello cards from new Tabidoo records","description":"Every time a new record is added to Tabidoo, Make will automatically create a card in a specified Trello board.","url":"4549-create-trello-cards-from-new-tabidoo-records","usedApps":["tabidoo","trello"],"usage":4}

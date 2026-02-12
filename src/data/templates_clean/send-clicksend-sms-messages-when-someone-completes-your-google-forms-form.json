@@ -1,0 +1,1 @@
+{"id":2732,"name":"Send ClickSend SMS messages when someone completes your Google Forms form","description":"Every time someone fills out your Google Forms form, Make will automatically send an SMS message to a specified number.","url":"2732-send-clicksend-sms-messages-when-someone-completes-your-google-forms-form","usedApps":["google-forms","clicksend"],"usage":37}

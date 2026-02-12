@@ -1,0 +1,1 @@
+{"id":4035,"name":"Create Calendar events for new LiveWebinar meetings","description":"Every time a new webinar is created in LiveWebinar, Make will automatically create an event in Google Calendar.","url":"4035-create-calendar-events-for-new-livewebinar-meetings","usedApps":["livewebinar","google-calendar"],"usage":3}

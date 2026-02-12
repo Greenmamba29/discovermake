@@ -1,0 +1,1 @@
+{"id":3113,"name":"Send a notification to Android device with data from Moosend webhook","description":"When a new webhook is received from automation in Moosend, a push notification is sent to Android device.","url":"3113-send-a-notification-to-android-device-with-data-from-moosend-webhook","usedApps":["moosend","android"],"usage":11}

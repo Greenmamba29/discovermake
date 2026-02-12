@@ -1,0 +1,1 @@
+{"id":2512,"name":"Save new Google Calendar events to a Coda doc","description":"Every time a new event is created in a selected Google Calendar, Make will automatically add a new row to your Coda table.","url":"2512-save-new-google-calendar-events-to-a-coda-doc","usedApps":["google-calendar","coda"],"usage":62}

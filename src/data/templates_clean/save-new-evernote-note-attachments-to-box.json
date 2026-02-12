@@ -1,0 +1,1 @@
+{"id":8331,"name":"Save new Evernote note attachments to Box","description":"Every time a new note is added to a watched notebook in Evernote with an attachment, Make will automatically save that attachment in Box.","url":"8331-save-new-evernote-note-attachments-to-box","usedApps":["evernote","box"],"usage":12}

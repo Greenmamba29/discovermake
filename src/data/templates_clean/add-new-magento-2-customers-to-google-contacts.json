@@ -1,0 +1,1 @@
+{"id":2201,"name":"Add new Magento 2 customers to Google Contacts","description":"Every time a new customer is created in Magento 2, Make will automatically create a new contact in Google Contacts.","url":"2201-add-new-magento-2-customers-to-google-contacts","usedApps":["magento2","google-contacts"],"usage":19}

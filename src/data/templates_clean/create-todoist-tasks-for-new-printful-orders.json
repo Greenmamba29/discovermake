@@ -1,0 +1,1 @@
+{"id":8774,"name":"Create Todoist tasks for new Printful orders","description":"Make will watch for new Printful orders at regular intervals and create tasks in Todoist containing information about the order.","url":"8774-create-todoist-tasks-for-new-printful-orders","usedApps":["printful","builtin","util","todoist"],"usage":11}

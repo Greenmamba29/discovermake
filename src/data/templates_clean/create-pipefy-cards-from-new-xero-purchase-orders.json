@@ -1,0 +1,1 @@
+{"id":2654,"name":"Create Pipefy cards from new Xero purchase orders","description":"Every time a new purchase order is created in Xero, Make will automatically create a new card in Pipefy.","url":"2654-create-pipefy-cards-from-new-xero-purchase-orders","usedApps":["xero","pipefy"],"usage":4}

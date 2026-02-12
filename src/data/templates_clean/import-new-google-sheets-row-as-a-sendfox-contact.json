@@ -1,0 +1,1 @@
+{"id":3467,"name":"Import new Google Sheets row as a SendFox contact","description":"Every time you add a new row into Google Sheets with contact information, it will be saved as a new SendFox contact.","url":"3467-import-new-google-sheets-row-as-a-sendfox-contact","usedApps":["google-sheets","sendfox"],"usage":3}

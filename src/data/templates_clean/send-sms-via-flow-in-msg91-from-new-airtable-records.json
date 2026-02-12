@@ -1,0 +1,1 @@
+{"id":8337,"name":"Send SMS via flow in MSG91 from new Airtable records","description":"Every time a new record is added in Airtable, Make will automatically send SMS via flow in MSG91. The template uses this [example table](https://airtable.com/shrNsQNiQ3OvjsoSb).","url":"8337-send-sms-via-flow-in-msg91-from-new-airtable-records","usedApps":["airtable","msg91"],"usage":2}

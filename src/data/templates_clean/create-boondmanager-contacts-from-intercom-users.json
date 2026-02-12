@@ -1,0 +1,1 @@
+{"id":7505,"name":"Create BoondManager contacts from Intercom users","description":"Every time there is a new user added to Intercom, Make will automatically create a contact in BoondManager.","url":"7505-create-boondmanager-contacts-from-intercom-users","usedApps":["intercom","boondmanager"],"usage":3}

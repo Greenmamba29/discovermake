@@ -1,0 +1,1 @@
+{"id":6945,"name":"Send emails via Gmail to new RapidReg registrants","description":"Every time there is a new RapidReg registration, Make will automatically send an email to the registrant via Gmail.","url":"6945-send-emails-via-gmail-to-new-rapidreg-registrants","usedApps":["rapidreg","google-email"],"usage":2}

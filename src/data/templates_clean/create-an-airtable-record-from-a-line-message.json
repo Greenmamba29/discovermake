@@ -1,0 +1,1 @@
+{"id":5485,"name":"Create an Airtable record from a LINE message","description":"Every time a message is sent to your LINE chat, Make will create a new record in your Airtable. This template is created for table with a column's name \"LINE message\" ","url":"5485-create-an-airtable-record-from-a-line-message","usedApps":["line","airtable"],"usage":125}

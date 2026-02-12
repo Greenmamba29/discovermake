@@ -1,0 +1,1 @@
+{"id":12757,"name":"Send notifications via Pushover for custom webhooks events","description":"Automatically send Pushover notifications for custom webhook events. Connect CustomWebHook with Pushover to stay updated on important web activities.","url":"12757-send-notifications-via-pushover-for-custom-webhooks-events","usedApps":["gateway","pushover"],"usage":13}

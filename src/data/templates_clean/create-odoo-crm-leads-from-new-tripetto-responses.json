@@ -1,0 +1,1 @@
+{"id":7976,"name":"Create Odoo CRM leads from new Tripetto responses","description":"Every time a new response on your Tripetto form received, Make will automatically create a lead in Odoo CRM.","url":"7976-create-odoo-crm-leads-from-new-tripetto-responses","usedApps":["tripetto","odoo"],"usage":18}

@@ -1,0 +1,1 @@
+{"id":10148,"name":"Invoice creation of checked out reservations with open folios in Apaleo","description":"Daily automation template to create invoices for folios of checked out reservations without invoices","url":"10148-automation-invoice-creation-of-checked-out-reservations-with-open-folios","usedApps":["apaleo","apaleo"],"usage":100}

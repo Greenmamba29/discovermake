@@ -1,0 +1,1 @@
+{"id":29,"name":"Send Pushbullet links for new SoundCloud tracks","description":"Every time a new track is added to a selected SoundCloud account, Make will automatically send a Pushbullet link.","url":"29-send-pushbullet-links-for-new-soundcloud-tracks","usedApps":["pushbullet","soundcloud"],"usage":16}

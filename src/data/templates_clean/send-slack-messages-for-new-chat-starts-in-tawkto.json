@@ -1,0 +1,1 @@
+{"id":6851,"name":"Send Slack messages for new chat starts in tawk.to","description":"Every time a chat starts in your tawk.to, Make will send a message with information on this chat to your Slack.","url":"6851-send-slack-messages-for-new-chat-starts-in-tawk-to","usedApps":["tawkto","slack"],"usage":299}

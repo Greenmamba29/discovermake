@@ -1,0 +1,1 @@
+{"id":6056,"name":"Send a Slack message for a new Zoom meeting registrant","description":"Every time a new Zoom meeting registrant is added, Make will automatically send a Slack message to a channel or a user.","url":"6056-send-a-slack-message-for-a-new-zoom-meeting-registrant","usedApps":["zoom","slack"],"usage":9}

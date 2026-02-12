@@ -1,0 +1,1 @@
+{"id":1712,"name":"Create Insightly contacts from new Google Forms responses","description":"Every time you have a new response to your Google Form, Make will automatically create a new contact in Insightly CRM.","url":"1712-create-insightly-contacts-from-new-google-forms-responses","usedApps":["google-forms","insightly"],"usage":8}

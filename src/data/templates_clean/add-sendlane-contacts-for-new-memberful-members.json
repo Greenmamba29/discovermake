@@ -1,0 +1,1 @@
+{"id":8209,"name":"Add Sendlane contacts for new Memberful members","description":"Every time a new member signs up to your Memberful, Make will automatically add him to your Sendlane as a contact.","url":"8209-add-sendlane-contacts-for-new-memberful-members","usedApps":["memberful","sendlane"],"usage":1}

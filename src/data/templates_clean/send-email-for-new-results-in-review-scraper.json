@@ -1,0 +1,1 @@
+{"id":8393,"name":"Send Email for new results in Review Scraper","description":"Every time a new result is received in Review Scraper, Make will automatically send an email to a specified address.","url":"8393-send-email-for-new-results-in-review-scraper","usedApps":["review-scraper","email"],"usage":71}

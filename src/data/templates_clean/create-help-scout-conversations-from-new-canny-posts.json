@@ -1,0 +1,1 @@
+{"id":8823,"name":"Create Help Scout conversations from new Canny posts","description":"Use this template to automatically create a Help Scout conversation when a new Canny post is created on a certain board (or all boards).","url":"8823-create-help-scout-conversations-from-new-canny-posts","usedApps":["canny","helpscout"],"usage":2}

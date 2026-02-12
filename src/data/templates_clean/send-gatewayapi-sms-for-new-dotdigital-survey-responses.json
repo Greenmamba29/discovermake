@@ -1,0 +1,1 @@
+{"id":7175,"name":"Send GatewayAPI SMS for new dotdigital survey responses","description":"Every time there is a new dotdigital survey response, Make will automatically send an SMS via GatewayAPI to a phone number that was entered in a survey.","url":"7175-send-gatewayapi-sms-for-new-dotdigital-survey-responses","usedApps":["dotdigital","regexp","gatewayapi"],"usage":2}

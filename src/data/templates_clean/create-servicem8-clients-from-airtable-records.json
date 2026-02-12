@@ -1,0 +1,1 @@
+{"id":4968,"name":"Create ServiceM8 clients from Airtable records","description":"Every time a new Airtable record is added, Make will automatically create a new client in ServiceM8.","url":"4968-create-servicem8-clients-from-airtable-records","usedApps":["airtable","servicem8"],"usage":7}

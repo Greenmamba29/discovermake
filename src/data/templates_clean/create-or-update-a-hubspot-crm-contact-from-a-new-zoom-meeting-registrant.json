@@ -1,0 +1,1 @@
+{"id":6033,"name":"Create or update a HubSpot CRM contact from a new Zoom meeting registrant","description":"Every time a new Zoom meeting registrant is created, Make will automatically create (or update if it already exists) a HubSpot CRM contact.","url":"6033-create-or-update-a-hubspot-crm-contact-from-a-new-zoom-meeting-registrant","usedApps":["zoom","hubspotcrm"],"usage":59}

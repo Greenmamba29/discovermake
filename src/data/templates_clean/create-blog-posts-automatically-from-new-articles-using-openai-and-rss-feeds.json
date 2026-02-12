@@ -1,0 +1,1 @@
+{"id":14008,"name":"Create blog posts automatically from new articles using OpenAI and RSS feeds","description":"Automatically transform new RSS feed articles into engaging blog posts using ChatGPT and publish them on Blogger.","url":"14008-create-blog-posts-automatically-from-new-articles-using-openai-and-rss-feeds","usedApps":["rss","openai-gpt-3","blogger"],"usage":615}

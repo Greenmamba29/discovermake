@@ -1,0 +1,1 @@
+{"id":7693,"name":"Add new Nozbe Teams tasks to Trello as a new cards","description":"Every time a new task is created in Nozbe Teams, Make will automatically create a new card in Trello.","url":"7693-add-new-nozbe-teams-tasks-to-trello-as-a-new-cards","usedApps":["nozbe-teams","trello"],"usage":2}

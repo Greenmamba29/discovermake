@@ -1,0 +1,1 @@
+{"id":3229,"name":"WooCommerce Order-Status update via SMS","description":"Keep your customers happy with an order-status SMS update. The recipient's phone number has to be provided and the order has to have been placed through WooCommerce.","url":"3229-woocommerce-order-status-update-via-sms","usedApps":["woocommerce","gatewayapi"],"usage":57}

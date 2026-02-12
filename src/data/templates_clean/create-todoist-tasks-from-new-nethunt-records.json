@@ -1,0 +1,1 @@
+{"id":8454,"name":"Create Todoist tasks from new NetHunt records","description":"Every time a new record is created in NetHunt, Make will automatically create a new task in Todoist.","url":"8454-create-todoist-tasks-from-new-nethunt-records","usedApps":["nethunt","todoist"],"usage":2}

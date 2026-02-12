@@ -1,0 +1,1 @@
+{"id":8548,"name":"Get Slack notifications for new JobNimbus activities","description":"Every time a new activitie has been created in JobNimbus, Make will automatically send a notification message to a specified channel/chat in Slack.","url":"8548-get-slack-notifications-for-new-jobnimbus-activities","usedApps":["jobnimbus","slack"],"usage":4}

@@ -1,0 +1,1 @@
+{"id":2509,"name":"Save new Cognito Forms entries to a Coda doc","description":"Every time someone fills out your Cognito Forms form, Make will automatically add a new row to your Coda table.","url":"2509-save-new-cognito-forms-entries-to-a-coda-doc","usedApps":["cognitoforms","coda"],"usage":4}

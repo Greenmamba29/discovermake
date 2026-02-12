@@ -1,0 +1,1 @@
+{"id":2984,"name":"Copy the names of folders from Google Drive to Egnyte","description":"Retrieve all folders in Google Drive which meet specified criteria and copy the titles of the retrieved folders to Egnyte.","url":"2984-copy-the-names-of-folders-from-google-drive-to-egnyte","usedApps":["google-drive","egnyte"],"usage":3}

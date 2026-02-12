@@ -1,0 +1,1 @@
+{"id":8117,"name":"Create Trello cards for new Zistemo tasks","description":"Every time a new task is created in Zistemo, Make will automatically create a new card in Trello.","url":"8117-create-trello-cards-for-new-zistemo-tasks","usedApps":["zistemo","trello"],"usage":3}

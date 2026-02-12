@@ -1,0 +1,1 @@
+{"id":9114,"name":"Add YouCanBook.me bookings to Redtail CRM as activities","description":"Make will watch for new bookings created in YouCanBook.me at regular intervals and create a new activity in Redtail CRM using information received.","url":"9114-add-youcanbook-me-bookings-to-redtail-crm-as-activities","usedApps":["youcanbookme","builtin","util","redtail-crm"],"usage":3}

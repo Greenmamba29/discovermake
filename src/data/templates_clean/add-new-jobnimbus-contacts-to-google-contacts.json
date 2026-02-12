@@ -1,0 +1,1 @@
+{"id":8538,"name":"Add new JobNimbus contacts to Google Contacts","description":"Every time a new contact is created in JobNimbus, Make will automatically add that contact to Google Contacts.","url":"8538-add-new-jobnimbus-contacts-to-google-contacts","usedApps":["jobnimbus","google-contacts"],"usage":3}

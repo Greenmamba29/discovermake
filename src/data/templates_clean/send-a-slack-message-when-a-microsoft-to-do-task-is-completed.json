@@ -1,0 +1,1 @@
+{"id":4996,"name":"Send a Slack message when a Microsoft To Do task is completed","description":"With this template, you will receive a Slack message with a completed Microsoft To Do task.","url":"4996-send-a-slack-message-when-a-microsoft-to-do-task-is-completed","usedApps":["microsoft-to-do","slack"],"usage":16}

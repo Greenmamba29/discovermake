@@ -1,0 +1,1 @@
+{"id":6181,"name":"Send your Google Analytics reports as Slack messages","description":"This template will automatically retrieve data from your Google Analytics account for the past 24 hours and send the report as a Slack message.","url":"6181-send-your-google-analytics-reports-as-slack-messages","usedApps":["google-analytics","slack"],"usage":110}

@@ -1,0 +1,1 @@
+{"id":4438,"name":"Send Go4clients Email for new Google Sheet Spreadsheet rows","description":"Every time a new row is added to a Google Sheets Spreadsheet, Make will automatically send an email in Go4clients. The template uses this example spreadsheet.","url":"4438-send-go4clients-email-for-new-google-sheet-spreadsheet-rows","usedApps":["google-sheets","go4clients"],"usage":2}

@@ -1,0 +1,1 @@
+{"id":7451,"name":"Create Trello cards for new Syncro tickets","description":"Every time a new ticket is created in your Syncro, Make will create an identical card in your Trello.","url":"7451-create-trello-cards-for-new-syncro-tickets","usedApps":["syncro","builtin","trello"],"usage":9}

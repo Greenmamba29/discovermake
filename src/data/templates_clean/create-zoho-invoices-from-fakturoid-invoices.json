@@ -1,0 +1,1 @@
+{"id":3665,"name":"Create Zoho Invoices from Fakturoid invoices","description":"Every time a new Fakturoid invoice is created, Make will automatically create a new Zoho Invoice and send it to a specific email address.","url":"3665-create-zoho-invoices-from-fakturoid-invoices","usedApps":["fakturoid","zoho-invoice"],"usage":2}

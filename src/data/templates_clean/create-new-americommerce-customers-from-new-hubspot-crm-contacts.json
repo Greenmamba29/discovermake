@@ -1,0 +1,1 @@
+{"id":8869,"name":"Create new AmeriCommerce customers from new HubSpot CRM contacts","description":"Every time a new contact is created in HubSpot CRM, Make will automatically create a new customer in AmeriCommerce.","url":"8869-create-new-americommerce-customers-from-new-hubspot-crm-contacts","usedApps":["hubspotcrm","americommerce"],"usage":3}

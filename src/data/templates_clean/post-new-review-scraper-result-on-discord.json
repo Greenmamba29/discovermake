@@ -1,0 +1,1 @@
+{"id":8395,"name":"Post new Review Scraper result on Discord","description":"Every time a new result is received in Review Scraper, Make will automatically post it on your Discord server.","url":"8395-post-new-review-scraper-result-on-discord","usedApps":["review-scraper","discord"],"usage":23}

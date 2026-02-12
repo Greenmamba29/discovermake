@@ -1,0 +1,1 @@
+{"id":10633,"name":"Send a notification to Slack about new Paperform submissions","description":"Whenever you receive a new submission for your Paperform, you will receive a custom notification in the Slack channel of your choice.","url":"10633-send-a-notification-to-slack-about-new-paperform-submissions","usedApps":["paperform","slack"],"usage":14}

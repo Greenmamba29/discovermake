@@ -1,0 +1,1 @@
+{"id":8394,"name":"Post new Review Scraper results on Telegram","description":"Every time a new result is received in Review Scraper, Make will automatically send a message to a selected chat in Telegram with details of this result.","url":"8394-post-new-review-scraper-results-on-telegram","usedApps":["review-scraper","telegram"],"usage":18}

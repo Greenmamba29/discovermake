@@ -1,0 +1,1 @@
+{"id":5908,"name":"Send new Follow Up Boss contacts to Google Contacts","description":"Every time a new contact is created on Follow Up Boss, Make will automatically create Contact in Google Contacts.","url":"5908-send-new-follow-up-boss-contacts-to-google-contacts","usedApps":["follow-up-boss","google-contacts"],"usage":48}

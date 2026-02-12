@@ -1,0 +1,1 @@
+{"id":2754,"name":"Send ClickSend SMS messages for new Slack messages","description":"Every time a new message is received in a specific Slack channel, Make will automatically send an SMS message via ClickSend.","url":"2754-send-clicksend-sms-messages-for-new-slack-messages","usedApps":["slack","clicksend"],"usage":6}

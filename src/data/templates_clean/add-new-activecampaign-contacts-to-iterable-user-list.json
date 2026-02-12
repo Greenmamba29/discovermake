@@ -1,0 +1,1 @@
+{"id":7751,"name":"Add new ActiveCampaign contacts to Iterable user list","description":"Every time a new contact is created in ActiveCampaign, Make will automatically add that contact to Iterable user list of your choice.","url":"7751-add-new-activecampaign-contacts-to-iterable-user-list","usedApps":["activecampaign","iterable"],"usage":2}

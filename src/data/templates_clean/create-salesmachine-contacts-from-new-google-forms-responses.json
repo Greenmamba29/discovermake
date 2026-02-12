@@ -1,0 +1,1 @@
+{"id":9090,"name":"Create Salesmachine contacts from new Google Forms responses","description":"Make will watch for new Google Forms responses at regular intervals and create contacts in Salesmachine using information received.","url":"9090-create-salesmachine-contacts-from-new-google-forms-responses","usedApps":["google-forms","salesmachine"],"usage":2}

@@ -1,0 +1,1 @@
+{"id":3926,"name":"Send new Wrike tasks to Databox","description":"When a new task is created in Wrike, data from that task is sent to Databox.","url":"3926-send-new-wrike-tasks-to-databox","usedApps":["wrike","databox"],"usage":8}

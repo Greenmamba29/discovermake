@@ -1,0 +1,1 @@
+{"id":5530,"name":"Send Slack messages for new GitHub comments","description":"Every time a new comment is posted in GitHub, Make will automatically send a message in Slack","url":"5530-send-slack-messages-for-new-github-comments","usedApps":["github","slack"],"usage":51}

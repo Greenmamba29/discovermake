@@ -1,0 +1,1 @@
+{"id":8350,"name":"Create ActiveCampaign contacts from new Outgrow leads","description":"Every time a new lead is created in Outgrow, Make will automatically create a new contact in ActiveCampaign.","url":"8350-create-activecampaign-contacts-from-new-outgrow-leads","usedApps":["outgrow","activecampaign"],"usage":1}

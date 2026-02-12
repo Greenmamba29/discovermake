@@ -1,0 +1,1 @@
+{"id":3707,"name":"Send Slack messages for new G Suite users","description":"Every time a new user is created in G Suite, Make will automatically send a message to a specified Slack channel.","url":"3707-send-slack-messages-for-new-g-suite-users","usedApps":["google-g-suite","slack"],"usage":12}

@@ -1,0 +1,1 @@
+{"id":6864,"name":"Save new Telegram files to FileCloud","description":"Every time a new file is posted to your Telegram channel, Make will automatically save that file to a FileCloud folder you specify.","url":"6864-save-new-telegram-files-to-filecloud","usedApps":["telegram","filecloud"],"usage":7}

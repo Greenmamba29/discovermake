@@ -1,0 +1,1 @@
+{"id":5624,"name":"Add MailChimp subscribers from TalentLMS users","description":"Every time a new user from TalentLMS is added, Make will automatically add a subscriber in MailChimp.","url":"5624-add-mailchimp-subscribers-from-talentlms-users","usedApps":["talentlms","mailchimp"],"usage":0}

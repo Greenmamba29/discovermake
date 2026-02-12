@@ -1,0 +1,1 @@
+{"id":6734,"name":"Create Asana tasks for new Ronin tasks.","description":"Every time a new task is created in Ronin, Make will automatically create a new task on Asana.","url":"6734-create-asana-tasks-for-new-ronin-tasks","usedApps":["ronin","asana"],"usage":2}

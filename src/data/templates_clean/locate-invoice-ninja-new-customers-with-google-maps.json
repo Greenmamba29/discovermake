@@ -1,0 +1,1 @@
+{"id":6789,"name":"Locate Invoice Ninja new customers with Google Maps","description":"Every time a new client is created in Invoice Ninja, Make will automatically create a Static Map Image with Google Maps to save the client's business location.","url":"6789-locate-invoice-ninja-new-customers-with-google-maps","usedApps":["invoiceninja","google-maps","dropbox"],"usage":26}

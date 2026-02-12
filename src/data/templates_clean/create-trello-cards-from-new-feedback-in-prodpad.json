@@ -1,0 +1,1 @@
+{"id":4788,"name":"Create Trello cards from new feedback in ProdPad","description":"Every time new feedback is added toProdPad, Make will automatically create a new card in Trello. ","url":"4788-create-trello-cards-from-new-feedback-in-prodpad","usedApps":["prodpad","trello"],"usage":1}

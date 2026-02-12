@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Remix Configuration Checkout</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13a4ec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101c22",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .ios-blur { backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+        input:checked ~ .dot { transform: translateX(100%); }
+        input:checked ~ .block { background-color: #13a4ec; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white min-h-screen">
+<header class="sticky top-0 z-30 bg-background-light/80 dark:bg-background-dark/80 ios-blur border-b border-slate-200 dark:border-slate-800">
+<div class="flex items-center justify-between p-4">
+<button class="flex items-center justify-center size-10 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800">
+<span class="material-symbols-outlined">close</span>
+</button>
+<h1 class="text-lg font-bold">Remix Checkout</h1>
+<button class="flex items-center justify-center size-10 rounded-full text-primary">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+</div>
+</header>
+<main class="pb-44">
+<section class="p-4">
+<div class="bg-white dark:bg-[#192b33] rounded-2xl p-3 border border-slate-200 dark:border-slate-800 flex items-center gap-4">
+<div class="size-16 rounded-xl overflow-hidden shrink-0">
+<img alt="Workflow thumbnail" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeOmHCcF-imom74dV_TPQVN1cYFmcausQNo4oR9NYyxi0rUfYqmr93ajneqvRTRunAPODqt-yDp2vtPmhWPflh56StSEuCKR1bJ018mi82U8ofU8C4lx9_tbdnQrz9iGId9QBdOHcX3QgQi5kz4rxGlx58F_AUhbdQnW4RrI90QbWIldtnI6vp1cAx9EpHTcJ_M_37rMBCP-TGGlocEeBnGrUmSWDMkWE_3w_GlN4Ui4wIMoQVhUUxXLQlr7GE1RPDPK6d3bRgYvc"/>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-[10px] font-bold text-primary uppercase tracking-wider mb-0.5">Original Workflow</p>
+<h2 class="text-sm font-bold truncate">Instant Support Weaver</h2>
+<p class="text-xs text-slate-500 dark:text-slate-400">By Flux Labs • v2.4.0</p>
+</div>
+<div class="flex flex-col items-end gap-1">
+<span class="material-symbols-outlined text-slate-400 text-lg">link</span>
+</div>
+</div>
+</section>
+<section class="px-4 space-y-6">
+<div class="space-y-3">
+<label class="text-xs font-bold text-slate-500 uppercase tracking-widest px-1">AI Model</label>
+<div class="relative">
+<select class="w-full h-14 bg-white dark:bg-[#192b33] border border-slate-200 dark:border-slate-800 rounded-xl px-4 appearance-none focus:ring-2 focus:ring-primary focus:border-transparent font-medium">
+<option>GPT-4o (Standard)</option>
+<option>Claude 3.5 Sonnet</option>
+<option>GPT-4 Turbo</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">expand_more</span>
+</div>
+</div>
+<div class="space-y-3">
+<label class="text-xs font-bold text-slate-500 uppercase tracking-widest px-1">Data Sources</label>
+<div class="bg-white dark:bg-[#192b33] rounded-xl border border-slate-200 dark:border-slate-800 divide-y divide-slate-100 dark:divide-slate-800">
+<label class="flex items-center justify-between p-4 cursor-pointer">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">hub</span>
+<span class="font-medium">HubSpot</span>
+</div>
+<div class="relative inline-block w-12 h-6 align-middle select-none transition duration-200 ease-in">
+<input checked="" class="hidden peer" id="hubspot" name="toggle" type="checkbox"/>
+<div class="block w-12 h-6 bg-slate-200 dark:bg-slate-700 rounded-full transition-colors peer-checked:bg-primary"></div>
+<div class="dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform peer-checked:translate-x-6"></div>
+</div>
+</label>
+<label class="flex items-center justify-between p-4 cursor-pointer">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[#00A1E0]">cloud</span>
+<span class="font-medium">Salesforce</span>
+</div>
+<div class="relative inline-block w-12 h-6 align-middle select-none transition duration-200 ease-in">
+<input class="hidden peer" id="salesforce" name="toggle" type="checkbox"/>
+<div class="block w-12 h-6 bg-slate-200 dark:bg-slate-700 rounded-full transition-colors peer-checked:bg-primary"></div>
+<div class="dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform peer-checked:translate-x-6"></div>
+</div>
+</label>
+</div>
+</div>
+<div class="space-y-3">
+<label class="text-xs font-bold text-slate-500 uppercase tracking-widest px-1">Deployment</label>
+<div class="relative">
+<select class="w-full h-14 bg-white dark:bg-[#192b33] border border-slate-200 dark:border-slate-800 rounded-xl px-4 appearance-none focus:ring-2 focus:ring-primary focus:border-transparent font-medium">
+<option>Vercel Edge (Recommended)</option>
+<option>Local Infrastructure</option>
+<option>AWS Lambda</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">expand_more</span>
+</div>
+</div>
+<div class="space-y-3">
+<div class="flex items-center justify-between bg-white dark:bg-[#192b33] p-4 rounded-xl border border-slate-200 dark:border-slate-800">
+<div class="flex flex-col">
+<span class="font-bold">Privacy</span>
+<span class="text-xs text-slate-500">Public workflows can be seen by others</span>
+</div>
+<div class="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-lg">
+<button class="px-4 py-1.5 text-xs font-bold rounded-md bg-white dark:bg-slate-700 shadow-sm">Private</button>
+<button class="px-4 py-1.5 text-xs font-bold text-slate-500">Public</button>
+</div>
+</div>
+</div>
+</section>
+<section class="p-4 mt-4">
+<div class="bg-slate-900 rounded-2xl p-5 border border-white/10 shadow-2xl relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-10">
+<span class="material-symbols-outlined text-6xl">terminal</span>
+</div>
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-white font-bold flex items-center gap-2">
+<span class="size-2 bg-green-500 rounded-full animate-pulse"></span>
+                        Live Preview
+                    </h3>
+<div class="text-right">
+<p class="text-[10px] text-slate-400 uppercase font-bold tracking-tight">Est. Cost</p>
+<p class="text-primary font-bold">$0.12 <span class="text-[10px] text-slate-400">/ run</span></p>
+</div>
+</div>
+<div class="space-y-2 font-mono text-[11px] text-slate-400">
+<p class="flex gap-2"><span class="text-primary">&gt;</span> Initializing Remix engine...</p>
+<p class="flex gap-2"><span class="text-primary">&gt;</span> Injecting HubSpot context...</p>
+<p class="flex gap-2 text-green-400"><span class="text-primary">&gt;</span> GPT-4o ready for stream.</p>
+</div>
+</div>
+</section>
+</main>
+<footer class="fixed bottom-0 left-0 right-0 z-40 bg-white/90 dark:bg-[#111c22]/90 ios-blur border-t border-slate-200 dark:border-slate-800 px-4 pt-4 pb-10">
+<div class="flex gap-3 max-w-md mx-auto">
+<button class="flex-1 h-14 flex items-center justify-center rounded-2xl bg-transparent border-2 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 font-bold text-sm active:scale-95 transition-transform">
+                Run test build
+            </button>
+<button class="flex-[1.5] h-14 flex items-center justify-center rounded-2xl bg-primary text-white font-bold text-sm shadow-lg shadow-primary/30 active:scale-95 transition-transform">
+                Save as New Remix
+            </button>
+</div>
+</footer>
+<div class="fixed bottom-1 left-1/2 -translate-x-1/2 w-32 h-1.5 bg-slate-400/30 dark:bg-slate-700/50 rounded-full z-50 pointer-events-none"></div>
+
+</body></html>

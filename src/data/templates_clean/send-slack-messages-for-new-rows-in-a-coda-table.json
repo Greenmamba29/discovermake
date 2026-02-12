@@ -1,0 +1,1 @@
+{"id":2513,"name":"Send Slack messages for new rows in a Coda table","description":"Every time a new row is added to a table in your Coda doc, Make will automatically send a message in Slack.","url":"2513-send-slack-messages-for-new-rows-in-a-coda-table","usedApps":["coda","slack"],"usage":20}

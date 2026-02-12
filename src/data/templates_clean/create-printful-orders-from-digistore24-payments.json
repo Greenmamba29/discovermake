@@ -1,0 +1,1 @@
+{"id":8230,"name":"Create Printful orders from Digistore24 payments","description":"Every time a new payment has been completed in Digistore24, Make will automatically create a new order in Printful using information received. ","url":"8230-create-printful-orders-from-digistore24-payments","usedApps":["digistore","printful"],"usage":23}

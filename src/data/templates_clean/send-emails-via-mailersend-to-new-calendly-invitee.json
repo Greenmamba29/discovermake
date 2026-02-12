@@ -1,0 +1,1 @@
+{"id":6964,"name":"Send emails via MailerSend to new Calendly invitee","description":"Every time a person book a meeting with you in Calendly, Make will automatically send an email to this person using MailerSend.","url":"6964-send-emails-via-mailersend-to-new-calendly-invitee","usedApps":["calendly","mailersend"],"usage":18}

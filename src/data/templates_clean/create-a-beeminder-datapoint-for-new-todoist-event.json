@@ -1,0 +1,1 @@
+{"id":5017,"name":"Create a Beeminder datapoint for new Todoist event","description":"Every time a new Todoist event is received, Make will automatically create a datapoint in Beeminder.","url":"5017-create-a-beeminder-datapoint-for-new-todoist-event","usedApps":["todoist","beeminder"],"usage":4}

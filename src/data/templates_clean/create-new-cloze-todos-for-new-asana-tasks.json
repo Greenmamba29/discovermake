@@ -1,0 +1,1 @@
+{"id":9144,"name":"Create new Cloze ToDos for new Asana tasks","description":"Every time a new task is created in Asana,  Make will automatically create a new ToDo in Cloze.","url":"9144-create-new-cloze-todos-for-new-asana-tasks","usedApps":["asana","cloze"],"usage":3}

@@ -1,0 +1,1 @@
+{"id":6212,"name":"Create Trello cards from new case in CommCare","description":"Every time a new case is created in CommCare, Make will automatically add a new card to a Trello board of your choice.","url":"6212-create-trello-cards-from-new-case-in-commcare","usedApps":["commcare","trello"],"usage":2}

@@ -1,0 +1,1 @@
+{"id":4524,"name":"Send QuestionPro surveys for new Mailchimp unsubscribe events","description":"Every time a Mailchimp event occurs, Make will automatically send a QuestionPro survey to the subscriber. ","url":"4524-send-questionpro-surveys-for-new-mailchimp-unsubscribe-events","usedApps":["mailchimp","questionpro"],"usage":0}

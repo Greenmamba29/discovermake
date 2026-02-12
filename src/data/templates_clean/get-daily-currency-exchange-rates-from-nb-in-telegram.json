@@ -1,0 +1,1 @@
+{"id":6617,"name":"Get daily currency exchange rates from ČNB in Telegram","description":"Make will retrieve relevant currency rates on Czech koruna on schedule which you can set up yourself and send it to your Telegram.","url":"6617-get-daily-currency-exchange-rates-from-cnb-in-telegram","usedApps":["kurzy-cnb","util","telegram"],"usage":11}

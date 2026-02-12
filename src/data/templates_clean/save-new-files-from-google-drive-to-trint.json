@@ -1,0 +1,1 @@
+{"id":7549,"name":"Save new files from Google Drive to Trint","description":"Every time a new file is uploaded to your Google Drive, Make will automatically upload that file to Trint folder you specify.","url":"7549-save-new-files-from-google-drive-to-trint","usedApps":["google-drive","trint"],"usage":7}

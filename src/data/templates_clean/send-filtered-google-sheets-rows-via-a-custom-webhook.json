@@ -1,0 +1,1 @@
+{"id":13065,"name":"Send filtered Google Sheets rows via a custom webhook","description":"Automatically send filtered Google Sheets rows to a custom webhook and receive a response. Streamline data processing with Google Sheets and Custom Webhook integration.","url":"13065-send-filtered-google-sheets-rows-via-a-custom-webhook","usedApps":["gateway","google-sheets"],"usage":10}

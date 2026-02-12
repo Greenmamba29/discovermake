@@ -1,0 +1,1 @@
+{"id":7251,"name":"Send an email from a new action in Glide","description":"Every time a new action happens in Glide, a new message will be instantly sent via email.\n\nThe template expects to receive at least this variable from Glide:\n1) User email","url":"7251-send-an-email-from-a-new-action-in-glide","usedApps":["glide","email"],"usage":145}

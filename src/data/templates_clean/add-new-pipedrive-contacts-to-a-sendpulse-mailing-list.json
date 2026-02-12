@@ -1,0 +1,1 @@
+{"id":3517,"name":"Add new Pipedrive contacts to a SendPulse mailing list.","description":"Every time a new contact is added to Pipedrive, Make will automatically create a new contact in SendPulse and add it to a specified mailing list.","url":"3517-add-new-pipedrive-contacts-to-a-sendpulse-mailing-list","usedApps":["pipedrive","sendpulse"],"usage":18}

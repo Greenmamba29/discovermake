@@ -1,0 +1,1 @@
+{"id":8390,"name":"Get Jenkins Job notifications in Pushwoosh","description":"Every time you have a new Job notification in Jenkins, Make will automatically create a push notification in Pushwoosh with details of this Job.","url":"8390-get-jenkins-job-notifications-in-pushwoosh","usedApps":["jenkins","pushwoosh"],"usage":1}

@@ -1,0 +1,1 @@
+{"id":3507,"name":"Add new subscribers to Emercury audience from Smartsheet new rows","description":"Every time a new row is added in Smartsheet, Make will automatically create a new Emercury subscriber.","url":"3507-add-new-subscribers-to-emercury-audience-from-smartsheet-new-rows","usedApps":["smartsheet","builtin","emercury"],"usage":6}

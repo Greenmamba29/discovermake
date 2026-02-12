@@ -1,0 +1,1 @@
+{"id":1314,"name":"Delete an app item in Podio when a new credit note is created in Xero","description":"When in Xero and a new credit note is issued in the name of the Podio app, Make will automatically delete a specific item from this app in Podio. ","url":"1314-delete-an-app-item-in-podio-when-a-new-credit-note-is-created-in-xero","usedApps":["xero","podio"],"usage":4}

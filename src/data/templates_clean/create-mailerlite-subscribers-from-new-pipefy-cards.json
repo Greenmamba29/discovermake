@@ -1,0 +1,1 @@
+{"id":2663,"name":"Create MailerLite subscribers from new Pipefy cards","description":"Every time a new card is created in Pipefy, Make will automatically add a new subscriber to your MailerLite group.","url":"2663-create-mailerlite-subscribers-from-new-pipefy-cards","usedApps":["pipefy","mailerlite"],"usage":2}

@@ -1,0 +1,1 @@
+{"id":2012,"name":"Send Slack messages for new Tradegecko orders","description":"Every time a new order is created on Tradegecko, Make will automatically send a message to a Slack channel of your choice.","url":"2012-send-slack-messages-for-new-tradegecko-orders","usedApps":["tradegecko","slack"],"usage":4}

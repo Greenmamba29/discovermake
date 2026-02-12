@@ -1,0 +1,1 @@
+{"id":10264,"name":"Send WhatsApp messages for new Excel rows","description":"Every time a new row is added to your Excel spreadsheet, Make will automatically send a message in WhatsApp.","url":"6540-create-new-telegram-messages-for-new-messages-in-chatwork","usedApps":["microsoft-excel","whatsapp-business-cloud"],"usage":3119}

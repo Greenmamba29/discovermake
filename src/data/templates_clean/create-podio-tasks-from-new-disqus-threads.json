@@ -1,0 +1,1 @@
+{"id":299,"name":"Create Podio tasks from new Disqus threads","description":"Every time a new thread is created in a watched forum on Disqus, Make will automatically create a new task in Podio.","url":"299-create-podio-tasks-from-new-disqus-threads","usedApps":["disqus","podio"],"usage":1}

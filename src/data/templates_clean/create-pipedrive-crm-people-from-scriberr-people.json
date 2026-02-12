@@ -1,0 +1,1 @@
+{"id":7800,"name":"Create Pipedrive CRM people from Scriberr people","description":"Every time a new person is copied in Scriberr, Make will automatically create a person in Pipedrive CRM.","url":"7800-create-pipedrive-crm-people-from-scriberr-people","usedApps":["scriberr","pipedrive"],"usage":1}

@@ -1,0 +1,1 @@
+{"id":6761,"name":"Create new users in Award Force from new contacts in Wild Apricot","description":"Every time a new contact is created in Wild Apricot, Make will automatically create a new user in Award Force. ","url":"6761-create-new-users-in-award-force-from-new-contacts-in-wild-apricot","usedApps":["wild-apricot","award-force"],"usage":35}

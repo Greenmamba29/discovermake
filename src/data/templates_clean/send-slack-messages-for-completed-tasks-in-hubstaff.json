@@ -1,0 +1,1 @@
+{"id":7333,"name":"Send Slack messages for completed tasks in Hubstaff","description":"Every time there is a new completed task in Hubstaff, Make will automatically send a notification message in Slack.","url":"7333-send-slack-messages-for-completed-tasks-in-hubstaff","usedApps":["hubstaff","builtin","util","slack"],"usage":9}

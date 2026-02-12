@@ -1,0 +1,1 @@
+{"id":3813,"name":"Send Slack messages for new achievements in Bonusly","description":"Every time a new achievement is unlocked in Bonusly, Make will automatically send a message to a specified Slack channel.","url":"3813-send-slack-messages-for-new-achievements-in-bonusly","usedApps":["bonusly","slack"],"usage":0}

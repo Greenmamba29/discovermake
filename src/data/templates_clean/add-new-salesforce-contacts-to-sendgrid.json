@@ -1,0 +1,1 @@
+{"id":2445,"name":"Add new Salesforce contacts to SendGrid","description":"Every time a new contact is created in SalesForce, Make will automatically add that contact to a SendGrid list of your choice.","url":"2445-add-new-salesforce-contacts-to-sendgrid","usedApps":["salesforce","sendgrid"],"usage":8}

@@ -1,0 +1,1 @@
+{"id":5967,"name":"Send Slack notifications when tasks are completed on Todoist","description":"When you have completed tasks on Todoist, this scenario will receive the information of the tasks instantly and send Slack notifications to the selected channel/user.","url":"5967-send-slack-notifications-when-tasks-are-completed-on-todoist","usedApps":["todoist","slack"],"usage":52}

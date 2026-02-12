@@ -1,0 +1,1 @@
+{"id":12207,"name":"Send an email from a new QR code in Uniqode","description":"Every time a new QR code is created in Uniqode, a new message will be instantly sent via email.","url":"7522-send-an-email-from-a-new-qr-code-in-beaconstac","usedApps":["beaconstac","email"],"usage":8}

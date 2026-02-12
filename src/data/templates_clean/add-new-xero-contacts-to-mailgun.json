@@ -1,0 +1,1 @@
+{"id":1394,"name":"Add new Xero contacts to Mailgun","description":"Every time a new contact is created in Xero, Make will automatically add that contact to your mailing list in Mailgun.","url":"1394-add-new-xero-contacts-to-mailgun","usedApps":["xero","mailgun"],"usage":7}

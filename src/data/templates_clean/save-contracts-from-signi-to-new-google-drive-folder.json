@@ -1,0 +1,1 @@
+{"id":8369,"name":"Save contracts from Signi to new Google Drive folder","description":"Every time a document in a Signi meets special criteria, Make will automatically save this file to a new Google Drive folder with the date this scenario was run.","url":"8369-save-contracts-from-signi-to-new-google-drive-folder","usedApps":["signi","builtin","google-drive"],"usage":10}

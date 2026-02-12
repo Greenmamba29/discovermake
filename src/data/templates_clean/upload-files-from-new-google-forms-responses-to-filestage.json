@@ -1,0 +1,1 @@
+{"id":8785,"name":"Upload files from new Google Forms responses to Filestage","description":"Every time a new response is entered on your Google Forms, Make will automatically upload a new file to Filestage.","url":"8785-upload-files-from-new-google-forms-responses-to-filestage","usedApps":["google-forms","filestage"],"usage":7}

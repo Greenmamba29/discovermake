@@ -1,0 +1,1 @@
+{"id":6822,"name":"Create Asana tasks for new FreeAgent tasks.","description":"Every time a task is created in FreeAgent, Make will automatically create a new task on Asana.","url":"6822-create-asana-tasks-for-new-freeagent-tasks","usedApps":["freeagent","asana"],"usage":2}

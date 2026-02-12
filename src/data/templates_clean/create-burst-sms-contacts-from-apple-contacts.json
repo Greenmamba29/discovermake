@@ -1,0 +1,1 @@
+{"id":4706,"name":"Create Burst SMS contacts from Apple contacts","description":"Every time a new contact is added in an Apple Device, Make will automatically add a contact to a list in Burst SMS.","url":"4706-create-burst-sms-contacts-from-apple-contacts","usedApps":["ios","burst-sms"],"usage":3}

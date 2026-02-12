@@ -1,0 +1,1 @@
+{"id":4238,"name":"Create Burst SMS contacts from new MailChimp subscribers","description":"Every time a new subscriber is added to a specified Mailchimp list, Make will automatically add that subscriber to a Burst SMS contact list.","url":"4238-create-burst-sms-contacts-from-new-mailchimp-subscribers","usedApps":["mailchimp","burst-sms"],"usage":0}

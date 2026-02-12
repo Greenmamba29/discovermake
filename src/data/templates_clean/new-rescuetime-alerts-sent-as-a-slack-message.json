@@ -1,0 +1,1 @@
+{"id":6704,"name":"New RescueTime alerts sent as a Slack message","description":"Every time a defined alert is updated in RescueTime, you will get a Slack message with the alerts details. (Only for Premium users)","url":"6704-new-rescuetime-alerts-sent-as-a-slack-message","usedApps":["rescuetime","slack"],"usage":0}

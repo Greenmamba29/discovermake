@@ -1,0 +1,1 @@
+{"id":7297,"name":"Send Slack message when a Mailjet email is opened.","description":"Every time a Mailjet email is opened, a message to Slack is sent.","url":"7297-send-slack-message-when-a-mailjet-email-is-opened","usedApps":["mailjet","slack"],"usage":7}

@@ -1,0 +1,1 @@
+{"id":4671,"name":"Save new Tripetto entries to an Airtable table","description":"Every time someone fills out your Tripetto form, Make will automatically add the submission to a new record in an Airtable table.","url":"4671-save-new-tripetto-entries-to-an-airtable-table","usedApps":["tripetto","airtable"],"usage":40}

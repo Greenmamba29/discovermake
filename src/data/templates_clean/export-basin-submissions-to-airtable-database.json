@@ -1,0 +1,1 @@
+{"id":5655,"name":"Export Basin submissions to Airtable database","description":"This scenario lets you export submissions from Basin to Airtable. In order for it to work your table has to be the same as [this one](https://airtable.com/shrdYIjW362FMjAVL).","url":"5655-export-basin-submissions-to-airtable-database","usedApps":["basin","airtable"],"usage":3}

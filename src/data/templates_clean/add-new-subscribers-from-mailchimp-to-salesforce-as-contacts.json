@@ -1,0 +1,1 @@
+{"id":5414,"name":"Add new subscribers from Mailchimp to Salesforce as contacts","description":"Whenever new subscribers are added to a Mailchimp list, Make will automatically retrieve the subscribers and add them as contacts in Salesforce.","url":"5414-add-new-subscribers-from-mailchimp-to-salesforce-as-contacts","usedApps":["mailchimp","salesforce"],"usage":8}

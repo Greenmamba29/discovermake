@@ -1,0 +1,1 @@
+{"id":13429,"name":"Send data with basic authentication to Google Sheets","description":"Automatically send data with basic authentication to Google Sheets using the HTTP module. Streamline data entry and management effortlessly.","url":"13429-send-data-with-basic-authentication-to-google-sheets","usedApps":["http","builtin","google-sheets"],"usage":6}

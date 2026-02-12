@@ -1,0 +1,1 @@
+{"id":4518,"name":"Send a Telegram message for new Mailparser.io emails","description":"Every time a new email is parsed with mailparser.io, Make will automatically send a message in Telegram.","url":"4518-send-a-telegram-message-for-new-mailparser-io-emails","usedApps":["mailparser-io","telegram"],"usage":13}

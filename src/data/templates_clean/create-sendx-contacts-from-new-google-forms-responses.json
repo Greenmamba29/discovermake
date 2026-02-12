@@ -1,0 +1,1 @@
+{"id":5799,"name":"Create SendX contacts from new Google Forms responses","description":"Every time a new response is entered on your Google Form, Make will automatically create a new SendX contact.","url":"5799-create-sendx-contacts-from-new-google-forms-responses","usedApps":["google-forms","sendx"],"usage":0}

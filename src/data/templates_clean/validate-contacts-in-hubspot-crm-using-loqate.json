@@ -1,0 +1,1 @@
+{"id":7990,"name":"Validate contacts in HubSpot CRM using Loqate","description":"When a new contact is created in HubSpot CRM, that contact is validated by Loqate. If the e-mail is not valid, it is deactivated.","url":"7990-validate-contacts-in-hubspot-crm-using-loqate","usedApps":["hubspotcrm","loqate"],"usage":3}

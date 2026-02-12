@@ -1,0 +1,1 @@
+{"id":5012,"name":"Create a Shopify customer from a new QuickBooks customer","description":"Every time a new QuickBooks customer is created, Make will automatically create a Shopify customer.","url":"5012-create-a-shopify-customer-from-a-new-quickbooks-customer","usedApps":["quickbooks","shopify"],"usage":10}

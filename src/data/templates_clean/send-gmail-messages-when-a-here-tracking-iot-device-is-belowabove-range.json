@@ -1,0 +1,1 @@
+{"id":8314,"name":"Send Gmail messages when a HERE Tracking IoT device is below/above range","description":"Every time a HERE Tracking indicator reaches the specified range, Make will automatically post a message via Gmail.","url":"8314-send-gmail-messages-when-a-here-tracking-iot-device-is-below-above-range","usedApps":["here","google-email"],"usage":4}

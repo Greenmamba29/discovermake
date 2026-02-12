@@ -1,0 +1,1 @@
+{"id":4193,"name":"Log new Bitrix24 invoices into Google Sheets","description":"When you issue a new invoice in Bitrix24, it will be added as a new row into an existing Google Sheets document.","url":"4193-log-new-bitrix24-invoices-into-google-sheets","usedApps":["bitrix24","google-sheets"],"usage":66}

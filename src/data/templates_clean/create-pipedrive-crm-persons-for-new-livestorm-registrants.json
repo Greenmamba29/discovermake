@@ -1,0 +1,1 @@
+{"id":8564,"name":"Create Pipedrive CRM persons for new Livestorm registrants","description":"Every time a new registrant appears in your Livestorm, Make will create an identical Pipedrive CRM person.","url":"8564-create-pipedrive-crm-persons-for-new-livestorm-registrants","usedApps":["livestorm","pipedrive"],"usage":4}

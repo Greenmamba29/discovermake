@@ -1,0 +1,1 @@
+{"id":558,"name":"Send weather forecasts via Gitter","description":"Make will automatically send daily weather forecast to a selected Gitter room.","url":"558-send-weather-forecasts-via-gitter","usedApps":["gitter","openweathermap"],"usage":2}

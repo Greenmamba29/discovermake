@@ -1,0 +1,1 @@
+{"id":5387,"name":"Create a SendX contact from a new Facebook Lead Ads form submission","description":"Every time a new Facebook Lead Ads form is submitted, Make will automatically create a new SendX contact.","url":"5387-create-a-sendx-contact-from-a-new-facebook-lead-ads-form-submission","usedApps":["facebook-lead-ads","sendx"],"usage":3}

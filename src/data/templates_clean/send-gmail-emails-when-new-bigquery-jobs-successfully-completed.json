@@ -1,0 +1,1 @@
+{"id":8447,"name":"Send Gmail emails when new BigQuery jobs successfully completed","description":"Every time a new job has been completed in BigQuery, Make will automatically send an email via Gmail.","url":"8447-send-gmail-emails-when-new-bigquery-jobs-successfully-completed","usedApps":["google-bigquery","google-email"],"usage":6}

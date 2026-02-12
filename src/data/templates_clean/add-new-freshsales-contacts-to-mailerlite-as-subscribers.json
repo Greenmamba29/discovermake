@@ -1,0 +1,1 @@
+{"id":2029,"name":"Add new Freshsales contacts to MailerLite as subscribers","description":"Every time a new contact is created in Freshsales, Make will automatically add that contact to a MailerLite group of your choice.","url":"2029-add-new-freshsales-contacts-to-mailerlite-as-subscribers","usedApps":["freshsales","mailerlite"],"usage":11}

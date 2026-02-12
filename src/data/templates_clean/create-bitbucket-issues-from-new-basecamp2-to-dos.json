@@ -1,0 +1,1 @@
+{"id":303,"name":"Create Bitbucket issues from new Basecamp2 to-dos","description":"Every time a new to-do is added to a specific company and project in Basecamp2, Make will automatically create a new issue on Bitbucket.","url":"303-create-bitbucket-issues-from-new-basecamp2-to-dos","usedApps":["basecamp","bitbucket"],"usage":1}

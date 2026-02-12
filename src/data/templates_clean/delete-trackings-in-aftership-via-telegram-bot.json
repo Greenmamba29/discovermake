@@ -1,0 +1,1 @@
+{"id":6480,"name":"Delete trackings in AfterShip via Telegram bot","description":"Every time you send a tracking number to your bot a tracking in your AfterShip will be deleted.","url":"6480-delete-trackings-in-aftership-via-telegram-bot","usedApps":["telegram","aftership"],"usage":4}

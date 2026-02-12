@@ -1,0 +1,1 @@
+{"id":10122,"name":"Receive SMS messages via Telnyx for New Gmail emails","description":"Send an SMS message via Telnyx when a new Gmail email is received.","url":"10122-receive-sms-messages-via-telnyx-for-new-gmail-emails","usedApps":["google-email","telnyx"],"usage":9}

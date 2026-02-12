@@ -1,0 +1,1 @@
+{"id":7317,"name":"Create SwiftKanban cards from new Telegram messages","description":"Every time a new message is received on Telegram, Make will automatically create a new card in SwiftKanban.","url":"7317-create-swiftkanban-cards-from-new-telegram-messages","usedApps":["telegram","swiftkanban"],"usage":4}

@@ -1,0 +1,1 @@
+{"id":9036,"name":"Send Vonage messages for new Gmail emails","description":"Make will watch for new Gmail emails at regular intervals and send Vonage SMS messages to the specified number.","url":"9036-send-vonage-messages-for-new-gmail-emails","usedApps":["google-email","vonage"],"usage":4}

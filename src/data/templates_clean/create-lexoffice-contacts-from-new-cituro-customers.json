@@ -1,0 +1,1 @@
+{"id":8739,"name":"Create lexoffice contacts from new cituro customers","description":"After a new customer has been created, you'll also want to see it in lexoffice. This Make integration automatically adds every new cituro customer to lexoffice as a new contact.","url":"8739-create-lexoffice-contacts-from-new-cituro-customers","usedApps":["cituro","lexoffice"],"usage":34}

@@ -1,0 +1,1 @@
+{"id":7660,"name":"Send SignRequests from templates for new Typeform responses","description":"Make will watch your Typeform responses at regular intervals and create SignRequests from templates.","url":"7660-send-signrequests-from-templates-for-new-typeform-responses","usedApps":["typeform","signrequest"],"usage":5}

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Revenue &amp; Take-Rate Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13a4ec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101c22",
+                        "surface-dark": "#182830", // Slightly lighter than background-dark for cards
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen font-display text-slate-900 dark:text-white">
+<div class="relative flex h-full w-full flex-col max-w-md mx-auto overflow-x-hidden bg-background-light dark:bg-background-dark pb-24">
+<!-- Header -->
+<div class="flex items-center p-4 pb-2 justify-between sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md">
+<button class="flex size-10 shrink-0 items-center justify-center rounded-full hover:bg-slate-200 dark:hover:bg-surface-dark transition-colors">
+<span class="material-symbols-outlined text-slate-900 dark:text-white" style="font-size: 24px;">arrow_back</span>
+</button>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-tight flex-1 text-center pr-10">Revenue Hub</h2>
+<button class="flex size-10 items-center justify-center rounded-full hover:bg-slate-200 dark:hover:bg-surface-dark transition-colors absolute right-4">
+<span class="material-symbols-outlined text-slate-900 dark:text-white" style="font-size: 24px;">calendar_today</span>
+</button>
+</div>
+<!-- Time Filters -->
+<div class="flex gap-2 p-4 overflow-x-auto hide-scrollbar">
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-primary text-white px-5 transition-transform active:scale-95 shadow-lg shadow-primary/20">
+<p class="text-sm font-semibold leading-normal">This Month</p>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-white dark:bg-surface-dark border border-slate-200 dark:border-slate-700 px-5 transition-transform active:scale-95">
+<p class="text-slate-600 dark:text-slate-300 text-sm font-medium leading-normal">Last Month</p>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-white dark:bg-surface-dark border border-slate-200 dark:border-slate-700 px-5 transition-transform active:scale-95">
+<p class="text-slate-600 dark:text-slate-300 text-sm font-medium leading-normal">YTD</p>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-white dark:bg-surface-dark border border-slate-200 dark:border-slate-700 px-5 transition-transform active:scale-95">
+<p class="text-slate-600 dark:text-slate-300 text-sm font-medium leading-normal">All Time</p>
+</button>
+</div>
+<!-- KPI Cards -->
+<div class="grid grid-cols-2 gap-4 px-4">
+<!-- Total Volume -->
+<div class="flex flex-col gap-3 rounded-2xl p-5 bg-white dark:bg-surface-dark shadow-sm border border-slate-100 dark:border-slate-800 relative overflow-hidden group">
+<div class="absolute right-0 top-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+<span class="material-symbols-outlined text-slate-900 dark:text-white" style="font-size: 64px;">shopping_bag</span>
+</div>
+<div class="flex flex-col gap-1 z-10">
+<p class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">Total Volume</p>
+<p class="text-slate-900 dark:text-white text-xl font-bold leading-tight tracking-tight">$1.24M</p>
+</div>
+<div class="flex items-center gap-1 z-10">
+<span class="material-symbols-outlined text-emerald-500 text-sm">trending_up</span>
+<p class="text-emerald-500 text-xs font-bold leading-normal">+12%</p>
+</div>
+</div>
+<!-- Net Revenue (Take-Rate) -->
+<div class="flex flex-col gap-3 rounded-2xl p-5 bg-gradient-to-br from-primary to-[#0c8bc9] shadow-lg shadow-primary/20 relative overflow-hidden">
+<div class="absolute right-0 top-0 p-4 opacity-10">
+<span class="material-symbols-outlined text-white" style="font-size: 64px;">paid</span>
+</div>
+<div class="flex flex-col gap-1 z-10">
+<p class="text-white/80 text-xs font-semibold uppercase tracking-wider">Net Revenue</p>
+<p class="text-white text-xl font-bold leading-tight tracking-tight">$124.5k</p>
+</div>
+<div class="flex items-center gap-1 z-10">
+<div class="bg-white/20 px-1.5 py-0.5 rounded text-[10px] font-bold text-white">10% Take Rate</div>
+<span class="text-white text-xs font-medium ml-auto">+8%</span>
+</div>
+</div>
+</div>
+<!-- Main Chart Section -->
+<div class="flex flex-col gap-4 px-4 py-6">
+<div class="rounded-2xl bg-white dark:bg-surface-dark p-6 shadow-sm border border-slate-100 dark:border-slate-800">
+<div class="flex items-start justify-between mb-6">
+<div class="flex flex-col gap-1">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">30-Day Performance</p>
+<h3 class="text-slate-900 dark:text-white text-3xl font-bold tracking-tight">$124,050</h3>
+<div class="flex items-center gap-2 mt-1">
+<span class="flex items-center justify-center bg-emerald-500/10 text-emerald-500 rounded-full px-2 py-0.5 text-xs font-bold">
+<span class="material-symbols-outlined text-[14px] mr-0.5">arrow_upward</span> 12.5%
+                            </span>
+<span class="text-slate-400 text-xs">vs last 30 days</span>
+</div>
+</div>
+<button class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</div>
+<!-- Chart Visualization -->
+<div class="relative h-48 w-full">
+<!-- Grid Lines -->
+<div class="absolute inset-0 flex flex-col justify-between text-slate-300 dark:text-slate-700">
+<div class="border-b border-dashed border-slate-200 dark:border-slate-700 w-full h-px"></div>
+<div class="border-b border-dashed border-slate-200 dark:border-slate-700 w-full h-px"></div>
+<div class="border-b border-dashed border-slate-200 dark:border-slate-700 w-full h-px"></div>
+<div class="border-b border-dashed border-slate-200 dark:border-slate-700 w-full h-px"></div>
+<div class="border-b border-slate-200 dark:border-slate-700 w-full h-px"></div>
+</div>
+<!-- SVG Chart -->
+<svg class="absolute inset-0 h-full w-full overflow-visible" preserveaspectratio="none" viewbox="0 0 100 100">
+<!-- Gradient Definition -->
+<defs>
+<lineargradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#13a4ec" stop-opacity="0.3"></stop>
+<stop offset="100%" stop-color="#13a4ec" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<!-- Path: Volume (Background Grey Line) -->
+<path class="opacity-40" d="M0,80 C10,75 20,60 30,65 C40,70 50,50 60,45 C70,40 80,55 90,50 L100,45" fill="none" stroke="#64748b" stroke-dasharray="4 2" stroke-width="1.5"></path>
+<!-- Path: Earnings (Primary Color Line) -->
+<path d="M0,90 C15,85 25,60 40,55 C55,50 70,30 85,25 L100,20 L100,100 L0,100 Z" fill="url(#chartGradient)"></path>
+<path d="M0,90 C15,85 25,60 40,55 C55,50 70,30 85,25 L100,20" fill="none" stroke="#13a4ec" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></path>
+<!-- Tooltip Dot -->
+<circle class="fill-primary stroke-white dark:stroke-surface-dark stroke-2" cx="85" cy="25" r="3"></circle>
+</svg>
+<!-- Chart Tooltip -->
+<div class="absolute top-[10%] left-[78%] -translate-x-1/2 bg-slate-900 text-white text-[10px] py-1 px-2 rounded font-bold shadow-lg">
+                        $4,250
+                        <div class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-slate-900 rotate-45"></div>
+</div>
+</div>
+<!-- X-Axis Labels -->
+<div class="flex justify-between mt-4 px-1 text-xs font-medium text-slate-400">
+<span>1</span>
+<span>5</span>
+<span>10</span>
+<span>15</span>
+<span>20</span>
+<span>25</span>
+<span>30</span>
+</div>
+</div>
+</div>
+<!-- Forecasting Widget -->
+<div class="px-4 pb-6">
+<div class="flex items-center gap-4 p-4 rounded-xl bg-gradient-to-r from-indigo-500/10 to-primary/10 border border-primary/20">
+<div class="flex items-center justify-center size-10 rounded-full bg-primary/20 text-primary shrink-0">
+<span class="material-symbols-outlined">auto_graph</span>
+</div>
+<div class="flex-1">
+<p class="text-slate-900 dark:text-white text-sm font-bold">Forecast</p>
+<p class="text-slate-500 dark:text-slate-400 text-xs mt-0.5">On track to beat last month by <span class="text-emerald-500 font-bold">12%</span></p>
+</div>
+<div class="text-right">
+<p class="text-slate-900 dark:text-white text-sm font-bold">$145k</p>
+<p class="text-slate-400 text-[10px]">Proj. EOM</p>
+</div>
+</div>
+</div>
+<!-- Revenue Breakdown -->
+<div class="flex flex-col px-4 gap-4">
+<h3 class="text-slate-900 dark:text-white text-lg font-bold">Revenue Breakdown</h3>
+<div class="grid grid-cols-1 gap-4">
+<!-- Creator Mode Subs -->
+<div class="flex items-center justify-between p-4 rounded-xl bg-white dark:bg-surface-dark border border-slate-100 dark:border-slate-800">
+<div class="flex items-center gap-3">
+<div class="relative size-10">
+<svg class="size-full -rotate-90" viewbox="0 0 36 36">
+<path class="text-slate-200 dark:text-slate-700" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="4"></path>
+<path class="text-primary" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="68, 100" stroke-linecap="round" stroke-width="4"></path>
+</svg>
+<div class="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-slate-900 dark:text-white">68%</div>
+</div>
+<div>
+<p class="text-slate-900 dark:text-white text-sm font-bold">Creator Mode Subs</p>
+<p class="text-slate-500 dark:text-slate-400 text-xs">Recurring Revenue</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-slate-900 dark:text-white text-base font-bold tabular-nums">$85,000</p>
+<p class="text-emerald-500 text-xs font-medium">+15.2%</p>
+</div>
+</div>
+<!-- Remix Fees -->
+<div class="flex items-center justify-between p-4 rounded-xl bg-white dark:bg-surface-dark border border-slate-100 dark:border-slate-800">
+<div class="flex items-center gap-3">
+<div class="relative size-10">
+<svg class="size-full -rotate-90" viewbox="0 0 36 36">
+<path class="text-slate-200 dark:text-slate-700" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="4"></path>
+<path class="text-purple-500" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="32, 100" stroke-linecap="round" stroke-width="4"></path>
+</svg>
+<div class="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-slate-900 dark:text-white">32%</div>
+</div>
+<div>
+<p class="text-slate-900 dark:text-white text-sm font-bold">Remix Fees</p>
+<p class="text-slate-500 dark:text-slate-400 text-xs">Transaction Based</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-slate-900 dark:text-white text-base font-bold tabular-nums">$39,050</p>
+<p class="text-emerald-500 text-xs font-medium">+4.1%</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Payouts Pending Action Card -->
+<div class="px-4 pt-6 pb-6">
+<div class="rounded-2xl bg-surface-dark p-1 border border-slate-700 shadow-xl overflow-hidden">
+<div class="relative bg-slate-800/50 p-5 rounded-xl border border-white/5 backdrop-blur-sm">
+<!-- Background Pattern -->
+<div class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-primary rounded-full blur-3xl opacity-20"></div>
+<div class="relative z-10">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h4 class="text-white text-lg font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-orange-400">pending</span>
+                                    Payouts Pending
+                                </h4>
+<p class="text-slate-400 text-sm mt-1">142 Creators waiting for release</p>
+</div>
+<div class="bg-orange-500/20 text-orange-400 px-2 py-1 rounded text-xs font-bold uppercase tracking-wider">
+                                Action Required
+                            </div>
+</div>
+<div class="flex items-center justify-between mt-6">
+<div class="flex flex-col">
+<span class="text-slate-400 text-xs uppercase tracking-wider font-semibold">Total Amount</span>
+<span class="text-white text-2xl font-bold tracking-tight">$42,000</span>
+</div>
+<button class="flex items-center gap-2 bg-primary hover:bg-sky-400 text-white px-5 py-3 rounded-xl font-bold text-sm transition-colors shadow-lg shadow-primary/25">
+                                Review &amp; Release
+                                <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Navigation (Placeholder for App Context) -->
+<div class="fixed bottom-0 w-full max-w-md bg-white dark:bg-background-dark border-t border-slate-200 dark:border-slate-800 flex justify-around py-3 px-2 z-50 safe-area-bottom">
+<button class="flex flex-col items-center gap-1 p-2 text-slate-400 hover:text-primary">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[10px] font-medium">Hub</span>
+</button>
+<button class="flex flex-col items-center gap-1 p-2 text-primary">
+<span class="material-symbols-outlined fill-current">payments</span>
+<span class="text-[10px] font-medium">Revenue</span>
+</button>
+<button class="flex flex-col items-center gap-1 p-2 text-slate-400 hover:text-primary">
+<span class="material-symbols-outlined">group</span>
+<span class="text-[10px] font-medium">Creators</span>
+</button>
+<button class="flex flex-col items-center gap-1 p-2 text-slate-400 hover:text-primary">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] font-medium">Settings</span>
+</button>
+</div>
+</div>
+</body></html>

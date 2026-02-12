@@ -1,0 +1,1 @@
+{"id":11429,"name":"Send new RSS feed items as messages in Slack","description":"Send a Slack message every time there's a new RSS feed item on a watched site. ","url":"5461-send-new-rss-feed-items-as-messages-in-slack","usedApps":["rss","slack"],"usage":1030}

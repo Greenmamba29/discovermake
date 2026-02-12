@@ -1,0 +1,1 @@
+{"id":3160,"name":"Post SuperSaaS appointment reminders in Slack","description":"Send a reminder to Slack before every SuperSaaS appointment.","url":"3160-post-supersaas-appointment-reminders-in-slack","usedApps":["supersaas","slack"],"usage":4}

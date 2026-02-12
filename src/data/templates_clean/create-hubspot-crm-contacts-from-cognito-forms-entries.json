@@ -1,0 +1,1 @@
+{"id":4246,"name":"Create HubSpot CRM contacts from Cognito Forms entries","description":"Every time a new Cognito Forms entry is submitted, Make will automatically create a new contact in HubSpot CRM.","url":"4246-create-hubspot-crm-contacts-from-cognito-forms-entries","usedApps":["cognitoforms","hubspotcrm"],"usage":25}

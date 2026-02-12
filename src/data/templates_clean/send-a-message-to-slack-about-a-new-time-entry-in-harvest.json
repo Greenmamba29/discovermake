@@ -1,0 +1,1 @@
+{"id":3002,"name":"Send a message to Slack about a new time entry in Harvest","description":"When a new time entry is created and meets specified criteria, a notification about this event is sent to Slack.","url":"3002-send-a-message-to-slack-about-a-new-time-entry-in-harvest","usedApps":["harvest","slack"],"usage":14}

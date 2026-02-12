@@ -1,0 +1,1 @@
+{"id":3675,"name":"Create Zoho Invoices from Xero invoices","description":"Every time a new Xero invoice is created, Make will automatically create a new Zoho Invoice.","url":"3675-create-zoho-invoices-from-xero-invoices","usedApps":["xero","zoho-invoice"],"usage":14}

@@ -1,0 +1,1 @@
+{"id":6741,"name":"Add new SmartTask contacts to Google Contacts","description":"Every time a new contact is added to your SmartTask, Make will add them to your Google Contacts.","url":"6741-add-new-smarttask-contacts-to-google-contacts","usedApps":["smarttask","google-contacts","builtin"],"usage":4}

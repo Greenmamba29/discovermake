@@ -1,0 +1,1 @@
+{"id":4676,"name":"Create Pipedrive persons from Poptin leads","description":"Every time a new lead is generated using Poptin, Make will automatically look the person up in Pipedrive CRM. If the person does not exist it will create a new person.","url":"4676-create-pipedrive-persons-from-poptin-leads","usedApps":["poptin","pipedrive"],"usage":4}

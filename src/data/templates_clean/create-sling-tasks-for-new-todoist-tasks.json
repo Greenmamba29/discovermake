@@ -1,0 +1,1 @@
+{"id":7737,"name":"Create Sling tasks for new Todoist tasks","description":"Every time a new task is created in your Todoist, Make will create identical ones in your Sling.","url":"7737-create-sling-tasks-for-new-todoist-tasks","usedApps":["todoist","sling"],"usage":9}

@@ -1,0 +1,1 @@
+{"id":6309,"name":"Add new BugHerd tasks to Todoist as tasks","description":"Every time a new task is added to a BugHerd, Make will automatically add that task to a selected Todoist project as a new task.","url":"6309-add-new-bugherd-tasks-to-todoist-as-tasks","usedApps":["bugherd","todoist"],"usage":1}

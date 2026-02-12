@@ -1,0 +1,1 @@
+{"id":269,"name":"Create Evernote notes for new SoundCloud tracks","description":"Every time a user you watch uploads a new track to SoundCloud, Make will automatically create a new note in a selected notebook in Evernote .","url":"269-create-evernote-notes-for-new-soundcloud-tracks","usedApps":["evernote","soundcloud"],"usage":9}

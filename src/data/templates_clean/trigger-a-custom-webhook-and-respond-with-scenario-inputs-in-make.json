@@ -1,0 +1,1 @@
+{"id":13551,"name":"Trigger a custom webhook and respond with scenario inputs in Make","description":"Trigger a custom webhook to capture data, respond with inputs, and run scenarios in Make using Webhook and Make modules.","url":"13551-trigger-a-custom-webhook-and-respond-with-scenario-inputs-in-make","usedApps":["gateway","make"],"usage":10}

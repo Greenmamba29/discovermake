@@ -1,0 +1,1 @@
+{"id":7885,"name":"Create new Bitrix24 tasks for new Google Calendar events","description":"Every time a new event is added to your Google Calendar, Make will automatically create a new task in Bitrix24.","url":"7885-create-new-bitrix24-tasks-for-new-google-calendar-events","usedApps":["google-calendar","bitrix24"],"usage":35}

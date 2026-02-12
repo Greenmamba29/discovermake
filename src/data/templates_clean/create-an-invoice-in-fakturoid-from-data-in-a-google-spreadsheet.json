@@ -1,0 +1,1 @@
+{"id":13889,"name":"Create an invoice in Fakturoid from data in a Google spreadsheet","description":"Automatic creation of a new invoice in Fakturoid from data entered in a Google spreadsheet.","url":"13889-create-an-invoice-in-fakturoid-from-data-in-a-google-spreadsheet","usedApps":["google-sheets","fakturoid","builtin"],"usage":59}

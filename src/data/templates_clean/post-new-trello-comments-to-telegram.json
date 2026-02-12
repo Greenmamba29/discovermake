@@ -1,0 +1,1 @@
+{"id":2117,"name":"Post new Trello comments to Telegram","description":"Every time a new comment is added in Trello, Make will automatically send a message in Telegram.","url":"2117-post-new-trello-comments-to-telegram","usedApps":["trello","telegram"],"usage":182}

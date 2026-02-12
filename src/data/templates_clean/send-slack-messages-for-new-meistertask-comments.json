@@ -1,0 +1,1 @@
+{"id":2261,"name":"Send Slack messages for new MeisterTask comments","description":"Every time a new comment is added to a specific task in MeisterTask, Make will automatically send a message in Slack.","url":"2261-send-slack-messages-for-new-meistertask-comments","usedApps":["meistertask","slack"],"usage":4}

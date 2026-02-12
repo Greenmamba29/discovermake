@@ -1,0 +1,1 @@
+{"id":2714,"name":"Send Zoho mail emails for Square refunds exceeding a specified amount","description":"Every time there is a new Square refund exceeding a specific amount, Make will automatically send an email in Zoho Mail.","url":"2714-send-zoho-mail-emails-for-square-refunds-exceeding-a-specified-amount","usedApps":["square","zoho-mail"],"usage":3}

@@ -1,0 +1,1 @@
+{"id":2641,"name":"Create Pipefy cards from new Pipedrive deals","description":"Every time a new deal is created in Pipedrive CRM, Make will automatically create a new card in Pipefy.","url":"2641-create-pipefy-cards-from-new-pipedrive-deals","usedApps":["pipedrive","pipefy"],"usage":12}

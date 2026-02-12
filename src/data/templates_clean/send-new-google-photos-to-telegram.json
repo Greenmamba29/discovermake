@@ -1,0 +1,1 @@
+{"id":2161,"name":"Send new Google Photos to Telegram","description":"Every time you upload a new photo to a selected Google Photos album, Make will automatically send that photo to a Telegram chat/channel of your choice.","url":"2161-send-new-google-photos-to-telegram","usedApps":["google-photos","telegram"],"usage":379}

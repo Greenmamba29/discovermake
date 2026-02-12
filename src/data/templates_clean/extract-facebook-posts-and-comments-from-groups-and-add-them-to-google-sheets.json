@@ -1,0 +1,1 @@
+{"id":15694,"name":"Extract Facebook posts and comments from Groups and add them to Google Sheets","description":"Add a list of groups to scrape data from. Then choose which metrics and content to push to Google Sheets.","url":"15694-extract-facebook-posts-and-comments-from-groups-and-add-them-to-google-sheets","usedApps":["apify-facebook-scraper","google-sheets"],"usage":17}

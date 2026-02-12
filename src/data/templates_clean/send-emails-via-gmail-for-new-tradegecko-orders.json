@@ -1,0 +1,1 @@
+{"id":2016,"name":"Send emails via Gmail for new Tradegecko orders","description":"Every time a new order is created on Tradegecko, Make will automatically send an email with the order's info to a specified email address via Gmail.","url":"2016-send-emails-via-gmail-for-new-tradegecko-orders","usedApps":["tradegecko","google-email"],"usage":0}

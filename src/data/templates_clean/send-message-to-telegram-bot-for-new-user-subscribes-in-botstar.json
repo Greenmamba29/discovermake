@@ -1,0 +1,1 @@
+{"id":6485,"name":"Send message to Telegram Bot for new user subscribes in BotStar","description":"Every time user subscribes to receive the broadcast messages in BotStar, Make will automatically send a message on Telegram.","url":"6485-send-message-to-telegram-bot-for-new-user-subscribes-in-botstar","usedApps":["botstar","telegram"],"usage":13}

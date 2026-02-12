@@ -1,0 +1,1 @@
+{"id":2776,"name":"Create Trello cards from Help Scout conversations assigned to a specific user","description":"Every time a new conversion is assigned to a specific user in HelpScout, Make will add a new card to a selected Trello board.","url":"2776-create-trello-cards-from-help-scout-conversations-assigned-to-a-specific-user","usedApps":["helpscout","trello"],"usage":2}

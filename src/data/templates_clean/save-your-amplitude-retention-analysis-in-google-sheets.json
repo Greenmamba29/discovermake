@@ -1,0 +1,1 @@
+{"id":8915,"name":"Save your Amplitude retention analysis in Google Sheets","description":"Make will watch for your Amplitude retention analysis at regular intervals and send it to a specified Google Sheets spreadsheet.","url":"8915-save-your-amplitude-retention-analysis-in-google-sheets","usedApps":["amplitude","google-sheets"],"usage":6}

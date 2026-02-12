@@ -1,0 +1,1 @@
+{"id":6451,"name":"Send an email for new Resource Guru booking","description":"Every time a new Resource Guru booking is received, Make will automatically send an email to the specified email address.","url":"6451-send-an-email-for-new-resource-guru-booking","usedApps":["resource-guru","email"],"usage":4}

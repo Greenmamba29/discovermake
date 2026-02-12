@@ -1,0 +1,1 @@
+{"id":2291,"name":"Create MeisterTask tasks from new Slack messages","description":"Every time a new message is received in Slack, Make will automatically add a new task to your MeisterTask project.","url":"2291-create-meistertask-tasks-from-new-slack-messages","usedApps":["slack","meistertask"],"usage":5}

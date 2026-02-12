@@ -1,0 +1,1 @@
+{"id":6345,"name":"Import Stripe invoices to QuickBooks","description":"Use this template to automatically create a QuickBooks invoice when a Stripe invoice is paid.","url":"6345-import-stripe-invoices-to-quickbooks","usedApps":["stripe","builtin","quickbooks"],"usage":216}

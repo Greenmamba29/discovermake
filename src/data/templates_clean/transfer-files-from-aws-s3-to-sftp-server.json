@@ -1,0 +1,1 @@
+{"id":12829,"name":"Transfer files from AWS S3 to SFTP server","description":"Automatically transfer files from AWS S3 to your SFTP server. This template ensures secure file movement between AWS S3 and SFTP effortlessly.","url":"12829-transfer-files-from-aws-s3-to-sftp-server","usedApps":["aws-s3","sftp"],"usage":18}

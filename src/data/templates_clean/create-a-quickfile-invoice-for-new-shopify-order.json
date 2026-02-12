@@ -1,0 +1,1 @@
+{"id":5849,"name":"Create a QuickFile invoice for new Shopify order","description":"Every time a new Shopify order is created, Make will automatically create an invoice in QuickFile.","url":"5849-create-a-quickfile-invoice-for-new-shopify-order","usedApps":["shopify","quickfile"],"usage":8}

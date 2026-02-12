@@ -1,0 +1,1 @@
+{"id":2630,"name":"Create Yodel.io contacts from new Cognito Forms entries","description":"Every time someone fills out your Cognito Form form, Make will automatically create a new contact in Yodel.io.","url":"2630-create-yodel-io-contacts-from-new-cognito-forms-entries","usedApps":["cognitoforms","yodel"],"usage":1}

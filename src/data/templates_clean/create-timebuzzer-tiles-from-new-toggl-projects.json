@@ -1,0 +1,1 @@
+{"id":6491,"name":"Create timeBuzzer tiles from new Toggl projects","description":"Every time a new project is created in Toggl, Make will automatically create a new tile in timeBuzzer.","url":"6491-create-timebuzzer-tiles-from-new-toggl-projects","usedApps":["toggl","timebuzzer"],"usage":7}

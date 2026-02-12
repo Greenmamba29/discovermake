@@ -1,0 +1,1 @@
+{"id":3396,"name":"Add a contact to ClickSend when a contact is created on Mautic","description":"Every time a new contact is created on Mautic, Make will automatically create a new contact on ClickSend and send an SMS to a number.","url":"3396-add-a-contact-to-clicksend-when-a-contact-is-created-on-mautic","usedApps":["mautic","clicksend"],"usage":4}

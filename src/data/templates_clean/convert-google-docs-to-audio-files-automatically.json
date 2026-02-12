@@ -1,0 +1,1 @@
+{"id":4759,"name":"Convert Google Docs to audio files automatically","description":"Every time a new Google Doc is created, Make will automatically convert it to an audio file via the Google Text-to-Speech API.","url":"4759-convert-google-docs-to-audio-files-automatically","usedApps":["google-docs","google-cloud-tts","dropbox"],"usage":175}

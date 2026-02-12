@@ -1,0 +1,1 @@
+{"id":5989,"name":"Get Jenkins Job notifications in Telegram","description":"Every time you have a new Job notification in Jenkins, Make will automatically send a message in Telegram.","url":"5989-get-jenkins-job-notifications-in-telegram","usedApps":["jenkins","telegram"],"usage":18}

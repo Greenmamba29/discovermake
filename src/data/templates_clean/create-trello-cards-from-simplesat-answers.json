@@ -1,0 +1,1 @@
+{"id":7113,"name":"Create Trello cards from Simplesat answers","description":"Every time a answer is created or updated in Simplesat, Make will automatically create a new card in Trello.","url":"7113-create-trello-cards-from-simplesat-answers","usedApps":["simplesat","trello"],"usage":2}

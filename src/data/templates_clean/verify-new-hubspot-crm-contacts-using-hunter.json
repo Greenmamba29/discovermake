@@ -1,0 +1,1 @@
+{"id":7563,"name":"Verify new HubSpot CRM contacts using Hunter","description":"Every time there is a new HubSpot CRM contact, Make will automatically verify this contact using Hunter, then deactivate contact if email has low validity score.","url":"7563-verify-new-hubspot-crm-contacts-using-hunter","usedApps":["hubspotcrm","hunter"],"usage":9}

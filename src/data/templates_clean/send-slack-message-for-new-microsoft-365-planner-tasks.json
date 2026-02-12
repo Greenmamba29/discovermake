@@ -1,0 +1,1 @@
+{"id":6844,"name":"Send Slack message for new Microsoft 365 Planner tasks","description":"Every time a new task is created in Microsoft 365 Planner, Make will automatically send a message in Slack.","url":"6844-send-slack-message-for-new-microsoft-365-planner-tasks","usedApps":["microsoft-planner","util","slack"],"usage":27}

@@ -1,0 +1,1 @@
+{"id":13495,"name":"Search HubSpot contacts and send emails via SendGrid","description":"Automatically search HubSpot contacts and send personalized emails via SendGrid. Streamline communication by integrating HubSpotCRM, CSV, and SendGrid modules.","url":"13495-search-hubspot-contacts-and-send-emails-via-sendgrid","usedApps":["hubspotcrm","csv","sendgrid"],"usage":28}

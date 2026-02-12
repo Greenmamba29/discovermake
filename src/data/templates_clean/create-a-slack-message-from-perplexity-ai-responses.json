@@ -1,0 +1,1 @@
+{"id":15105,"name":"Create a Slack message from Perplexity AI responses","description":"This automations sends Slack messages using Perplexity AI on a scheduled basis. Streamline communication by integrating AI-generated insights directly into your Slack channels.","url":"15105-create-a-slack-message-from-perplexity-ai-responses","usedApps":["perplexity-ai","slack"],"usage":18}

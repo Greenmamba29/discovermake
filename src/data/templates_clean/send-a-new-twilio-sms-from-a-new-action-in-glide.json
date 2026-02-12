@@ -1,0 +1,1 @@
+{"id":7253,"name":"Send a new Twilio SMS from a new action in Glide","description":"Every time a new action happens in Glide, a new SMS message will be instantly sent via Twilio.\n\nThe template expects to receive at least this variable from Glide:\n1) phone_number","url":"7253-send-a-new-twilio-sms-from-a-new-action-in-glide","usedApps":["glide","twilio"],"usage":10}

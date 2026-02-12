@@ -1,0 +1,1 @@
+{"id":7921,"name":"Send Mixmax messages for new Gmail emails","description":"Every time you receive a Gmail email matching specified criteria, Make will automatically send a message in Mixmax.","url":"7921-send-mixmax-messages-for-new-gmail-emails","usedApps":["google-email","mixmax"],"usage":1}

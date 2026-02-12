@@ -1,0 +1,1 @@
+{"id":4311,"name":"Send postcards with Lob from Airtable records","description":"Every time a new Airtable record is created, Make will send a postcard to the contact in that record using Lob.","url":"4311-send-postcards-with-lob-from-airtable-records","usedApps":["airtable","lob"],"usage":4}

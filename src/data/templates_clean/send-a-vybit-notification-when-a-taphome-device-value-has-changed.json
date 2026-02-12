@@ -1,0 +1,1 @@
+{"id":5243,"name":"Send a Vybit notification when a Taphome device value has changed","description":"Every time a Taphome device value changes, Make will automatically send a Vybit notification.","url":"5243-send-a-vybit-notification-when-a-taphome-device-value-has-changed","usedApps":["taphome","vybit"],"usage":1}

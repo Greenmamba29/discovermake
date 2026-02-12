@@ -1,0 +1,1 @@
+{"id":7167,"name":"Save new RSS feed items to linkish.io","description":"Every time there is a new item in a watched RSS channel, Make will automatically save a link to this item to linkish.io.","url":"7167-save-new-rss-feed-items-to-linkish-io","usedApps":["rss","linkish"],"usage":4}

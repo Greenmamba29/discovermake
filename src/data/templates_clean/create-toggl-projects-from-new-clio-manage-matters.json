@@ -1,0 +1,1 @@
+{"id":8167,"name":"Create Toggl projects from new Clio Manage matters","description":"Every time there is a new matter in Clio Manage, Make will automatically create a new project in Toggl using information received.","url":"8167-create-toggl-projects-from-new-clio-manage-matters","usedApps":["clio-manage","toggl"],"usage":9}

@@ -1,0 +1,1 @@
+{"id":6545,"name":"Create Trello cards for new Submitted Landingi Form","description":"Every time a new form is Submitted in Landingi, Make will automatically create a Trello card on a specified board.","url":"6545-create-trello-cards-for-new-submitted-landingi-form","usedApps":["landingi","trello"],"usage":3}

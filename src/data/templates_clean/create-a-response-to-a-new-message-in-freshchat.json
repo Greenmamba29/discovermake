@@ -1,0 +1,1 @@
+{"id":6410,"name":"Create a response to a new message in Freshchat","description":"Every time a new message is received on Freshchat, Make will automatically send a response to the very same channel.","url":"6410-create-a-response-to-a-new-message-in-freshchat","usedApps":["freshchat","freshchat"],"usage":32}

@@ -1,0 +1,1 @@
+{"id":8168,"name":"Add new Toggl time entries to Clio Manage as activities","description":"Make will watch for new Toggl time entries at regular intervals and create Clio Manage activities using information received.","url":"8168-add-new-toggl-time-entries-to-clio-manage-as-activities","usedApps":["toggl","clio-manage"],"usage":34}

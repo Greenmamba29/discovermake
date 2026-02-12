@@ -1,0 +1,1 @@
+{"id":4498,"name":"Trigger GrowSurf referrals from new Shopify orders","description":"Every time a new order is created in Shopify, Make will automatically trigger a new referral in GrowSurf.","url":"4498-trigger-growsurf-referrals-from-new-shopify-orders","usedApps":["shopify","growsurf"],"usage":1}

@@ -1,0 +1,1 @@
+{"id":5991,"name":"Create Trello cards from new Job Notification","description":"Every time a new Job Notification is created in Jenkins, Make will automatically create a new card in Trello.","url":"5991-create-trello-cards-from-new-job-notification","usedApps":["jenkins","trello"],"usage":5}

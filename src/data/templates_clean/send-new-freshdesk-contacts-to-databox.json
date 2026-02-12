@@ -1,0 +1,1 @@
+{"id":3870,"name":"Send new Freshdesk contacts to Databox","description":"If a new contact is created in Freshdesk, Make will automatically push that value to Databox, updating all the dashboards where this metric is included. ","url":"3870-send-new-freshdesk-contacts-to-databox","usedApps":["freshdesk","databox"],"usage":4}

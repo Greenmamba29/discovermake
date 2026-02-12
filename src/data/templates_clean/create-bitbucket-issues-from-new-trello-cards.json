@@ -1,0 +1,1 @@
+{"id":302,"name":"Create BitBucket issues from new Trello cards","description":"Every time a new card is added to a Trello board being watched, Make will automatically create a new issue on Bitbucket.","url":"302-create-bitbucket-issues-from-new-trello-cards","usedApps":["trello","bitbucket"],"usage":23}

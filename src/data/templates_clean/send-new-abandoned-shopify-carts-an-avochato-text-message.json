@@ -1,0 +1,1 @@
+{"id":5565,"name":"Send new abandoned Shopify carts an Avochato text message","description":"Every time a new Shopify abandoned checkout is received, Make will automatically send a message via Avachato.","url":"5565-send-new-abandoned-shopify-carts-an-avochato-text-message","usedApps":["shopify","avochato"],"usage":13}

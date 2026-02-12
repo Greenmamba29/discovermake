@@ -1,0 +1,1 @@
+{"id":7120,"name":"Send Slack messages for new Trustmary completed answers","description":"Every time a new answer is completed in Trustmary, Make will automatically send a message in Slack.","url":"7120-send-slack-messages-for-new-trustmary-completed-answers","usedApps":["trustmary","util","slack"],"usage":2}

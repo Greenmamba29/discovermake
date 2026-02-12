@@ -1,0 +1,1 @@
+{"id":4409,"name":"Send Microsoft Teams messages for new Kanbanize tasks","description":"Every time a new task is created in Kanbanize, Make will automatically send a message in Microsoft Teams.","url":"4409-send-microsoft-teams-messages-for-new-kanbanize-tasks","usedApps":["kanbanize","microsoft-teams"],"usage":5}

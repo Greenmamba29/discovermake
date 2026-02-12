@@ -1,0 +1,1 @@
+{"id":5940,"name":"Create Google Calendar events from new Slack messages","description":"Every time a new Slack message is posted, Make will automatically create a Google Calendar event.","url":"5940-create-google-calendar-events-from-new-slack-messages","usedApps":["slack","google-calendar"],"usage":143}

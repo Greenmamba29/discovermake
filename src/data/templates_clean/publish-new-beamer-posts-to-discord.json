@@ -1,0 +1,1 @@
+{"id":5145,"name":"Publish new Beamer posts to Discord","description":"Every time a new post is added to your Beamer account, Make will automatically send a message to Discord.","url":"5145-publish-new-beamer-posts-to-discord","usedApps":["beamer","discord"],"usage":8}

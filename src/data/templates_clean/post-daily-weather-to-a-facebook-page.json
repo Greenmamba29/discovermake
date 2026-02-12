@@ -1,0 +1,1 @@
+{"id":193,"name":"Post daily weather to a Facebook page","description":"Every time this scenario is run, Make will automatically post current weather information to a selected Facebook page. The scenario is set to be executed every morning at 8 o'clock.","url":"193-post-daily-weather-to-a-facebook-page","usedApps":["weather","facebook-pages"],"usage":677}

@@ -1,0 +1,1 @@
+{"id":7641,"name":"Send Circle messages for new IM Slack messages","description":"Every time you get an IM Slack message, Make will forward it to your Circle. ","url":"7641-send-circle-messages-for-new-im-slack-messages","usedApps":["slack","circle-so"],"usage":5}

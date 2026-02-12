@@ -1,0 +1,1 @@
+{"id":5237,"name":"Automatically upload videos to Wistia from new files in Dropbox","description":"When a new video is stored in Dropbox, Make will automatically upload a new file to a Wistia account.","url":"5237-automatically-upload-videos-to-wistia-from-new-files-in-dropbox","usedApps":["dropbox","wistia"],"usage":9}

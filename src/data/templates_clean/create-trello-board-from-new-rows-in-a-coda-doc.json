@@ -1,0 +1,1 @@
+{"id":2518,"name":"Create Trello board from new rows in a Coda doc","description":"Every time a new row is added to your table in a Coda doc, Make will automatically create a new board in Trello.","url":"2518-create-trello-board-from-new-rows-in-a-coda-doc","usedApps":["coda","trello"],"usage":6}

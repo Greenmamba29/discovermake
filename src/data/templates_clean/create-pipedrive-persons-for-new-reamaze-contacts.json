@@ -1,0 +1,1 @@
+{"id":6716,"name":"Create Pipedrive persons for new Reamaze contacts","description":"Every time a new contact is created in Reamaze, Make will automatically create a new person in Pipedrive CRM.","url":"6716-create-pipedrive-persons-for-new-reamaze-contacts","usedApps":["reamaze","pipedrive","builtin"],"usage":3}

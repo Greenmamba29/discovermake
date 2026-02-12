@@ -1,0 +1,1 @@
+{"id":178,"name":"Post a daily reminder to a selected Slack channel","description":"This scenario will automatically send a daily reminder to a selected channel in Slack. ","url":"178-post-a-daily-reminder-to-a-selected-slack-channel","usedApps":["slack"],"usage":385}

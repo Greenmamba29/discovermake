@@ -1,0 +1,1 @@
+{"id":584,"name":"Create Evernote notes from new SugarCRM 7 campaigns","description":"Every time a new campaign is created in SugarCRM 7, Make will automatically add a new note to a selectected notebook in Evernote, ","url":"584-create-evernote-notes-from-new-sugarcrm-7-campaigns","usedApps":["evernote","sugarcrm7"],"usage":0}

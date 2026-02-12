@@ -1,0 +1,1 @@
+{"id":12952,"name":"Watch moved Trello cards and send data via HTTP action","description":"Monitor Trello card movements and automatically send data via HTTP action, streamlining project management and data integration between Trello and your web services.","url":"12952-watch-moved-trello-cards-and-send-data-via-http-action","usedApps":["trello","http"],"usage":11}

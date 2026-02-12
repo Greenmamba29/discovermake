@@ -1,0 +1,1 @@
+{"id":4749,"name":"Retrieve all tasks from a list in ClickUp and send it via Slack","description":"Every time the scenario runs, the tasks from a list in ClickUp are retrieved and sent as a Slack message to the intended person/channel.","url":"4749-retrieve-all-tasks-from-a-list-in-clickup-and-send-it-via-slack","usedApps":["clickup","slack"],"usage":119}

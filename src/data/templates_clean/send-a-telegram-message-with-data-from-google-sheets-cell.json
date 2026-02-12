@@ -1,0 +1,1 @@
+{"id":12674,"name":"Send a Telegram message with data from Google Sheets cell","description":"Automatically send a Telegram message with specific data from a Google Sheets cell. Ideal for instant updates or notifications directly from your spreadsheet.\n","url":"12674-send-a-telegram-message-with-data-from-google-sheets-cell","usedApps":["google-sheets","telegram"],"usage":211}

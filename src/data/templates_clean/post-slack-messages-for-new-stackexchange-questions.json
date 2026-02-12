@@ -1,0 +1,1 @@
+{"id":227,"name":"Post Slack messages for new StackExchange questions ","description":"Every time a new questions containing a specific tag is posted on StackEchange, Make will automatically send a message to a selected channel/group/user in Slack.","url":"227-post-slack-messages-for-new-stackexchange-questions","usedApps":["stackexchange","slack"],"usage":4}

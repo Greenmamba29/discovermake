@@ -1,0 +1,1 @@
+{"id":7377,"name":"Add Drip subscribers to MemberVault as a new users","description":"Every time there's a new subscriber in Drip, Make will automatically add that subscriber to MemberVault as a new user.","url":"7377-add-drip-subscribers-to-membervault-as-a-new-users","usedApps":["drip","membervault"],"usage":1}

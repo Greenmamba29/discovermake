@@ -1,0 +1,1 @@
+{"id":1396,"name":"Add new WooCommerce orders to Xero","description":"Every time a new order is created in WooCommerce, Make will automatically create a new order in Xero.","url":"1396-add-new-woocommerce-orders-to-xero","usedApps":["woocommerce","xero","builtin","util"],"usage":452}

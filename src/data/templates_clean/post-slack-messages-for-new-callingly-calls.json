@@ -1,0 +1,1 @@
+{"id":8621,"name":"Post Slack messages for new Callingly calls","description":"Every time a new call is received on Callingly, Make will automatically post a message on Slack.","url":"8621-post-slack-messages-for-new-callingly-calls","usedApps":["callingly","slack"],"usage":2}

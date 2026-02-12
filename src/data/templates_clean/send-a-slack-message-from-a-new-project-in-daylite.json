@@ -1,0 +1,1 @@
+{"id":6975,"name":"Send a Slack message from a new project in Daylite","description":"Every time a new project is created in Daylite, Make will automatically send a notification in Slack.","url":"6975-send-a-slack-message-from-a-new-project-in-daylite","usedApps":["marketcircle-daylite","slack"],"usage":3}

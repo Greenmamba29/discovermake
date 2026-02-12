@@ -1,0 +1,1 @@
+{"id":6553,"name":"Create Telegram messages for new ideas in Prodpad","description":"Every time a new idea is added in your ProdPad, Make will send a message in Telegram via your Telegram bot.","url":"6553-create-telegram-messages-for-new-ideas-in-prodpad","usedApps":["prodpad","telegram"],"usage":2}

@@ -1,0 +1,1 @@
+{"id":2570,"name":"Create new MeisterTask tasks from new Acuity Scheduling appointments","description":"Every time a new appointment is scheduled in Acuity Scheduling, Make will automatically create a new task in MeisterTask.","url":"2570-create-new-meistertask-tasks-from-new-acuity-scheduling-appointments","usedApps":["acuity-scheduling","meistertask"],"usage":4}

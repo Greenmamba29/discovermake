@@ -1,0 +1,1 @@
+{"id":3898,"name":"Send new New Chargebee Inovices created in Databox","description":"Every time a new invoice is created in Chargebee, Make will automatically push that information to Databox. ","url":"3898-send-new-new-chargebee-inovices-created-in-databox","usedApps":["chargebee","databox"],"usage":4}

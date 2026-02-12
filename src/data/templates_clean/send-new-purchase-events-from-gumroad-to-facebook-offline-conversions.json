@@ -1,0 +1,1 @@
+{"id":10218,"name":"Send new purchase events from Gumroad to Facebook Offline Conversions","description":"Every time an item is sold in Gumroad, a new offline conversion event will be instantly sent to Facebook. ","url":"10218-send-new-purchase-events-from-gumroad-to-facebook-offline-conversions","usedApps":["gumroad","facebook-offline-conversions"],"usage":9}

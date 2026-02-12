@@ -1,0 +1,1 @@
+{"id":13099,"name":"Send a response to a webhook and retrieve a file from Google Drive","description":"Automatically respond to incoming webhooks and retrieve specific files from Google Drive, then send a response back using Make's integration.","url":"13099-send-a-response-to-a-webhook-and-retrieve-a-file-from-google-drive","usedApps":["gateway","google-drive"],"usage":13}

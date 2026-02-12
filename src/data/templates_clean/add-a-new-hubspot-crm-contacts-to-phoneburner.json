@@ -1,0 +1,1 @@
+{"id":7703,"name":"Add a new HubSpot CRM contacts to PhoneBurner","description":"Every time a new contact is created in HubSpot CRM, Make will automatically create a new contact in PhoneBurner.","url":"7703-add-a-new-hubspot-crm-contacts-to-phoneburner","usedApps":["hubspotcrm","phoneburner"],"usage":1}

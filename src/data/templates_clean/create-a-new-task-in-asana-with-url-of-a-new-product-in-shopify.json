@@ -1,0 +1,1 @@
+{"id":3084,"name":"Create a new task in Asana with URL of a new product in Shopify","description":"When a new product is created in Shopify, a new task is created in Asana. The task contains URL to the admin site with the product profile.","url":"3084-create-a-new-task-in-asana-with-url-of-a-new-product-in-shopify","usedApps":["shopify","asana"],"usage":40}

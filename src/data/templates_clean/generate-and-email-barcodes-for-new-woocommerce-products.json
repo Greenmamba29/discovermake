@@ -1,0 +1,1 @@
+{"id":10253,"name":"Generate and email barcodes for new WooCommerce products","description":"Every time a new product is added to WooCommerce, Make will automatically generate a barcode for the product and send it to a specified email address.","url":"10253-generate-and-email-barcodes-for-new-woocommerce-products","usedApps":["woocommerce","barcode","email"],"usage":64}

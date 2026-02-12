@@ -1,0 +1,1 @@
+{"id":4742,"name":"Create Channels contacts from Agile CRM contacts","description":"Every time a new contact is created in Agile CRM, Make will automatically create a new contact in Channels.","url":"4742-create-channels-contacts-from-agile-crm-contacts","usedApps":["agile-crm","channels"],"usage":0}

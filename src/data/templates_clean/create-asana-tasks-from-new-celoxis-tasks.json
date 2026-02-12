@@ -1,0 +1,1 @@
+{"id":4199,"name":"Create Asana tasks from new Celoxis tasks","description":"Every time a new Celoxis task is created, Make will automatically create a task in Asana.","url":"4199-create-asana-tasks-from-new-celoxis-tasks","usedApps":["celoxis","asana"],"usage":0}

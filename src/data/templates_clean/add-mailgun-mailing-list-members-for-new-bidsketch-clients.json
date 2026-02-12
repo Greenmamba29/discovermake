@@ -1,0 +1,1 @@
+{"id":7213,"name":"Add Mailgun mailing list members for new Bidsketch clients","description":"Every time new client joins your Bidsketch, Make will add him to your Mailgun mailing list.","url":"7213-add-mailgun-mailing-list-members-for-new-bidsketch-clients","usedApps":["bidsketch","mailgun"],"usage":0}

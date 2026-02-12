@@ -1,0 +1,1 @@
+{"id":7252,"name":"Create SharpSpring lead from new Mailchimp Subscribers","description":"Every time there's a new subscriber in Mailchimp, Make will automatically create a new Lead in SharpSpring.","url":"7252-create-sharpspring-lead-from-new-mailchimp-subscribers","usedApps":["mailchimp","sharpspring"],"usage":0}

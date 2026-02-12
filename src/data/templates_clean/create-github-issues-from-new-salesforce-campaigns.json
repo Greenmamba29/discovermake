@@ -1,0 +1,1 @@
+{"id":642,"name":"Create GitHub issues from new Salesforce campaigns","description":"Every time a new campaign is created in Salesforce, Make will automatically create a new issue in GitHub.","url":"642-create-github-issues-from-new-salesforce-campaigns","usedApps":["github","salesforce"],"usage":1}

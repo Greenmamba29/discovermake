@@ -1,0 +1,1 @@
+{"id":12790,"name":"Send data to Slack when a new event occurs","description":"Automatically send data to Slack whenever a new event is triggered, ensuring your team stays informed and responsive with real-time updates.","url":"12790-send-data-to-slack-when-a-new-event-occurs","usedApps":["slack","http"],"usage":15}

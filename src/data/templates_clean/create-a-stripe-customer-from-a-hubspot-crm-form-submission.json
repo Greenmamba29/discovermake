@@ -1,0 +1,1 @@
+{"id":6926,"name":"Create a Stripe customer from a HubSpot CRM form submission","description":"Use this template to automatically create a Stripe customer when a HubSpot CRM form is submitted.","url":"6926-create-a-stripe-customer-from-a-hubspot-crm-form-submission","usedApps":["hubspotcrm","stripe"],"usage":10}

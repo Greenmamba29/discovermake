@@ -1,0 +1,1 @@
+{"id":2035,"name":"Create Streak boxes from new Cognito Forms entries","description":"Every time someone fills out your Cognito Forms form, Make will automatically create a new box in Streak.","url":"2035-create-streak-boxes-from-new-cognito-forms-entries","usedApps":["cognitoforms","streak"],"usage":4}

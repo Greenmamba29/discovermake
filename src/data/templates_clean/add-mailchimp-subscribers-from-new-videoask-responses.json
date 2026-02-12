@@ -1,0 +1,1 @@
+{"id":8937,"name":"Add Mailchimp subscribers from new VideoAsk responses","description":"Every time a new response is added to the form in VideoAsk, Make will automatically add subscriber to your Mailchimp.","url":"8937-add-mailchimp-subscribers-from-new-videoask-responses","usedApps":["videoask","mailchimp"],"usage":2}

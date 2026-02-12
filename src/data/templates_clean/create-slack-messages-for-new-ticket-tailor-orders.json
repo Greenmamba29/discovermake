@@ -1,0 +1,1 @@
+{"id":8300,"name":"Create Slack messages for new Ticket Tailor orders","description":"Make will watch your Ticket Tailor orders at regular intervals and create Slack messages.","url":"8300-create-slack-messages-for-new-ticket-tailor-orders","usedApps":["ticket-tailor","slack"],"usage":3}

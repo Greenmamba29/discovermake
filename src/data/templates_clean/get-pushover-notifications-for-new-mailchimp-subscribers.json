@@ -1,0 +1,1 @@
+{"id":8378,"name":"Get Pushover notifications for new Mailchimp subscribers","description":"Every time when a new subscriber is added to Mailchimp, Make will automatically send a notification message in Pushover.","url":"8378-get-pushover-notifications-for-new-mailchimp-subscribers","usedApps":["mailchimp","pushover"],"usage":2}

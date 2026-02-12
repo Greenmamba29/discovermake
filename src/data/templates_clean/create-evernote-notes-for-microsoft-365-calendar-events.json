@@ -1,0 +1,1 @@
+{"id":8644,"name":"Create Evernote notes for Microsoft 365 Calendar events","description":"Make will watch your Microsoft 365 Calendar event at regular intervals, parse the HTML content from it and create identical Evernote notes. ","url":"8644-create-evernote-notes-for-microsoft-365-calendar-events","usedApps":["microsoft-calendar","regexp","evernote"],"usage":35}

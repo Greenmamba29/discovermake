@@ -1,0 +1,1 @@
+{"id":13437,"name":"Send data to Airtable using HTTP make a request and the Iterator","description":"Automatically send data to Airtable by triggering an HTTP action to create records in Airtable.","url":"13437-send-data-to-airtable-using-http-make-a-request-and-the-iterator","usedApps":["http","builtin","airtable"],"usage":51}

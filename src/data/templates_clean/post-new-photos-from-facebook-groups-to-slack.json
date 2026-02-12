@@ -1,0 +1,1 @@
+{"id":285,"name":"Post new photos from Facebook Groups to Slack","description":"Every time a new photo is posted to a specified Facebook Group, Make will automatically post that photo to Slack.","url":"285-post-new-photos-from-facebook-groups-to-slack","usedApps":["facebook-groups","http","slack"],"usage":25}

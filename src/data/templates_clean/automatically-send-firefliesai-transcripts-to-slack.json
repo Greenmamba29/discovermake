@@ -1,0 +1,1 @@
+{"id":8613,"name":"Automatically send Fireflies.ai transcripts to Slack","description":"This template can be setup at a regular interval (every month, week, hour or on a specific date) to automatically send today's Fireflies.ai transcripts in Slack.","url":"8613-automatically-send-fireflies-ai-transcripts-to-slack","usedApps":["fireflies-ai","slack"],"usage":133}

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Software Marketplace</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#0a0a14",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: radial-gradient(circle at top right, #1a0b2e 0%, #0a0a14 100%);
+            min-height: 100vh;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-nav {
+            background: rgba(10, 10, 20, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-dark text-white font-display overflow-x-hidden pb-24">
+<!-- Top App Bar -->
+<div class="sticky top-0 z-50 glass-nav border-b border-white/5 px-4 pt-12 pb-4">
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full border border-primary/50 bg-cover bg-center" data-alt="User profile avatar with neon glow" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDfiFz1b1u4WHTKwvA3L1-1VfhmTtUeq_6-dHMFgezsaWQNIpQC4yBjsv5LGOgUYFNIg-pXssgzBNOLm8dsASeUZmVv9nkfcM1QSoVaYnaUyUH93LR3aBflFwJwMif6EBSG4Q6_645vz_JnvZh4O-IKNRC2W90eMt8BXabI3jpMpKSGgPk91OS0-VMHHndf6F7_iswDVuV5dH4anfCVA6Mp4GxmVWzn-nNqNBMKiDXwQoUwzmUVoBpepLIVCh1FVfxcfHebNofq-SOH');"></div>
+<div>
+<h1 class="text-xl font-bold tracking-tight">Marketplace</h1>
+<p class="text-xs text-primary font-medium uppercase tracking-wider">Level 4 Engineer</p>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="size-10 flex items-center justify-center rounded-full glass-card">
+<span class="material-symbols-outlined text-[22px]">notifications</span>
+</button>
+<button class="size-10 flex items-center justify-center rounded-full glass-card">
+<span class="material-symbols-outlined text-[22px]">search</span>
+</button>
+</div>
+</div>
+<!-- Filter Tabs -->
+<div class="flex gap-3 overflow-x-auto no-scrollbar pb-1">
+<a class="flex-none px-4 py-2 rounded-full bg-primary text-white text-sm font-semibold" href="#">All Tasks</a>
+<a class="flex-none px-4 py-2 rounded-full glass-card text-white/60 text-sm font-semibold" href="#">Feature Requests</a>
+<a class="flex-none px-4 py-2 rounded-full glass-card text-white/60 text-sm font-semibold" href="#">Bug Fixes</a>
+<a class="flex-none px-4 py-2 rounded-full glass-card text-white/60 text-sm font-semibold" href="#">UI Polish</a>
+</div>
+</div>
+<!-- Main Feed -->
+<div class="p-4 space-y-4">
+<!-- Job Card 1 -->
+<div class="glass-card rounded-xl overflow-hidden p-4 relative group">
+<div class="absolute top-0 right-0 p-4">
+<span class="bg-primary/20 text-primary px-3 py-1 rounded-full text-xs font-bold border border-primary/30">
+                    FEATURE
+                </span>
+</div>
+<div class="flex flex-col gap-4">
+<div class="size-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl">terminal</span>
+</div>
+<div>
+<h3 class="text-lg font-bold leading-tight mb-1">Implement OAuth2 for Mobile</h3>
+<p class="text-sm text-white/50 line-clamp-2">Security enhancement for the main ride-sharing auth flow. Required tech: React Native, Node.js.</p>
+</div>
+<div class="flex items-center justify-between pt-2 border-t border-white/5">
+<div class="flex flex-col">
+<span class="text-2xl font-bold text-white">$500</span>
+<span class="text-[10px] text-white/40 uppercase tracking-widest">Bounty Amount</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="text-sm font-medium text-white/80">3 Bids • 2h left</span>
+<div class="flex gap-1 mt-1">
+<span class="size-2 rounded-full bg-green-500 animate-pulse"></span>
+<span class="text-[10px] text-green-500 font-bold uppercase">Active</span>
+</div>
+</div>
+</div>
+<button class="w-full bg-primary hover:bg-blue-600 text-white font-bold py-3 rounded-lg transition-all flex items-center justify-center gap-2">
+<span>Place Bid</span>
+<span class="material-symbols-outlined text-sm">trending_up</span>
+</button>
+</div>
+</div>
+<!-- Job Card 2 -->
+<div class="glass-card rounded-xl overflow-hidden p-4 relative">
+<div class="absolute top-0 right-0 p-4">
+<span class="bg-red-500/20 text-red-400 px-3 py-1 rounded-full text-xs font-bold border border-red-500/30">
+                    BUG FIX
+                </span>
+</div>
+<div class="flex flex-col gap-4">
+<div class="size-12 rounded-lg bg-red-500/10 flex items-center justify-center text-red-400">
+<span class="material-symbols-outlined text-3xl">bug_report</span>
+</div>
+<div>
+<h3 class="text-lg font-bold leading-tight mb-1">Fix Race Condition in Dispatch</h3>
+<p class="text-sm text-white/50 line-clamp-2">Critical bug fix for driver assignment logic. Debugging required in Go lang high-load services.</p>
+</div>
+<div class="flex items-center justify-between pt-2 border-t border-white/5">
+<div class="flex flex-col">
+<span class="text-2xl font-bold text-white">$350</span>
+<span class="text-[10px] text-white/40 uppercase tracking-widest">Bounty Amount</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="text-sm font-medium text-white/80">1 Bid • 5h left</span>
+<div class="flex gap-1 mt-1">
+<span class="size-2 rounded-full bg-red-500"></span>
+<span class="text-[10px] text-red-400 font-bold uppercase">Urgent</span>
+</div>
+</div>
+</div>
+<button class="w-full bg-primary hover:bg-blue-600 text-white font-bold py-3 rounded-lg transition-all flex items-center justify-center gap-2">
+<span>Place Bid</span>
+<span class="material-symbols-outlined text-sm">trending_up</span>
+</button>
+</div>
+</div>
+<!-- Job Card 3 -->
+<div class="glass-card rounded-xl overflow-hidden p-4 relative">
+<div class="absolute top-0 right-0 p-4">
+<span class="bg-white/10 text-white/60 px-3 py-1 rounded-full text-xs font-bold border border-white/10">
+                    POLISH
+                </span>
+</div>
+<div class="flex flex-col gap-4">
+<div class="size-12 rounded-lg bg-white/5 flex items-center justify-center text-white/70">
+<span class="material-symbols-outlined text-3xl">palette</span>
+</div>
+<div>
+<h3 class="text-lg font-bold leading-tight mb-1">Dark Mode UI Polish</h3>
+<p class="text-sm text-white/50 line-clamp-2">Update all legacy components to support the new glassmorphism design system across iOS views.</p>
+</div>
+<div class="flex items-center justify-between pt-2 border-t border-white/5">
+<div class="flex flex-col">
+<span class="text-2xl font-bold text-white">$200</span>
+<span class="text-[10px] text-white/40 uppercase tracking-widest">Bounty Amount</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="text-sm font-medium text-white/80">8 Bids • 1d left</span>
+<div class="flex gap-1 mt-1">
+<span class="size-2 rounded-full bg-white/40"></span>
+<span class="text-[10px] text-white/40 font-bold uppercase">Standard</span>
+</div>
+</div>
+</div>
+<button class="w-full bg-primary hover:bg-blue-600 text-white font-bold py-3 rounded-lg transition-all flex items-center justify-center gap-2">
+<span>Place Bid</span>
+<span class="material-symbols-outlined text-sm">trending_up</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Bottom Navigation Bar -->
+<div class="fixed bottom-0 left-0 right-0 glass-nav border-t border-white/10 px-6 py-4 flex items-center justify-between z-50">
+<button class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-[28px] fill-[1]">explore</span>
+<span class="text-[10px] font-bold uppercase">Explore</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-white/40">
+<span class="material-symbols-outlined text-[28px]">account_balance_wallet</span>
+<span class="text-[10px] font-bold uppercase">Earnings</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-white/40">
+<span class="material-symbols-outlined text-[28px]">chat_bubble</span>
+<span class="text-[10px] font-bold uppercase">Bids</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-white/40">
+<span class="material-symbols-outlined text-[28px]">settings</span>
+<span class="text-[10px] font-bold uppercase">Settings</span>
+</button>
+</div>
+<!-- Decoration Gradients -->
+<div class="fixed top-[-10%] right-[-10%] w-64 h-64 bg-primary/20 rounded-full blur-[100px] pointer-events-none"></div>
+<div class="fixed bottom-[-5%] left-[-5%] w-80 h-80 bg-purple-600/10 rounded-full blur-[120px] pointer-events-none"></div>
+</body></html>

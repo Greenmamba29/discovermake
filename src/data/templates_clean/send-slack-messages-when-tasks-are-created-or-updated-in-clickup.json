@@ -1,0 +1,1 @@
+{"id":5810,"name":"Send Slack messages when tasks are created or updated in ClickUp","description":"Whenever you create new tasks or existing ones in ClickUp, Make will automatically send Slack messages with the names and descriptions of the tasks.","url":"5810-send-slack-messages-when-tasks-are-created-or-updated-in-clickup","usedApps":["clickup","slack"],"usage":366}

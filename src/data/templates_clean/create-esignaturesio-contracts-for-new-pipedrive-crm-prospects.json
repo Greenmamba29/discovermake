@@ -1,0 +1,1 @@
+{"id":4027,"name":"Create eSignatures.io contracts for new Pipedrive CRM prospects","description":"Every time a deal moves to a specific stage in Pipedrive CRM, Make will automatically create a contract from an eSignatures.io template.","url":"4027-create-esignatures-io-contracts-for-new-pipedrive-crm-prospects","usedApps":["pipedrive","esignatures-io"],"usage":10}

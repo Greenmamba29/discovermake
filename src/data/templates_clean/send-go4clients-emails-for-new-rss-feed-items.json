@@ -1,0 +1,1 @@
+{"id":4586,"name":"Send Go4Clients emails for new RSS feed Items","description":"Every time a new item is posted to a watched RSS feed, Make will automatically send an email via Go4Clients","url":"4586-send-go4clients-emails-for-new-rss-feed-items","usedApps":["rss","go4clients"],"usage":3}

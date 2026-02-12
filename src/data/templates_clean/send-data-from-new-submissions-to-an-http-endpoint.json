@@ -1,0 +1,1 @@
+{"id":12766,"name":"Send data from new submissions to an HTTP endpoint","description":"Automatically send data from new submissions to a specified HTTP endpoint using Make's fillout and http modules for streamlined data integration.","url":"12712-send-data-from-new-submissions-to-an-http-endpoint","usedApps":["fillout","http"],"usage":76}

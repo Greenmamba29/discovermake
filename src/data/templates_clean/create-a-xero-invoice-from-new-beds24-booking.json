@@ -1,0 +1,1 @@
+{"id":3440,"name":"Create a Xero invoice from new Beds24 booking.","description":"Every time you get a new Beds24 booking, a new Xero invoice will be created for the customer.","url":"3440-create-a-xero-invoice-from-new-beds24-booking","usedApps":["beds24","xero","builtin"],"usage":183}

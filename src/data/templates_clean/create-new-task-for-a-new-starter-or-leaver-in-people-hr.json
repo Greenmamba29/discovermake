@@ -1,0 +1,1 @@
+{"id":4272,"name":"Create new task for a new starter or leaver in People HR","description":"When a new starter is created or a new leaver is marked in People HR, a new Microsoft To Do task is created.","url":"4272-create-new-task-for-a-new-starter-or-leaver-in-people-hr","usedApps":["people-hr","builtin","microsoft-to-do"],"usage":5}

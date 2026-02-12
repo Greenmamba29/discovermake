@@ -1,0 +1,1 @@
+{"id":6669,"name":"Create deals in HubSpot CRM from newly labeled emails in Gmaill","description":"This automation watches for emails that have been given a specific label and creates deals in HubSpot CRM.","url":"6669-create-deals-in-hubspot-crm-from-newly-labeled-emails-in-gmaill","usedApps":["google-email","hubspotcrm"],"usage":90}

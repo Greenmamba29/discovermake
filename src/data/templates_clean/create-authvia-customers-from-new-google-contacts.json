@@ -1,0 +1,1 @@
+{"id":8125,"name":"Create Authvia customers from new Google Contacts","description":"Every time a new contact is created in Google Contacts, Make will automatically add that contact to Authvia as a new customer.","url":"8125-create-authvia-customers-from-new-google-contacts","usedApps":["google-contacts","authvia"],"usage":2}

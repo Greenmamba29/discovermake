@@ -1,0 +1,1 @@
+{"id":3100,"name":"Send new photos from Album in Facebook Group to Dropbox","description":"When a new photo is uploaded to a specified album in a specified group in Facebook, the photo is sent to Dropbox.","url":"3100-send-new-photos-from-album-in-facebook-group-to-dropbox","usedApps":["facebook-groups","http","dropbox"],"usage":12}

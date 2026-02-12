@@ -1,0 +1,1 @@
+{"id":7142,"name":"Creates new Weekdone item from new Google Calendar Events","description":"Every time a new event is added to your Google Calendar, Make will automatically create a new item in Weekdone.","url":"7142-creates-new-weekdone-item-from-new-google-calendar-events","usedApps":["google-calendar","weekdone"],"usage":3}

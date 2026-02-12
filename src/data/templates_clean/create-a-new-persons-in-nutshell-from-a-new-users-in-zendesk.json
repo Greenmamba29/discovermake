@@ -1,0 +1,1 @@
+{"id":7313,"name":"Create a new persons in Nutshell from a new users in Zendesk","description":"Every time a new users is created in Zendesk, Make will automatically create a new person in Nutshell.","url":"7313-create-a-new-persons-in-nutshell-from-a-new-users-in-zendesk","usedApps":["zendesk","nutshell"],"usage":0}

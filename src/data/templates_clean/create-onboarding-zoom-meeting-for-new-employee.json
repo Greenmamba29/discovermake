@@ -1,0 +1,1 @@
+{"id":5385,"name":"Create Onboarding Zoom Meeting For New Employee","description":"Create onboarding Zoom meetings for your new employees that have a record in your Airtable Base and send an email with the meeting information.","url":"5385-create-onboarding-zoom-meeting-for-new-employee","usedApps":["airtable","zoom","email"],"usage":27}

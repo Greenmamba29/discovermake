@@ -1,0 +1,1 @@
+{"id":8879,"name":"Send a new message on Slack from a new response in VideoAsk","description":"Every time a new response is submitted in VideoAsk, a new message will be instantly sent on Slack.","url":"8879-send-a-new-message-on-slack-from-a-new-response-in-videoask","usedApps":["videoask","slack"],"usage":4}

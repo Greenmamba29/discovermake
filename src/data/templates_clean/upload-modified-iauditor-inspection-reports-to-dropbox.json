@@ -1,0 +1,1 @@
+{"id":7732,"name":"Upload modified iAuditor inspection reports to Dropbox","description":"Make will watch your iAuditor inspections at regular intervals and upload reports of these inspections to a specified folder in Dropbox. ","url":"7732-upload-modified-iauditor-inspection-reports-to-dropbox","usedApps":["iauditor","http","dropbox"],"usage":5}

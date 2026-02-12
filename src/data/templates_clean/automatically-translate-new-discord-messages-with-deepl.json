@@ -1,0 +1,1 @@
+{"id":8662,"name":"Automatically translate new Discord messages with DeepL","description":"Every time a new message is posted in Discord, Make will automatically translate it into the target language of your preference using DeepL and post it back in Discord.","url":"8662-automatically-translate-new-discord-messages-with-deepl","usedApps":["discord","deepl"],"usage":201}

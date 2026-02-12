@@ -1,0 +1,1 @@
+{"id":2211,"name":"Add new AWeber subscribers to Infusionsoft as contacts","description":"Every time a new subscriber is created in AWeber, Make will automatically create a new contact in Infusionsoft.","url":"2211-add-new-aweber-subscribers-to-infusionsoft-as-contacts","usedApps":["aweber","infusionsoft"],"usage":3}

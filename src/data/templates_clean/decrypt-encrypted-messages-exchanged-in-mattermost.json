@@ -1,0 +1,1 @@
+{"id":1621,"name":"Decrypt encrypted messages exchanged in Mattermost","description":"Every time an encrypted message is received to a specified channel on Mattermost, Make will automatically decrypt that message and post it to another Mattermost channel of your choice.","url":"1621-decrypt-encrypted-messages-exchanged-in-mattermost","usedApps":["mattermost","crypto"],"usage":17}

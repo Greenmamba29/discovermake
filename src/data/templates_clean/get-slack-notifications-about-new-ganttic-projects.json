@@ -1,0 +1,1 @@
+{"id":7858,"name":"Get Slack notifications about new Ganttic projects","description":"Every time a new project is created in Ganttic, Make will automatically send a notification message to a specified channel/chat in Slack.","url":"7858-get-slack-notifications-about-new-ganttic-projects","usedApps":["ganttic","slack"],"usage":2}

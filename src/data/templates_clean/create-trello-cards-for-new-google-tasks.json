@@ -1,0 +1,1 @@
+{"id":3641,"name":"Create Trello cards for new Google Tasks","description":"Every time a new task is created in Google Tasks, Make will automatically create a new card in Trello.","url":"3641-create-trello-cards-for-new-google-tasks","usedApps":["google-tasks","trello"],"usage":198}

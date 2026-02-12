@@ -1,0 +1,1 @@
+{"id":2782,"name":"Add new Salesforce customers to Autopilot","description":"Every time a new contact is created in Salesforce, Make will automatically add that contact to your Autopilot list.","url":"2782-add-new-salesforce-customers-to-autopilot","usedApps":["salesforce","autopilot"],"usage":2}

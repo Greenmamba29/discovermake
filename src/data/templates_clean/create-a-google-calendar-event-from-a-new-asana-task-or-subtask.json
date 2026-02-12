@@ -1,0 +1,1 @@
+{"id":5305,"name":"Create a Google Calendar event from a new Asana task (or subtask)","description":"Every time a new Asana task or subtask is created, Make will automatically create a Google Calendar event.","url":"5305-create-a-google-calendar-event-from-a-new-asana-task-or-subtask","usedApps":["asana","google-calendar"],"usage":289}

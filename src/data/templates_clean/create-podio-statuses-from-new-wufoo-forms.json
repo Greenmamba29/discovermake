@@ -1,0 +1,1 @@
+{"id":289,"name":"Create Podio statuses from new Wufoo forms","description":"Every time a new form is created in Wufoo, Make will automatically create a new status in Podio.","url":"289-create-podio-statuses-from-new-wufoo-forms","usedApps":["podio","wufoo"],"usage":0}

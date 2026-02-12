@@ -1,0 +1,1 @@
+{"id":8377,"name":"Get Pushover notifications for new spreadsheet rows on Google Sheets","description":"Every time a new row is added to a Google Sheets spreadsheet, Make will automatically send a notification message in Pushover.","url":"8377-get-pushover-notifications-for-new-spreadsheet-rows-on-google-sheets","usedApps":["google-sheets","pushover"],"usage":18}

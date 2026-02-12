@@ -1,0 +1,1 @@
+{"id":8450,"name":"Create ActiveCampaign contacts from new NetHunt records","description":"Every time a new record is created in NetHunt, Make will automatically create a new contact in ActiveCampaign.","url":"8450-create-activecampaign-contacts-from-new-nethunt-records","usedApps":["nethunt","activecampaign"],"usage":3}

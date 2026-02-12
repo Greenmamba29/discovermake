@@ -1,0 +1,1 @@
+{"id":4655,"name":"Publish Pub/Sub messages from new GitHub issues","description":"Every time a new issue is created in GitHub, Make will automatically publish a new message in Google Cloud Pub/Sub.","url":"4655-publish-pub-sub-messages-from-new-github-issues","usedApps":["github","google-cloud-pubsub"],"usage":2}

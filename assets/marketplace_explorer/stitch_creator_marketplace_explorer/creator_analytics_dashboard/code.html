@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Creator Analytics Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13a4ec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101c22", // Deep charcoal
+                        "surface-dark": "#192b33", // Slightly lighter for cards
+                        "surface-dark-highlight": "#233c48", // Even lighter
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.375rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar hide for cleaner mobile look */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        /* Custom graph line animation simulation */
+        .graph-line {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: dash 2s linear forwards;
+        }
+        @keyframes dash {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display antialiased overflow-x-hidden min-h-screen pb-20">
+<!-- Header -->
+<header class="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/95 backdrop-blur-md border-b border-gray-200 dark:border-white/5">
+<div class="flex items-center justify-between px-4 py-3">
+<div class="flex items-center gap-3">
+<div class="relative">
+<div class="size-10 rounded-full bg-cover bg-center border-2 border-primary/20" data-alt="User profile portrait of a smiling man" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDy1V5kjeMogHyHCurV-P03dpTYHlmCgztMCWPAFCpl13gv-Bicm9He-aXFvBWmgx-AvvBWSpaHdYQ3m_wASS_dgG9QTe3QHz2psLmv7_DeM-VZarVGtuHI32pM5kPEDaVHiut1VkdoJzKi4uY8zL_nB5xmMdig2bkCXl8oI_RQDjcyp2dSXwxjFr9D7sPpflVxh-48E1X5ksqeDW0qJk5eSfBjvhnpedMsFVYzDtoAhWanoX7WCGbr7CJRNOF3ROF96q_QKhzbFAA");'></div>
+<div class="absolute bottom-0 right-0 size-3 bg-green-500 rounded-full border-2 border-background-light dark:border-background-dark"></div>
+</div>
+<div>
+<h2 class="text-sm text-slate-500 dark:text-slate-400 font-medium leading-none mb-0.5">Welcome back,</h2>
+<h1 class="text-lg font-bold leading-none text-slate-900 dark:text-white">Alex Chen</h1>
+</div>
+</div>
+<button class="relative p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-300">notifications</span>
+<span class="absolute top-2 right-2 size-2 bg-red-500 rounded-full"></span>
+</button>
+</div>
+</header>
+<main class="flex flex-col gap-6 px-4 pt-6">
+<!-- Total Earnings Card -->
+<section>
+<div class="flex justify-between items-end mb-3 px-1">
+<h3 class="text-xl font-bold tracking-tight">Total Earnings</h3>
+<button class="text-xs font-medium text-primary hover:text-primary/80 transition-colors">View Report</button>
+</div>
+<div class="bg-white dark:bg-surface-dark rounded-2xl p-5 shadow-sm ring-1 ring-black/5 dark:ring-white/5">
+<div class="flex items-start justify-between mb-6">
+<div>
+<p class="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Available Balance</p>
+<h2 class="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">$12,450.00</h2>
+</div>
+<div class="flex items-center gap-1 bg-green-500/10 dark:bg-green-500/20 px-2.5 py-1 rounded-full">
+<span class="material-symbols-outlined text-green-600 dark:text-green-400 text-sm">trending_up</span>
+<span class="text-xs font-bold text-green-700 dark:text-green-400">+12%</span>
+</div>
+</div>
+<!-- Simple CSS Line Chart Representation -->
+<div class="relative h-32 w-full">
+<!-- Grid Lines -->
+<div class="absolute inset-0 flex flex-col justify-between pointer-events-none">
+<div class="w-full h-px bg-slate-100 dark:bg-white/5"></div>
+<div class="w-full h-px bg-slate-100 dark:bg-white/5"></div>
+<div class="w-full h-px bg-slate-100 dark:bg-white/5"></div>
+<div class="w-full h-px bg-slate-100 dark:bg-white/5"></div>
+</div>
+<!-- SVG Graph -->
+<svg class="absolute inset-0 w-full h-full overflow-visible" preserveaspectratio="none">
+<defs>
+<lineargradient id="gradient" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:#13a4ec; stop-opacity:0.3"></stop>
+<stop offset="100%" style="stop-color:#13a4ec; stop-opacity:0"></stop>
+</lineargradient>
+</defs>
+<path class="opacity-50" d="M0,128 L0,100 C20,95 40,110 60,80 C80,50 100,60 120,40 C140,20 160,30 180,50 C200,70 220,40 240,20 C260,0 280,30 300,10 L350,5 L350,128 Z" fill="url(#gradient)"></path>
+<path class="graph-line" d="M0,100 C20,95 40,110 60,80 C80,50 100,60 120,40 C140,20 160,30 180,50 C200,70 220,40 240,20 C260,0 280,30 300,10 L350,5" fill="none" stroke="#13a4ec" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" vector-effect="non-scaling-stroke"></path>
+</svg>
+</div>
+<div class="flex justify-between mt-2 text-xs text-slate-400 dark:text-slate-500 font-medium">
+<span>Nov 1</span>
+<span>Nov 8</span>
+<span>Nov 15</span>
+<span>Nov 22</span>
+<span>Today</span>
+</div>
+</div>
+</section>
+<!-- Marketplace Performance -->
+<section>
+<h3 class="text-xl font-bold tracking-tight mb-3 px-1">Performance</h3>
+<div class="grid grid-cols-2 gap-3">
+<!-- Stat Card 1 -->
+<div class="bg-white dark:bg-surface-dark-highlight rounded-xl p-4 shadow-sm ring-1 ring-black/5 dark:ring-white/5 flex flex-col justify-between gap-4">
+<div class="flex items-start justify-between">
+<div class="p-2 rounded-lg bg-purple-500/10 dark:bg-purple-500/20 text-purple-600 dark:text-purple-400">
+<span class="material-symbols-outlined" style="font-size: 20px;">content_copy</span>
+</div>
+<span class="text-xs font-bold text-green-600 dark:text-green-400 bg-green-100 dark:bg-green-500/10 px-1.5 py-0.5 rounded flex items-center">
+<span class="material-symbols-outlined" style="font-size: 12px;">arrow_upward</span> 12%
+                        </span>
+</div>
+<div>
+<p class="text-sm text-slate-500 dark:text-slate-400 font-medium">Remix Count</p>
+<p class="text-2xl font-bold text-slate-900 dark:text-white mt-1">1,204</p>
+</div>
+</div>
+<!-- Stat Card 2 -->
+<div class="bg-white dark:bg-surface-dark-highlight rounded-xl p-4 shadow-sm ring-1 ring-black/5 dark:ring-white/5 flex flex-col justify-between gap-4">
+<div class="flex items-start justify-between">
+<div class="p-2 rounded-lg bg-orange-500/10 dark:bg-orange-500/20 text-orange-600 dark:text-orange-400">
+<span class="material-symbols-outlined" style="font-size: 20px;">stars</span>
+</div>
+<span class="text-xs font-bold text-green-600 dark:text-green-400 bg-green-100 dark:bg-green-500/10 px-1.5 py-0.5 rounded flex items-center">
+<span class="material-symbols-outlined" style="font-size: 12px;">arrow_upward</span> 5%
+                        </span>
+</div>
+<div>
+<p class="text-sm text-slate-500 dark:text-slate-400 font-medium">Avg. Score</p>
+<p class="text-2xl font-bold text-slate-900 dark:text-white mt-1">9.2<span class="text-base text-slate-400 font-medium">/10</span></p>
+</div>
+</div>
+</div>
+</section>
+<!-- Top Performing Workflows -->
+<section>
+<div class="flex justify-between items-end mb-3 px-1">
+<h3 class="text-xl font-bold tracking-tight">Top Workflows</h3>
+<button class="text-xs font-medium text-primary hover:text-primary/80 transition-colors">See All</button>
+</div>
+<div class="flex flex-col gap-3">
+<!-- Workflow Item 1 -->
+<div class="flex items-center p-3 bg-white dark:bg-surface-dark rounded-xl shadow-sm ring-1 ring-black/5 dark:ring-white/5">
+<div class="flex-shrink-0 size-12 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 mr-4">
+<span class="material-symbols-outlined">smart_toy</span>
+</div>
+<div class="flex-1 min-w-0">
+<h4 class="text-base font-semibold text-slate-900 dark:text-white truncate">AI Image Generator v2</h4>
+<div class="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400 mt-1">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">play_arrow</span> 845 runs</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">schedule</span> 2m avg</span>
+</div>
+</div>
+<div class="text-right">
+<span class="block text-sm font-bold text-slate-900 dark:text-white">$342</span>
+<span class="block text-xs text-green-500 font-medium">+8%</span>
+</div>
+</div>
+<!-- Workflow Item 2 -->
+<div class="flex items-center p-3 bg-white dark:bg-surface-dark rounded-xl shadow-sm ring-1 ring-black/5 dark:ring-white/5">
+<div class="flex-shrink-0 size-12 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400 mr-4">
+<span class="material-symbols-outlined">summarize</span>
+</div>
+<div class="flex-1 min-w-0">
+<h4 class="text-base font-semibold text-slate-900 dark:text-white truncate">Text Summarizer Pro</h4>
+<div class="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400 mt-1">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">play_arrow</span> 620 runs</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">schedule</span> 45s avg</span>
+</div>
+</div>
+<div class="text-right">
+<span class="block text-sm font-bold text-slate-900 dark:text-white">$215</span>
+<span class="block text-xs text-green-500 font-medium">+15%</span>
+</div>
+</div>
+<!-- Workflow Item 3 -->
+<div class="flex items-center p-3 bg-white dark:bg-surface-dark rounded-xl shadow-sm ring-1 ring-black/5 dark:ring-white/5">
+<div class="flex-shrink-0 size-12 rounded-lg bg-pink-100 dark:bg-pink-900/30 flex items-center justify-center text-pink-600 dark:text-pink-400 mr-4">
+<span class="material-symbols-outlined">edit_note</span>
+</div>
+<div class="flex-1 min-w-0">
+<h4 class="text-base font-semibold text-slate-900 dark:text-white truncate">SEO Blog Writer</h4>
+<div class="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400 mt-1">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">play_arrow</span> 410 runs</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">schedule</span> 5m avg</span>
+</div>
+</div>
+<div class="text-right">
+<span class="block text-sm font-bold text-slate-900 dark:text-white">$180</span>
+<span class="block text-xs text-slate-500 font-medium">0%</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Recent Feedback -->
+<section>
+<h3 class="text-xl font-bold tracking-tight mb-3 px-1">Recent Feedback</h3>
+<div class="flex gap-4 overflow-x-auto no-scrollbar pb-2 -mx-4 px-4 snap-x">
+<!-- Feedback Card 1 -->
+<div class="snap-center shrink-0 w-[280px] bg-white dark:bg-surface-dark-highlight p-4 rounded-xl shadow-sm ring-1 ring-black/5 dark:ring-white/5 flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<div class="flex gap-0.5 text-yellow-400">
+<span class="material-symbols-outlined text-[18px] filled">star</span>
+<span class="material-symbols-outlined text-[18px] filled">star</span>
+<span class="material-symbols-outlined text-[18px] filled">star</span>
+<span class="material-symbols-outlined text-[18px] filled">star</span>
+<span class="material-symbols-outlined text-[18px] filled">star</span>
+</div>
+<span class="text-xs text-slate-400">2h ago</span>
+</div>
+<p class="text-sm text-slate-700 dark:text-slate-300 italic">"Incredible speed! Used this for my entire newsletter workflow today."</p>
+<div class="flex items-center gap-2 mt-auto pt-2 border-t border-slate-100 dark:border-white/10">
+<div class="size-6 rounded-full bg-cover" data-alt="Small avatar of Sarah M." style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCO8_hG1Od_z4G9_5ccTOVQsmo2jAi1y1K3gcSq-ze5tRrZh4oh5EW6dwHqg--FjA-6Gmfj-ginay4cAsCkGogUqSw7FuVpIcgRYEIPYQ5Nq-edLUpJwbqrOHcsAnlMgSxE6l2V1Hz3e_2uZJJNWjVGpbRezYjJWTx2ZgQ5BXmSWeTigztbAPkn_J8dMI7tZjeCr34fPn6OvDvkJo8J5YTIYyxJ_rD_IzzHeqOOQ32ckxRXCRXL0l3Db0lvY367fONkNxV9Gw03eZA");'></div>
+<span class="text-xs font-semibold text-slate-900 dark:text-white">Sarah M.</span>
+<span class="text-xs text-slate-500 ml-auto">on Image Gen v2</span>
+</div>
+</div>
+<!-- Feedback Card 2 -->
+<div class="snap-center shrink-0 w-[280px] bg-white dark:bg-surface-dark-highlight p-4 rounded-xl shadow-sm ring-1 ring-black/5 dark:ring-white/5 flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<div class="flex gap-0.5 text-yellow-400">
+<span class="material-symbols-outlined text-[18px] filled">star</span>
+<span class="material-symbols-outlined text-[18px] filled">star</span>
+<span class="material-symbols-outlined text-[18px] filled">star</span>
+<span class="material-symbols-outlined text-[18px] filled">star</span>
+<span class="material-symbols-outlined text-[18px] filled">star</span>
+</div>
+<span class="text-xs text-slate-400">5h ago</span>
+</div>
+<p class="text-sm text-slate-700 dark:text-slate-300 italic">"Best workflow for writing long form content. The structured output is perfect."</p>
+<div class="flex items-center gap-2 mt-auto pt-2 border-t border-slate-100 dark:border-white/10">
+<div class="size-6 rounded-full bg-cover" data-alt="Small avatar of John D." style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuACHg2EaPj21lT-0BMEU3v7UdqLAfEswPTiR_owrghaO3dkNxW5R9UMQjgLPQXSEb_k9x6YrZEUrfNUm1b9Vkvf4C20BOZQghnq2l5cQIueXrOoFAZ061KsS3rK56yMJTVgVxGXXbZEXYDsnWRsiqXwAcOXApRcAHnNBdadlDcuXaZUfYYgP4JZ5218RNlOkJDvmI7SZZS_UDaQv5ujGU9YjnSsUCA2M1Wv0B2n0MmxJcWiWeYH9JCuQx5kWozSd4SJBtUWcv7u83Q");'></div>
+<span class="text-xs font-semibold text-slate-900 dark:text-white">John D.</span>
+<span class="text-xs text-slate-500 ml-auto">on Blog Writer</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Spacer for nav -->
+<div class="h-10"></div>
+</main>
+<!-- Bottom Navigation -->
+<nav class="fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-background-dark/90 backdrop-blur-lg border-t border-gray-200 dark:border-white/5 safe-pb">
+<div class="flex items-center justify-around h-16 max-w-md mx-auto">
+<button class="flex flex-col items-center justify-center w-full h-full gap-1 group">
+<span class="material-symbols-outlined text-primary text-[26px]">dashboard</span>
+<span class="text-[10px] font-medium text-primary">Overview</span>
+</button>
+<button class="flex flex-col items-center justify-center w-full h-full gap-1 group text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 transition-colors">
+<span class="material-symbols-outlined text-[26px]">folder_open</span>
+<span class="text-[10px] font-medium">Projects</span>
+</button>
+<!-- Center Action Button -->
+<div class="-mt-8">
+<button class="flex items-center justify-center size-14 rounded-full bg-primary shadow-lg shadow-primary/30 text-white hover:bg-primary/90 transition-transform active:scale-95">
+<span class="material-symbols-outlined text-[28px]">add</span>
+</button>
+</div>
+<button class="flex flex-col items-center justify-center w-full h-full gap-1 group text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 transition-colors">
+<span class="material-symbols-outlined text-[26px]">account_balance_wallet</span>
+<span class="text-[10px] font-medium">Wallet</span>
+</button>
+<button class="flex flex-col items-center justify-center w-full h-full gap-1 group text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 transition-colors">
+<span class="material-symbols-outlined text-[26px]">settings</span>
+<span class="text-[10px] font-medium">Settings</span>
+</button>
+</div>
+</nav>
+<style>
+        /* Add some padding for devices with home indicator */
+        .safe-pb {
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+        /* Custom fill class for material symbols */
+        .material-symbols-outlined.filled {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</body></html>

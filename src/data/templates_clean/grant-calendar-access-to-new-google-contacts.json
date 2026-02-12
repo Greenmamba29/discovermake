@@ -1,0 +1,1 @@
+{"id":3599,"name":"Grant Calendar access to new Google Contacts","description":"Every time a new contact is added to Google Contacts, Make will automatically grant access to a selected Google Calendar and notify the user by email.","url":"3599-grant-calendar-access-to-new-google-contacts","usedApps":["google-contacts","builtin","google-calendar","google-email"],"usage":50}

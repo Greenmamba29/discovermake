@@ -1,0 +1,1 @@
+{"id":8020,"name":"Enrich Sellsy clients by Clearbit data","description":"Every time a new client (only people, not companies) has been added to Sellsy, Make will automatically find this client in Clearbit and update the client.","url":"8020-enrich-sellsy-clients-by-clearbit-data","usedApps":["sellsy","clearbit"],"usage":4}

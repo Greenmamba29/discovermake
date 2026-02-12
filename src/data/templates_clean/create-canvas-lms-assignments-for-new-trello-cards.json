@@ -1,0 +1,1 @@
+{"id":8804,"name":"Create Canvas LMS assignments for new Trello cards","description":"Make will watch your Trello cards at regular intervals and create Canvas LMS assignments.","url":"8804-create-canvas-lms-assignments-for-new-trello-cards","usedApps":["trello","util","canvas-lms"],"usage":26}

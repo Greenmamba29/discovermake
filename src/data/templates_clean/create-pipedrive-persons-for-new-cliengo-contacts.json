@@ -1,0 +1,1 @@
+{"id":6417,"name":"Create Pipedrive persons for new Cliengo contacts","description":"Every time a new contact is created in Cliengo, Make will automatically create a new person in Pipedrive CRM.","url":"6417-create-pipedrive-persons-for-new-cliengo-contacts","usedApps":["cliengo","pipedrive"],"usage":1}

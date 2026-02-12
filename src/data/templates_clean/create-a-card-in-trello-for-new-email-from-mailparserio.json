@@ -1,0 +1,1 @@
+{"id":5004,"name":"Create a card in Trello for new email from mailparser.io","description":"Every time a new email is received from mailparser.io, Make will automatically create a card in the specified Trello board.","url":"5004-create-a-card-in-trello-for-new-email-from-mailparser-io","usedApps":["mailparser-io","trello"],"usage":1}

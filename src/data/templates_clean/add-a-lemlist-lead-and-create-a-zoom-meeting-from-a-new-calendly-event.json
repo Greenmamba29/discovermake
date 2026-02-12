@@ -1,0 +1,1 @@
+{"id":5539,"name":"Add a Lemlist lead and create a Zoom meeting from a new Calendly event","description":"Every time a new Calendly event is scheduled, Make will automatically add a lead to a Lemlist campaign and create a Zoom meeting.","url":"5539-add-a-lemlist-lead-and-create-a-zoom-meeting-from-a-new-calendly-event","usedApps":["calendly","lemlist","zoom"],"usage":4}

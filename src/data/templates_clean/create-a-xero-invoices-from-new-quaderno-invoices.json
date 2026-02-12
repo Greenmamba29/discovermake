@@ -1,0 +1,1 @@
+{"id":8529,"name":"Create a Xero invoices from new Quaderno invoices","description":"Every time you get a new Quaderno invoice, a new Xero invoice will be created for the customer.","url":"8529-create-a-xero-invoices-from-new-quaderno-invoices","usedApps":["quaderno","xero","builtin"],"usage":9}

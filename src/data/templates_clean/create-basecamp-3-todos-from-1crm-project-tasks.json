@@ -1,0 +1,1 @@
+{"id":4049,"name":"Create Basecamp 3 todos from 1CRM project tasks","description":"Every time a new project task is created in 1CRM, Make will automatically create a new todo on Basecamp 3.","url":"4049-create-basecamp-3-todos-from-1crm-project-tasks","usedApps":["onecrm","basecamp3"],"usage":4}

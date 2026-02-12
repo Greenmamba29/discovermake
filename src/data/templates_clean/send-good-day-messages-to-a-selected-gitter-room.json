@@ -1,0 +1,1 @@
+{"id":557,"name":"Send Good day messages to a selected Gitter room","description":"Every time this scenario is run, Make will automatically send a Good Day message  to a selected Gitter room. This template is scheduled to run every day at 8:00 a.m.","url":"557-send-good-day-messages-to-a-selected-gitter-room","usedApps":["gitter"],"usage":2}

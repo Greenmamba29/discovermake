@@ -1,0 +1,1 @@
+{"id":232,"name":"Create Trello cards from new GitHub issues","description":"Every time a new issue is created in GitHub, Make will automatically create a new card in Trello.","url":"232-create-trello-cards-from-new-github-issues","usedApps":["github","trello"],"usage":135}

@@ -1,0 +1,1 @@
+{"id":1984,"name":"Add new Invoice Ninja clients to ActiveTrail","description":"Every time a new client is created in Invoice Ninja, Make will automatically create a new contact in ActiveTrail.","url":"1984-add-new-invoice-ninja-clients-to-activetrail","usedApps":["invoiceninja","activetrail"],"usage":1}

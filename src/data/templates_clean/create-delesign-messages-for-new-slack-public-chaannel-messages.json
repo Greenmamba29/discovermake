@@ -1,0 +1,1 @@
+{"id":8087,"name":"Create Delesign messages for new Slack public chaannel messages","description":"Make wil watch your Slack public channel messages at regular intervals and create project messages in your Delesign.","url":"8087-create-delesign-messages-for-new-slack-public-chaannel-messages","usedApps":["slack","delesign"],"usage":2}

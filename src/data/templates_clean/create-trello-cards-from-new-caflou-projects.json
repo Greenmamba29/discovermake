@@ -1,0 +1,1 @@
+{"id":2257,"name":"Create Trello cards from new Caflou projects","description":"Every time there is a new project in Caflou, Make will listen for it & create a new Trello card.","url":"2257-create-trello-cards-from-new-caflou-projects","usedApps":["caflou","trello"],"usage":7}

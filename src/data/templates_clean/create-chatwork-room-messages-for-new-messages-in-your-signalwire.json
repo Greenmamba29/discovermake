@@ -1,0 +1,1 @@
+{"id":7365,"name":"Create Chatwork room messages for new messages in your SignalWire","description":"Every time a message appears in your SignalWire, Make will forward it to your Chatwork.","url":"7365-create-chatwork-room-messages-for-new-messages-in-your-signalwire","usedApps":["signalwire","chatwork"],"usage":0}

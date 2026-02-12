@@ -1,0 +1,1 @@
+{"id":7246,"name":"Send a Slack message from a new action in Glide","description":"Every time a new action happens in Glide, a new message will be instantly sent via Slack.\n\nThe template expects to receive at least these variables from Glide:\n1) User email\n2) Screen link","url":"7246-send-a-slack-message-from-a-new-action-in-glide","usedApps":["glide","slack"],"usage":21}

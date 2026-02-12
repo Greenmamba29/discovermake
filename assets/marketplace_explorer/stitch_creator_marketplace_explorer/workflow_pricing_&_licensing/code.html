@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Workflow Pricing &amp; Licensing</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#13a4ec",
+              "background-light": "#f6f7f8",
+              "background-dark": "#101c22",
+              "surface-dark": "#182830",
+              "surface-light": "#ffffff",
+              "text-secondary": "#92b7c9",
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>body {
+    font-family: "Inter", sans-serif
+    }
+/* Custom radio button styling */
+.license-radio:checked + div {
+    border-color: #13a4ec;
+    background-color: rgba(19, 164, 236, 0.1)
+    }
+.license-radio:checked + div .radio-indicator {
+    border-color: #13a4ec;
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuD0GAN4P6mPozZMVM9i7BENyc-wSnhg2Vd40Wi6A3jH427x8i9dTDi8MInHDZUB7m-X3omYmx27ovYAtFdus4-q-jwqNRJRV4sUzw7WBOtM3OWdE0tj0c5mPve5OfJBhTd1lXIetw4lsp9XMJyT2YlAh7FJolRz-0-QsJqeBNNkYuznpjP6Wdd-PO9hKYgQwT-5TKH28rJXAtrpAlp5Wc1NQbF9KBrJ0fsZ0RbwDIRJVfckOCdL-xF-27p885lKByugUkK_iqxEVnM);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100% 100%
+    }
+/* Custom toggle styling */
+.toggle-checkbox:checked {
+    right: 0;
+    border-color: #13a4ec
+    }
+.toggle-checkbox:checked + .toggle-label {
+    background-color: #13a4ec
+    }</style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen flex flex-col font-display antialiased">
+<!-- Top App Bar -->
+<header class="sticky top-0 z-50 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800">
+<div class="flex items-center p-4 pb-2 justify-between">
+<button class="text-gray-900 dark:text-white flex size-12 shrink-0 items-center justify-start hover:opacity-70 transition-opacity">
+<span class="material-symbols-outlined !text-2xl">arrow_back</span>
+</button>
+<h2 class="text-gray-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center">Pricing &amp; Licensing</h2>
+<button class="flex w-12 items-center justify-end hover:opacity-70 transition-opacity">
+<span class="text-primary text-base font-bold leading-normal tracking-[0.015em] shrink-0">Help</span>
+</button>
+</div>
+</header>
+<main class="flex-1 w-full max-w-md mx-auto flex flex-col pb-24">
+<!-- Workflow Context Card -->
+<div class="p-4">
+<div class="flex items-stretch justify-between gap-4 rounded-xl bg-surface-light dark:bg-surface-dark p-3 shadow-sm border border-gray-200 dark:border-gray-800">
+<div class="flex flex-col justify-center gap-1 flex-[2_2_0px]">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">auto_fix_high</span>
+<p class="text-gray-900 dark:text-white text-base font-bold leading-tight">Image Upscaler Pro</p>
+</div>
+<p class="text-gray-500 dark:text-text-secondary text-xs font-normal leading-normal pl-6">v2.4 • Last edited 2h ago</p>
+</div>
+<div class="w-16 h-16 bg-center bg-no-repeat bg-cover rounded-lg shrink-0 border border-gray-200 dark:border-gray-700" data-alt="Abstract fluid blue and purple gradient representing image processing" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDEeinNTAltmodY-hWInGJ_060VGSWI4VHkHBksFy41Fq874ijiR2AOL9Gda-aRAEdtakbEpkSQavn8tdGqEQFXGQ8EnR5oQbbUJhx-qhzqdYOvFdrausmgnNK3zcbT8w-Pp23IOnJeqJY-V9uqyEFZbuiiqJK7baEkF7kYB-yrhTtrUCgdl9eX1nMk8uElJSk_w9gPij5028LjEuynGojZvYTtBMgC5OEIuA3k3TSL-zO7p1paro0nqrIkg78A6oJ_FX8n2_7prDE");'></div>
+</div>
+</div>
+<!-- License Model Section -->
+<div class="flex flex-col gap-4 px-4 pb-2 pt-2">
+<h3 class="text-gray-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">License Model</h3>
+<div class="flex flex-col gap-3">
+<!-- Option 1 -->
+<label class="cursor-pointer group relative">
+<input class="license-radio sr-only" name="license_model" type="radio" value="free"/>
+<div class="flex items-start gap-4 rounded-xl border border-gray-300 dark:border-[#325567] bg-surface-light dark:bg-surface-dark p-4 transition-all duration-200 hover:border-gray-400 dark:hover:border-gray-500">
+<div class="radio-indicator h-5 w-5 mt-0.5 shrink-0 rounded-full border-2 border-gray-400 dark:border-[#325567] bg-transparent"></div>
+<div class="flex grow flex-col">
+<p class="text-gray-900 dark:text-white text-sm font-semibold leading-normal">Free for personal use</p>
+<p class="text-gray-500 dark:text-text-secondary text-xs font-normal leading-normal mt-1">Attribution required, no commercial rights included.</p>
+</div>
+</div>
+</label>
+<!-- Option 2 -->
+<label class="cursor-pointer group relative">
+<input checked="" class="license-radio sr-only" name="license_model" type="radio" value="remix"/>
+<div class="flex items-start gap-4 rounded-xl border border-gray-300 dark:border-[#325567] bg-surface-light dark:bg-surface-dark p-4 transition-all duration-200 hover:border-gray-400 dark:hover:border-gray-500">
+<div class="radio-indicator h-5 w-5 mt-0.5 shrink-0 rounded-full border-2 border-gray-400 dark:border-[#325567] bg-transparent"></div>
+<div class="flex grow flex-col">
+<p class="text-gray-900 dark:text-white text-sm font-semibold leading-normal">Single Remix Fee</p>
+<p class="text-gray-500 dark:text-text-secondary text-xs font-normal leading-normal mt-1">One-time payment for commercial use and remixing.</p>
+</div>
+<div class="bg-primary/20 text-primary px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">Popular</div>
+</div>
+</label>
+<!-- Option 3 -->
+<label class="cursor-pointer group relative">
+<input class="license-radio sr-only" name="license_model" type="radio" value="enterprise"/>
+<div class="flex items-start gap-4 rounded-xl border border-gray-300 dark:border-[#325567] bg-surface-light dark:bg-surface-dark p-4 transition-all duration-200 hover:border-gray-400 dark:hover:border-gray-500">
+<div class="radio-indicator h-5 w-5 mt-0.5 shrink-0 rounded-full border-2 border-gray-400 dark:border-[#325567] bg-transparent"></div>
+<div class="flex grow flex-col">
+<p class="text-gray-900 dark:text-white text-sm font-semibold leading-normal">Enterprise License</p>
+<p class="text-gray-500 dark:text-text-secondary text-xs font-normal leading-normal mt-1">Recurring high-volume usage rights for teams.</p>
+</div>
+</div>
+</label>
+</div>
+</div>
+<!-- Price Input Section -->
+<div class="px-4 py-6">
+<h3 class="text-gray-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] mb-4">Pricing</h3>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="text-gray-500 dark:text-gray-400 text-xl font-medium">$</span>
+</div>
+<input class="block w-full pl-8 pr-16 py-4 bg-surface-light dark:bg-surface-dark border border-gray-300 dark:border-[#325567] rounded-xl text-gray-900 dark:text-white text-2xl font-bold placeholder-gray-400 dark:placeholder-gray-600 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="0.00" type="number" value="25.00"/>
+<div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+<span class="text-gray-400 dark:text-gray-500 text-sm font-medium">USD</span>
+</div>
+</div>
+<p class="text-gray-500 dark:text-text-secondary text-xs mt-2 ml-1">Set a fair price for your work. Minimum $1.00 for paid licenses.</p>
+</div>
+<!-- Logic Protection -->
+<div class="px-4 pb-6">
+<div class="flex items-center justify-between py-2">
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<h3 class="text-gray-900 dark:text-white text-base font-bold leading-tight">Logic Visibility</h3>
+<span class="material-symbols-outlined text-gray-400 text-sm cursor-help" title="Controls if buyers can see inside your workflow nodes">info</span>
+</div>
+<p class="text-gray-500 dark:text-text-secondary text-xs font-normal mt-1">Hide complex logic from buyers</p>
+</div>
+<!-- Toggle Switch -->
+<div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+<input class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 border-gray-300 dark:border-[#325567] appearance-none cursor-pointer transition-all duration-300 left-0" id="logic-toggle" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 dark:bg-[#325567] cursor-pointer transition-colors duration-300" for="logic-toggle"></label>
+</div>
+</div>
+<div class="flex gap-2 mt-3">
+<span class="px-2.5 py-1 rounded-md bg-green-500/10 text-green-600 dark:text-green-400 text-xs font-medium border border-green-500/20">Open Source</span>
+<span class="px-2.5 py-1 rounded-md bg-surface-light dark:bg-surface-dark text-gray-400 dark:text-gray-500 text-xs font-medium border border-gray-200 dark:border-gray-800">Protected</span>
+</div>
+</div>
+<!-- Revenue Estimator -->
+<div class="px-4 mb-4">
+<div class="bg-gradient-to-br from-surface-light to-gray-50 dark:from-surface-dark dark:to-[#1a2c36] rounded-xl p-5 border border-gray-200 dark:border-[#325567]">
+<h4 class="text-gray-900 dark:text-white text-sm font-bold uppercase tracking-wide mb-4 opacity-80">Estimated Earnings</h4>
+<div class="space-y-3">
+<div class="flex justify-between text-sm">
+<span class="text-gray-500 dark:text-text-secondary">Gross Price</span>
+<span class="text-gray-900 dark:text-white font-medium">$25.00</span>
+</div>
+<div class="flex justify-between text-sm">
+<span class="text-gray-500 dark:text-text-secondary flex items-center gap-1">
+                            Platform Fee (10%)
+                            <span class="material-symbols-outlined text-[14px]">help</span>
+</span>
+<span class="text-red-500 dark:text-red-400 font-medium">-$2.50</span>
+</div>
+<div class="h-px bg-gray-200 dark:bg-gray-700 my-2"></div>
+<div class="flex justify-between items-baseline">
+<span class="text-gray-900 dark:text-white font-bold text-base">Your Take</span>
+<span class="text-primary text-2xl font-bold">$22.50</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Sticky Footer -->
+<div class="fixed bottom-0 left-0 right-0 p-4 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md border-t border-gray-200 dark:border-gray-800 z-40 max-w-md mx-auto w-full">
+<button class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3.5 px-4 rounded-lg shadow-lg shadow-primary/20 transition-all active:scale-[0.98] flex items-center justify-center gap-2">
+<span>Save &amp; Publish</span>
+<span class="material-symbols-outlined text-lg">check_circle</span>
+</button>
+</div>
+</body></html>

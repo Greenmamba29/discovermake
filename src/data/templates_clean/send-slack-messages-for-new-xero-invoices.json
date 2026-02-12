@@ -1,0 +1,1 @@
+{"id":1181,"name":"Send Slack messages for new Xero invoices","description":"Every time a new invoice is created in Xero, Make will automatically send a message in Slack.","url":"1181-send-slack-messages-for-new-xero-invoices","usedApps":["xero","builtin","util","slack"],"usage":155}

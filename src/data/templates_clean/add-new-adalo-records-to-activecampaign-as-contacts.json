@@ -1,0 +1,1 @@
+{"id":8260,"name":"Add new Adalo records to ActiveCampaign as contacts","description":"Make will watch for new records in Adalo at regular intervals and add these records to ActiveCampaign as contacts.","url":"8260-add-new-adalo-records-to-activecampaign-as-contacts","usedApps":["adalo","activecampaign"],"usage":4}

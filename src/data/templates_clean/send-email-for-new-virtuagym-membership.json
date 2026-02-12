@@ -1,0 +1,1 @@
+{"id":6322,"name":"Send email for new Virtuagym membership","description":"Every time a new Virtuagym membership is created, Make will automatically send an email.","url":"6322-send-email-for-new-virtuagym-membership","usedApps":["virtuagym","email"],"usage":23}

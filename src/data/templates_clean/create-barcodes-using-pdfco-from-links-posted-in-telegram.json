@@ -1,0 +1,1 @@
+{"id":6117,"name":"Create barcodes using PDF.co from links posted in Telegram","description":"Every time there is a new link posted in Telegram, Make will create a barcode for the link using PDF.co and send it to a specified Telegram chat.","url":"6117-create-barcodes-using-pdf-co-from-links-posted-in-telegram","usedApps":["telegram","regexp","pdf-co"],"usage":36}

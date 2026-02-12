@@ -1,0 +1,1 @@
+{"id":350,"name":"Send Slack messages for new Magento products","description":"Every time a new product is created in Magento, Make will automatically post a message to Slack.","url":"350-send-slack-messages-for-new-magento-products","usedApps":["magento","slack"],"usage":2}

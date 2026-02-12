@@ -1,0 +1,1 @@
+{"id":4736,"name":"Connect Dux-Soup to HubSpot CRM - Create/Update a Contact","description":"When a webhook from Dux-Soup Turbo is received, a new contact is created or only updated in HubSpot CRM.","url":"4736-connect-dux-soup-to-hubspot-crm-create-update-a-contact","usedApps":["dux-soup","hubspotcrm"],"usage":6}

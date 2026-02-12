@@ -1,0 +1,1 @@
+{"id":3988,"name":"Create Pipedrive CRM deals for new Lemlist email events","description":"Every time a specified Lemlist email event occurs, Make will automatically add the contact and create a deal in Pipedrive CRM.","url":"3988-create-pipedrive-crm-deals-for-new-lemlist-email-events","usedApps":["lemlist","pipedrive"],"usage":37}

@@ -1,0 +1,1 @@
+{"id":4204,"name":"Send Android push notifications for new Salesmate CRM deals","description":"Every time a new deal is created in Salesmate CRM, Make will automatically send a push notification to a specified Android device.","url":"4204-send-android-push-notifications-for-new-salesmate-crm-deals","usedApps":["salesmate","android"],"usage":2}

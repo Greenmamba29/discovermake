@@ -1,0 +1,1 @@
+{"id":586,"name":"Create Podio tasks from new SugarCRM7 issues","description":"Every time a new issue is created in SugarCRM7, Make will automatically create a new task in Podio.","url":"586-create-podio-tasks-from-new-sugarcrm7-issues","usedApps":["podio","sugarcrm7"],"usage":2}

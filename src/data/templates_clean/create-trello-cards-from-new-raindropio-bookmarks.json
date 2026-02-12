@@ -1,0 +1,1 @@
+{"id":6600,"name":"Create Trello cards from new Raindrop.io bookmarks","description":"Every time a new bookmark is saved to Raindrop.io, Make will automatically add a new card to a selected board in Trello.","url":"6600-create-trello-cards-from-new-raindrop-io-bookmarks","usedApps":["raindrop-io","trello"],"usage":31}

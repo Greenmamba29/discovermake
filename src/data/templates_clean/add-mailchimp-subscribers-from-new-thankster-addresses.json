@@ -1,0 +1,1 @@
+{"id":8793,"name":"Add Mailchimp subscribers from new Thankster addresses","description":"Every time a new address is created in Thankster, Make will automatically add subscriber to your Mailchimp.","url":"8793-add-mailchimp-subscribers-from-new-thankster-addresses","usedApps":["thankster","mailchimp"],"usage":1}

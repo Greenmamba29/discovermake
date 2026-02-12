@@ -1,0 +1,1 @@
+{"id":6887,"name":"Transfer files from Google Drive to Nextcloud","description":"When you upload files to a specific folder in Google Drive, Make will automatically download the files and upload them to a folder in Nextcloud.","url":"6887-transfer-files-from-google-drive-to-nextcloud","usedApps":["google-drive","nextcloud"],"usage":71}

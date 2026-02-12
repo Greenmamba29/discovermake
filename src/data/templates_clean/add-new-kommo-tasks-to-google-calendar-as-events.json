@@ -1,0 +1,1 @@
+{"id":10429,"name":"Add new Kommo tasks to Google Calendar as events","description":"Every time a new task is created in Kommo, Make will automatically add that task to your Google Calendar as an event.","url":"2324-add-new-amocrm-tasks-to-google-calendar-as-events","usedApps":["amo-crm","google-calendar"],"usage":150}

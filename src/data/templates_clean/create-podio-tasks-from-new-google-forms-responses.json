@@ -1,0 +1,1 @@
+{"id":1732,"name":"Create Podio tasks from new Google Forms responses","description":"Every time a new response is entered on your Google Form, Make will automatically create a new task in Podio.","url":"1732-create-podio-tasks-from-new-google-forms-responses","usedApps":["google-forms","podio"],"usage":10}

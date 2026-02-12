@@ -1,0 +1,1 @@
+{"id":1994,"name":"Add new Stripe customers to MailerLite","description":"Every time a new customer is created in Stripe, Make will automatically add that customer as a new subscriber to a MailerLite group of your choice.","url":"1994-add-new-stripe-customers-to-mailerlite","usedApps":["mailerlite","stripe"],"usage":405}

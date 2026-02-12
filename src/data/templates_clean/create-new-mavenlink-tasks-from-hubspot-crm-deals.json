@@ -1,0 +1,1 @@
+{"id":6845,"name":"Create new Mavenlink tasks from HubSpot CRM deals","description":"Every time there is a new deal created in HubSpot CRM, Make will automatically create a new task in Mavenlink using information about the deal. ","url":"6845-create-new-mavenlink-tasks-from-hubspot-crm-deals","usedApps":["hubspotcrm","mavenlink"],"usage":2}

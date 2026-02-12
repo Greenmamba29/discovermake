@@ -1,0 +1,1 @@
+{"id":2978,"name":"List links in Rebrandly meeting specified criteria and send them to Google Sheets","description":"List links meeting specified criteria and add the records as new rows in Google Sheets.","url":"2978-list-links-in-rebrandly-meeting-specified-criteria-and-send-them-to-google-sheets","usedApps":["rebrandly","google-sheets"],"usage":7}

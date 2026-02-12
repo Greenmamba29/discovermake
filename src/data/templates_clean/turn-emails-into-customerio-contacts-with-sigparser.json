@@ -1,0 +1,1 @@
+{"id":4110,"name":"Turn emails into Customer.io contacts with SigParser","description":"Every time a contact is created or updated in SigParser, Make will automatically update or create a new contact in Customer.io","url":"4110-turn-emails-into-customer-io-contacts-with-sigparser","usedApps":["sigparser","customer-io"],"usage":1}

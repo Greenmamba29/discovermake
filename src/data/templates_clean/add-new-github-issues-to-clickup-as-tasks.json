@@ -1,0 +1,1 @@
+{"id":1897,"name":"Add new GitHub issues to ClickUp as tasks","description":"Every time a new issue is created in GitHub, Make will automatically create a new task in ClickUp.","url":"1897-add-new-github-issues-to-clickup-as-tasks","usedApps":["github","clickup"],"usage":69}

@@ -1,0 +1,1 @@
+{"id":8649,"name":"Create Trello cards for new Site24x7 alerts","description":"Every time there is a new alert appeared in Site24x7, Make will automatically create a card in Trello containing info about the alert.","url":"8649-create-trello-cards-for-new-site24x7-alerts","usedApps":["site24x7","trello"],"usage":3}

@@ -1,0 +1,1 @@
+{"id":3601,"name":"Create subscribers on Emercury from new Shopify customers","description":"Every time a new customer is created on Shopify, Make will automatically create a new subscriber on Emercury.","url":"3601-create-subscribers-on-emercury-from-new-shopify-customers","usedApps":["shopify","emercury","builtin"],"usage":1}

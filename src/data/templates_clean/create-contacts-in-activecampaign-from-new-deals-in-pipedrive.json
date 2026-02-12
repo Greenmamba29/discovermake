@@ -1,0 +1,1 @@
+{"id":5184,"name":"Create contacts in ActiveCampaign from new deals in Pipedrive","description":"Every time new deals are added in Pipedrive, Make retrieves them and creates contacts in ActiveCampaign automatically.","url":"5184-create-contacts-in-activecampaign-from-new-deals-in-pipedrive","usedApps":["pipedrive","activecampaign"],"usage":10}

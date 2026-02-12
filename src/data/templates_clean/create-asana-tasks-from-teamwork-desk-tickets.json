@@ -1,0 +1,1 @@
+{"id":4134,"name":"Create Asana tasks from Teamwork Desk tickets","description":"Every time a new ticket is created in Teamwork Desk, Make will automatically create a new task in Asana.","url":"4134-create-asana-tasks-from-teamwork-desk-tickets","usedApps":["teamwork-desk","asana"],"usage":4}

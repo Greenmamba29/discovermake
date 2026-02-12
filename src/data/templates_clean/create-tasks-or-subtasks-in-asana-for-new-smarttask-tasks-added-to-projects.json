@@ -1,0 +1,1 @@
+{"id":6743,"name":"Create tasks or subtasks in Asana for new SmartTask tasks added to projects.","description":"Every time a new task is added you a project in your SmartTask, Make will create a task with identical information in your Asana.","url":"6743-create-tasks-or-subtasks-in-asana-for-new-smarttask-tasks-added-to-projects","usedApps":["smarttask","asana"],"usage":2}

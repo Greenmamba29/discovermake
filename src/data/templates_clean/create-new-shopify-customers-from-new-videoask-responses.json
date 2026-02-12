@@ -1,0 +1,1 @@
+{"id":8944,"name":"Create new Shopify customers from new VideoAsk responses","description":"Every time a new response is added to the form in VideoAsk, Make will automatically create a new customer in Shopify.","url":"8944-create-new-shopify-customers-from-new-videoask-responses","usedApps":["videoask","shopify"],"usage":7}

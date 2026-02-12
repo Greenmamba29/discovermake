@@ -1,0 +1,1 @@
+{"id":5784,"name":"Send a Gmail email from a new Todoist project","description":"Every time a new Todoist project is created, Make will automatically send a Gmail email.","url":"5784-send-a-gmail-email-from-a-new-todoist-project","usedApps":["todoist","google-email"],"usage":7}

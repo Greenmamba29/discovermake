@@ -1,0 +1,1 @@
+{"id":13180,"name":"Send data to an HTTP endpoint based on Monday.com item updates","description":"Automatically send updated Monday.com item data to an HTTP endpoint. Keep your systems in sync with real-time updates from Monday.com.","url":"13180-send-data-to-an-http-endpoint-based-on-monday-com-item-updates","usedApps":["monday","http"],"usage":12}

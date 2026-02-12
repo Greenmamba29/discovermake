@@ -1,0 +1,1 @@
+{"id":8734,"name":"Send Telegram messages for new Clust submitted applications","description":"Make will watch for new submitted applications in Clust and send messages to the specified chat in Telegram.","url":"8734-send-telegram-messages-for-new-clust-submitted-applications","usedApps":["clust","telegram"],"usage":2}

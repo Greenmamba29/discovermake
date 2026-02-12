@@ -1,0 +1,1 @@
+{"id":8063,"name":"Create EZOfficeInventory users from new Zendesk users","description":"Every time a new user is created in Zendesk, Make will automatically add that user to EZOfficeInventory.","url":"8063-create-ezofficeinventory-users-from-new-zendesk-users","usedApps":["zendesk","ezofficeinventory"],"usage":2}

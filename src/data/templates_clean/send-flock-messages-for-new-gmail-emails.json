@@ -1,0 +1,1 @@
+{"id":6433,"name":"Send Flock messages for new Gmail emails","description":"Every time you receive a Gmail email matching specified criteria, Integromat will automatically post that message to Flock.","url":"6433-send-flock-messages-for-new-gmail-emails","usedApps":["google-email","flock"],"usage":1}

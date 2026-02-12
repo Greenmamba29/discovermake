@@ -1,0 +1,1 @@
+{"id":8308,"name":"Send Google Chrome push notifications for new Calls in Relatel","description":"Every time a new call is received in Relatel, Make will automatically send a push notification via Google Chrome.","url":"8308-send-google-chrome-push-notifications-for-new-calls-in-relatel","usedApps":["relatel","chrome"],"usage":2}

@@ -1,0 +1,1 @@
+{"id":3522,"name":"New Airtable records sent as a Slack message","description":"Every time a new record is added in Airtable, you will get a Slack message with the record details.","url":"3522-new-airtable-records-sent-as-a-slack-message","usedApps":["airtable","slack"],"usage":987}

@@ -1,0 +1,1 @@
+{"id":8671,"name":"Create Trello cards for new Voxloud phone calls","description":"Every time a new call is going through Voxloud, Make will automatically create a new card in Trello.","url":"8671-create-trello-cards-for-new-voxloud-phone-calls","usedApps":["voxloud","trello"],"usage":5}

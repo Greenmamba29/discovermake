@@ -1,0 +1,1 @@
+{"id":2123,"name":"Get notified on Telegram when new members are added to a Trello card/board","description":"Every time a new member is added to a specified card /board in Trello, Make will automatically send a message on Telegram.","url":"2123-get-notified-on-telegram-when-new-members-are-added-to-a-trello-card-board","usedApps":["trello","telegram"],"usage":60}

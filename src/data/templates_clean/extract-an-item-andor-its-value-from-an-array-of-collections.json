@@ -1,0 +1,1 @@
+{"id":2110,"name":"Extract an item and/or its value from an array of collections","description":"From an Array of Collections (Names, Emails, IDs), you can extract an item (Email) and/or extract the value of an item (a specific email) using functions.","url":"2110-extract-an-item-and-or-its-value-from-an-array-of-collections","usedApps":["builtin","json","util"],"usage":4660}

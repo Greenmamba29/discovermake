@@ -1,0 +1,1 @@
+{"id":4028,"name":"Create eSignatures.io contracts for new HubSpot CRM prospects","description":"Every time a deal moves to a specific stage in HubSpot CRM, Make will automatically create a contract from an eSignatures.io template.","url":"4028-create-esignatures-io-contracts-for-new-hubspot-crm-prospects","usedApps":["hubspotcrm","esignatures-io"],"usage":4}

@@ -1,0 +1,1 @@
+{"id":6388,"name":"Create ClickUp tasks for new MakePlans bookings","description":"Every time an invitee reservate an appointment in MakePlans, Make will automatically create a new task in a ClickUp list of your choice.","url":"6388-create-clickup-tasks-for-new-makeplans-bookings","usedApps":["makeplans","clickup"],"usage":2}

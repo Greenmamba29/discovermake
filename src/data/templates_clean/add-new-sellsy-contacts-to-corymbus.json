@@ -1,0 +1,1 @@
+{"id":8016,"name":"Add new Sellsy contacts to Corymbus","description":"Every time a new contact has been added to Sellsy, Make will automatically find this contact in Sellsy internal systems and create a new contact in Corymbus.","url":"8016-add-new-sellsy-contacts-to-corymbus","usedApps":["sellsy","corymbus"],"usage":3}

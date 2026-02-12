@@ -1,0 +1,1 @@
+{"id":4247,"name":"Create Pipedrive CRM persons from Cognito Forms entries","description":"Every time a new Cognito Forms entry is submitted, Make will automatically create a new person in Pipedrive CRM.","url":"4247-create-pipedrive-crm-persons-from-cognito-forms-entries","usedApps":["cognitoforms","pipedrive"],"usage":7}

@@ -1,0 +1,1 @@
+{"id":5142,"name":"Publish new Beamer posts to Facebook Groups","description":"Every time a new post is created in Beamer, Make will automatically create a post in Facebook Group.","url":"5142-publish-new-beamer-posts-to-facebook-groups","usedApps":["beamer","facebook-groups"],"usage":4}

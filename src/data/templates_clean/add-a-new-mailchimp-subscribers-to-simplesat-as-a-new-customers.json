@@ -1,0 +1,1 @@
+{"id":7115,"name":"Add a new Mailchimp subscribers to Simplesat as a new customers","description":"Every time there's a new subscriber in Mailchimp, Make will automatically create a new customer in Simplesat.","url":"7115-add-a-new-mailchimp-subscribers-to-simplesat-as-a-new-customers","usedApps":["mailchimp","simplesat"],"usage":0}

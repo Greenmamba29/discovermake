@@ -1,0 +1,1 @@
+{"id":8287,"name":"Send Telegram messages for new Ticket Tailor orders","description":"Make will watch your Ticket Tailor orders  at regular intervals and send messages to your Telegram channel.","url":"8287-send-telegram-messages-for-new-ticket-tailor-orders","usedApps":["ticket-tailor","telegram"],"usage":3}

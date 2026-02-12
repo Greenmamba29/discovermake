@@ -1,0 +1,1 @@
+{"id":3256,"name":"Create Zoho CRM deals from new Zoho Sign documents","description":"Every time a new document is signed with Zoho Sign, Make will automatically add a new deal in Zoho CRM.","url":"3256-create-zoho-crm-deals-from-new-zoho-sign-documents","usedApps":["zoho-sign","zohocrm"],"usage":22}

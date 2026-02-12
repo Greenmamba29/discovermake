@@ -1,0 +1,1 @@
+{"id":8203,"name":"Brief details of the Loyverse receipt by sms using Mitto SMS","description":"Every time a new receipt is created on Loyverse POS, Mitto SMS will send to the customer a brief details of it.","url":"8203-brief-details-of-the-loyverse-receipt-by-sms-using-mitto-sms","usedApps":["loyverse","util","mitto-sms"],"usage":19}

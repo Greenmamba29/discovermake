@@ -1,0 +1,1 @@
+{"id":8535,"name":"Send emails from new Google Forms responses using Restdb.io","description":"Make will watch for new Google Forms responses at regular intervals and send emails using Restdb.io.","url":"8535-send-emails-from-new-google-forms-responses-using-restdb-io","usedApps":["google-forms","restdb-io"],"usage":6}

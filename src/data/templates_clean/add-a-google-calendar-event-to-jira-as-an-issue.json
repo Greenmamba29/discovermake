@@ -1,0 +1,1 @@
+{"id":5479,"name":"Add a Google Calendar event to JIRA as an issue","description":"Use this template to create a JIRA Cloud Platform issue when a new Google Calendar event is scheduled.","url":"5479-add-a-google-calendar-event-to-jira-as-an-issue","usedApps":["google-calendar","jira"],"usage":31}

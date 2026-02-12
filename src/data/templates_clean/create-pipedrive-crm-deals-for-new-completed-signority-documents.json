@@ -1,0 +1,1 @@
+{"id":7602,"name":"Create Pipedrive CRM deals for new completed Signority documents","description":"Every time there is a new completed Signority document, Make will automatically create a new deal in Pipedrive CRM.","url":"7602-create-pipedrive-crm-deals-for-new-completed-signority-documents","usedApps":["signority","pipedrive"],"usage":1}

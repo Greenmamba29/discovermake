@@ -1,0 +1,1 @@
+{"id":4183,"name":"Record Wave transactions from new Shopify orders","description":"Every time a new Shopify order is created, Make will automatically record the corresponding accounting transaction in Wave.","url":"4183-record-wave-transactions-from-new-shopify-orders","usedApps":["shopify","wave"],"usage":115}

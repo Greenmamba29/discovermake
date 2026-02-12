@@ -1,0 +1,1 @@
+{"id":7689,"name":"Add MantisBT issues from new Trello cards","description":"Make will watch new cards moved to specified list in Trello at regular intervals and create issues in MantisBt using provided information from Trello.","url":"7689-add-mantisbt-issues-from-new-trello-cards","usedApps":["trello","mantisbt"],"usage":1}

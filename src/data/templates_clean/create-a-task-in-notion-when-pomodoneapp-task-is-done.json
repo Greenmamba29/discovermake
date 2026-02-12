@@ -1,0 +1,1 @@
+{"id":6808,"name":"Create a task in Notion when PomoDoneApp task is done","description":"Every time a task is marked as \"Done\" in PomoDoneApp, Make will automatically create a new item in Notion.","url":"6808-create-a-task-in-notion-when-pomodoneapp-task-is-done","usedApps":["pomodoneapp","notion"],"usage":24}

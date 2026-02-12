@@ -1,0 +1,1 @@
+{"id":4541,"name":"Send Go4Clients SMS messages for new Zoho CRM Calls","description":"Every time a new call is logged in Zoho CRM, Make Will Automatically send a SMS message via Go4Clients.","url":"4541-send-go4clients-sms-messages-for-new-zoho-crm-calls","usedApps":["zohocrm","go4clients"],"usage":1}

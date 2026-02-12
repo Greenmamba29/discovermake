@@ -1,0 +1,1 @@
+{"id":8582,"name":"Send Telegram messages for Steam app news","description":"Make will list news for a selected Steam game and send them via your Telegram bot.","url":"8582-send-telegram-messages-for-steam-app-news","usedApps":["steam","telegram"],"usage":50}

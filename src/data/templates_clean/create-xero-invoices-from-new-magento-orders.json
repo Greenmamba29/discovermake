@@ -1,0 +1,1 @@
+{"id":1309,"name":"Create Xero invoices from new Magento orders","description":"Every time a new order is created in Magento, Make will automatically add the submitted data to Xero as a new contact and subsequently create a new invoice in Xero. ","url":"1309-create-xero-invoices-from-new-magento-orders","usedApps":["magento","xero","builtin","util"],"usage":40}

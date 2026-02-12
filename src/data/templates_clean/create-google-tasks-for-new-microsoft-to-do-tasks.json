@@ -1,0 +1,1 @@
+{"id":3638,"name":"Create Google Tasks for new Microsoft To Do tasks","description":"Every time a new task is created in Microsoft To Do, Integromat will automatically add that task to Google Tasks.","url":"3638-create-google-tasks-for-new-microsoft-to-do-tasks","usedApps":["microsoft-to-do","google-tasks"],"usage":446}

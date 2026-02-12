@@ -1,0 +1,1 @@
+{"id":8696,"name":"Create new ActiveCampaign contacts for new registrants in ClickMeeting","description":"Every time a new attendee registets to an event in ClickMeeting, Make will automatically create a new contact in ActiveCampaign. ","url":"8696-create-new-activecampaign-contacts-for-new-registrants-in-clickmeeting","usedApps":["clickmeeting","activecampaign"],"usage":1}

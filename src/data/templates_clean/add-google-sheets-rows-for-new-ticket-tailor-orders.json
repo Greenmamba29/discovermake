@@ -1,0 +1,1 @@
+{"id":8288,"name":"Add Google Sheets rows for new Ticket Tailor orders","description":"Make will watch your Ticket Tailor orders at regular intervals and add them to your Google Sheets. Here's the [sheet](https://youtu.be/lFqLQEJk0NQ) used in this scenario. ","url":"8288-add-google-sheets-rows-for-new-ticket-tailor-orders","usedApps":["ticket-tailor","google-sheets"],"usage":43}

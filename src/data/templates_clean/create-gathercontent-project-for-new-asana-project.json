@@ -1,0 +1,1 @@
+{"id":6316,"name":"Create GatherContent project for new Asana project","description":"Every time a new Asana project is created, Make will automatically create a project in GatherContent.","url":"6316-create-gathercontent-project-for-new-asana-project","usedApps":["asana","gathercontent"],"usage":3}

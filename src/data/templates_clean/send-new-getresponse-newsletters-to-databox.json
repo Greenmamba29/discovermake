@@ -1,0 +1,1 @@
+{"id":3894,"name":"Send new GetResponse newsletters to Databox","description":"When a newsletter is created in GetResponse, Make will automatically send newsletter's data to Databox.","url":"3894-send-new-getresponse-newsletters-to-databox","usedApps":["getresponse","databox"],"usage":7}

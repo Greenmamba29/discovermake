@@ -1,0 +1,1 @@
+{"id":3810,"name":"Create Eversign documents for new Pipedrive CRM prospects","description":"Every time a deal moves to a specific stage in Pipedrive CRM, Make will automatically create a contract from an Eversign template.","url":"3810-create-eversign-documents-for-new-pipedrive-crm-prospects","usedApps":["pipedrive","eversign"],"usage":0}

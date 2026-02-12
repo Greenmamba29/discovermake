@@ -1,0 +1,1 @@
+{"id":4605,"name":"Create GrowSurf participants from Google Contacts","description":"Every time a new Google Contact is created. Make will automatically create a GrowSurf participant.","url":"4605-create-growsurf-participants-from-google-contacts","usedApps":["google-contacts","growsurf"],"usage":0}

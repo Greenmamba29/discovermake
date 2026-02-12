@@ -1,0 +1,1 @@
+{"id":5463,"name":"Create tasks on Todoist from Slack messages","description":"This automation watches for messages in a private Slack channel and adds them as tasks on Todoist for you to attend to.","url":"5463-create-tasks-on-todoist-from-slack-messages","usedApps":["slack","todoist"],"usage":48}

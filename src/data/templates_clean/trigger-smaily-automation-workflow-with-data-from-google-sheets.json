@@ -1,0 +1,1 @@
+{"id":3235,"name":"Trigger Smaily Automation Workflow with data from Google Sheets","description":"When a new row with data is created in Google Sheets, the data are sent to Smaily and the automation workflow is triggered.","url":"3235-trigger-smaily-automation-workflow-with-data-from-google-sheets","usedApps":["google-sheets","smaily"],"usage":10}

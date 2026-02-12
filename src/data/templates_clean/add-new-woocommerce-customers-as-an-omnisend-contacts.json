@@ -1,0 +1,1 @@
+{"id":6162,"name":"Add new WooCommerce customers as an Omnisend contacts","description":"Every time a new customer is created in WooCommerce, Make will automatically add that customer as a new Omnisend contact.","url":"6162-add-new-woocommerce-customers-as-an-omnisend-contacts","usedApps":["woocommerce","omnisend"],"usage":10}

@@ -1,0 +1,1 @@
+{"id":5669,"name":"Create a training assignment in Strava via Telegram bot","description":"Every time you message your Telegram bot with an activity type a training assignment is created on a designated athlete in Strava. ","url":"5669-create-a-training-assignment-in-strava-via-telegram-bot","usedApps":["telegram","strava"],"usage":19}

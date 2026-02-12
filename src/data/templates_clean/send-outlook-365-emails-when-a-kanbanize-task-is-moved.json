@@ -1,0 +1,1 @@
+{"id":4411,"name":"Send Outlook 365 emails when a Kanbanize task is moved","description":"Every time a task is moved in Kanbanize, Make will automatically send a new email to a specified recipient in Microsoft 365 email.","url":"4411-send-outlook-365-emails-when-a-kanbanize-task-is-moved","usedApps":["kanbanize","microsoft-email"],"usage":10}

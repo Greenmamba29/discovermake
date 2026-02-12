@@ -1,0 +1,1 @@
+{"id":3529,"name":"Connect Dux-Soup to Pipedrive CRM","description":"When a webhook from Dux-Soup Turbo is received, a person in Pipedrive CRM is created or updated, an organization is created and assigned to that newly created person.","url":"3529-connect-dux-soup-to-pipedrive-crm","usedApps":["dux-soup","pipedrive","builtin"],"usage":52}

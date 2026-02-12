@@ -1,0 +1,1 @@
+{"id":1436,"name":"Send Slack messages for new MessageBird SMS messages","description":"Every time a new message is received in MessageBird, Make will automatically send a message in Slack.","url":"1436-send-slack-messages-for-new-messagebird-sms-messages","usedApps":["message-bird","slack"],"usage":5}

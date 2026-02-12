@@ -1,0 +1,1 @@
+{"id":12889,"name":"Fetch Facebook ad account insights and write to Google BigQuery","description":"Automatically fetch Facebook ad account insights and write them to Google BigQuery for streamlined data analysis and reporting.","url":"12889-fetch-facebook-ad-account-insights-and-write-to-google-bigquery","usedApps":["facebook-insights","google-bigquery"],"usage":15}

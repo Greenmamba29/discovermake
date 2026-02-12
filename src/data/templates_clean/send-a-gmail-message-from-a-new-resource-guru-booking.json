@@ -1,0 +1,1 @@
+{"id":6146,"name":"Send a Gmail message from a new Resource Guru booking","description":"Every time a Resource Guru booking is created, Make will automatically send a Gmail message.","url":"6146-send-a-gmail-message-from-a-new-resource-guru-booking","usedApps":["resource-guru","google-email"],"usage":3}

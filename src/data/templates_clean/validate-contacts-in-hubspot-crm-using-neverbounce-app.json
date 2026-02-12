@@ -1,0 +1,1 @@
+{"id":4584,"name":"Validate contacts in Hubspot CRM using NeverBounce App","description":"When a new contact is created in Hubspot CRM, that contacts is validated by NeverBounce. If the Email is not valid, it is deactivated","url":"4584-validate-contacts-in-hubspot-crm-using-neverbounce-app","usedApps":["hubspotcrm","neverbounce","go4clients"],"usage":1}

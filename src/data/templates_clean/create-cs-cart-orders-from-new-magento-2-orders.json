@@ -1,0 +1,1 @@
+{"id":7784,"name":"Create CS-Cart orders from new Magento 2 orders","description":"Make will watch your Magento 2 orders at regular intervals and create CS-Cart orders. If a product doesn't exist in CS-Cart, it will be created.","url":"7784-create-cs-cart-orders-from-new-magento-2-orders","usedApps":["magento2","builtin","cs-cart"],"usage":4}

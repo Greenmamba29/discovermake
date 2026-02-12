@@ -1,0 +1,1 @@
+{"id":8768,"name":"Send Gmail emails for new fulfilled Printful orders","description":"Make will watch for new fulfilled orders in Printful and send an email via Gmail to a customer.","url":"8768-send-gmail-emails-for-new-fulfilled-printful-orders","usedApps":["printful","google-email"],"usage":7}

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Dispute Resolution Console</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13a4ec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101c22",
+                        "surface-dark": "#1c2b36",
+                        "surface-light": "#ffffff",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #233c48;
+            border-radius: 4px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white h-screen overflow-hidden flex flex-col antialiased">
+<!-- Top App Bar -->
+<header class="shrink-0 bg-surface-light dark:bg-background-dark border-b border-gray-200 dark:border-slate-800 z-20">
+<div class="flex items-center p-4 pb-2 justify-between">
+<button class="text-slate-600 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full p-2 -ml-2 transition-colors">
+<span class="material-symbols-outlined text-2xl">arrow_back</span>
+</button>
+<div class="flex-1 px-3">
+<div class="flex items-center gap-2">
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-tight">Dispute #4092</h2>
+<span class="bg-amber-500/10 text-amber-600 dark:text-amber-400 text-[10px] uppercase font-bold px-2 py-0.5 rounded-full border border-amber-500/20">Active</span>
+</div>
+<p class="text-slate-500 dark:text-[#92b7c9] text-xs font-medium truncate">SaaS Dashboard Automator • #WFL-8821</p>
+</div>
+<button class="text-primary text-sm font-bold leading-normal tracking-wide shrink-0 hover:text-blue-400 transition-colors">
+                DETAILS
+            </button>
+</div>
+<!-- Collapsible Context Card -->
+<div class="px-4 pb-4">
+<div class="bg-slate-100 dark:bg-[#1c2b36] rounded-lg p-3 flex items-start gap-3 border border-slate-200 dark:border-slate-700/50 shadow-sm">
+<div class="h-10 w-10 shrink-0 rounded-md bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400">
+<span class="material-symbols-outlined">gavel</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start">
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider mb-0.5">Dispute Reason</p>
+<span class="text-slate-900 dark:text-white font-bold text-sm">$45.00</span>
+</div>
+<p class="text-slate-900 dark:text-white text-sm font-semibold truncate">Inaccurate Outcome</p>
+<p class="text-slate-500 dark:text-slate-400 text-xs truncate">Model failed to generate specified chart types.</p>
+</div>
+<button class="text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300">
+<span class="material-symbols-outlined text-xl">expand_more</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Chat Area -->
+<main class="flex-1 overflow-y-auto p-4 space-y-6 bg-slate-50 dark:bg-background-dark relative">
+<!-- Date Divider -->
+<div class="flex items-center justify-center my-4">
+<span class="bg-slate-200 dark:bg-[#1c2b36] text-slate-500 dark:text-slate-400 text-xs font-medium px-3 py-1 rounded-full">Today, 10:23 AM</span>
+</div>
+<!-- Creator Message (Left) -->
+<div class="flex items-end gap-3 group">
+<div class="relative">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full w-8 h-8 shrink-0 ring-2 ring-[#233c48]" data-alt="Profile picture of the creator" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuASDxTXKjogMKzWj0yVhGgy7RuLAoGAqthdQQ_bN93FUHsQU9EnxaGIY2eNjmGxQkwqhZP3LcFJvVMSMpsiHpzwxa5TQQvPvVcOqDFmqIMxlZ2kNmi-zJ-USgqk2ErhdZdy0VwkaC6rB4oyqEauiNXo86Ev_PZ5g9P7cdkJIIcKmgi0M3skkMm6FiZ0uHNqFz4dE0haQkXy39pJ1TIE5j9iJMg3Ehh4vcdUmzRcdEAmnF5PGXo5K2M02mndUjh8s7d6A3QxYD8CaKo");'></div>
+<div class="absolute -bottom-1 -right-1 bg-purple-500 rounded-full p-0.5 border-2 border-slate-50 dark:border-background-dark flex items-center justify-center" title="Creator">
+<span class="material-symbols-outlined text-[10px] text-white font-bold">code</span>
+</div>
+</div>
+<div class="flex flex-1 flex-col gap-1 items-start max-w-[85%]">
+<div class="flex items-baseline gap-2">
+<span class="text-slate-600 dark:text-[#92b7c9] text-xs font-bold">Creator (Dev)</span>
+<span class="text-slate-400 dark:text-slate-600 text-[10px]">10:24 AM</span>
+</div>
+<div class="p-3 bg-white dark:bg-[#233c48] border border-slate-200 dark:border-transparent rounded-lg rounded-tl-none shadow-sm">
+<p class="text-slate-800 dark:text-white text-sm leading-relaxed">
+                        Please check the logs, the input parameters were ambiguous. I followed the standard procedure for vague prompts.
+                    </p>
+</div>
+</div>
+</div>
+<!-- User Message (Right) -->
+<div class="flex items-end gap-3 justify-end group">
+<div class="flex flex-1 flex-col gap-1 items-end max-w-[85%]">
+<div class="flex items-baseline gap-2 flex-row-reverse">
+<span class="text-slate-600 dark:text-[#92b7c9] text-xs font-bold">User (Client)</span>
+<span class="text-slate-400 dark:text-slate-600 text-[10px]">10:28 AM</span>
+</div>
+<div class="p-3 bg-blue-50 dark:bg-[#1c2b36] border border-blue-100 dark:border-transparent rounded-lg rounded-tr-none shadow-sm">
+<p class="text-slate-800 dark:text-white text-sm leading-relaxed">
+                        The output didn't match the prompt provided at all. I specifically asked for a bar chart and got a pie chart.
+                    </p>
+<!-- Attachment Example -->
+<div class="mt-2 flex items-center gap-2 p-2 bg-white/50 dark:bg-black/20 rounded border border-blue-100 dark:border-white/5">
+<div class="bg-indigo-500/20 text-indigo-400 p-1.5 rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-lg">image</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-xs font-medium text-slate-700 dark:text-slate-300 truncate">screenshot_evidence.png</p>
+<p class="text-[10px] text-slate-500 dark:text-slate-500">245 KB</p>
+</div>
+</div>
+</div>
+</div>
+<div class="relative">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full w-8 h-8 shrink-0 ring-2 ring-[#13a4ec]/20" data-alt="Profile picture of the user" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAo0errVye7EJ6N1Ma_SYjTdfvmF8NgU4EBAsJyViwHSROkuKoXQfaaAH-zi3HoJ5nuuCjcIvae-O63xhZmHCZzMNNkxIrfHU5C6DZVyAowVUlqfkZZHQrW5gJlxHFoJC8HvAcRherjM3yi6lWHVomJygEGCPZYUqvPMY7FWtYJtWKDlXjdgk0tHKoTYhBzqBldbyqAXe7xuDErtfuqCwOgNzIYajR4MKNs6Romg_Ug9DenrkJFTL7h5IywRpt82jy7Qp49j_wCm2I");'></div>
+<div class="absolute -bottom-1 -left-1 bg-teal-500 rounded-full p-0.5 border-2 border-slate-50 dark:border-background-dark flex items-center justify-center" title="User">
+<span class="material-symbols-outlined text-[10px] text-white font-bold">person</span>
+</div>
+</div>
+</div>
+<!-- Admin Intervention (Center) -->
+<div class="flex flex-col items-center gap-2 my-6">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-sm">security</span>
+<span class="text-xs font-bold tracking-widest uppercase">Admin Intervention</span>
+<div class="h-px w-12 bg-primary/20"></div>
+</div>
+<div class="bg-primary/10 border border-primary/20 p-4 rounded-xl max-w-[90%] text-center">
+<p class="text-primary text-sm font-medium mb-1">System Review In Progress</p>
+<p class="text-slate-600 dark:text-slate-300 text-xs">
+                    I am reviewing the generation logs now. Both parties please hold while I verify the prompt history against the output.
+                </p>
+</div>
+</div>
+<!-- User Follow up -->
+<div class="flex items-end gap-3 justify-end group">
+<div class="flex flex-1 flex-col gap-1 items-end max-w-[85%]">
+<div class="flex items-baseline gap-2 flex-row-reverse">
+<span class="text-slate-600 dark:text-[#92b7c9] text-xs font-bold">User (Client)</span>
+<span class="text-slate-400 dark:text-slate-600 text-[10px]">10:35 AM</span>
+</div>
+<div class="p-3 bg-blue-50 dark:bg-[#1c2b36] border border-blue-100 dark:border-transparent rounded-lg rounded-tr-none shadow-sm">
+<p class="text-slate-800 dark:text-white text-sm leading-relaxed">
+                        Sure, standing by.
+                    </p>
+</div>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full w-8 h-8 shrink-0 ring-2 ring-[#13a4ec]/20" data-alt="Profile picture of the user" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCqYr-JcMCMaT0VT_t2n_uP7sZPFfppzwOnKJyGFC7W2V37VggwCyLyl36xZ6znyGTHpJW9O4gZEIqahS7Kmng7UfKifTLRguxnoXSAFEBCEHECy2cx-unZRt-6hwtiiHwlqFmxPGjAEw1m-TwqeXheMHfeCpkAUF6z5EOXa0UkQVnK6XEZiGznaDATOlqmEubEOYmaiEHbW1SKvWwqLV-I31Zaz97Vg3WkJbeASKm_M30aQEdwnYm3_zUnjFW9TCqi5t9yXVXU4EU");'></div>
+</div>
+<!-- Admin Action Notification -->
+<div class="flex flex-col items-center gap-2 my-4 opacity-70">
+<div class="bg-slate-200 dark:bg-slate-800 px-3 py-1.5 rounded-full flex items-center gap-2">
+<span class="material-symbols-outlined text-xs text-slate-500 dark:text-slate-400">visibility</span>
+<p class="text-[10px] text-slate-500 dark:text-slate-400 font-medium">Admin viewed attachment "screenshot_evidence.png"</p>
+</div>
+</div>
+<!-- Spacer for fixed bottom -->
+<div class="h-32"></div>
+</main>
+<!-- Admin Action Bar & Input -->
+<footer class="bg-surface-light dark:bg-[#111c22] border-t border-gray-200 dark:border-slate-800 p-4 fixed bottom-0 w-full z-30 pb-6">
+<!-- Message Input -->
+<div class="flex gap-2 items-end mb-4">
+<button class="text-slate-400 hover:text-primary p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined">add_circle</span>
+</button>
+<div class="flex-1 bg-slate-100 dark:bg-[#1c2b36] rounded-lg flex items-center border border-transparent focus-within:border-primary/50 transition-colors">
+<input class="bg-transparent border-none w-full text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:ring-0 py-2.5 px-3" placeholder="Type a message as Admin..." type="text"/>
+<button class="mr-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1">
+<span class="material-symbols-outlined text-lg">sentiment_satisfied</span>
+</button>
+</div>
+<button class="bg-primary text-white p-2.5 rounded-lg hover:bg-blue-600 transition-colors shadow-lg shadow-blue-500/20">
+<span class="material-symbols-outlined text-xl">send</span>
+</button>
+</div>
+<!-- Quick Actions -->
+<div class="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4 scrollbar-hide">
+<button class="flex-1 min-w-[120px] bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-500/20 hover:bg-red-100 dark:hover:bg-red-500/20 py-2.5 px-3 rounded-lg text-sm font-semibold flex items-center justify-center gap-2 transition-all">
+<span class="material-symbols-outlined text-lg">money_off</span>
+                Issue Refund
+            </button>
+<button class="flex-1 min-w-[120px] bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700 py-2.5 px-3 rounded-lg text-sm font-semibold flex items-center justify-center gap-2 transition-all">
+<span class="material-symbols-outlined text-lg">cancel</span>
+                Reject
+            </button>
+<button class="shrink-0 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700 py-2.5 px-3 rounded-lg flex items-center justify-center transition-all">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</div>
+</footer>
+</body></html>

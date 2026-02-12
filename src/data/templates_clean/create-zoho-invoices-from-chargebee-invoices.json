@@ -1,0 +1,1 @@
+{"id":3666,"name":"Create Zoho Invoices from Chargebee invoices","description":"Every time a new chargebee invoice is created, Make will automatically create a new invoice in Zoho Invoice.","url":"3666-create-zoho-invoices-from-chargebee-invoices","usedApps":["chargebee","zoho-invoice"],"usage":5}

@@ -1,0 +1,1 @@
+{"id":7467,"name":"Create YouTestMe users for new contacts in HubSpot CRM","description":"Every time a new contact is created in your HubSpot CRM, Make will automatically create a user in YouTestMe.","url":"7467-create-youtestme-users-for-new-contacts-in-hubspot-crm","usedApps":["hubspotcrm","youtestme"],"usage":1}

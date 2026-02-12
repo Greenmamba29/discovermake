@@ -1,0 +1,1 @@
+{"id":5457,"name":"Create a Smartsheet row from a new Airtable record","description":"Using this template, Make will automatically create a Smartsheet row when a new Airtable record is added.\n\nYour Airtable table has to contain the 'Created time' type of column.","url":"5457-create-a-smartsheet-row-from-a-new-airtable-record","usedApps":["airtable","smartsheet"],"usage":16}

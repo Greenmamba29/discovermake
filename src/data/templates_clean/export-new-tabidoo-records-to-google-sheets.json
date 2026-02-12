@@ -1,0 +1,1 @@
+{"id":4546,"name":"Export new Tabidoo records to Google Sheets","description":"Every time a new record is added to Tabidoo, Make will automatically add a new row in Google Sheets.","url":"4546-export-new-tabidoo-records-to-google-sheets","usedApps":["tabidoo","google-sheets"],"usage":19}

@@ -1,0 +1,1 @@
+{"id":4726,"name":"Create a Thankster card when row is added to Google Sheet spreadsheet","description":"When a new row is added in a Google Sheets spreadsheet, a new Thankster card is created.","url":"4726-create-a-thankster-card-when-row-is-added-to-google-sheet-spreadsheet","usedApps":["google-sheets","thankster"],"usage":1}

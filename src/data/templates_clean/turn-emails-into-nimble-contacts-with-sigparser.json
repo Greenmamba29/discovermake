@@ -1,0 +1,1 @@
+{"id":4050,"name":"Turn emails into Nimble contacts with SigParser","description":"Every time a contact is created or updated in SigParser, Make will automatically update or create a new contact in Nimble","url":"4050-turn-emails-into-nimble-contacts-with-sigparser","usedApps":["sigparser","nimble","builtin","util","json"],"usage":2}

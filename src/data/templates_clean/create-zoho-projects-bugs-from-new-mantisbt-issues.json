@@ -1,0 +1,1 @@
+{"id":7851,"name":"Create Zoho Projects bugs from new MantisBT issues","description":"Every time there is a new issue in your MantisBT, Make will automatically create a bug in a specified Zoho Project.","url":"7851-create-zoho-projects-bugs-from-new-mantisbt-issues","usedApps":["mantisbt","zoho-projects"],"usage":2}

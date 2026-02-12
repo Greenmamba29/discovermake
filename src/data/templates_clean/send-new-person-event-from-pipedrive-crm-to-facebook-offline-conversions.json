@@ -1,0 +1,1 @@
+{"id":3037,"name":"Send new person event from Pipedrive CRM to Facebook Offline Conversions","description":"When a new person is created/updated in Pipedrive CRM, the record of the person is sent to Facebook Offline Conversions.","url":"3037-send-new-person-event-from-pipedrive-crm-to-facebook-offline-conversions","usedApps":["pipedrive","facebook-offline-conversions"],"usage":2}

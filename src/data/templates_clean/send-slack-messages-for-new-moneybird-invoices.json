@@ -1,0 +1,1 @@
+{"id":6666,"name":"Send Slack messages for new Moneybird invoices","description":"Every time there is a new sales invoice in Moneybird, Make will automatically send a message with main information through Slack.","url":"6666-send-slack-messages-for-new-moneybird-invoices","usedApps":["moneybird","slack"],"usage":10}

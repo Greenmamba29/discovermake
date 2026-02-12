@@ -1,0 +1,1 @@
+{"id":6172,"name":"Add Xero contacts as a new CloudTalk contacts","description":"Every time a new contact is created in Xero with an email address, Make will automatically add that contact to a CloudTalk.","url":"6172-add-xero-contacts-as-a-new-cloudtalk-contacts","usedApps":["xero","cloudtalk"],"usage":1}

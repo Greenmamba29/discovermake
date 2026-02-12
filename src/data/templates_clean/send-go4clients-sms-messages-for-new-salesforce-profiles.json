@@ -1,0 +1,1 @@
+{"id":4566,"name":"Send Go4Clients SMS messages for new Salesforce Profiles","description":"Every time a new profile is created in Salesforce, Make will automatically send an SMS message via Go4Clients","url":"4566-send-go4clients-sms-messages-for-new-salesforce-profiles","usedApps":["salesforce","go4clients"],"usage":0}

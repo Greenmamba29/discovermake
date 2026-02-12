@@ -1,0 +1,1 @@
+{"id":7669,"name":"Add a new HubSpot CRM contacts to Revv Documents","description":"Every time a new contact is created in HubSpot CRM, Make will automatically create a new contact in Revv Documents.","url":"7669-add-a-new-hubspot-crm-contacts-to-revv-documents","usedApps":["hubspotcrm","revv-documents"],"usage":1}

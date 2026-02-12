@@ -1,0 +1,1 @@
+{"id":4503,"name":"Generate PDFMonkey documents from Google Sheets rows","description":"Every time a new Google Sheets row is added, Make will generate a new document in PDFMonkey.","url":"4503-generate-pdfmonkey-documents-from-google-sheets-rows","usedApps":["google-sheets","pdfmonkey"],"usage":197}

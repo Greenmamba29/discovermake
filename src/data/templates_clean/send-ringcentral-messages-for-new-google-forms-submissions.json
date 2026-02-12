@@ -1,0 +1,1 @@
+{"id":2547,"name":"Send RingCentral messages for new Google Forms submissions","description":"Every time someone fills out your Google Form, Make will automatically send an SMS message via RingCentral.","url":"2547-send-ringcentral-messages-for-new-google-forms-submissions","usedApps":["google-forms","ringcentral"],"usage":3}

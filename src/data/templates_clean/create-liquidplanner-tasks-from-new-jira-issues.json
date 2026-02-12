@@ -1,0 +1,1 @@
+{"id":8272,"name":"Create LiquidPlanner tasks from new JIRA issues","description":"Every time there is a new issue on JIRA Cloud Platform, Make will automatically create a new task in LiquidPlanner.","url":"8272-create-liquidplanner-tasks-from-new-jira-issues","usedApps":["jira","liquidplanner"],"usage":10}

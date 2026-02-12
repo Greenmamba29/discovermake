@@ -1,0 +1,1 @@
+{"id":6201,"name":"Create a PostgreSQL table row from a WordPress comment","description":"Use this template to automatically insert a row to your PostgreSQL table when a new WordPress comment is posted.","url":"6201-create-a-postgresql-table-row-from-a-wordpress-comment","usedApps":["wordpress","postgres"],"usage":6}

@@ -1,0 +1,1 @@
+{"id":8580,"name":"Save new Splitwise expenses to Google Sheets","description":"Every time a new expense is created in Splitwise, Make will automatically create a record for it in Google Sheets.","url":"8580-save-new-splitwise-expenses-to-google-sheets","usedApps":["splitwise","google-sheets"],"usage":44}

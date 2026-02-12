@@ -1,0 +1,1 @@
+{"id":4421,"name":"Create a Beeminder datapoint for new Runkeeper activities","description":"Every time a new activity is added to Runkeeper, Make will automatically add the corresponding datapoint to Beeminder.","url":"4421-create-a-beeminder-datapoint-for-new-runkeeper-activities","usedApps":["runkeeper","beeminder"],"usage":1}

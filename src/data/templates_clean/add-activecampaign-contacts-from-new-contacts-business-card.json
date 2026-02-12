@@ -1,0 +1,1 @@
+{"id":6272,"name":"Add ActiveCampaign contacts from new Contacts+ business Card","description":"Every time a new you add a new business card in Contacts+, Make will automatically create an ActiveCampaign contact.","url":"6272-add-activecampaign-contacts-from-new-contacts-business-card","usedApps":["contactsplus","activecampaign"],"usage":2}

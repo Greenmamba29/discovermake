@@ -1,0 +1,1 @@
+{"id":5506,"name":"Create Opsgenie Alert from new GitHub issues","description":"Every time a new issue is created in GitHub, Make will automatically create a new Alert in Opsgenie.","url":"5506-create-opsgenie-alert-from-new-github-issues","usedApps":["github","opsgenie"],"usage":0}

@@ -1,0 +1,1 @@
+{"id":7785,"name":"Create CS-Cart orders from new Squarespace orders","description":"Make will watch your Squarespace orders at regular intervals and create CS-Cart orders. If a product doesn't exist in CS-Cart, it will be created.","url":"7785-create-cs-cart-orders-from-new-squarespace-orders","usedApps":["squarespace","builtin","cs-cart"],"usage":2}

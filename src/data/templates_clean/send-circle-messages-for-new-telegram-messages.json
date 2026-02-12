@@ -1,0 +1,1 @@
+{"id":7642,"name":"Send Circle messages for new Telegram messages","description":"Every time your Telegram bot gets a message, Make will forward it to your Circle.","url":"7642-send-circle-messages-for-new-telegram-messages","usedApps":["telegram","circle-so"],"usage":6}

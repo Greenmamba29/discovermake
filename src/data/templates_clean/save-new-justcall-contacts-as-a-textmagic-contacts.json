@@ -1,0 +1,1 @@
+{"id":6167,"name":"Save new JustCall contacts as a TextMagic contacts","description":"Every time a new contact is added to a JustCall, Make will automatically add that contact to TextMagic.","url":"6167-save-new-justcall-contacts-as-a-textmagic-contacts","usedApps":["justcall","textmagic"],"usage":2}

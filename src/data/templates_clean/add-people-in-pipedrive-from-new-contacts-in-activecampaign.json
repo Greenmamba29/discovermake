@@ -1,0 +1,1 @@
+{"id":5075,"name":"Add people in Pipedrive from new contacts in ActiveCampaign","description":"Every time contacts are added to ActiveCampaign, Make retrieves the contacts and adds them as new people in Pipedrive.","url":"5075-add-people-in-pipedrive-from-new-contacts-in-activecampaign","usedApps":["activecampaign","pipedrive"],"usage":54}

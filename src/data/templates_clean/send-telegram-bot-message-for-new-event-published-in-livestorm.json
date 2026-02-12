@@ -1,0 +1,1 @@
+{"id":5164,"name":"Send Telegram bot message for new Event Published in Livestorm","description":"Every time when a new event is published on Livestorm, Make will automatically send a message to Telegram Bot.","url":"5164-send-telegram-bot-message-for-new-event-published-in-livestorm","usedApps":["livestorm","telegram"],"usage":0}

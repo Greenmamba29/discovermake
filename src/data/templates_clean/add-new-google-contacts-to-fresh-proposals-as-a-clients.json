@@ -1,0 +1,1 @@
+{"id":7928,"name":"Add new Google Contacts to Fresh Proposals as a clients","description":"Every time a new contact is created in Google Contacts, Make will automatically add that contact to Fresh Proposals as a client.","url":"7928-add-new-google-contacts-to-fresh-proposals-as-a-clients","usedApps":["google-contacts","fresh-proposals"],"usage":1}

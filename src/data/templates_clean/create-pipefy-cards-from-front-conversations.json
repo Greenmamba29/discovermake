@@ -1,0 +1,1 @@
+{"id":3767,"name":"Create Pipefy cards from Front conversations","description":"Every time a new conversation is created on Front, Make will automatically create a new card on Pipefy.","url":"3767-create-pipefy-cards-from-front-conversations","usedApps":["front","pipefy"],"usage":3}

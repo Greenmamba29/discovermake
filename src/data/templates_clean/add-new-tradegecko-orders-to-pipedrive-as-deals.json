@@ -1,0 +1,1 @@
+{"id":2017,"name":"Add new Tradegecko orders to Pipedrive as deals","description":"Every time a new order is created on Tradegecko, Make will automatically create a new deal in Pipedrive.","url":"2017-add-new-tradegecko-orders-to-pipedrive-as-deals","usedApps":["tradegecko","pipedrive"],"usage":2}

@@ -1,0 +1,1 @@
+{"id":4010,"name":"Send GIF using GIPHY on Skype when a new Google Task is created","description":"Every time a new Google Task is created, Make will automatically get a random Gif using GIPHY and send it to Skype.","url":"4010-send-gif-using-giphy-on-skype-when-a-new-google-task-is-created","usedApps":["google-tasks","giphy","skype"],"usage":2}

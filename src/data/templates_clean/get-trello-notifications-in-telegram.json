@@ -1,0 +1,1 @@
+{"id":2122,"name":"Get Trello notifications in Telegram","description":"Every time you have a new notification in Trello, Make will automatically send a message in Telegram.","url":"2122-get-trello-notifications-in-telegram","usedApps":["trello","telegram"],"usage":1373}

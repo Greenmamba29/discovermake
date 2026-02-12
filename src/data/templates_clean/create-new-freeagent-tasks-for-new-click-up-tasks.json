@@ -1,0 +1,1 @@
+{"id":6823,"name":"Create new FreeAgent tasks for new Click Up tasks","description":"Every time a new task is created in ClickUp, Make will automatically add that task to FreeAgent.","url":"6823-create-new-freeagent-tasks-for-new-click-up-tasks","usedApps":["clickup","freeagent"],"usage":20}

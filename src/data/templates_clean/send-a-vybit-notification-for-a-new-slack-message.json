@@ -1,0 +1,1 @@
+{"id":5241,"name":"Send a Vybit notification for a new Slack message","description":"Every time there's a new Slack message (in a specified public or private channel for instance), Make will automatically send a Vybit notification.","url":"5241-send-a-vybit-notification-for-a-new-slack-message","usedApps":["slack","vybit"],"usage":3}

@@ -1,0 +1,1 @@
+{"id":3605,"name":"Add new ClickUp tasks to Microsoft To Do","description":"Every time a new task is created in ClickUp, Make will automatically add that task to Microsoft To Do.","url":"3605-add-new-clickup-tasks-to-microsoft-to-do","usedApps":["clickup","microsoft-to-do"],"usage":206}

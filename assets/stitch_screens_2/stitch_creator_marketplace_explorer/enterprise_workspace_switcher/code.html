@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Enterprise Workspace Switcher</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13a4ec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#111c22",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#1b272f",
+                        "secondary-dark": "#233c48",
+                        "text-subtle-dark": "#92b7c9",
+                        "text-subtle-light": "#64748b",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased min-h-screen flex flex-col items-center">
+<!-- Mobile Container -->
+<div class="w-full max-w-md bg-background-light dark:bg-background-dark min-h-screen shadow-2xl overflow-hidden flex flex-col">
+<!-- Header -->
+<div class="flex items-center px-4 py-3 justify-between sticky top-0 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-sm z-10 border-b border-gray-200 dark:border-white/5">
+<button class="flex items-center justify-center p-2 -ml-2 rounded-full hover:bg-gray-200 dark:hover:bg-white/10 transition-colors text-slate-800 dark:text-white">
+<span class="material-symbols-outlined">close</span>
+</button>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">Switch Workspace</h2>
+<button class="text-primary text-base font-semibold leading-normal tracking-[0.015em] shrink-0 p-2 -mr-2 hover:opacity-80 transition-opacity">
+                Done
+            </button>
+</div>
+<!-- Scrollable Content -->
+<div class="flex-1 overflow-y-auto">
+<!-- Active Workspace Section -->
+<div class="p-4 w-full flex flex-col items-center">
+<div class="w-full bg-surface-light dark:bg-surface-dark rounded-xl p-6 shadow-sm border border-gray-200 dark:border-white/5 flex flex-col items-center gap-4 relative overflow-hidden group">
+<!-- Ambient Background Glow -->
+<div class="absolute -top-24 -left-24 w-48 h-48 bg-primary/20 rounded-full blur-3xl group-hover:bg-primary/30 transition-all duration-500"></div>
+<div class="relative z-10 flex flex-col items-center gap-3">
+<div class="relative">
+<div class="bg-center bg-no-repeat bg-cover rounded-xl shadow-lg h-24 w-24 ring-4 ring-white dark:ring-[#233c48]" data-alt="Abstract geometric blue logo for DiscoverMake HQ" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAeIb-uG-rKqQwJcM3H1psIgJ1dReO56KDEfn1L_ojCeHOE29Jhd45FmFsmAfNm4mVegIbornFReezlT1GNcqgZRgSmdvoYD_yg4dqEmBRP72b2ZWpLd7Z1HY4nteyCylXuK-bxBB_5dYglZqrtasteDeYw2mbL8sPvLM5x3DsvXwxIMDCUKITAz2Bbc9Andbvz4DaK2Wp0ohZH7VS1GPNtQZCABf0t79kqNUbbD2KDzZ_JXdO44gDDQmsbiqTp6pWgt7sRpNg1QTo");'></div>
+<div class="absolute -bottom-2 -right-2 bg-primary text-white rounded-full p-1 shadow-md flex items-center justify-center ring-2 ring-white dark:ring-[#233c48]">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</div>
+</div>
+<div class="flex flex-col items-center justify-center text-center mt-1">
+<h1 class="text-slate-900 dark:text-white text-2xl font-bold leading-tight tracking-tight">DiscoverMake HQ</h1>
+<div class="flex items-center gap-1.5 mt-2 bg-primary/10 px-3 py-1 rounded-full border border-primary/20">
+<span class="material-symbols-outlined text-primary text-[16px]">verified_user</span>
+<span class="text-primary text-xs font-semibold uppercase tracking-wide">Verified Enterprise</span>
+</div>
+<div class="flex items-center gap-4 mt-3 text-slate-500 dark:text-text-subtle-dark text-sm font-medium">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">group</span>
+                                    124 Members
+                                </span>
+<span class="w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-600"></span>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">domain</span>
+                                    San Francisco
+                                </span>
+</div>
+</div>
+</div>
+<button class="relative z-10 mt-2 w-full flex items-center justify-center gap-2 h-10 px-4 rounded-lg bg-slate-100 dark:bg-[#233c48] text-slate-700 dark:text-white text-sm font-semibold hover:bg-slate-200 dark:hover:bg-[#2c4b5a] transition-colors border border-transparent dark:border-white/5">
+<span class="material-symbols-outlined text-[18px]">settings</span>
+<span>Manage Settings</span>
+</button>
+</div>
+</div>
+<!-- List Section -->
+<div class="mt-2">
+<div class="flex items-center justify-between px-6 pb-3 pt-2">
+<h3 class="text-slate-900 dark:text-white text-base font-bold leading-tight">Available Organizations</h3>
+<span class="text-xs font-medium text-slate-500 dark:text-text-subtle-dark bg-slate-100 dark:bg-surface-dark px-2 py-0.5 rounded-full">3 Accounts</span>
+</div>
+<div class="flex flex-col gap-[1px] bg-gray-200 dark:bg-white/5 border-y border-gray-200 dark:border-white/5">
+<!-- Item 1 -->
+<button class="group flex items-center gap-4 bg-white dark:bg-background-dark px-6 py-4 justify-between hover:bg-slate-50 dark:hover:bg-surface-dark transition-colors text-left w-full">
+<div class="flex items-center gap-4 min-w-0">
+<div class="relative shrink-0">
+<div class="bg-center bg-no-repeat bg-cover rounded-lg size-12 shadow-sm border border-gray-100 dark:border-white/10" data-alt="Global Marketing Team logo with abstract colorful shapes" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBVIvrMYQGq6jlW-kb7C47IHeT0FGxul_P-R7Cg7J2mHU2xV45_K09zVJ45nURwYyVre3ApJNI9GHSIbgJSiy0fyjcFDS6YukEpb-qNPKppPpqFKTK6KcSjdB3hx4HQjSYYS4I4Bm-KgLpjpJxz0VDmstjSn6fmyu6CXcnu0P8H1tP1jx7W9KHcdzeDFZ2KLEAxFXX27yYn3_2mq4rf0TLTJq7TQfqVT78jYCOZ1gogAqiMxr4A_rdP9f2X36DuGdt30vazRNRlMCo");'></div>
+</div>
+<div class="flex flex-col justify-center min-w-0">
+<div class="flex items-center gap-2 mb-0.5">
+<p class="text-slate-900 dark:text-white text-base font-semibold leading-none truncate">Global Marketing</p>
+<span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-300 border border-purple-200 dark:border-purple-800">ADMIN</span>
+</div>
+<div class="flex items-center gap-1.5 text-slate-500 dark:text-text-subtle-dark text-sm">
+<span class="material-symbols-outlined text-[14px] shrink-0">history</span>
+<p class="font-normal leading-normal truncate">Campaign launched 2h ago</p>
+</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-slate-400 dark:text-slate-600 group-hover:text-primary transition-colors">chevron_right</span>
+</button>
+<!-- Item 2 -->
+<button class="group flex items-center gap-4 bg-white dark:bg-background-dark px-6 py-4 justify-between hover:bg-slate-50 dark:hover:bg-surface-dark transition-colors text-left w-full">
+<div class="flex items-center gap-4 min-w-0">
+<div class="relative shrink-0">
+<div class="bg-center bg-no-repeat bg-cover rounded-lg size-12 shadow-sm border border-gray-100 dark:border-white/10 grayscale opacity-80" data-alt="Minimalist geometric avatar for Personal Builds workspace" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAlrn6No_axnBL2s7dBUiR3bqPVu8ebZtoFG3-mMNX1xCUkFFrzVhA-a3UXXMQf07B16gWh4m7hpYGRT34DVwBFiVp1YU50cp9hzTSgcJYi93mqMyAqCyAzsQFb_DTbvKdDfPM1ByDOxcigHYeQw1pigfzyylGpFP7GBR1-nxOvXs2RvycfD1uMenrjlBrKD_iYkJCnYy04wD4pcU6-UvPVkx8hdWBj666uAZvKZ3Yib98Jk6LrNWKrGrE9DmJA3dvSnEgHVzW-dBY");'></div>
+</div>
+<div class="flex flex-col justify-center min-w-0">
+<div class="flex items-center gap-2 mb-0.5">
+<p class="text-slate-900 dark:text-white text-base font-semibold leading-none truncate">Personal Builds</p>
+<span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 border border-blue-200 dark:border-blue-800">OWNER</span>
+</div>
+<div class="flex items-center gap-1.5 text-slate-500 dark:text-text-subtle-dark text-sm">
+<span class="material-symbols-outlined text-[14px] shrink-0">edit</span>
+<p class="font-normal leading-normal truncate">Edited 'Draft 4'</p>
+</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-slate-400 dark:text-slate-600 group-hover:text-primary transition-colors">chevron_right</span>
+</button>
+<!-- Item 3 -->
+<button class="group flex items-center gap-4 bg-white dark:bg-background-dark px-6 py-4 justify-between hover:bg-slate-50 dark:hover:bg-surface-dark transition-colors text-left w-full">
+<div class="flex items-center gap-4 min-w-0">
+<div class="relative shrink-0">
+<div class="bg-center bg-no-repeat bg-cover rounded-lg size-12 shadow-sm border border-gray-100 dark:border-white/10" data-alt="Creative Studio workspace logo with artistic brush strokes" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCVTKRRlQqpwn_PzUhQrBHvN0eudB554D0uxxQa-GtCMYL0uQMtzA9zntP5lIa5DxSeJ_uYfNISJ97V-tGYfd-OWFfv6YS7ckEIbdH3vunXKl42lLJ6XZh5PTUZTZiE9d8xtWfVuOtb0s-bVgPfdmj1mhfhZROy6xqSl5gVpQEV9WOom5C-KHi6I0wSoYwMx3IdfOyhJhkG4lvnmDR-Unb03o8lCGxzSexjl1DiDJxyJesO8-P5QHvLulgL0ntcRrwjLq_28kSjXD4");'></div>
+</div>
+<div class="flex flex-col justify-center min-w-0">
+<div class="flex items-center gap-2 mb-0.5">
+<p class="text-slate-900 dark:text-white text-base font-semibold leading-none truncate">Creative Studio</p>
+<span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-slate-100 dark:bg-slate-700/50 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-600">CONTRIBUTOR</span>
+</div>
+<div class="flex items-center gap-1.5 text-slate-500 dark:text-text-subtle-dark text-sm">
+<span class="material-symbols-outlined text-[14px] shrink-0">chat_bubble</span>
+<p class="font-normal leading-normal truncate">5 new comments</p>
+</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-slate-400 dark:text-slate-600 group-hover:text-primary transition-colors">chevron_right</span>
+</button>
+</div>
+</div>
+<div class="h-20"></div> <!-- Spacer for scrolling -->
+</div>
+<!-- Sticky Bottom Actions -->
+<div class="p-4 bg-background-light dark:bg-background-dark border-t border-gray-200 dark:border-white/5 sticky bottom-0 w-full z-10 safe-area-bottom">
+<button class="flex w-full cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-xl h-12 px-4 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] shadow-lg hover:bg-blue-500 transition-colors active:scale-[0.98]">
+<span class="material-symbols-outlined">add_circle</span>
+<span class="truncate">Join or Create Organization</span>
+</button>
+<div class="mt-4 flex justify-center">
+<button class="text-slate-500 dark:text-text-subtle-dark text-sm font-medium hover:text-slate-800 dark:hover:text-white transition-colors">
+                    Log out of all accounts
+                </button>
+</div>
+</div>
+</div>
+</body></html>

@@ -1,0 +1,1 @@
+{"id":7256,"name":"Add Mailgun mailing list members for new affiliates in Tapfiliate","description":"Every time a new affiliate is added to your Tapfiliate, Make will add them as a mailing list member in your Mailgun.","url":"7256-add-mailgun-mailing-list-members-for-new-affiliates-in-tapfiliate","usedApps":["tapfiliate","mailgun"],"usage":1}

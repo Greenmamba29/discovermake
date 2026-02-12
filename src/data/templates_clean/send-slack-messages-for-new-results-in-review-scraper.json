@@ -1,0 +1,1 @@
+{"id":8392,"name":"Send Slack messages for new results in Review Scraper","description":"Every time a new result is received in Review Scraper, Make will automatically send a message in Slack.","url":"8392-send-slack-messages-for-new-results-in-review-scraper","usedApps":["review-scraper","slack"],"usage":20}

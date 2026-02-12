@@ -1,0 +1,1 @@
+{"id":15174,"name":"Get content of a Google Doc, edit using ChatGPT and create a new doc","description":"Periodically fetch contents of a Google Doc and edit using ChatGPT. The automation will then create a new Google Doc with the AI results.","url":"15174-get-content-of-a-google-doc-edit-using-chatgpt-and-create-a-new-doc","usedApps":["google-docs","openai-gpt-3"],"usage":52}

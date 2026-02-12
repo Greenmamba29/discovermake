@@ -1,0 +1,1 @@
+{"id":10131,"name":"Send out apaleo's Payment Link via Microsoft 365 Email","description":"Automation template to send out an email with the payment link, if a payment link was created on a folio.","url":"10131-automation-send-out-payment-link-microsoft-365-email","usedApps":["apaleo","builtin","util","microsoft-email"],"usage":71}

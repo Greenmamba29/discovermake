@@ -1,0 +1,1 @@
+{"id":4023,"name":"Add records in Zoho Creator when barcodes are scanned","description":"Every time a barcode / QR code is scanned via the Make Android app, Make will automatically add a record in Zoho Creator. ","url":"4023-add-records-in-zoho-creator-when-barcodes-are-scanned","usedApps":["android","zoho-creator"],"usage":3}

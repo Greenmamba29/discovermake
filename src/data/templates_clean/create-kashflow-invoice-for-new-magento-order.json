@@ -1,0 +1,1 @@
+{"id":5963,"name":"Create KashFlow invoice for new Magento order","description":"Every time a new Magento order is created, Make will automatically create an invoice in KashFlow.","url":"5963-create-kashflow-invoice-for-new-magento-order","usedApps":["magento2","kashflow"],"usage":1}

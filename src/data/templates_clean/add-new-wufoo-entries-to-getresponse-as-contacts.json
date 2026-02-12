@@ -1,0 +1,1 @@
+{"id":865,"name":"Add new Wufoo entries to GetResponse as contacts ","description":"Every time someone completes a selected Wufoo form, Make will automatically create a new contact in GetResponse.","url":"865-add-new-wufoo-entries-to-getresponse-as-contacts","usedApps":["getresponse","wufoo"],"usage":1}

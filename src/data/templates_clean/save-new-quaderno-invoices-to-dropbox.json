@@ -1,0 +1,1 @@
+{"id":8537,"name":"Save new Quaderno invoices to Dropbox","description":"Every time a new invoice is created in Quaderno, Make will automatically save pdf file with that invoice to specified folder in Dropbox.","url":"8537-save-new-quaderno-invoices-to-dropbox","usedApps":["quaderno","http","dropbox"],"usage":8}

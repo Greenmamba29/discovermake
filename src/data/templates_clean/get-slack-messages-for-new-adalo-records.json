@@ -1,0 +1,1 @@
+{"id":8257,"name":"Get Slack messages for new Adalo records","description":"Make will watch for new records in Adalo at regular intervals and send messages to a specified channel or chat in Slack.","url":"8257-get-slack-messages-for-new-adalo-records","usedApps":["adalo","slack"],"usage":13}

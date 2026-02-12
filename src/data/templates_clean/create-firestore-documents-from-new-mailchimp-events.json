@@ -1,0 +1,1 @@
+{"id":4435,"name":"Create Firestore documents from new Mailchimp events","description":"Every time a new subscriber is added to a selected Mailchimp list, Make will automatically add that subscriber to your Firestore database.","url":"4435-create-firestore-documents-from-new-mailchimp-events","usedApps":["mailchimp","google-cloud-firestore"],"usage":2}

@@ -1,0 +1,1 @@
+{"id":11330,"name":"Add Smith.ai calls as a New Prospect to an Outreach Sequence","description":"Every time Smith.ai answers a call from a new lead, this scenario will add them as a Prospect to Outreach and then add that Prospect to a Sequence. ","url":"11330-add-smith-ai-calls-as-a-new-prospect-to-an-outreach-sequence","usedApps":["smith-ai","outreach"],"usage":10}

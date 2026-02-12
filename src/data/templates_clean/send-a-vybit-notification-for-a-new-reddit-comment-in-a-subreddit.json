@@ -1,0 +1,1 @@
+{"id":5240,"name":"Send a Vybit notification for a new reddit comment in a subreddit","description":"Every time a new reddit comment in a subreddit is created, Make will automatically send a Vybit notification.","url":"5240-send-a-vybit-notification-for-a-new-reddit-comment-in-a-subreddit","usedApps":["reddit","vybit"],"usage":8}

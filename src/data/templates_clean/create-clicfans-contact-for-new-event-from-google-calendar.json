@@ -1,0 +1,1 @@
+{"id":5520,"name":"Create Clicfans contact for new event from Google Calendar","description":"Every time a new event is added to Google Calendar, Make will automatically create a contact in Clicfans.","url":"5520-create-clicfans-contact-for-new-event-from-google-calendar","usedApps":["google-calendar","clicfans"],"usage":2}

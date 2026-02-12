@@ -1,0 +1,1 @@
+{"id":6302,"name":"Send new Wix orders to Facebook Conversions API","description":"Every time a new order is created in Wix, a new conversion will be uploaded to Facebook Conversions API.\n","url":"6302-send-new-wix-orders-to-facebook-conversions-api","usedApps":["wix","facebook-conversions-api"],"usage":16}

@@ -1,0 +1,1 @@
+{"id":4393,"name":"Create Time Doctor tasks from Trello cards","description":"Every time a new Trello card is created, Make will automatically create a new task in Time Doctor and delete that card from Trello.","url":"4393-create-time-doctor-tasks-from-trello-cards","usedApps":["trello","time-doctor"],"usage":3}

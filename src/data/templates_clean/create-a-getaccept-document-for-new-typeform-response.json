@@ -1,0 +1,1 @@
+{"id":5609,"name":"Create a GetAccept document for new Typeform response","description":"Every time a new Typeform response is received, Make will automatically create a document in GetAccept.","url":"5609-create-a-getaccept-document-for-new-typeform-response","usedApps":["typeform","getaccept"],"usage":4}

@@ -1,0 +1,1 @@
+{"id":8704,"name":"Send Gmail emails for new Tars conversations","description":"Every time these is a new conversation in Tars, Make will automatically send a Gmail email to the respondent. The data received from Tars is supposed to be email address.","url":"8704-send-gmail-emails-for-new-tars-conversations","usedApps":["tars","builtin","google-email"],"usage":2}

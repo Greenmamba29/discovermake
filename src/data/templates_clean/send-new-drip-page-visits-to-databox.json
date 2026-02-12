@@ -1,0 +1,1 @@
+{"id":3905,"name":"Send new Drip page visits to Databox","description":"Whenever a subscriber visits a page that is bound to an automation rule in your Drip email campaign, Make will automatically update the number of page visits in Databox. ","url":"3905-send-new-drip-page-visits-to-databox","usedApps":["drip","databox"],"usage":5}

@@ -1,0 +1,1 @@
+{"id":576,"name":"Delete a Gitter room when a card is moved in Trello","description":"When a card is moved in Trello, Make will automatically delete a specified Gitter room.","url":"576-delete-a-gitter-room-when-a-card-is-moved-in-trello","usedApps":["trello","gitter"],"usage":1}

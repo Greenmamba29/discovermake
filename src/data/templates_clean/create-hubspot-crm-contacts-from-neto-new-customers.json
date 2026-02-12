@@ -1,0 +1,1 @@
+{"id":4683,"name":"Create HubSpot CRM contacts from Neto new customers","description":"Every time a new customer is created in Neto, Make will automatically create a new contact in HubSpot CRM.","url":"4683-create-hubspot-crm-contacts-from-neto-new-customers","usedApps":["neto","hubspotcrm"],"usage":1}

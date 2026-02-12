@@ -1,0 +1,1 @@
+{"id":5441,"name":"Create ClickUp tasks from new Close CRM tasks","description":"Every time there is a new Close CRM task, it will be recorded into ClickUp.","url":"5441-create-clickup-tasks-from-new-close-crm-tasks","usedApps":["close-crm","clickup"],"usage":17}

@@ -1,0 +1,1 @@
+{"id":8700,"name":"Create attendees in ClickMeeting from new Google Forms responses","description":"Every time a new response is entered on your Google Forms, Make will automatically create a new attendee in ClickMeeting.","url":"8700-create-attendees-in-clickmeeting-from-new-google-forms-responses","usedApps":["google-forms","clickmeeting"],"usage":3}

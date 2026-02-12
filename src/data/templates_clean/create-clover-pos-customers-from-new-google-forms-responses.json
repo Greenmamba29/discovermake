@@ -1,0 +1,1 @@
+{"id":8148,"name":"Create Clover POS customers from new Google Forms responses","description":"Make will watch new Google Forms responses and create Clover POS customers using information received.","url":"8148-create-clover-pos-customers-from-new-google-forms-responses","usedApps":["google-forms","clover-pos"],"usage":40}

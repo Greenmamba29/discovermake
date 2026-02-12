@@ -1,0 +1,1 @@
+{"id":4127,"name":"Send Microsoft Teams messages for new KanbanFlow tasks","description":"Every time a new task is created in KanbanFlow, Make will automatically send a message in Microsoft Teams.","url":"4127-send-microsoft-teams-messages-for-new-kanbanflow-tasks","usedApps":["kanbanflow","microsoft-teams"],"usage":8}

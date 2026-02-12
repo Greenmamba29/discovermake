@@ -1,0 +1,1 @@
+{"id":2174,"name":"Send new email attachments to Telegram","description":"Every time you receive a new email with an attachment, Make will automatically send that attachment to a Telegram channel of your choice.","url":"2174-send-new-email-attachments-to-telegram","usedApps":["email","builtin","telegram"],"usage":411}

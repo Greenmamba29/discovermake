@@ -1,0 +1,1 @@
+{"id":1899,"name":"Add new messages in a Slack channel to ClickUp as tasks","description":"Every time a new message is posted in Slack, Make will automatically create a new task in a ClickUp list of your choice.","url":"1899-add-new-messages-in-a-slack-channel-to-clickup-as-tasks","usedApps":["slack","clickup"],"usage":167}

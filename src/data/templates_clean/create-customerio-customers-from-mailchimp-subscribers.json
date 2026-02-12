@@ -1,0 +1,1 @@
+{"id":4715,"name":"Create Customer.io customers from Mailchimp subscribers","description":"Every time a new Mailchimp subscriber is added, Make will automatically create a new customer in Customer.io.","url":"4715-create-customer-io-customers-from-mailchimp-subscribers","usedApps":["mailchimp","customer-io"],"usage":3}

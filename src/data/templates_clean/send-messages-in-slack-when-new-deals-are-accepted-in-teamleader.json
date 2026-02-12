@@ -1,0 +1,1 @@
+{"id":7573,"name":"Send messages in Slack when new deals are accepted in Teamleader","description":"Every time a new deal are accepted in Teamleader, Make will automatically send a message to your Slack.","url":"7573-send-messages-in-slack-when-new-deals-are-accepted-in-teamleader","usedApps":["teamleader","slack"],"usage":13}

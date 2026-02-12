@@ -1,0 +1,1 @@
+{"id":1420,"name":"Send SMS messages via Texbelt for new Runkeeper activities","description":"Every time a new activity is added on Runkeeper, Make will check if it matches specified criteria. If not, Make will send an SMS message via Textbelt.","url":"1420-send-sms-messages-via-texbelt-for-new-runkeeper-activities","usedApps":["textbelt","runkeeper"],"usage":0}

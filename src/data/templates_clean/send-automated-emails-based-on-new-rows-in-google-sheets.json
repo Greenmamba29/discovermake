@@ -1,0 +1,1 @@
+{"id":13091,"name":"Send automated emails based on new rows in Google Sheets","description":"Automatically send personalized emails when new rows are added in Google Sheets, then update the sheet with email status using Google Email and Sheets.","url":"13091-send-automated-emails-based-on-new-rows-in-google-sheets","usedApps":["google-sheets","google-email"],"usage":71}

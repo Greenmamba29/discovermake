@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Creator Mode Membership</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13a4ec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101c22",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-gray-900 dark:text-white antialiased">
+<!-- Main Container -->
+<div class="relative flex min-h-screen flex-col overflow-hidden max-w-md mx-auto shadow-2xl bg-white dark:bg-[#101c22]">
+<!-- Close Button (Absolute) -->
+<button class="absolute top-6 right-6 z-20 flex h-8 w-8 items-center justify-center rounded-full bg-black/20 text-white backdrop-blur-sm transition hover:bg-black/40">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+<!-- Hero Section -->
+<div class="relative h-[45vh] w-full shrink-0">
+<!-- Background Image -->
+<div class="absolute inset-0 bg-cover bg-center" data-alt="Professional creator focused at desk working on laptop in dark environment" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDmHqPVbm2X9sebEFsmR4CJezDX1KPNgLS-7Zm9G8f0l4CaydoeJyG7x0yIhLTrWchnBxzzqRDw_SbDgqVtAHzZoictrFa2y95dXRyQBHBjhxNI-Bqpbf17Jyezt4na6yijI9ssSh-ZEXueMjNmYEAm8b24ovw_kO29nvILrdbH9uxgoG4Lp4kf_2rPdxSC0nxYvR_QflRmkYg_2JZKNqPgt1yurrkO6_kcgNYCSAWt_x-eTrka7zKwbOMy4de_zRYTmGtS8zTDN7w');">
+</div>
+<!-- Gradient Overlay -->
+<div class="absolute inset-0 bg-gradient-to-t from-[#101c22] via-[#101c22]/60 to-transparent"></div>
+<!-- Hero Content -->
+<div class="absolute bottom-0 left-0 right-0 p-6">
+<div class="mb-4 inline-flex items-center gap-1.5 rounded-full bg-primary/20 border border-primary/30 px-3 py-1 backdrop-blur-md">
+<span class="material-symbols-outlined text-primary text-[16px] fill">bolt</span>
+<span class="text-xs font-bold text-primary uppercase tracking-wide">Level Up</span>
+</div>
+<h1 class="text-3xl font-black leading-tight tracking-tight text-white drop-shadow-sm">
+                    You're already creating.<br/>
+<span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-300">Go faster</span> with Creator Mode.
+                </h1>
+</div>
+</div>
+<!-- Scrollable Content -->
+<div class="flex-1 px-6 pb-32"> <!-- pb-32 for sticky bottom spacing -->
+<p class="mb-8 text-gray-400 font-medium leading-relaxed">
+                Unlock professional tools designed to remove friction from your workflow. Build, iterate, and launch without limits.
+            </p>
+<!-- Comparison Table -->
+<div class="rounded-xl overflow-hidden border border-gray-800 bg-[#16242c]">
+<!-- Header Row -->
+<div class="grid grid-cols-2 border-b border-gray-800 bg-[#1a2b34]">
+<div class="py-4 text-center text-sm font-medium text-gray-400">Free</div>
+<div class="relative py-4 text-center text-sm font-bold text-white bg-primary/10">
+<div class="absolute inset-0 top-0 h-[2px] w-full bg-primary"></div>
+                        Creator Mode
+                    </div>
+</div>
+<!-- Row 1 -->
+<div class="grid grid-cols-2 border-b border-gray-800/50">
+<div class="flex flex-col items-center justify-center p-4 text-center">
+<span class="material-symbols-outlined mb-1 text-gray-500">speed</span>
+<span class="text-xs text-gray-400">Standard AI</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-primary/5 p-4 text-center">
+<span class="material-symbols-outlined mb-1 text-primary">rocket_launch</span>
+<span class="text-xs font-bold text-white">Priority AI</span>
+</div>
+</div>
+<!-- Row 2 -->
+<div class="grid grid-cols-2 border-b border-gray-800/50">
+<div class="flex flex-col items-center justify-center p-4 text-center">
+<span class="material-symbols-outlined mb-1 text-gray-500">public</span>
+<span class="text-xs text-gray-400">Public Builds</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-primary/5 p-4 text-center">
+<span class="material-symbols-outlined mb-1 text-primary">lock</span>
+<span class="text-xs font-bold text-white">Private Workflows</span>
+</div>
+</div>
+<!-- Row 3 -->
+<div class="grid grid-cols-2">
+<div class="flex flex-col items-center justify-center p-4 text-center">
+<span class="material-symbols-outlined mb-1 text-gray-500">pan_tool</span>
+<span class="text-xs text-gray-400">Limited Remixes</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-primary/5 p-4 text-center">
+<span class="material-symbols-outlined mb-1 text-primary">all_inclusive</span>
+<span class="text-xs font-bold text-white">Unlimited Remixes</span>
+</div>
+</div>
+</div>
+<!-- Testimonial / Social Proof (Middle Section) -->
+<div class="mt-8 flex items-center justify-center space-x-[-12px]">
+<div class="h-10 w-10 rounded-full border-2 border-[#101c22] bg-gray-700 bg-cover bg-center" data-alt="Portrait of a female user smiling" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBf9wLwZUQ2ZLQ4TaODBfyJzFzKISdukMTO2qECo4SFvxu5yMW2Kji41xmLmdnwbdkdKUUUjvh77lHiKZKjHqW48yxvilL2KCFP810pJJBZo2oUXq6HRmnyoRYcRFwF05zrxb8tFkxy-DPWCZ9N3DOfzGWvSbATMnaLb2V5oeDFl4VdhJl4Nw2gGSeOpdgrwNtGKmZOui-PmmOQQwU2iAR8Ej6pZpMwLvQbFl1r89uUk3e3QkQeWzIN6ASRp_xDzwRts-QZGbEPNRQ');"></div>
+<div class="h-10 w-10 rounded-full border-2 border-[#101c22] bg-gray-700 bg-cover bg-center" data-alt="Portrait of a male user smiling" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDmNSP6W6bzddsjX27SHzWnJzF-xnRhtl_E2R8p86c_qSUiU9CqBoAaPZPc2gtPaETPIhzmUWeRmAceZogQidZDzMxJqueyd8mJVYe-k0L_8cMw4E5CGWS8TkWa75ooltZhDm1edPIYZTehHcmf8bHDYNVYmCQcBfGQSdJQbwWRvT5-idKlFfzEGbBGvULRmOhcrSyn6kh3KSWxqtxUpwlYlvchPSoA0gADuZxkBaDC8dJLcxz9mcsDtTg4tEZrV-eBUyeNba-BZyg');"></div>
+<div class="h-10 w-10 rounded-full border-2 border-[#101c22] bg-gray-700 bg-cover bg-center" data-alt="Portrait of another female user smiling" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuABe-R8A53a9BUFPiHif2w5JTdUhVuKZSJ5012O4tpr5aOUkNJOuRUFRV5uIOpaYRPvvUCMTeqYbej3M8V7b0qWVBkKNAw8Q6F2_z2BSuOndoB0ceVhw0ALGS5bckyP4WPD2kc--S1KK2vM9sZuaVSwby-OAafDXO1Ve_LzlLOOiaEsbbPzWHjgab8ZQ367c8JokF-8kgOJY--u0v_5fn4JQr6cXfM0N2e0HWcOfyuNEo9IIpUFoCBBHtFhODu6EyieBiYKyshhCCk');"></div>
+<div class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-[#101c22] bg-gray-800 text-[10px] font-bold text-white">
+                    +12k
+                </div>
+</div>
+<p class="mt-3 text-center text-xs font-medium text-gray-400">Join 12,000+ power builders using Creator Mode</p>
+</div>
+<!-- Sticky Bottom CTA Area -->
+<div class="fixed bottom-0 left-0 right-0 z-10 mx-auto max-w-md bg-gradient-to-t from-[#101c22] via-[#101c22] to-transparent px-6 pb-8 pt-12">
+<div class="flex flex-col gap-3">
+<!-- Main Button -->
+<button class="group relative flex w-full items-center justify-center overflow-hidden rounded-lg bg-primary py-4 transition active:scale-[0.98]">
+<div class="absolute inset-0 bg-white/20 opacity-0 transition group-hover:opacity-100"></div>
+<div class="flex flex-col items-center leading-none">
+<span class="text-base font-bold text-white">Start 14-day Free Trial</span>
+<span class="mt-1 text-[11px] font-medium text-white/80">$9.99/month after trial</span>
+</div>
+</button>
+<p class="text-center text-[11px] text-gray-500">Cancel anytime in settings. No questions asked.</p>
+</div>
+</div>
+</div>
+</body></html>

@@ -1,0 +1,1 @@
+{"id":6170,"name":"Create CloudTalk activity from new Shopify orders","description":"Every time when a new order is created in Shopify, Make will automatically create an activity from CloudTalk.","url":"6170-create-cloudtalk-activity-from-new-shopify-orders","usedApps":["shopify","cloudtalk"],"usage":2}

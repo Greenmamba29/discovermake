@@ -1,0 +1,1 @@
+{"id":3174,"name":"Import spreadsheet data into Bubble","description":"Make checks in specified intervals whether there is a new row in a watched Google spreadsheet. If so, the data are imported to Bubble.","url":"3174-import-spreadsheet-data-into-bubble","usedApps":["google-sheets","bubble"],"usage":604}

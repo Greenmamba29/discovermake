@@ -1,0 +1,1 @@
+{"id":6651,"name":"Create a new FireText contact from a new MailChimp subscriber","description":"Every time a new subscriber is created in MailChimp, a new contact in FireText will be created.","url":"6651-create-a-new-firetext-contact-from-a-new-mailchimp-subscriber","usedApps":["mailchimp","firetext"],"usage":2}

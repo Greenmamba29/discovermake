@@ -1,0 +1,1 @@
+{"id":15608,"name":"Extract data from documents in Slack and generate CSV/XLSX ","description":"Send PDF documents or image from Slack to Koncile OCR, and download extracted data in CSV or XLSX format.   ","url":"15608-extract-data-from-documents-in-slack-and-generate-csv-xlsx","usedApps":["slack","koncile-advanced-ocr"],"usage":14}

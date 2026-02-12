@@ -1,0 +1,1 @@
+{"id":3108,"name":"Create a new subscriber in Moosend with data from Google Sheets","description":"When a new row with a new contact is made in Google Sheets, a new subscriber is added to Moosend.","url":"3108-create-a-new-subscriber-in-moosend-with-data-from-google-sheets","usedApps":["google-sheets","moosend"],"usage":15}

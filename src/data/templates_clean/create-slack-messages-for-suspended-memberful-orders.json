@@ -1,0 +1,1 @@
+{"id":8179,"name":"Create Slack messages for suspended Memberful orders","description":"Every time a new order is suspended in your Memberful, Make will send a message to your Slack.","url":"8179-create-slack-messages-for-suspended-memberful-orders","usedApps":["memberful","slack"],"usage":1}

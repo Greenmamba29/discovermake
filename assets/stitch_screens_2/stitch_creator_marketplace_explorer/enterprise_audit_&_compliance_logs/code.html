@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Enterprise Audit &amp; Compliance Logs</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13a4ec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101c22",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-background-light dark:bg-background-dark group/design-root overflow-x-hidden max-w-[430px] mx-auto border-x border-slate-200 dark:border-slate-800">
+<!-- Top App Bar -->
+<div class="sticky top-0 z-20 flex items-center bg-background-light dark:bg-background-dark p-4 pb-2 justify-between border-b border-slate-200 dark:border-slate-800">
+<div class="text-slate-900 dark:text-white flex size-10 shrink-0 items-center justify-center rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 cursor-pointer">
+<span class="material-symbols-outlined">arrow_back</span>
+</div>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-tight flex-1 text-center">Compliance Logs</h2>
+<div class="flex w-10 items-center justify-end">
+<button class="flex cursor-pointer items-center justify-center rounded-full size-10 bg-transparent text-slate-900 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-800">
+<span class="material-symbols-outlined">shield_with_heart</span>
+</button>
+</div>
+</div>
+<!-- System Status Summary -->
+<div class="flex flex-wrap gap-3 p-4">
+<div class="flex min-w-[120px] flex-1 flex-col gap-1 rounded-xl p-4 bg-white dark:bg-[#1a262e] shadow-sm border border-slate-200 dark:border-slate-800">
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider">System</p>
+<p class="text-slate-900 dark:text-white text-xl font-bold">Secure</p>
+<div class="flex items-center gap-1 text-[#0bda57]">
+<span class="material-symbols-outlined text-sm">check_circle</span>
+<p class="text-[10px] font-bold">Optimal</p>
+</div>
+</div>
+<div class="flex min-w-[120px] flex-1 flex-col gap-1 rounded-xl p-4 bg-white dark:bg-[#1a262e] shadow-sm border border-slate-200 dark:border-slate-800">
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider">Alerts</p>
+<p class="text-slate-900 dark:text-white text-xl font-bold">0</p>
+<div class="flex items-center gap-1 text-slate-400">
+<span class="material-symbols-outlined text-sm">horizontal_rule</span>
+<p class="text-[10px] font-bold">Stable</p>
+</div>
+</div>
+<div class="flex min-w-[120px] flex-1 flex-col gap-1 rounded-xl p-4 bg-white dark:bg-[#1a262e] shadow-sm border border-slate-200 dark:border-slate-800">
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider">Audits</p>
+<p class="text-slate-900 dark:text-white text-xl font-bold">2</p>
+<div class="flex items-center gap-1 text-[#fa5f38]">
+<span class="material-symbols-outlined text-sm">schedule</span>
+<p class="text-[10px] font-bold">Pending</p>
+</div>
+</div>
+</div>
+<!-- Heatmap Section -->
+<div class="px-4 pb-4">
+<div class="bg-white dark:bg-[#1a262e] rounded-xl p-4 border border-slate-200 dark:border-slate-800">
+<div class="flex justify-between items-center mb-3">
+<h3 class="text-slate-900 dark:text-white text-sm font-bold">System Access Heatmap</h3>
+<span class="text-[10px] font-bold text-primary px-2 py-0.5 bg-primary/10 rounded-full">Live</span>
+</div>
+<div class="relative w-full h-32 bg-slate-100 dark:bg-[#111c22] rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700/50">
+<!-- Placeholder for Map/Heatmap visualization -->
+<div class="absolute inset-0 opacity-20 dark:opacity-30 flex items-center justify-center">
+<span class="material-symbols-outlined text-[100px] text-primary">public</span>
+</div>
+<!-- Mock Data Points -->
+<div class="absolute top-1/4 left-1/3 size-2 bg-primary rounded-full animate-pulse shadow-[0_0_8px_#13a4ec]"></div>
+<div class="absolute top-1/2 left-2/3 size-2 bg-primary rounded-full animate-pulse shadow-[0_0_8px_#13a4ec]"></div>
+<div class="absolute bottom-1/4 left-1/4 size-1.5 bg-primary/60 rounded-full"></div>
+<div class="absolute top-1/3 right-1/4 size-1.5 bg-primary/60 rounded-full"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-background-light dark:from-background-dark to-transparent opacity-10"></div>
+</div>
+<div class="flex justify-between mt-2 text-[10px] text-slate-500 font-medium">
+<span>High Density: NA, EU</span>
+<span>Last Login: 4s ago</span>
+</div>
+</div>
+</div>
+<!-- Global Activity Feed -->
+<h3 class="text-slate-900 dark:text-white text-base font-bold leading-tight tracking-tight px-4 pb-2 pt-2">Global Activity Feed</h3>
+<div class="flex gap-2 px-4 py-2 overflow-x-auto no-scrollbar">
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-white dark:bg-[#283339] border border-slate-200 dark:border-slate-700 px-3 whitespace-nowrap">
+<span class="text-slate-600 dark:text-slate-300 text-xs font-medium">Today</span>
+<span class="material-symbols-outlined text-slate-400 text-sm">calendar_today</span>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-white dark:bg-[#283339] border border-slate-200 dark:border-slate-700 px-3 whitespace-nowrap">
+<span class="text-slate-600 dark:text-slate-300 text-xs font-medium">All Users</span>
+<span class="material-symbols-outlined text-slate-400 text-sm">person</span>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-white dark:bg-[#283339] border border-slate-200 dark:border-slate-700 px-3 whitespace-nowrap">
+<span class="text-slate-600 dark:text-slate-300 text-xs font-medium">Critical</span>
+<span class="material-symbols-outlined text-slate-400 text-sm">error</span>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-white dark:bg-[#283339] border border-slate-200 dark:border-slate-700 px-3 whitespace-nowrap">
+<span class="text-slate-600 dark:text-slate-300 text-xs font-medium">API Keys</span>
+<span class="material-symbols-outlined text-slate-400 text-sm">key</span>
+</button>
+</div>
+<!-- Activity Logs -->
+<div class="flex flex-col px-4 divide-y divide-slate-100 dark:divide-slate-800">
+<!-- Log Entry 1 -->
+<div class="flex items-center gap-4 py-3 justify-between">
+<div class="flex items-center gap-3">
+<div class="bg-primary/20 flex items-center justify-center rounded-lg size-10">
+<span class="material-symbols-outlined text-primary text-xl">upload_file</span>
+</div>
+<div class="flex flex-col justify-center">
+<p class="text-slate-900 dark:text-white text-sm font-semibold leading-tight">Workflow Published</p>
+<p class="text-slate-500 dark:text-slate-400 text-[11px] font-normal leading-tight mt-1">Admin_JS • 2 mins ago • IP: 192.168.1.1</p>
+</div>
+</div>
+<div class="shrink-0 flex items-center gap-2">
+<div class="size-2 rounded-full bg-[#0bda57]"></div>
+<span class="material-symbols-outlined text-slate-400 text-lg">chevron_right</span>
+</div>
+</div>
+<!-- Log Entry 2 -->
+<div class="flex items-center gap-4 py-3 justify-between">
+<div class="flex items-center gap-3">
+<div class="bg-orange-500/20 flex items-center justify-center rounded-lg size-10">
+<span class="material-symbols-outlined text-orange-500 text-xl">vpn_key</span>
+</div>
+<div class="flex flex-col justify-center">
+<p class="text-slate-900 dark:text-white text-sm font-semibold leading-tight">API Key Created</p>
+<p class="text-slate-500 dark:text-slate-400 text-[11px] font-normal leading-tight mt-1">System_Bot • 15 mins ago • Scope: Read-Only</p>
+</div>
+</div>
+<div class="shrink-0 flex items-center gap-2">
+<div class="size-2 rounded-full bg-orange-500"></div>
+<span class="material-symbols-outlined text-slate-400 text-lg">chevron_right</span>
+</div>
+</div>
+<!-- Log Entry 3 -->
+<div class="flex items-center gap-4 py-3 justify-between">
+<div class="flex items-center gap-3">
+<div class="bg-slate-500/20 flex items-center justify-center rounded-lg size-10">
+<span class="material-symbols-outlined text-slate-500 dark:text-slate-400 text-xl">login</span>
+</div>
+<div class="flex flex-col justify-center">
+<p class="text-slate-900 dark:text-white text-sm font-semibold leading-tight">Console Login</p>
+<p class="text-slate-500 dark:text-slate-400 text-[11px] font-normal leading-tight mt-1">Dev_Manager • 45 mins ago • UK_Region</p>
+</div>
+</div>
+<div class="shrink-0 flex items-center gap-2">
+<div class="size-2 rounded-full bg-[#0bda57]"></div>
+<span class="material-symbols-outlined text-slate-400 text-lg">chevron_right</span>
+</div>
+</div>
+</div>
+<!-- Export Reports Module -->
+<div class="p-4 mt-4 bg-slate-50 dark:bg-[#151f26] border-t border-slate-200 dark:border-slate-800">
+<h3 class="text-slate-900 dark:text-white text-base font-bold mb-4">Export Reports</h3>
+<div class="grid grid-cols-3 gap-3 mb-4">
+<label class="flex flex-col items-center justify-center p-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#1a262e] cursor-pointer group hover:border-primary">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<span class="material-symbols-outlined text-slate-400 peer-checked:text-primary mb-1">data_object</span>
+<span class="text-[10px] font-bold uppercase text-slate-500 dark:text-slate-400 peer-checked:text-primary">JSON</span>
+</label>
+<label class="flex flex-col items-center justify-center p-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#1a262e] cursor-pointer group hover:border-primary">
+<input class="sr-only peer" type="checkbox"/>
+<span class="material-symbols-outlined text-slate-400 peer-checked:text-primary mb-1">table_view</span>
+<span class="text-[10px] font-bold uppercase text-slate-500 dark:text-slate-400 peer-checked:text-primary">CSV</span>
+</label>
+<label class="flex flex-col items-center justify-center p-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#1a262e] cursor-pointer group hover:border-primary">
+<input class="sr-only peer" type="checkbox"/>
+<span class="material-symbols-outlined text-slate-400 peer-checked:text-primary mb-1">picture_as_pdf</span>
+<span class="text-[10px] font-bold uppercase text-slate-500 dark:text-slate-400 peer-checked:text-primary">PDF</span>
+</label>
+</div>
+<div class="flex items-center justify-between p-4 mb-6 rounded-xl bg-white dark:bg-[#1a262e] border border-slate-200 dark:border-slate-700/50">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-400">update</span>
+<div class="flex flex-col">
+<p class="text-slate-900 dark:text-white text-sm font-semibold">Schedule Recurring</p>
+<p class="text-slate-500 dark:text-slate-400 text-[10px]">Monthly automated audit</p>
+</div>
+</div>
+<div class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-slate-300 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</div>
+</div>
+<button class="w-full h-12 bg-primary text-white font-bold rounded-xl shadow-lg shadow-primary/20 flex items-center justify-center gap-2 active:scale-[0.98] transition-transform">
+<span class="material-symbols-outlined">download</span>
+                Generate Compliance Report
+            </button>
+</div>
+<!-- Footer / Space -->
+<div class="h-8 bg-slate-50 dark:bg-[#151f26]"></div>
+</div>
+<!-- Background Images for context (hidden as requested but logic maintained) -->
+<div class="hidden">
+<img data-alt="Abstract secure network connection dots" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBj-_u-4NCSmpQVAEI06QWsCEJedUna-022DrRGgQjogq2arUn8pEuQkBi3n-AUuigbfQE0XW-zm1oSxHT3Cd3kVOpSG1QXHrFt-XrdIRz9uDSBYTA44F1jv85Ocl-8r-S8ZYgOjiWU-LTrkRzRfXNPP-kSh_4zy6WWziQIvF_pnUQSPDNMEpZFX-HEbCDOs9leMoerM2pKSPuVdX-Kubvg3oohLm0cYgHBQ1jXbnNvuRYSTMB8RXPuZAq3WcZX-8JPX7ZzlIKyEck"/>
+<img data-alt="World map login density visualization" data-location="Global" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBY9uHLoFFFlYi5ZcBiWVQV2HY5uXHWJEhBhmWGCdQlgypqgvOBQ0dbGkuSnc56aVDnKSXf2SxtqL0uMspZ7OgzWTDH9bOGuSqudgUDDjHOLAZZqpcAHf9ff1CpXDlESShDQWaWKSy8bKzUCml4Cn6EFNLCchCQuPbvFb8vf4VyAaqVKhxHuz9W5OyxQGOEOrk6Y4mdLE7F5CEgNldskBgddZ2S9NdWT_4ZXwP227CcvvW3aGDxkeodKcvtv1KafgsAXQOTDlbNVd4"/>
+</div>
+</body></html>

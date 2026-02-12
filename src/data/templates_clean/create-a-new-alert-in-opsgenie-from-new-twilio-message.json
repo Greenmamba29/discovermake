@@ -1,0 +1,1 @@
+{"id":4415,"name":"Create a new alert in Opsgenie from new Twilio message","description":"When a message is received in Twilio, a new alert is created in Opsgenie.","url":"4415-create-a-new-alert-in-opsgenie-from-new-twilio-message","usedApps":["twilio","opsgenie"],"usage":5}

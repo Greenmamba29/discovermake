@@ -1,0 +1,1 @@
+{"id":7887,"name":"Add new Bitrix24 contacts to Google Contacts","description":"Every time a new contact is created in Bitrix24, Make will automatically add that contact to Google Contacts.","url":"7887-add-new-bitrix24-contacts-to-google-contacts","usedApps":["bitrix24","google-contacts"],"usage":37}

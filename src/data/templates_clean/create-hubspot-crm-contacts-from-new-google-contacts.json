@@ -1,0 +1,1 @@
+{"id":5851,"name":"Create HubSpot CRM contacts from new Google Contacts","description":"When you have new contacts in your Google contacts, Make will automatically retrieve the contacts and create or update the contacts in your HubSpot CRM.","url":"5851-create-hubspot-crm-contacts-from-new-google-contacts","usedApps":["google-contacts","hubspotcrm"],"usage":114}

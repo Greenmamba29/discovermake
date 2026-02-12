@@ -1,0 +1,1 @@
+{"id":3208,"name":"Save new Zoho Books invoices to a Google Sheets spreadsheet","description":"Every time a new invoice is created in Zoho Books, Make will automatically add the invoice's data to a new row in your Google Sheets spreadsheet.","url":"3208-save-new-zoho-books-invoices-to-a-google-sheets-spreadsheet","usedApps":["zoho-books","google-sheets"],"usage":125}

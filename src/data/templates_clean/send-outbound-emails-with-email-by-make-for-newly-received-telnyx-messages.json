@@ -1,0 +1,1 @@
+{"id":10123,"name":"Send outbound emails with Email by Make for newly-received Telnyx messages","description":"Send an outbound email when an SMS in Telnyx is received.","url":"10123-send-outbound-emails-with-email-by-make-for-newly-received-telnyx-messages","usedApps":["telnyx","email"],"usage":14}

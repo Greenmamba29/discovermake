@@ -1,0 +1,1 @@
+{"id":5951,"name":"Create Endorsal contacts for new person in Pipedrive","description":"Every time a new Pipedrive contact is created, Make will automatically create a new Endorsal contact.","url":"5951-create-endorsal-contacts-for-new-person-in-pipedrive","usedApps":["pipedrive","endorsal"],"usage":0}

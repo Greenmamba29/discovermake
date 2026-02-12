@@ -1,0 +1,1 @@
+{"id":7460,"name":"Create users in MemberVault from new one time sales in Plug&Paid","description":"Every time a new one time sale is created in Plug&Paid, Make will automatically add a new user to MemberVault.","url":"7460-create-users-in-membervault-from-new-one-time-sales-in-plug-paid","usedApps":["plug-paid","membervault"],"usage":4}

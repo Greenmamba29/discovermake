@@ -1,0 +1,1 @@
+{"id":3596,"name":"Create new subscribers on Emercury from new Google Contacts","description":"Every time a new Google Contact is created, Make will automatically create a new Emercury subscriber.","url":"3596-create-new-subscribers-on-emercury-from-new-google-contacts","usedApps":["google-contacts","emercury","builtin"],"usage":0}

@@ -1,0 +1,1 @@
+{"id":8061,"name":"Create EZOfficeInventory users for new paid Wave invoices","description":"Every time an invoice gets status \"paid\" in Wave, Make will automatically add customer from that invoice to EZOfficeInventory as a new user.\n","url":"8061-create-ezofficeinventory-users-for-new-paid-wave-invoices","usedApps":["wave","ezofficeinventory"],"usage":3}

@@ -1,0 +1,1 @@
+{"id":3620,"name":"Create Fakturoid invoices and contacts from Zoho Invoice invoices and contacts","description":"Every time a new invoice is created on Zoho Invoice, Make will automatically create a new Fakturoid contact and invoice.","url":"3620-create-fakturoid-invoices-and-contacts-from-zoho-invoice-invoices-and-contacts","usedApps":["zoho-invoice","fakturoid"],"usage":1}

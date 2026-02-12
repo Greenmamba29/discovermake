@@ -1,0 +1,1 @@
+{"id":377,"name":"Send Twilio SMS messages for new Flickr photos","description":"Every time a new photo is added to a watched album in Flickr, Make will automatically send an SMS message via Twilio.","url":"377-send-twilio-sms-messages-for-new-flickr-photos","usedApps":["flickr","twilio"],"usage":3}

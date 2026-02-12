@@ -1,0 +1,1 @@
+{"id":7450,"name":"Add/Update Mailchimp subscribers for new Syncro customers","description":"Every time a new customer is added to your Syncro, Make will add them to your Mailchimp as a subscriber.","url":"7450-add-update-mailchimp-subscribers-for-new-syncro-customers","usedApps":["syncro","mailchimp"],"usage":2}

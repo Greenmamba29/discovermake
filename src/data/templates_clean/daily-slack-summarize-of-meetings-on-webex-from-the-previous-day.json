@@ -1,0 +1,1 @@
+{"id":7773,"name":"Daily Slack summarize of meetings on Webex from the previous day","description":"This template will send a daily Slack message with the number of meetings that started the previous day.","url":"7773-daily-slack-summarize-of-meetings-on-webex-from-the-previous-day","usedApps":["webex-meetings","builtin","slack"],"usage":11}

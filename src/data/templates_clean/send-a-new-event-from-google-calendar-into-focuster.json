@@ -1,0 +1,1 @@
+{"id":2923,"name":"Send a new event from Google Calendar into Focuster","description":"When a new event is made in Google Calendar, a new action is added into Focuster.","url":"2923-send-a-new-event-from-google-calendar-into-focuster","usedApps":["google-calendar","focuster"],"usage":1}

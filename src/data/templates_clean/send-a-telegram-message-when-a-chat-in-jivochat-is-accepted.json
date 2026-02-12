@@ -1,0 +1,1 @@
+{"id":6423,"name":"Send a Telegram message when a chat in JivoChat is accepted","description":"Every time a chat is accepted in your JivoChat, Make will send a message via your Telegram Bot.","url":"6423-send-a-telegram-message-when-a-chat-in-jivochat-is-accepted","usedApps":["jivochat","telegram"],"usage":9}

@@ -1,0 +1,1 @@
+{"id":6893,"name":"Send new Dropbox files to Discord","description":"Use this template to automatically send a new Dropbox file to Discord as a message with an attachment.","url":"6893-send-new-dropbox-files-to-discord","usedApps":["dropbox","discord"],"usage":57}

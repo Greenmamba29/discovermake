@@ -1,0 +1,1 @@
+{"id":6852,"name":"Send Telegram messages for ended chats in tawk.to","description":"Every time a chat ends in your tawk.to, Make will send a message to your Telegram with information on this chat.","url":"6852-send-telegram-messages-for-ended-chats-in-tawk-to","usedApps":["tawkto","telegram"],"usage":8}

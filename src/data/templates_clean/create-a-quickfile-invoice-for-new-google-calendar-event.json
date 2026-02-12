@@ -1,0 +1,1 @@
+{"id":5846,"name":"Create a QuickFile invoice for new Google Calendar event","description":"Every time a new Google Calendar event is created, Make will automatically create an invoice in QuickFile.","url":"5846-create-a-quickfile-invoice-for-new-google-calendar-event","usedApps":["google-calendar","quickfile"],"usage":7}

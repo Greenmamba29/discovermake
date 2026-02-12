@@ -1,0 +1,1 @@
+{"id":8163,"name":"Add new Clio Manage contacts to ActiveCampaign","description":"Every time there is a new contact in Clio Manage, Make will automatically create a new contact in ActiveCampaign or update an existing one.","url":"8163-add-new-clio-manage-contacts-to-activecampaign","usedApps":["clio-manage","activecampaign"],"usage":8}

@@ -1,0 +1,1 @@
+{"id":8636,"name":"Create FreeScout conversations from new Google Forms responses","description":"Every time a new Google Forms response is submitted, Make will automatically create the corresponding conversation in FreeScout.","url":"8636-create-freescout-conversations-from-new-google-forms-responses","usedApps":["google-forms","freescout"],"usage":4}

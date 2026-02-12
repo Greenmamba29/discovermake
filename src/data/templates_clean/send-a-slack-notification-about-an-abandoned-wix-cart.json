@@ -1,0 +1,1 @@
+{"id":5578,"name":"Send a Slack notification about an abandoned Wix cart","description":"Every time an abandoned Wix cart is registered, Make will automatically send a Slack message to a channel or a user.","url":"5578-send-a-slack-notification-about-an-abandoned-wix-cart","usedApps":["wix","slack"],"usage":6}

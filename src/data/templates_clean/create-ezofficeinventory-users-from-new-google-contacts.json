@@ -1,0 +1,1 @@
+{"id":8060,"name":"Create EZOfficeInventory users from new Google Contacts","description":"Every time a new contact is created in Google Contacts, Make will automatically add that contact to EZOfficeInventory as a new user.","url":"8060-create-ezofficeinventory-users-from-new-google-contacts","usedApps":["google-contacts","ezofficeinventory"],"usage":1}

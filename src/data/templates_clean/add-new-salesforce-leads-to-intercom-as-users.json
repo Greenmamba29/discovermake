@@ -1,0 +1,1 @@
+{"id":1875,"name":"Add new SalesForce leads to Intercom as users","description":"Every time a new user is created in SalesForce, Make will automatically create a new user in Intercom.","url":"1875-add-new-salesforce-leads-to-intercom-as-users","usedApps":["intercom","salesforce"],"usage":4}

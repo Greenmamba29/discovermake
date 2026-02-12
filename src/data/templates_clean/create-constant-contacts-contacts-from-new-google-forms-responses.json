@@ -1,0 +1,1 @@
+{"id":1847,"name":"Create Constant Contacts contacts from new Google Forms responses","description":"Every time a new response is received on your Google Form, Make will automatically create a new contact in Google Contact.","url":"1847-create-constant-contacts-contacts-from-new-google-forms-responses","usedApps":["google-forms","constant-contact"],"usage":21}

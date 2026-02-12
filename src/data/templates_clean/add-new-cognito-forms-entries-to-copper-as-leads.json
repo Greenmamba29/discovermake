@@ -1,0 +1,1 @@
+{"id":1752,"name":"Add new Cognito Forms entries to Copper as leads","description":"Every time a new entry is added on your Cognito Form, Make will automatically create a new lead on Copper.","url":"1752-add-new-cognito-forms-entries-to-copper-as-leads","usedApps":["cognitoforms","prosperworks"],"usage":0}

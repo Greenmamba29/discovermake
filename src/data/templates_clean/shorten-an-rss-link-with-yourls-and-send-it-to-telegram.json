@@ -1,0 +1,1 @@
+{"id":8056,"name":"Shorten an RSS link with YOURLS and send it to Telegram","description":"Use this template to automatically shorten a new RSS feed item link with YOURLS and post it as a Telegram message.","url":"8056-shorten-an-rss-link-with-yourls-and-send-it-to-telegram","usedApps":["rss","yourls","telegram"],"usage":27}

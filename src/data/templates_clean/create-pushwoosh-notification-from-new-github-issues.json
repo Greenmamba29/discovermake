@@ -1,0 +1,1 @@
+{"id":8391,"name":"Create Pushwoosh notification from new GitHub issues","description":"Every time a new issue is created in GitHub, Make will automatically create a push notification in Pushwoosh with details of this Issue.","url":"8391-create-pushwoosh-notification-from-new-github-issues","usedApps":["github","pushwoosh"],"usage":2}

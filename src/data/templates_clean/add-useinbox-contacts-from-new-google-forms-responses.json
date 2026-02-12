@@ -1,0 +1,1 @@
+{"id":7866,"name":"Add UseINBOX contacts from new Google Forms responses","description":"Make will watch for new Google Forms responses at regular intervals and add contacts to a UseINBOX mailing list using information from the response.","url":"7866-add-useinbox-contacts-from-new-google-forms-responses","usedApps":["google-forms","useinbox"],"usage":1}

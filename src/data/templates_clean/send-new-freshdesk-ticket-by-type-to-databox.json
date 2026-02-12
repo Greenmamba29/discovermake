@@ -1,0 +1,1 @@
+{"id":3871,"name":"Send new Freshdesk ticket by type to Databox","description":"Do you have your tickets organized by type? As soon as you add a new ticket under a specified type, Make will update that data in Databox. ","url":"3871-send-new-freshdesk-ticket-by-type-to-databox","usedApps":["freshdesk","builtin","databox"],"usage":12}

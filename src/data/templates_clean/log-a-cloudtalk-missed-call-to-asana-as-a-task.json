@@ -1,0 +1,1 @@
+{"id":6186,"name":"Log a CloudTalk missed call to Asana as a task","description":"Use this template to automatically create an Asana task when a new CloudTalk call is registered.","url":"6186-log-a-cloudtalk-missed-call-to-asana-as-a-task","usedApps":["cloudtalk","asana"],"usage":3}

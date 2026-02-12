@@ -1,0 +1,1 @@
+{"id":564,"name":"Send Gitter messages for new RSS feed items","description":"Every time a new item is posted to a watched RSS feed, Make will automatically send a  message to a selected room in Gitter.","url":"564-send-gitter-messages-for-new-rss-feed-items","usedApps":["gitter","rss"],"usage":12}

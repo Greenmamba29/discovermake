@@ -1,0 +1,1 @@
+{"id":3589,"name":"Post new Reddit comments on Discord","description":"Every time a new comment is posted by a specified user on reddit, Make will automatically share it on your Discord channel.","url":"3589-post-new-reddit-comments-on-discord","usedApps":["reddit","discord"],"usage":286}

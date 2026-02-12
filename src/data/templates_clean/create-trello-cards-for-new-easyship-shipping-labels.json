@@ -1,0 +1,1 @@
+{"id":8810,"name":"Create Trello cards for new Easyship shipping labels","description":"Every time there is a new shipping label created in Easyship, Make will automatically add this label to a specified Trello board as a card.","url":"8810-create-trello-cards-for-new-easyship-shipping-labels","usedApps":["easyship","trello"],"usage":3}

@@ -1,0 +1,1 @@
+{"id":308,"name":"Post Slack messages for new Twilio SMS messages ","description":"Every time a new SMS message is sent via Twilio,  Make will automatically send a message in Slack.","url":"308-post-slack-messages-for-new-twilio-sms-messages","usedApps":["twilio","slack"],"usage":151}

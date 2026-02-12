@@ -1,0 +1,1 @@
+{"id":12090,"name":"Create Brevo contacts from new SimpleCirc subscribers","description":"Every time you got a new subscription purchase in SimpleCirc, Make will automatically create a contact in Brevo using information about a subscriber.","url":"7034-create-sendinblue-contacts-from-new-simplecirc-subscribers","usedApps":["simplecirc","sendinblue"],"usage":12}

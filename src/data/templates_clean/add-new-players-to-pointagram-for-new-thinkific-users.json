@@ -1,0 +1,1 @@
+{"id":6815,"name":"Add new players to Pointagram for new Thinkific users","description":"Every time a user added to Thinkific, Make will automatically search this user in Pointagram, then create a new Pointagram player if no existing found.","url":"6815-add-new-players-to-pointagram-for-new-thinkific-users","usedApps":["thinkific","pointagram"],"usage":0}

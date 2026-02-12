@@ -1,0 +1,1 @@
+{"id":12940,"name":"Send data to Google Sheets and update a row with new information","description":"Automatically send data to Google Sheets and update a specific row with new information using HTTP and Google Sheets modules in Make.","url":"12940-send-data-to-google-sheets-and-update-a-row-with-new-information","usedApps":["http","google-sheets"],"usage":35}

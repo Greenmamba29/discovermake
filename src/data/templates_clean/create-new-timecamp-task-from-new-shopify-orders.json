@@ -1,0 +1,1 @@
+{"id":4288,"name":"Create new TimeCamp task from new Shopify orders","description":"When you receive a new Shopify order, a corresponding task will be created in TimeCamp.","url":"4288-create-new-timecamp-task-from-new-shopify-orders","usedApps":["shopify","timecamp"],"usage":2}

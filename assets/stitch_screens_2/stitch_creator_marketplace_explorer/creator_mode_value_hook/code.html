@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Creator Mode Value Hook</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13a4ec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101c22",
+                        "surface-dark": "#182830",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .scrim-gradient {
+            background: linear-gradient(to top, #101c22 40%, rgba(16, 28, 34, 0.8) 70%, rgba(16, 28, 34, 0.4) 100%);
+        }
+        /* Custom scrollbar hiding for cleaner mobile look */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display antialiased selection:bg-primary selection:text-white">
+<div class="relative min-h-screen w-full flex flex-col overflow-hidden max-w-md mx-auto shadow-2xl bg-background-dark">
+<!-- Background Image -->
+<div class="absolute inset-0 z-0 h-[65vh] w-full bg-cover bg-center" data-alt="Professional creator working in a dark high-tech futuristic studio with neon lighting" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBX5W-zWmsLx3Y6xtqycs5YHbcq1tdX9mRuMfvcY2QIwDFuhvwBwhiUB6kDs9wDoDKfXkmvCFJ4B77Q0c7BTbUH_tdQ0LU30qoNtse7gF66bPFowcIsguiSp06STnnnUw4kf-RObuI1gCCarBZVHwu1fWvUI30BSx_JZdZXiXCb-mCgmtfB_l_rp4gZ9ZSfXnInNOUVue3cB6rC8bizPOhifYkwrWuS8keUsLLSeAx4CPtRLe3Wom-dP-JJRkquIAR7NXzNe_mca5Q');">
+</div>
+<!-- Gradient Overlay (Scrim) -->
+<div class="absolute inset-0 z-10 scrim-gradient pointer-events-none"></div>
+<!-- Header -->
+<header class="relative z-20 flex items-center justify-between px-4 py-4 pt-12">
+<button class="flex items-center justify-center size-10 rounded-full bg-black/20 backdrop-blur-sm text-white hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-[24px]">close</span>
+</button>
+<button class="text-sm font-semibold text-slate-300 hover:text-white transition-colors">
+                Restore Purchase
+            </button>
+</header>
+<!-- Main Content Scroll Area -->
+<main class="relative z-20 flex-1 flex flex-col justify-end px-6 pb-6 pt-20 no-scrollbar overflow-y-auto">
+<!-- Hero Text -->
+<div class="mb-8">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/20 border border-primary/30 text-primary text-xs font-bold uppercase tracking-wider mb-4 backdrop-blur-md">
+<span class="material-symbols-outlined text-[16px]">verified</span>
+                    Creator Mode
+                </div>
+<h1 class="text-4xl font-extrabold tracking-tight text-white mb-2 leading-[1.1]">
+                    Go Pro with <br/> <span class="text-primary">Creator Mode</span>
+</h1>
+<p class="text-slate-300 text-lg font-medium leading-snug">
+                    Unlock your full creative potential with professional tools.
+                </p>
+</div>
+<!-- Value Props Stack -->
+<div class="flex flex-col gap-4 mb-8">
+<!-- Card 1 -->
+<div class="group flex items-center gap-4 p-4 rounded-xl bg-surface-dark/60 border border-white/5 backdrop-blur-md hover:bg-surface-dark/80 transition-colors">
+<div class="flex items-center justify-center size-12 rounded-lg bg-primary/20 text-primary shrink-0">
+<span class="material-symbols-outlined text-[24px]">lock</span>
+</div>
+<div class="flex flex-col">
+<h3 class="text-white text-base font-bold leading-tight">Keep Workflows Private</h3>
+<p class="text-slate-400 text-sm font-normal leading-snug">Hide your prompts and assets</p>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="group flex items-center gap-4 p-4 rounded-xl bg-surface-dark/60 border border-white/5 backdrop-blur-md hover:bg-surface-dark/80 transition-colors">
+<div class="flex items-center justify-center size-12 rounded-lg bg-primary/20 text-primary shrink-0">
+<span class="material-symbols-outlined text-[24px]">percent</span>
+</div>
+<div class="flex flex-col">
+<h3 class="text-white text-base font-bold leading-tight">0% Marketplace Fees</h3>
+<p class="text-slate-400 text-sm font-normal leading-snug">Keep 100% of your sales revenue</p>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="group flex items-center gap-4 p-4 rounded-xl bg-surface-dark/60 border border-white/5 backdrop-blur-md hover:bg-surface-dark/80 transition-colors">
+<div class="flex items-center justify-center size-12 rounded-lg bg-primary/20 text-primary shrink-0">
+<span class="material-symbols-outlined text-[24px]">all_inclusive</span>
+</div>
+<div class="flex flex-col">
+<h3 class="text-white text-base font-bold leading-tight">Unlimited Ultra-Models</h3>
+<p class="text-slate-400 text-sm font-normal leading-snug">Access our most powerful AI engines</p>
+</div>
+</div>
+</div>
+<!-- Sticky Bottom Area -->
+<div class="mt-auto pt-2">
+<div class="text-center mb-3">
+<p class="text-slate-400 text-xs font-medium tracking-wide">$19.99/mo after trial. Cancel anytime.</p>
+</div>
+<button class="w-full bg-primary hover:bg-blue-500 active:bg-blue-600 text-white font-bold text-lg py-4 px-6 rounded-xl shadow-lg shadow-primary/25 transition-all transform active:scale-[0.98] flex items-center justify-center gap-2">
+                    Start 14-Day Free Trial
+                    <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+<div class="flex justify-center gap-6 mt-6 pb-2">
+<a class="text-xs text-slate-500 hover:text-slate-300 font-medium" href="#">Terms of Service</a>
+<a class="text-xs text-slate-500 hover:text-slate-300 font-medium" href="#">Privacy Policy</a>
+</div>
+</div>
+</main>
+</div>
+</body></html>

@@ -1,0 +1,1 @@
+{"id":5281,"name":"Send SendGrid emails for new Typeform entries","description":"Every time someone fills out your Typeform form, Make will automatically send an email via SendGrid.","url":"5281-send-sendgrid-emails-for-new-typeform-entries","usedApps":["typeform","sendgrid"],"usage":10}

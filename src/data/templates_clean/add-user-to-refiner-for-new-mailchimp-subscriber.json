@@ -1,0 +1,1 @@
+{"id":5643,"name":"Add user to Refiner for new Mailchimp subscriber","description":"Every time a new subscriber is added to Mailchimp, Make will automatically add a user to Refiner.","url":"5643-add-user-to-refiner-for-new-mailchimp-subscriber","usedApps":["mailchimp","refiner"],"usage":0}

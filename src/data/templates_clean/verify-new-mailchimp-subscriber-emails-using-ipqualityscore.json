@@ -1,0 +1,1 @@
+{"id":8161,"name":"Verify new Mailchimp subscriber emails using IPQualityScore","description":"When a new subscriber is created in Mailchimp, that subscriber is validated by IPQualityScore. If the e-mail is not valid, it is unsubscribed.","url":"8161-verify-new-mailchimp-subscriber-emails-using-ipqualityscore","usedApps":["mailchimp","ipqualityscore"],"usage":2}

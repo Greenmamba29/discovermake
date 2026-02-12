@@ -1,0 +1,1 @@
+{"id":5611,"name":"Upload new signed document from GetAccept to Google Drive folder","description":"Every time a new signed document from GetAccept is received, Make will automatically upload the document to the specified Google Drive folder.","url":"5611-upload-new-signed-document-from-getaccept-to-google-drive-folder","usedApps":["getaccept","google-drive"],"usage":3}

@@ -1,0 +1,1 @@
+{"id":1416,"name":"Send MessageBird SMS messages for new Wufoo form entries","description":"Every time someone fills out your Wufoo form, Make will automatically send an SMS message via MessageBird.","url":"1416-send-messagebird-sms-messages-for-new-wufoo-form-entries","usedApps":["message-bird","wufoo"],"usage":2}

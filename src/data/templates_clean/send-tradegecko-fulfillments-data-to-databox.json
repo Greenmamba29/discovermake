@@ -1,0 +1,1 @@
+{"id":3974,"name":"Send TradeGecko fulfillments data to Databox","description":"When a fulfillment is tracked in TradeGecko, data of that fulfillment are sent to Databox.","url":"3974-send-tradegecko-fulfillments-data-to-databox","usedApps":["tradegecko","databox"],"usage":0}

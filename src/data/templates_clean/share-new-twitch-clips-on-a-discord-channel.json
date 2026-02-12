@@ -1,0 +1,1 @@
+{"id":3587,"name":"Share new Twitch clips on a Discord channel","description":"Every time a new clip is posted on a Twitch channel you follow, Make will automatically share it on your Discord channel.","url":"3587-share-new-twitch-clips-on-a-discord-channel","usedApps":["twitch","discord"],"usage":1266}

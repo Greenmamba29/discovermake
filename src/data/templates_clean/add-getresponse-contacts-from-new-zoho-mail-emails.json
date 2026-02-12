@@ -1,0 +1,1 @@
+{"id":2711,"name":"Add GetResponse contacts from new Zoho Mail emails","description":"Every time a new email is received in a specific Zoho Mail folder, Make will automatically add a new contact to your GetResponse list.","url":"2711-add-getresponse-contacts-from-new-zoho-mail-emails","usedApps":["zoho-mail","getresponse"],"usage":7}

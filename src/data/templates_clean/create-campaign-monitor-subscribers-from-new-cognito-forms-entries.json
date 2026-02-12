@@ -1,0 +1,1 @@
+{"id":2499,"name":"Create Campaign Monitor subscribers from new Cognito Forms entries","description":"Every time someone fills out your Cognito Form, Make will automatically add a new subsciber to your Campaign Monitor list.","url":"2499-create-campaign-monitor-subscribers-from-new-cognito-forms-entries","usedApps":["cognitoforms","campaign-monitor"],"usage":1}

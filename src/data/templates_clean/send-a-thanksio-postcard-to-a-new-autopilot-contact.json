@@ -1,0 +1,1 @@
+{"id":5426,"name":"Send a Thanks.io postcard to a new Autopilot contact","description":"Every time a new Autopilot contact is created, Make will automatically send a Thanks.io postcard.","url":"5426-send-a-thanks-io-postcard-to-a-new-autopilot-contact","usedApps":["autopilot","thanks-io"],"usage":1}

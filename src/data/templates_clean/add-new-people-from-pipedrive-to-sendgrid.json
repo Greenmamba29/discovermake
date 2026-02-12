@@ -1,0 +1,1 @@
+{"id":2447,"name":"Add new people from Pipedrive to SendGrid","description":"Every time a new person is added in Pipedrive, Make will automatically add that person to your SendGrid list.","url":"2447-add-new-people-from-pipedrive-to-sendgrid","usedApps":["pipedrive","sendgrid"],"usage":11}

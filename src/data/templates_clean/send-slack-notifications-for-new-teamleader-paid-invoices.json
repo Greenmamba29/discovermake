@@ -1,0 +1,1 @@
+{"id":7719,"name":"Send Slack notifications for new Teamleader paid invoices","description":"Every time there is a invoice paid in your Teamleader, Make will automatically send the message containing info about the invoice to Slack .","url":"7719-send-slack-notifications-for-new-teamleader-paid-invoices","usedApps":["teamleader","slack"],"usage":5}

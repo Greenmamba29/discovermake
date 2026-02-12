@@ -1,0 +1,1 @@
+{"id":6868,"name":"Transfer files from Google Drive to FileCloud","description":"When you upload files to a specific folder in Google Drive, Make will automatically download the files and upload them to a folder in FileCloud.","url":"6868-transfer-files-from-google-drive-to-filecloud","usedApps":["google-drive","filecloud"],"usage":34}

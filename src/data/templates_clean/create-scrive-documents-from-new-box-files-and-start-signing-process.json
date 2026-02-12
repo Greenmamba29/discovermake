@@ -1,0 +1,1 @@
+{"id":8204,"name":"Create Scrive documents from new Box files and start signing process","description":"Every time a new file is added to a selected Box folder, Make will automatically create a new document in Scrive and start signing process.","url":"8204-create-scrive-documents-from-new-box-files-and-start-signing-process","usedApps":["box","scrive"],"usage":5}

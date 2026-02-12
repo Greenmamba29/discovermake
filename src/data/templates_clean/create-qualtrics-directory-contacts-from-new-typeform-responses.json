@@ -1,0 +1,1 @@
+{"id":8026,"name":"Create Qualtrics directory contacts from new Typeform responses","description":"Make will watch for new Typeform responses at regular intervals and create directory contacts in Qualtrics using information received.","url":"8026-create-qualtrics-directory-contacts-from-new-typeform-responses","usedApps":["typeform","qualtrics"],"usage":1}

@@ -1,0 +1,1 @@
+{"id":6203,"name":"Post a welcoming message to Slack about new employees in Deputy","description":"The template sends a welcoming message to Slack whenever a new employee is created in Deputy.","url":"6203-post-a-welcoming-message-to-slack-about-new-employees-in-deputy","usedApps":["deputy","slack"],"usage":4}

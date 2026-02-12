@@ -1,0 +1,1 @@
+{"id":7477,"name":"Add and Update a new Shopify сustomers as a Petoffice people","description":"Every time a new customer is added to a Shopify, Make will automatically add that customer to Petoffice as a new person or update existing person.","url":"7477-add-and-update-a-new-shopify-ustomers-as-a-petoffice-people","usedApps":["shopify","builtin","petoffice","util"],"usage":9}

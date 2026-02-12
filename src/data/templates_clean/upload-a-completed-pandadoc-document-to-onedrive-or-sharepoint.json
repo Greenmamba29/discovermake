@@ -1,0 +1,1 @@
+{"id":5265,"name":"Upload a completed PandaDoc document to OneDrive (or SharePoint)","description":"Every time a PandaDoc document is completed, Make will automatically upload the document to OneDrive (or SharePoint using OneDrive Site's or Group's Drive).","url":"5265-upload-a-completed-pandadoc-document-to-onedrive-or-sharepoint","usedApps":["pandadoc","onedrive"],"usage":26}

@@ -1,0 +1,1 @@
+{"id":4594,"name":"Send emails for Channels missed calls","description":"Every time a new call is missed in Channels, Make will automatically send an email in Gmail.","url":"4594-send-emails-for-channels-missed-calls","usedApps":["channels","google-email"],"usage":3}

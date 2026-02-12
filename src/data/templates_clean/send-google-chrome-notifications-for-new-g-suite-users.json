@@ -1,0 +1,1 @@
+{"id":3713,"name":"Send Google Chrome notifications for new G Suite users","description":"Every time a user is added to your G Suite organization, Make will automatically send a notification to a specified Chrome browser.","url":"3713-send-google-chrome-notifications-for-new-g-suite-users","usedApps":["google-g-suite","chrome"],"usage":13}

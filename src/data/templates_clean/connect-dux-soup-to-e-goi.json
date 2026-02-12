@@ -1,0 +1,1 @@
+{"id":6963,"name":"Connect Dux-Soup to E-goi","description":"When a webhook from Dux-Soup Turbo is received, a new contact is created in E-goi.","url":"6963-connect-dux-soup-to-e-goi","usedApps":["dux-soup","e-goi"],"usage":0}

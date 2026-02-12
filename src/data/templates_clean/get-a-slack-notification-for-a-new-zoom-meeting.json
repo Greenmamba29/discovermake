@@ -1,0 +1,1 @@
+{"id":6053,"name":"Get a Slack notification for a new Zoom meeting","description":"Every time a new Zoom meeting is created, Make will automatically send a Slack message to a channel or a user.","url":"6053-get-a-slack-notification-for-a-new-zoom-meeting","usedApps":["zoom","slack"],"usage":32}

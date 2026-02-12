@@ -1,0 +1,1 @@
+{"id":5518,"name":"Send SMS via Infobip for new lead from Facebook Lead Ads","description":"Every time a new Facebook Lead is received, Make will automatically send SMS messages via Infobip.","url":"5518-send-sms-via-infobip-for-new-lead-from-facebook-lead-ads","usedApps":["facebook-lead-ads","infobip"],"usage":2}

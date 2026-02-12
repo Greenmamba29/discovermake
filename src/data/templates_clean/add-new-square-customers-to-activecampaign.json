@@ -1,0 +1,1 @@
+{"id":2671,"name":"Add new Square customers to ActiveCampaign","description":"Every time a new customer is created in Square, Make will automatically create a new contact in ActiveCampaign.","url":"2671-add-new-square-customers-to-activecampaign","usedApps":["square","activecampaign"],"usage":20}

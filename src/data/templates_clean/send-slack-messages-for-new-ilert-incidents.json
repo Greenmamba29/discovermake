@@ -1,0 +1,1 @@
+{"id":12024,"name":"Send Slack messages for new ilert incidents","description":"Every time you receive a new incident in ilert, Make will automatically send a message in Slack.","url":"7892-send-slack-messages-for-new-ilert-incidents","usedApps":["ilert","slack"],"usage":1}

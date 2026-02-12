@@ -1,0 +1,1 @@
+{"id":7337,"name":"Send push notifications via Google Chrome for new answered email in Snov.io","description":"Every time an email is answered in Snov.io, Make will automatically send a notification via Google Chrome.","url":"7337-send-push-notifications-via-google-chrome-for-new-answered-email-in-snov-io","usedApps":["snovio","chrome"],"usage":9}

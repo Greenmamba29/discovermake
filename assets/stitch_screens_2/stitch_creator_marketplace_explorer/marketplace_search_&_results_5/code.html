@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Creator Storefront Catalog - DiscoverMake</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13a4ec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101c22",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .glass-header { backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+        body { min-height: 100dvh; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white">
+<header class="sticky top-0 z-40 bg-background-light/90 dark:bg-background-dark/90 glass-header border-b border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-3 px-4 pt-4 pb-2">
+<button class="flex items-center justify-center size-8 rounded-full bg-slate-100 dark:bg-slate-800">
+<span class="material-symbols-outlined text-xl">arrow_back_ios_new</span>
+</button>
+<div class="flex items-center gap-2 flex-1">
+<div class="size-8 rounded-full overflow-hidden border border-primary/20">
+<img alt="Flux Labs Avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYpYH7c-gnJJ3LvRZYWh_D7-1wpcE8bGiHxxy-E7XmbZ55LGt43aVmYodHL2Wp2t7-Bn6PZjfFImSvZhewDtHUuFKa0vUyjvHjk5Lm90CypVmJ3KjqL_gc4N1Xs0KQ5YSXM-eGnGPaWq-16PYLxZOceHiUDs_Rdg6RUjOAJJV2lh4ajaLkvF_6m3Whk-WaHqUxDMKyJCJtt7LglrICPTNkFtHdUFkCnte0FKGgnujRDaMC-dogJXbTQPX_u_W_MG1EadqprHjxh3s"/>
+</div>
+<div>
+<h1 class="text-sm font-bold leading-none">Flux Labs</h1>
+<p class="text-[10px] text-slate-500 font-medium">12.4k Remixes • 4.9 Rating</p>
+</div>
+</div>
+<button class="flex items-center justify-center size-8 rounded-full border border-slate-200 dark:border-slate-700">
+<span class="material-symbols-outlined text-xl">share</span>
+</button>
+</div>
+<div class="flex border-b border-slate-100 dark:border-slate-800/50 mt-2">
+<button class="flex-1 py-3 text-xs font-bold border-b-2 border-primary text-primary">Most popular</button>
+<button class="flex-1 py-3 text-xs font-bold text-slate-400">Newest</button>
+<button class="flex-1 py-3 text-xs font-bold text-slate-400">Best outcomes</button>
+</div>
+<div class="flex gap-2 overflow-x-auto px-4 py-3 no-scrollbar">
+<button class="flex h-8 shrink-0 items-center justify-center gap-1 rounded-full bg-slate-200 dark:bg-slate-800 px-4 text-[11px] font-semibold border border-transparent">
+<span>Category</span>
+<span class="material-symbols-outlined text-[14px]">expand_more</span>
+</button>
+<button class="flex h-8 shrink-0 items-center justify-center gap-1 rounded-full bg-slate-200 dark:bg-slate-800 px-4 text-[11px] font-semibold border border-transparent">
+<span>Price</span>
+<span class="material-symbols-outlined text-[14px]">expand_more</span>
+</button>
+<button class="flex h-8 shrink-0 items-center justify-center gap-1 rounded-full bg-slate-200 dark:bg-slate-800 px-4 text-[11px] font-semibold border border-transparent">
+<span>Stack</span>
+<span class="material-symbols-outlined text-[14px]">expand_more</span>
+</button>
+<button class="flex h-8 shrink-0 items-center justify-center gap-1 rounded-full bg-slate-200 dark:bg-slate-800 px-4 text-[11px] font-semibold border border-transparent">
+<span class="material-symbols-outlined text-[14px]">filter_list</span>
+</button>
+</div>
+</header>
+<main class="p-4 space-y-6 pb-24">
+<div class="grid grid-cols-2 gap-3">
+<div class="flex flex-col rounded-2xl bg-white dark:bg-[#192b33] overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="aspect-square w-full relative">
+<img alt="Outcome" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeOmHCcF-imom74dV_TPQVN1cYFmcausQNo4oR9NYyxi0rUfYqmr93ajneqvRTRunAPODqt-yDp2vtPmhWPflh56StSEuCKR1bJ018mi82U8ofU8C4lx9_tbdnQrz9iGId9QBdOHcX3QgQi5kz4rxGlx58F_AUhbdQnW4RrI90QbWIldtnI6vp1cAx9EpHTcJ_M_37rMBCP-TGGlocEeBnGrUmSWDMkWE_3w_GlN4Ui4wIMoQVhUUxXLQlr7GE1RPDPK6d3bRgYvc"/>
+<div class="absolute bottom-2 left-2 flex items-center gap-1 bg-black/60 backdrop-blur px-1.5 py-0.5 rounded text-[10px] text-white font-bold">
+<span class="material-symbols-outlined text-[12px]">bolt</span> FAST
+                </div>
+</div>
+<div class="p-3 flex flex-col flex-1">
+<h3 class="text-sm font-bold leading-tight line-clamp-2 mb-2">Instant Support Weaver</h3>
+<div class="mt-auto flex items-center justify-between">
+<span class="text-[11px] font-bold text-primary">$12</span>
+<button class="bg-primary text-white text-[10px] font-black px-3 py-1.5 rounded-full uppercase">Remix</button>
+</div>
+</div>
+</div>
+<div class="flex flex-col rounded-2xl bg-white dark:bg-[#192b33] overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="aspect-square w-full relative">
+<img alt="Outcome" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCCRc4s3Zh9mS_gG8VPEEhrmK0V3RrYQqvX-AhSntHxmvNlk6OWwH5ThMfendgya2x6_JxTUeReZ-7VH_vTavOZIzeb80kz_bZ9GBQf2qtBPcANXdi75YHAqyiAXmF9yNk-JY7E2rbahFR8s7gbRB8B7RkIhHB-xq26cOOr64fCnrviQhqaHELVj37GR_uzPtLYQ3ZgZggomz-6JXfeAITrDeQYWQn1iOARmATsCp2NPjR0NoNUsEtcHlZHFyC5GtxJF-0dxlu4wgw"/>
+<div class="absolute top-2 right-2 bg-green-500 text-white text-[9px] font-black px-1.5 py-0.5 rounded uppercase">Free</div>
+</div>
+<div class="p-3 flex flex-col flex-1">
+<h3 class="text-sm font-bold leading-tight line-clamp-2 mb-2">SupportSync Pro</h3>
+<div class="mt-auto flex items-center justify-between">
+<span class="text-[11px] font-bold text-slate-400">FREE</span>
+<button class="bg-primary text-white text-[10px] font-black px-3 py-1.5 rounded-full uppercase">Remix</button>
+</div>
+</div>
+</div>
+</div>
+<div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-600 to-primary p-5 text-white">
+<div class="relative z-10">
+<div class="flex items-center gap-2 mb-2">
+<span class="bg-white/20 backdrop-blur text-[10px] font-bold px-2 py-0.5 rounded uppercase border border-white/20">Bundle Offer</span>
+</div>
+<h2 class="text-xl font-bold mb-1">SaaS Starter Pack</h2>
+<p class="text-white/80 text-xs font-medium mb-4">3 Workflows: Onboarding, Support, &amp; Billing automation.</p>
+<div class="flex items-center justify-between bg-black/10 -mx-5 -mb-5 px-5 py-3 mt-4">
+<div class="flex items-baseline gap-1">
+<span class="text-lg font-black">$29</span>
+<span class="text-[10px] line-through text-white/50">$45</span>
+</div>
+<button class="bg-white text-primary text-xs font-bold px-4 py-2 rounded-lg shadow-lg">Get Bundle</button>
+</div>
+</div>
+<div class="absolute -right-4 -top-4 size-24 bg-white/10 rounded-full blur-2xl"></div>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<div class="flex flex-col rounded-2xl bg-white dark:bg-[#192b33] overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="aspect-square w-full relative">
+<img alt="Outcome" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBD0QlI5fYebtmcBMGpf2ktpUjTQuBeVu9mryFC4wAeyavgQxZqVGJrOwcHWyB9dcLp32_q49nG5AZHaKlTVsLWancGc_z9DrD8--hQ-Co7SkDhUzKQHyPDcHZ-SnX98bNP-RK0JB0NmhNhn2NNNwKtj3UHnSXay9ihUhajegK1Y-zOC1CL0cDOkLFaMHCVcoX917rg1yVFuXjOaCkNKnpG9xRz1nEyicVuGP4LONOnQTylTM-iP29gF-rWu8dbSD2F7Y3Gdra8uCY"/>
+</div>
+<div class="p-3 flex flex-col flex-1">
+<h3 class="text-sm font-bold leading-tight line-clamp-2 mb-2">Rapid Response Bot</h3>
+<div class="mt-auto flex items-center justify-between">
+<span class="text-[11px] font-bold text-primary">$19</span>
+<button class="bg-primary text-white text-[10px] font-black px-3 py-1.5 rounded-full uppercase">Remix</button>
+</div>
+</div>
+</div>
+<div class="flex flex-col rounded-2xl bg-white dark:bg-[#192b33] overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="aspect-square w-full relative">
+<img alt="Outcome" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_h0Xz1tQf-1VSFaOFEDHahYB8PnNFKJzfKLdeTEHfPXxTR7CckKPMlE098w6Bvz4lB_8Vaas1RW3FawXie7Xd6Ymwp81E48IeaD8v8Cx6faiQJQOBCHAC52m3bTiFYDQnLnwbQU0vye63tS8_Q-UC3wV6IAfsh4ic1WsyjWeJ0CGHKKg-q_ijCxFdDasvLULgxeoOaG2xsDZRGPKiE-WpU2c9MxeTcj_YknMKz6d4RNuLvNVPc1fHmqgjfr1zyYz4wcgGJD89EIE"/>
+</div>
+<div class="p-3 flex flex-col flex-1">
+<h3 class="text-sm font-bold leading-tight line-clamp-2 mb-2">AutoHelper Lite</h3>
+<div class="mt-auto flex items-center justify-between">
+<span class="text-[11px] font-bold text-primary">$8</span>
+<button class="bg-primary text-white text-[10px] font-black px-3 py-1.5 rounded-full uppercase">Remix</button>
+</div>
+</div>
+</div>
+</div>
+<div class="rounded-2xl border-2 border-primary/30 bg-primary/5 p-5 flex flex-col items-center text-center">
+<div class="size-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-4">
+<span class="material-symbols-outlined text-primary text-3xl">workspace_premium</span>
+</div>
+<h3 class="text-lg font-bold mb-1 italic">Flux Labs Pass</h3>
+<p class="text-slate-500 dark:text-slate-400 text-xs mb-4">Unlimited access to all 48 current &amp; future Flux Labs workflows.</p>
+<div class="w-full flex flex-col gap-2">
+<button class="w-full h-11 bg-primary text-white font-bold rounded-xl shadow-lg shadow-primary/20">Subscribe • $15/mo</button>
+<p class="text-[10px] text-slate-400">Cancel anytime. 7-day free trial.</p>
+</div>
+</div>
+</main>
+<nav class="fixed bottom-0 left-0 right-0 z-50 bg-white/90 dark:bg-[#101c22]/90 glass-header border-t border-slate-200 dark:border-slate-800 pb-8">
+<div class="flex justify-around items-center pt-3 px-4">
+<div class="flex flex-col items-center gap-1">
+<span class="material-symbols-outlined text-slate-400">explore</span>
+<span class="text-[10px] font-medium text-slate-400">Explore</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<span class="material-symbols-outlined text-primary fill-1">storefront</span>
+<span class="text-[10px] font-medium text-primary">Store</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<span class="material-symbols-outlined text-slate-400">add_circle</span>
+<span class="text-[10px] font-medium text-slate-400">Create</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<span class="material-symbols-outlined text-slate-400">person</span>
+<span class="text-[10px] font-medium text-slate-400">Profile</span>
+</div>
+</div>
+</nav>
+<div class="fixed bottom-1 left-1/2 -translate-x-1/2 w-32 h-1.5 bg-slate-400/30 dark:bg-slate-700/50 rounded-full z-[60]"></div>
+
+</body></html>

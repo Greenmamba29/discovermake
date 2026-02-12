@@ -1,0 +1,1 @@
+{"id":6814,"name":"Send a message on Slack for new Pointagram players","description":"Every time there is a new player added to Pointagram, Make will automatically send a message on Slack containing info about the player.","url":"6814-send-a-message-on-slack-for-new-pointagram-players","usedApps":["pointagram","slack"],"usage":0}

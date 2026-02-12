@@ -1,0 +1,1 @@
+{"id":734,"name":" Add new Magento customers to SuiteCRM 7 as new contacts","description":"Every time a new customer is created in Magento, Make will automatically add that customer to SuiteCRM 7 as a new contact.","url":"734-add-new-magento-customers-to-suitecrm-7-as-new-contacts","usedApps":["magento","suitecrm7"],"usage":8}

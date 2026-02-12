@@ -1,0 +1,1 @@
+{"id":7690,"name":"Add new GitHub issues to Nozbe Teams as tasks","description":"Every time a new issue is created in GitHub, Make will automatically create a new task in Nozbe Teams.","url":"7690-add-new-github-issues-to-nozbe-teams-as-tasks","usedApps":["github","nozbe-teams"],"usage":1}

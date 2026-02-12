@@ -1,0 +1,1 @@
+{"id":7932,"name":"Add new Zoho CRM contacts to Fresh Proposals as a clients","description":"Every time new contact is created in Zoho CRM, Make will automatically add that contact to Fresh Proposals as a client.","url":"7932-add-new-zoho-crm-contacts-to-fresh-proposals-as-a-clients","usedApps":["zohocrm","fresh-proposals"],"usage":1}

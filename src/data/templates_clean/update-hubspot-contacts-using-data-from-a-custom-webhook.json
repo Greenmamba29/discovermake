@@ -1,0 +1,1 @@
+{"id":13326,"name":"Update HubSpot contacts using data from a custom webhook","description":"Automatically update HubSpot contacts with data from a custom webhook. Trigger updates by receiving data, searching contacts, and updating them in HubSpot CRM.","url":"13326-update-hubspot-contacts-using-data-from-a-custom-webhook","usedApps":["gateway","hubspotcrm"],"usage":17}

@@ -1,0 +1,1 @@
+{"id":6202,"name":"Create a PostgreSQL table row from a WordPress media item","description":"Use this template to automatically insert a row to your PostgreSQL table when a new WordPress media item is added to the library.","url":"6202-create-a-postgresql-table-row-from-a-wordpress-media-item","usedApps":["wordpress","postgres"],"usage":9}

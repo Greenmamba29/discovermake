@@ -1,0 +1,1 @@
+{"id":3917,"name":"Send new Slack public channels messages to Databox","description":"Every time a new message is sent to a public Slack channel, Make will automatically push that data to Databox.","url":"3917-send-new-slack-public-channels-messages-to-databox","usedApps":["slack","builtin","databox"],"usage":5}

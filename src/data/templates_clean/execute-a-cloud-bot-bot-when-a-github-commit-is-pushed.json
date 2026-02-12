@@ -1,0 +1,1 @@
+{"id":5059,"name":"Execute a Cloud BOT bot when a GitHub commit is pushed","description":"Every time a GitHub commit is pushed, Make will automatically execute a Cloud BOT bot.","url":"5059-execute-a-cloud-bot-bot-when-a-github-commit-is-pushed","usedApps":["github","cloud-bot"],"usage":37}

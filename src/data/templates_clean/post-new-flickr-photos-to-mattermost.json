@@ -1,0 +1,1 @@
+{"id":1616,"name":"Post new Flickr photos to Mattermost","description":"Every time a new photo is added to Flickr, Make will automatically post that photo to a selected channel on Mattermost.","url":"1616-post-new-flickr-photos-to-mattermost","usedApps":["mattermost","flickr"],"usage":4}

@@ -1,0 +1,1 @@
+{"id":5566,"name":"Send SMS messages via Infobip for new emails from Gmail","description":"Every time a new Gmail email is recieved, Make will automatically send SMS messages via Infobip.","url":"5566-send-sms-messages-via-infobip-for-new-emails-from-gmail","usedApps":["google-email","infobip"],"usage":9}

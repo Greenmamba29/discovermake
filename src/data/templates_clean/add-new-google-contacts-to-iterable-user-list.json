@@ -1,0 +1,1 @@
+{"id":7752,"name":"Add new Google Contacts to Iterable user list","description":"Every time a new contact is created in Google Contacts, Make will automatically add that contact to Iterable user list of your choice.","url":"7752-add-new-google-contacts-to-iterable-user-list","usedApps":["google-contacts","iterable"],"usage":2}

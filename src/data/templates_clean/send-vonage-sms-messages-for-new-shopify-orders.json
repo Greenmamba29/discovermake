@@ -1,0 +1,1 @@
+{"id":9037,"name":"Send Vonage SMS messages for new Shopify orders","description":"Make will watch for new Shopify orders at regular intervals and send Vonage SMS messages to the specified number.","url":"9037-send-vonage-sms-messages-for-new-shopify-orders","usedApps":["shopify","vonage"],"usage":7}

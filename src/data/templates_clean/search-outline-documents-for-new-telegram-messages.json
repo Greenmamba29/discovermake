@@ -1,0 +1,1 @@
+{"id":7176,"name":"Search Outline documents for new Telegram messages","description":"Every time your Telegram bot receives a message that contains a title of a document from your Outline, Make will retrieve the document and send it to your Telegram. ","url":"7176-search-outline-documents-for-new-telegram-messages","usedApps":["telegram","outline"],"usage":9}

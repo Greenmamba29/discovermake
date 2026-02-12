@@ -1,0 +1,1 @@
+{"id":6324,"name":"Create Virtuagym member for new Google Forms response","description":"Every time a new Google Forms response is received, Make will automatically create a member in Virtuagym. ","url":"6324-create-virtuagym-member-for-new-google-forms-response","usedApps":["google-forms","virtuagym"],"usage":17}

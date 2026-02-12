@@ -1,0 +1,1 @@
+{"id":6119,"name":"Add new Office 365 People contacts to SmartEmailing","description":"Every time a new contact is added to Office 365 People, Make will automatically add it to SmartEmailing.","url":"6119-add-new-office-365-people-contacts-to-smartemailing","usedApps":["microsoft-people","smart-emailing"],"usage":4}

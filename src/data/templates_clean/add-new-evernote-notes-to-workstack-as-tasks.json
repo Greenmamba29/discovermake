@@ -1,0 +1,1 @@
+{"id":6839,"name":"Add new Evernote notes to Workstack as tasks","description":"Every time a new note is added to your Evernote notebook, Make will automatically create a new task in a Workstack.","url":"6839-add-new-evernote-notes-to-workstack-as-tasks","usedApps":["evernote","workstack"],"usage":1}

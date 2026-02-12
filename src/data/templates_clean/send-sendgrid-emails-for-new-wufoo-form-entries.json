@@ -1,0 +1,1 @@
+{"id":2430,"name":"Send SendGrid emails for new Wufoo form entries","description":"Every time someone fills out your Wufoo form, Make will automatically send an email via SendGrid.","url":"2430-send-sendgrid-emails-for-new-wufoo-form-entries","usedApps":["wufoo","sendgrid"],"usage":2}

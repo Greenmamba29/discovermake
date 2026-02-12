@@ -1,0 +1,1 @@
+{"id":8197,"name":"Add new Google Calendar events to Invision Community calendar","description":"Make will watch for new Google Calendar events at regular intervals and create calendar events in Invision Community using information received.","url":"8197-add-new-google-calendar-events-to-invision-community-calendar","usedApps":["google-calendar","invision-community"],"usage":2}

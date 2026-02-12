@@ -1,0 +1,1 @@
+{"id":5774,"name":"Add new SendOwl customers to Intercom as users","description":"Every time you get a new order in SendOwl, a new user will be created in Intercom. If the contact already exists, it will be updated.","url":"5774-add-new-sendowl-customers-to-intercom-as-users","usedApps":["sendowl","intercom"],"usage":3}

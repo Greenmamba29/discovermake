@@ -1,0 +1,1 @@
+{"id":6416,"name":"Create Hubspot CRM contacts for new Cliengo contacts","description":"Every time a new user is created in Cliengo, Make will automatically create a new contact in Hubspot CRM.","url":"6416-create-hubspot-crm-contacts-for-new-cliengo-contacts","usedApps":["cliengo","hubspotcrm"],"usage":3}

@@ -1,0 +1,1 @@
+{"id":4013,"name":"Turn emails into Zoho CRM contacts with SigParser","description":"Every time a contact is created or updated in SigParser, Make will automatically update or create a new contact in Zoho CRM.","url":"4013-turn-emails-into-zoho-crm-contacts-with-sigparser","usedApps":["sigparser","zohocrm","builtin","util"],"usage":32}

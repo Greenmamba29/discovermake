@@ -1,0 +1,1 @@
+{"id":5570,"name":"Send confirmation text messages in Avochato for new Calendly entry","description":"Every time a new Calendly entry is created, Make will automatically send confirmation text messages in Avochato.","url":"5570-send-confirmation-text-messages-in-avochato-for-new-calendly-entry","usedApps":["calendly","avochato"],"usage":9}

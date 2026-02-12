@@ -1,0 +1,1 @@
+{"id":7590,"name":"Create Factorial employees for new HubSpot CRM contacts","description":"Make will watch your HubSpot CRM contacts at regular intervals and create Factorial employees.","url":"7590-create-factorial-employees-for-new-hubspot-crm-contacts","usedApps":["hubspotcrm","factorial"],"usage":1}

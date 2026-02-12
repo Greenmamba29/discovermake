@@ -1,0 +1,1 @@
+{"id":5572,"name":"Add new Base.com customers to Google contacts","description":"Every time a new orders is created in Base.com, Make will automatically add contact from the order to Google contacts.","url":"5572-add-new-baselinker-customers-to-google-contacts","usedApps":["baselinker","google-contacts"],"usage":21}

@@ -1,0 +1,1 @@
+{"id":138,"name":"Create Blogger posts from new Facebook posts","description":"Every time a new entry is posted on a selected Facebook page, Make will automatically create a new post in a designated Blogger blog.","url":"138-create-blogger-posts-from-new-facebook-posts","usedApps":["facebook-pages","blogger"],"usage":287}

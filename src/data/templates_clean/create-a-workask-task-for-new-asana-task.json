@@ -1,0 +1,1 @@
+{"id":5010,"name":"Create a Workask task for new Asana task","description":"Every time a new task is created in Asana, Make will automatically create a Workask task.","url":"5010-create-a-workask-task-for-new-asana-task","usedApps":["asana","workast"],"usage":3}

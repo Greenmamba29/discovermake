@@ -1,0 +1,1 @@
+{"id":2713,"name":"Add SendGrid recipients from new Zoho Mail emails","description":"Every time a new email is received in a specific Zoho Mail folder, Make will automatically add a new recipient in SendGrid.","url":"2713-add-sendgrid-recipients-from-new-zoho-mail-emails","usedApps":["zoho-mail","sendgrid"],"usage":3}

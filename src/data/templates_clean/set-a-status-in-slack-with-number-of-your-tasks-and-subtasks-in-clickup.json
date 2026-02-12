@@ -1,0 +1,1 @@
+{"id":3150,"name":"Set a status in Slack with number of your tasks and subtasks in ClickUp","description":"In specified intervals Make retrieves the number of tasks and subtasks in your ClickUp and set ups the number as your status in Slack.","url":"3150-set-a-status-in-slack-with-number-of-your-tasks-and-subtasks-in-clickup","usedApps":["clickup","builtin","slack"],"usage":56}

@@ -1,0 +1,1 @@
+{"id":4417,"name":"Register calls in Teamgate CRM from new Toky calls","description":"Every time a new call is received on Toky, Make will automatically create a new call event in Teamgate CRM. ","url":"4417-register-calls-in-teamgate-crm-from-new-toky-calls","usedApps":["toky","teamgate-crm"],"usage":1}

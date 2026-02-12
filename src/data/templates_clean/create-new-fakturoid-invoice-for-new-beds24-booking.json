@@ -1,0 +1,1 @@
+{"id":3477,"name":"Create new Fakturoid invoice for new Beds24 booking","description":"Every time you have a new Beds24 booking, a new invoice will be issued in Fakturoid.","url":"3477-create-new-fakturoid-invoice-for-new-beds24-booking","usedApps":["beds24","fakturoid","builtin"],"usage":11}

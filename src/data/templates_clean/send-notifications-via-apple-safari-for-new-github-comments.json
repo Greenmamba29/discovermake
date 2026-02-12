@@ -1,0 +1,1 @@
+{"id":1075,"name":"Send notifications via Apple Safari for new GitHub comments","description":"Every time a new comment is added to GitHub, Make will automatically send a notification via Apple Safari.","url":"1075-send-notifications-via-apple-safari-for-new-github-comments","usedApps":["github","safari"],"usage":6}

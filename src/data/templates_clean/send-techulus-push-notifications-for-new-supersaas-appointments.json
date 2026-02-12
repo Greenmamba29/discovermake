@@ -1,0 +1,1 @@
+{"id":6833,"name":"Send Techulus Push notifications for new SuperSaaS appointments","description":"Every time there is a new appointment scheduled in SuperSaaS, Make will automatically send a Techulus Push notification.","url":"6833-send-techulus-push-notifications-for-new-supersaas-appointments","usedApps":["supersaas","techulus-push"],"usage":2}

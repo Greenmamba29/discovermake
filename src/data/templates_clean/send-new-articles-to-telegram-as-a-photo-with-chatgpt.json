@@ -1,0 +1,1 @@
+{"id":14040,"name":"Send new articles to Telegram as a photo with ChatGPT","description":"Automatically send new RSS articles to Telegram as a photo with ChatGPT. Convert HTML to text, generate an image, and share via Telegram.","url":"14040-send-new-articles-to-telegram-as-a-photo-with-chatgpt","usedApps":["rss","regexp","openai-gpt-3","telegram"],"usage":49}

@@ -1,0 +1,1 @@
+{"id":13595,"name":"Transform and send data using Compose a string and HTTP modules","description":"Transform data with Compose a string, set variable, and send it via HTTP. Ideal for automating data processing and transmission tasks.","url":"13595-transform-and-send-data-using-composetransformer-and-actionsenddata-modules","usedApps":["util","http"],"usage":11}

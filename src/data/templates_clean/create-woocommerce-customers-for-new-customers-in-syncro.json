@@ -1,0 +1,1 @@
+{"id":7452,"name":"Create WooCommerce customers for new customers in Syncro","description":"Every time a new customer is added to your Syncro, Make will create an identical customer in your WooCommerce.","url":"7452-create-woocommerce-customers-for-new-customers-in-syncro","usedApps":["syncro","woocommerce"],"usage":2}

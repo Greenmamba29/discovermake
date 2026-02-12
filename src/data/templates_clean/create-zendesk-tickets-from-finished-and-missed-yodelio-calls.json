@@ -1,0 +1,1 @@
+{"id":10286,"name":"Create Zendesk tickets from finished and missed Yodel.io calls","description":"Every time a new call is finished or missed in Yodel.io, Make will automatically create a new ticket in Zendesk.","url":"2592-create-zendesk-tickets-from-finished-and-missed-yodel-io-calls","usedApps":["yodel","zendesk"],"usage":2}

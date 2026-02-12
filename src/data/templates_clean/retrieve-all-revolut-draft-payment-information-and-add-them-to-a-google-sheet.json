@@ -1,0 +1,1 @@
+{"id":5819,"name":"Retrieve all Revolut draft payment information and add them to a Google Sheet","description":"Retrieve all Revolut draft payments and store them in a Google Sheet.","url":"5819-retrieve-all-revolut-draft-payment-information-and-add-them-to-a-google-sheet","usedApps":["revolut","google-sheets"],"usage":59}

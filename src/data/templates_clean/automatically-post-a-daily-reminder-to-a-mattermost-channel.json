@@ -1,0 +1,1 @@
+{"id":1607,"name":"Automatically post a daily reminder to a Mattermost channel ","description":"Once activated, this scenario will post a reminder to a specified channel on Mattermost automatically every day at 8 a.m.","url":"1607-automatically-post-a-daily-reminder-to-a-mattermost-channel","usedApps":["mattermost"],"usage":61}

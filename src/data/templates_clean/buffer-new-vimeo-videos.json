@@ -1,0 +1,1 @@
+{"id":1063,"name":"Buffer new Vimeo videos","description":"Every time a new video is added to a watched album on Vimeo, Make will automatically add it to your Buffer queue.","url":"1063-buffer-new-vimeo-videos","usedApps":["buffer","vimeo"],"usage":50}

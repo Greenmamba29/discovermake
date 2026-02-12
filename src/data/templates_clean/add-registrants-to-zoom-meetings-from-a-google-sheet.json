@@ -1,0 +1,1 @@
+{"id":6620,"name":"Add registrants to Zoom meetings from a Google Sheet","description":"When you update a Google Sheet with new registrants, the scenario will retrieve the registrants and add them to a Zoom meeting.","url":"6620-add-registrants-to-zoom-meetings-from-a-google-sheet","usedApps":["google-sheets","zoom"],"usage":187}

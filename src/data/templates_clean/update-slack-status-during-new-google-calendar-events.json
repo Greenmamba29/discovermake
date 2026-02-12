@@ -1,0 +1,1 @@
+{"id":5946,"name":"Update Slack status during new Google Calendar events","description":"Use this template to change a Slack status when a Google Calendar event has started.","url":"5946-update-slack-status-during-new-google-calendar-events","usedApps":["google-calendar","slack"],"usage":118}

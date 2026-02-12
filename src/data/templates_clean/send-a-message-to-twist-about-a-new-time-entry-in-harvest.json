@@ -1,0 +1,1 @@
+{"id":3007,"name":"Send a message to Twist about a new time entry in Harvest","description":"When a new time entry is created and meets specified criteria, a notification about this event is sent to specified thread in Twist.","url":"3007-send-a-message-to-twist-about-a-new-time-entry-in-harvest","usedApps":["harvest","twist"],"usage":4}

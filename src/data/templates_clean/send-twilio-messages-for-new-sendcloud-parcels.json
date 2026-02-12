@@ -1,0 +1,1 @@
+{"id":4826,"name":"Send Twilio messages for new Sendcloud parcels","description":"Every time a Sendcloud parcel is updated to the specified status, Make will automatically send a message to the customer via Twilio.","url":"4826-send-twilio-messages-for-new-sendcloud-parcels","usedApps":["sendcloud","twilio"],"usage":12}

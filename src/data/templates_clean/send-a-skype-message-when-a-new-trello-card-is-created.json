@@ -1,0 +1,1 @@
+{"id":3322,"name":"Send a Skype message when a new Trello card is created","description":"Every time a new card is created in Trello, Make will automatically send a new message in Skype.","url":"3322-send-a-skype-message-when-a-new-trello-card-is-created","usedApps":["trello","skype"],"usage":20}

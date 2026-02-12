@@ -1,0 +1,1 @@
+{"id":13292,"name":"Send data from Google Sheets to an HTTP endpoint","description":"Automatically send updated Google Sheets data to an HTTP endpoint for real-time processing and integration with your web applications.","url":"13292-send-data-from-google-sheets-to-an-http-endpoint","usedApps":["google-sheets","http"],"usage":12}

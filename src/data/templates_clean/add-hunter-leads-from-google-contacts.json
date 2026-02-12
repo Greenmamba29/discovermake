@@ -1,0 +1,1 @@
+{"id":7562,"name":"Add Hunter leads from Google Contacts","description":"Every time there is a new contact added to Google Contacts, Make will automatically create a new Hunter lead.","url":"7562-add-hunter-leads-from-google-contacts","usedApps":["google-contacts","hunter"],"usage":6}

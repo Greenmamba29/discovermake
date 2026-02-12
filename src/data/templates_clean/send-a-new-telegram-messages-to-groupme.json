@@ -1,0 +1,1 @@
+{"id":7353,"name":"Send a new Telegram messages to GroupMe","description":"Every time a new message is received on your Telegram chat, Make will automatically send message to GroupMe.","url":"7353-send-a-new-telegram-messages-to-groupme","usedApps":["telegram","groupme"],"usage":19}

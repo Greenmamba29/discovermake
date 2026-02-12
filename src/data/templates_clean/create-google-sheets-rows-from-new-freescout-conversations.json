@@ -1,0 +1,1 @@
+{"id":8635,"name":"Create Google Sheets rows from new FreeScout conversations","description":"Every time a new FreeScout conversation is created, Make will automatically add a corresponding row to the Google Sheets spreadsheet of your choice.","url":"8635-create-google-sheets-rows-from-new-freescout-conversations","usedApps":["freescout","google-sheets"],"usage":5}

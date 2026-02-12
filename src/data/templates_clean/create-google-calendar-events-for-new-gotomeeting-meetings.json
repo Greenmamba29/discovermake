@@ -1,0 +1,1 @@
+{"id":6521,"name":"Create Google Calendar events for new GoToMeeting meetings","description":"Every time a new meeting is created in GoToMeeting, Make will automatically create a new event in Google Calendar.","url":"6521-create-google-calendar-events-for-new-gotomeeting-meetings","usedApps":["gotomeeting","google-calendar"],"usage":3}

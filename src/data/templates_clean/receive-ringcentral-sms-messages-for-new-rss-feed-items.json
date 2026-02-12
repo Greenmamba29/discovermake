@@ -1,0 +1,1 @@
+{"id":2557,"name":"Receive RingCentral SMS messages for new RSS feed items","description":"Every time a new RSS feed item is posted to a watched RSS feed, Make will automatically send an SMS message via RingCentral.","url":"2557-receive-ringcentral-sms-messages-for-new-rss-feed-items","usedApps":["rss","ringcentral"],"usage":6}

@@ -1,0 +1,1 @@
+{"id":8916,"name":"Save your Amplitude chart results in Google Sheets","description":"Make will watch for your Amplitude chart results at regular intervals and send it to a specified Google Sheets spreadsheet.","url":"8916-save-your-amplitude-chart-results-in-google-sheets","usedApps":["amplitude","google-sheets"],"usage":38}

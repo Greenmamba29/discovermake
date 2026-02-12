@@ -1,0 +1,1 @@
+{"id":10252,"name":"Create Trello cards from new Google Drive documents","description":"Every time a new document is added to a watched folder on Google Drive, Make will automatically create a new card in Trello.","url":"10252-create-trello-cards-from-new-google-drive-documents","usedApps":["google-drive","trello"],"usage":54}

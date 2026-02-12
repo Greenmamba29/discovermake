@@ -1,0 +1,1 @@
+{"id":5852,"name":"Create Mailchimp subscribers from new Contacts in MOCO","description":"Every time a MOCO contact is added, Make will automatically create a new Mailchimp subscriber.","url":"5852-create-mailchimp-subscribers-from-new-contacts-in-moco","usedApps":["moco","mailchimp"],"usage":7}

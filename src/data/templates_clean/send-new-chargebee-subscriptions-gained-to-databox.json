@@ -1,0 +1,1 @@
+{"id":3897,"name":"Send new Chargebee subscriptions gained to Databox","description":"Whenever you gain a new subscriber in your Chargebee account, Make will automatically update the number of subscribers in Databox. ","url":"3897-send-new-chargebee-subscriptions-gained-to-databox","usedApps":["chargebee","databox"],"usage":7}

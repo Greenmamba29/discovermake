@@ -1,0 +1,1 @@
+{"id":6913,"name":"Create new ActiveCampaign contacts from new Transistor.fm subscribers","description":"Every time a new subscriber is added in Transistor.fm, a new contact will be created in ActiveCampaign.","url":"6913-create-new-activecampaign-contacts-from-new-transistor-fm-subscribers","usedApps":["transistor-fm","activecampaign"],"usage":1}

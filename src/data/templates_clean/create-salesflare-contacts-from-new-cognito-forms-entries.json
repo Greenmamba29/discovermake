@@ -1,0 +1,1 @@
+{"id":2809,"name":"Create Salesflare contacts from new Cognito Forms entries","description":"Every time someone fills out your Cognito Forms form, Make will automatically create a new contact in Salesflare.","url":"2809-create-salesflare-contacts-from-new-cognito-forms-entries","usedApps":["cognitoforms","salesflare"],"usage":2}

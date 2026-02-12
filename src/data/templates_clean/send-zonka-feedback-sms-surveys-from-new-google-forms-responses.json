@@ -1,0 +1,1 @@
+{"id":8468,"name":"Send Zonka Feedback SMS surveys from new Google Forms responses","description":"Every time a new response is entered on your Google Forms,  Make will automatically send an SMS survey in Zonka Feedback.","url":"8468-send-zonka-feedback-sms-surveys-from-new-google-forms-responses","usedApps":["google-forms","zonka-feedback"],"usage":1}

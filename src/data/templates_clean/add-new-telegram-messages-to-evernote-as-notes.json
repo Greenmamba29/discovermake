@@ -1,0 +1,1 @@
+{"id":2153,"name":"Add new Telegram messages to Evernote as notes","description":"Every time a new message is received in a specific Telegram chat/channel, Make will automatically add a new note to an Evernote notebook of your choice.","url":"2153-add-new-telegram-messages-to-evernote-as-notes","usedApps":["telegram","evernote"],"usage":236}

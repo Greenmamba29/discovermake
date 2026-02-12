@@ -1,0 +1,1 @@
+{"id":8670,"name":"Send Telegram messages for new Voxloud phone calls","description":"Every time a new call is going through Voxloud, Make will automatically create a message in your Telegram.","url":"8670-send-telegram-messages-for-new-voxloud-phone-calls","usedApps":["voxloud","telegram"],"usage":3}

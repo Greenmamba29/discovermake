@@ -1,0 +1,1 @@
+{"id":2124,"name":"Get notified on Telegram when a new checklist is added on Trello","description":"Every time a new checklist is added to a Trello card, Make will automatically send a message to a specified Telegram channel/chat.","url":"2124-get-notified-on-telegram-when-a-new-checklist-is-added-on-trello","usedApps":["trello","telegram"],"usage":33}

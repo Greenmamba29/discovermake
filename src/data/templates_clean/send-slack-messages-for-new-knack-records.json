@@ -1,0 +1,1 @@
+{"id":1030,"name":"Send Slack messages for new Knack records","description":"Every time a new record is added to Knack, Make will automatically send a message in Slack.","url":"1030-send-slack-messages-for-new-knack-records","usedApps":["knack","slack"],"usage":7}

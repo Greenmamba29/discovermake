@@ -1,0 +1,1 @@
+{"id":8073,"name":"Send SMSC messages from new Telegram messages","description":"Every time a new message is received on Telegram, Make will automatically send new message in SMSC.","url":"8073-send-smsc-messages-from-new-telegram-messages","usedApps":["telegram","smsc"],"usage":4}

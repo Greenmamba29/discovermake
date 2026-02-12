@@ -1,0 +1,1 @@
+{"id":4508,"name":"Send Email attachments from PDFMonkey documents","description":"Every time a new PDFMonkey document is created, Make will automatically send an email with the document as an attachment.","url":"4508-send-email-attachments-from-pdfmonkey-documents","usedApps":["pdfmonkey","http","email"],"usage":33}

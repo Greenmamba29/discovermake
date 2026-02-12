@@ -1,0 +1,1 @@
+{"id":13457,"name":"Send custom email notifications with JSON data using Make","description":"Automatically send personalized email notifications by creating JSON data and sending it via HTTP using Custom MailHook, Create JSON, and HTTP modules in Make.","url":"13457-send-custom-email-notifications-with-json-data-using-make","usedApps":["gateway","json","http"],"usage":8}

@@ -1,0 +1,1 @@
+{"id":6787,"name":"Create GitHub issues from new Invoice Ninja tasks","description":"Every time a new task is created in Invoice Ninja, Make will automatically create a new issue in GitHub.","url":"6787-create-github-issues-from-new-invoice-ninja-tasks","usedApps":["invoiceninja","github"],"usage":1}

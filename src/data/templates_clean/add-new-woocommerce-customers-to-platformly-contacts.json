@@ -1,0 +1,1 @@
+{"id":6340,"name":"Add new WooCommerce customers to Platformly contacts","description":"Every time a new customer is created in WooCommerce, Make will automatically add that contact to Platformly contacts.","url":"6340-add-new-woocommerce-customers-to-platformly-contacts","usedApps":["woocommerce","platformly"],"usage":2}

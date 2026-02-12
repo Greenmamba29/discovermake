@@ -1,0 +1,1 @@
+{"id":7116,"name":"Add a new LiveAgent customers to Simplesat","description":"Every time a new customer is created in LiveAgent, Make will automatically create a new customer in Simplesat.","url":"7116-add-a-new-liveagent-customers-to-simplesat","usedApps":["liveagent","simplesat"],"usage":2}

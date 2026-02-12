@@ -1,0 +1,1 @@
+{"id":5048,"name":"Add a new row in Google Sheets when a Cloud BOT bot is executed","description":"Every time a Cloud BOT bot is executed, Make will automatically add a new row to your Google Sheets spreadsheet.","url":"5048-add-a-new-row-in-google-sheets-when-a-cloud-bot-bot-is-executed","usedApps":["cloud-bot","google-sheets"],"usage":1}

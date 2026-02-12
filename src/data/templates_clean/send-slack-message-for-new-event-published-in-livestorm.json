@@ -1,0 +1,1 @@
+{"id":5160,"name":"Send Slack message for new Event Published in Livestorm","description":"Every time when a new event is published on Livestorm, Make will automatically send a message in Slack.","url":"5160-send-slack-message-for-new-event-published-in-livestorm","usedApps":["livestorm","slack"],"usage":0}

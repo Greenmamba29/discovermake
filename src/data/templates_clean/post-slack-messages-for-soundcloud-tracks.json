@@ -1,0 +1,1 @@
+{"id":262,"name":"Post Slack messages for SoundCloud tracks","description":"Every time a selected user uploads a new track to SoundCloud, Make will automatically post a message to Slack.","url":"262-post-slack-messages-for-soundcloud-tracks","usedApps":["soundcloud","slack"],"usage":12}

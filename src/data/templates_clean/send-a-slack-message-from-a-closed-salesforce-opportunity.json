@@ -1,0 +1,1 @@
+{"id":5586,"name":"Send a Slack message from a closed Salesforce opportunity","description":"Use this template to send a Slack message to a channel or a user when a Salesforce opportunity is closed.","url":"5586-send-a-slack-message-from-a-closed-salesforce-opportunity","usedApps":["salesforce","slack"],"usage":84}

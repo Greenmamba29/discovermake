@@ -1,0 +1,1 @@
+{"id":960,"name":"Post Merk data about new Fakturoid contacts to Slack","description":"Every time a new contact is created in Fakturoid, Make will automatically check in Merk whether this contact has a debt with VZP. If it does, Make will send a message in Slack.","url":"960-post-merk-data-about-new-fakturoid-contacts-to-slack","usedApps":["fakturoid","merk","slack"],"usage":4}

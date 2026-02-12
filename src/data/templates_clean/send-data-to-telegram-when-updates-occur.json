@@ -1,0 +1,1 @@
+{"id":12845,"name":"Send data to Telegram when updates occur","description":"Automatically send data to Telegram whenever updates occur, using Telegram's WatchUpdates and HTTP's ActionSendData modules for real-time notifications.","url":"12845-send-data-to-telegram-when-updates-occur","usedApps":["telegram","http"],"usage":55}

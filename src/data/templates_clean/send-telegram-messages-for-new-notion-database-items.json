@@ -1,0 +1,1 @@
+{"id":5836,"name":"Send Telegram messages for new Notion database items","description":"Every time a new row is added to your Notion database, Make will automatically post a message on Telegram.","url":"5836-send-telegram-messages-for-new-notion-database-items","usedApps":["notion","telegram"],"usage":1641}

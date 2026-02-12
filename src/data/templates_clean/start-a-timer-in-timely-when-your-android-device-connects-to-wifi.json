@@ -1,0 +1,1 @@
+{"id":6921,"name":"Start a timer in Timely when your Android device connects to WiFi","description":"Every time an Android device being watched connects to a specified Wi-Fi network, Make will automatically start a new event in Timely.","url":"6921-start-a-timer-in-timely-when-your-android-device-connects-to-wifi","usedApps":["android","timelyapp"],"usage":4}

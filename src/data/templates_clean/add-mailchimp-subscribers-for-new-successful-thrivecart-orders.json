@@ -1,0 +1,1 @@
+{"id":7381,"name":"Add Mailchimp subscribers for new successful ThriveCart orders","description":"Every time a successful order is completed in your ThriveCart, Make will add a customer from the order to your Mailchimp mailing list.","url":"7381-add-mailchimp-subscribers-for-new-successful-thrivecart-orders","usedApps":["thrivecart","mailchimp"],"usage":34}

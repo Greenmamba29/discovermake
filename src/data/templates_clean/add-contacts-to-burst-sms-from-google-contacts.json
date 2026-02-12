@@ -1,0 +1,1 @@
+{"id":4695,"name":"Add contacts to Burst SMS from Google Contacts","description":"Every time a new Google Contacts contact is added, Make will automatically add a contact to Burst SMS.","url":"4695-add-contacts-to-burst-sms-from-google-contacts","usedApps":["google-contacts","burst-sms"],"usage":2}

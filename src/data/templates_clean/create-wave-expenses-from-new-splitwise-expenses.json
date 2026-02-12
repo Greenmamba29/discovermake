@@ -1,0 +1,1 @@
+{"id":8578,"name":"Create Wave expenses from new Splitwise expenses","description":"Every time a new expense is created in Splitwise, Make will automatically create a record for it in Wave accounting.","url":"8578-create-wave-expenses-from-new-splitwise-expenses","usedApps":["splitwise","wave"],"usage":6}

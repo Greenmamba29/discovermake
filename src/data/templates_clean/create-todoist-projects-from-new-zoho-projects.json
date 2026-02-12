@@ -1,0 +1,1 @@
+{"id":7847,"name":"Create Todoist projects from new Zoho Projects","description":"Make will watch for new projects in Zoho Projects at regular intervals and create projects in Todoist using information retrieved.","url":"7847-create-todoist-projects-from-new-zoho-projects","usedApps":["zoho-projects","todoist"],"usage":10}

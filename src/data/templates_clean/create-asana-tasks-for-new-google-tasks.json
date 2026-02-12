@@ -1,0 +1,1 @@
+{"id":3643,"name":"Create Asana tasks for new Google Tasks","description":"Every time a new task is added to a specified Google Tasks list, Make will automatically create a new task in Asana.","url":"3643-create-asana-tasks-for-new-google-tasks","usedApps":["google-tasks","asana"],"usage":110}

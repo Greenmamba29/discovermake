@@ -1,0 +1,1 @@
+{"id":7150,"name":"Create Fleep messages for new offline messages in HappyFox Chat","description":"Every time an offline message is received in your HappyFox Chat, Make will send it to your Fleep.","url":"7150-create-fleep-messages-for-new-offline-messages-in-happyfox-chat","usedApps":["happyfox-chat","fleep"],"usage":0}

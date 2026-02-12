@@ -1,0 +1,1 @@
+{"id":12715,"name":"Retrieve files from HTTP and upload them via FTP","description":"Automatically retrieve files from any HTTP source and upload them to an FTP server. Streamline file transfers with HTTP and FTP integration.","url":"12715-retrieve-files-from-http-and-upload-them-via-ftp","usedApps":["http","ftp"],"usage":21}

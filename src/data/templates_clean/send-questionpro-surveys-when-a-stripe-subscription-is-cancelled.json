@@ -1,0 +1,1 @@
+{"id":4523,"name":"Send QuestionPro surveys when a Stripe subscription is cancelled","description":"Every time a Stripe subscription is deleted, Make will automatically send a QuestionPro feedback survey to the customer. ","url":"4523-send-questionpro-surveys-when-a-stripe-subscription-is-cancelled","usedApps":["stripe","questionpro"],"usage":16}

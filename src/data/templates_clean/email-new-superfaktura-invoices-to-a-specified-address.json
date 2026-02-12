@@ -1,0 +1,1 @@
+{"id":1784,"name":"Email new Superfaktura invoices to a specified address","description":"Every time a new invoice is created in Superfaktura, Make will automatically send that invoice via email to a specified address.","url":"1784-email-new-superfaktura-invoices-to-a-specified-address","usedApps":["superfaktura","superfaktura"],"usage":7}

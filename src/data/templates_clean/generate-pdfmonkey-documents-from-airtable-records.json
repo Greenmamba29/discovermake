@@ -1,0 +1,1 @@
+{"id":4509,"name":"Generate PDFMonkey documents from Airtable records","description":"Every time a new Airtable record is added, Make will automatically generate a PDFMonkey document.","url":"4509-generate-pdfmonkey-documents-from-airtable-records","usedApps":["airtable","pdfmonkey"],"usage":191}

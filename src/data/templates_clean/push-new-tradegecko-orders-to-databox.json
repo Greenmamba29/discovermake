@@ -1,0 +1,1 @@
+{"id":3976,"name":"Push new TradeGecko orders to Databox","description":"Whenever a new order comes in to TradeGecko, Make will push that information to Databox. ","url":"3976-push-new-tradegecko-orders-to-databox","usedApps":["tradegecko","databox"],"usage":0}

@@ -1,0 +1,1 @@
+{"id":2598,"name":"Create Copper activities from finished Yodel.io calls","description":"Every time you make or receive a call from a specific number via Yodel.io, Make will automatically create a new activity in Copper.","url":"2598-create-copper-activities-from-finished-yodel-io-calls","usedApps":["yodel","prosperworks"],"usage":1}

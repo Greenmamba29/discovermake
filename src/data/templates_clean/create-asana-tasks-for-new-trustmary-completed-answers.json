@@ -1,0 +1,1 @@
+{"id":7119,"name":"Create Asana tasks for new Trustmary completed answers.","description":"Every time a new answer is completed in Trustmary, Make will automatically create a new task on Asana.","url":"7119-create-asana-tasks-for-new-trustmary-completed-answers","usedApps":["trustmary","asana"],"usage":1}

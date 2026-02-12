@@ -1,0 +1,1 @@
+{"id":8200,"name":"Create Invision Community forum topics from new Discord posts","description":"Make will watch for new Discord posts at regular intervals and create forum topics in Invision Community using information received.","url":"8200-create-invision-community-forum-topics-from-new-discord-posts","usedApps":["discord","invision-community"],"usage":7}

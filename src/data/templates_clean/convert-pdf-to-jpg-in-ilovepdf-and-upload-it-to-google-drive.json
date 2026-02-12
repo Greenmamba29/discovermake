@@ -1,0 +1,1 @@
+{"id":10228,"name":"Convert PDF to JPG in iLovePDF and upload it to Google Drive","description":"This template loads PDFs from a Google Drive folder, converts them to JPG via iLovePDF and uploads files to a Google Drive folder.","url":"10228-covert-pdf-to-jpg-in-ilovepdf-and-upload-it-to-google-drive","usedApps":["google-drive","ilovepdf"],"usage":71}

@@ -1,0 +1,1 @@
+{"id":8343,"name":"Create Google Contacts from new Shift4Shop customers","description":"Every time a new customer is created in Shift4Shop, Make will automatically add that customer to Google Contacts as a new contact.","url":"8343-create-google-contacts-from-new-shift4shop-customers","usedApps":["a3dcart","google-contacts"],"usage":5}

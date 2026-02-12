@@ -1,0 +1,1 @@
+{"id":4746,"name":"Add new Zendesk tickets to ClickUp as tasks","description":"Every time a new ticket is received in Zendesk, Make will automatically create a new task in a ClickUp list of your choice.","url":"4746-add-new-zendesk-tickets-to-clickup-as-tasks","usedApps":["zendesk","clickup"],"usage":37}

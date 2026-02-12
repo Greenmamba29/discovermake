@@ -1,0 +1,1 @@
+{"id":8569,"name":"Send Amazon SES messages for Livestorm registrants attended","description":"Every time a Livestorm webinar ends, Make will send a message to all the registered attendants via Amazon SES.","url":"8569-send-amazon-ses-messages-for-livestorm-registrants-attended","usedApps":["livestorm","amazon-ses"],"usage":3}

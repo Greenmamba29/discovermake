@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Marketplace Moderation Queue</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13a4ec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101c22",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 antialiased">
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-background-light dark:bg-background-dark group/design-root overflow-x-hidden max-w-[430px] mx-auto border-x border-slate-200 dark:border-slate-800 shadow-2xl">
+<!-- Header Section (TopAppBar Influence) -->
+<header class="sticky top-0 z-30 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md">
+<div class="flex items-center p-4 pb-2 justify-between">
+<div class="flex size-10 shrink-0 items-center justify-center rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 cursor-pointer">
+<span class="material-symbols-outlined text-2xl">menu</span>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-tight flex-1 text-center">Mod Queue</h2>
+<div class="flex size-10 items-center justify-end">
+<button class="flex items-center justify-center rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 h-10 w-10">
+<span class="material-symbols-outlined text-2xl">search</span>
+</button>
+</div>
+</div>
+<!-- Filter Tabs -->
+<div class="pb-3 overflow-x-auto no-scrollbar">
+<div class="flex border-b border-slate-200 dark:border-slate-800 px-4 gap-6 whitespace-nowrap">
+<a class="flex flex-col items-center justify-center border-b-[3px] border-primary text-primary pb-[10px] pt-2" href="#">
+<p class="text-xs font-bold uppercase tracking-wider">Pending</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[3px] border-transparent text-slate-500 pb-[10px] pt-2" href="#">
+<p class="text-xs font-bold uppercase tracking-wider">High Priority</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[3px] border-transparent text-slate-500 pb-[10px] pt-2" href="#">
+<p class="text-xs font-bold uppercase tracking-wider">Escalated</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[3px] border-transparent text-slate-500 pb-[10px] pt-2" href="#">
+<p class="text-xs font-bold uppercase tracking-wider">Resolved</p>
+</a>
+</div>
+</div>
+<!-- Horizontal Quick Filters -->
+<div class="flex gap-2 p-3 overflow-x-auto no-scrollbar">
+<button class="flex h-8 shrink-0 items-center justify-center gap-x-1 rounded-lg bg-slate-200 dark:bg-slate-800 px-3">
+<p class="text-xs font-medium">Policy: IP</p>
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</button>
+<button class="flex h-8 shrink-0 items-center justify-center gap-x-1 rounded-lg bg-slate-200 dark:bg-slate-800 px-3 border border-primary/30">
+<p class="text-xs font-medium text-primary">Reports &gt; 5</p>
+<span class="material-symbols-outlined text-sm text-primary">expand_more</span>
+</button>
+<button class="flex h-8 shrink-0 items-center justify-center gap-x-1 rounded-lg bg-slate-200 dark:bg-slate-800 px-3">
+<p class="text-xs font-medium">Region: US</p>
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</button>
+</div>
+</header>
+<!-- Moderation Feed (Table-style condensed list) -->
+<main class="flex-1 overflow-y-auto px-4 pb-20">
+<h3 class="text-xs font-bold text-slate-500 uppercase tracking-widest pt-4 pb-3">Workflows for Review (12)</h3>
+<!-- Workflow Card 1 (Active/Selected) -->
+<div class="mb-3 rounded-xl border-2 border-primary bg-white dark:bg-slate-900 p-4 shadow-lg">
+<div class="flex items-start justify-between">
+<div class="flex-1">
+<div class="flex items-center gap-2 mb-1">
+<span class="flex size-2 rounded-full bg-red-500 animate-pulse"></span>
+<h4 class="font-bold text-sm">Vintage Leica M6 Camera</h4>
+</div>
+<p class="text-xs text-slate-500">Creator: <span class="text-primary font-medium">photo_pro_99</span> • 3h ago</p>
+</div>
+<div class="bg-red-100 dark:bg-red-950 px-2 py-1 rounded flex items-center gap-1">
+<span class="material-symbols-outlined text-xs text-red-600 dark:text-red-400">report</span>
+<span class="text-[10px] font-bold text-red-600 dark:text-red-400">12 Reports</span>
+</div>
+</div>
+<div class="mt-3 flex gap-1 overflow-x-hidden">
+<span class="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-[10px] font-semibold text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700">Counterfeit</span>
+<span class="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-[10px] font-semibold text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700">Misleading</span>
+<span class="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-[10px] font-semibold text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700">IP Violation</span>
+</div>
+</div>
+<!-- Workflow Card 2 -->
+<div class="mb-3 rounded-xl bg-white dark:bg-slate-900/50 p-4 border border-slate-200 dark:border-slate-800">
+<div class="flex items-start justify-between">
+<div class="flex-1">
+<div class="flex items-center gap-2 mb-1">
+<span class="flex size-2 rounded-full bg-orange-500"></span>
+<h4 class="font-bold text-sm">Designer Sunglasses Bundle</h4>
+</div>
+<p class="text-xs text-slate-500">Creator: <span class="text-primary font-medium">hypebeast_01</span> • 8h ago</p>
+</div>
+<div class="bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded flex items-center gap-1">
+<span class="material-symbols-outlined text-xs text-slate-500">report</span>
+<span class="text-[10px] font-bold text-slate-500">4 Reports</span>
+</div>
+</div>
+<div class="mt-3 flex gap-1 overflow-x-hidden">
+<span class="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-[10px] font-semibold text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700">Spam</span>
+<span class="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-[10px] font-semibold text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700">Pricing</span>
+</div>
+</div>
+<!-- Workflow Card 3 -->
+<div class="mb-3 rounded-xl bg-white dark:bg-slate-900/50 p-4 border border-slate-200 dark:border-slate-800">
+<div class="flex items-start justify-between">
+<div class="flex-1">
+<div class="flex items-center gap-2 mb-1">
+<span class="flex size-2 rounded-full bg-slate-400"></span>
+<h4 class="font-bold text-sm">2023 Mac Studio M2 Max</h4>
+</div>
+<p class="text-xs text-slate-500">Creator: <span class="text-primary font-medium">tech_liquidator</span> • 12h ago</p>
+</div>
+<div class="bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded flex items-center gap-1">
+<span class="material-symbols-outlined text-xs text-slate-500">report</span>
+<span class="text-[10px] font-bold text-slate-500">2 Reports</span>
+</div>
+</div>
+</div>
+<!-- Selection Detail View (Mock Bottom Panel UI) -->
+<div class="mt-6 border-t border-slate-200 dark:border-slate-800 pt-6">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-bold text-base">Preview &amp; Outcome</h3>
+<span class="text-[10px] bg-primary/10 text-primary font-bold px-2 py-1 rounded">SLA: 45m LEFT</span>
+</div>
+<div class="rounded-xl overflow-hidden bg-slate-200 dark:bg-slate-800 mb-4 aspect-video relative group">
+<img class="w-full h-full object-cover" data-alt="Close up of a vintage black camera on a wooden table" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCVsilBLHcYseTi4DfLwVIt7mLTn7-iN7AxEvXEjFz6nv60qZkBCwMHizTgnWi7lRF1vm1Nm55EKLXAECb1xxWECoGXlSYtwpFy5znkQ_qCJoUe3nPae8TbPcaNnaBm2Ro3TdXveNZD7hSM3eLTjFuxJHjpgTe6orQBsGxMGC8Awy5Ilg7VraLtSPanerugK_ZBZBQn7LxWm4yuixD3Yq5guwUr63G6XHuhZmIiUznbLrysuh3Lj7VWJzRtAXmWHYAQBoapD0KTzgs"/>
+<div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-white text-3xl">zoom_in</span>
+</div>
+</div>
+<div class="mb-6">
+<p class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Listing Description</p>
+<div class="p-3 rounded-lg bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 text-sm leading-relaxed max-h-32 overflow-y-auto">
+                    "Selling my mint condition Leica M6. Original box included. No scratches or fungus. Shipped from overseas warehouse. Price non-negotiable. DM for payment links outside the app..."
+                    <span class="text-red-500 font-bold underline cursor-help">payment links outside the app</span>
+</div>
+</div>
+<!-- Violation Tagging System -->
+<div class="mb-6">
+<p class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Policy Violations (Select All)</p>
+<div class="grid grid-cols-2 gap-2">
+<button class="flex items-center gap-2 p-2 rounded-lg border-2 border-primary bg-primary/10 text-primary text-xs font-medium text-left">
+<span class="material-symbols-outlined text-sm">check_box</span>
+                        External Payment
+                    </button>
+<button class="flex items-center gap-2 p-2 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 text-xs font-medium text-left">
+<span class="material-symbols-outlined text-sm">check_box_outline_blank</span>
+                        Counterfeit
+                    </button>
+<button class="flex items-center gap-2 p-2 rounded-lg border-2 border-primary bg-primary/10 text-primary text-xs font-medium text-left">
+<span class="material-symbols-outlined text-sm">check_box</span>
+                        Misleading Info
+                    </button>
+<button class="flex items-center gap-2 p-2 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 text-xs font-medium text-left">
+<span class="material-symbols-outlined text-sm">check_box_outline_blank</span>
+                        Prohibited Item
+                    </button>
+</div>
+</div>
+</div>
+</main>
+<!-- Action Bar (Sticky Footer) -->
+<footer class="sticky bottom-0 z-40 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 p-4 pb-8">
+<div class="flex gap-2">
+<button class="flex-[1] h-12 flex items-center justify-center rounded-lg bg-red-600 text-white font-bold text-sm shadow-lg shadow-red-900/20 active:scale-95 transition-transform">
+<span class="material-symbols-outlined mr-1">block</span>
+                Unlist
+            </button>
+<button class="flex-[1] h-12 flex items-center justify-center rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold text-sm active:scale-95 transition-transform">
+<span class="material-symbols-outlined mr-1">edit_square</span>
+                Request
+            </button>
+<button class="flex-[1] h-12 flex items-center justify-center rounded-lg bg-primary text-white font-bold text-sm shadow-lg shadow-primary/20 active:scale-95 transition-transform">
+<span class="material-symbols-outlined mr-1">flag</span>
+                Escalate
+            </button>
+</div>
+</footer>
+</div>
+<style>
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+</style>
+</body></html>

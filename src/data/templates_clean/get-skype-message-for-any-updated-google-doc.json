@@ -1,0 +1,1 @@
+{"id":3310,"name":"Get Skype message for any updated Google Doc","description":"Every time a Google Doc is updated, Make will automatically send a new message in Skype.","url":"3310-get-skype-message-for-any-updated-google-doc","usedApps":["google-docs","skype"],"usage":16}

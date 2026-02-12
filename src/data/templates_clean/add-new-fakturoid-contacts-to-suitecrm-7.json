@@ -1,0 +1,1 @@
+{"id":736,"name":"Add new Fakturoid contacts to SuiteCRM 7","description":"Every time a new contact is created in Fakturoid, Make will automatically create a new contact in SuiteCRM 7.","url":"736-add-new-fakturoid-contacts-to-suitecrm-7","usedApps":["fakturoid","suitecrm7"],"usage":4}

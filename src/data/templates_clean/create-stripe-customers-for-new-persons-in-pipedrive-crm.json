@@ -1,0 +1,1 @@
+{"id":7274,"name":"Create Stripe customers for new Persons in Pipedrive CRM","description":"Every time a person is created in your Pipedrive CRM, Make will automatically create an identical customer in your Stripe.","url":"7274-create-stripe-customers-for-new-persons-in-pipedrive-crm","usedApps":["pipedrive","builtin","stripe"],"usage":31}

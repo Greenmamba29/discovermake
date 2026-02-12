@@ -1,0 +1,1 @@
+{"id":6605,"name":"Save new RSS feed items to Raindrop.io","description":"Every time a new item is published in an RSS feed item, Make will automatically add that item to Raindrop.io as a bookmark.","url":"6605-save-new-rss-feed-items-to-raindrop-io","usedApps":["rss","raindrop-io"],"usage":180}

@@ -1,0 +1,1 @@
+{"id":7848,"name":"Create Trello boards from new Zoho Projects tasklists","description":"Make will watch for new tasklists in Zoho Projects at regular intervals and create boards in Trello using information retrieved.","url":"7848-create-trello-boards-from-new-zoho-projects-tasklists","usedApps":["zoho-projects","trello"],"usage":1}

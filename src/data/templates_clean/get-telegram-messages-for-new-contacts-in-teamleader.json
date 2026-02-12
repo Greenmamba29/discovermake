@@ -1,0 +1,1 @@
+{"id":5738,"name":"Get Telegram messages for new contacts in Teamleader","description":"Every time a new contact joins your Teamleader a message from your Telegram bot will be sent.","url":"5738-get-telegram-messages-for-new-contacts-in-teamleader","usedApps":["teamleader","util","telegram"],"usage":5}

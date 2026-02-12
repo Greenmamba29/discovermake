@@ -1,0 +1,1 @@
+{"id":12892,"name":"Create a Firestore document from a custom webhook trigger","description":"Trigger a custom webhook to automatically create a new document in Google Cloud Firestore, streamlining data integration and storage for your applications.","url":"12892-create-a-firestore-document-from-a-custom-webhook-trigger","usedApps":["gateway","google-cloud-firestore"],"usage":19}

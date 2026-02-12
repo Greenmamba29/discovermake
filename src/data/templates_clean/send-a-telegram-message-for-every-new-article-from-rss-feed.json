@@ -1,0 +1,1 @@
+{"id":13367,"name":"Send a Telegram message for every new article from RSS feed","description":"Automatically send a Telegram message for every new article detected in your RSS feed. Keep your audience updated with fresh content instantly.","url":"13367-send-a-telegram-message-for-every-new-article-from-rss-feed","usedApps":["rss","anthropic-claude","telegram"],"usage":89}

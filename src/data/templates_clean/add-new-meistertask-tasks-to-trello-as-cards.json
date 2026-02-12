@@ -1,0 +1,1 @@
+{"id":2286,"name":"Add new MeisterTask tasks to Trello as cards","description":"Every time a new task is added to your MeisterTask project, Make will automatically add a new card to a Trello board of your choice.","url":"2286-add-new-meistertask-tasks-to-trello-as-cards","usedApps":["meistertask","trello"],"usage":38}

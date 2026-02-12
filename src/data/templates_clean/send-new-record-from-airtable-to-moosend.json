@@ -1,0 +1,1 @@
+{"id":3104,"name":"Send new record from Airtable to Moosend","description":"When a new record is added to Airtable, a new subscriber is created in Moosend.","url":"3104-send-new-record-from-airtable-to-moosend","usedApps":["airtable","moosend"],"usage":1}

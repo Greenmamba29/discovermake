@@ -1,0 +1,1 @@
+{"id":5654,"name":"Get user's information from Okta in Telegram","description":"Every time you message your Telegram bot an email of your Okta user you will get a response with information about him.","url":"5654-get-user-s-information-from-okta-in-telegram","usedApps":["telegram","okta","util"],"usage":1}

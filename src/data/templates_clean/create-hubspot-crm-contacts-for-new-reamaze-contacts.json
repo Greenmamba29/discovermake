@@ -1,0 +1,1 @@
+{"id":6715,"name":"Create Hubspot CRM contacts for new Reamaze contacts","description":"Every time a new user is created in Reamaze, Make will automatically create a new contact in Hubspot CRM.","url":"6715-create-hubspot-crm-contacts-for-new-reamaze-contacts","usedApps":["reamaze","hubspotcrm"],"usage":1}

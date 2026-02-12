@@ -1,0 +1,1 @@
+{"id":12710,"name":"Send a message to Discord for every new row in Google Sheets","description":"Automatically send a Discord message for every new row added in Google Sheets, keeping your team updated with real-time data changes.","url":"12710-send-a-message-to-discord-for-every-new-row-in-google-sheets","usedApps":["google-sheets","discord"],"usage":252}

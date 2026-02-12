@@ -1,0 +1,1 @@
+{"id":4341,"name":"Send Telegram messages for new Platformly contacts","description":"Every time a new contact is added to Platformly, Make will automatically send a message in a specified Telegram channel.","url":"4341-send-telegram-messages-for-new-platformly-contacts","usedApps":["platformly","telegram"],"usage":0}

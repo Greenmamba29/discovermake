@@ -1,0 +1,1 @@
+{"id":3975,"name":"Send new TradeGecko contacts to Databox","description":"When you create a new contact in TradeGecko, Make will send the contact's data to Databox for further analyses.","url":"3975-send-new-tradegecko-contacts-to-databox","usedApps":["tradegecko","databox"],"usage":0}

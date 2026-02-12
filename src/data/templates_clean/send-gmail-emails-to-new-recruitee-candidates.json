@@ -1,0 +1,1 @@
+{"id":7152,"name":"Send Gmail emails to new Recruitee candidates","description":"Every time a new candidate applied for a job in Recruitee, Make will automatically send an email to this candidate via Gmail.","url":"7152-send-gmail-emails-to-new-recruitee-candidates","usedApps":["recruitee","google-email"],"usage":3}

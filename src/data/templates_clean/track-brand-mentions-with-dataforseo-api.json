@@ -1,0 +1,1 @@
+{"id":12286,"name":"Track Brand Mentions with DataForSEO API","description":"This template checks for new brand mentions daily using the DataForSEO API and sends a Slack message with detailed results, documented in Google Docs.","url":"12286-brand-mentions-via-dataforseo-api","usedApps":["util","dataforseo","builtin","google-docs","slack"],"usage":113}

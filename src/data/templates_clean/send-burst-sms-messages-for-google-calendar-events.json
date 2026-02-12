@@ -1,0 +1,1 @@
+{"id":4698,"name":"Send Burst SMS messages for Google Calendar events","description":"Every time an event is created in Google Calendar, Make will automatically send an SMS using Burst SMS at the starting time of the event.","url":"4698-send-burst-sms-messages-for-google-calendar-events","usedApps":["google-calendar","burst-sms"],"usage":12}

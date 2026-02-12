@@ -1,0 +1,1 @@
+{"id":4462,"name":"Send Gmail messages every time a Bidsketch proposal is completed","description":"Every time a new proposal is accepted or declined in Bidsketch, Make will automatically send a message in Gmail. ","url":"4462-send-gmail-messages-every-time-a-bidsketch-proposal-is-completed","usedApps":["bidsketch","builtin","google-email"],"usage":3}

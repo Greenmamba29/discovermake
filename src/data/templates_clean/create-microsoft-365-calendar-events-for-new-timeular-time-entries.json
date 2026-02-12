@@ -1,0 +1,1 @@
+{"id":7052,"name":"Create Microsoft 365 Calendar events for new Timeular time entries","description":"Every time there is a new Timeular time entry, Make will automatically add that entry to a selected Microsoft 365 Calendar as an event.","url":"7052-create-microsoft-365-calendar-events-for-new-timeular-time-entries","usedApps":["timeular","microsoft-calendar"],"usage":6}

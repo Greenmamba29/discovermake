@@ -1,0 +1,1 @@
+{"id":6159,"name":"Add and Update Shopify Customers as a Omnisend contacts","description":"Every time a new customer is added to a Shopify, Make will automatically add that customer to Omnisend as a new contact or update existing contact.","url":"6159-add-and-update-shopify-customers-as-a-omnisend-contacts","usedApps":["shopify","omnisend","builtin"],"usage":17}

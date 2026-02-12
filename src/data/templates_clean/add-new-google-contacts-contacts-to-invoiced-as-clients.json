@@ -1,0 +1,1 @@
+{"id":6381,"name":"Add new Google Contacts contacts to Invoiced as clients","description":"Every time a new contact is added to Google Contacts, Make will automatically create a new customer in Invoiced.","url":"6381-add-new-google-contacts-contacts-to-invoiced-as-clients","usedApps":["google-contacts","invoiced"],"usage":1}

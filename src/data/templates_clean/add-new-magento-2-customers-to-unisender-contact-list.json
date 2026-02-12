@@ -1,0 +1,1 @@
+{"id":7747,"name":"Add new Magento 2 customers to UniSender contact list","description":"Every time a new customer is created in Magento 2, Make will automatically add that customer to UniSender contact list.","url":"7747-add-new-magento-2-customers-to-unisender-contact-list","usedApps":["magento2","unisender"],"usage":3}

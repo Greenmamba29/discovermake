@@ -1,0 +1,1 @@
+{"id":8194,"name":"Create Diigo bookmarks for new Google Sheets spreadsheet rows","description":"Every time a new row is added to a Google Sheets spreadsheet, Make will automatically create a new bookmark in Diigo.","url":"8194-create-diigo-bookmarks-for-new-google-sheets-spreadsheet-rows","usedApps":["google-sheets","diigo"],"usage":5}

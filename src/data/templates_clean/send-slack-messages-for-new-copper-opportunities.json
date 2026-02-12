@@ -1,0 +1,1 @@
+{"id":1747,"name":"Send Slack messages for new Copper opportunities","description":"Every time a new opportunity is added on Copper, Make will automatically send a message on Slack.","url":"1747-send-slack-messages-for-new-copper-opportunities","usedApps":["prosperworks","slack"],"usage":0}

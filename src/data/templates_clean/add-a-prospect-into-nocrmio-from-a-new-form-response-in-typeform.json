@@ -1,0 +1,1 @@
+{"id":8418,"name":"Add a prospect into noCRm.io from a new form response in Typeform","description":"Every time a new form response is received in Typeform, a new prospect will be instantly created in noCRM.io.","url":"8418-add-a-prospect-into-nocrm-io-from-a-new-form-response-in-typeform","usedApps":["typeform","nocrm-io"],"usage":1}

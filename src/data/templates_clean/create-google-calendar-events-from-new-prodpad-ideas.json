@@ -1,0 +1,1 @@
+{"id":4787,"name":"Create Google Calendar events from new ProdPad ideas","description":"Every time a new idea is created in ProdPad, Make will automatically create a new event in a selected Google Calendar.","url":"4787-create-google-calendar-events-from-new-prodpad-ideas","usedApps":["prodpad","google-calendar"],"usage":1}

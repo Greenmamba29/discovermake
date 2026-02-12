@@ -1,0 +1,1 @@
+{"id":4990,"name":"Create Clubhouse story for new Trello card","description":"Every time a new card is created in Trello, Make will automatically create a story in Clubhouse.","url":"4990-create-clubhouse-story-for-new-trello-card","usedApps":["trello","clubhouse"],"usage":5}

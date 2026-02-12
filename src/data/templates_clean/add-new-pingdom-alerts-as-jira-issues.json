@@ -1,0 +1,1 @@
+{"id":5697,"name":"Add new Pingdom alerts as Jira issues","description":"Every time you received a new alert in Pingdom, Make automatically adds new alerts as issues in Jira.","url":"5697-add-new-pingdom-alerts-as-jira-issues","usedApps":["pingdom","jira"],"usage":2}

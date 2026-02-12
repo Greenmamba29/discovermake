@@ -1,0 +1,1 @@
+{"id":5748,"name":"Convert files from pCloud in CloudConvert and upload the output to pCloud","description":"Get files meeting specified criteria in pCloud, convert them to a specified format and upload the converted files back to pCloud.","url":"5748-convert-files-from-pcloud-in-cloudconvert-and-upload-the-output-to-pcloud","usedApps":["pcloud","cloudconvert"],"usage":24}

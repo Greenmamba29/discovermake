@@ -1,0 +1,1 @@
+{"id":13149,"name":"Watch all Google Drive files and send data via HTTP action","description":"Monitor all Google Drive files and send updates via HTTP. Automatically aggregate text data for streamlined communication and efficient file management.","url":"13149-watch-all-google-drive-files-and-send-data-via-http-action","usedApps":["google-drive","util","http"],"usage":11}

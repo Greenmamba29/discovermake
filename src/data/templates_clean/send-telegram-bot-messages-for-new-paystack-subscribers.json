@@ -1,0 +1,1 @@
+{"id":9158,"name":"Send Telegram Bot messages for new Paystack subscribers","description":"Every time there is a new subscription in Paystack, Make will automatically send a message to the specified channel or chat in Telegram.","url":"9158-send-telegram-bot-messages-for-new-paystack-subscribers","usedApps":["paystack","telegram"],"usage":9}

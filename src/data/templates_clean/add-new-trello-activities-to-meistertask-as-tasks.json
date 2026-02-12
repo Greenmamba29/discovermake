@@ -1,0 +1,1 @@
+{"id":2288,"name":"Add new Trello activities to MeisterTask as tasks","description":"Every time a specific activity occurs in Trello, Make will automatically add a new task to your MeisterTask project.","url":"2288-add-new-trello-activities-to-meistertask-as-tasks","usedApps":["trello","meistertask"],"usage":5}

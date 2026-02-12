@@ -1,0 +1,1 @@
+{"id":5376,"name":"Create a Copper person from a new CloudTalk contact","description":"Every time a new CloudTalk contact is created, Make will automatically create a Copper person.","url":"5376-create-a-copper-person-from-a-new-cloudtalk-contact","usedApps":["cloudtalk","prosperworks"],"usage":2}

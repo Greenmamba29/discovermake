@@ -1,0 +1,1 @@
+{"id":13721,"name":"Search Airtable records and send results via SendGrid email","description":"Automatically search Airtable records and retrieve specific data, then send results via SendGrid email for streamlined communication and data management.","url":"13721-search-airtable-records-and-send-results-via-sendgrid-email","usedApps":["airtable","sendgrid"],"usage":10}

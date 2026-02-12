@@ -1,0 +1,1 @@
+{"id":7648,"name":"Add Mailgun mailing list members for new Circle members","description":"Make will watch your Circle members and add them to your Mailgun as mailing list members. ","url":"7648-add-mailgun-mailing-list-members-for-new-circle-members","usedApps":["circle-so","mailgun"],"usage":1}

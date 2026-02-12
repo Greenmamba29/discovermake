@@ -1,0 +1,1 @@
+{"id":4087,"name":"Create Netlify site deploys when a new Trello card is created","description":"Every time a new Trello card is created matching a specific criteria, Make will automatically create a new Netlify site deploy.","url":"4087-create-netlify-site-deploys-when-a-new-trello-card-is-created","usedApps":["trello","netlify"],"usage":2}

@@ -1,0 +1,1 @@
+{"id":5500,"name":"Send Slack messages for new Runkeeper activities","description":"Every time you add a new activity on the Runkeeper app, Make will automatically post a message to Slack.","url":"5500-send-slack-messages-for-new-runkeeper-activities","usedApps":["runkeeper","slack"],"usage":1}

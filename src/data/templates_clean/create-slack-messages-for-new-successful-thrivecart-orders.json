@@ -1,0 +1,1 @@
+{"id":7375,"name":"Create Slack messages for new successful ThriveCart orders","description":"Every time a new successful order is completed in your ThriveCart, Make will send a Slack message with some information on it.","url":"7375-create-slack-messages-for-new-successful-thrivecart-orders","usedApps":["thrivecart","slack"],"usage":35}

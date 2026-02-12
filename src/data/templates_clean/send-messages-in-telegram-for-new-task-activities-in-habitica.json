@@ -1,0 +1,1 @@
+{"id":6649,"name":"Send messages in Telegram for new task activities in Habitica","description":"Every time a task is modified in your Habitica, Make will post a message in your Telegram with information on it's current state.","url":"6649-send-messages-in-telegram-for-new-task-activities-in-habitica","usedApps":["habitica","telegram"],"usage":12}

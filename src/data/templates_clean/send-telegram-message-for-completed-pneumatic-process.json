@@ -1,0 +1,1 @@
+{"id":6319,"name":"Send Telegram message for completed Pneumatic process","description":"Every time a Pneumatic process is completed, Make will automatically send a message to the specified Telegram channel.","url":"6319-send-telegram-message-for-completed-pneumatic-process","usedApps":["pneumatic","telegram"],"usage":2}

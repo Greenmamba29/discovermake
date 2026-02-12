@@ -1,0 +1,1 @@
+{"id":10150,"name":"Send email when availability is zero in Apaleo","description":"Automation template to send an email when the availability for a certain day drops to zero, in Apaleo.","url":"10150-automation-send-email-when-availability-is-zero","usedApps":["apaleo","util","microsoft-email"],"usage":51}

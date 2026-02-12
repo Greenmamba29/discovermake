@@ -1,0 +1,1 @@
+{"id":5036,"name":"Create a Setmore appointment for new Google Calendar event","description":"Every time a new Google Calendar event is created, Make will automatically create an appointment in Setmore.","url":"5036-create-a-setmore-appointment-for-new-google-calendar-event","usedApps":["google-calendar","setmore"],"usage":6}

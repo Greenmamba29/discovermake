@@ -1,0 +1,1 @@
+{"id":5736,"name":"Post your weekly E-Commerce revenue on Slack","description":"Calculate the weekly revenue of your E-Commerce store with sales data from Google Sheets and send it as a message in a Slack channel.","url":"5736-post-your-weekly-e-commerce-revenue-on-slack","usedApps":["google-sheets","util","slack"],"usage":51}

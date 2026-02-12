@@ -1,0 +1,1 @@
+{"id":7329,"name":"Send Slack messages when employees are late for their shift in Hubstaff","description":"Every time your employee is late for their shift in Hubstaff, Make will automatically send a notification message in Slack.","url":"7329-send-slack-messages-when-employees-are-late-for-their-shift-in-hubstaff","usedApps":["hubstaff","slack"],"usage":18}

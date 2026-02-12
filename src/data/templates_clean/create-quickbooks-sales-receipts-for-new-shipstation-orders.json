@@ -1,0 +1,1 @@
+{"id":1956,"name":"Create QuickBooks sales receipts for new ShipStation orders","description":"Every time a new order is created in ShipStation, Make will automatically create a new sales receipt in QuickBooks.","url":"1956-create-quickbooks-sales-receipts-for-new-shipstation-orders","usedApps":["shipstation","quickbooks","builtin"],"usage":39}

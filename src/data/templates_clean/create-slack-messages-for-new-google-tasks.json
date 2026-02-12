@@ -1,0 +1,1 @@
+{"id":3644,"name":"Create Slack messages for new Google Tasks","description":"Every time a new task is added to a specified Google Tasks list, Make will automatically create a new message in Slack.","url":"3644-create-slack-messages-for-new-google-tasks","usedApps":["google-tasks","slack"],"usage":36}

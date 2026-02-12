@@ -1,0 +1,1 @@
+{"id":4115,"name":"Upload a Static Map image to a new ClickUp task","description":"When a new task is created in ClickUp, a static map image is uploaded to the task. The longitude and latitude are taken from custom fields in ClickUp.","url":"4115-upload-a-static-map-image-to-a-new-clickup-task","usedApps":["clickup","google-maps"],"usage":43}

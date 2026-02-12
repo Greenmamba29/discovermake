@@ -1,0 +1,1 @@
+{"id":7217,"name":"Send Slack messages for new DigitalOcean Spaces files","description":"Every time there is a new DigitalOcean Spaces file, Make will automatically send info about this file via Slack.","url":"7217-send-slack-messages-for-new-digitalocean-spaces-files","usedApps":["digitalocean-spaces","slack"],"usage":1}

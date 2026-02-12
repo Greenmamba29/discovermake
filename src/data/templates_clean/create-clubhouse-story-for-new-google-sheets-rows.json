@@ -1,0 +1,1 @@
+{"id":4987,"name":"Create Clubhouse story for new Google Sheets rows","description":"Every time a new row is added to your Google Sheets spreadsheet, Make will automatically create a story in Clubhouse.","url":"4987-create-clubhouse-story-for-new-google-sheets-rows","usedApps":["google-sheets","clubhouse"],"usage":7}

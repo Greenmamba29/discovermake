@@ -1,0 +1,1 @@
+{"id":7672,"name":"Send notification messages in Slack when new Revv Document stages change","description":"Every time a new stage change in Revv Document, Make will automatically send a message to your Slack.","url":"7672-send-notification-messages-in-slack-when-new-revv-document-stages-change","usedApps":["revv-documents","slack"],"usage":1}

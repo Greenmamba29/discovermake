@@ -1,0 +1,1 @@
+{"id":4218,"name":"Send Mailgun email to new Facebook Lead Ads leads","description":"When you get new responses to your Facebook Lead Ads form, Mailgun will send an email to the respondent.","url":"4218-send-mailgun-email-to-new-facebook-lead-ads-leads","usedApps":["facebook-lead-ads","mailgun"],"usage":36}

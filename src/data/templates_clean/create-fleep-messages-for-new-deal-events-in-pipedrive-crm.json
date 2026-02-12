@@ -1,0 +1,1 @@
+{"id":7101,"name":"Create Fleep messages for new deal events in Pipedrive CRM","description":"Every time a deal event occurs in your Pipedrive CRM, Make will send a message to your Fleep.","url":"7101-create-fleep-messages-for-new-deal-events-in-pipedrive-crm","usedApps":["pipedrive","fleep"],"usage":0}

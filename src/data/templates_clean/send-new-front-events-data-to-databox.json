@@ -1,0 +1,1 @@
+{"id":3962,"name":"Send new Front event's data to Databox","description":"Whenever a new event occurs in your Front account, Make automatically the event's data to Databox.","url":"3962-send-new-front-event-s-data-to-databox","usedApps":["front","databox"],"usage":3}

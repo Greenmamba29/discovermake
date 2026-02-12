@@ -1,0 +1,1 @@
+{"id":5869,"name":"Send a Gmail notification about new Revolut draft payments","description":"Use this template to send a Gmail notification when a new Revolut Business draft payment is created.","url":"5869-send-a-gmail-notification-about-new-revolut-draft-payments","usedApps":["revolut","google-email"],"usage":6}

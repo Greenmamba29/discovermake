@@ -1,0 +1,1 @@
+{"id":7799,"name":"Create BoondManager contacts from Scriberr people","description":"Every time a new person is copied in Scriberr, Make will automatically create a contact in BoondManager.","url":"7799-create-boondmanager-contacts-from-scriberr-people","usedApps":["scriberr","boondmanager"],"usage":3}

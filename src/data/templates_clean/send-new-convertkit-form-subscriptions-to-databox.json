@@ -1,0 +1,1 @@
+{"id":3900,"name":"Send new ConvertKit form subscriptions to Databox","description":"Whenever a new user subscribes through your ConvertKit form, Make will automatically push that information to Databox. ","url":"3900-send-new-convertkit-form-subscriptions-to-databox","usedApps":["convertkit","databox"],"usage":6}

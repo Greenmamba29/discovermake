@@ -1,0 +1,1 @@
+{"id":7295,"name":"Import contacts from Google Sheets to Mailjet","description":"Every time a new contact is added to the Google sheet, a new contact is created in Mailjet. The Google sheet have to contain an email addresses in column A and names in column B.","url":"7295-import-contacts-from-google-sheets-to-mailjet","usedApps":["google-sheets","mailjet"],"usage":63}

@@ -1,0 +1,1 @@
+{"id":4389,"name":"Identify users in Segment from Shopify orders","description":"Every time a new Shopify order is created, Make will automatically identify the customer using Segment.","url":"4389-identify-users-in-segment-from-shopify-orders","usedApps":["shopify","segment"],"usage":11}

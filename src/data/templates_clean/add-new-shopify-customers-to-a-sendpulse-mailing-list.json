@@ -1,0 +1,1 @@
+{"id":3519,"name":"Add new Shopify customers to a SendPulse mailing list.","description":"Every time a new customer is added to Shopify, Make will automatically create a new contact in SendPulse and add it to a specified mailing list.","url":"3519-add-new-shopify-customers-to-a-sendpulse-mailing-list","usedApps":["shopify","sendpulse"],"usage":19}

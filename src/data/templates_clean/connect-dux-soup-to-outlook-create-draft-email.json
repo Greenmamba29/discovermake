@@ -1,0 +1,1 @@
+{"id":4182,"name":"Connect Dux-Soup to Outlook: Create draft email","description":"When a webhook from Dux-Soup Turbo is received, a new email draft in Outlook is created ready to be sent","url":"4182-connect-dux-soup-to-outlook-create-draft-email","usedApps":["dux-soup","email"],"usage":4}

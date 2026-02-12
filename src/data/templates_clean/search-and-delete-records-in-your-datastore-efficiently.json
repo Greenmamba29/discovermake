@@ -1,0 +1,1 @@
+{"id":12654,"name":"Search and delete records in your datastore efficiently","description":"Automatically search and delete records in your datastore using Make's datastore:SearchRecord and datastore:DeleteRecord modules, streamlining data management tasks.","url":"12654-search-and-delete-records-in-your-datastore-efficiently","usedApps":["datastore","datastore"],"usage":24}

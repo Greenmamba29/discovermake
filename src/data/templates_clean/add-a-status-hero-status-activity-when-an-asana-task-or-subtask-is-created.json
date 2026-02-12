@@ -1,0 +1,1 @@
+{"id":5259,"name":"Add a Status Hero status activity when an Asana task (or subtask) is created","description":"Every time a new Asana task or subtask is created, Make will automatically add a Status Hero status activity.","url":"5259-add-a-status-hero-status-activity-when-an-asana-task-or-subtask-is-created","usedApps":["asana","builtin","status-hero"],"usage":4}

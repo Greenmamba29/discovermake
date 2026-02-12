@@ -1,0 +1,1 @@
+{"id":7931,"name":"Add new Salesflare contacts to Fresh Proposals as a clients","description":"Every time a new contact is created in Salesflare, Make will automatically add that contact to Fresh Proposals as a client.","url":"7931-add-new-salesflare-contacts-to-fresh-proposals-as-a-clients","usedApps":["salesflare","fresh-proposals"],"usage":1}

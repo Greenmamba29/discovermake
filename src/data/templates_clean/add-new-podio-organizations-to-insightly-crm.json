@@ -1,0 +1,1 @@
+{"id":792,"name":"Add new Podio organizations to Insightly CRM","description":"Every time a new organization is added to Podio, Make will automatically create a new organization in Insightly CRM.","url":"792-add-new-podio-organizations-to-insightly-crm","usedApps":["insightly","podio"],"usage":0}

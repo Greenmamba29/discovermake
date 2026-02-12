@@ -1,0 +1,1 @@
+{"id":7287,"name":"Create a MantisBT Issue from Gmail","description":"Every time you get an email in the watched folder, a new Issue in MantisBT is created.","url":"7287-create-a-mantisbt-issue-from-gmail","usedApps":["google-email","mantisbt"],"usage":0}

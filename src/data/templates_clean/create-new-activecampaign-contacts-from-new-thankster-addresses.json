@@ -1,0 +1,1 @@
+{"id":8789,"name":"Create new ActiveCampaign contacts from new Thankster addresses","description":"Every time a new address is created in Thankster, Make will automatically create a new contact in ActiveCampaign.","url":"8789-create-new-activecampaign-contacts-from-new-thankster-addresses","usedApps":["thankster","activecampaign"],"usage":1}

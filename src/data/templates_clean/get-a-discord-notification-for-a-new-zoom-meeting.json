@@ -1,0 +1,1 @@
+{"id":6070,"name":"Get a Discord notification for a new Zoom meeting","description":"Every time a new Zoom meeting is created, Make will automatically post a Discord message.","url":"6070-get-a-discord-notification-for-a-new-zoom-meeting","usedApps":["zoom","discord"],"usage":33}

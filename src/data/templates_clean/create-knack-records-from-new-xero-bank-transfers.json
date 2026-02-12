@@ -1,0 +1,1 @@
+{"id":1313,"name":"Create Knack records from new Xero bank transfers ","description":"Every time a new bank transfer is created in Xero, Make will automatically create a new record in Knack.","url":"1313-create-knack-records-from-new-xero-bank-transfers","usedApps":["xero","knack"],"usage":11}

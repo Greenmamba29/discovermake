@@ -1,0 +1,1 @@
+{"id":485,"name":"Add new VTiger CRM products to Trello as cards","description":"Every time a new product is created in VTiger CRM, Make will automatically create a new card in Trello.","url":"485-add-new-vtiger-crm-products-to-trello-as-cards","usedApps":["vtiger","trello"],"usage":24}

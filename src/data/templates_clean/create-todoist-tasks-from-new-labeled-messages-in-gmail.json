@@ -1,0 +1,1 @@
+{"id":1696,"name":"Create Todoist tasks from new labeled messages in Gmail","description":"Every time you add a certain label to an email  on Gmail, Make will automatically create a new task in Todoist.","url":"1696-create-todoist-tasks-from-new-labeled-messages-in-gmail","usedApps":["google-email","todoist"],"usage":404}

@@ -1,0 +1,1 @@
+{"id":7978,"name":"Create Odoo CRM leads from new Facebook Lead Ads leads","description":"Make will watch for new leads in your Facebook Lead Ads at regular intervals and create a lead in Odoo CRM using information received.","url":"7978-create-odoo-crm-leads-from-new-facebook-lead-ads-leads","usedApps":["facebook-lead-ads","odoo"],"usage":506}

@@ -1,0 +1,1 @@
+{"id":1993,"name":"Add new Stripe customers to Active Campaign","description":"Every time a new contact is created in Stripe, Make will automatically add that contact to an ActiveCampaign list of your choice.","url":"1993-add-new-stripe-customers-to-active-campaign","usedApps":["activecampaign","stripe"],"usage":164}

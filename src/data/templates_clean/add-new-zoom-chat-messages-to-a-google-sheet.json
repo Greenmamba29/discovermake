@@ -1,0 +1,1 @@
+{"id":6641,"name":"Add new Zoom chat messages to a Google Sheet","description":"This scenario uses a Webhook to instantly receive new chat events in Zoom and add the details to a Google Sheet.","url":"6641-add-new-zoom-chat-messages-to-a-google-sheet","usedApps":["zoom","google-sheets"],"usage":25}

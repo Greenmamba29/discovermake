@@ -1,0 +1,1 @@
+{"id":8251,"name":"Add Sendlane contacts for new HubSpot CRM contacts","description":"Make will watch your HubSpot CRM objects contacts and add them to your Sendlane as contacts. ","url":"8251-add-sendlane-contacts-for-new-hubspot-crm-contacts","usedApps":["hubspotcrm","sendlane"],"usage":2}

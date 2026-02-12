@@ -1,0 +1,1 @@
+{"id":8015,"name":"Send receipt from Loyverse by SMS with MessageBird","description":"Every time a new receipt in Loyverse POS is created Make will send retrieved receipts' details by sms to registered Loyverse user using MessageBird","url":"8015-send-receipt-from-loyverse-by-sms-with-messagebird","usedApps":["loyverse","builtin","util","message-bird"],"usage":17}

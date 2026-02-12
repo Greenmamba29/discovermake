@@ -1,0 +1,1 @@
+{"id":1813,"name":"Create Zoom meetings from new Copper tasks","description":"Every time a new task is created on Copper, Make will automatically create a new meeting in Zoom.","url":"1813-create-zoom-meetings-from-new-copper-tasks","usedApps":["prosperworks","builtin","zoom"],"usage":2}

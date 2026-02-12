@@ -1,0 +1,1 @@
+{"id":2622,"name":"Create or update Yodel.io contacts from Salesforce","description":"Every time a new contact is added in Salesforce, Make will automatically create or update a contact in Yodel.io.","url":"2622-create-or-update-yodel-io-contacts-from-salesforce","usedApps":["salesforce","yodel"],"usage":5}

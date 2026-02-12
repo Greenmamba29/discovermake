@@ -1,0 +1,1 @@
+{"id":4578,"name":"Send Go4Clients SMS for a new Google forms Entries","description":"Every time someone fills out your google form, Make will automatically send a SMS via Go4Clients ","url":"4578-send-go4clients-sms-for-a-new-google-forms-entries","usedApps":["google-forms","go4clients"],"usage":0}

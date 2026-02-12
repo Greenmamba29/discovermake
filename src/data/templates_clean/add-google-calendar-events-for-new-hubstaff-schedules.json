@@ -1,0 +1,1 @@
+{"id":7343,"name":"Add Google Calendar events for new Hubstaff schedules","description":"Every time there is a new schedule created in Hubstaff, Make will automatically add it to Google Calendar as an event.","url":"7343-add-google-calendar-events-for-new-hubstaff-schedules","usedApps":["hubstaff","google-calendar"],"usage":8}

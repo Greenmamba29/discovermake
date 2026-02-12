@@ -1,0 +1,1 @@
+{"id":10275,"name":"Add new HubSpot CRM contacts to Google Contacts","description":"Every time a new contact is added to HubSpot CRM, Make will automatically create a new Google contact.","url":"10255-add-new-hubspot-crm-contacts-to-google-contacts","usedApps":["hubspotcrm","google-contacts"],"usage":30}

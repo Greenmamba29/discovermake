@@ -1,0 +1,1 @@
+{"id":10167,"name":"Set Market Segment for Newly Created Reservation Automatically","description":"Automation template to assign segments to newly created reservations in Apaleo.","url":"10167-automation-set-market-segment-for-newly-created-reservation-automatically","usedApps":["apaleo","datastore"],"usage":91}

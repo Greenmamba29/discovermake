@@ -1,0 +1,1 @@
+{"id":3776,"name":"Watch for ApuTime project changes and add a label to RAYNET CRM","description":"When there is a change in your ApuTime project, a corresponding label will be added to a connected RAYNET CRM business case.","url":"3776-watch-for-aputime-project-changes-and-add-a-label-to-raynet-crm","usedApps":["aputime","datastore","raynetcrm"],"usage":6}

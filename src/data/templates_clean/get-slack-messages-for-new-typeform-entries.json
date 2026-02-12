@@ -1,0 +1,1 @@
+{"id":5268,"name":"Get Slack messages for new Typeform entries","description":"Whenever new form responses are received for a selected form, a Slack notification is sent to a chosen channel or user.","url":"5268-get-slack-messages-for-new-typeform-entries","usedApps":["typeform","slack"],"usage":119}

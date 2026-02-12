@@ -1,0 +1,1 @@
+{"id":3604,"name":"Create Microsoft To-Do tasks from new Asana tasks","description":"Every time a new task is created in Asana, Make will automatically add a new task to a selected Microsoft To-Do List.","url":"3604-create-microsoft-to-do-tasks-from-new-asana-tasks","usedApps":["asana","microsoft-to-do"],"usage":62}

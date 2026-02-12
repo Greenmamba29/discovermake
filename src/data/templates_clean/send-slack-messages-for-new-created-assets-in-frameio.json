@@ -1,0 +1,1 @@
+{"id":6861,"name":"Send Slack messages for new created Assets in Frame.io","description":"Every time a new asset is created in Frame.io , Make will automatically post details about that asset to Slack.","url":"6861-send-slack-messages-for-new-created-assets-in-frame-io","usedApps":["frame-io","slack"],"usage":50}

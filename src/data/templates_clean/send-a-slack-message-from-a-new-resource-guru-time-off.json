@@ -1,0 +1,1 @@
+{"id":6151,"name":"Send a Slack message from a new Resource Guru time-off","description":"Every time a Resource Guru time-off is created, Make will automatically send a Slack message to a channel or a user.","url":"6151-send-a-slack-message-from-a-new-resource-guru-time-off","usedApps":["resource-guru","slack"],"usage":1}

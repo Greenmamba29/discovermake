@@ -1,0 +1,1 @@
+{"id":2929,"name":"Send a new response from Airtable into Focuster","description":"When a new response is received by Airtable, a new action is added into Focuster.","url":"2929-send-a-new-response-from-airtable-into-focuster","usedApps":["airtable","focuster"],"usage":0}

@@ -1,0 +1,1 @@
+{"id":4104,"name":"Save Attendance GIRITON users to Google Sheets","description":"This template helps you retrieve a list of Attendance GIRITON's users at regular intervals. Then, Make will automatically add them to a selected Google Sheets spreadsheet.","url":"4104-save-attendance-giriton-users-to-google-sheets","usedApps":["giriton","google-sheets"],"usage":9}

@@ -1,0 +1,1 @@
+{"id":8271,"name":"Create Trello cards from new LiquidPlanner tasks","description":"Every time there is a new task in LiquidPlanner, Make will automatically create a new card on Trello.","url":"8271-create-trello-cards-from-new-liquidplanner-tasks","usedApps":["liquidplanner","trello"],"usage":3}

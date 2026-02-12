@@ -1,0 +1,1 @@
+{"id":547,"name":"Send Slack messages with information about which Gitter chat rooms you are in","description":"Make will automatically send a Slack message with information about which chat rooms a selected user is in.","url":"547-send-slack-messages-with-information-about-which-gitter-chat-rooms-you-are-in","usedApps":["gitter","slack"],"usage":6}

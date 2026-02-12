@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Set Your Build Goal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13a4ec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101c22",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom radio styling to hide default input */
+        .peer:checked ~ .card-border {
+            border-color: #13a4ec;
+            background-color: rgba(19, 164, 236, 0.1);
+        }
+        .peer:checked ~ .card-border .icon-container {
+            background-color: #13a4ec;
+            color: white;
+        }
+        .peer:checked ~ .card-border .check-circle {
+            background-color: #13a4ec;
+            border-color: #13a4ec;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased text-slate-900 dark:text-white h-screen flex flex-col overflow-hidden">
+<!-- Top Navigation & Progress -->
+<header class="flex-none pt-12 px-4 pb-2 bg-background-light dark:bg-background-dark z-10">
+<div class="flex items-center justify-between mb-4">
+<button class="flex items-center justify-center p-2 -ml-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors text-slate-900 dark:text-white">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<span class="text-sm font-semibold text-slate-500 dark:text-slate-400">Step 1 of 4</span>
+<div class="w-8"></div> <!-- Spacer for centering -->
+</div>
+<!-- Progress Bar -->
+<div class="h-1.5 w-full bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+<div class="h-full bg-primary w-1/4 rounded-full"></div>
+</div>
+</header>
+<!-- Scrollable Content Area -->
+<main class="flex-1 overflow-y-auto px-4 pb-24">
+<div class="pt-4 pb-6">
+<h1 class="text-3xl font-bold tracking-tight mb-2 text-slate-900 dark:text-white">Set Your Build Goal</h1>
+<p class="text-slate-600 dark:text-slate-400 text-base">What do you want to achieve today?</p>
+</div>
+<!-- Selection Cards Form -->
+<form class="flex flex-col gap-4" id="goal-form">
+<!-- Card 1: Automate a task -->
+<label class="relative group cursor-pointer block">
+<input checked="" class="peer sr-only" name="goal" type="radio" value="automate"/>
+<div class="card-border flex items-center p-4 rounded-xl border-2 border-transparent bg-white dark:bg-[#192b33] shadow-sm hover:shadow-md transition-all duration-200">
+<div class="icon-container flex items-center justify-center size-12 rounded-lg bg-primary/10 text-primary transition-colors shrink-0">
+<span class="material-symbols-outlined text-[28px]">smart_toy</span>
+</div>
+<div class="ml-4 flex-1">
+<h3 class="font-bold text-lg text-slate-900 dark:text-white">Automate a task</h3>
+<p class="text-sm text-slate-500 dark:text-[#92b7c9]">Connect apps to save time.</p>
+</div>
+<div class="check-circle size-6 rounded-full border-2 border-slate-300 dark:border-slate-600 flex items-center justify-center ml-2 transition-colors">
+<span class="material-symbols-outlined text-white text-[16px]">check</span>
+</div>
+</div>
+</label>
+<!-- Card 2: Build an app -->
+<label class="relative group cursor-pointer block">
+<input class="peer sr-only" name="goal" type="radio" value="app"/>
+<div class="card-border flex items-center p-4 rounded-xl border-2 border-transparent bg-white dark:bg-[#192b33] shadow-sm hover:shadow-md transition-all duration-200">
+<div class="icon-container flex items-center justify-center size-12 rounded-lg bg-primary/10 text-primary transition-colors shrink-0">
+<span class="material-symbols-outlined text-[28px]">smartphone</span>
+</div>
+<div class="ml-4 flex-1">
+<h3 class="font-bold text-lg text-slate-900 dark:text-white">Build an app</h3>
+<p class="text-sm text-slate-500 dark:text-[#92b7c9]">Create a mobile or web interface.</p>
+</div>
+<div class="check-circle size-6 rounded-full border-2 border-slate-300 dark:border-slate-600 flex items-center justify-center ml-2 transition-colors">
+<span class="material-symbols-outlined text-white text-[16px]">check</span>
+</div>
+</div>
+</label>
+<!-- Card 3: Create an agent -->
+<label class="relative group cursor-pointer block">
+<input class="peer sr-only" name="goal" type="radio" value="agent"/>
+<div class="card-border flex items-center p-4 rounded-xl border-2 border-transparent bg-white dark:bg-[#192b33] shadow-sm hover:shadow-md transition-all duration-200">
+<div class="icon-container flex items-center justify-center size-12 rounded-lg bg-primary/10 text-primary transition-colors shrink-0">
+<span class="material-symbols-outlined text-[28px]">psychology</span>
+</div>
+<div class="ml-4 flex-1">
+<h3 class="font-bold text-lg text-slate-900 dark:text-white">Create an agent</h3>
+<p class="text-sm text-slate-500 dark:text-[#92b7c9]">Design an AI assistant.</p>
+</div>
+<div class="check-circle size-6 rounded-full border-2 border-slate-300 dark:border-slate-600 flex items-center justify-center ml-2 transition-colors">
+<span class="material-symbols-outlined text-white text-[16px]">check</span>
+</div>
+</div>
+</label>
+<!-- Card 4: Analyze data -->
+<label class="relative group cursor-pointer block">
+<input class="peer sr-only" name="goal" type="radio" value="data"/>
+<div class="card-border flex items-center p-4 rounded-xl border-2 border-transparent bg-white dark:bg-[#192b33] shadow-sm hover:shadow-md transition-all duration-200">
+<div class="icon-container flex items-center justify-center size-12 rounded-lg bg-primary/10 text-primary transition-colors shrink-0">
+<span class="material-symbols-outlined text-[28px]">monitoring</span>
+</div>
+<div class="ml-4 flex-1">
+<h3 class="font-bold text-lg text-slate-900 dark:text-white">Analyze data</h3>
+<p class="text-sm text-slate-500 dark:text-[#92b7c9]">Turn spreadsheets into insights.</p>
+</div>
+<div class="check-circle size-6 rounded-full border-2 border-slate-300 dark:border-slate-600 flex items-center justify-center ml-2 transition-colors">
+<span class="material-symbols-outlined text-white text-[16px]">check</span>
+</div>
+</div>
+</label>
+</form>
+</main>
+<!-- Sticky Footer CTA -->
+<div class="flex-none p-4 pb-8 bg-background-light dark:bg-background-dark border-t border-slate-200 dark:border-slate-800 z-10">
+<button class="w-full bg-primary hover:bg-sky-500 text-white font-bold text-lg py-4 rounded-xl shadow-lg shadow-primary/20 transition-all active:scale-[0.98]">
+            Continue
+        </button>
+</div>
+</body></html>

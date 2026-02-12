@@ -1,0 +1,1 @@
+{"id":4025,"name":"Add a tag to ConvertKit subscribers for new Stripe payments","description":"Every time a new payment charge has succeeded in Stripe, Make will automatically add a tag to the subscriber in ConvertKit.","url":"4025-add-a-tag-to-convertkit-subscribers-for-new-stripe-payments","usedApps":["stripe","convertkit"],"usage":112}

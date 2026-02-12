@@ -1,0 +1,1 @@
+{"id":5434,"name":"Add new Close CRM contacts to Google Contacts","description":"Every time a new contact is created in Close CRM, Make will automatically add that contact to Google contacts.","url":"5434-add-new-close-crm-contacts-to-google-contacts","usedApps":["close-crm","google-contacts","builtin"],"usage":18}

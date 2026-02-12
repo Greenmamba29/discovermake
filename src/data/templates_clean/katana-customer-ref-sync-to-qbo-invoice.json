@@ -1,0 +1,1 @@
+{"id":17726,"name":"Katana Customer Ref # sync to QBO Invoice","description":"Use this template to watch for Invoice creation in QBO then check Katana to see if there is information like Customer Reference Number to send to the Invoice. ","url":"17726-katana-customer-ref-sync-to-qbo-invoice","usedApps":["quickbooks","katana-mrp"],"usage":2}

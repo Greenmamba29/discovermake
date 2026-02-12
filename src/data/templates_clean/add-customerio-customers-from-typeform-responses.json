@@ -1,0 +1,1 @@
+{"id":7725,"name":"Add Customer.io customers from Typeform responses","description":"Make will watch new responses for a specified form from Typeform at regular intervals and create or update Customer.io customers.","url":"7725-add-customer-io-customers-from-typeform-responses","usedApps":["typeform","customer-io"],"usage":3}

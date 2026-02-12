@@ -1,0 +1,1 @@
+{"id":7158,"name":"Creates Weekdone item from new Google Forms responses","description":"Every time a new response is entered on your Google form, Make will automatically create a new item in Weekdone.","url":"7158-creates-weekdone-item-from-new-google-forms-responses","usedApps":["google-forms","weekdone"],"usage":1}

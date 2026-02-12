@@ -1,0 +1,1 @@
+{"id":6255,"name":"Create Recruitee candidates from Gmail emails","description":"Every time a new email is received on Gmail, Make will automatically filter that email by the subject and create a new candidate in Recruitee.","url":"6255-create-recruitee-candidates-from-gmail-emails","usedApps":["google-email","recruitee"],"usage":4}

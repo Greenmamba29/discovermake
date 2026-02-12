@@ -1,0 +1,1 @@
+{"id":1883,"name":"Add new Intercom users to Copper as leads","description":"Every time a new user is created in Intercom, Make will automatically create a new lead on Copper.","url":"1883-add-new-intercom-users-to-copper-as-leads","usedApps":["intercom","prosperworks"],"usage":10}

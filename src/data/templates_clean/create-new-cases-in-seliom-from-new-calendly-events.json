@@ -1,0 +1,1 @@
+{"id":8497,"name":"Create new cases in Seliom from new Calendly events","description":"Every time a new Calendly event is scheduled with you, a new case will be instantly created in Seliom.\n\nYou need to have a Calendly premium account to create this integration.","url":"8497-create-new-cases-in-seliom-from-new-calendly-events","usedApps":["calendly","seliom"],"usage":3}

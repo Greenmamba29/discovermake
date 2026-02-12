@@ -1,0 +1,1 @@
+{"id":3334,"name":"Generate a Google Map to locate new Zoho Sign signatories.","description":"Every time a document is signed with Zoho Sign, Make will automatically generate a Google Map to locate the new signatory. ","url":"3334-generate-a-google-map-to-locate-new-zoho-sign-signatories","usedApps":["zoho-sign","google-maps","google-drive"],"usage":34}

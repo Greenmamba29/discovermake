@@ -1,0 +1,1 @@
+{"id":7424,"name":"Add a new Google Contacts to SendMe","description":"Every time a new contact is created in Google Contacts, Make will automatically create a new contact in SendMe.","url":"7424-add-a-new-google-contacts-to-sendme","usedApps":["google-contacts","sendme123"],"usage":2}

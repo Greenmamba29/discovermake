@@ -1,0 +1,1 @@
+{"id":6124,"name":"Add new Todoist tasks to PomoDoneApp","description":"Every time a new task is created in Todoist, Make will automatically add that task to PomoDoneApp as a new task.","url":"6124-add-new-todoist-tasks-to-pomodoneapp","usedApps":["todoist","pomodoneapp"],"usage":3}

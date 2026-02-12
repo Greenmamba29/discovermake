@@ -1,0 +1,1 @@
+{"id":2874,"name":"Add new Google contacts to Plutio as tasks","description":"Every time a new contact is added in Google Contacts, Make will automatically create a new task in Plutio.","url":"2874-add-new-google-contacts-to-plutio-as-tasks","usedApps":["google-contacts","plutio"],"usage":9}

@@ -1,0 +1,1 @@
+{"id":7098,"name":"Create Fleep messages for new records in SeaTable","description":"Every time a record is added in your SeaTable, Make will send a message to your Fleep.","url":"7098-create-fleep-messages-for-new-records-in-seatable","usedApps":["seatable","fleep"],"usage":1}

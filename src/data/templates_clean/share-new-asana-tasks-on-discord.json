@@ -1,0 +1,1 @@
+{"id":3590,"name":"Share new Asana tasks on Discord","description":"Every time a new task is added to a specified Asana project, Make will automatically share it on your Discord channel.","url":"3590-share-new-asana-tasks-on-discord","usedApps":["asana","discord"],"usage":84}

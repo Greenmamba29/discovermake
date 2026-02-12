@@ -1,0 +1,1 @@
+{"id":5119,"name":"Send new files from Google Drive to Magentrix","description":"Every time a new file is uploaded to your Google Drive, Make will automatically upload the document to Magentrix.","url":"5119-send-new-files-from-google-drive-to-magentrix","usedApps":["google-drive","magentrix"],"usage":2}

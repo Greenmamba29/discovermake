@@ -1,0 +1,1 @@
+{"id":4106,"name":"Save Attendance GIRITON profile pictures to Google Drive","description":"This template helps you retrieve the profile picture of each Attendance GIRITON user. Then, Make will automatically store each picture in a selected Google Drive folder.","url":"4106-save-attendance-giriton-profile-pictures-to-google-drive","usedApps":["giriton","google-drive"],"usage":2}

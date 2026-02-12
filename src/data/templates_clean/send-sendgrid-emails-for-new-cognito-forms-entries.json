@@ -1,0 +1,1 @@
+{"id":2434,"name":"Send SendGrid emails for new Cognito Forms entries","description":"Every someone fills out your Cognito Form, Make fill automatically send a message via SendGrid.","url":"2434-send-sendgrid-emails-for-new-cognito-forms-entries","usedApps":["cognitoforms","sendgrid"],"usage":4}

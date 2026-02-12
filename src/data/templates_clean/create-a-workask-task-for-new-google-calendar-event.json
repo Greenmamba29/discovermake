@@ -1,0 +1,1 @@
+{"id":5008,"name":"Create a Workask task for new Google Calendar event","description":"Every time a new Google Calendar event is created, Make will automatically create a Workask task.","url":"5008-create-a-workask-task-for-new-google-calendar-event","usedApps":["google-calendar","workast"],"usage":1}

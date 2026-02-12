@@ -1,0 +1,1 @@
+{"id":4563,"name":"Record SignNow events in Google Sheets","description":"Every time a SignNow event is processed, Make will automatically save the document information to Google Sheets.","url":"4563-record-signnow-events-in-google-sheets","usedApps":["signnow","google-sheets"],"usage":6}

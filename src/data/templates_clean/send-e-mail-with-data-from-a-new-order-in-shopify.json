@@ -1,0 +1,1 @@
+{"id":3082,"name":"Send e-mail with data from a new order in Shopify","description":"When a new order is created in Shopify, a new e-mail with data from the order is sent by Gmail. The data are structured into tables using HTML tags.","url":"3082-send-e-mail-with-data-from-a-new-order-in-shopify","usedApps":["shopify","builtin","util","google-email"],"usage":359}

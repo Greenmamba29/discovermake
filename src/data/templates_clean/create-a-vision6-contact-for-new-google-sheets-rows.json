@@ -1,0 +1,1 @@
+{"id":5087,"name":"Create a Vision6 contact for new Google Sheets rows","description":"Every time a new row is added to Google Sheets spreadsheet, Make will automatically create a contact in Vision6.","url":"5087-create-a-vision6-contact-for-new-google-sheets-rows","usedApps":["google-sheets","vision6"],"usage":0}

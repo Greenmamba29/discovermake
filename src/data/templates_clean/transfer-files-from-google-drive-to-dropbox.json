@@ -1,0 +1,1 @@
+{"id":6029,"name":"Transfer files from Google Drive to Dropbox","description":"When you upload files to a specific folder in Google Drive, Make will automatically download the files and upload them to a folder in Dropbox.","url":"6029-transfer-files-from-google-drive-to-dropbox","usedApps":["google-drive","dropbox"],"usage":347}

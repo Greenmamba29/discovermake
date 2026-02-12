@@ -1,0 +1,1 @@
+{"id":9138,"name":"Create new Cloze customers from new WooCommerce customers","description":"Every time a new customer is added to a WooCommerce, Make will automatically create a new customer in Cloze.","url":"9138-create-new-cloze-customers-from-new-woocommerce-customers","usedApps":["woocommerce","cloze"],"usage":2}

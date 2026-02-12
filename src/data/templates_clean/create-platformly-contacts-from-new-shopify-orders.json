@@ -1,0 +1,1 @@
+{"id":4339,"name":"Create Platformly contacts from new Shopify orders","description":"Every time a new order is made in your Shopify store, Make will automatically add the customer as a Platformly contact with a specific tag.","url":"4339-create-platformly-contacts-from-new-shopify-orders","usedApps":["shopify","builtin","platformly"],"usage":2}

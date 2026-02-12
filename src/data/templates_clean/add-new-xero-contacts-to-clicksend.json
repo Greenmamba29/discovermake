@@ -1,0 +1,1 @@
+{"id":2743,"name":"Add new Xero contacts to ClickSend","description":"Every time a new contact is created in Xero, Make will automatically add that contact to ClickSend.","url":"2743-add-new-xero-contacts-to-clicksend","usedApps":["xero","clicksend"],"usage":16}

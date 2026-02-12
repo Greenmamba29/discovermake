@@ -1,0 +1,1 @@
+{"id":2306,"name":"Create barcodes from links posted in Telegram","description":"Every time there is a new link posted in Telegram, Make will create a Barcode for the link and send it to a specified Telegram chat.","url":"2306-create-barcodes-from-links-posted-in-telegram","usedApps":["telegram","regexp","barcode"],"usage":307}

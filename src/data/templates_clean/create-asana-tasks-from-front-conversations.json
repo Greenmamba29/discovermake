@@ -1,0 +1,1 @@
+{"id":3722,"name":"Create Asana tasks from Front conversations","description":"Every time a new conversation is triggered on Front, Make will automatically create a new task in Asana.","url":"3722-create-asana-tasks-from-front-conversations","usedApps":["front","asana"],"usage":2}

@@ -1,0 +1,1 @@
+{"id":10922,"name":"Add new Shopify products to Zoho Inventory as items","description":"Every time a new product is added to Shopify, Make will automatically add it to Zoho Inventory as an item.","url":"3248-add-new-shopify-products-to-zoho-inventory-as-items","usedApps":["shopify","builtin","zoho-inventory"],"usage":76}

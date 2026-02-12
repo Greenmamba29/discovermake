@@ -1,0 +1,1 @@
+{"id":5107,"name":"Creates an Alert in Opsgenie and sends a notification to Telegram Bot","description":"Сreates an alert in Opsgenie and automatically sends a notification to the Telegram Bot channel with information about the Alert","url":"5107-creates-an-alert-in-opsgenie-and-sends-a-notification-to-telegram-bot","usedApps":["opsgenie","telegram"],"usage":9}

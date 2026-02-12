@@ -1,0 +1,1 @@
+{"id":13712,"name":"Send data to a custom webhook and set variables using JSON in Make","description":"Automatically send data to a custom webhook, set variables, create JSON, and send data using HTTP in Make for streamlined data management.","url":"13712-send-data-to-a-custom-webhook-and-set-variables-using-json-in-make","usedApps":["gateway","util","json","http"],"usage":28}

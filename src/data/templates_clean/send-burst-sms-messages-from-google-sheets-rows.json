@@ -1,0 +1,1 @@
+{"id":4696,"name":"Send Burst SMS messages from Google Sheets rows","description":"Every time a new row is added to a Google Sheet, Make will automatically send an SMS using Burst SMS.","url":"4696-send-burst-sms-messages-from-google-sheets-rows","usedApps":["google-sheets","burst-sms"],"usage":18}

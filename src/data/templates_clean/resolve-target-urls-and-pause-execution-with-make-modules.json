@@ -1,0 +1,1 @@
+{"id":13452,"name":"Resolve target URLs and pause execution with Make modules","description":"Automatically resolve target URLs and pause execution using Make's HTTP and Utility modules. Ideal for workflows requiring URL resolution and timed actions.","url":"13452-resolve-target-urls-and-pause-execution-with-make-modules","usedApps":["http","util"],"usage":4}

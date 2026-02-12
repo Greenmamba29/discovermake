@@ -1,0 +1,1 @@
+{"id":6847,"name":"Send messages in Slack for new Mavenlink tasks","description":"Every time there is a new task created in Mavenlink, Make will automatically send a message containing task details via Slack. ","url":"6847-send-messages-in-slack-for-new-mavenlink-tasks","usedApps":["mavenlink","slack"],"usage":2}

@@ -1,0 +1,1 @@
+{"id":1458,"name":"Send Telegram messages with weather forecast for tomorrow","description":"Every time this scenario is run, Make will automatically get the weather forecast for tomorrow and send it to a selected chat in Telegram.","url":"1458-send-telegram-messages-with-weather-forecast-for-tomorrow","usedApps":["telegram","weather"],"usage":5726}

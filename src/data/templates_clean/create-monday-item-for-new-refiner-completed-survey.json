@@ -1,0 +1,1 @@
+{"id":5641,"name":"Create monday item for new Refiner completed survey","description":"Every time a new Refiner completed survey is received, Make will automatically create a Monday item.","url":"5641-create-monday-item-for-new-refiner-completed-survey","usedApps":["refiner","monday"],"usage":5}

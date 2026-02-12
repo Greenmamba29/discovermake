@@ -1,0 +1,1 @@
+{"id":2432,"name":"Create or update SendGrid recipients from new Wufoo form entries","description":"Every time someone fills out your Wufoo form, Make will automatically add/update a  recipient in SendGrid.","url":"2432-create-or-update-sendgrid-recipients-from-new-wufoo-form-entries","usedApps":["wufoo","sendgrid"],"usage":1}

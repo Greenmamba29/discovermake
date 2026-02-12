@@ -1,0 +1,1 @@
+{"id":7796,"name":"Add new Myphoner winners to Mailchimp as subscribers","description":"Every time a lead becomes a winner in Myphoner, Make will automatically add this lead to a specified Mailchimp mailing list as a subscriber or update an existing one.","url":"7796-add-new-myphoner-winners-to-mailchimp-as-subscribers","usedApps":["myphoner","mailchimp"],"usage":2}

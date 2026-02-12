@@ -1,0 +1,1 @@
+{"id":7884,"name":"Create Trello cards for new Bitrix24 deals","description":"Every time a new deal is created in Bitrix24, Make will automatically create a new card in Trello.","url":"7884-create-trello-cards-for-new-bitrix24-deals","usedApps":["bitrix24","trello"],"usage":10}

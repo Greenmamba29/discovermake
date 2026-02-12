@@ -1,0 +1,1 @@
+{"id":3414,"name":"Create a new listing on Etsy when a new row is added to a Google Sheet","description":"Every time a new row is added in Google Sheets, Make will automatically create a new listing in Etsy.","url":"3414-create-a-new-listing-on-etsy-when-a-new-row-is-added-to-a-google-sheet","usedApps":["google-sheets","etsy"],"usage":964}

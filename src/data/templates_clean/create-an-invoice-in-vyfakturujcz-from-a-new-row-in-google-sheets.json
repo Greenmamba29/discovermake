@@ -1,0 +1,1 @@
+{"id":4250,"name":"Create an invoice in Vyfakturuj.cz from a new row in Google Sheets","description":"When a new row is created in Google Sheets spreadsheet, a new invoice is created in Vyfakturuj.cz.","url":"4250-create-an-invoice-in-vyfakturuj-cz-from-a-new-row-in-google-sheets","usedApps":["google-sheets","vyfakturuj-cz"],"usage":10}

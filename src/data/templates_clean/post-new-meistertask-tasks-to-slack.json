@@ -1,0 +1,1 @@
+{"id":2281,"name":"Post new MeisterTask tasks to Slack","description":"Every time a new task is added to a selected MeisterTask project, Make will automatically send a message in Slack.","url":"2281-post-new-meistertask-tasks-to-slack","usedApps":["meistertask","slack"],"usage":2}

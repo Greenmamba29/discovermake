@@ -1,0 +1,1 @@
+{"id":4993,"name":"Invoke Amazon Lambda function for new Telegram message","description":"Every time you receive a new message in Telegram, Make will automatically invoke a function in Amazon Lambda and send the output in Telegram Bot.","url":"4993-invoke-amazon-lambda-function-for-new-telegram-message","usedApps":["telegram","amazon-lambda"],"usage":19}

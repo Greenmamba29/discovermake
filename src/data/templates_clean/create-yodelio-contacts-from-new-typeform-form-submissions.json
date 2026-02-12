@@ -1,0 +1,1 @@
+{"id":5313,"name":"Create Yodel.io contacts from new Typeform form submissions","description":"Every time someone fills out your Typeform form, Make will automatically create a new Yodel.io contact (or update it if it already exists).","url":"5313-create-yodel-io-contacts-from-new-typeform-form-submissions","usedApps":["typeform","yodel"],"usage":0}

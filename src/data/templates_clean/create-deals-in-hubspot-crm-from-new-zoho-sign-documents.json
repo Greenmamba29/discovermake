@@ -1,0 +1,1 @@
+{"id":3257,"name":"Create deals in Hubspot CRM from new Zoho Sign documents","description":"Every time a new document is signed with Zoho Sign, Make will automatically add a new deal in Hubspot CRM.","url":"3257-create-deals-in-hubspot-crm-from-new-zoho-sign-documents","usedApps":["zoho-sign","hubspotcrm"],"usage":10}

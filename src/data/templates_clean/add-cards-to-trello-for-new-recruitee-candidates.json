@@ -1,0 +1,1 @@
+{"id":7155,"name":"Add cards to Trello for new Recruitee candidates","description":"Every time a candidate aplied for a job in Recruitee, Make will automatically create a new Trello card in a specified board.","url":"7155-add-cards-to-trello-for-new-recruitee-candidates","usedApps":["recruitee","trello"],"usage":2}

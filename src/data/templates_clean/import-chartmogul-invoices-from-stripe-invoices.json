@@ -1,0 +1,1 @@
+{"id":6736,"name":"Import ChartMogul invoices from Stripe invoices.","description":"Use this template to automatically import an invoices from Stripe to ChartMogul by specific criteria.","url":"6736-import-chartmogul-invoices-from-stripe-invoices","usedApps":["stripe","chartmogul"],"usage":2}

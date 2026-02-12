@@ -1,0 +1,1 @@
+{"id":5346,"name":"Export BigQuery Tables to Google Sheets","description":"This template helps you export a BigQuery table to Google Sheets. The scenario can be set up to run at regular intervals (every hour, day, week or a specific date).","url":"5346-export-bigquery-tables-to-google-sheets","usedApps":["google-bigquery","google-sheets"],"usage":170}

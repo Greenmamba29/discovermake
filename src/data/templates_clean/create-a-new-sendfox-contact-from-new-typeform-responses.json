@@ -1,0 +1,1 @@
+{"id":3478,"name":"Create a new SendFox contact from new Typeform responses","description":"Every time there is a new Typeform response, a corresponding SendFox contact will be created.","url":"3478-create-a-new-sendfox-contact-from-new-typeform-responses","usedApps":["typeform","sendfox"],"usage":3}

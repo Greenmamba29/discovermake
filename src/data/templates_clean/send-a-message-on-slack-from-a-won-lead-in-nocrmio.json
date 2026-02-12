@@ -1,0 +1,1 @@
+{"id":8417,"name":"Send a message on Slack from a won lead in noCRM.io","description":"Every time a lead is won in noCRM.io, a new message containing lead details will be instantly sent on Slack.","url":"8417-send-a-message-on-slack-from-a-won-lead-in-nocrm-io","usedApps":["nocrm-io","slack"],"usage":2}

@@ -1,0 +1,1 @@
+{"id":5080,"name":"Create a QuickBooks customer from a WooCommerce order","description":"Every time a new WooCommerce order is placed, Make will automatically create a QuickBooks customer (provided it doesn't already exist).","url":"5080-create-a-quickbooks-customer-from-a-woocommerce-order","usedApps":["woocommerce","quickbooks"],"usage":16}

@@ -1,0 +1,1 @@
+{"id":2802,"name":"Create a card in Trello when Salesflare opportunities reach a certain stage","description":"Every time a Salesflare opportunity reaches a certain stage, Make will automatically add a new card to your Trello board.","url":"2802-create-a-card-in-trello-when-salesflare-opportunities-reach-a-certain-stage","usedApps":["salesflare","trello"],"usage":2}

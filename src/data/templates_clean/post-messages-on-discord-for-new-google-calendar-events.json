@@ -1,0 +1,1 @@
+{"id":5571,"name":"Post messages on Discord for new Google Calendar events","description":"With this automation, Make will retrieve all your new Google Calendar events and post them to Discord.","url":"5571-post-messages-on-discord-for-new-google-calendar-events","usedApps":["google-calendar","discord"],"usage":706}

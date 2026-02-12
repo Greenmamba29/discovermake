@@ -1,0 +1,1 @@
+{"id":5625,"name":"Add subscribers in Google Sheets from users TalentLMS","description":"Every time a new user from TalentLMS is added, Make will automatically add a row in Google Sheets spreadsheet.","url":"5625-add-subscribers-in-google-sheets-from-users-talentlms","usedApps":["talentlms","google-sheets"],"usage":4}

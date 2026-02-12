@@ -1,0 +1,1 @@
+{"id":7541,"name":"Create/update a HubSpot contact from a new booking in FareHarbor","description":"Every time a new booking is created in FareHarbor, Make will automatically create a new or update an existing contact in HubSpot CRM.","url":"7541-create-update-a-hubspot-contact-from-a-new-booking-in-fareharbor","usedApps":["fareharbor","hubspotcrm"],"usage":16}

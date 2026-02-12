@@ -1,0 +1,1 @@
+{"id":7376,"name":"Add a new ActiveCampaign contacts to MemberVault as a new users","description":"Every time a new contact is created in ActiveCampaign, Make will automatically add that contact to MemberVault as a new user.","url":"7376-add-a-new-activecampaign-contacts-to-membervault-as-a-new-users","usedApps":["activecampaign","membervault"],"usage":0}

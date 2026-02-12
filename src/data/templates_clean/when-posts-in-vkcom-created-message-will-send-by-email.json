@@ -1,0 +1,1 @@
+{"id":4848,"name":"When posts in VK.com created message will send by Email","description":"Every time a new post is published on VK.com, Make will send automatically attachment by email","url":"4848-when-posts-in-vk-com-created-message-will-send-by-email","usedApps":["vk-com","builtin","http","email"],"usage":9}

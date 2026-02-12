@@ -1,0 +1,1 @@
+{"id":4830,"name":"Upload Sendcloud labels to OneDrive","description":"Every time a Sendcloud parcel is updated, Make will automatically upload the corresponding label to OneDrive.","url":"4830-upload-sendcloud-labels-to-onedrive","usedApps":["sendcloud","onedrive"],"usage":10}

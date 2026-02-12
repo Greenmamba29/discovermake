@@ -1,0 +1,1 @@
+{"id":3651,"name":"Create new Zoho Invoices from custom Webhooks","description":"Every time a custom webhook is triggered, Make will automatically create a new invoice on Zoho Invoice.","url":"3651-create-new-zoho-invoices-from-custom-webhooks","usedApps":["gateway","zoho-invoice"],"usage":34}

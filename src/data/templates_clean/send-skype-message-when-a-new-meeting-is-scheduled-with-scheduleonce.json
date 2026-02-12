@@ -1,0 +1,1 @@
+{"id":3338,"name":"Send Skype message when a new meeting is scheduled with ScheduleOnce","description":"Every time an appointment is scheduled with ScheduleOnce, Make will automatically send a message in Skype.","url":"3338-send-skype-message-when-a-new-meeting-is-scheduled-with-scheduleonce","usedApps":["scheduleonce","skype"],"usage":1}

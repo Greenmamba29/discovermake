@@ -1,0 +1,1 @@
+{"id":2957,"name":"Send a Pushcut notification with a new watched RSS feed item","description":"Watch for an RSS feed and if there is a new item, send a notification to Pushcut.","url":"2957-send-a-pushcut-notification-with-a-new-watched-rss-feed-item","usedApps":["rss","pushcut"],"usage":13}

@@ -1,0 +1,1 @@
+{"id":6225,"name":"Create tasks on Asana from records in a specific view on Airtable","description":"This automation watches for new records created on a table in a specific view on Airtable and creates tasks on Asana with the information.","url":"6225-create-tasks-on-asana-from-records-in-a-specific-view-on-airtable","usedApps":["airtable","asana"],"usage":56}

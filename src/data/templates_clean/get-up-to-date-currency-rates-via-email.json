@@ -1,0 +1,1 @@
+{"id":36,"name":"Get up-to-date currency rates via email","description":"Every time this scenario is run, Make will automatically send the current exchange rates of your selected currencies to a specified email address.","url":"36-get-up-to-date-currency-rates-via-email","usedApps":["currency","email"],"usage":194}

@@ -1,0 +1,1 @@
+{"id":8735,"name":"Send Slack messages for new Clust submitted applications","description":"Make will watch for new submitted applications in Clust and send messages to the specified chat or channel in Slack.","url":"8735-send-slack-messages-for-new-clust-submitted-applications","usedApps":["clust","slack"],"usage":2}

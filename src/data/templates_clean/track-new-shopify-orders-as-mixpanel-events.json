@@ -1,0 +1,1 @@
+{"id":3781,"name":"Track new Shopify orders as Mixpanel events","description":"Every time a new order is created in Shopify, Make will automatically track this event in Mixpanel.","url":"3781-track-new-shopify-orders-as-mixpanel-events","usedApps":["shopify","mixpanel"],"usage":16}

@@ -1,0 +1,1 @@
+{"id":10115,"name":"Receive Telnyx SMS messages for new Mailchimp subscribers","description":"Send an SMS via Telnyx when a new person subscribes to your emails in Mailchimp.","url":"10115-receive-telnyx-sms-messages-for-new-mailchimp-subscribers","usedApps":["mailchimp","telnyx"],"usage":3}

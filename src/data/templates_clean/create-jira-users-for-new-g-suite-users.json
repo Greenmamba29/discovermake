@@ -1,0 +1,1 @@
+{"id":3739,"name":"Create JIRA users for new G Suite users","description":"Every time a new user is added to your G Suite organization, Make will automatically create a new user in JIRA.","url":"3739-create-jira-users-for-new-g-suite-users","usedApps":["google-g-suite","jira"],"usage":25}

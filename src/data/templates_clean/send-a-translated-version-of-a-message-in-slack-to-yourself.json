@@ -1,0 +1,1 @@
+{"id":3156,"name":"Send a translated version of a message in Slack to yourself","description":"Translate every/filtered received message from Slack to target language and send it to selected channel in Slack.","url":"3156-send-a-translated-version-of-a-message-in-slack-to-yourself","usedApps":["slack","google-translate"],"usage":22}

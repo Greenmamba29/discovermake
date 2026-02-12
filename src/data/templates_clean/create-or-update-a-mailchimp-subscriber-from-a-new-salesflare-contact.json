@@ -1,0 +1,1 @@
+{"id":6461,"name":"Create or update a Mailchimp subscriber from a new Salesflare contact","description":"Every time a Salesflare contact is created, Make will automatically add a Mailchimp subscriber.","url":"6461-create-or-update-a-mailchimp-subscriber-from-a-new-salesflare-contact","usedApps":["salesflare","mailchimp"],"usage":6}

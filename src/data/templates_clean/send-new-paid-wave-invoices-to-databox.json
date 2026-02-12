@@ -1,0 +1,1 @@
+{"id":3930,"name":"Send new paid Wave invoices to Databox","description":"Every time an invoice gets status \"paid\" in Wave, data from the invoice are sent to Databox.","url":"3930-send-new-paid-wave-invoices-to-databox","usedApps":["wave","databox"],"usage":20}

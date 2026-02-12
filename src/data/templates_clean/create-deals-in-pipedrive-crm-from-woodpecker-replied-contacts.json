@@ -1,0 +1,1 @@
+{"id":4321,"name":"Create deals in Pipedrive CRM from Woodpecker replied contacts","description":"Every time a prospect replies or is marked as replied in Woodpecker, Make will automatically create a new deal in Pipedrive CRM.","url":"4321-create-deals-in-pipedrive-crm-from-woodpecker-replied-contacts","usedApps":["woodpecker","pipedrive"],"usage":12}

@@ -1,0 +1,1 @@
+{"id":5722,"name":"Add order tracking codes to Google Sheets and update the orders on Shopify","description":"Retrieve rows from Google Sheets that contain order data with added tracking numbers. Find and update these orders on Shopify.","url":"5722-add-order-tracking-codes-to-google-sheets-and-update-the-orders-on-shopify","usedApps":["google-sheets","shopify"],"usage":286}

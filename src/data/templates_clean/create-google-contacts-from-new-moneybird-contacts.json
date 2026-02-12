@@ -1,0 +1,1 @@
+{"id":6663,"name":"Create Google Contacts from new Moneybird contacts","description":"Every time there is a new Moneybird contact, Make will automatically search Google Contacts with the same name, then create a new one or update the existing one.","url":"6663-create-google-contacts-from-new-moneybird-contacts","usedApps":["moneybird","google-contacts","builtin"],"usage":9}

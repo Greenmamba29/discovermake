@@ -1,0 +1,1 @@
+{"id":7868,"name":"Add UseINBOX contacts from new Shopify customers","description":"Make will watch for new Shopify customers at regular intervals and add contacts to a UseINBOX mailing list using the information received.","url":"7868-add-useinbox-contacts-from-new-shopify-customers","usedApps":["shopify","useinbox"],"usage":2}

@@ -1,0 +1,1 @@
+{"id":12086,"name":"Add new SendOwl customers to Brevo as contacts","description":"Every time you get a new order in SendOwl, a new contact will be created in Brevo. If the contact already exists, it will be updated.","url":"5775-add-new-sendowl-customers-to-sendinblue-as-contacts","usedApps":["sendowl","sendinblue"],"usage":10}

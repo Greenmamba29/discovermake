@@ -1,0 +1,1 @@
+{"id":8328,"name":"Transfer files from Google Drive to Box","description":"When you upload files to a specific folder in Google Drive, Make will automatically download the files and upload them to a folder in Box.","url":"8328-transfer-files-from-google-drive-to-box","usedApps":["google-drive","box"],"usage":23}

@@ -1,0 +1,1 @@
+{"id":1320,"name":"Add new Shopify orders to Xero as orders","description":"Every time a new order is created in Shopify, Make will automatically add the data submitted to Xero as a new contact and subsequently create a new order in Xero.","url":"1320-add-new-shopify-orders-to-xero-as-orders","usedApps":["shopify","xero","builtin","util"],"usage":597}

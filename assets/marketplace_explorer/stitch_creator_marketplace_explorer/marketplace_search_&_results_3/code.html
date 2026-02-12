@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Verified Creator Profile</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13a4ec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101c22",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .ios-blur { backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+        body { min-height: 100dvh; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white">
+<nav class="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 ios-blur border-b border-slate-200 dark:border-slate-800">
+<div class="flex items-center justify-between p-4">
+<button class="flex items-center justify-center size-10 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined">arrow_back_ios_new</span>
+</button>
+<div class="text-center">
+<span class="text-xs font-semibold uppercase tracking-widest text-slate-500">Creator Profile</span>
+</div>
+<button class="flex items-center justify-center size-10 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined">share</span>
+</button>
+</div>
+</nav>
+<main class="pb-32">
+<section class="px-6 pt-6 pb-4 flex flex-col items-center">
+<div class="relative mb-4">
+<div class="size-24 rounded-3xl overflow-hidden ring-4 ring-primary/20">
+<img alt="Creator avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYpYH7c-gnJJ3LvRZYWh_D7-1wpcE8bGiHxxy-E7XmbZ55LGt43aVmYodHL2Wp2t7-Bn6PZjfFImSvZhewDtHUuFKa0vUyjvHjk5Lm90CypVmJ3KjqL_gc4N1Xs0KQ5YSXM-eGnGPaWq-16PYLxZOceHiUDs_Rdg6RUjOAJJV2lh4ajaLkvF_6m3Whk-WaHqUxDMKyJCJtt7LglrICPTNkFtHdUFkCnte0FKGgnujRDaMC-dogJXbTQPX_u_W_MG1EadqprHjxh3s"/>
+</div>
+<div class="absolute -bottom-2 -right-2 bg-primary text-white p-1 rounded-full border-4 border-background-light dark:border-background-dark">
+<span class="material-symbols-outlined text-[18px] block fill-1">verified</span>
+</div>
+</div>
+<h1 class="text-2xl font-bold mb-1">Flux Labs</h1>
+<p class="text-sm text-slate-500 dark:text-slate-400 font-medium mb-4 italic">"Building the plumbing for AI-first companies"</p>
+<div class="flex flex-wrap justify-center gap-2 mb-6">
+<span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-full text-[11px] font-bold text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700">SAAS</span>
+<span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-full text-[11px] font-bold text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700">AUTOMATION</span>
+<span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-full text-[11px] font-bold text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700">ZAPIER EXPERT</span>
+</div>
+<div class="grid grid-cols-4 w-full bg-white dark:bg-[#192b33] rounded-2xl border border-slate-200 dark:border-slate-800 p-4 divide-x divide-slate-100 dark:divide-slate-800 shadow-sm">
+<div class="flex flex-col items-center justify-center px-1">
+<span class="text-sm font-bold">12</span>
+<span class="text-[9px] uppercase font-bold text-slate-400">Workflows</span>
+</div>
+<div class="flex flex-col items-center justify-center px-1">
+<span class="text-sm font-bold">8.5k</span>
+<span class="text-[9px] uppercase font-bold text-slate-400">Remixes</span>
+</div>
+<div class="flex flex-col items-center justify-center px-1">
+<span class="text-sm font-bold">22k</span>
+<span class="text-[9px] uppercase font-bold text-slate-400">Deployed</span>
+</div>
+<div class="flex flex-col items-center justify-center px-1 text-primary">
+<span class="text-sm font-bold">4.8</span>
+<span class="text-[9px] uppercase font-bold">Avg Score</span>
+</div>
+</div>
+</section>
+<section class="px-4 mt-6">
+<div class="flex items-center justify-between mb-4 px-2">
+<h2 class="text-lg font-bold">Top Workflows</h2>
+<button class="text-primary text-xs font-bold uppercase">View All</button>
+</div>
+<div class="space-y-4">
+<div class="bg-white dark:bg-[#192b33] rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 flex flex-col">
+<div class="h-32 bg-slate-200 dark:bg-slate-800 relative">
+<img alt="Project preview" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeOmHCcF-imom74dV_TPQVN1cYFmcausQNo4oR9NYyxi0rUfYqmr93ajneqvRTRunAPODqt-yDp2vtPmhWPflh56StSEuCKR1bJ018mi82U8ofU8C4lx9_tbdnQrz9iGId9QBdOHcX3QgQi5kz4rxGlx58F_AUhbdQnW4RrI90QbWIldtnI6vp1cAx9EpHTcJ_M_37rMBCP-TGGlocEeBnGrUmSWDMkWE_3w_GlN4Ui4wIMoQVhUUxXLQlr7GE1RPDPK6d3bRgYvc"/>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h3 class="font-bold text-sm">Instant Support Weaver</h3>
+<p class="text-xs text-slate-500 line-clamp-1">Multi-channel RAG bot with Zendesk integration</p>
+</div>
+<button class="bg-primary text-white px-4 py-1.5 rounded-lg text-xs font-bold shadow-md shadow-primary/20 active:scale-95 transition-transform">
+                            Remix
+                        </button>
+</div>
+</div>
+</div>
+<div class="bg-white dark:bg-[#192b33] rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 flex flex-col">
+<div class="h-32 bg-slate-200 dark:bg-slate-800 relative">
+<img alt="Project preview" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCCRc4s3Zh9mS_gG8VPEEhrmK0V3RrYQqvX-AhSntHxmvNlk6OWwH5ThMfendgya2x6_JxTUeReZ-7VH_vTavOZIzeb80kz_bZ9GBQf2qtBPcANXdi75YHAqyiAXmF9yNk-JY7E2rbahFR8s7gbRB8B7RkIhHB-xq26cOOr64fCnrviQhqaHELVj37GR_uzPtLYQ3ZgZggomz-6JXfeAITrDeQYWQn1iOARmATsCp2NPjR0NoNUsEtcHlZHFyC5GtxJF-0dxlu4wgw"/>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h3 class="font-bold text-sm">CRM Lead Enricher</h3>
+<p class="text-xs text-slate-500 line-clamp-1">Auto-fetch LinkedIn data for new leads</p>
+</div>
+<button class="bg-primary text-white px-4 py-1.5 rounded-lg text-xs font-bold shadow-md shadow-primary/20 active:scale-95 transition-transform">
+                            Remix
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="px-4 mt-10">
+<h2 class="text-lg font-bold mb-4 px-2">Outcome-based Reviews</h2>
+<div class="space-y-3">
+<div class="p-4 bg-white dark:bg-[#192b33] rounded-2xl border border-slate-200 dark:border-slate-800">
+<div class="flex items-center justify-between mb-2">
+<div class="flex items-center gap-2">
+<div class="size-6 rounded-full bg-slate-200 overflow-hidden">
+<img alt="Reviewer" class="object-cover w-full h-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_h0Xz1tQf-1VSFaOFEDHahYB8PnNFKJzfKLdeTEHfPXxTR7CckKPMlE098w6Bvz4lB_8Vaas1RW3FawXie7Xd6Ymwp81E48IeaD8v8Cx6faiQJQOBCHAC52m3bTiFYDQnLnwbQU0vye63tS8_Q-UC3wV6IAfsh4ic1WsyjWeJ0CGHKKg-q_ijCxFdDasvLULgxeoOaG2xsDZRGPKiE-WpU2c9MxeTcj_YknMKz6d4RNuLvNVPc1fHmqgjfr1zyYz4wcgGJD89EIE"/>
+</div>
+<span class="text-xs font-bold">Mark S.</span>
+</div>
+<div class="flex text-amber-400">
+<span class="material-symbols-outlined text-[14px] fill-1">star</span>
+<span class="material-symbols-outlined text-[14px] fill-1">star</span>
+<span class="material-symbols-outlined text-[14px] fill-1">star</span>
+<span class="material-symbols-outlined text-[14px] fill-1">star</span>
+<span class="material-symbols-outlined text-[14px] fill-1">star</span>
+</div>
+</div>
+<p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">"The 'Support Weaver' workflow delivered exactly the outcome promised. Reduced our initial response time by 2.4 hours within the first week."</p>
+<div class="mt-3 flex gap-2">
+<span class="text-[10px] bg-green-500/10 text-green-500 px-2 py-0.5 rounded font-bold">Reliable Deployment</span>
+<span class="text-[10px] bg-blue-500/10 text-blue-500 px-2 py-0.5 rounded font-bold">High ROI</span>
+</div>
+</div>
+</div>
+</section>
+<section class="px-6 mt-10 mb-8">
+<h2 class="text-lg font-bold mb-3">About &amp; Guarantees</h2>
+<div class="space-y-4">
+<p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                Expert in building production-grade workflows for high-growth startups. I specialize in connecting LLMs with traditional SaaS APIs.
+            </p>
+<div class="grid grid-cols-1 gap-3">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary text-[20px]">verified_user</span>
+<div>
+<h4 class="text-sm font-bold">Lifetime Updates</h4>
+<p class="text-[11px] text-slate-500">I update all workflows within 48h of API changes.</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary text-[20px]">support_agent</span>
+<div>
+<h4 class="text-sm font-bold">Direct Support</h4>
+<p class="text-[11px] text-slate-500">24/7 dedicated Discord channel for buyers.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<footer class="fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-[#111c22]/95 ios-blur border-t border-slate-200 dark:border-slate-800 pb-10 p-4">
+<div class="flex gap-3 max-w-md mx-auto">
+<button class="flex-1 h-12 flex items-center justify-center rounded-2xl bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold text-sm border border-slate-300 dark:border-slate-700 active:scale-95 transition-transform">
+            Follow
+        </button>
+<button class="flex-[1.5] h-12 flex items-center justify-center rounded-2xl bg-primary text-white font-bold text-sm shadow-lg shadow-primary/20 active:scale-95 transition-transform">
+            Request Custom Build
+        </button>
+</div>
+</footer>
+<div class="fixed bottom-1 left-1/2 -translate-x-1/2 w-32 h-1.5 bg-slate-400/30 dark:bg-slate-700/50 rounded-full z-50"></div>
+
+</body></html>

@@ -1,0 +1,1 @@
+{"id":8521,"name":"Send Telegram messages for Livestorm events started","description":"Every time an event starts in Livestorm, Make will automatically send a Telegram message.","url":"8521-send-telegram-messages-for-livestorm-events-started","usedApps":["livestorm","telegram"],"usage":3}

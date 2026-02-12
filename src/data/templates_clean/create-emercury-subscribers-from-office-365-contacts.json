@@ -1,0 +1,1 @@
+{"id":3565,"name":"Create Emercury subscribers from Office 365 contacts","description":"Every time a new Office 365 contact is created, Make will automatically add that contact to a specific list in Emercury.","url":"3565-create-emercury-subscribers-from-office-365-contacts","usedApps":["microsoft-people","builtin","emercury"],"usage":1}

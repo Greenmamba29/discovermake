@@ -1,0 +1,1 @@
+{"id":7400,"name":"Save new files from Google Drive to a lexoffice","description":"Every time a new file is uploaded to your Google Drive, Make will automatically upload that file to lexoffice.","url":"7400-save-new-files-from-google-drive-to-a-lexoffice","usedApps":["google-drive","lexoffice"],"usage":163}

@@ -1,0 +1,1 @@
+{"id":366,"name":"Send Twilio SMS messages with weather forecast for tommorow","description":"Make will automatically send a Twilio SMS message with tommorow's weather forecast to a specified phone number. The message will be sent every day at 7 p.m.","url":"366-send-twilio-sms-messages-with-weather-forecast-for-tommorow","usedApps":["openweathermap","twilio"],"usage":36}

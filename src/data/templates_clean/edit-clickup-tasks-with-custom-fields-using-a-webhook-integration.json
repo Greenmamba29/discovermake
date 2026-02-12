@@ -1,0 +1,1 @@
+{"id":12787,"name":"Edit ClickUp tasks with custom fields using a webhook integration","description":"Automatically update ClickUp tasks with custom fields using a webhook. Trigger updates via CustomWebHook and edit tasks with ClickUp's advanced features.","url":"12787-edit-clickup-tasks-with-custom-fields-using-a-webhook-integration","usedApps":["gateway","clickup"],"usage":10}

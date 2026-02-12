@@ -1,0 +1,1 @@
+{"id":3132,"name":"Send an SMS message by sending an email","description":"Send an SMS by sending an email. Put the recipient’s mobile number in the subject line of the email and your message in the body of the email. Useful for automatic replies!","url":"3132-send-an-sms-message-by-sending-an-email","usedApps":["gateway","gatewayapi"],"usage":89}

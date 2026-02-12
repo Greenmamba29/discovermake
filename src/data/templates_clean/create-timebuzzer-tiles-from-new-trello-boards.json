@@ -1,0 +1,1 @@
+{"id":6488,"name":"Create timeBuzzer tiles from new Trello boards","description":"Every time a new board is created in Trello, Make will automatically create a new tile in timeBuzzer.","url":"6488-create-timebuzzer-tiles-from-new-trello-boards","usedApps":["trello","timebuzzer"],"usage":6}

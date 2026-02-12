@@ -1,0 +1,1 @@
+{"id":8898,"name":"Send Google Analytics data to a Google Sheet","description":"Use this template to automatically send Google Analytics data to a Google Sheet. It's set to fetch the data on a daily basis which you can change in the scheduling menu.","url":"8898-send-google-analytics-data-to-a-google-sheet","usedApps":["google-analytics","google-sheets"],"usage":236}

@@ -1,0 +1,1 @@
+{"id":6618,"name":"Get exchange rates from ČNB for Telegram messages","description":"Whenever your Telegram bot receives a message with a valid currency code, Make will retrieve relevant exchange rate for it relative to Czech koruna and send it to your Telegram.","url":"6618-get-exchange-rates-from-cnb-for-telegram-messages","usedApps":["telegram","kurzy-cnb"],"usage":5}

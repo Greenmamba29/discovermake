@@ -1,0 +1,1 @@
+{"id":7954,"name":"Validate e-mails in Airtable table by Loqate","description":"When a new record is created in Airtable, e-mail from the record is validated by Loqate. If the e-mail is not valid, it is deleted from the table.","url":"7954-validate-e-mails-in-airtable-table-by-loqate","usedApps":["airtable","loqate"],"usage":1}

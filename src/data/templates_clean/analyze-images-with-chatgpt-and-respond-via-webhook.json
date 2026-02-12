@@ -1,0 +1,1 @@
+{"id":15299,"name":"Analyze images with ChatGPT and respond via webhook","description":"Instantly analyze images using ChatGPT and send results via a custom webhook response. Ideal for real-time image processing and instant feedback.","url":"15299-analyze-images-with-chatgpt-and-respond-via-webhook","usedApps":["gateway","openai-gpt-3"],"usage":23}

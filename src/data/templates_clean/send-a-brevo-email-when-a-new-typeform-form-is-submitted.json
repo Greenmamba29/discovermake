@@ -1,0 +1,1 @@
+{"id":12082,"name":"Send a Brevo email when a new Typeform form is submitted","description":"Every time someone fills out your Typeform form, Make will automatically send an email message via Brevo.","url":"5279-send-a-sendinblue-email-when-a-new-typeform-form-is-submitted","usedApps":["typeform","sendinblue"],"usage":138}

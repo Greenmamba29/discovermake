@@ -1,0 +1,1 @@
+{"id":7402,"name":"Add Mailgun mailing list members for new successful orders in ThriveCart","description":"Every time a successful order is completed in your ThriveCart, Make will add a customer from the order to your Mailgun mailing list.","url":"7402-add-mailgun-mailing-list-members-for-new-successful-orders-in-thrivecart","usedApps":["thrivecart","mailgun"],"usage":3}

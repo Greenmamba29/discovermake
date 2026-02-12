@@ -1,0 +1,1 @@
+{"id":5406,"name":"Add contacts from Salesforce to a Mailchimp list","description":"Whenever you add or update contacts in Salesforce, Make will automatically retrieve the contacts and add/update them in a Mailchimp list of your choice.","url":"5406-add-contacts-from-salesforce-to-a-mailchimp-list","usedApps":["salesforce","mailchimp"],"usage":60}

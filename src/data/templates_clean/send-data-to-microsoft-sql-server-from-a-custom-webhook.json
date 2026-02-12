@@ -1,0 +1,1 @@
+{"id":12832,"name":"Send data to Microsoft SQL Server from a custom webhook","description":"Automatically send data from your custom webhook to Microsoft SQL Server. Streamline data management by inserting records directly into your SQL tables.","url":"12832-send-data-to-microsoft-sql-server-from-a-custom-webhook","usedApps":["gateway","mssql"],"usage":38}

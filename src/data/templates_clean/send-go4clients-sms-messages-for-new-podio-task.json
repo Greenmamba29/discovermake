@@ -1,0 +1,1 @@
+{"id":4552,"name":"Send Go4Clients SMS messages for new Podio Task","description":"Every time a new task is created in Podio, Make will automatically send an SMS message via Go4Clients","url":"4552-send-go4clients-sms-messages-for-new-podio-task","usedApps":["podio","go4clients"],"usage":2}

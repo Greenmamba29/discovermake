@@ -1,0 +1,1 @@
+{"id":6916,"name":"Send SMSFactor messages for new Telegram messages","description":"Every time a new message is sent to a specified chat/channel on Telegram, Make will automatically send an SMS using SMSFactor.","url":"6916-send-smsfactor-messages-for-new-telegram-messages","usedApps":["telegram","smsfactor"],"usage":47}

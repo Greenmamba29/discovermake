@@ -1,0 +1,1 @@
+{"id":7075,"name":"Create new notes in Productboard from new Userback feedback","description":"Every time a new feedback is received via Userback, Make will automatically create a new note in Productboard.","url":"7075-create-new-notes-in-productboard-from-new-userback-feedback","usedApps":["userback","builtin","util","productboard"],"usage":2}

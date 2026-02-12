@@ -1,0 +1,1 @@
+{"id":6010,"name":"Create tasks on Todoist for new links in a subreddit","description":"This automation watches for new links in a subreddit that you are watching and creates tasks on Todoist with the information.","url":"6010-create-tasks-on-todoist-for-new-links-in-a-subreddit","usedApps":["reddit","todoist"],"usage":11}

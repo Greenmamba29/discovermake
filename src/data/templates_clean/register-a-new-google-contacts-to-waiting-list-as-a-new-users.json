@@ -1,0 +1,1 @@
+{"id":7388,"name":"Register a new Google Contacts to Waiting List as a new users","description":"Every time a new contact is created in Google Contacts, Make will automatically register that contact as a new user in Waiting List.","url":"7388-register-a-new-google-contacts-to-waiting-list-as-a-new-users","usedApps":["google-contacts","waiting-list"],"usage":1}

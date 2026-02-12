@@ -1,0 +1,1 @@
+{"id":8065,"name":"Create EZOfficeInventory fixed assets from new rows in Smartsheet","description":"Every time a new row is added to a Smartsheet, Make will automatically create a new fixed asset in EZOfficeInventory.","url":"8065-create-ezofficeinventory-fixed-assets-from-new-rows-in-smartsheet","usedApps":["smartsheet","ezofficeinventory"],"usage":6}

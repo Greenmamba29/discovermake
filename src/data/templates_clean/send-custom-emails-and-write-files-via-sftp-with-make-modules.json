@@ -1,0 +1,1 @@
+{"id":13425,"name":"Send custom emails and write files via SFTP with Make modules","description":"Automate sending personalized emails and writing files via SFTP. Use Custom MailHook, and SFTP modules to streamline communication and file management.","url":"13425-send-custom-emails-and-write-files-via-sftp-with-make-modules","usedApps":["gateway","builtin","sftp"],"usage":5}

@@ -1,0 +1,1 @@
+{"id":12676,"name":"Send text messages via Z-API for custom webhook events","description":"Trigger custom webhook events to send text messages via Z-API. Automate notifications by connecting CustomWebHook with Z-API for instant communication.","url":"12676-send-text-messages-via-z-api-for-custom-webhook-events","usedApps":["gateway","z-api"],"usage":50}

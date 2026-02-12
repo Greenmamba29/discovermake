@@ -1,0 +1,1 @@
+{"id":5286,"name":"Create Trello cards from new Point of Sale sales","description":"When a new sale in PHP Point of Sale is created, a new card is created in Trello, that includes all information about the sale.","url":"5286-create-trello-cards-from-new-point-of-sale-sales","usedApps":["php-point-of-sale","builtin","util","trello"],"usage":4}

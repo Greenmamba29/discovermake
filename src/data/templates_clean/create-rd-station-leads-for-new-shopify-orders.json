@@ -1,0 +1,1 @@
+{"id":4337,"name":"Create RD Station leads for new Shopify orders","description":"Every time a new order is made on Shopify, Make will automatically create a conversion event in RD Station and mark the lead as won.","url":"4337-create-rd-station-leads-for-new-shopify-orders","usedApps":["shopify","rd-station"],"usage":35}

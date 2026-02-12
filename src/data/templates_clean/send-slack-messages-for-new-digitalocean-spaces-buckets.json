@@ -1,0 +1,1 @@
+{"id":7216,"name":"Send Slack messages for new DigitalOcean Spaces buckets","description":"Every time there is a new DigitalOcean Spaces bucket, Make will automatically send info about this bucket via Slack.","url":"7216-send-slack-messages-for-new-digitalocean-spaces-buckets","usedApps":["digitalocean-spaces","slack"],"usage":2}

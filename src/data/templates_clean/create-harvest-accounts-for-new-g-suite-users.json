@@ -1,0 +1,1 @@
+{"id":3706,"name":"Create Harvest accounts for new G Suite users","description":"Every time a new user is added to your G Suite organization, Make will automatically create a new user in Harvest.","url":"3706-create-harvest-accounts-for-new-g-suite-users","usedApps":["google-g-suite","harvest"],"usage":6}

@@ -1,0 +1,1 @@
+{"id":10292,"name":"Create Invoice Ninja invoices for new WooCommerce orders","description":"Every time a new order is created in WooCommerce, Make will automatically create a new invoice in Invoice Ninja.","url":"10292-create-invoice-ninja-invoices-for-new-woocommerce-orders","usedApps":["woocommerce","invoiceninja"],"usage":95}

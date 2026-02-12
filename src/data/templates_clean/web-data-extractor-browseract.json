@@ -1,0 +1,1 @@
+{"id":17128,"name":"Web Data Extractor Browseract","description":"Easy process of extracting data from websites via Browseract, which allows you to do so without extensive knowledge.  ","url":"17128-new-template","usedApps":["browser-act","json","util","datastore","builtin","google-sheets"],"usage":12}

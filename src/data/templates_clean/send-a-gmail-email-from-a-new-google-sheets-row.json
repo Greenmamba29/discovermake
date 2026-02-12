@@ -1,0 +1,1 @@
+{"id":11381,"name":"Send a Gmail email from a new Google Sheets row","description":"Effortlessly send Gmail messages when a new row is added to your Google Sheets. Just ensure your spreadsheet includes these columns:\n\n- Email Address\n\n- Subject\n\n- Content","url":"5770-send-a-gmail-email-from-a-new-google-sheets-row","usedApps":["google-sheets","google-email"],"usage":34089}

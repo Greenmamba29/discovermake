@@ -1,0 +1,1 @@
+{"id":6426,"name":"Send Telegram messages when new documents in Zoho Writer are added","description":"Every time a document is created in your Zoho Writer, Make will send a message with links to it, via your Telegram Bot.","url":"6426-send-telegram-messages-when-new-documents-in-zoho-writer-are-added","usedApps":["zoho-writer","telegram"],"usage":0}

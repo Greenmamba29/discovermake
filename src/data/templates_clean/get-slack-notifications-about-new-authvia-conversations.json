@@ -1,0 +1,1 @@
+{"id":8131,"name":"Get Slack notifications about new Authvia conversations","description":"Every time a new conversation created in Authvia, Make will automatically send a notification message to a specified channel/chat in Slack.","url":"8131-get-slack-notifications-about-new-authvia-conversations","usedApps":["authvia","slack"],"usage":2}

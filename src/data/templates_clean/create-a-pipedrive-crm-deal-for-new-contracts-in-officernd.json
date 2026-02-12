@@ -1,0 +1,1 @@
+{"id":5022,"name":"Create a Pipedrive CRM deal for new contracts in OfficeRnD","description":"Every time new contracts from OfficeRnD is received, Make will automatically create a deal in Pipedrive CRM.","url":"5022-create-a-pipedrive-crm-deal-for-new-contracts-in-officernd","usedApps":["officernd","pipedrive"],"usage":1}

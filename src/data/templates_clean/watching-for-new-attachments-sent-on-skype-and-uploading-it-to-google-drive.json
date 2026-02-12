@@ -1,0 +1,1 @@
+{"id":3314,"name":"Watching for new attachments sent on Skype and uploading it to Google Drive","description":"Every time a new Skype message is sent with an attachment, Make will automatically save that as a file to Google Drive.","url":"3314-watching-for-new-attachments-sent-on-skype-and-uploading-it-to-google-drive","usedApps":["skype","builtin","google-drive"],"usage":12}

@@ -1,0 +1,1 @@
+{"id":8449,"name":"Create Google Contacts from new NetHunt records","description":"Every time a new record is created in NetHunt, Make will automatically create a new contact in Google Contacts.","url":"8449-create-google-contacts-from-new-nethunt-records","usedApps":["nethunt","google-contacts"],"usage":12}

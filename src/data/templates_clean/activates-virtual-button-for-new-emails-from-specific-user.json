@@ -1,0 +1,1 @@
+{"id":7110,"name":"Activates Virtual button for new emails from specific user","description":"Every time you receive a new email have a specific subject or from a specific user, Make will automatically activate the button in Virtual Buttons","url":"7110-activates-virtual-button-for-new-emails-from-specific-user","usedApps":["email","virtual-buttons"],"usage":12}

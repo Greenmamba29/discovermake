@@ -1,0 +1,1 @@
+{"id":322,"name":"Buffer new Blogger posts","description":"Every time a new post is published in a selected blog on Blogger, Make will automatically add it to your Buffer queue.","url":"322-buffer-new-blogger-posts","usedApps":["blogger","buffer"],"usage":50}

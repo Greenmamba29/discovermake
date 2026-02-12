@@ -1,0 +1,1 @@
+{"id":7698,"name":"Create SatisMeter users for new Xero contacts","description":"Make will watch your Xero contacts at regular intervals and create SatisMeter users.","url":"7698-create-satismeter-users-for-new-xero-contacts","usedApps":["xero","satismeter"],"usage":1}

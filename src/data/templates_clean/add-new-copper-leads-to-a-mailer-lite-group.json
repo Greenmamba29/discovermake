@@ -1,0 +1,1 @@
+{"id":1754,"name":"Add new Copper leads to a Mailer Lite group","description":"Every time a new lead is added on Copper, Make will automatically add a new subscriber to a MailerLite group you specify.","url":"1754-add-new-copper-leads-to-a-mailer-lite-group","usedApps":["prosperworks","mailerlite"],"usage":2}

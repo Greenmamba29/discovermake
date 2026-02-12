@@ -1,0 +1,1 @@
+{"id":4323,"name":"Add Mailchimp subscribers from Unbounce form submissions","description":"Every time a new Unbounce form is submitted, Make will automatically add a new subscriber to Mailchimp.","url":"4323-add-mailchimp-subscribers-from-unbounce-form-submissions","usedApps":["unbounce","mailchimp"],"usage":10}

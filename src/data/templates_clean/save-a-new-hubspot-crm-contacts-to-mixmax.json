@@ -1,0 +1,1 @@
+{"id":7913,"name":"Save a new HubSpot CRM contacts to Mixmax","description":"Every time a new contact is created in HubSpot CRM, Make will automatically create a new contact in Mixmax.","url":"7913-save-a-new-hubspot-crm-contacts-to-mixmax","usedApps":["hubspotcrm","mixmax"],"usage":1}

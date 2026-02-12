@@ -1,0 +1,1 @@
+{"id":6265,"name":"Send an Email from a finished Chatra Conversation","description":"Every time your Chatra conversation finished, Make will automatically send an Email message with data from the conversation.","url":"6265-send-an-email-from-a-finished-chatra-conversation","usedApps":["chatra","email"],"usage":1}

@@ -1,0 +1,1 @@
+{"id":6965,"name":"Send emails using MailerSend for new Google Forms responses","description":"Every time there is a new response in Google Forms, Make will automatically send an email via MailerSend.","url":"6965-send-emails-using-mailersend-for-new-google-forms-responses","usedApps":["google-forms","mailersend"],"usage":19}

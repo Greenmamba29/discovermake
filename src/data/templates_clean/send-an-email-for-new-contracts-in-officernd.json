@@ -1,0 +1,1 @@
+{"id":5024,"name":"Send an email for new contracts in OfficeRnD","description":"Every time new contracts from OfficeRnD is received, Make will automatically send an email to the specified address.","url":"5024-send-an-email-for-new-contracts-in-officernd","usedApps":["officernd","email"],"usage":1}

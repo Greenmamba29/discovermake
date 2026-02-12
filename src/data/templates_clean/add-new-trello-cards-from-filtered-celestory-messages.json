@@ -1,0 +1,1 @@
+{"id":4142,"name":"Add new Trello cards from filtered Celestory messages","description":"Every time a new Celestory message is sent, Make will automatically filter it based on its content. Then, a Trello card will be created on a specified board.","url":"4142-add-new-trello-cards-from-filtered-celestory-messages","usedApps":["celestory","builtin","trello"],"usage":6}

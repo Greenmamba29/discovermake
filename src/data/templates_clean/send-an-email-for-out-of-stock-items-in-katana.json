@@ -1,0 +1,1 @@
+{"id":10344,"name":"Send an email for out-of-stock items in Katana","description":"When an item's inventory is out of stock in Katana, an e-mail is sent via Gmail.","url":"10344-send-an-email-for-out-of-stock-items-in-katana","usedApps":["katana-mrp","builtin","google-email"],"usage":26}

@@ -1,0 +1,1 @@
+{"id":4841,"name":"Convert email text to audio file","description":"Every time you receive an email, Make will automatically convert email text to an audio file and save it to a specified folder in Onedrive.","url":"4841-convert-email-text-to-audio-file","usedApps":["email","google-cloud-tts","onedrive"],"usage":47}

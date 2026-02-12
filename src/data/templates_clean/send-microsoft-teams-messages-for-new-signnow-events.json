@@ -1,0 +1,1 @@
+{"id":4562,"name":"Send Microsoft Teams messages for new SignNow events","description":"Every time a SignNow document event is processed, Make will automatically send a message to a specified Microsoft Teams channel.","url":"4562-send-microsoft-teams-messages-for-new-signnow-events","usedApps":["signnow","microsoft-teams"],"usage":4}

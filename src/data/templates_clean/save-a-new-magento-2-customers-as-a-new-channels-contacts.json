@@ -1,0 +1,1 @@
+{"id":7096,"name":"Save a new Magento 2 customers as a new Channels contacts","description":"Every time when a new customer is created in Magento 2, Make will automatically add that customer to Channels as a new contact.","url":"7096-save-a-new-magento-2-customers-as-a-new-channels-contacts","usedApps":["magento2","channels"],"usage":2}

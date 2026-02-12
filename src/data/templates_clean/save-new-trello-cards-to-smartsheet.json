@@ -1,0 +1,1 @@
+{"id":2059,"name":"Save new Trello cards to Smartsheet","description":"Every time you add a new card to Trello, Make will automatically add that card's info to a new row in your Smartsheet sheet.","url":"2059-save-new-trello-cards-to-smartsheet","usedApps":["trello","smartsheet"],"usage":25}

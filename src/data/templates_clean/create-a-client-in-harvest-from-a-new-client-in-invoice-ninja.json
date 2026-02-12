@@ -1,0 +1,1 @@
+{"id":2949,"name":"Create a client in Harvest from a new client in Invoice Ninja","description":"When a new client is added to Invoice Ninja, a new client is created in Harvest. Available only for type of Harvest account \"administrator\".","url":"2949-create-a-client-in-harvest-from-a-new-client-in-invoice-ninja","usedApps":["invoiceninja","harvest"],"usage":3}

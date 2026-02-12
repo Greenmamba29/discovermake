@@ -1,0 +1,1 @@
+{"id":3203,"name":"Create Microsoft To Do tasks from new GitHub issues","description":"Every time a new issue is created in GitHub, Make will automatically create a new task in Microsoft To Do.","url":"3203-create-microsoft-to-do-tasks-from-new-github-issues","usedApps":["github","microsoft-to-do"],"usage":12}

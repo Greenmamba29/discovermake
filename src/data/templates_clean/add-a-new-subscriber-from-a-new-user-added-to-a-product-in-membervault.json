@@ -1,0 +1,1 @@
+{"id":7876,"name":"Add a new subscriber from a new user added to a product in MemberVault","description":"Every time a new user is added to a product in MemberVault, Make will automatically add a new subscriber to MailerLite.","url":"7876-add-a-new-subscriber-from-a-new-user-added-to-a-product-in-membervault","usedApps":["membervault","mailerlite"],"usage":1}

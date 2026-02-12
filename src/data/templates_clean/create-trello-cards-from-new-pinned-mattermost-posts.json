@@ -1,0 +1,1 @@
+{"id":1657,"name":"Create Trello cards from new pinned Mattermost posts","description":"Every time a new post is pinned to a specified channel in Mattermost, Make will automatically create a new card in Trello.","url":"1657-create-trello-cards-from-new-pinned-mattermost-posts","usedApps":["mattermost","trello"],"usage":10}

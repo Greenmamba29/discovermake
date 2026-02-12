@@ -1,0 +1,1 @@
+{"id":2423,"name":"Clone an event with registrants","description":"This template is expected to be run on demand, when you want to make a full copy of existing event including all event registrants.\n\nDue to system limitations it does not copy guests.","url":"2423-clone-an-event-with-registrants","usedApps":["wild-apricot","wild-apricot"],"usage":54}

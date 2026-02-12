@@ -1,0 +1,1 @@
+{"id":7268,"name":"Create Trello cards from new ActiveCampaign tasks","description":"Every time a new task is created in ActiveCampaign, Make will automatically create a new card in Trello.","url":"7268-create-trello-cards-from-new-activecampaign-tasks","usedApps":["activecampaign","trello"],"usage":7}

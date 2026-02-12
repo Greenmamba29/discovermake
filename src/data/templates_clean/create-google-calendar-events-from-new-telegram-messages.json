@@ -1,0 +1,1 @@
+{"id":11452,"name":"Create Google Calendar events from new Telegram messages","description":"Automatically create a new event in Google Calendar every time there is a new message in Telegram.","url":"2116-create-google-calendar-events-from-new-telegram-messages","usedApps":["telegram","google-calendar"],"usage":2796}

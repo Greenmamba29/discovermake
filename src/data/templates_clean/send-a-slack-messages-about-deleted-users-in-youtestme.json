@@ -1,0 +1,1 @@
+{"id":7470,"name":"Send a Slack messages about deleted users in YouTestMe","description":"Every time when user is deleted in YouTestMe, Make will automatically send a message in Slack.","url":"7470-send-a-slack-messages-about-deleted-users-in-youtestme","usedApps":["youtestme","util","slack"],"usage":1}

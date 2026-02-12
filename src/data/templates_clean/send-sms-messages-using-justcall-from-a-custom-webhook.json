@@ -1,0 +1,1 @@
+{"id":12902,"name":"Send SMS messages using JustCall from a custom webhook","description":"Automatically send SMS messages via JustCall when triggered by a custom webhook, streamlining communication directly from your preferred platform.","url":"12902-send-sms-messages-using-justcall-from-a-custom-webhook","usedApps":["gateway","justcall"],"usage":7}

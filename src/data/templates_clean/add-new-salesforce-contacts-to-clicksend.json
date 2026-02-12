@@ -1,0 +1,1 @@
+{"id":2749,"name":"Add new Salesforce contacts to ClickSend","description":"Every time a new contact is created in Salesforce, Make will automatically add that contact to ClickSend.","url":"2749-add-new-salesforce-contacts-to-clicksend","usedApps":["salesforce","clicksend"],"usage":3}

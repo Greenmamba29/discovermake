@@ -1,0 +1,1 @@
+{"id":4489,"name":"Send new Google Sheets contacts to EngageBay","description":"When a new row is added in Google Sheets spreadsheet, a new contact is created in EngageBay.","url":"4489-send-new-google-sheets-contacts-to-engagebay","usedApps":["google-sheets","engagebay"],"usage":6}

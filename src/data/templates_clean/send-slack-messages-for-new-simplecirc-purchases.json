@@ -1,0 +1,1 @@
+{"id":7037,"name":"Send Slack messages for new SimpleCirc purchases","description":"Every time you got a new subscription purchase in SimpleCirc, Make will automatically send a message containing info about the purchase via Slack.","url":"7037-send-slack-messages-for-new-simplecirc-purchases","usedApps":["simplecirc","slack"],"usage":176}

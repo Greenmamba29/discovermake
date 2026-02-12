@@ -1,0 +1,1 @@
+{"id":4647,"name":"Backup your Google Cloud Storage files to AWS S3","description":"Every time a new object is added to a GCS bucket, Make will automatically upload it to the Amazon S3 bucket of your choice.","url":"4647-backup-your-google-cloud-storage-files-to-aws-s3","usedApps":["google-cloud-storage","aws-s3"],"usage":54}

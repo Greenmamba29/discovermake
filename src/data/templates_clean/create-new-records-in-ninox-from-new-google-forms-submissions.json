@@ -1,0 +1,1 @@
+{"id":10047,"name":"Create new records in Ninox from new Google Forms submissions","description":"Store all you Google Forms submissions as new records in your Ninox database. This automation executes on a scheduled basis which you can customize. ","url":"10047-create-new-records-in-ninox-from-new-google-forms-submissions","usedApps":["google-forms","ninox"],"usage":15}

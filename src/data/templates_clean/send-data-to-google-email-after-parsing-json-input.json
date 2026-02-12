@@ -1,0 +1,1 @@
+{"id":13458,"name":"Send data to Google Email after parsing JSON input","description":"Automatically parse JSON data and send it to Google Email. This template uses HTTP, JSON parsing, and Google Email modules for streamlined communication.","url":"13458-send-data-to-google-email-after-parsing-json-input","usedApps":["http","json","google-email"],"usage":26}

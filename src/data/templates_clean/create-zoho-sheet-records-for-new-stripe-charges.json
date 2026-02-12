@@ -1,0 +1,1 @@
+{"id":7956,"name":"Create Zoho Sheet records for new Stripe charges","description":"Every time a new charge is created in Stripe, Make will automatically add that charge to a Zoho Sheet spreadsheet.","url":"7956-create-zoho-sheet-records-for-new-stripe-charges","usedApps":["stripe","util","zoho-sheet"],"usage":22}

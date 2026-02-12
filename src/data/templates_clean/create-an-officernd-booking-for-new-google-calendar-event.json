@@ -1,0 +1,1 @@
+{"id":5026,"name":"Create an OfficeRnD booking for new Google Calendar event","description":"Every time a new event is received from Google Calendar, Make automatically creates a booking in OfficeRnD.","url":"5026-create-an-officernd-booking-for-new-google-calendar-event","usedApps":["google-calendar","officernd"],"usage":1}

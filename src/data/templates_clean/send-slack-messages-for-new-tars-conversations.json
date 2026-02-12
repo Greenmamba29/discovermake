@@ -1,0 +1,1 @@
+{"id":8707,"name":"Send Slack messages for new Tars conversations","description":"Every time these is a new conversation in Tars, Make will automatically send a Slack message to the specified channel.","url":"8707-send-slack-messages-for-new-tars-conversations","usedApps":["tars","builtin","util","slack"],"usage":3}

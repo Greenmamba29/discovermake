@@ -1,0 +1,1 @@
+{"id":7285,"name":"Update Orders in WooCommerce as fulfilled when picked in ScanOrders","description":"When an Order has been fulfilled in ScanOrders, the order will be marked as fulfilled in WooCommerce","url":"7285-update-orders-in-woocommerce-as-fulfilled-when-picked-in-scanorders","usedApps":["scanorders","woocommerce"],"usage":18}

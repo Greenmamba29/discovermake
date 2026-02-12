@@ -1,0 +1,1 @@
+{"id":2040,"name":"Create Trello cards from new Streak boxes","description":"Every time a new box is created in Streak, Make will automatically create a new card in Trello.","url":"2040-create-trello-cards-from-new-streak-boxes","usedApps":["streak","trello"],"usage":13}

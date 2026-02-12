@@ -1,0 +1,1 @@
+{"id":8244,"name":"Add Mailchimp subscribers for new Bidsketch clients","description":"Every time a new client is created in Bidsketch, Make will automatically add subscribers to your Mailchimp.","url":"8244-add-mailchimp-subscribers-for-new-bidsketch-clients","usedApps":["bidsketch","mailchimp"],"usage":1}

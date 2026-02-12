@@ -1,0 +1,1 @@
+{"id":4254,"name":"Import signed documents from DocuSign to Google Drive","description":"After 7 days, all documents are downloaded from DocuSign and uploaded to Google Drive. The scenario is designed to run every Monday.","url":"4254-import-signed-documents-from-docusign-to-google-drive","usedApps":["docusign","builtin","google-drive"],"usage":487}

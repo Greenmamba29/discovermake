@@ -1,0 +1,1 @@
+{"id":2586,"name":"Create Infusionsoft contacts from new Acuity Scheduling appointments","description":"Every time a new appointment is scheduled in Acuity Scheduling, Make will automatically create a new contact in Infusionsoft.","url":"2586-create-infusionsoft-contacts-from-new-acuity-scheduling-appointments","usedApps":["acuity-scheduling","infusionsoft"],"usage":13}

@@ -1,0 +1,1 @@
+{"id":13279,"name":"Send Slack channel updates and notifications via HTTP requests","description":"Automatically send Slack channel updates and notifications via HTTP requests. Trigger new events in Slack, retrieve channel details, and send data efficiently.","url":"13279-send-slack-channel-updates-and-notifications-via-http-requests","usedApps":["slack","http"],"usage":8}

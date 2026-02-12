@@ -1,0 +1,1 @@
+{"id":3584,"name":"Create new Emercury subscribers from Pipefy new cards","description":"Every time a new card is created on Pipefy, Make will automatically create a new subscriber on Emercury.","url":"3584-create-new-emercury-subscribers-from-pipefy-new-cards","usedApps":["pipefy","builtin","emercury"],"usage":1}

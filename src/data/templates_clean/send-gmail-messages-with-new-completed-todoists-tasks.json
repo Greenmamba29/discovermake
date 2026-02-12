@@ -1,0 +1,1 @@
+{"id":6654,"name":"Send Gmail messages with new completed Todoists tasks","description":"Retrieve completed tasks in Todoist and send an e-mail in Gmail.","url":"6654-send-gmail-messages-with-new-completed-todoists-tasks","usedApps":["todoist","google-email"],"usage":25}

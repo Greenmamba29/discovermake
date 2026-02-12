@@ -1,0 +1,1 @@
+{"id":13266,"name":"Watch Google Sheets rows and send data via HTTP action","description":"Automatically monitor Google Sheets for new rows and send the data as JSON via HTTP action, streamlining data integration and communication.","url":"13266-watch-google-sheets-rows-and-send-data-via-http-action","usedApps":["google-sheets","json","http"],"usage":24}

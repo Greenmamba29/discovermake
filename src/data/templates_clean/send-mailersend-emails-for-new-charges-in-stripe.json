@@ -1,0 +1,1 @@
+{"id":6966,"name":"Send MailerSend emails for new charges in Stripe","description":"Every time there is a new charge processed in Stripe, Make will automatically send an email to the customer using MailerSend.","url":"6966-send-mailersend-emails-for-new-charges-in-stripe","usedApps":["stripe","mailersend"],"usage":45}

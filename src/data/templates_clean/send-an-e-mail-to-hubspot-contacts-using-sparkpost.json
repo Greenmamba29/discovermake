@@ -1,0 +1,1 @@
+{"id":4085,"name":"Send an e-mail to HubSpot contacts using SparkPost","description":"When new contacts are created and meet specified criteria, an e-mail is sent to the customer's of the deals using SparkPost.","url":"4085-send-an-e-mail-to-hubspot-contacts-using-sparkpost","usedApps":["hubspotcrm","builtin","sparkpost"],"usage":1}

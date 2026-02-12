@@ -1,0 +1,1 @@
+{"id":778,"name":"Create Harvest projects from new Slack messages","description":"Every time a new message is posted to a selected Slack channel, Make will automatically create a new project in Harvest.","url":"778-create-harvest-projects-from-new-slack-messages","usedApps":["slack","harvest"],"usage":14}

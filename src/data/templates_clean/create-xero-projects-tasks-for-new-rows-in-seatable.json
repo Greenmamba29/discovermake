@@ -1,0 +1,1 @@
+{"id":7060,"name":"Create Xero Projects tasks for new rows in SeaTable","description":"Every time a row is added in your SeaTable, Make will create a task of it in your Xero Projects.","url":"7060-create-xero-projects-tasks-for-new-rows-in-seatable","usedApps":["seatable","xero-projects"],"usage":4}

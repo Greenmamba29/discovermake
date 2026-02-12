@@ -1,0 +1,1 @@
+{"id":1640,"name":"Create Microsoft To Do tasks from new pinned Mattermost posts","description":"Every time a new post is pinned to a specified channel in Mattermost, Make will automatically create a new task in Microsoft To Do.","url":"1640-create-microsoft-to-do-tasks-from-new-pinned-mattermost-posts","usedApps":["mattermost","microsoft-to-do"],"usage":5}

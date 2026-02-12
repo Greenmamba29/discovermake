@@ -1,0 +1,1 @@
+{"id":13368,"name":"Send data to Slack using a basic feeder action","description":"Automatically send data to Slack by triggering a message creation using HTTP module.","url":"13368-send-data-to-slack-using-a-basic-feeder-action","usedApps":["http","builtin","slack"],"usage":5}

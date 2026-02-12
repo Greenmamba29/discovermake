@@ -1,0 +1,1 @@
+{"id":8191,"name":"Create Diigo bookmarks for new Evernote notes","description":"Every time a new note is added to a watched notebook in Evernote, Make will automatically create a new bookmark in Diigo.","url":"8191-create-diigo-bookmarks-for-new-evernote-notes","usedApps":["evernote","diigo"],"usage":1}

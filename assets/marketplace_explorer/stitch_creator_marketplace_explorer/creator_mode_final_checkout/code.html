@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Creator Mode Final Checkout</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13a4ec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101c22",
+                        "card-dark": "#182830", // Slightly lighter than background-dark for cards
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "sans": ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar hide for cleaner mobile look */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-white antialiased overflow-x-hidden">
+<div class="relative flex min-h-screen w-full flex-col max-w-md mx-auto shadow-2xl overflow-hidden bg-background-light dark:bg-background-dark">
+<!-- Top App Bar -->
+<div class="sticky top-0 z-10 flex items-center bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-sm p-4 justify-between border-b border-gray-200 dark:border-gray-800">
+<button aria-label="Go back" class="flex size-10 items-center justify-center rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors text-slate-700 dark:text-white">
+<span class="material-symbols-outlined text-[24px]">arrow_back</span>
+</button>
+<h2 class="text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-10">Unlock Creator Mode</h2>
+</div>
+<!-- Scrollable Content -->
+<div class="flex-1 overflow-y-auto no-scrollbar pb-24">
+<!-- Plan Toggle -->
+<div class="px-4 py-6">
+<div class="flex h-12 w-full items-center justify-center rounded-xl bg-gray-200 dark:bg-[#1c2e36] p-1 relative">
+<label class="group relative flex cursor-pointer h-full flex-1 items-center justify-center overflow-hidden rounded-lg px-2 z-10">
+<input class="peer sr-only" name="plan_period" type="radio" value="Monthly"/>
+<span class="relative z-10 text-sm font-medium transition-colors text-slate-500 peer-checked:text-white">Monthly</span>
+<div class="absolute inset-0 bg-transparent peer-checked:bg-background-dark dark:peer-checked:bg-background-dark peer-checked:shadow-sm rounded-lg transition-all duration-200 opacity-0 peer-checked:opacity-100 dark:peer-checked:border dark:peer-checked:border-gray-700"></div>
+</label>
+<label class="group relative flex cursor-pointer h-full flex-1 items-center justify-center overflow-hidden rounded-lg px-2 z-10">
+<input checked="" class="peer sr-only" name="plan_period" type="radio" value="Annual"/>
+<span class="relative z-10 text-sm font-medium transition-colors text-slate-500 peer-checked:text-white flex items-center gap-2">
+                            Annual 
+                            <span class="inline-flex items-center rounded-full bg-primary/20 px-2 py-0.5 text-[10px] font-bold text-primary uppercase tracking-wide whitespace-nowrap">2 Months Free</span>
+</span>
+<div class="absolute inset-0 bg-transparent peer-checked:bg-background-dark dark:peer-checked:bg-background-dark peer-checked:shadow-sm rounded-lg transition-all duration-200 opacity-0 peer-checked:opacity-100 dark:peer-checked:border dark:peer-checked:border-gray-700"></div>
+</label>
+</div>
+</div>
+<!-- Hero Plan Card -->
+<div class="px-4 mb-6">
+<div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/20 via-primary/5 to-transparent p-6 border border-primary/20">
+<div class="absolute top-0 right-0 -mr-4 -mt-4 h-24 w-24 rounded-full bg-primary/20 blur-2xl"></div>
+<div class="relative flex flex-col items-center text-center gap-1">
+<div class="flex items-baseline gap-1">
+<span class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">$99.99</span>
+<span class="text-sm font-medium text-slate-500 dark:text-slate-400">/ year</span>
+</div>
+<p class="text-xs font-medium text-primary">Save $20 compared to monthly</p>
+<p class="mt-2 text-sm text-slate-600 dark:text-slate-400">Billed annually after 7-day free trial</p>
+</div>
+</div>
+</div>
+<!-- Benefits List -->
+<div class="px-4 space-y-3 mb-8">
+<h3 class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2 ml-1">Included Benefits</h3>
+<div class="flex items-start gap-3 p-3 rounded-xl bg-white dark:bg-card-dark border border-gray-100 dark:border-gray-800 shadow-sm">
+<div class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+<div>
+<p class="font-medium text-slate-900 dark:text-white text-sm">0% Platform Fees</p>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Keep 100% of your earnings from supporters.</p>
+</div>
+</div>
+<div class="flex items-start gap-3 p-3 rounded-xl bg-white dark:bg-card-dark border border-gray-100 dark:border-gray-800 shadow-sm">
+<div class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+<span class="material-symbols-outlined text-[16px]">verified</span>
+</div>
+<div>
+<p class="font-medium text-slate-900 dark:text-white text-sm">Verified Creator Badge</p>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Stand out with a verified checkmark on your profile.</p>
+</div>
+</div>
+<div class="flex items-start gap-3 p-3 rounded-xl bg-white dark:bg-card-dark border border-gray-100 dark:border-gray-800 shadow-sm">
+<div class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+<span class="material-symbols-outlined text-[16px]">headset_mic</span>
+</div>
+<div>
+<p class="font-medium text-slate-900 dark:text-white text-sm">Priority 24/7 Support</p>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Direct line to our creator success team.</p>
+</div>
+</div>
+</div>
+<!-- Express Checkout -->
+<div class="px-4 mb-8">
+<h3 class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3 ml-1">Express Checkout</h3>
+<div class="grid grid-cols-2 gap-3 mb-4">
+<button class="flex h-12 items-center justify-center rounded-lg bg-black text-white hover:bg-gray-900 transition-colors border border-transparent">
+<!-- Simplified Apple Pay Logo representation -->
+<span class="font-semibold tracking-tight text-lg"> Pay</span>
+</button>
+<button class="flex h-12 items-center justify-center rounded-lg bg-white text-black hover:bg-gray-50 transition-colors border border-gray-200">
+<!-- Simplified GPay Logo representation -->
+<span class="font-medium text-lg flex items-center gap-1">
+<span class="text-blue-500 font-bold">G</span> Pay
+                         </span>
+</button>
+</div>
+<div class="relative flex py-2 items-center">
+<div class="flex-grow border-t border-gray-200 dark:border-gray-700"></div>
+<span class="flex-shrink-0 mx-4 text-xs text-gray-400 uppercase">Or pay with card</span>
+<div class="flex-grow border-t border-gray-200 dark:border-gray-700"></div>
+</div>
+<!-- Credit Card Form -->
+<div class="mt-4 space-y-3">
+<div class="relative">
+<input class="w-full rounded-lg bg-white dark:bg-card-dark border-gray-200 dark:border-gray-700 text-slate-900 dark:text-white text-sm py-3 px-4 focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all placeholder:text-gray-400" placeholder="Card number" type="text"/>
+<span class="material-symbols-outlined absolute right-3 top-3 text-gray-400 text-[20px]">credit_card</span>
+</div>
+<div class="flex gap-3">
+<input class="w-1/2 rounded-lg bg-white dark:bg-card-dark border-gray-200 dark:border-gray-700 text-slate-900 dark:text-white text-sm py-3 px-4 focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all placeholder:text-gray-400" placeholder="MM / YY" type="text"/>
+<input class="w-1/2 rounded-lg bg-white dark:bg-card-dark border-gray-200 dark:border-gray-700 text-slate-900 dark:text-white text-sm py-3 px-4 focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all placeholder:text-gray-400" placeholder="CVC" type="text"/>
+</div>
+</div>
+</div>
+<!-- Anxiety Reducer / What Happens Next -->
+<div class="px-4 py-4 mx-4 bg-primary/5 rounded-xl border border-primary/10 mb-8">
+<div class="flex gap-3">
+<span class="material-symbols-outlined text-primary text-[20px] mt-0.5">info</span>
+<div>
+<h4 class="text-sm font-semibold text-slate-900 dark:text-white">What happens next?</h4>
+<p class="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
+                            Your <span class="text-slate-900 dark:text-white font-medium">7-day free trial</span> starts immediately. You won't be charged until the trial ends. We'll send you a reminder 2 days before.
+                        </p>
+</div>
+</div>
+</div>
+<!-- Legal Footer -->
+<div class="px-6 pb-8 text-center">
+<p class="text-[10px] text-gray-400 leading-normal">
+                    By subscribing, you agree to our <a class="underline hover:text-gray-300" href="#">Terms of Service</a> and <a class="underline hover:text-gray-300" href="#">Privacy Policy</a>. Subscriptions auto-renew unless canceled.
+                </p>
+</div>
+</div>
+<!-- Sticky Bottom Bar -->
+<div class="fixed bottom-0 left-0 right-0 p-4 bg-background-light dark:bg-background-dark border-t border-gray-200 dark:border-gray-800 max-w-md mx-auto z-20">
+<button class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg shadow-primary/20 flex items-center justify-center gap-2 transition-all active:scale-[0.98]">
+<span>Start 7-Day Free Trial</span>
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+<div class="flex items-center justify-center gap-1.5 mt-3 text-[10px] text-gray-500">
+<span class="material-symbols-outlined text-[12px]">lock</span>
+<span>Payments secured by Stripe</span>
+</div>
+</div>
+</div>
+</body></html>

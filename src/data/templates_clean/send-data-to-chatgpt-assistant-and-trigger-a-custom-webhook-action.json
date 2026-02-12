@@ -1,0 +1,1 @@
+{"id":13097,"name":"Send data to ChatGPT assistant and trigger a custom webhook action","description":"Automatically send data to ChatGPT assistant from a triggered custom webhook, and perform an HTTP action for seamless integration and automation.","url":"13097-send-data-to-openai-gpt-3-and-trigger-a-custom-webhook-action","usedApps":["gateway","openai-gpt-3","http"],"usage":59}

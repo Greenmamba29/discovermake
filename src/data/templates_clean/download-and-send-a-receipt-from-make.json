@@ -1,0 +1,1 @@
+{"id":3047,"name":"Download and send a receipt from Make","description":"When the new email about the payment is received, the scenario downloads this invoice and sends it to the specific recipient. ","url":"3047-download-and-send-a-receipt-from-integromat","usedApps":["email","regexp","http"],"usage":794}

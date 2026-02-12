@@ -1,0 +1,1 @@
+{"id":4590,"name":"Create a Hive action for new Mailchimp subscribers","description":"Every time a new subscriber is added to Mailchimp, Make will automatically create an action in Hive.","url":"4590-create-a-hive-action-for-new-mailchimp-subscribers","usedApps":["mailchimp","hive"],"usage":1}

@@ -1,0 +1,1 @@
+{"id":4148,"name":"Create Teamwork Desk tickets and customers from Shopify orders","description":"Every time a new Shopify order is created, Make will automatically create a new ticket in Teamwork Desk.","url":"4148-create-teamwork-desk-tickets-and-customers-from-shopify-orders","usedApps":["shopify","teamwork-desk"],"usage":3}

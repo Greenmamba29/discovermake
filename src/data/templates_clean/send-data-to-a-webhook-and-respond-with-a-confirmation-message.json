@@ -1,0 +1,1 @@
+{"id":13687,"name":"Send data to a webhook and respond with a confirmation message","description":"Automatically send data to a custom webhook and receive a confirmation message. Integrate with HTTP actions for seamless data transmission and response.","url":"13687-send-data-to-a-webhook-and-respond-with-a-confirmation-message","usedApps":["gateway","http"],"usage":10}

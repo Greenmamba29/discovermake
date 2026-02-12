@@ -1,0 +1,1 @@
+{"id":418,"name":"Post new Facebook Groups videos to Slack","description":"Every time a new video is posted to a selected Facebook group, Make will automatically send that video to Slack.","url":"418-post-new-facebook-groups-videos-to-slack","usedApps":["facebook-groups","http","slack"],"usage":21}

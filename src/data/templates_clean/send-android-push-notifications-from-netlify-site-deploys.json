@@ -1,0 +1,1 @@
+{"id":4097,"name":"Send Android push notifications from Netlify site deploys","description":"Every time a deploy event occurs on Netlify, Make will automatically send a push notification to an Android device.","url":"4097-send-android-push-notifications-from-netlify-site-deploys","usedApps":["netlify","android"],"usage":5}

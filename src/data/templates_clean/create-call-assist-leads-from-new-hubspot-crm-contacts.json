@@ -1,0 +1,1 @@
+{"id":8634,"name":"Create Call Assist leads from new HubSpot CRM contacts","description":"Make will watch for new HubSpot CRM contacts at regular intervals and create the leads in Call Assist from these contacts.","url":"8634-create-call-assist-leads-from-new-hubspot-crm-contacts","usedApps":["hubspotcrm","call-assist"],"usage":23}

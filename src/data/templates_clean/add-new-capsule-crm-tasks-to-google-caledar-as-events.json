@@ -1,0 +1,1 @@
+{"id":1929,"name":"Add new Capsule CRM tasks to Google Caledar as events","description":"Every time a new task is created in Capsule CRM, Make will automatically create a new event in a Google Calendar of your choice.","url":"1929-add-new-capsule-crm-tasks-to-google-caledar-as-events","usedApps":["capsule-crm","google-calendar"],"usage":4}

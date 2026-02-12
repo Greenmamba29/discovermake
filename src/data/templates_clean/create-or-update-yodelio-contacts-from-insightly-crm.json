@@ -1,0 +1,1 @@
+{"id":2620,"name":"Create or update Yodel.io contacts from Insightly CRM","description":"Every time a new contact is created in Insightly CRM, Make will automatically create or update a contact in Yodel.io.","url":"2620-create-or-update-yodel-io-contacts-from-insightly-crm","usedApps":["insightly","yodel"],"usage":2}

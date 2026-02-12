@@ -1,0 +1,1 @@
+{"id":3630,"name":"Add new Ghost members to your Mailgun mailing list","description":"Every time a new member is added to Ghost, Make will automatically add the email address of that contact to a Mailgun mailing list of your choice.","url":"3630-add-new-ghost-members-to-your-mailgun-mailing-list","usedApps":["ghost","mailgun"],"usage":0}

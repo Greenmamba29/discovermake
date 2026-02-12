@@ -1,0 +1,1 @@
+{"id":7696,"name":"Get Slack notifications about new Nozbe Teams tasks","description":"Every time a new task is created in Nozbe Teams, Make will automatically send a notification message to a specified channel/chat in Slack.","url":"7696-get-slack-notifications-about-new-nozbe-teams-tasks","usedApps":["nozbe-teams","slack"],"usage":2}

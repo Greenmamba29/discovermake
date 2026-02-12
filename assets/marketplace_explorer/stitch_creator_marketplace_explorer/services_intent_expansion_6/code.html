@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Workflow Detail View</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "primary": "#13a4ec",
+                "background-light": "#f6f7f8",
+                "background-dark": "#101c22",
+                "surface-dark": "#192b33",
+                "surface-light": "#ffffff",
+              },
+              fontFamily: {
+                "display": ["Inter", "sans-serif"]
+              },
+              borderRadius: {"DEFAULT": "0.375rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+            },
+          },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .safe-pb {
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen text-slate-900 dark:text-white overflow-x-hidden font-display flex flex-col">
+<div class="relative w-full h-72 md:h-80 lg:h-96">
+<div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC05BBdmkqA1g996mTBM8XyTaFhDaI_IyVgy2bzXjltGFFhcpeg_jZA1FDx7LWv674eGz8AMo0IheciZfB2dQnwtepKeVA8NLqgfI7c0pAEOzPPLD1m8J_RxhKCPRAIUvSIyOXCQxK3Cu5nuDvkKoBuBJ59lEhpAnwgr9duTUDNZcM095mm45p8IwaBYi6SvOS-cEdFztyPZBwOaUUcBpod01f3ryo-IN77YE497US5WXxW_NPw6FDkfJrAl7ZaMChpAoImekIewRY');"></div>
+<div class="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-background-light dark:to-background-dark"></div>
+<header class="absolute top-0 w-full z-50">
+<div class="flex items-center justify-between px-4 py-3 pt-6 md:pt-4">
+<button class="flex items-center justify-center w-10 h-10 rounded-full bg-black/40 backdrop-blur-md hover:bg-black/60 transition-colors text-white">
+<span class="material-symbols-outlined" style="font-size: 24px;">arrow_back</span>
+</button>
+<div class="flex gap-3">
+<button class="flex items-center justify-center w-10 h-10 rounded-full bg-black/40 backdrop-blur-md hover:bg-black/60 transition-colors text-white">
+<span class="material-symbols-outlined" style="font-size: 24px;">share</span>
+</button>
+<button class="flex items-center justify-center w-10 h-10 rounded-full bg-black/40 backdrop-blur-md hover:bg-black/60 transition-colors text-white">
+<span class="material-symbols-outlined" style="font-size: 24px;">bookmark_border</span>
+</button>
+</div>
+</div>
+</header>
+</div>
+<main class="flex-1 px-4 -mt-6 relative z-10 pb-32">
+<div class="mb-6">
+<div class="flex items-center gap-2 mb-2">
+<span class="bg-primary/10 text-primary text-[11px] font-bold px-2 py-0.5 rounded uppercase tracking-wider border border-primary/20">Automated</span>
+<span class="flex items-center text-xs text-yellow-500 font-medium">
+<span class="material-symbols-outlined mr-0.5" style="font-size: 14px; font-variation-settings: 'FILL' 1;">star</span>
+                    4.9 (128)
+                </span>
+</div>
+<h1 class="text-3xl font-extrabold tracking-tight mb-2 text-slate-900 dark:text-white">Content Repurposer Pro</h1>
+<p class="text-slate-500 dark:text-gray-400 text-sm leading-relaxed">Automatically turn your long-form YouTube videos into viral Twitter threads and LinkedIn posts using GPT-4 and Whisper.</p>
+</div>
+<div class="grid grid-cols-3 gap-3 mb-8">
+<div class="bg-surface-light dark:bg-surface-dark p-3 rounded-xl border border-gray-200 dark:border-gray-800 flex flex-col items-center justify-center text-center shadow-sm">
+<span class="material-symbols-outlined text-primary mb-1" style="font-size: 24px;">timer</span>
+<span class="text-xs text-gray-500 dark:text-gray-400 font-medium mb-0.5">Time to Value</span>
+<span class="text-sm font-bold">5 mins</span>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark p-3 rounded-xl border border-gray-200 dark:border-gray-800 flex flex-col items-center justify-center text-center shadow-sm">
+<span class="material-symbols-outlined text-orange-500 mb-1" style="font-size: 24px;">signal_cellular_alt</span>
+<span class="text-xs text-gray-500 dark:text-gray-400 font-medium mb-0.5">Difficulty</span>
+<span class="text-sm font-bold">Medium</span>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark p-3 rounded-xl border border-gray-200 dark:border-gray-800 flex flex-col items-center justify-center text-center shadow-sm">
+<span class="material-symbols-outlined text-green-500 mb-1" style="font-size: 24px;">check_circle</span>
+<span class="text-xs text-gray-500 dark:text-gray-400 font-medium mb-0.5">Success Rate</span>
+<span class="text-sm font-bold">98%</span>
+</div>
+</div>
+<div class="flex items-center justify-between py-4 border-t border-b border-gray-200 dark:border-gray-800 mb-8">
+<div class="flex items-center gap-3">
+<div class="h-10 w-10 rounded-full bg-surface-dark overflow-hidden border border-gray-200 dark:border-gray-700">
+<img alt="Creator" class="h-full w-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtt0jXIpxDRGgTPu6aMa-nKFzirukhLg8DsicNG_KIVlPRm_h4H4ebRM1DfG2AW_L_vUTEeB-bPIzk9QhvwkLtq6cpOnHRzkgRDVQQsyXHUbtYR8dMIsw223TJV2-YQRe-fqEwmz_Ww2DdEcMfe8AQE0YL3b2kIFLXrj229D-mR_pIVFD71doLGONp5i9c6bgX8R3_BznsCHqiB4UgckhaxIf9_xbFUeRrHxpvMUnBnZFsE-GNA9KozNCu18GDtvupiQjhcS96mCc"/>
+</div>
+<div>
+<h3 class="text-sm font-bold text-slate-900 dark:text-white">Sarah Chen</h3>
+<p class="text-xs text-slate-500 dark:text-gray-400">Automation Expert • Top Seller</p>
+</div>
+</div>
+<button class="text-sm font-semibold text-primary hover:text-primary/80 transition-colors">View Profile</button>
+</div>
+<div class="mb-8">
+<h2 class="text-lg font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-purple-400">psychology</span>
+                AI Stack
+            </h2>
+<div class="space-y-3">
+<div class="flex items-center p-3 rounded-xl bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-800">
+<div class="h-10 w-10 rounded-lg bg-green-900/30 flex items-center justify-center mr-3 text-green-400 font-bold border border-green-500/20">
+                        OP
+                    </div>
+<div class="flex-1">
+<h4 class="font-semibold text-sm">OpenAI GPT-4</h4>
+<p class="text-xs text-gray-500 dark:text-gray-400">Content generation &amp; summarization</p>
+</div>
+<span class="material-symbols-outlined text-gray-400" style="font-size: 20px;">info</span>
+</div>
+<div class="flex items-center p-3 rounded-xl bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-800">
+<div class="h-10 w-10 rounded-lg bg-blue-900/30 flex items-center justify-center mr-3 text-blue-400 font-bold border border-blue-500/20">
+                        WH
+                    </div>
+<div class="flex-1">
+<h4 class="font-semibold text-sm">Whisper</h4>
+<p class="text-xs text-gray-500 dark:text-gray-400">Audio transcription engine</p>
+</div>
+<span class="material-symbols-outlined text-gray-400" style="font-size: 20px;">info</span>
+</div>
+<div class="flex items-center p-3 rounded-xl bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-800">
+<div class="h-10 w-10 rounded-lg bg-pink-900/30 flex items-center justify-center mr-3 text-pink-400 font-bold border border-pink-500/20">
+                        ZA
+                    </div>
+<div class="flex-1">
+<h4 class="font-semibold text-sm">Zapier</h4>
+<p class="text-xs text-gray-500 dark:text-gray-400">Workflow automation logic</p>
+</div>
+<span class="material-symbols-outlined text-gray-400" style="font-size: 20px;">info</span>
+</div>
+</div>
+</div>
+<div class="mb-6">
+<h2 class="text-lg font-bold mb-3">How it works</h2>
+<div class="relative pl-4 border-l-2 border-gray-200 dark:border-gray-800 space-y-6">
+<div class="relative">
+<div class="absolute -left-[21px] top-1 h-3 w-3 rounded-full bg-primary ring-4 ring-background-light dark:ring-background-dark"></div>
+<h4 class="text-sm font-bold mb-1">Upload Source</h4>
+<p class="text-sm text-gray-500 dark:text-gray-400">Input your YouTube video URL or upload an MP4 file directly.</p>
+</div>
+<div class="relative">
+<div class="absolute -left-[21px] top-1 h-3 w-3 rounded-full bg-gray-300 dark:bg-gray-600 ring-4 ring-background-light dark:ring-background-dark"></div>
+<h4 class="text-sm font-bold mb-1">AI Processing</h4>
+<p class="text-sm text-gray-500 dark:text-gray-400">Whisper transcribes the audio, then GPT-4 analyzes key points.</p>
+</div>
+<div class="relative">
+<div class="absolute -left-[21px] top-1 h-3 w-3 rounded-full bg-gray-300 dark:bg-gray-600 ring-4 ring-background-light dark:ring-background-dark"></div>
+<h4 class="text-sm font-bold mb-1">Generate Output</h4>
+<p class="text-sm text-gray-500 dark:text-gray-400">Receive formatted threads ready for Twitter and LinkedIn.</p>
+</div>
+</div>
+</div>
+</main>
+<div class="fixed bottom-0 left-0 right-0 p-4 pt-4 bg-background-light dark:bg-background-dark border-t border-gray-200 dark:border-gray-800 z-50 safe-pb shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
+<div class="flex items-center gap-4">
+<div class="flex flex-col">
+<span class="text-xs text-gray-500 dark:text-gray-400 font-medium">Price</span>
+<span class="text-lg font-bold text-slate-900 dark:text-white">Free</span>
+</div>
+<button class="flex-1 bg-primary hover:bg-primary/90 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg shadow-primary/25 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" style="font-size: 22px;">sync_alt</span>
+                Remix Workflow
+            </button>
+</div>
+<div class="h-2"></div> 
+</div>
+
+</body></html>

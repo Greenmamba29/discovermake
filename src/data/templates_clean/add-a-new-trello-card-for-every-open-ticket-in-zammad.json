@@ -1,0 +1,1 @@
+{"id":2223,"name":"Add a new Trello Card for Every Open Ticket in Zammad","description":"Whenever there is a new ticket in Zammad, Make will automatically create a new card in Trello.","url":"2223-add-a-new-trello-card-for-every-open-ticket-in-zammad","usedApps":["zammad","trello"],"usage":51}

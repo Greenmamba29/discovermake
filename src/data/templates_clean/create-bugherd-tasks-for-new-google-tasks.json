@@ -1,0 +1,1 @@
+{"id":6301,"name":"Create BugHerd tasks for new Google Tasks","description":"Every time a new task is added to a specified Google Tasks list, Make will automatically create a new task in BugHerd.","url":"6301-create-bugherd-tasks-for-new-google-tasks","usedApps":["google-tasks","bugherd"],"usage":2}

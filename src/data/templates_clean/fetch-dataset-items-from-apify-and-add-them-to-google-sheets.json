@@ -1,0 +1,1 @@
+{"id":13139,"name":"Fetch dataset items from Apify and add them to Google Sheets","description":"Automatically transfer Apify dataset items to Google Sheets after actor runs complete, streamlining data management and enhancing workflow efficiency.","url":"13139-fetch-dataset-items-from-apify-and-add-them-to-google-sheets","usedApps":["apify","google-sheets"],"usage":525}

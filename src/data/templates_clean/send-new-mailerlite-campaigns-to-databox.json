@@ -1,0 +1,1 @@
+{"id":3881,"name":"Send new MailerLite Campaigns to Databox","description":"Every time a new campaign is sent in MailerLite, Make will automatically push that value to Databox, helping you stay on track of your marketing funnel. ","url":"3881-send-new-mailerlite-campaigns-to-databox","usedApps":["mailerlite","databox"],"usage":8}

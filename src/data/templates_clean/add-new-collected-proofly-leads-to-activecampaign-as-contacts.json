@@ -1,0 +1,1 @@
+{"id":8105,"name":"Add new collected Proofly leads to ActiveCampaign as contacts","description":"Every time there is a new lead collected in Proofly, Make will automatically add this lead to ActiveCampaign as a contact.","url":"8105-add-new-collected-proofly-leads-to-activecampaign-as-contacts","usedApps":["proofly","activecampaign"],"usage":1}

@@ -1,0 +1,1 @@
+{"id":7300,"name":"Add a new Stripe customer to Mailchimp as a subscriber","description":"Use this template to automatically add a new (or update an existing) Mailchimp subscriber when a Stripe customer is created.","url":"7300-add-a-new-stripe-customer-to-mailchimp-as-a-subscriber","usedApps":["stripe","mailchimp"],"usage":154}

@@ -1,0 +1,1 @@
+{"id":4658,"name":"Create Google Cloud Pub/Sub Topics from new BigQuery tables","description":"Every time a new table is created in BigQuery, Make will automatically publish a new Topic in Google Cloud Pub/Sub.","url":"4658-create-google-cloud-pub-sub-topics-from-new-bigquery-tables","usedApps":["google-bigquery","google-cloud-pubsub"],"usage":1}

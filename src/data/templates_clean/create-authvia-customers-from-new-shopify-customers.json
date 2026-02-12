@@ -1,0 +1,1 @@
+{"id":8127,"name":"Create Authvia customers from new Shopify customers","description":"Every time a new customer is created in Shopify, Make will automatically add that customer to Authvia.","url":"8127-create-authvia-customers-from-new-shopify-customers","usedApps":["shopify","authvia"],"usage":3}

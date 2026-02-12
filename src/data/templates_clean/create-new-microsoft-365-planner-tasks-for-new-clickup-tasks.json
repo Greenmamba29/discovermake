@@ -1,0 +1,1 @@
+{"id":6843,"name":"Create new Microsoft 365 Planner tasks for new ClickUp tasks","description":"Every time a new task is created in ClickUp, Make will automatically add that task to Microsoft 365 Planner.","url":"6843-create-new-microsoft-365-planner-tasks-for-new-clickup-tasks","usedApps":["clickup","microsoft-planner"],"usage":122}

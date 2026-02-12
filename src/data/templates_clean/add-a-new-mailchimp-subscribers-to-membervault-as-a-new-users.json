@@ -1,0 +1,1 @@
+{"id":7374,"name":"Add a new Mailchimp subscribers to MemberVault as a new users","description":"Every time there's a new subscriber in Mailchimp, Make will automatically add that subscriber to MemberVault as a new user.","url":"7374-add-a-new-mailchimp-subscribers-to-membervault-as-a-new-users","usedApps":["mailchimp","membervault"],"usage":0}

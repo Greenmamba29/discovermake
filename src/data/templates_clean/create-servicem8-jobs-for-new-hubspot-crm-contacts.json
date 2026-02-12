@@ -1,0 +1,1 @@
+{"id":4956,"name":"Create ServiceM8 jobs for new HubSpot CRM contacts","description":"Every time a new HubSpot CRM contact is created, Make will automatically create a new job in Service M8.","url":"4956-create-servicem8-jobs-for-new-hubspot-crm-contacts","usedApps":["hubspotcrm","servicem8"],"usage":11}

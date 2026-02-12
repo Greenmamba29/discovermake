@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>DiscoverMake Marketplace</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13a4ec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101c22",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display">
+<!-- Sticky Header & Search Area -->
+<header class="sticky top-0 z-50 bg-background-light dark:bg-background-dark/95 backdrop-blur-md px-4 pt-4 pb-2">
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-2">
+<div class="size-8 rounded-full bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-xl">bolt</span>
+</div>
+<h1 class="text-xl font-bold tracking-tight">DiscoverMake</h1>
+</div>
+<div class="flex items-center gap-3">
+<button class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="size-8 rounded-full border-2 border-primary/20 bg-cover bg-center" data-alt="User profile avatar photo" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCXP8w8a6N8BmtyQfUycwJEBfdMdAi5rfrqzHpd3YNmk-YlEvKmSewLzj6ziSjWIRgxi6s66qi61Xo22OK0Tm3VMDsFLuoCkPgBLMC_POPEQCKx65BCb5QPeawSE7RkxsIh_Ab40BfpcNFsXYqSKrsxDnFmlBbn23qdxH7RHJPqbTlVp0AAfUCbSRdmVv2eCo9VsXcbXT4Co0y5eO9eSwHFlr_HP1kz2DafEDUQTmyJQm4iqSjc8kKyFqR1iNisYsAxequpMThc55M')"></div>
+</div>
+</div>
+<div class="relative flex items-center gap-2">
+<div class="relative flex-1">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+<input class="w-full bg-slate-100 dark:bg-slate-800/50 border-none rounded-xl py-3 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary placeholder:text-slate-500" placeholder="What do you want to make?" type="text"/>
+</div>
+<button class="bg-slate-100 dark:bg-slate-800/50 p-3 rounded-xl">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-300">tune</span>
+</button>
+</div>
+</header>
+<main class="pb-24">
+<!-- Horizontal Tabs/Categories -->
+<div class="flex gap-3 px-4 py-4 overflow-x-auto hide-scrollbar">
+<button class="px-5 py-2 rounded-full bg-primary text-white text-sm font-semibold whitespace-nowrap">Explore All</button>
+<button class="px-5 py-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-sm font-medium whitespace-nowrap">AI Agents</button>
+<button class="px-5 py-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-sm font-medium whitespace-nowrap">Dashboards</button>
+<button class="px-5 py-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-sm font-medium whitespace-nowrap">SaaS Kits</button>
+<button class="px-5 py-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-sm font-medium whitespace-nowrap">Automation</button>
+</div>
+<!-- Section: Trending -->
+<section class="mt-2">
+<div class="flex items-center justify-between px-4 mb-3">
+<h2 class="text-xl font-bold">Trending Now</h2>
+<button class="text-primary text-sm font-semibold">See all</button>
+</div>
+<div class="flex gap-4 px-4 overflow-x-auto hide-scrollbar snap-x">
+<!-- Card 1 -->
+<div class="min-w-[280px] w-72 bg-white dark:bg-slate-900 rounded-xl overflow-hidden shadow-sm border border-slate-100 dark:border-slate-800 snap-start">
+<div class="relative h-44 bg-cover bg-center" data-alt="High fidelity data dashboard visualization" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDmt2Pb9C8C2lIK_8P89RRHH-TlmoaBiZZRnB8iKscsI6aL6bp94M7wo8gRSY8g9r9dTWH196ALYSCIB5nTfKM1mYak_RmQoJjPzMoqZlw7FTa_sqwLYTpSXX5ZRGg0yGtkPoik3PseOrXuaqrBN79LhAVBFTqVeI-SK-Bm-pB4e_Ly-7PT6z-BCQ2Rs4QCwrD0QJSmJzJe7Oov6tSLodv_CPOW0NnFUnKi3Em2ONOUhlfcREiTBFrU_qUWTH5cyvK9C3zDHc72GQw')">
+<button class="absolute top-3 right-3 size-9 bg-white/90 dark:bg-black/40 backdrop-blur rounded-full flex items-center justify-center text-slate-900 dark:text-white">
+<span class="material-symbols-outlined text-[20px]">favorite</span>
+</button>
+</div>
+<div class="p-4">
+<div class="flex items-center gap-2 mb-2">
+<div class="relative">
+<img alt="Creator Avatar" class="size-6 rounded-full border border-slate-200 dark:border-slate-700" data-alt="Small profile photo of creator" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGmedYgf-Jt5hvUb0FBNu9vjEPgR1pu50aVPmp7qvRer9hur_erSBriqV6ffMEBJJbOf9cQjDHSj8-nEfKXjgC7Hgj44w4W3WzRATxqa5PsFdyp0h8CCCdg8hlrVewAS3-mW_Hu5Tl8-hvjPan5wl06buP60wUoKSM-tswLxMLw6LzzHpy94YwuasDv28WGX46mvKS250wtTn5Mgh933wcFjqy6gK6WY23GHTbOE51uGAVDqIO3GisMrIlhXzOjSZtG9rrclO74Ww"/>
+<span class="material-symbols-outlined absolute -bottom-1 -right-1 text-[12px] bg-primary text-white rounded-full p-[1px] font-bold">check</span>
+</div>
+<span class="text-xs text-slate-500 dark:text-slate-400">Alex Rivers</span>
+</div>
+<h3 class="text-base font-bold leading-snug mb-1">AI Content Strategy Engine</h3>
+<div class="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400 mb-4">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">cycle</span> 2.4k remixes</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">schedule</span> 4 mins</span>
+</div>
+<button class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-2.5 rounded-lg text-sm transition-colors">Remix Workflow</button>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="min-w-[280px] w-72 bg-white dark:bg-slate-900 rounded-xl overflow-hidden shadow-sm border border-slate-100 dark:border-slate-800 snap-start">
+<div class="relative h-44 bg-cover bg-center" data-alt="Sleek financial analytical dashboard" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDCPv82sJ2zvJOp72v4WWO-0uUWTzhrC50s-vk5FmC_AuWKT1_BamroCDJtJinWEjQ6uDdPXrXgdLfNQ19cQ8DC-PNZH54g5hhDYL1GDY1r6VloZtEco7hJVJRg9fFjiDi3tavPx37tL2Vn5-1ySLZXLeWemvkSzrUTUqgp_GhFOVWNfZ0xlYR6-ZR5zcFjlJEvcf_Dl3e0dKl9pXbogNt2mKEjpI0FQCTpqMvR9bo3-vDw-o86oLmtgbdWutzn9BvdgZeo_3VSDEc')">
+<button class="absolute top-3 right-3 size-9 bg-white/90 dark:bg-black/40 backdrop-blur rounded-full flex items-center justify-center text-slate-900 dark:text-white">
+<span class="material-symbols-outlined text-[20px]">favorite</span>
+</button>
+</div>
+<div class="p-4">
+<div class="flex items-center gap-2 mb-2">
+<div class="relative">
+<img alt="Creator Avatar" class="size-6 rounded-full border border-slate-200 dark:border-slate-700" data-alt="Small profile photo of creator" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBC-veqkb2HRl8c8kJcVAEPmo3_crYb1-2Fc6j7NobGliU9JyUMNvo5CI4v3SHXeDFwtQHwye9jWaMUsr-i-5XHTzCeNJULhzkO74YpL4SWs08CpOmlihElZdvMLM7XH2kly3ossszwU2ZsoFOWFTVVqHTXvQ-AAU7Z5DFpksc7GXTmN9V6HBnrx-_dAHAGAPHYxe-FCvuaavMEm-jLdLyB5g5WDRwwMDCSEl-CJbU6Ts8EZ-fh3gurMOI3VOjOLHNiS0Xah53uxxQ"/>
+<span class="material-symbols-outlined absolute -bottom-1 -right-1 text-[12px] bg-primary text-white rounded-full p-[1px] font-bold">check</span>
+</div>
+<span class="text-xs text-slate-500 dark:text-slate-400">Sarah Chen</span>
+</div>
+<h3 class="text-base font-bold leading-snug mb-1">B2B SaaS Sales Dashboard</h3>
+<div class="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400 mb-4">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">cycle</span> 1.8k remixes</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">schedule</span> 6 mins</span>
+</div>
+<button class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-2.5 rounded-lg text-sm transition-colors">Remix Workflow</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Section: For Your Role (Product Manager) -->
+<section class="mt-8">
+<div class="flex items-center justify-between px-4 mb-3">
+<h2 class="text-xl font-bold">For Your Role</h2>
+<span class="px-2 py-0.5 bg-primary/10 text-primary text-[10px] font-bold rounded uppercase tracking-wider">Product Lead</span>
+</div>
+<div class="flex gap-4 px-4 overflow-x-auto hide-scrollbar snap-x">
+<!-- Card 3 -->
+<div class="min-w-[280px] w-72 bg-white dark:bg-slate-900 rounded-xl overflow-hidden shadow-sm border border-slate-100 dark:border-slate-800 snap-start">
+<div class="relative h-44 bg-cover bg-center" data-alt="Kanban board style project management tool" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBcR6RJ8c-R8hVg6av1YcKrUySJfcEKkHKDVO48JAEfbXzkX8T0iJSnEqEIycOdliXxsflLxCITk8eRW0yfxXmJ8gjVQZMNm8_qOg7VwZY6j3n1DZOscFY8RATZblbVusM3RTPJnt6JN-ynT7H9T9RQp_2uWmY8_FpXgn9NCgYv_0HL_aTp6s35jGP4uWnjGYZrnMhxN2oKcrbtE5UVkVtoGTUuMXgX_fKaw64_QSGha5_fYXNd3BHdlAVBfx_cF8QFgyv0p-45VP8')">
+<button class="absolute top-3 right-3 size-9 bg-white/90 dark:bg-black/40 backdrop-blur rounded-full flex items-center justify-center text-slate-900 dark:text-white">
+<span class="material-symbols-outlined text-[20px]">favorite</span>
+</button>
+</div>
+<div class="p-4">
+<div class="flex items-center gap-2 mb-2">
+<div class="relative">
+<img alt="Creator Avatar" class="size-6 rounded-full border border-slate-200 dark:border-slate-700" data-alt="Small profile photo of creator" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDByL6ZCgHKxFfXxVwYoRMuyu37XkEccHj-vwncQGwh0jzxpHik40qnvXhjDXmDxBkt-W_KG6q08R8mpr8RM7vtF6QC1olh4duGk4RIEGfhL_e8mDy2UNGa5kNk2Yrzk_-ACEXB-wkrw1gTp5zcF4Ul7e58rbgBBNvcBzxPhLIHxehbCauheyOO1_MxhFH4XGGNj82cDaWgHI5g6vxEU0vR0cImaKUWSGc_Qu_8PR4Kj9pNMTvTMEnIITaMd6OTuCqpb0gJRYaMFIQ"/>
+<span class="material-symbols-outlined absolute -bottom-1 -right-1 text-[12px] bg-primary text-white rounded-full p-[1px] font-bold">check</span>
+</div>
+<span class="text-xs text-slate-500 dark:text-slate-400">Marcus Wright</span>
+</div>
+<h3 class="text-base font-bold leading-snug mb-1">Product Roadmap Tracker</h3>
+<div class="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400 mb-4">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">cycle</span> 892 remixes</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">schedule</span> 12 mins</span>
+</div>
+<button class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-2.5 rounded-lg text-sm transition-colors">Remix Workflow</button>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="min-w-[280px] w-72 bg-white dark:bg-slate-900 rounded-xl overflow-hidden shadow-sm border border-slate-100 dark:border-slate-800 snap-start">
+<div class="relative h-44 bg-cover bg-center" data-alt="Workflow automation connection diagram" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD9L6Vq57CsTOVx4ktQBH-XG2lRnt3TsPbvPoaCVlm-Fi6FBc2iV7ZMo-PH-xEDMamd9FYp4UV3jN9OkMG2uJn6b3wxK8HVFs63k3b1ZgDjR4c5bLch4-AuDYWCMsq4InUDlyeF1savtbMSNaHvb-dFIqlDRwTbKanOieU3bOzB2QlCn5GpK4mFSFVuG0s9eey-uRV9oKyZKLta0NjjUAuaoW2YqURkRcDr7HOlzF8O_N-NCczEuTN_1q7-C65HapcGjj55kfVUvgA')">
+<button class="absolute top-3 right-3 size-9 bg-white/90 dark:bg-black/40 backdrop-blur rounded-full flex items-center justify-center text-slate-900 dark:text-white">
+<span class="material-symbols-outlined text-[20px] fill-1 text-red-500">favorite</span>
+</button>
+</div>
+<div class="p-4">
+<div class="flex items-center gap-2 mb-2">
+<div class="relative">
+<img alt="Creator Avatar" class="size-6 rounded-full border border-slate-200 dark:border-slate-700" data-alt="Small profile photo of creator" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTJpmwaBrkPh6CyBm_0rgn9GBfve7h7PAyph75z6EV9_dMRbAFtoD84a2U_7uKgN3YFbGzxGRzewHxGGcKNWawNKk7KSoObNycMGFAwzjjHNPwIeqPv5R7EWtu8KR7jnKrX4CIz95mIh_SkZB20-T4I4CQc-Hxn04E58e1oskSO_TCzfH0HaJZeJbQ7CLSj2v9a5ZUIVl5kgp1PBTcsJ7uBAJUNpT7xtLikidimQbM2QguhEwIS-7UTpQ-9RKHloTy_VrvE5y-MPI"/>
+<span class="material-symbols-outlined absolute -bottom-1 -right-1 text-[12px] bg-primary text-white rounded-full p-[1px] font-bold">check</span>
+</div>
+<span class="text-xs text-slate-500 dark:text-slate-400">Elena Joy</span>
+</div>
+<h3 class="text-base font-bold leading-snug mb-1">User Feedback Aggregator</h3>
+<div class="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400 mb-4">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">cycle</span> 3.1k remixes</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">schedule</span> 5 mins</span>
+</div>
+<button class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-2.5 rounded-lg text-sm transition-colors">Remix Workflow</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Section: New this week -->
+<section class="mt-8">
+<div class="flex items-center justify-between px-4 mb-3">
+<h2 class="text-xl font-bold">New this week</h2>
+<button class="text-primary text-sm font-semibold">See all</button>
+</div>
+<div class="px-4">
+<div class="grid grid-cols-1 gap-4">
+<!-- Featured Wide Card -->
+<div class="bg-white dark:bg-slate-900 rounded-xl overflow-hidden shadow-sm border border-slate-100 dark:border-slate-800">
+<div class="relative h-56 bg-cover bg-center" data-alt="Futuristic AI interaction interface design" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDiZyUmla9G_-R8KXdgQ9OAiouR_wpkruAl5TsFnhJWpo9uziMMRhWPx2S_ZSGL3VptgeA8jJYeVkBE3me9lwb0H0Cby74KGqV0d1fNWjwtEOEyHtS5Qm_Iu9IQ0IVbUzJW-bkDfl1RIWtP43WPRn04kqb0-Cxl-O3RpmV4nkWYor2LZAkCCgXPZ9G-ODcjiW8MLpIhIR7wRo1yg4Mw2PvWaqNp1dKj6gzj8xrTAyBXcwZmcF3f5bQowtuwqraXUCA85Ogwt_3P0dU')">
+<div class="absolute top-3 left-3 bg-black/60 backdrop-blur px-3 py-1 rounded-full border border-white/20">
+<span class="text-[10px] text-white font-bold uppercase">Staff Pick</span>
+</div>
+<button class="absolute top-3 right-3 size-10 bg-white dark:bg-slate-800 rounded-full flex items-center justify-center shadow-lg">
+<span class="material-symbols-outlined">favorite</span>
+</button>
+</div>
+<div class="p-5">
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-lg font-bold">Advanced LinkedIn Automation V2</h3>
+<div class="flex items-center gap-1 text-xs text-slate-400">
+<span class="material-symbols-outlined text-sm">schedule</span> 10m
+                                </div>
+</div>
+<p class="text-sm text-slate-500 dark:text-slate-400 mb-5 line-clamp-2">Complete outbound engine for B2B sales leads. Includes automatic personalization and CRM sync.</p>
+<div class="flex items-center justify-between">
+<div class="flex -space-x-2">
+<img alt="Avatar" class="size-7 rounded-full border-2 border-white dark:border-slate-900" data-alt="User avatar small" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4gmZHm7m8rs-imGpls8ZEfDQf9fCJWlpINofmvy6UOZd5kIrjLaNZm-dStdqeeluG437L_g1FC98bVkoRcPp7gjE3rhWo2Nhugg9COClL4mt85MxKVYdH9RwJLdWMGocMSe5u4afg1yuNZ1bJbs8JT2Tz-H4XK1mzTfM_N98w6EjNkbcrj-B6SJnJXOFytUy_Lo0JNNX6iyDbbmqdJ91-f-xmlDJD74FZy1Xo0BWyOhBZEt-FOJSqAQOQUwKQskZsDo8UW1QOyx8"/>
+<img alt="Avatar" class="size-7 rounded-full border-2 border-white dark:border-slate-900" data-alt="User avatar small" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDAdSaN-yo2l9HHS1Wd7RQi37L5_qiK5_sUUWwBj20xlMJhFDJWDEtDmqKri6roORJB-B5RVI161iss4Hflitbl1a7X-BxkBWtYjpb9oXuWsguNc7u4VElwFLihjcik0D9AyctJZrB9sgErYGiiB9LXFYCIoQNgUG_LzJzb4eISsbQ2wQbbHATLCfu_BkW4_enJJgZ8WJxJJkbv6rE9srCEv2SVKckw-lmkJQu3qKsh6yUOCYPArQ3mwSoDXBCNxBA0lZhbddENSCw"/>
+<div class="size-7 rounded-full bg-slate-100 dark:bg-slate-800 border-2 border-white dark:border-slate-900 flex items-center justify-center text-[10px] font-bold">+12</div>
+</div>
+<button class="bg-primary px-8 py-2.5 rounded-lg text-white font-bold text-sm">Remix</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 right-0 bg-white/80 dark:bg-background-dark/80 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800 px-6 py-3 pb-6 flex justify-between items-center z-50">
+<button class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined font-variation-fill">home</span>
+<span class="text-[10px] font-bold">Home</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">explore</span>
+<span class="text-[10px] font-bold">Discover</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">library_add_check</span>
+<span class="text-[10px] font-bold">My Remixes</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] font-bold">Profile</span>
+</button>
+</nav>
+<!-- Floating Action Button for iOS style -->
+<button class="fixed bottom-24 right-6 size-14 bg-primary text-white rounded-full shadow-2xl flex items-center justify-center z-40">
+<span class="material-symbols-outlined text-3xl">add</span>
+</button>
+</body></html>

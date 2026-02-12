@@ -1,0 +1,1 @@
+{"id":1040,"name":"Send push notifications via Google Chrome for new Gitter messages","description":"Every time a new message is posted to a watched chat room in Gitter, Make will automatically send a push notification via Google Chrome.","url":"1040-send-push-notifications-via-google-chrome-for-new-gitter-messages","usedApps":["gitter","chrome"],"usage":4}

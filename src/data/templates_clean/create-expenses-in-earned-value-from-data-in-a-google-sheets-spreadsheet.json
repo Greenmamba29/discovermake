@@ -1,0 +1,1 @@
+{"id":4114,"name":"Create expenses in Earned Value from data in a Google Sheets spreadsheet","description":"When a new row is created in a Google Sheets spreadsheet, a new expense is created in Earned Value.","url":"4114-create-expenses-in-earned-value-from-data-in-a-google-sheets-spreadsheet","usedApps":["google-sheets","earned-value"],"usage":5}

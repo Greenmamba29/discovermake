@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>DiscoverMake Security Hub</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13a4ec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101c22",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white">
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-background-light dark:bg-background-dark overflow-x-hidden">
+<!-- TopAppBar -->
+<div class="flex items-center bg-white dark:bg-background-dark p-4 pb-2 justify-between sticky top-0 z-50 border-b border-slate-200 dark:border-slate-800">
+<div class="text-primary flex size-12 shrink-0 items-center justify-center">
+<span class="material-symbols-outlined text-3xl">shield_lock</span>
+</div>
+<div class="flex-1 text-center">
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">Security Hub</h2>
+<div class="flex items-center justify-center gap-1">
+<div class="size-2 rounded-full bg-emerald-500 animate-pulse"></div>
+<span class="text-[10px] uppercase font-bold text-emerald-500 tracking-wider">Live Monitoring</span>
+</div>
+</div>
+<div class="flex w-12 items-center justify-end">
+<button class="relative flex size-10 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white">
+<span class="material-symbols-outlined text-2xl">notifications</span>
+<span class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border-2 border-white dark:border-background-dark"></span>
+</button>
+</div>
+</div>
+<!-- Metric Tiles Grid -->
+<div class="flex flex-wrap gap-3 p-4">
+<div class="flex min-w-[100px] flex-1 flex-col gap-1 rounded-xl p-4 bg-white dark:bg-[#1a2b34] shadow-sm border border-slate-200 dark:border-slate-800">
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider">2FA Adoption</p>
+<p class="text-slate-900 dark:text-white text-2xl font-bold leading-tight">84.2%</p>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-emerald-500 text-sm">trending_up</span>
+<p class="text-emerald-500 text-xs font-bold">+2.1%</p>
+</div>
+</div>
+<div class="flex min-w-[100px] flex-1 flex-col gap-1 rounded-xl p-4 bg-white dark:bg-[#1a2b34] shadow-sm border border-slate-200 dark:border-slate-800">
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider">Active Alerts</p>
+<p class="text-slate-900 dark:text-white text-2xl font-bold leading-tight">12</p>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-orange-500 text-sm">warning</span>
+<p class="text-orange-500 text-xs font-bold">Priority</p>
+</div>
+</div>
+<div class="flex min-w-[100px] flex-1 flex-col gap-1 rounded-xl p-4 bg-white dark:bg-[#1a2b34] shadow-sm border border-slate-200 dark:border-slate-800">
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider">Safe Score</p>
+<p class="text-slate-900 dark:text-white text-2xl font-bold leading-tight">94/100</p>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-red-500 text-sm">trending_down</span>
+<p class="text-red-500 text-xs font-bold">-3%</p>
+</div>
+</div>
+</div>
+<!-- Fraud Signals Visualization -->
+<div class="px-4 pb-4">
+<div class="rounded-xl bg-white dark:bg-[#1a2b34] p-4 shadow-sm border border-slate-200 dark:border-slate-800">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="text-slate-900 dark:text-white text-base font-bold">Fraud Signals (24h)</h3>
+<p class="text-slate-500 dark:text-slate-400 text-xs">Suspicious pattern detection trend</p>
+</div>
+<span class="bg-red-500/10 text-red-500 text-[10px] font-bold px-2 py-1 rounded uppercase tracking-tighter">High Risk Volume</span>
+</div>
+<div class="flex flex-col gap-4 py-2">
+<svg fill="none" height="100" preserveaspectratio="none" viewbox="0 0 400 100" width="100%" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 80C20 80 40 20 60 20C80 20 100 60 120 60C140 60 160 40 180 40C200 40 220 90 240 90C260 90 280 10 300 10C320 10 340 50 360 50C380 50 400 70 420 70V100H0V80Z" fill="url(#riskGradient)"></path>
+<path d="M0 80C20 80 40 20 60 20C80 20 100 60 120 60C140 60 160 40 180 40C200 40 220 90 240 90C260 90 280 10 300 10C320 10 340 50 360 50C380 50 400 70 420 70" stroke="#13a4ec" stroke-linecap="round" stroke-width="2"></path>
+<defs>
+<lineargradient id="riskGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#13a4ec" stop-opacity="0.3"></stop>
+<stop offset="100%" stop-color="#13a4ec" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+</svg>
+<div class="flex justify-between px-1">
+<p class="text-slate-400 text-[10px] font-bold">12AM</p>
+<p class="text-slate-400 text-[10px] font-bold">8AM</p>
+<p class="text-slate-400 text-[10px] font-bold">4PM</p>
+<p class="text-slate-400 text-[10px] font-bold">NOW</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Emergency Actions -->
+<div class="px-4 pb-4">
+<h2 class="text-slate-900 dark:text-white text-sm font-bold uppercase tracking-widest mb-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-red-500 text-lg">emergency</span>
+                Emergency Actions
+            </h2>
+<div class="grid grid-cols-2 gap-3">
+<button class="flex items-center justify-center gap-2 rounded-xl bg-red-600 hover:bg-red-700 text-white p-4 transition-colors">
+<span class="material-symbols-outlined">payments</span>
+<span class="text-sm font-bold">Freeze Payouts</span>
+</button>
+<button class="flex items-center justify-center gap-2 rounded-xl bg-slate-800 hover:bg-slate-900 dark:bg-slate-700 dark:hover:bg-slate-600 text-white p-4 transition-colors border border-slate-600">
+<span class="material-symbols-outlined">lock_person</span>
+<span class="text-sm font-bold">Lock Accounts</span>
+</button>
+</div>
+</div>
+<!-- Flag Queue -->
+<div class="flex flex-col flex-1 rounded-t-3xl bg-white dark:bg-[#1a2b34] shadow-2xl border-t border-slate-200 dark:border-slate-800 pb-20">
+<div class="p-5 flex items-center justify-between">
+<div>
+<h2 class="text-slate-900 dark:text-white text-xl font-bold leading-tight">Flag Queue</h2>
+<p class="text-slate-500 dark:text-slate-400 text-xs">7 High-risk items require review</p>
+</div>
+<button class="text-primary text-sm font-bold flex items-center gap-1">
+                    Filter <span class="material-symbols-outlined text-base">filter_list</span>
+</button>
+</div>
+<div class="flex flex-col gap-px bg-slate-100 dark:bg-slate-800">
+<!-- Queue Item 1 -->
+<div class="flex flex-col gap-3 bg-white dark:bg-[#1a2b34] p-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center overflow-hidden">
+<img alt="Creator avatar" class="size-full object-cover" data-alt="Profile picture of a digital artist" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0x4UydorBCqWSWlj0Y_OfIjuzz35-HEcKue08IEzak0syDrth_eQevxdyfxX_pbD3AxbT8goH3aNtBkxpgze0CJzC-2OYwcDzrWDjKel-9FlVTDZMumLvNugRMQP4MyeWCXnCbw14PDnpgQugxU3IX3jUENcVse8fzGe8sHhe5ONh7DXz_MSHq5YU5StOY7nBBaVHfHbNATrxMO_6H81cJI3ItVI38MBuQ9aTM_ysWsODC4EFqhY8VVojgVNw9LHEQkjqtvmFYc4"/>
+</div>
+<div>
+<p class="text-slate-900 dark:text-white text-sm font-bold">Studio_Vortex</p>
+<p class="text-slate-500 dark:text-slate-400 text-[10px] font-medium uppercase tracking-tighter">ID: DM-92811</p>
+</div>
+</div>
+<div class="text-right">
+<div class="text-red-500 text-xs font-bold">Risk: 92/100</div>
+<div class="text-slate-400 text-[10px]">2 mins ago</div>
+</div>
+</div>
+<div class="flex flex-wrap gap-2">
+<span class="bg-red-500/10 text-red-500 text-[10px] font-bold px-2 py-0.5 rounded border border-red-500/20">PAYOUT_ANOMALY</span>
+<span class="bg-orange-500/10 text-orange-500 text-[10px] font-bold px-2 py-0.5 rounded border border-orange-500/20">IP_MISMATCH</span>
+<span class="bg-slate-500/10 text-slate-500 text-[10px] font-bold px-2 py-0.5 rounded">REMIX_SPIKE</span>
+</div>
+<div class="flex gap-2 mt-1">
+<button class="flex-1 bg-primary text-white text-xs font-bold py-2 rounded-lg">Review</button>
+<button class="flex items-center justify-center size-9 bg-red-500/10 text-red-500 rounded-lg">
+<span class="material-symbols-outlined text-lg">block</span>
+</button>
+<button class="flex items-center justify-center size-9 bg-slate-100 dark:bg-slate-800 text-slate-500 rounded-lg">
+<span class="material-symbols-outlined text-lg">more_horiz</span>
+</button>
+</div>
+</div>
+<!-- Queue Item 2 -->
+<div class="flex flex-col gap-3 bg-white dark:bg-[#1a2b34] p-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center overflow-hidden">
+<img alt="Creator avatar" class="size-full object-cover" data-alt="Avatar icon for a creative user" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDy_xcJvZxfnbMsDxeZ-Tma4FR3Et3UG5aV99YE0D-x70dNg0BR9XmyrHcP-HptWrp3NCbasIGgYqRHjXltxPMbOic3j9PQg_kRe6MswetV14R-tzCY2HfV7PkChikeRj6R6LckfFG1h4SEmD23noJfX-UVuPxiEUBnVOAV_DA0KhFkF1y3T7IhirLYeGbndFwnnHmpbuCIU2QAbIdwTYxxCnzMMox2DJl39HB_WH5bCK6lt5Av0bNmTHW0efb5lEjYaGE9MnSIiSU"/>
+</div>
+<div>
+<p class="text-slate-900 dark:text-white text-sm font-bold">NeonPulse_Records</p>
+<p class="text-slate-500 dark:text-slate-400 text-[10px] font-medium uppercase tracking-tighter">ID: DM-11203</p>
+</div>
+</div>
+<div class="text-right">
+<div class="text-orange-500 text-xs font-bold">Risk: 78/100</div>
+<div class="text-slate-400 text-[10px]">14 mins ago</div>
+</div>
+</div>
+<div class="flex flex-wrap gap-2">
+<span class="bg-orange-500/10 text-orange-500 text-[10px] font-bold px-2 py-0.5 rounded border border-orange-500/20">RAPID_CREATION</span>
+<span class="bg-slate-500/10 text-slate-500 text-[10px] font-bold px-2 py-0.5 rounded">BOT_SUSPICION</span>
+</div>
+<div class="flex gap-2 mt-1">
+<button class="flex-1 bg-primary text-white text-xs font-bold py-2 rounded-lg">Review</button>
+<button class="flex items-center justify-center size-9 bg-red-500/10 text-red-500 rounded-lg">
+<span class="material-symbols-outlined text-lg">block</span>
+</button>
+<button class="flex items-center justify-center size-9 bg-slate-100 dark:bg-slate-800 text-slate-500 rounded-lg">
+<span class="material-symbols-outlined text-lg">more_horiz</span>
+</button>
+</div>
+</div>
+<!-- Queue Item 3 -->
+<div class="flex flex-col gap-3 bg-white dark:bg-[#1a2b34] p-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center overflow-hidden">
+<img alt="Creator avatar" class="size-full object-cover" data-alt="Generic profile headshot for admin UI" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2LtiL_MC1zpPQixyi1LuPZfldwIXC9lXMdCcSHU_aKeYK4GGOuM6vHowlS1-Wz7U3pSBd3Z_X6aXUvBAn-2s2lFlU4gWeju1GWzKexqti6ijdOSOYk41-JGGz1hoDZUH9Wn0trkfRqocPsRraa9iePkL4Dbpi_xALvKUAv_CwJxC3vxLxtb0CAj0SN8kOs46TR7_hT3dQBq9VEoDUz55UBO3-RNnWr5NYaQ5FMNN2TMRe-g4E_mwwWLIO037hmeR_BgM6XWfvmuk"/>
+</div>
+<div>
+<p class="text-slate-900 dark:text-white text-sm font-bold">CyberSynthetics</p>
+<p class="text-slate-500 dark:text-slate-400 text-[10px] font-medium uppercase tracking-tighter">ID: DM-00445</p>
+</div>
+</div>
+<div class="text-right">
+<div class="text-orange-500 text-xs font-bold">Risk: 65/100</div>
+<div class="text-slate-400 text-[10px]">42 mins ago</div>
+</div>
+</div>
+<div class="flex flex-wrap gap-2">
+<span class="bg-orange-500/10 text-orange-500 text-[10px] font-bold px-2 py-0.5 rounded border border-orange-500/20">CREDENTIAL_STUFFING</span>
+</div>
+<div class="flex gap-2 mt-1">
+<button class="flex-1 bg-primary text-white text-xs font-bold py-2 rounded-lg">Review</button>
+<button class="flex items-center justify-center size-9 bg-red-500/10 text-red-500 rounded-lg">
+<span class="material-symbols-outlined text-lg">block</span>
+</button>
+<button class="flex items-center justify-center size-9 bg-slate-100 dark:bg-slate-800 text-slate-500 rounded-lg">
+<span class="material-symbols-outlined text-lg">more_horiz</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Navigation Tab Bar (iOS style) -->
+<div class="fixed bottom-0 left-0 right-0 h-16 bg-white dark:bg-[#111c22] border-t border-slate-200 dark:border-slate-800 flex items-center justify-around px-2 z-[60]">
+<button class="flex flex-col items-center justify-center gap-1 text-primary">
+<span class="material-symbols-outlined text-2xl">dashboard</span>
+<span class="text-[10px] font-bold">Overview</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-1 text-slate-400">
+<span class="material-symbols-outlined text-2xl">rule</span>
+<span class="text-[10px] font-medium">Queue</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-1 text-slate-400">
+<span class="material-symbols-outlined text-2xl">gavel</span>
+<span class="text-[10px] font-medium">Logs</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-1 text-slate-400">
+<span class="material-symbols-outlined text-2xl">settings</span>
+<span class="text-[10px] font-medium">Config</span>
+</button>
+</div>
+<!-- Safe Area Spacer for iOS -->
+<div class="h-6 bg-white dark:bg-[#111c22]"></div>
+</div>
+</body></html>

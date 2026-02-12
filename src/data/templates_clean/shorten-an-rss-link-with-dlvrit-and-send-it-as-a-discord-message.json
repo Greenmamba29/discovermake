@@ -1,0 +1,1 @@
+{"id":8138,"name":"Shorten an RSS link with dlvr.it and send it as a Discord message","description":"Use this template to automatically shorten a new RSS feed item link with dlvr.it and post it as a Discord message.","url":"8138-shorten-an-rss-link-with-dlvr-it-and-send-it-as-a-discord-message","usedApps":["rss","dlvrit","discord"],"usage":13}

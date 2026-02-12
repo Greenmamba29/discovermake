@@ -1,0 +1,1 @@
+{"id":3944,"name":"Send Dropbox files data to Databox","description":"Every time a new file is added to your Dropbox account, Make will automatically update the report about amount and size of files in Databox.","url":"3944-send-dropbox-files-data-to-databox","usedApps":["dropbox","databox"],"usage":5}

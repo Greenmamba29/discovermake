@@ -1,0 +1,1 @@
+{"id":3831,"name":"Create Status Hero activities from Shopify orders","description":"Every time a new Shopify order is created, Make will automatically add a status activity to a member in Status Hero.","url":"3831-create-status-hero-activities-from-shopify-orders","usedApps":["shopify","status-hero"],"usage":1}

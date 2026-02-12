@@ -1,0 +1,1 @@
+{"id":13430,"name":"Send parsed JSON data to a datastore and add a new record","description":"Automatically parse JSON data and send it to your datastore, adding a new record with HTTP actions for streamlined data management.","url":"13430-send-parsed-json-data-to-a-datastore-and-add-a-new-record","usedApps":["http","json","datastore"],"usage":36}

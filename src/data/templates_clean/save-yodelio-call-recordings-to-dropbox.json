@@ -1,0 +1,1 @@
+{"id":8893,"name":"Save Yodel.io call recordings to Dropbox","description":"Use this template to automatically upload a Yodel.io call recording to a Dropbox folder. The feature \"call recording\" has to be enabled in Yodel.io settings.","url":"8893-save-yodel-io-call-recordings-to-dropbox","usedApps":["yodel","http","dropbox"],"usage":3}

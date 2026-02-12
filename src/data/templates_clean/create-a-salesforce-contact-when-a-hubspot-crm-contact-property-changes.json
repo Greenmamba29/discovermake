@@ -1,0 +1,1 @@
+{"id":5997,"name":"Create a Salesforce contact when a HubSpot CRM contact property changes","description":"Every time a HubSpot CRM contact property changes, Make will automatically create a Salesforce contact. ","url":"5997-create-a-salesforce-contact-when-a-hubspot-crm-contact-property-changes","usedApps":["hubspotcrm","salesforce"],"usage":9}

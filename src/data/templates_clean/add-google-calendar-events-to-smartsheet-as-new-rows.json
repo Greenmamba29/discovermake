@@ -1,0 +1,1 @@
+{"id":5220,"name":"Add Google Calendar events to Smartsheet as new rows","description":"This integration automatically retrieves your Google Calendar events and adds them as new rows on your spreadsheet.","url":"5220-add-google-calendar-events-to-smartsheet-as-new-rows","usedApps":["google-calendar","smartsheet"],"usage":14}

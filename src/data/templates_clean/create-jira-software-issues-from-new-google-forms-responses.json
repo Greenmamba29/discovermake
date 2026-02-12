@@ -1,0 +1,1 @@
+{"id":1713,"name":"Create Jira Software issues from new Google Forms responses","description":"Every time a new response is entered on your Google Form, Make will automatically create a new issue in Jira Software.","url":"1713-create-jira-software-issues-from-new-google-forms-responses","usedApps":["google-forms","jira"],"usage":300}

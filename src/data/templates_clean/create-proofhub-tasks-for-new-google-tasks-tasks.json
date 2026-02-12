@@ -1,0 +1,1 @@
+{"id":8045,"name":"Create ProofHub tasks for new Google Tasks tasks","description":"Make will watch your tasks in Google Tasks at regular intervals and create identical ProofHub tasks.","url":"8045-create-proofhub-tasks-for-new-google-tasks-tasks","usedApps":["google-tasks","proofhub"],"usage":6}

@@ -1,0 +1,1 @@
+{"id":7085,"name":"Add and Update Outseta persons as a Stripe customers","description":"Every time a new person is created in Outseta, Make will automatically add that person to Stripe as a new customer or update existing customer.","url":"7085-add-and-update-outseta-persons-as-a-stripe-customers","usedApps":["outseta","stripe","builtin"],"usage":11}

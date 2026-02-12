@@ -1,0 +1,1 @@
+{"id":3270,"name":"Post messages on Discord from new Ghost publications","description":"Every time a new post is published on a Ghost blog, Make will automatically post it on your Discord server.","url":"3270-post-messages-on-discord-from-new-ghost-publications","usedApps":["ghost","discord"],"usage":31}

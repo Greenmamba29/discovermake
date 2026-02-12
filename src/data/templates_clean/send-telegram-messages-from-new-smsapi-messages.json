@@ -1,0 +1,1 @@
+{"id":7093,"name":"Send Telegram messages from new SMSAPI messages","description":"Every time a new SMSAPI message is created,  Make will automatically send a message to a selected chat in Telegram.","url":"7093-send-telegram-messages-from-new-smsapi-messages","usedApps":["smsapi","telegram"],"usage":6}

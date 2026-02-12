@@ -1,0 +1,1 @@
+{"id":2639,"name":"Create Pipefy cards from new labeled emails in Gmail","description":"Every time you add a specific label to an email in on Gmail, Make will automatically create a new card in Pipefy.","url":"2639-create-pipefy-cards-from-new-labeled-emails-in-gmail","usedApps":["google-email","pipefy"],"usage":10}

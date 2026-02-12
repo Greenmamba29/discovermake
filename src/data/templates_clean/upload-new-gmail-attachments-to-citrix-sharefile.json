@@ -1,0 +1,1 @@
+{"id":1945,"name":"Upload new Gmail attachments to Citrix ShareFile","description":"Every time you receive a new email in Gmail with an attachment, Make will automatically upload that attachment to Citrix ShareFile.","url":"1945-upload-new-gmail-attachments-to-citrix-sharefile","usedApps":["google-email","sharefile"],"usage":16}

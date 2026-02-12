@@ -1,0 +1,1 @@
+{"id":8586,"name":"Import new files from Dropbox to PowerOffice","description":"Make will watch for new files in a specified Dropbox folder at regular intervals, download it, and import to PowerOffice.","url":"8586-import-new-files-from-dropbox-to-poweroffice","usedApps":["dropbox","poweroffice"],"usage":9}

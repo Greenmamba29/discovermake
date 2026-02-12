@@ -1,0 +1,1 @@
+{"id":1450,"name":"Pause a Drip campaign when a new activity happens in Trello","description":"Every time there is a new activity in Trello, Make will automatically pause a selected campaign in Drip.","url":"1450-pause-a-drip-campaign-when-a-new-activity-happens-in-trello","usedApps":["trello","drip"],"usage":1}

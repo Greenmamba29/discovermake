@@ -1,0 +1,1 @@
+{"id":7836,"name":"Add a new WooCommerce customers to ServiceWorks","description":"Every time a new customer is added to a WooCommerce, Make will automatically add that customer to ServiceWorks.","url":"7836-add-a-new-woocommerce-customers-to-serviceworks","usedApps":["woocommerce","serviceworks"],"usage":2}

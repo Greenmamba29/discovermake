@@ -1,0 +1,1 @@
+{"id":8896,"name":"Send a Slack notification when a new Invoice Ninja invoice is created","description":"Use this template to automatically create and send a Slack message when a new Invoice Ninja invoice is created.","url":"8896-send-a-slack-notification-when-a-new-invoice-ninja-invoice-is-created","usedApps":["invoiceninja","slack"],"usage":4}

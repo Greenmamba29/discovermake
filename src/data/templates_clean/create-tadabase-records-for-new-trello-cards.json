@@ -1,0 +1,1 @@
+{"id":6401,"name":"Create Tadabase records for new Trello cards","description":"Every time a new card is added to Trello, Make will automatically create a record in Tadabase.","url":"6401-create-tadabase-records-for-new-trello-cards","usedApps":["trello","tadabase"],"usage":3}

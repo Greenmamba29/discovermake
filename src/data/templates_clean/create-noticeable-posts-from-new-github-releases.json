@@ -1,0 +1,1 @@
+{"id":4216,"name":"Create Noticeable posts from new GitHub releases","description":"Every time a new release is created in GitHub, Make will automatically create a post in your Noticeable project.","url":"4216-create-noticeable-posts-from-new-github-releases","usedApps":["github","noticeable"],"usage":8}

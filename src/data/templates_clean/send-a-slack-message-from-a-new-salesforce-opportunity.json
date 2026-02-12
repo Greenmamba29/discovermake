@@ -1,0 +1,1 @@
+{"id":5593,"name":"Send a Slack message from a new Salesforce opportunity","description":"Use this template to send a Slack message to a channel or a user when a new Salesforce opportunity is created.","url":"5593-send-a-slack-message-from-a-new-salesforce-opportunity","usedApps":["salesforce","slack"],"usage":33}

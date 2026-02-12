@@ -1,0 +1,1 @@
+{"id":8536,"name":"Save new Quaderno invoices to Google Drive","description":"Every time a new invoice is created in Quaderno, Make will automatically save pdf file with that invoice to a Google Drive folder you specify.","url":"8536-save-new-quaderno-invoices-to-google-drive","usedApps":["quaderno","http","google-drive"],"usage":6}

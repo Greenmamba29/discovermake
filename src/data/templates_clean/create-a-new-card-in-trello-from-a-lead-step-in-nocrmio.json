@@ -1,0 +1,1 @@
+{"id":8420,"name":"Create a new card in Trello from a lead step in noCRM.io","description":"Every time a lead moves into a specific step in noCRM.io, a new card will be instantly created in Trello.","url":"8420-create-a-new-card-in-trello-from-a-lead-step-in-nocrm-io","usedApps":["nocrm-io","trello"],"usage":3}

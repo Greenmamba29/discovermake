@@ -1,0 +1,1 @@
+{"id":8786,"name":"Upload files from new Google Sheets spreadsheet rows to Filestage","description":"Every time a new row is added to a Google Sheets spreadsheet, Make will automatically upload a new file to Filestage.","url":"8786-upload-files-from-new-google-sheets-spreadsheet-rows-to-filestage","usedApps":["google-sheets","filestage"],"usage":7}

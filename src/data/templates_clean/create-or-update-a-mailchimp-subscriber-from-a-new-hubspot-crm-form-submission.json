@@ -1,0 +1,1 @@
+{"id":5356,"name":"Create or update a Mailchimp subscriber from a new HubSpot CRM form submission","description":"Every time a HubSpot CRM form is submitted, Make will automatically add a Mailchimp subscriber.","url":"5356-create-or-update-a-mailchimp-subscriber-from-a-new-hubspot-crm-form-submission","usedApps":["hubspotcrm","mailchimp"],"usage":20}

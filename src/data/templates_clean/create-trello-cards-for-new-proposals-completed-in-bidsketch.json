@@ -1,0 +1,1 @@
+{"id":8242,"name":"Create Trello cards for new proposals completed in Bidsketch","description":"Every time a new proposal is accepted or declined in Bidsketch, Make will automatically create a new card in Trello.","url":"8242-create-trello-cards-for-new-proposals-completed-in-bidsketch","usedApps":["bidsketch","builtin","trello"],"usage":5}

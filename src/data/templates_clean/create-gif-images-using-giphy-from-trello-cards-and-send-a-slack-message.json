@@ -1,0 +1,1 @@
+{"id":3998,"name":"Create GIF images using GIPHY from Trello cards and send a Slack message","description":"Every time a new Trello card is created, Make will automatically get a random GIF using GIPHY and send it in a Slack message.","url":"3998-create-gif-images-using-giphy-from-trello-cards-and-send-a-slack-message","usedApps":["trello","giphy","slack"],"usage":34}

@@ -1,0 +1,1 @@
+{"id":2930,"name":"Send a new task from Wrike into Focuster","description":"When a new task in Wrike is created and meets specified criteria, a new action is added into Focuster.","url":"2930-send-a-new-task-from-wrike-into-focuster","usedApps":["wrike","focuster"],"usage":1}

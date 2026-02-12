@@ -1,0 +1,1 @@
+{"id":7117,"name":"Add a new Mailchimp subscribers to Trustmary as a new contacts","description":"Every time there's a new subscriber in Mailchimp, Make will automatically create a new contact in Trustmary.","url":"7117-add-a-new-mailchimp-subscribers-to-trustmary-as-a-new-contacts","usedApps":["mailchimp","trustmary"],"usage":1}

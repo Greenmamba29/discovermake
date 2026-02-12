@@ -1,0 +1,1 @@
+{"id":8254,"name":"Send Telegram messages for new Tumblr text posts","description":"Make will watch your Tumblr text posts at regular intervals and send them to your Telegram.","url":"8254-send-telegram-messages-for-new-tumblr-text-posts","usedApps":["tumblr","telegram"],"usage":13}

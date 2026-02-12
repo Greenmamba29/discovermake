@@ -1,0 +1,1 @@
+{"id":13087,"name":"Send automated replies to messages using ChatGPT and Line","description":"Automatically respond to incoming Line messages using ChatGPT. Enhance customer interaction by generating AI-driven replies and sending them via Line.","url":"13087-send-automated-replies-to-messages-using-chatgpt-and-line","usedApps":["line","openai-gpt-3"],"usage":1311}

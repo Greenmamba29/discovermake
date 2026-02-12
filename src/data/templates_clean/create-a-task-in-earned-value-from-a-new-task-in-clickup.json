@@ -1,0 +1,1 @@
+{"id":4112,"name":"Create a task in Earned Value from a new task in ClickUp","description":"When a new task is created in ClickUp, a new task is created in Earned Value. the task budget may be mapped from a custom field in ClickUp.","url":"4112-create-a-task-in-earned-value-from-a-new-task-in-clickup","usedApps":["clickup","earned-value"],"usage":2}

@@ -1,0 +1,1 @@
+{"id":4270,"name":"Send email when an item in Webflow is below a minimal inventory level","description":"When an item decreases under a minimal inventory level in Webflow, an e-mail is sent to Gmail.","url":"4270-send-email-when-an-item-in-webflow-is-below-a-minimal-inventory-level","usedApps":["webflow","util","google-email"],"usage":77}

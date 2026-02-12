@@ -1,0 +1,1 @@
+{"id":8007,"name":"Create Airtable records for new Tally responses","description":"Make will watch your Tally responses at regular intervals and create records in your Airtable . Here's a [table](https://airtable.com/shr9hrZo851pmW3MS) used in this scenario.","url":"8007-create-airtable-records-for-new-tally-responses","usedApps":["tally","airtable"],"usage":417}

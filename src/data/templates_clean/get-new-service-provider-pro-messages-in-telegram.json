@@ -1,0 +1,1 @@
+{"id":8051,"name":"Get new Service Provider Pro messages in Telegram","description":"Every time there is a new message in Service Provider Pro, Make will automatically send this message to Telegram Bot.","url":"8051-get-new-service-provider-pro-messages-in-telegram","usedApps":["service-provider-pro","telegram"],"usage":2}

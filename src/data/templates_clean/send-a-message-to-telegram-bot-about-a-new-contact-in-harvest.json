@@ -1,0 +1,1 @@
+{"id":2993,"name":"Send a message to Telegram Bot about a new contact in Harvest","description":"When a new contact is created in Harvest, a new message about this event is sent to Telegram Bot.","url":"2993-send-a-message-to-telegram-bot-about-a-new-contact-in-harvest","usedApps":["harvest","telegram"],"usage":0}

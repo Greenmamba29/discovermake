@@ -1,0 +1,1 @@
+{"id":7750,"name":"Add new Stripe customers to UniSender contact list","description":"Every time a new customer is created in Stripe, Make will automatically add that customer to UniSender contact list.","url":"7750-add-new-stripe-customers-to-unisender-contact-list","usedApps":["stripe","unisender"],"usage":3}

@@ -1,0 +1,1 @@
+{"id":4979,"name":"Add user to segment based on new input from Chatforma","description":"Every time a new user input is received from Chatforma, Make will automatically add the user to the specified segment.\n","url":"4979-add-user-to-segment-based-on-new-input-from-chatforma","usedApps":["chatforma","chatforma"],"usage":0}

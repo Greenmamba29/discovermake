@@ -1,0 +1,1 @@
+{"id":11451,"name":"Create Trello cards from new Telegram messages","description":"Automatically add a new card to a Trello board every time there is a new Telegram message.","url":"2119-create-trello-cards-from-new-telegram-messages","usedApps":["telegram","trello"],"usage":983}

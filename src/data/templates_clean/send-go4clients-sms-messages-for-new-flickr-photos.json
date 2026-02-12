@@ -1,0 +1,1 @@
+{"id":4553,"name":"Send Go4Clients SMS messages for new Flickr photos","description":"Every time a new photo is added to a watched album in Flickr, Make will automatically send a SMS messages via Go4Clients ","url":"4553-send-go4clients-sms-messages-for-new-flickr-photos","usedApps":["flickr","go4clients"],"usage":0}

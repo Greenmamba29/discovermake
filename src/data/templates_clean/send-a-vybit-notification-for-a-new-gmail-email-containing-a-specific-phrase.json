@@ -1,0 +1,1 @@
+{"id":5238,"name":"Send a Vybit notification for a new Gmail email containing a specific phrase","description":"Every time you receive an email in Gmail that contains a specific phrase, Make will automatically send a Vybit notification.","url":"5238-send-a-vybit-notification-for-a-new-gmail-email-containing-a-specific-phrase","usedApps":["google-email","vybit"],"usage":8}

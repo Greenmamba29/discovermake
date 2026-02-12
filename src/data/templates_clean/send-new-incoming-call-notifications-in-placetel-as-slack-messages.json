@@ -1,0 +1,1 @@
+{"id":7348,"name":"Send new incoming call notifications in Placetel as Slack messages","description":"Every time a new incoming call is created in Placetel, Make will automatically send a notification message in Slack.","url":"7348-send-new-incoming-call-notifications-in-placetel-as-slack-messages","usedApps":["placetel","slack"],"usage":7}

@@ -1,0 +1,1 @@
+{"id":8222,"name":"Add Sendlane contacts for new Amazon SES contacts","description":"Make will watch your Amazon SES contacts at regular intervals and add them to your Sendlane.","url":"8222-add-sendlane-contacts-for-new-amazon-ses-contacts","usedApps":["amazon-ses","sendlane"],"usage":1}

@@ -1,0 +1,1 @@
+{"id":4526,"name":"Send email with data from a new order in Shopify","description":"When a new order is created in Shopify, a new e-mail with data from the order is sent by Go4clients Drips. The data are structured into tables using HTML tags.","url":"4526-send-email-with-data-from-a-new-order-in-shopify","usedApps":["shopify","go4clients"],"usage":5}

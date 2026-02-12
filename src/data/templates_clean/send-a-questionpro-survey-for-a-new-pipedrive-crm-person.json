@@ -1,0 +1,1 @@
+{"id":5110,"name":"Send a QuestionPro survey for a new Pipedrive CRM person","description":"Every time a new person is added to Pipedrive CRM, Make will automatically send a QuestionPro survey to the specified email address.","url":"5110-send-a-questionpro-survey-for-a-new-pipedrive-crm-person","usedApps":["pipedrive","questionpro"],"usage":0}

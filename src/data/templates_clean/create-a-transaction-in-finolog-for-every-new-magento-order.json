@@ -1,0 +1,1 @@
+{"id":5662,"name":"Create a transaction in Finolog for every new Magento order","description":"Every time a new Magento order is received, Make will automatically create a transaction in Finolog.","url":"5662-create-a-transaction-in-finolog-for-every-new-magento-order","usedApps":["magento2","finolog"],"usage":3}

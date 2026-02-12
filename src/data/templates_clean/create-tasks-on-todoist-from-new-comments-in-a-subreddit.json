@@ -1,0 +1,1 @@
+{"id":6009,"name":"Create tasks on Todoist from new comments in a subreddit","description":"When there are new comments added in a subreddit, Make will automatically retrieve the comments and create tasks on Todoist.","url":"6009-create-tasks-on-todoist-from-new-comments-in-a-subreddit","usedApps":["reddit","todoist"],"usage":15}

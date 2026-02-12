@@ -1,0 +1,1 @@
+{"id":8012,"name":"Create Freshdesk tickets for negative Judge.me reviews","description":"Every time a negative review is added to your Judge.me, Make will automatically create a Freshdesk ticket out of it.","url":"8012-create-freshdesk-tickets-for-negative-judge-me-reviews","usedApps":["judge-me","freshdesk"],"usage":4}

@@ -1,0 +1,1 @@
+{"id":3728,"name":"Create Front contacts from Custom Webhooks and add them to groups","description":"Every time a new custom webhook is triggered, Make will automatically create a new contact on Front and send a message to that contact using Front.","url":"3728-create-front-contacts-from-custom-webhooks-and-add-them-to-groups","usedApps":["gateway","front"],"usage":1}

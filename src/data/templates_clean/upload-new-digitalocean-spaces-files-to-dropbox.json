@@ -1,0 +1,1 @@
+{"id":7215,"name":"Upload new DigitalOcean Spaces files to Dropbox","description":"Every time there is a new file in a DigitalOcean space, Make will automatically download it and upload to Dropbox.","url":"7215-upload-new-digitalocean-spaces-files-to-dropbox","usedApps":["digitalocean-spaces","dropbox"],"usage":3}

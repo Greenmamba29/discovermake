@@ -1,0 +1,1 @@
+{"id":1077,"name":"Send push notifications via Apple Safari for new Wufoo form entries","description":"Every time someone fills out a selected Wufoo form, Make will automatically send a push notification via Apple Safari.","url":"1077-send-push-notifications-via-apple-safari-for-new-wufoo-form-entries","usedApps":["safari","wufoo"],"usage":1}

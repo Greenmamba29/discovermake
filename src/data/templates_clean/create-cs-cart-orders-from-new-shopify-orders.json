@@ -1,0 +1,1 @@
+{"id":7782,"name":"Create CS-Cart orders from new Shopify orders","description":"Make will watch your Shopify orders at regular intervals and create CS-Cart orders. If a product doesn't exist in CS-Cart, it will be created.","url":"7782-create-cs-cart-orders-from-new-shopify-orders","usedApps":["shopify","builtin","cs-cart"],"usage":6}

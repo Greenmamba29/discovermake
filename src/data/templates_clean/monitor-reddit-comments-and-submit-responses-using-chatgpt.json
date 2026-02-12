@@ -1,0 +1,1 @@
+{"id":15070,"name":"Monitor Reddit comments and submit responses using ChatGPT","description":"Automatically monitor Reddit comments in specific subreddits, generate responses using ChatGPT, and submit them back to Reddit, enhancing engagement.","url":"15070-monitor-reddit-comments-and-submit-responses-using-chatgpt","usedApps":["reddit","openai-gpt-3"],"usage":125}

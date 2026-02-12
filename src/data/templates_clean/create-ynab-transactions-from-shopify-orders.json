@@ -1,0 +1,1 @@
+{"id":4595,"name":"Create YNAB transactions from Shopify orders","description":"Every time a new Shopify order is created, Make will automatically create a new transaction in YNAB.","url":"4595-create-ynab-transactions-from-shopify-orders","usedApps":["shopify","ynab"],"usage":5}

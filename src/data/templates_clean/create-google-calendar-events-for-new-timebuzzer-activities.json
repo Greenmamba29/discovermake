@@ -1,0 +1,1 @@
+{"id":6479,"name":"Create Google Calendar events for new timeBuzzer activities","description":"Every time you create a new timeBuzzer activity, Make will automatically add that activity to a selected Google Calendar as an event.","url":"6479-create-google-calendar-events-for-new-timebuzzer-activities","usedApps":["timebuzzer","builtin","util","google-calendar"],"usage":12}

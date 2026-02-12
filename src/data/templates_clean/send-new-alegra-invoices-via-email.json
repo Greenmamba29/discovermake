@@ -1,0 +1,1 @@
+{"id":5169,"name":"Send new Alegra invoices via Email","description":"Whenever you have a new invoice on your Alegra account, Make will automatically send an email message to a specified email address.","url":"5169-send-new-alegra-invoices-via-email","usedApps":["alegra","email"],"usage":13}

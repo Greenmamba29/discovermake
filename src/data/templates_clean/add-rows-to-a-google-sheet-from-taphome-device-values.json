@@ -1,0 +1,1 @@
+{"id":4723,"name":"Add rows to a Google Sheet from Taphome device values","description":"Every time a Taphome device switches state or changes value, Make will automatically add a row to a Google Sheet spreadsheet.","url":"4723-add-rows-to-a-google-sheet-from-taphome-device-values","usedApps":["taphome","google-sheets"],"usage":12}

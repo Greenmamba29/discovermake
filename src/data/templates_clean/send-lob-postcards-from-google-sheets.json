@@ -1,0 +1,1 @@
+{"id":4309,"name":"Send Lob postcards from Google Sheets","description":"Every time a new Google Sheets row is added, Make will automatically send a postcard to the person in the sheet using Lob and update the row in the sheet.","url":"4309-send-lob-postcards-from-google-sheets","usedApps":["google-sheets","lob"],"usage":8}

@@ -1,0 +1,1 @@
+{"id":6885,"name":"Send new photos from a new post in Facebook group to Nextcloud","description":"When a new post is posted in a specified group in Facebook and this post contains photos, they are uploaded to Nextcloud.","url":"6885-send-new-photos-from-a-new-post-in-facebook-group-to-nextcloud","usedApps":["facebook-groups","http","nextcloud"],"usage":7}

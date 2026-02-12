@@ -1,0 +1,1 @@
+{"id":4143,"name":"Save new Celestory messages to Google Sheets","description":"Every time a new Celestory message is sent, Make will automatically add its content to Google Sheets.","url":"4143-save-new-celestory-messages-to-google-sheets","usedApps":["celestory","google-sheets"],"usage":1}

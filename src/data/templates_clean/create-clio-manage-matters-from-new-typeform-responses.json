@@ -1,0 +1,1 @@
+{"id":8170,"name":"Create Clio Manage matters from new Typeform responses","description":"Make will watch for new Typeform responses at regular intervals, create a contact in Clio Manage, then create a matter using information received.","url":"8170-create-clio-manage-matters-from-new-typeform-responses","usedApps":["typeform","clio-manage"],"usage":7}

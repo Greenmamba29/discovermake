@@ -1,0 +1,1 @@
+{"id":9021,"name":"Upload new Bannerbear images to Flickr","description":"Every time a new image is created in Bannerbear, Make will automatically upload that image to a Flickr photoset you specify.","url":"9021-upload-new-bannerbear-images-to-flickr","usedApps":["bannerbear","http","flickr"],"usage":10}

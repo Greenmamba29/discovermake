@@ -1,0 +1,1 @@
+{"id":6638,"name":"Add new Zoom chat channel events to a Google Sheet","description":"When you have a new Zoom chat channel event, this scenario instantly receives the details and adds it to a Google Sheet.","url":"6638-add-new-zoom-chat-channel-events-to-a-google-sheet","usedApps":["zoom","google-sheets"],"usage":10}

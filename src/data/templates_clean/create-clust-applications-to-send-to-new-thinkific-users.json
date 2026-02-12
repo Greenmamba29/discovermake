@@ -1,0 +1,1 @@
+{"id":8733,"name":"Create Clust applications to send to new Thinkific users","description":"Every time there is a new Thinkific user created, Make will automatically create a Clust application using information received.","url":"8733-create-clust-applications-to-send-to-new-thinkific-users","usedApps":["thinkific","clust"],"usage":4}

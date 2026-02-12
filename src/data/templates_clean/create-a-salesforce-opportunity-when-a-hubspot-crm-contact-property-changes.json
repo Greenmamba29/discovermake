@@ -1,0 +1,1 @@
+{"id":6001,"name":"Create a Salesforce opportunity when a HubSpot CRM contact property changes","description":"Every time a HubSpot CRM contact property changes, Make will automatically create a Salesforce opportunity. ","url":"6001-create-a-salesforce-opportunity-when-a-hubspot-crm-contact-property-changes","usedApps":["hubspotcrm","salesforce"],"usage":3}

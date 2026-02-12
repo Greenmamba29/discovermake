@@ -1,0 +1,1 @@
+{"id":6667,"name":"Add Mailchimp subscribers for new Moneybird contacts","description":"Every time there is a new Moneybird contact, Make will automatically add a new subcriber to Mailchimp.","url":"6667-add-mailchimp-subscribers-for-new-moneybird-contacts","usedApps":["moneybird","mailchimp"],"usage":6}

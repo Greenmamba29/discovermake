@@ -1,0 +1,1 @@
+{"id":1723,"name":"Send messages via Gmail for new Google Forms responses","description":"Every time this scenario is run, Make will automatically send an email via Gmail with the summary of your Google form responses.","url":"1723-send-messages-via-gmail-for-new-google-forms-responses","usedApps":["google-forms","util","google-email"],"usage":1013}

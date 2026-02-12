@@ -1,0 +1,1 @@
+{"id":7578,"name":"Add new Productboard features as tasks in Asana","description":"Every time a new feature is created in Productboard, Make will automatically create a new task on Asana.","url":"7578-add-new-productboard-features-as-tasks-in-asana","usedApps":["productboard","asana"],"usage":2}

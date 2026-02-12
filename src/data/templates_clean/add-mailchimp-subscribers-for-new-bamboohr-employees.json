@@ -1,0 +1,1 @@
+{"id":7328,"name":"Add Mailchimp subscribers for new BambooHR employees","description":"Every time an employee is added to your BambooHR, Make will add them to your Mailchimp as a subscriber.","url":"7328-add-mailchimp-subscribers-for-new-bamboohr-employees","usedApps":["bamboohr","mailchimp"],"usage":4}

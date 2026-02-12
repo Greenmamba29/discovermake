@@ -1,0 +1,1 @@
+{"id":4205,"name":"Send Chrome push notifications for new Salesmate deals","description":"Every time a new deal is created in Salesmate CRM, Make will automatically send a push notification to a specified Google Chrome browser.","url":"4205-send-chrome-push-notifications-for-new-salesmate-deals","usedApps":["salesmate","chrome"],"usage":0}

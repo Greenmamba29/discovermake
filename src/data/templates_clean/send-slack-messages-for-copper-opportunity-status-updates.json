@@ -1,0 +1,1 @@
+{"id":1750,"name":"Send Slack messages for Copper opportunity status updates","description":"Every time an opportunity changes its status on Copper, Make will automatically send a message in Slack.","url":"1750-send-slack-messages-for-copper-opportunity-status-updates","usedApps":["prosperworks","slack"],"usage":7}

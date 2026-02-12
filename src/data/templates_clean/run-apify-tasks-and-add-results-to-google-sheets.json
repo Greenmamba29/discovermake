@@ -1,0 +1,1 @@
+{"id":13576,"name":"Run Apify tasks and add results to Google Sheets","description":"Automatically run Apify tasks and fetch results to update Google Sheets. Streamline data processing by integrating Apify and Google Sheets for real-time insights.","url":"13576-run-apify-tasks-and-add-results-to-google-sheets","usedApps":["apify","google-sheets"],"usage":225}

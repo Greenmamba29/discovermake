@@ -1,0 +1,1 @@
+{"id":5850,"name":"Create MOCO project tasks from new Trello cards","description":"Every time a new card is added in Trello to a specific Board, Make will automatically create a new task to a selected Project in MOCO.","url":"5850-create-moco-project-tasks-from-new-trello-cards","usedApps":["trello","moco"],"usage":10}

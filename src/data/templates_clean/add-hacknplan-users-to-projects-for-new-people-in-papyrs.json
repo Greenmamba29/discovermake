@@ -1,0 +1,1 @@
+{"id":7182,"name":"Add HacknPlan users to projects for new people in Papyrs","description":"Every time a new person is added to your Papyrs, Make will send an invitation by email for them to join your HacknPlan project.","url":"7182-add-hacknplan-users-to-projects-for-new-people-in-papyrs","usedApps":["papyrs","hacknplan"],"usage":1}

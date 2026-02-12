@@ -1,0 +1,1 @@
+{"id":7197,"name":"Get daily currency rates from ČNB to Mailgun","description":"Make will retrieve relevant currency rates on koruna česká on schedule which you can set up yourself and send it to recipients via your Mailgun.","url":"7197-get-daily-currency-rates-from-cnb-to-mailgun","usedApps":["kurzy-cnb","util","mailgun"],"usage":3}

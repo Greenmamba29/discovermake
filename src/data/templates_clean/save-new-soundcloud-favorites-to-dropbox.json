@@ -1,0 +1,1 @@
+{"id":5541,"name":"Save new SoundCloud favorites to Dropbox","description":"This automation grabs all your new favorite tracks from SoundCloud and uploads them directly to a folder in Dropbox for you.","url":"5541-save-new-soundcloud-favorites-to-dropbox","usedApps":["soundcloud","dropbox"],"usage":33}

@@ -1,0 +1,1 @@
+{"id":2556,"name":"Send RingCentral SMS messages for new Shopify orders","description":"Every time a new order is created in Shopify, Make will automatically send an SMS message via RingCentral.","url":"2556-send-ringcentral-sms-messages-for-new-shopify-orders","usedApps":["shopify","ringcentral"],"usage":5}

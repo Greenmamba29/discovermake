@@ -1,0 +1,1 @@
+{"id":3931,"name":"Send new Wave invoices to Databox","description":"Whenever you create a new invoice in Wave, Make will automatically that invoice data to Databox for further reporting.","url":"3931-send-new-wave-invoices-to-databox","usedApps":["wave","databox"],"usage":8}

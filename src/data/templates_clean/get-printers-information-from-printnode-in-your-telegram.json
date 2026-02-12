@@ -1,0 +1,1 @@
+{"id":6515,"name":"Get printers information from Printnode in your Telegram","description":"Every time your Telegram bot receieves a message, information on printers that are in your PrintNode will be sent.","url":"6515-get-printers-information-from-printnode-in-your-telegram","usedApps":["telegram","printnode"],"usage":4}

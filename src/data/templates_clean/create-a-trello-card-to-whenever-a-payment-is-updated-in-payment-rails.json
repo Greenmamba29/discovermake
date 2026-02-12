@@ -1,0 +1,1 @@
+{"id":5619,"name":"Create a Trello card to whenever a payment is updated in Payment Rails","description":"Every time a payment status in Payment Rails is updated, Make will automatically create a new card in Trello.","url":"5619-create-a-trello-card-to-whenever-a-payment-is-updated-in-payment-rails","usedApps":["payment-rails","trello"],"usage":3}

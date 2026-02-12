@@ -1,0 +1,1 @@
+{"id":4991,"name":"Send message to specified Telegram channel for new Clubhouse story","description":"Every time a new story is created in Clubhouse, Make will automatically send a message to the specified Telegram channel/group.","url":"4991-send-message-to-specified-telegram-channel-for-new-clubhouse-story","usedApps":["clubhouse","telegram"],"usage":13}

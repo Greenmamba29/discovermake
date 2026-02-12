@@ -1,0 +1,1 @@
+{"id":4147,"name":"Create Teamwork Desk customers from Microsoft 365 People contacts","description":"Every time a new Microsoft 365 People contact is added, Make will automatically create a new customer in Teamwork Desk.","url":"4147-create-teamwork-desk-customers-from-microsoft-365-people-contacts","usedApps":["microsoft-people","teamwork-desk"],"usage":1}

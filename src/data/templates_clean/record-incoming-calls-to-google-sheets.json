@@ -1,0 +1,1 @@
+{"id":10121,"name":"Record Incoming Calls to Google Sheets","description":"Create a log in Google Sheets spreadsheet, when a new call is received in Telnyx.","url":"10121-record-incoming-calls-to-google-sheets","usedApps":["telnyx","google-sheets"],"usage":19}

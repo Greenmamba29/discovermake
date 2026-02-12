@@ -1,0 +1,1 @@
+{"id":6892,"name":"Send a Discord message for a new Dropbox file","description":"Use this template to automatically send a Discord message when a new Dropbox file is uploaded.","url":"6892-send-a-discord-message-for-a-new-dropbox-file","usedApps":["dropbox","discord"],"usage":33}

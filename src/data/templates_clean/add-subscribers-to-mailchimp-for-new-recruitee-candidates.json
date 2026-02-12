@@ -1,0 +1,1 @@
+{"id":7156,"name":"Add subscribers to Mailchimp for new Recruitee candidates","description":"Every time a new candidate aplied for a job in Recruitee, Make will automatically add a new subscriber to a Mailchimp mailing list.","url":"7156-add-subscribers-to-mailchimp-for-new-recruitee-candidates","usedApps":["recruitee","mailchimp"],"usage":1}

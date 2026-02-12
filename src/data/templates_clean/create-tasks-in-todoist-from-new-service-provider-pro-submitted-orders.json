@@ -1,0 +1,1 @@
+{"id":8048,"name":"Create tasks in Todoist from new Service Provider Pro submitted orders","description":"Every time there is a new order in Service Provider Pro, Make will automatically create a task in Todoist using information received.","url":"8048-create-tasks-in-todoist-from-new-service-provider-pro-submitted-orders","usedApps":["service-provider-pro","todoist"],"usage":2}

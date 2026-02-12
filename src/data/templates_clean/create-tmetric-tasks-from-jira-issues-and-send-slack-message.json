@@ -1,0 +1,1 @@
+{"id":4459,"name":"Create TMetric tasks from JIRA issues and send Slack message","description":"Every time a new issue is created in JIRA, Make will automatically create a new TMetric task and notify a user with Slack.","url":"4459-create-tmetric-tasks-from-jira-issues-and-send-slack-message","usedApps":["jira","tmetric","slack"],"usage":18}

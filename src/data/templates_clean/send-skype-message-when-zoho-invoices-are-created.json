@@ -1,0 +1,1 @@
+{"id":3684,"name":"Send Skype message when Zoho Invoices are created","description":"Every time a new invoice is created on Zoho Invoice, Make will automatically send a Skype message.","url":"3684-send-skype-message-when-zoho-invoices-are-created","usedApps":["zoho-invoice","skype"],"usage":1}

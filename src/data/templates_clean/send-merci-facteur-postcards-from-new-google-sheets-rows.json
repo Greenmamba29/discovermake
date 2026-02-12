@@ -1,0 +1,1 @@
+{"id":8518,"name":"Send Merci Facteur postcards from new Google Sheets rows","description":"Every time a new row is added to your Google Sheets spreadsheet, Make will automatically send a Merci Facteur postcard for it.","url":"8518-send-merci-facteur-postcards-from-new-google-sheets-rows","usedApps":["google-sheets","merci-facteur"],"usage":2}

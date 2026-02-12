@@ -1,0 +1,1 @@
+{"id":13426,"name":"Send data from a custom webhook to your app using HTTP","description":"Automatically send data from a custom webhook to a Basic Feeder and trigger an HTTP action. Streamline data flow and automate actions effortlessly.","url":"13426-send-data-from-a-custom-webhook-to-your-app-using-http","usedApps":["gateway","builtin","http"],"usage":7}

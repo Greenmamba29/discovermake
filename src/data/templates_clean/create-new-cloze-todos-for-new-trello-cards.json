@@ -1,0 +1,1 @@
+{"id":9143,"name":"Create new Cloze ToDos for new Trello cards","description":"Every time a new card is created in a specified Trello board,  Make will automatically create a new ToDo in Cloze.","url":"9143-create-new-cloze-todos-for-new-trello-cards","usedApps":["trello","cloze"],"usage":2}

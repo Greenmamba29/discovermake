@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Workflow Detail View</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13a4ec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101c22",
+                        "surface-dark": "#192b33",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "3xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .ios-blur { backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white pb-20">
+<nav class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between p-4 pointer-events-none">
+<button class="pointer-events-auto size-10 rounded-full bg-black/20 dark:bg-white/10 backdrop-blur-md flex items-center justify-center text-white">
+<span class="material-symbols-outlined">arrow_back_ios_new</span>
+</button>
+<button class="pointer-events-auto size-10 rounded-full bg-black/20 dark:bg-white/10 backdrop-blur-md flex items-center justify-center text-white">
+<span class="material-symbols-outlined">share</span>
+</button>
+</nav>
+<section class="relative w-full aspect-[4/3] bg-slate-200 dark:bg-slate-800 overflow-hidden">
+<img alt="High-end dashboard interface" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeOmHCcF-imom74dV_TPQVN1cYFmcausQNo4oR9NYyxi0rUfYqmr93ajneqvRTRunAPODqt-yDp2vtPmhWPflh56StSEuCKR1bJ018mi82U8ofU8C4lx9_tbdnQrz9iGId9QBdOHcX3QgQi5kz4rxGlx58F_AUhbdQnW4RrI90QbWIldtnI6vp1cAx9EpHTcJ_M_37rMBCP-TGGlocEeBnGrUmSWDMkWE_3w_GlN4Ui4wIMoQVhUUxXLQlr7GE1RPDPK6d3bRgYvc"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background-dark/80 via-transparent to-transparent"></div>
+<div class="absolute bottom-6 left-1/2 -translate-x-1/2 w-full px-6">
+<button class="w-full h-14 bg-primary text-white font-bold rounded-2xl shadow-xl shadow-primary/30 flex items-center justify-center gap-2 active:scale-95 transition-transform">
+<span class="material-symbols-outlined fill-1">bolt</span>
+                Remix this Workflow
+            </button>
+</div>
+</section>
+<main class="relative -mt-4 bg-background-light dark:bg-background-dark rounded-t-2xl px-5 pt-6 space-y-8">
+<div class="space-y-4">
+<div class="space-y-1">
+<div class="flex items-center gap-2 text-primary font-bold text-[10px] uppercase tracking-widest">
+<span class="material-symbols-outlined text-sm">verified</span> Verified Automation
+                </div>
+<h1 class="text-2xl font-bold leading-tight">Instant Support Weaver</h1>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<div class="bg-white dark:bg-surface-dark p-3 rounded-xl border border-slate-200 dark:border-slate-800">
+<p class="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase">Builds</p>
+<p class="text-sm font-semibold">Customer Support Agent</p>
+</div>
+<div class="bg-white dark:bg-surface-dark p-3 rounded-xl border border-slate-200 dark:border-slate-800">
+<p class="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase">For</p>
+<p class="text-sm font-semibold">E-commerce Teams</p>
+</div>
+<div class="bg-white dark:bg-surface-dark p-3 rounded-xl border border-slate-200 dark:border-slate-800">
+<p class="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase">Result</p>
+<p class="text-sm font-semibold text-green-500">30% faster resolution</p>
+</div>
+<div class="bg-white dark:bg-surface-dark p-3 rounded-xl border border-slate-200 dark:border-slate-800">
+<p class="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase">ETA</p>
+<p class="text-sm font-semibold">4 mins</p>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between py-4 border-y border-slate-200 dark:border-slate-800">
+<div class="text-center flex-1">
+<p class="text-lg font-bold">4.9</p>
+<div class="flex items-center justify-center gap-1 text-[10px] text-slate-500 font-bold uppercase">
+                    Outcome Score
+                </div>
+</div>
+<div class="w-px h-8 bg-slate-200 dark:bg-slate-800"></div>
+<div class="text-center flex-1">
+<p class="text-lg font-bold">5.2k</p>
+<div class="flex items-center justify-center gap-1 text-[10px] text-slate-500 font-bold uppercase">
+                    Deployed
+                </div>
+</div>
+<div class="w-px h-8 bg-slate-200 dark:bg-slate-800"></div>
+<div class="text-center flex-1">
+<p class="text-lg font-bold underline decoration-primary/30">128</p>
+<div class="flex items-center justify-center gap-1 text-[10px] text-slate-500 font-bold uppercase">
+                    Reviews
+                </div>
+</div>
+</div>
+<section class="space-y-3">
+<h3 class="text-xs font-bold text-slate-500 uppercase tracking-widest">Compatibility</h3>
+<div class="flex flex-wrap gap-2">
+<div class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-full border border-slate-200 dark:border-slate-700">
+<div class="size-4 bg-green-500 rounded-sm"></div>
+<span class="text-xs font-medium">GPT-4o</span>
+</div>
+<div class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-full border border-slate-200 dark:border-slate-700">
+<div class="size-4 bg-blue-500 rounded-sm"></div>
+<span class="text-xs font-medium">Zendesk</span>
+</div>
+<div class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-full border border-slate-200 dark:border-slate-700">
+<div class="size-4 bg-orange-500 rounded-sm"></div>
+<span class="text-xs font-medium">AWS</span>
+</div>
+</div>
+</section>
+<section class="space-y-4">
+<h3 class="text-xs font-bold text-slate-500 uppercase tracking-widest">What you'll get</h3>
+<div class="space-y-3">
+<div class="flex items-center gap-4 group">
+<div class="size-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined">code</span>
+</div>
+<div class="flex-1">
+<p class="text-sm font-semibold leading-none">Source code</p>
+<p class="text-[11px] text-slate-500 mt-1">Full access to Python &amp; Node logic</p>
+</div>
+</div>
+<div class="flex items-center gap-4 group">
+<div class="size-10 rounded-xl bg-purple-500/10 text-purple-500 flex items-center justify-center">
+<span class="material-symbols-outlined">dashboard_customize</span>
+</div>
+<div class="flex-1">
+<p class="text-sm font-semibold leading-none">UI components</p>
+<p class="text-[11px] text-slate-500 mt-1">Ready-to-use chat widget themes</p>
+</div>
+</div>
+<div class="flex items-center gap-4 group">
+<div class="size-10 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center">
+<span class="material-symbols-outlined">account_tree</span>
+</div>
+<div class="flex-1">
+<p class="text-sm font-semibold leading-none">Logic flow</p>
+<p class="text-[11px] text-slate-500 mt-1">Visual node architecture documentation</p>
+</div>
+</div>
+</div>
+</section>
+<section class="bg-slate-100 dark:bg-surface-dark/50 p-4 rounded-2xl border border-slate-200 dark:border-slate-800">
+<div class="flex justify-between items-center mb-2">
+<h3 class="text-xs font-bold text-slate-500 uppercase tracking-widest">Licensing</h3>
+<span class="text-[10px] font-bold px-2 py-0.5 bg-primary/20 text-primary rounded">COMMERCIAL</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-400 text-sm">token</span>
+<p class="text-sm font-medium">5 credits / run</p>
+</div>
+</section>
+<section class="pb-12">
+<h3 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">Developed by</h3>
+<div class="bg-white dark:bg-surface-dark p-4 rounded-2xl border border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-3">
+<div class="relative size-12 rounded-full overflow-hidden bg-slate-200">
+<img alt="Creator avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYpYH7c-gnJJ3LvRZYWh_D7-1wpcE8bGiHxxy-E7XmbZ55LGt43aVmYodHL2Wp2t7-Bn6PZjfFImSvZhewDtHUuFKa0vUyjvHjk5Lm90CypVmJ3KjqL_gc4N1Xs0KQ5YSXM-eGnGPaWq-16PYLxZOceHiUDs_Rdg6RUjOAJJV2lh4ajaLkvF_6m3Whk-WaHqUxDMKyJCJtt7LglrICPTNkFtHdUFkCnte0FKGgnujRDaMC-dogJXbTQPX_u_W_MG1EadqprHjxh3s"/>
+<div class="absolute bottom-0 right-0 size-4 bg-primary border-2 border-white dark:border-surface-dark rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-[8px] text-white font-bold">check</span>
+</div>
+</div>
+<div class="flex-1">
+<h4 class="font-bold text-sm">Flux Labs</h4>
+<p class="text-xs text-slate-500">Top 1% Creator • 42 Workflows</p>
+</div>
+<button class="text-primary text-xs font-bold">Follow</button>
+</div>
+<div class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+<p class="text-[11px] font-bold text-slate-400 uppercase">Other Popular</p>
+<div class="flex -space-x-2">
+<div class="size-6 rounded-lg bg-slate-800 border-2 border-white dark:border-surface-dark"></div>
+<div class="size-6 rounded-lg bg-slate-700 border-2 border-white dark:border-surface-dark"></div>
+<div class="size-6 rounded-lg bg-slate-600 border-2 border-white dark:border-surface-dark flex items-center justify-center text-[10px] font-bold">+5</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<footer class="fixed bottom-0 left-0 right-0 z-40 bg-white/90 dark:bg-background-dark/90 ios-blur border-t border-slate-200 dark:border-slate-800 p-4 pb-8">
+<div class="flex gap-3 max-w-md mx-auto">
+<button class="flex-1 h-12 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold text-sm border border-slate-300 dark:border-slate-700 active:scale-95 transition-transform">
+                Save
+            </button>
+<button class="flex-[2] h-12 rounded-xl bg-primary text-white font-bold text-sm shadow-lg shadow-primary/20 flex items-center justify-center gap-2 active:scale-95 transition-transform">
+                Deploy Now
+            </button>
+</div>
+</footer>
+<div class="fixed bottom-1 left-1/2 -translate-x-1/2 w-32 h-1.5 bg-slate-400/30 dark:bg-slate-700/50 rounded-full z-50"></div>
+
+</body></html>

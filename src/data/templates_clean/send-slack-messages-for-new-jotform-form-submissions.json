@@ -1,0 +1,1 @@
+{"id":1514,"name":"Send Slack messages for new Jotform form submissions","description":"Every time someone fills out your Jotform form, Make will automatically send a message in Slack.","url":"1514-send-slack-messages-for-new-jotform-form-submissions","usedApps":["jotform","slack"],"usage":77}

@@ -1,0 +1,1 @@
+{"id":3960,"name":"Send new Freshsales contacts to Databox","description":"If a new contact is created in your Freshsales account, Make will update a corresponding report in Databox.","url":"3960-send-new-freshsales-contacts-to-databox","usedApps":["freshsales","databox"],"usage":3}

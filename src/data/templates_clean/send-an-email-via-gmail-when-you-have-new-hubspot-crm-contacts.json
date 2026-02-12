@@ -1,0 +1,1 @@
+{"id":6672,"name":"Send an email via Gmail when you have new HubSpot CRM contacts","description":"When you add new contacts in HubSpot CRM, an email is sent through Gmail to the intended people like the contact, team members etc.","url":"6672-send-an-email-via-gmail-when-you-have-new-hubspot-crm-contacts","usedApps":["hubspotcrm","google-email"],"usage":272}

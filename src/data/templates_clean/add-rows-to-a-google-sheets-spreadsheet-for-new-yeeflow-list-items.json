@@ -1,0 +1,1 @@
+{"id":7510,"name":"Add rows to a Google Sheets spreadsheet for new Yeeflow list items","description":"Every time there is a new item created in a specified Yeeflow list, Make will automatically add a new row to a specified Google Sheets spreadsheet.","url":"7510-add-rows-to-a-google-sheets-spreadsheet-for-new-yeeflow-list-items","usedApps":["yeeflow","google-sheets"],"usage":2}

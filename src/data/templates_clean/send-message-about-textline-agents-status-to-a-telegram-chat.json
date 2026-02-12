@@ -1,0 +1,1 @@
+{"id":6176,"name":"Send message about Textline agents status to a Telegram chat","description":"Every time when a status of Textline agents changed, Make will automatically send a message to Telegram chat. ","url":"6176-send-message-about-textline-agents-status-to-a-telegram-chat","usedApps":["textline","util","telegram"],"usage":2}

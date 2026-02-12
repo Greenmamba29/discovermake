@@ -1,0 +1,1 @@
+{"id":3823,"name":"Send scheduled bookings from ScheduleOnce to Facebook Conversions API","description":"When a booking is received in ScheduleOnce, this event is sent to Facebook Conversions API as a new \"schedule\" event.","url":"3823-send-scheduled-bookings-from-scheduleonce-to-facebook-conversions-api","usedApps":["scheduleonce","facebook-conversions-api"],"usage":1}

@@ -1,0 +1,1 @@
+{"id":7983,"name":"Send an Email from new Deployments in New Relic","description":"Every time a new Deployment is received in New Relic, Make will automatically send an Email message.","url":"7983-send-an-email-from-new-deployments-in-new-relic","usedApps":["new-relic","email"],"usage":2}

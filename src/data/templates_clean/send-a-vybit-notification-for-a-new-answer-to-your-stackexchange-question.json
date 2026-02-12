@@ -1,0 +1,1 @@
+{"id":5242,"name":"Send a Vybit notification for a new answer to your StackExchange question","description":"Every time your StackExchange question is answered, Make will automatically send a Vybit notification.","url":"5242-send-a-vybit-notification-for-a-new-answer-to-your-stackexchange-question","usedApps":["stackexchange","vybit"],"usage":2}

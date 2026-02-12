@@ -1,0 +1,1 @@
+{"id":6648,"name":"Send messages in Slack for new task activities in Habitica","description":"Every time a task is modified in your Habitica, Make will send a message in your Slack with information on it's current state.","url":"6648-send-messages-in-slack-for-new-task-activities-in-habitica","usedApps":["habitica","slack"],"usage":7}

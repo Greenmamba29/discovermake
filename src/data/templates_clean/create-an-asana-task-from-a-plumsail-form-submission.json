@@ -1,0 +1,1 @@
+{"id":14595,"name":"Create an Asana task from a Plumsail form submission","description":"Automatically create an Asana task from new Plumsail form submissions. The task is generated with the form data.","url":"14595-create-an-asana-task-from-a-plumsail-form-submission","usedApps":["plumsail-forms","asana"],"usage":3}

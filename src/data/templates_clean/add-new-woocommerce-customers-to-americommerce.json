@@ -1,0 +1,1 @@
+{"id":8870,"name":"Add new WooCommerce customers to AmeriCommerce","description":"Every time a new customer is created in WooCommerce, Make will automatically create a new customer in AmeriCommerce.","url":"8870-add-new-woocommerce-customers-to-americommerce","usedApps":["woocommerce","americommerce"],"usage":2}

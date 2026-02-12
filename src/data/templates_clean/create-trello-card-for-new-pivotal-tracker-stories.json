@@ -1,0 +1,1 @@
+{"id":6368,"name":"Create Trello card for new Pivotal Tracker stories","description":"Every time a new Pivotal Tracker story is received, Make will automatically create a Trello card.","url":"6368-create-trello-card-for-new-pivotal-tracker-stories","usedApps":["pivotal-tracker","trello"],"usage":2}

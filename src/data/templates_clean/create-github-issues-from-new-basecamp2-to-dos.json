@@ -1,0 +1,1 @@
+{"id":243,"name":"Create GitHub issues from new Basecamp2 to-dos","description":"Every time a new issue is created on GitHub, Make  will automatically create a new to-do in Basecamp2.","url":"243-create-github-issues-from-new-basecamp2-to-dos","usedApps":["basecamp","github"],"usage":1}

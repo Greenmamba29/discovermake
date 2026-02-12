@@ -1,0 +1,1 @@
+{"id":1969,"name":"Create Xero invoices from ShipStation orders","description":"Every time a new order is created in ShipStation, Make will automatically create a new invoice in Xero.","url":"1969-create-xero-invoices-from-shipstation-orders","usedApps":["shipstation","xero","builtin","util"],"usage":44}

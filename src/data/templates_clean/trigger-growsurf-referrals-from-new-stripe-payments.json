@@ -1,0 +1,1 @@
+{"id":4497,"name":"Trigger GrowSurf referrals from new Stripe payments","description":"Every time a new charge is created in Stripe, Make will automatically trigger a new referral in GrowSurf.","url":"4497-trigger-growsurf-referrals-from-new-stripe-payments","usedApps":["stripe","growsurf"],"usage":12}

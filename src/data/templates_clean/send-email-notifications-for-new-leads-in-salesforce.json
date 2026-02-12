@@ -1,0 +1,1 @@
+{"id":5039,"name":"Send email notifications for new leads in Salesforce","description":"Whenever new leads are added in Salesforce, Make retrieves the leads and sends notifications to the selected recipient/s.","url":"5039-send-email-notifications-for-new-leads-in-salesforce","usedApps":["salesforce","google-email"],"usage":99}

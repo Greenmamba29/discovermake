@@ -1,0 +1,1 @@
+{"id":4111,"name":"Import Google Forms responses to EasyCSV","description":"Every time a new response is entered on your Google Form, Make will automatically create a CSV with all the responses. Then, the CSV file is saved in DropBox and imported in EasyCSV.","url":"4111-import-google-forms-responses-to-easycsv","usedApps":["google-forms","util","dropbox","easycsv"],"usage":36}

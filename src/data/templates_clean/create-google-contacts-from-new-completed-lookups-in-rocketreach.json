@@ -1,0 +1,1 @@
+{"id":8461,"name":"Create Google Contacts from new completed lookups in RocketReach","description":"Every time a new lookup has been completed in RocketReach, Make will automatically create a new contact in Google Contacts.","url":"8461-create-google-contacts-from-new-completed-lookups-in-rocketreach","usedApps":["rocketreach","google-contacts"],"usage":3}

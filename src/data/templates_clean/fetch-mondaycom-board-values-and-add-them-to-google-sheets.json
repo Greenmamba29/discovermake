@@ -1,0 +1,1 @@
+{"id":13523,"name":"Fetch Monday.com board values and add them to Google Sheets","description":"Automatically transfer Monday.com board values to Google Sheets. Keep your data synchronized by fetching and adding board details to your spreadsheet.","url":"13523-fetch-monday-com-board-values-and-add-them-to-google-sheets","usedApps":["monday","google-sheets"],"usage":87}

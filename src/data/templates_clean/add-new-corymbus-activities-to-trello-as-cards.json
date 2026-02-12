@@ -1,0 +1,1 @@
+{"id":5941,"name":"Add new Corymbus activities to Trello as cards","description":"Every time a new activity is created in Corymbus, Make will automatically create a new card in Trello.","url":"5941-add-new-corymbus-activities-to-trello-as-cards","usedApps":["corymbus","trello"],"usage":1}

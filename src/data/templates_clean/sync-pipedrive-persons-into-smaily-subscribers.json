@@ -1,0 +1,1 @@
+{"id":3237,"name":"Sync Pipedrive Persons into Smaily Subscribers","description":"When a new person event happens in Pipedrive CRM, a new subscriber is created or just updated in Smaily.","url":"3237-sync-pipedrive-persons-into-smaily-subscribers","usedApps":["pipedrive","builtin","smaily"],"usage":3}

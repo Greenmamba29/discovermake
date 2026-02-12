@@ -1,0 +1,1 @@
+{"id":7083,"name":"Add a new Mailchimp subscriber to Outseta as a new person","description":"Every time there's a new subscriber in Mailchimp, Make will automatically create a new person in Outseta.","url":"7083-add-a-new-mailchimp-subscriber-to-outseta-as-a-new-person","usedApps":["mailchimp","outseta"],"usage":3}

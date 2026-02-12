@@ -1,0 +1,1 @@
+{"id":2715,"name":"Add MailerLite subscribers from new Zoho Mail emails","description":"Every time a new email is received in a specific Zoho Mail folder, Make will automatically add a new subscriber to your MailerLite group.","url":"2715-add-mailerlite-subscribers-from-new-zoho-mail-emails","usedApps":["zoho-mail","mailerlite"],"usage":3}

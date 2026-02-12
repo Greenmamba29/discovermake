@@ -1,0 +1,1 @@
+{"id":6064,"name":"Create a Salesforce event from a new Zoom webinar","description":"Every time a Zoom webinar is created, Make will automatically create a new Salesforce event.","url":"6064-create-a-salesforce-event-from-a-new-zoom-webinar","usedApps":["zoom","salesforce"],"usage":5}

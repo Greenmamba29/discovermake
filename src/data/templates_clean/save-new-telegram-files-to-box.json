@@ -1,0 +1,1 @@
+{"id":8322,"name":"Save new Telegram files to Box","description":"Every time a new file is posted to your Telegram channel, Make will automatically save that file to a Box folder you specify.","url":"8322-save-new-telegram-files-to-box","usedApps":["telegram","box"],"usage":23}

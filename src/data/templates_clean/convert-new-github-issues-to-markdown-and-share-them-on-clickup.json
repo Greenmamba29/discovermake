@@ -1,0 +1,1 @@
+{"id":3806,"name":"Convert new GitHub issues to Markdown and share them on ClickUp","description":"Every time a new issue is added to GitHub, Make will automatically convert it to Markdown and create a related task in ClickUp.","url":"3806-convert-new-github-issues-to-markdown-and-share-them-on-clickup","usedApps":["github","markdown","clickup"],"usage":32}

@@ -1,0 +1,1 @@
+{"id":8549,"name":"Create QR codes for new Shopify products","description":"Generate a QR code and save it to a Google Drive folder when a new Shopify product is created.","url":"8549-create-qr-codes-for-new-shopify-products","usedApps":["shopify","barcode","google-drive"],"usage":55}

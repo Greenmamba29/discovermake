@@ -1,0 +1,1 @@
+{"id":9039,"name":"Send Vonage SMS messages for new WooCommerce orders","description":"Make will watch for new WooCommerce orders at regular intervals and send Vonage SMS messages to the specified number.","url":"9039-send-vonage-sms-messages-for-new-woocommerce-orders","usedApps":["woocommerce","vonage"],"usage":9}

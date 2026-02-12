@@ -1,0 +1,1 @@
+{"id":4080,"name":"Upload e-mail attachment to Docparser","description":"When an e-mail that has an attachment which meets specified criteria is received, that attachment is uploaded to Docparser.","url":"4080-upload-e-mail-attachment-to-docparser","usedApps":["email","docparser"],"usage":61}

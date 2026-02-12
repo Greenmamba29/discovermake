@@ -1,0 +1,1 @@
+{"id":5476,"name":"Share your Dropbox files in Slack","description":"Whenever you upload files to a folder in Dropbox, Make will download the files and send them as Slack messages.","url":"5476-share-your-dropbox-files-in-slack","usedApps":["dropbox","slack"],"usage":44}

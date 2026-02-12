@@ -1,0 +1,1 @@
+{"id":8714,"name":"Add records to Airtable for new Tars conversations","description":"Every time these is a new conversation in Tars, Make will automatically create a record in a specified table in Airtable.","url":"8714-add-records-to-airtable-for-new-tars-conversations","usedApps":["tars","builtin","airtable"],"usage":2}

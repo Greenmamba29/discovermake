@@ -1,0 +1,1 @@
+{"id":568,"name":"Send Gitter messages for new Flickr photos","description":"Every time a new photo is added to Flickr, Make will automatically send a message to a Gitter room of your choice.","url":"568-send-gitter-messages-for-new-flickr-photos","usedApps":["flickr","gitter"],"usage":0}

@@ -1,0 +1,1 @@
+{"id":5065,"name":"Retrieve RSS feed items and post it on Reddit","description":"This scenario watches for new RSS feed items, retrieves and posts the items in a subreddit of your choice.","url":"5065-retrieve-rss-feed-items-and-post-it-on-reddit","usedApps":["rss","reddit"],"usage":390}

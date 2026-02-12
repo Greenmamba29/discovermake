@@ -1,0 +1,1 @@
+{"id":5025,"name":"Send a Telegram message for new contracts in OfficeRnD","description":"Every time new contracts from OfficeRnD is received, Make will automatically send a message to the specified Telegram channel/group.","url":"5025-send-a-telegram-message-for-new-contracts-in-officernd","usedApps":["officernd","telegram"],"usage":2}

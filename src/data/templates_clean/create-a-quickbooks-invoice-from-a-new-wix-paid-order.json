@@ -1,0 +1,1 @@
+{"id":5704,"name":"Create a QuickBooks invoice from a new Wix paid order","description":"Every time there's a new Wix paid order, Make will automatically create a QuickBooks invoice (and a QuickBooks customer if it doesn't already exist).","url":"5704-create-a-quickbooks-invoice-from-a-new-wix-paid-order","usedApps":["wix","builtin","quickbooks"],"usage":48}

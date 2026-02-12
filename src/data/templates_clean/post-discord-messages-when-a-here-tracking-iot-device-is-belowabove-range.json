@@ -1,0 +1,1 @@
+{"id":8315,"name":"Post Discord messages when a HERE Tracking IoT device is below/above range","description":"Every time a HERE Tracking indicator reaches the specified range, Make will automatically post a message on Discord.","url":"8315-post-discord-messages-when-a-here-tracking-iot-device-is-below-above-range","usedApps":["here","discord"],"usage":2}

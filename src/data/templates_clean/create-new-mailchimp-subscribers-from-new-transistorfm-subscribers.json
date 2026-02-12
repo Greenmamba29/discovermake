@@ -1,0 +1,1 @@
+{"id":6909,"name":"Create new MailChimp subscribers from new Transistor.fm subscribers","description":"Every time a new subscriber is added in Transistor.fm, a new subscriber will be added into a MailChimp list.","url":"6909-create-new-mailchimp-subscribers-from-new-transistor-fm-subscribers","usedApps":["transistor-fm","mailchimp"],"usage":1}

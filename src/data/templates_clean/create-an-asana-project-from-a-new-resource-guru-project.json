@@ -1,0 +1,1 @@
+{"id":6143,"name":"Create an Asana project from a new Resource Guru project","description":"Every time a Resource Guru project is created, Make will automatically create an Asana project.","url":"6143-create-an-asana-project-from-a-new-resource-guru-project","usedApps":["resource-guru","asana"],"usage":1}

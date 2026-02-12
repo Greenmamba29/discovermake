@@ -1,0 +1,1 @@
+{"id":13205,"name":"Retrieve and add records to your datastore with HTTP actions","description":"Automatically retrieve records from your datastore, send data via HTTP, and add new records back to your datastore with this Make template.","url":"13205-retrieve-and-add-records-to-your-datastore-with-http-actions","usedApps":["datastore","http"],"usage":4}

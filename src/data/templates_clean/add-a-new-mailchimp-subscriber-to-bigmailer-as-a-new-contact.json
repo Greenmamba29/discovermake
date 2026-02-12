@@ -1,0 +1,1 @@
+{"id":6900,"name":"Add a new Mailchimp subscriber to BigMailer as a new contact","description":"Every time when a new subscriber is added to Mailchimp, Make will automatically create a new contact on BigMailer.","url":"6900-add-a-new-mailchimp-subscriber-to-bigmailer-as-a-new-contact","usedApps":["mailchimp","bigmailer"],"usage":2}

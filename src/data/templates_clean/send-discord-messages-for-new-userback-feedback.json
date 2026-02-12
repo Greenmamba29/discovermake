@@ -1,0 +1,1 @@
+{"id":7078,"name":"Send Discord messages for new Userback feedback","description":"Every time there is a new feedback sent via Userback, Make will automatically post a message in Discord.","url":"7078-send-discord-messages-for-new-userback-feedback","usedApps":["userback","builtin","util","discord"],"usage":6}

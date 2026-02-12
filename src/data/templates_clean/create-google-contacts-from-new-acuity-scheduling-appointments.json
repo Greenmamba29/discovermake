@@ -1,0 +1,1 @@
+{"id":2584,"name":"Create Google Contacts from new Acuity Scheduling appointments","description":"Every time a new appointment is scheduled in Acuity Scheduling, Make will automatically create a new contact in Google Contacts.","url":"2584-create-google-contacts-from-new-acuity-scheduling-appointments","usedApps":["acuity-scheduling","google-contacts"],"usage":36}

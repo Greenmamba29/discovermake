@@ -1,0 +1,1 @@
+{"id":6011,"name":"Create Trello cards from new Task in Breeze","description":"Every time a new Task is created in Breeze, Make will automatically add a new card to a Trello board of your choice.","url":"6011-create-trello-cards-from-new-task-in-breeze","usedApps":["breeze","trello"],"usage":2}

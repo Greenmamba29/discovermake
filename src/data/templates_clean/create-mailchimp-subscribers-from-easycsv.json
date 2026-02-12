@@ -1,0 +1,1 @@
+{"id":4103,"name":"Create MailChimp subscribers from EasyCSV","description":"Every time a new CSV import is performed via EasyCSV, Make will automatically create a new subscriber in MailChimp.","url":"4103-create-mailchimp-subscribers-from-easycsv","usedApps":["easycsv","mailchimp"],"usage":8}

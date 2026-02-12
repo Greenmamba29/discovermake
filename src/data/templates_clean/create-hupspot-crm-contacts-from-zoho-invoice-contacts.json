@@ -1,0 +1,1 @@
+{"id":3623,"name":"Create HupSpot CRM contacts from Zoho Invoice contacts","description":"Every time a new contact is created in Zoho Invoice, Make will automatically create a new HubSpot CRM contact.","url":"3623-create-hupspot-crm-contacts-from-zoho-invoice-contacts","usedApps":["zoho-invoice","hubspotcrm"],"usage":9}

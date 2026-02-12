@@ -1,0 +1,1 @@
+{"id":8637,"name":"Create FreeScout conversations from new Excel 365 rows","description":"Every time a new Microsoft Excel 365 row is added to your spreadsheet, Make will automatically create the corresponding conversation in FreeScout.","url":"8637-create-freescout-conversations-from-new-excel-365-rows","usedApps":["microsoft-excel","freescout"],"usage":3}

@@ -1,0 +1,1 @@
+{"id":8212,"name":"Get Slack messages for new chats in LiveChat","description":"Every time a new chat incoming in Livechat, Make will automatically send a message to a specified chat/channel in Slack. ","url":"8212-get-slack-messages-for-new-chats-in-livechat","usedApps":["livechat","slack"],"usage":5}

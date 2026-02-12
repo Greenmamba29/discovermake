@@ -1,0 +1,1 @@
+{"id":4453,"name":"Create TMetric time entries from Google Calender events","description":"Every time a new event is created in Google Calendar, Make will automatically create a new time entry in TMetric.","url":"4453-create-tmetric-time-entries-from-google-calender-events","usedApps":["google-calendar","tmetric"],"usage":19}

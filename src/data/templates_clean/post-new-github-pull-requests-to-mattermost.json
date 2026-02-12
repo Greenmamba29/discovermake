@@ -1,0 +1,1 @@
+{"id":6090,"name":"Post new GitHub pull requests to Mattermost","description":"Use this template to automatically post a Mattermost message when a GitHub pull request is created. ","url":"6090-post-new-github-pull-requests-to-mattermost","usedApps":["github","mattermost"],"usage":5}

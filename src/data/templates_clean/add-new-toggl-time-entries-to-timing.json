@@ -1,0 +1,1 @@
+{"id":8926,"name":"Add new Toggl time entries to Timing","description":"Make will watch for new Toggl time entries at regular intervals and create time entries in Timing using information received.","url":"8926-add-new-toggl-time-entries-to-timing","usedApps":["toggl","timing"],"usage":49}

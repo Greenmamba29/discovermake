@@ -1,0 +1,1 @@
+{"id":2444,"name":"Add new Shopify customers to SendGrid as recipients","description":"Every time a new customer is created in Shopify, Make will automatically add that customer to a selected SendGrid list.","url":"2444-add-new-shopify-customers-to-sendgrid-as-recipients","usedApps":["shopify","sendgrid"],"usage":6}

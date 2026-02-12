@@ -1,0 +1,1 @@
+{"id":7183,"name":"Send a Slack message for a new one time sale in Plug&Paid","description":"Every time a new one time sale is created in Plug&Paid, a new message containing sale details will be sent on Slack.","url":"7183-send-a-slack-message-for-a-new-one-time-sale-in-plug-paid","usedApps":["plug-paid","builtin","util","slack"],"usage":2}

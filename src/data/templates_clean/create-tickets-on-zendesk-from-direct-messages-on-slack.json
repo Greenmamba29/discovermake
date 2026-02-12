@@ -1,0 +1,1 @@
+{"id":5206,"name":"Create tickets on Zendesk from direct messages on Slack","description":"This integration retrieves direct messages on Slack and creates tickets from it on Zendesk.","url":"5206-create-tickets-on-zendesk-from-direct-messages-on-slack","usedApps":["slack","zendesk"],"usage":9}

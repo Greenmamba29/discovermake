@@ -1,0 +1,1 @@
+{"id":7797,"name":"Send Slack messages for new Myphoner winners","description":"Every time a lead becomes a winner in Myphoner, Make will automatically send a message containing information about this lead to Slack.","url":"7797-send-slack-messages-for-new-myphoner-winners","usedApps":["myphoner","slack"],"usage":2}

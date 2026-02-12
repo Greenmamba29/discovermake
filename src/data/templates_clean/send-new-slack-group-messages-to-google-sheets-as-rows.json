@@ -1,0 +1,1 @@
+{"id":12774,"name":"Send new Slack group messages to Google Sheets as rows","description":"Automatically log new Slack group messages into Google Sheets. Keep track of conversations by adding each message as a new row.","url":"12774-send-new-slack-group-messages-to-google-sheets-as-rows","usedApps":["slack","google-sheets"],"usage":31}

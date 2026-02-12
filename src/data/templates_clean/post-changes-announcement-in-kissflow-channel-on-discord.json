@@ -1,0 +1,1 @@
+{"id":6711,"name":"Post changes announcement in KissFlow channel on Discord","description":"Every time a channel announcement is created/updated in KissFlow, Make will automatically post it on your Discord server.","url":"6711-post-changes-announcement-in-kissflow-channel-on-discord","usedApps":["kissflow","discord"],"usage":3}

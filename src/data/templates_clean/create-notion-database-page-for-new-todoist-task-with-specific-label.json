@@ -1,0 +1,1 @@
+{"id":6112,"name":"Create Notion database page for new todoist task with specific label","description":"Retrieve a new task from Todoist, check if it has a specified label and if it does create a new Notion database page for it","url":"6112-create-notion-database-page-for-new-todoist-task-with-specific-label","usedApps":["todoist","builtin","notion"],"usage":2185}

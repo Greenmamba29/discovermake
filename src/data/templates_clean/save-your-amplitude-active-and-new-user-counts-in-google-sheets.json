@@ -1,0 +1,1 @@
+{"id":8921,"name":"Save your Amplitude active and new user counts in Google Sheets","description":"Make will watch for your Amplitude active and new user counts at regular intervals and send it to a specified Google Sheets spreadsheet.","url":"8921-save-your-amplitude-active-and-new-user-counts-in-google-sheets","usedApps":["amplitude","google-sheets"],"usage":11}

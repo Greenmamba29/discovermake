@@ -1,0 +1,1 @@
+{"id":5644,"name":"Send an opportunity from RD Station to Zoho CRM","description":"Every time an opportunity is created in RD Station Marketing, Make will automatically send it to Zoho CRM, creating a Lead at Zoho so you can add it to your sales funnel.","url":"5644-send-an-opportunity-from-rd-station-to-zoho-crm","usedApps":["rd-station","zohocrm"],"usage":12}

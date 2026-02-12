@@ -1,0 +1,1 @@
+{"id":5623,"name":"Add new SolarWinds Service Desk incidents to Trello as new cards","description":"Every time a new SolarWinds Service Desk incident is added, Make will automatically add a new card to Trello.","url":"5623-add-new-solarwinds-service-desk-incidents-to-trello-as-new-cards","usedApps":["solarwinds","trello"],"usage":2}

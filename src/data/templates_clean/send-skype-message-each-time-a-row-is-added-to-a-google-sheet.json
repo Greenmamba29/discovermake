@@ -1,0 +1,1 @@
+{"id":3328,"name":"Send Skype message each time a row is added to a Google Sheet","description":"Every time a new row is added to a Google Sheet, Make will automatically send a new message in Skype.","url":"3328-send-skype-message-each-time-a-row-is-added-to-a-google-sheet","usedApps":["google-sheets","skype"],"usage":84}

@@ -1,0 +1,1 @@
+{"id":3712,"name":"Send Android Push notifications for new G Suite users","description":"Every time a user is added to your G Suite organization, Make will automatically send a push notification to a specified Android device.","url":"3712-send-android-push-notifications-for-new-g-suite-users","usedApps":["google-g-suite","android"],"usage":14}

@@ -1,0 +1,1 @@
+{"id":175,"name":"Post Slack messages for new Basecamp 2 events","description":"Every time a new event is created in Basecamp 2, Make will automatically post a message to Slack.","url":"175-post-slack-messages-for-new-basecamp-2-events","usedApps":["basecamp","slack"],"usage":8}

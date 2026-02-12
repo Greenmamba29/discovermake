@@ -1,0 +1,1 @@
+{"id":2797,"name":"Add Autopilot contacts from new Acuity Scheduling appointments","description":"Every time a new appointment is scheduled in Acuity Scheduling, Make will automatically add a new contact to your Autopilot list.","url":"2797-add-autopilot-contacts-from-new-acuity-scheduling-appointments","usedApps":["acuity-scheduling","autopilot"],"usage":4}

@@ -1,0 +1,1 @@
+{"id":562,"name":"Create Disqus comments from new Gitter messages","description":"Every time a new message is posted to a watched room in Gitter, Make will automatically create a new comment in Disqus.","url":"562-create-disqus-comments-from-new-gitter-messages","usedApps":["disqus","gitter"],"usage":2}

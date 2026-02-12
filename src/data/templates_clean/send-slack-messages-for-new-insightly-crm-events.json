@@ -1,0 +1,1 @@
+{"id":775,"name":"Send Slack messages for new Insightly CRM events","description":"Every time a new event is added to Insightly CRM, Make will automatically send a message in Slack.","url":"775-send-slack-messages-for-new-insightly-crm-events","usedApps":["insightly","slack"],"usage":1}

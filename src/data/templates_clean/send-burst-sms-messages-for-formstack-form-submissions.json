@@ -1,0 +1,1 @@
+{"id":4705,"name":"Send Burst SMS messages for Formstack form submissions","description":"Every time a new form is submitted in Formstack, Make will automatically send an SMS using Burst SMS.","url":"4705-send-burst-sms-messages-for-formstack-form-submissions","usedApps":["formstack","burst-sms"],"usage":2}

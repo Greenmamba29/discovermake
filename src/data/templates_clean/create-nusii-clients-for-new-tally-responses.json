@@ -1,0 +1,1 @@
+{"id":8041,"name":"Create Nusii clients for new Tally responses","description":"Make will watch your Tally responses at regular intervals and create Nusii clients.","url":"8041-create-nusii-clients-for-new-tally-responses","usedApps":["tally","nusii"],"usage":3}

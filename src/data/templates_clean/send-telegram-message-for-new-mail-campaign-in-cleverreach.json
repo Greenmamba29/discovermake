@@ -1,0 +1,1 @@
+{"id":7259,"name":"Send Telegram message for new mail campaign in CleverReach","description":"Every time a new campaign is created in CleverReach, Make will automatically send a message in Telegram with campaigns details.","url":"7259-send-telegram-message-for-new-mail-campaign-in-cleverreach","usedApps":["cleverreach","telegram"],"usage":1}

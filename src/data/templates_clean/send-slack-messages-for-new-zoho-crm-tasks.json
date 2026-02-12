@@ -1,0 +1,1 @@
+{"id":615,"name":"Send Slack messages for new Zoho CRM tasks","description":"Every time a new task is created in Zoho CRM, Make will automatically send a message in Slack.","url":"615-send-slack-messages-for-new-zoho-crm-tasks","usedApps":["zohocrm","slack"],"usage":86}

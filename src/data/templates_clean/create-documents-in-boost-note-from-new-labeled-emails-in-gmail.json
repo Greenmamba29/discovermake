@@ -1,0 +1,1 @@
+{"id":7517,"name":"Create documents in Boost Note from new labeled emails in Gmail","description":"Every time you add a specific label to an email in Gmail, Make will automatically create a new document in Boost Note.","url":"7517-create-documents-in-boost-note-from-new-labeled-emails-in-gmail","usedApps":["google-email","boost-hub"],"usage":2}

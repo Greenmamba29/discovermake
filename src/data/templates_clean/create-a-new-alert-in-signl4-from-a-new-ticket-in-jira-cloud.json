@@ -1,0 +1,1 @@
+{"id":7438,"name":"Create a new alert in SIGNL4 from a new ticket in Jira Cloud","description":"Every time a new ticket is created in Jira Cloud, a new alert will be instantly created in SIGNL4.","url":"7438-create-a-new-alert-in-signl4-from-a-new-ticket-in-jira-cloud","usedApps":["jira","signl4"],"usage":8}

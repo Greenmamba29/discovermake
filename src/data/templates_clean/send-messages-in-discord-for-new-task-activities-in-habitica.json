@@ -1,0 +1,1 @@
+{"id":6647,"name":"Send messages in Discord for new task activities in Habitica","description":"Every time a task is modified in your Habitica, Make will post a message in your Discord with information on it's current state.","url":"6647-send-messages-in-discord-for-new-task-activities-in-habitica","usedApps":["habitica","discord"],"usage":26}

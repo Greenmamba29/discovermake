@@ -1,0 +1,1 @@
+{"id":5582,"name":"Creates an Alert in Opsgenie of new orders in Shopify","description":"Every time a new Shopify order is created, Make will automatically sends a new message alert to Opsgenie","url":"5582-creates-an-alert-in-opsgenie-of-new-orders-in-shopify","usedApps":["shopify","opsgenie"],"usage":3}

@@ -1,0 +1,1 @@
+{"id":8124,"name":"Create Authvia customers from new ActiveCampaign contacts","description":"Every time a new contact is created in ActiveCampaign, Make will automatically add that contact to Authvia as a new customer.","url":"8124-create-authvia-customers-from-new-activecampaign-contacts","usedApps":["activecampaign","authvia"],"usage":2}

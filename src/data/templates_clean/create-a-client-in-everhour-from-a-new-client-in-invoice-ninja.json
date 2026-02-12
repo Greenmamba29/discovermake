@@ -1,0 +1,1 @@
+{"id":5516,"name":"Create a client in Everhour from a new client in Invoice Ninja","description":"When a new client is added to Invoice Ninja, a new client is created in Everhour. Available only for type of Everhour account \"administrator\"","url":"5516-create-a-client-in-everhour-from-a-new-client-in-invoice-ninja","usedApps":["invoiceninja","everhour"],"usage":2}

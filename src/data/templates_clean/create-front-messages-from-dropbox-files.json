@@ -1,0 +1,1 @@
+{"id":3745,"name":"Create Front messages from Dropbox files","description":"Every time new files are added to Dropbox, Make will automatically send those files as attachments in a Front message.","url":"3745-create-front-messages-from-dropbox-files","usedApps":["dropbox","builtin","front"],"usage":22}

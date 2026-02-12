@@ -1,0 +1,1 @@
+{"id":3175,"name":"Send a message about a new presentation in Google Slides to Slack","description":"In specified intervals, Make checks whether there is a new presentation in Google Drive. If so, a message about this event is sent to Slack.","url":"3175-send-a-message-about-a-new-presentation-in-google-slides-to-slack","usedApps":["google-slides","slack"],"usage":25}

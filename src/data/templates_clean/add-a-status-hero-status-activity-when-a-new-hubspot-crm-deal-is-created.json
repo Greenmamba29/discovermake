@@ -1,0 +1,1 @@
+{"id":5254,"name":"Add a Status Hero status activity when a new HubSpot CRM deal is created","description":"Every time a new HubSpot CRM deal is created, Make will automatically add a status activity in Status Hero.","url":"5254-add-a-status-hero-status-activity-when-a-new-hubspot-crm-deal-is-created","usedApps":["hubspotcrm","status-hero"],"usage":1}

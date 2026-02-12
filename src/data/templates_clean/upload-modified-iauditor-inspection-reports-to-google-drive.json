@@ -1,0 +1,1 @@
+{"id":7733,"name":"Upload modified iAuditor inspection reports to Google Drive","description":"Make will watch your iAuditor inspections at regular intervals and upload reports of these inspections to a specified folder in Google Drive.","url":"7733-upload-modified-iauditor-inspection-reports-to-google-drive","usedApps":["iauditor","http","google-drive"],"usage":4}

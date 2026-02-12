@@ -1,0 +1,1 @@
+{"id":7743,"name":"Create a Asana tasks from a new Retently survey responses","description":"Every time a new survey response is submitted in Retently, Make will automatically create a new task on Asana.","url":"7743-create-a-asana-tasks-from-a-new-retently-survey-responses","usedApps":["retently","asana"],"usage":2}

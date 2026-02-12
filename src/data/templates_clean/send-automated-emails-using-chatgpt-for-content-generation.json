@@ -1,0 +1,1 @@
+{"id":15294,"name":"Send automated emails using ChatGPT for content generation","description":"This template generates and send personalized emails using ChatGPT. Trigger new email creation, generate content, and send via email module.","url":"15294-send-automated-emails-using-chatgpt-for-content-generation","usedApps":["email","openai-gpt-3"],"usage":18}

@@ -1,0 +1,1 @@
+{"id":4502,"name":"Trigger GrowSurf referrals from new Memberstack members","description":"Every time a new member is created in Memberstack, Make will automatically trigger a new referral in GrowSurf.","url":"4502-trigger-growsurf-referrals-from-new-memberstack-members","usedApps":["memberstack","growsurf"],"usage":2}

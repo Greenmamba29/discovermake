@@ -1,0 +1,1 @@
+{"id":4514,"name":"Generate PDFMonkey documents from Shopify orders","description":"Every time a new Shopify order is created, Make will automatically use the data from that order to generate a PDFMonkey document.","url":"4514-generate-pdfmonkey-documents-from-shopify-orders","usedApps":["shopify","pdfmonkey"],"usage":22}

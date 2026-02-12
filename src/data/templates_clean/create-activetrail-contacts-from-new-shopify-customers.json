@@ -1,0 +1,1 @@
+{"id":1988,"name":"Create ActiveTrail contacts from new Shopify customers","description":"Every time a new customer is added in Shopify, Make will automatically create or update a contact in ActiveTrail.","url":"1988-create-activetrail-contacts-from-new-shopify-customers","usedApps":["shopify","activetrail"],"usage":2}

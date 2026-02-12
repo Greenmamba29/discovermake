@@ -1,0 +1,1 @@
+{"id":7834,"name":"Create new LimbleCMMS tasks from new Google Sheets spreadsheet rows","description":"Every time a new row is added to a Google Sheets spreadsheet, Make will automatically create a new task in LimbleCMMS.","url":"7834-create-new-limblecmms-tasks-from-new-google-sheets-spreadsheet-rows","usedApps":["google-sheets","limble-cmms"],"usage":1}

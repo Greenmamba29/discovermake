@@ -1,0 +1,1 @@
+{"id":4002,"name":"Send Android push notifications for new RepairShopr tickets","description":"Every time a new ticket is created in RepairShopr, Make will automatically send a Push notification to your Android device.","url":"4002-send-android-push-notifications-for-new-repairshopr-tickets","usedApps":["repairshopr","android"],"usage":1}

@@ -1,0 +1,1 @@
+{"id":10124,"name":"Send Telnyx SMS messages if it's going to rain today","description":"Send a message with the weather forecast via Telnyx.","url":"10124-send-telnyx-sms-messages-if-it-s-going-to-rain-today","usedApps":["weather","telnyx"],"usage":28}

@@ -1,0 +1,1 @@
+{"id":10500,"name":"Upload a new invoice from QuickBooks to Google Drive.","description":"When a new invoice is created in QuickBooks, the PDF is downloaded and then uploaded to Google Drive.","url":"3144-upload-a-new-invoice-from-quickbooks-to-google-drive","usedApps":["quickbooks","google-drive"],"usage":170}

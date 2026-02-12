@@ -1,0 +1,1 @@
+{"id":790,"name":"Add new GitHub isssues to Insightly CRM as new opportunities","description":"Every time a new issue is created in GitHub, Make will automatically create a new opportunity in Insightly CRM.","url":"790-add-new-github-isssues-to-insightly-crm-as-new-opportunities","usedApps":["github","insightly"],"usage":1}

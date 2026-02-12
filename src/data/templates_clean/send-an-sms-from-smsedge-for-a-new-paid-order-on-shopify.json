@@ -1,0 +1,1 @@
+{"id":8268,"name":"Send an SMS from SMSEdge for a new paid order on Shopify","description":"An automated process that gets new orders from Shopify and sends the customer a personalized SMS via SMSEdge.","url":"8268-send-an-sms-from-smsedge-for-a-new-paid-order-on-shopify","usedApps":["shopify","phonenumber","smsedge"],"usage":10}

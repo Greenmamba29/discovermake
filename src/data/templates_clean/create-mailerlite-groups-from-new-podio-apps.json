@@ -1,0 +1,1 @@
+{"id":1371,"name":"Create Mailerlite groups from new Podio apps","description":"Every time a new app is added in Podio, Make will automatically create a new group in Mailerlite.","url":"1371-create-mailerlite-groups-from-new-podio-apps","usedApps":["mailerlite","podio"],"usage":1}

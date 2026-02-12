@@ -1,0 +1,1 @@
+{"id":2772,"name":"Add new Help Scout customers to Get Response","description":"Every time a new customer is created in Help Scout, Make will automatically create a new contact in GetResponse.","url":"2772-add-new-help-scout-customers-to-get-response","usedApps":["helpscout","getresponse"],"usage":2}

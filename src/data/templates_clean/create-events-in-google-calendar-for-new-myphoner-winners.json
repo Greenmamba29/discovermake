@@ -1,0 +1,1 @@
+{"id":7795,"name":"Create events in Google Calendar for new Myphoner winners","description":"Every time a lead becomes a winner in Myphoner, Make will automatically create an event in Google Calendar. This event will contain main information about the lead.","url":"7795-create-events-in-google-calendar-for-new-myphoner-winners","usedApps":["myphoner","google-calendar"],"usage":2}

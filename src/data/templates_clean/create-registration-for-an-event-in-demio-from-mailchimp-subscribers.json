@@ -1,0 +1,1 @@
+{"id":4600,"name":"Create registration for an event in Demio from Mailchimp subscribers","description":"Every time a new Mailchimp subscriber is created, Make will automatically create a registration for an event in Demio.","url":"4600-create-registration-for-an-event-in-demio-from-mailchimp-subscribers","usedApps":["mailchimp","demio"],"usage":1}

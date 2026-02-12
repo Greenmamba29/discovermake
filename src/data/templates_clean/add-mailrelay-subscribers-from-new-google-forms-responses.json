@@ -1,0 +1,1 @@
+{"id":6534,"name":"Add Mailrelay subscribers from new Google Forms responses","description":"Every time a new response is submitted on your Google Form, Make will automatically add a new Mailrelay subscriber.","url":"6534-add-mailrelay-subscribers-from-new-google-forms-responses","usedApps":["google-forms","mailrelay"],"usage":14}

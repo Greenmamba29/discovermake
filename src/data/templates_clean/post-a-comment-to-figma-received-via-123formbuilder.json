@@ -1,0 +1,1 @@
+{"id":4268,"name":"Post a comment to Figma received via 123FormBuilder","description":"When a new form is submitted, the content from the form is imported as a new comment to a corresponding file in Figma.","url":"4268-post-a-comment-to-figma-received-via-123formbuilder","usedApps":["one-two-three-form-builder","builtin","figma"],"usage":40}

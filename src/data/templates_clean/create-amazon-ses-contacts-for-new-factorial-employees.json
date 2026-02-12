@@ -1,0 +1,1 @@
+{"id":7961,"name":"Create Amazon SES contacts for new Factorial employees","description":"Make will watch your Factorial employees at regular intervals and create Amazon SES contacts out of them.","url":"7961-create-amazon-ses-contacts-for-new-factorial-employees","usedApps":["factorial","amazon-ses"],"usage":2}

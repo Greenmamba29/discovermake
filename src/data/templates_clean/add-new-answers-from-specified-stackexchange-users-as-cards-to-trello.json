@@ -1,0 +1,1 @@
+{"id":600,"name":"Add new answers from specified StackExchange users as cards to Trello","description":"Every time a specified user answers a question on StackExchange, Make will automatically create a new card in Trello.","url":"600-add-new-answers-from-specified-stackexchange-users-as-cards-to-trello","usedApps":["stackexchange","trello"],"usage":0}

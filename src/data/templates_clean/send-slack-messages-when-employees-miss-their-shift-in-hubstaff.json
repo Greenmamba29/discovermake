@@ -1,0 +1,1 @@
+{"id":7331,"name":"Send Slack messages when employees miss their shift in Hubstaff","description":"Every time your employee misses their shift in Hubstaff, Make will automatically send a notification message in Slack.","url":"7331-send-slack-messages-when-employees-miss-their-shift-in-hubstaff","usedApps":["hubstaff","slack"],"usage":5}

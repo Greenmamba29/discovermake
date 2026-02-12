@@ -1,0 +1,1 @@
+{"id":7695,"name":"Add new Nozbe Teams tasks to Slack as reminders","description":"Every time a new task is created in Nozbe Teams, Make will automatically add that task to Slack as reminder.","url":"7695-add-new-nozbe-teams-tasks-to-slack-as-reminders","usedApps":["nozbe-teams","slack"],"usage":2}

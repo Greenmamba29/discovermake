@@ -1,0 +1,1 @@
+{"id":13276,"name":"Send aggregated JSON data via HTTP webhook","description":"Automatically send aggregated JSON data via HTTP webhook using Custom WebHook, Aggregate To JSON, and HTTP modules for streamlined data integration and communication.","url":"13276-send-aggregated-json-data-via-http-webhook","usedApps":["gateway","json","http"],"usage":12}

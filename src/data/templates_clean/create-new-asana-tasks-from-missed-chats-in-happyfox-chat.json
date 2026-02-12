@@ -1,0 +1,1 @@
+{"id":7020,"name":"Create new Asana tasks from missed chats in HappyFox Chat","description":"Every time a new chat is missed in HappyFox Chat, Make will automatically create a task in Asana.","url":"7020-create-new-asana-tasks-from-missed-chats-in-happyfox-chat","usedApps":["happyfox-chat","asana"],"usage":2}

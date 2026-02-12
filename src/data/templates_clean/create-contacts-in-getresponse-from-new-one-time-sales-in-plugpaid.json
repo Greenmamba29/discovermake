@@ -1,0 +1,1 @@
+{"id":7461,"name":"Create contacts in GetResponse from new one time sales in Plug&Paid","description":"Every time a new one time sale is created in Plug&Paid, Make will automatically add a new contact to GetResponse.","url":"7461-create-contacts-in-getresponse-from-new-one-time-sales-in-plug-paid","usedApps":["plug-paid","getresponse"],"usage":1}

@@ -1,0 +1,1 @@
+{"id":2437,"name":"Create or update SendGrid recipients from new Jotform entries","description":"Every time someone fills out your Jotform form, Make will automatically add/update a recipient in SendGrid.","url":"2437-create-or-update-sendgrid-recipients-from-new-jotform-entries","usedApps":["jotform","sendgrid"],"usage":2}

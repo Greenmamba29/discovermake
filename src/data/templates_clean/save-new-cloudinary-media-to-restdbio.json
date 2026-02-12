@@ -1,0 +1,1 @@
+{"id":8530,"name":"Save new Cloudinary media to Restdb.io","description":"Every time there is new tagged media in Cloudinary, Make will automatically upload it to Restdb.io.","url":"8530-save-new-cloudinary-media-to-restdb-io","usedApps":["cloudinary","http","restdb-io"],"usage":3}

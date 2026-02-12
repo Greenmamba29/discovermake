@@ -1,0 +1,1 @@
+{"id":7206,"name":"Send Slack messages for new Flow XO first time interactions","description":"When a person interacts with your Flow XO bot for the first time, Make will automatically send a message in Slack.","url":"7206-send-slack-messages-for-new-flow-xo-first-time-interactions","usedApps":["flow-xo","slack"],"usage":0}

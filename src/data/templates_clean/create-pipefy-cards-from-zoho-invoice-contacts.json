@@ -1,0 +1,1 @@
+{"id":3654,"name":"Create Pipefy cards from Zoho Invoice contacts","description":"Every time a new contact is created in Zoho Invoice, Make will automatically create a new Pipefy card.","url":"3654-create-pipefy-cards-from-zoho-invoice-contacts","usedApps":["zoho-invoice","pipefy"],"usage":0}

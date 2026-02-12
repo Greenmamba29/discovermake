@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bid Negotiation Center</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glass-dark {
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .gradient-primary {
+            background: linear-gradient(135deg, #135bec 0%, #4483ff 100%);
+        }
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        /* Custom scrollbar for chat area */
+        .chat-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        .chat-scroll::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display overflow-hidden">
+<!-- Main Container (iOS Safe Area Simulation) -->
+<div class="relative flex h-screen w-full max-w-[430px] mx-auto flex-col bg-slate-950 overflow-hidden shadow-2xl">
+<!-- Header -->
+<header class="sticky top-0 z-50 glass flex items-center justify-between px-6 py-4">
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 text-white">
+<span class="material-symbols-outlined">arrow_back_ios_new</span>
+</button>
+<div class="flex flex-col items-center">
+<h1 class="text-sm font-bold tracking-tight uppercase opacity-60">Negotiation Center</h1>
+<p class="text-xs text-primary font-medium flex items-center gap-1">
+<span class="size-1.5 rounded-full bg-green-500 animate-pulse"></span>
+                    Live Connection
+                </p>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 text-white">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</header>
+<!-- Top Section: Engineer's Proposal -->
+<section class="p-4 space-y-4">
+<div class="glass p-5 rounded-xl border border-white/10 shadow-xl">
+<div class="flex items-start justify-between mb-6">
+<div class="flex gap-4">
+<div class="relative">
+<img alt="Engineer Profile" class="size-16 rounded-full object-cover border-2 border-primary/30" data-alt="Professional portrait of a male software engineer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBiT1T9zVLE3jt5XAe42ce40Rx9hVlHF_kx4qanry-OR3WZ9u3FrXNWaA3uIZ5OHU9kJRO_XOn3d2NduE2Gg444sD9qzSqY6vUeTFbvVEQ-crTD1HjHZQOwGdsHg3AjLMskNNbqDm67sDYvHMe_9SDspsNtOiY12wpm0ivEQ0FjDGDEiCts-D3nrX9UDMvYct7tO-2OLiXUMhdGZdHqAKmvkUGZArwbOwxK0KK-eMDHIar0IpirIKWBmR2z6hSbFsLDKnlNTLSmgdup"/>
+<span class="absolute bottom-0 right-0 size-4 bg-green-500 border-2 border-[#111722] rounded-full"></span>
+</div>
+<div>
+<h2 class="text-xl font-bold">Alex Rivera</h2>
+<p class="text-sm text-slate-400">Senior Full Stack Architect</p>
+<div class="flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-yellow-400 text-sm fill-current">star</span>
+<span class="text-xs font-bold text-white">4.9</span>
+<span class="text-xs text-slate-500">(142 projects)</span>
+</div>
+</div>
+</div>
+<div class="bg-primary/20 text-primary px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase">
+                        Preferred
+                    </div>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<div class="bg-white/5 border border-white/5 p-4 rounded-lg">
+<p class="text-[10px] text-slate-400 uppercase font-bold tracking-widest mb-1">Bid Amount</p>
+<p class="text-2xl font-bold text-white">$4,500</p>
+</div>
+<div class="bg-white/5 border border-white/5 p-4 rounded-lg">
+<p class="text-[10px] text-slate-400 uppercase font-bold tracking-widest mb-1">Timeline</p>
+<p class="text-2xl font-bold text-white">14 Days</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Chat Section -->
+<section class="flex-1 flex flex-col min-h-0 bg-slate-900/40 rounded-t-[2.5rem] border-t border-white/10 shadow-2xl relative">
+<div class="flex items-center justify-center py-3">
+<div class="w-12 h-1 bg-white/10 rounded-full"></div>
+</div>
+<div class="flex-1 overflow-y-auto px-6 space-y-4 py-4 chat-scroll">
+<!-- Message Timestamp -->
+<div class="flex justify-center my-2">
+<span class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Today, 10:45 AM</span>
+</div>
+<!-- Engineer Message -->
+<div class="flex gap-3 max-w-[85%]">
+<div class="flex-shrink-0 size-8 rounded-full overflow-hidden">
+<img alt="Alex" class="w-full h-full object-cover" data-alt="Small avatar of Alex Rivera" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7v3RG8Pcz7YU-RX2HsxpNGL4kAnHtOx4w26KZE98QpVgvv7CEiL2C30mghQ3OugDWPEHmyFdXDZyQK6cOyTlgMMdDFawUdJCRQlev5wnmlcpBQjxI0dOa8cqFTvjUUqDR060f70GiO5nEzm_91l96zAw-uCOh7XXy3rIKp8Ycsn6GSQvXsPQwSjS5-QBMhl7xRcOgKywmfXczR7RpGnZguba5LaI5jBGu-yKjaRuTTBukXqOAKxLNGIMrmK3cFmxXJqIVtxbBTRbR"/>
+</div>
+<div class="glass-dark px-4 py-3 rounded-2xl rounded-tl-none">
+<p class="text-sm leading-relaxed text-slate-200">
+                            Hi! I've reviewed your specifications. The React/Tailwind architecture you need fits perfectly with my expertise. $4,500 includes full deployment.
+                        </p>
+</div>
+</div>
+<!-- User Message -->
+<div class="flex flex-row-reverse gap-3 max-w-[85%] ml-auto">
+<div class="gradient-primary px-4 py-3 rounded-2xl rounded-tr-none shadow-lg shadow-primary/20">
+<p class="text-sm leading-relaxed text-white">
+                            Thanks, Alex. The timeline is a bit tight. Is there any way we can expedite the MVP to 10 days instead of 14?
+                        </p>
+</div>
+</div>
+<!-- Engineer Message -->
+<div class="flex gap-3 max-w-[85%]">
+<div class="flex-shrink-0 size-8 rounded-full overflow-hidden">
+<img alt="Alex" class="w-full h-full object-cover" data-alt="Small avatar of Alex Rivera" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFwOof5Lglu8XqINY-QRZTNQn7gWE2YFigGnzf3P3XCBg-V31G4k1d_hiNlKGRAl8le8_fxpFrXfqMUl0S1Ef8swEPzrO_8eYuRO_MypNTWXjehYFauK8WZE4SXpuuLN1HVNQ9FJxRDDuCHGiDf8L7C-rs05mMzwM7YSzKSCrGncA-rLPWCOb3hkLGfSdQev_4nT9kY73ZmczGR5zEa9rwz0rkV9DvfD3wQdikBemqXCNFzlNssr_c4rCW1al4U0UTNgufmXRB1rY4"/>
+</div>
+<div class="glass-dark px-4 py-3 rounded-2xl rounded-tl-none">
+<p class="text-sm leading-relaxed text-slate-200">
+                            I can prioritize the core features. It might require a small weekend premium if we want to hit 10 days. What do you think?
+                        </p>
+</div>
+</div>
+<div class="flex items-center gap-2 text-slate-500 text-xs italic px-11">
+<div class="flex gap-1">
+<span class="size-1 bg-slate-500 rounded-full animate-bounce"></span>
+<span class="size-1 bg-slate-500 rounded-full animate-bounce [animation-delay:0.2s]"></span>
+<span class="size-1 bg-slate-500 rounded-full animate-bounce [animation-delay:0.4s]"></span>
+</div>
+                    Alex is typing...
+                </div>
+</div>
+<!-- Action Area -->
+<div class="p-6 pt-0 space-y-4 bg-slate-900/40 backdrop-blur-md">
+<!-- Chat Input -->
+<div class="relative flex items-center">
+<input class="w-full bg-white/5 border border-white/10 rounded-full py-4 px-6 pr-14 text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary/50 placeholder:text-slate-500" placeholder="Send a counter offer..." type="text"/>
+<button class="absolute right-2 p-2 bg-primary rounded-full text-white flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">send</span>
+</button>
+</div>
+<!-- Main CTA Buttons -->
+<div class="grid grid-cols-2 gap-4">
+<button class="glass py-4 rounded-xl font-bold text-sm tracking-wide hover:bg-white/10 transition-colors border-white/10">
+                        Counter Offer
+                    </button>
+<button class="gradient-primary py-4 rounded-xl font-bold text-sm tracking-wide shadow-xl shadow-primary/30 text-white">
+                        Accept Bid
+                    </button>
+</div>
+</div>
+</section>
+<!-- DoorDash Inspired Bottom Menu -->
+<nav class="bg-black/95 border-t border-white/5 pt-2 pb-8 px-8 flex justify-between items-center">
+<button class="flex flex-col items-center gap-1 opacity-40">
+<span class="material-symbols-outlined text-2xl">home</span>
+<span class="text-[10px] font-bold">Discover</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-2xl fill-primary">handshake</span>
+<span class="text-[10px] font-bold">Bids</span>
+<div class="size-1 bg-primary rounded-full mt-0.5"></div>
+</button>
+<button class="flex flex-col items-center gap-1 opacity-40">
+<span class="material-symbols-outlined text-2xl">chat_bubble</span>
+<span class="text-[10px] font-bold">Messages</span>
+</button>
+<button class="flex flex-col items-center gap-1 opacity-40">
+<span class="material-symbols-outlined text-2xl">account_circle</span>
+<span class="text-[10px] font-bold">Profile</span>
+</button>
+</nav>
+<!-- Safe Area Home Indicator -->
+<div class="absolute bottom-1 w-1/3 h-1 bg-white/20 left-1/2 -translate-x-1/2 rounded-full pointer-events-none"></div>
+</div>
+</body></html>

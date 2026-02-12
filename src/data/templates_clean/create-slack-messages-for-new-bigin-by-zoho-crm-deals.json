@@ -1,0 +1,1 @@
+{"id":7145,"name":"Create Slack messages for new Bigin by Zoho CRM deals","description":"Every time a deal in your Bigin by Zoho CRM is added, Make will create a message in your Slack.","url":"7145-create-slack-messages-for-new-bigin-by-zoho-crm-deals","usedApps":["bigin-by-zoho","slack"],"usage":21}

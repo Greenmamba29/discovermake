@@ -1,0 +1,1 @@
+{"id":6577,"name":"Create new notes in Productboard from new ClickUp tasks","description":"Every time a new task is created in ClickUp, a new note will be created in Productboard.","url":"6577-create-new-notes-in-productboard-from-new-clickup-tasks","usedApps":["clickup","productboard"],"usage":8}

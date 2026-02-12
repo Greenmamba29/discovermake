@@ -1,0 +1,1 @@
+{"id":4362,"name":"Create HubSpot contacts from Gravity Forms entries","description":"Every time a new entry is submitted to Gravity, Make will automatically create or update a contact in HubSpot CRM.","url":"4362-create-hubspot-contacts-from-gravity-forms-entries","usedApps":["gravity-forms","hubspotcrm"],"usage":28}

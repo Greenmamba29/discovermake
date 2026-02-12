@@ -1,0 +1,1 @@
+{"id":12800,"name":"Create a new contact in Mautic from a custom webhook trigger","description":"Automatically create a new contact in Mautic whenever a custom webhook is triggered, streamlining your contact management process with this integration.","url":"12800-create-a-new-contact-in-mautic-from-a-custom-webhook-trigger","usedApps":["gateway","mautic"],"usage":4}

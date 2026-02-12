@@ -1,0 +1,1 @@
+{"id":8766,"name":"Add AWeber subscribers for new Printful orders","description":"Make will watch for new Printful orders at regular intervals and add customers as subscribers to AWeber.","url":"8766-add-aweber-subscribers-for-new-printful-orders","usedApps":["printful","aweber"],"usage":3}

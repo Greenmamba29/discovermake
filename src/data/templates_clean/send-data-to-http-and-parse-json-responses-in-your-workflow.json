@@ -1,0 +1,1 @@
+{"id":13140,"name":"Send data to HTTP and parse JSON responses in your workflow","description":"Streamline data workflows by sending data via HTTP, parsing JSON responses, and sending processed data back using HTTP in Make.","url":"13140-send-data-to-http-and-parse-json-responses-in-your-workflow","usedApps":["http","json"],"usage":13}

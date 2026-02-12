@@ -1,0 +1,1 @@
+{"id":7169,"name":"Create HacknPlan projects for new Easy Project projects","description":"Every time a new project is created in your Easy Project, Make will create an identical project in your HacknPlan.","url":"7169-create-hacknplan-projects-for-new-easy-project-projects","usedApps":["easy-project","hacknplan"],"usage":5}

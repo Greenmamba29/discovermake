@@ -1,0 +1,1 @@
+{"id":3819,"name":"Add status activities to Status Hero members from Evernote notes","description":"Every time a new Evernote note is created, Make will add a new status activity to members on Status Hero.","url":"3819-add-status-activities-to-status-hero-members-from-evernote-notes","usedApps":["evernote","status-hero"],"usage":0}

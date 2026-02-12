@@ -1,0 +1,1 @@
+{"id":4450,"name":"Register new Mailchimp subscribers to a BigMarker conference","description":"Every time a new Mailchimp subscriber is added to a mailing list, Make will automatically register the user to a BigMarker conference.","url":"4450-register-new-mailchimp-subscribers-to-a-bigmarker-conference","usedApps":["mailchimp","bigmarker"],"usage":1}

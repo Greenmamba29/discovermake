@@ -1,0 +1,1 @@
+{"id":4414,"name":"Create Kanbanize tasks for new Excel 365 rows","description":"Every time a new row is added to Excel 365, Make will automatically export the data and create a new card in Kanbanize. ","url":"4414-create-kanbanize-tasks-for-new-excel-365-rows","usedApps":["microsoft-excel","kanbanize"],"usage":8}

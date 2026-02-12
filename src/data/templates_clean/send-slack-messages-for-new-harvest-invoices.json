@@ -1,0 +1,1 @@
+{"id":128,"name":"Send Slack messages for new Harvest invoices","description":"Every time a new invoice is created in Harvest, Make will automatically send a message in Slack.","url":"128-send-slack-messages-for-new-harvest-invoices","usedApps":["harvest","slack"],"usage":11}

@@ -1,0 +1,1 @@
+{"id":13512,"name":"Send a response to a webhook with parsed JSON data","description":"Automatically respond to webhooks by parsing JSON data with Make. Use Custom WebHook, Parse JSON, and Webhook Respond modules for streamlined data handling.","url":"13512-send-a-response-to-a-webhook-with-parsed-json-data","usedApps":["gateway","json"],"usage":15}

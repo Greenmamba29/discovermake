@@ -1,0 +1,1 @@
+{"id":8773,"name":"Create Trello cards for new Printful orders","description":"Make will watch for new Printful orders at regular intervals and create cards on a specified Trello board containing information about the order.","url":"8773-create-trello-cards-for-new-printful-orders","usedApps":["printful","builtin","util","trello"],"usage":9}

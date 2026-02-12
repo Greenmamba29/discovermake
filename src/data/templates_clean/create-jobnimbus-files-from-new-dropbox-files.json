@@ -1,0 +1,1 @@
+{"id":8547,"name":"Create JobNimbus files from new Dropbox files","description":"When you upload files to a specific folder in Dropbox, Make will automatically download the files and upload them to JobNimbus for an entity this files relates to.","url":"8547-create-jobnimbus-files-from-new-dropbox-files","usedApps":["dropbox","jobnimbus"],"usage":9}

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Publishing Wizard: Preview</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13a4ec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101c22",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .ios-blur {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen font-display">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 ios-blur border-b border-slate-200 dark:border-slate-800">
+<div class="flex items-center px-4 py-3 justify-between">
+<div class="flex items-center gap-3">
+<button class="flex items-center justify-center p-1 text-slate-500 dark:text-slate-400">
+<span class="material-symbols-outlined">arrow_back_ios</span>
+</button>
+<h1 class="text-lg font-bold tracking-tight">Publishing Wizard</h1>
+</div>
+<button class="text-primary font-medium text-sm">Cancel</button>
+</div>
+<!-- Progress Indicator -->
+<div class="px-4 pb-4">
+<div class="flex justify-between items-center mb-2">
+<span class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Step 2 of 6</span>
+<span class="text-xs font-semibold text-primary">Outcome Preview</span>
+</div>
+<div class="flex w-full gap-1.5 h-1.5">
+<div class="h-full flex-1 rounded-full bg-primary"></div>
+<div class="h-full flex-1 rounded-full bg-primary"></div>
+<div class="h-full flex-1 rounded-full bg-slate-200 dark:bg-slate-700"></div>
+<div class="h-full flex-1 rounded-full bg-slate-200 dark:bg-slate-700"></div>
+<div class="h-full flex-1 rounded-full bg-slate-200 dark:bg-slate-700"></div>
+<div class="h-full flex-1 rounded-full bg-slate-200 dark:bg-slate-700"></div>
+</div>
+</div>
+</header>
+<main class="pb-32">
+<!-- Section: Upload Area -->
+<section class="p-4">
+<h3 class="text-xl font-bold mb-4">Outcome Preview</h3>
+<div class="flex flex-col items-center gap-6 rounded-xl border-2 border-dashed border-slate-300 dark:border-slate-700 px-6 py-12 bg-white/50 dark:bg-white/5">
+<div class="flex flex-col items-center gap-2 text-center">
+<div class="bg-primary/10 p-4 rounded-full mb-2">
+<span class="material-symbols-outlined text-primary text-3xl">cloud_upload</span>
+</div>
+<p class="text-lg font-bold">Upload visual assets</p>
+<p class="text-sm text-slate-500 dark:text-slate-400 max-w-[280px]">
+                        Add your hero image or a 15-second video preview. Max file size: 50MB.
+                    </p>
+</div>
+<button class="flex min-w-[140px] cursor-pointer items-center justify-center rounded-lg h-11 px-6 bg-primary text-white text-sm font-bold shadow-lg shadow-primary/20">
+<span class="truncate">Select Media</span>
+</button>
+</div>
+</section>
+<!-- Section: Marketplace Preview -->
+<section class="p-4">
+<div class="flex justify-between items-end mb-4">
+<h3 class="text-lg font-bold">Marketplace Preview</h3>
+<span class="text-xs text-slate-500">Live View</span>
+</div>
+<div class="bg-white dark:bg-slate-900 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="relative aspect-video bg-slate-100 dark:bg-slate-800 flex items-center justify-center overflow-hidden">
+<img alt="App outcome preview" class="w-full h-full object-cover opacity-60" data-alt="Abstract 3D rendered digital asset design" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFXeVvtZcufLvOq3o01VYUGmJQ4xHLeEiZRogaHhnz4Zd0C_yOB-zxHuPzivZuL9M1yYIqHySCC9l-i_TwnvrqBG_97o7PEGAgKbaFVY3Pr2lmAMhMNsCn0uVKRRFIfkAPzbUYqMRVhMEdgBIHXidynS4_K_G33S2AP174AxssLJehwUGDfBmybqEb3G-gPO2_J9WrwuDCQ_Hrcx3AFctpIqGXbo7OjiUrBn7YI2uiQYuDPCvr3yuoWYAb_Kn1iZqwATzIeSk3vRk"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+<div class="absolute bottom-4 left-4 right-4">
+<span class="px-2 py-0.5 bg-primary rounded text-[10px] font-bold text-white uppercase tracking-wider">Premium Asset</span>
+</div>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-bold text-lg leading-tight">Neural Mesh Generator V2</h4>
+<span class="font-bold text-primary">$49</span>
+</div>
+<p class="text-sm text-slate-500 dark:text-slate-400 line-clamp-2 mb-4">
+                        A high-performance neural network architecture for generating complex 3D meshes from natural language prompts.
+                    </p>
+<div class="flex items-center gap-3">
+<div class="h-8 w-8 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center overflow-hidden">
+<img alt="Creator avatar" class="h-full w-full object-cover" data-alt="Professional creator profile photo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZmjulCIGKvW2odKtJQDAdpsTW1TDV0cFKGrtj6N6rq_xdYBOPljNrkC-3HAtm6sYJaH-jPf2fxbSsRmDW-ZQgbac8Gsok4tN_7ycAaKBNVqjnMinRMdrT5LYo09ao08-BobsBltLZDtvVh8L6y0c2FqxYKrWysvXsEaX4w6mhpHYZiwnai9w-DsaP08KX9WJ3-LsA3OCJ12GaDha8mIYTMYWwam8E0EHVfRYfGZ0OamTon5VE8GSZwJyodbWqz-Ve4jKp3s6uobg"/>
+</div>
+<span class="text-xs font-medium text-slate-600 dark:text-slate-300">by DesignLab Pro</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Section: Quality Checklist -->
+<section class="p-4">
+<div class="bg-slate-100 dark:bg-slate-800/50 rounded-xl p-4">
+<h3 class="text-sm font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-4">Quality Checklist</h3>
+<div class="space-y-4">
+<!-- Item 1: Complete -->
+<div class="flex items-start gap-3">
+<div class="mt-0.5 text-green-500">
+<span class="material-symbols-outlined text-xl">check_circle</span>
+</div>
+<div>
+<p class="text-sm font-semibold">Description &gt; 50 words</p>
+<p class="text-xs text-slate-500">Done (124 words)</p>
+</div>
+</div>
+<!-- Item 2: Incomplete -->
+<div class="flex items-start gap-3">
+<div class="mt-0.5 text-slate-300 dark:text-slate-600">
+<span class="material-symbols-outlined text-xl">radio_button_unchecked</span>
+</div>
+<div>
+<p class="text-sm font-semibold">High-res image (1080p+)</p>
+<p class="text-xs text-slate-500">Waiting for upload</p>
+</div>
+</div>
+<!-- Item 3: Incomplete -->
+<div class="flex items-start gap-3">
+<div class="mt-0.5 text-slate-300 dark:text-slate-600">
+<span class="material-symbols-outlined text-xl">radio_button_unchecked</span>
+</div>
+<div>
+<p class="text-sm font-semibold">Thumbnail aspect ratio 16:9</p>
+<p class="text-xs text-slate-500">Will be verified after upload</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Sticky Bottom Action Bar -->
+<div class="fixed bottom-0 left-0 right-0 bg-white/80 dark:bg-background-dark/80 ios-blur border-t border-slate-200 dark:border-slate-800 px-4 pt-4 pb-8 z-50">
+<div class="flex gap-3 max-w-md mx-auto">
+<button class="flex-1 h-12 rounded-xl border border-slate-300 dark:border-slate-700 font-bold text-sm bg-transparent hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+                Save Draft
+            </button>
+<button class="flex-[2] h-12 rounded-xl bg-primary text-white font-bold text-sm shadow-lg shadow-primary/20 flex items-center justify-center gap-2">
+<span>Next: Connect Inputs</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+</body></html>

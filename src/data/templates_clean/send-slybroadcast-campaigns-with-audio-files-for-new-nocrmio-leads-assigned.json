@@ -1,0 +1,1 @@
+{"id":8509,"name":"Send Slybroadcast campaigns with audio files for new noCRM.io leads assigned","description":"Every time a new lead is assigned in your noCRM.io, Make will automatically send a Slybroadcast campaign with an audio file.","url":"8509-send-slybroadcast-campaigns-with-audio-files-for-new-nocrm-io-leads-assigned","usedApps":["nocrm-io","slybroadcast"],"usage":1}

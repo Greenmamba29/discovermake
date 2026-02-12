@@ -1,0 +1,1 @@
+{"id":3580,"name":"Upload Discord attachments to Google Drive","description":"Every time a new message is sent to a selected Discord Channel, Make will automatically save the attached file to Google Drive.","url":"3580-upload-discord-attachments-to-google-drive","usedApps":["discord","builtin","http","google-drive"],"usage":364}

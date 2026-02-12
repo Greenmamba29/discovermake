@@ -1,0 +1,1 @@
+{"id":2582,"name":"Create SendGrid Contacts from new Acuity Scheduling appointments","description":"Every time a new appointment is scheduled in Acuity Scheduling, Make will automatically add a new recipient to your SendGrid list.","url":"2582-create-sendgrid-contacts-from-new-acuity-scheduling-appointments","usedApps":["acuity-scheduling","sendgrid"],"usage":1}

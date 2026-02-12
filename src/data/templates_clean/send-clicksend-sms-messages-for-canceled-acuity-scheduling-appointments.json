@@ -1,0 +1,1 @@
+{"id":2725,"name":"Send ClickSend SMS messages for canceled Acuity Scheduling appointments","description":"Every time an appointment is canceled in Acuity Scheduling, Make will automatically send an SMS via ClickSend.","url":"2725-send-clicksend-sms-messages-for-canceled-acuity-scheduling-appointments","usedApps":["acuity-scheduling","clicksend"],"usage":9}

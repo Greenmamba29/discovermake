@@ -1,0 +1,1 @@
+{"id":6635,"name":"Send Slack messages for new orders in Gigrove","description":"Every time a new order is created in your Gigrove, Make will send a message in your Slack.","url":"6635-send-slack-messages-for-new-orders-in-gigrove","usedApps":["gigrove","slack"],"usage":2}

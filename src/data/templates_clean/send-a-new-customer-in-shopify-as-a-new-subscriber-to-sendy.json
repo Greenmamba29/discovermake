@@ -1,0 +1,1 @@
+{"id":3081,"name":"Send a new customer in Shopify as a new subscriber to Sendy","description":"When a new customer is created in Shopify who has agreed to receive marketing e-mails, the e-mail of the customer is added to Sendy as a new subscriber.","url":"3081-send-a-new-customer-in-shopify-as-a-new-subscriber-to-sendy","usedApps":["shopify","sendy"],"usage":62}

@@ -1,0 +1,1 @@
+{"id":14780,"name":"Log New Orders to Google Sheets","description":"Logs every new order placed via AirMenu into a Google Sheets spreadsheet. It captures all items, quantities, prices, totals, PLUs, and client data for easy tracking and reporting.","url":"14780-log-new-orders-to-google-sheets","usedApps":["airmenu","builtin","google-sheets"],"usage":6}

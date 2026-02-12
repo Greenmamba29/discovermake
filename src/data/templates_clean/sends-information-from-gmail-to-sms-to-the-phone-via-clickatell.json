@@ -1,0 +1,1 @@
+{"id":5067,"name":"Sends information from Gmail to SMS to the phone via Clickatell","description":"Every time you receive a new message an email from a specific user, Make will send automatically SMS to the selected phone number","url":"5067-sends-information-from-gmail-to-sms-to-the-phone-via-clickatell","usedApps":["google-email","builtin","clickatell"],"usage":7}

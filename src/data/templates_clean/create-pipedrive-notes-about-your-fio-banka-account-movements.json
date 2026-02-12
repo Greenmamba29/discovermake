@@ -1,0 +1,1 @@
+{"id":985,"name":"Create Pipedrive notes about your Fio banka account movements","description":"Every time there is a new movement on your Fio banka account, Make will automatically create a note in Pipedrive and attach it to a specified Pipedrive deal.","url":"985-create-pipedrive-notes-about-your-fio-banka-account-movements","usedApps":["fio","pipedrive"],"usage":12}

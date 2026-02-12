@@ -1,0 +1,1 @@
+{"id":8624,"name":"Post Microsoft Teams messages for new Callingly calls","description":"Every time a new call is received on Callingly, Make will automatically post a message on Microsoft Teams.","url":"8624-post-microsoft-teams-messages-for-new-callingly-calls","usedApps":["callingly","microsoft-teams"],"usage":6}

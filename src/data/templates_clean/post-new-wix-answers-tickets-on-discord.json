@@ -1,0 +1,1 @@
+{"id":3568,"name":"Post new Wix Answers tickets on Discord","description":"Every time a new ticket is submitted to Wix Answers, Make will automatically post a message on a specified Discord server.","url":"3568-post-new-wix-answers-tickets-on-discord","usedApps":["wix-answers","discord"],"usage":2}

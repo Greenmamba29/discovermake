@@ -1,0 +1,1 @@
+{"id":7911,"name":"Get Slack notifications for new Bitrix24 companies","description":"Every time a new company is created in Bitrix24, Make will automatically send a notification message to a specified channel/chat in Slack.","url":"7911-get-slack-notifications-for-new-bitrix24-companies","usedApps":["bitrix24","slack"],"usage":5}

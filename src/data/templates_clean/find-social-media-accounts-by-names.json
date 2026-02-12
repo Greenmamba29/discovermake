@@ -1,0 +1,1 @@
+{"id":14695,"name":"Find social media accounts by names","description":"This template finds social media account names and updates a row in your Google Sheet effortlessly.","url":"14695-find-social-media-accounts-by-names","usedApps":["apify-google-search-scraper","google-sheets"],"usage":48}

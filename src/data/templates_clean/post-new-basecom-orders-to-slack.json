@@ -1,0 +1,1 @@
+{"id":5561,"name":"Post new Base.com orders to Slack","description":"Every time a new order is created in Base.com account, Make will automatically post a message to Slack with order information.","url":"5561-post-new-baselinker-orders-to-slack","usedApps":["baselinker","slack"],"usage":8}

@@ -1,0 +1,1 @@
+{"id":5962,"name":"Update KashFlow client with new WooCommerce client","description":"Every time a new WooCommerce client is created or updated, Make will automatically create or update the client in KashFlow.","url":"5962-update-kashflow-client-with-new-woocommerce-client","usedApps":["woocommerce","kashflow"],"usage":4}

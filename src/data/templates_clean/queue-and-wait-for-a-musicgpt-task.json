@@ -1,0 +1,1 @@
+{"id":17948,"name":"Queue and wait for a  MusicGPT task","description":"The simplest way to create AI-generated music with MusicGPT. Queues your task, waits for the expected generation time (plus 15 seconds for safety) and retrieves the result. Add your own following steps as desired.","url":"17948-queue-and-wait-for-a-musicgpt-task","usedApps":["musicgpt","util"],"usage":4}

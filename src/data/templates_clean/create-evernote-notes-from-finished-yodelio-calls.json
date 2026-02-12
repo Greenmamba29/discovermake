@@ -1,0 +1,1 @@
+{"id":2596,"name":"Create Evernote notes from finished Yodel.io calls","description":"Every time a call is finished or missed  in Yodel.io, Make will automatically create a new note in your Evernote notebook.","url":"2596-create-evernote-notes-from-finished-yodel-io-calls","usedApps":["yodel","evernote"],"usage":1}

@@ -1,0 +1,1 @@
+{"id":3645,"name":"Create Google Tasks for new Evernote notes","description":"Every time a note is created in Evernote, Make will automatically add it as a new task in Google Tasks.","url":"3645-create-google-tasks-for-new-evernote-notes","usedApps":["evernote","google-tasks"],"usage":69}

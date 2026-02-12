@@ -1,0 +1,1 @@
+{"id":6989,"name":"Add new Square customers to Textlocal as a new contacts","description":"Every time a new customer is created in Square, Make will automatically add a new contact in Textlocal.","url":"6989-add-new-square-customers-to-textlocal-as-a-new-contacts","usedApps":["square","textlocal"],"usage":6}

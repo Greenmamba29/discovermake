@@ -1,0 +1,1 @@
+{"id":7975,"name":"Send a Twilio SMS message for new Deployments in New Relic","description":"Every time a new Deployments is recivied in New Relic, Make will automatically send an SMS message via Twilio.","url":"7975-send-a-twilio-sms-message-for-new-deployments-in-new-relic","usedApps":["new-relic","twilio"],"usage":2}

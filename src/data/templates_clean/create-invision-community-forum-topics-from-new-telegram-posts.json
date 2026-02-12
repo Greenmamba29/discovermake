@@ -1,0 +1,1 @@
+{"id":8201,"name":"Create Invision Community forum topics from new Telegram posts","description":"Make will watch for new Telegram Bot posts at regular intervals and create forum topics in Invision Community using information received.","url":"8201-create-invision-community-forum-topics-from-new-telegram-posts","usedApps":["telegram","invision-community"],"usage":4}

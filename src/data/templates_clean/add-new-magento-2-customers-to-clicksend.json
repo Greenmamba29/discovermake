@@ -1,0 +1,1 @@
+{"id":2740,"name":"Add new Magento 2 customers to ClickSend","description":"Every time a new customer is added in Magento 2, Make will automatically add that contact to ClickSend.","url":"2740-add-new-magento-2-customers-to-clicksend","usedApps":["magento2","clicksend"],"usage":1}

@@ -1,0 +1,1 @@
+{"id":4090,"name":"Create Netlify site deploys when receiving a new email","description":"Every time a new email with a specific criteria is received, Make will automatically create a site deploy on Netlify and send an email.","url":"4090-create-netlify-site-deploys-when-receiving-a-new-email","usedApps":["google-email","netlify"],"usage":5}

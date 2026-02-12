@@ -1,0 +1,1 @@
+{"id":4740,"name":"Create Trello cards from PagerDuty incidents","description":"Every time a new incident is triggered in PagerDuty, Make will automatically create a card in Trello.","url":"4740-create-trello-cards-from-pagerduty-incidents","usedApps":["pagerduty","trello"],"usage":2}

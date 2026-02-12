@@ -1,0 +1,1 @@
+{"id":8245,"name":"Create Bidsketch clients from new Google Contacts","description":"Every time a new contact is created in Google Contacts, Make will automatically add that contact to Bidsketch as a client.","url":"8245-create-bidsketch-clients-from-new-google-contacts","usedApps":["google-contacts","bidsketch"],"usage":1}

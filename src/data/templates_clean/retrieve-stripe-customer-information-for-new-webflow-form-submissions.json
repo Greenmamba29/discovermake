@@ -1,0 +1,1 @@
+{"id":4358,"name":"Retrieve Stripe customer information for new Webflow form submissions","description":"Every time a new form is submitted to Webflow, Make will automatically retrieve the customer information in Stripe.","url":"4358-retrieve-stripe-customer-information-for-new-webflow-form-submissions","usedApps":["webflow","stripe"],"usage":56}

@@ -1,0 +1,1 @@
+{"id":5198,"name":"Create an Emma audience member from new Google Forms response","description":"Every time a new Google Form response is received, Make will automatically create an audience member in Emma.","url":"5198-create-an-emma-audience-member-from-new-google-forms-response","usedApps":["google-forms","emma"],"usage":1}

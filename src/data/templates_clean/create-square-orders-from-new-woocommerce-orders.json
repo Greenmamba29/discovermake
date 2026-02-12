@@ -1,0 +1,1 @@
+{"id":4318,"name":"Create Square orders from new WooCommerce orders","description":"When you get a new WooCommerce order, it will be transferred to Square with all line items.","url":"4318-create-square-orders-from-new-woocommerce-orders","usedApps":["woocommerce","builtin","square"],"usage":147}

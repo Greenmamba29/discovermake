@@ -1,0 +1,1 @@
+{"id":8295,"name":"Add Mailgun mailing list members for new Ticket Tailor orders","description":"Make will watch your Ticket Tailor order at regular intervals and add your Ticket Tailor buyers to Mailgun mailing list as members.","url":"8295-add-mailgun-mailing-list-members-for-new-ticket-tailor-orders","usedApps":["ticket-tailor","mailgun"],"usage":1}

@@ -1,0 +1,1 @@
+{"id":7794,"name":"Send emails via Gmail to Myphoner winners","description":"Every time a lead becomes a winner in Myphoner, Make will automatically send an email to this lead via Gmail.","url":"7794-send-emails-via-gmail-to-myphoner-winners","usedApps":["myphoner","google-email"],"usage":2}

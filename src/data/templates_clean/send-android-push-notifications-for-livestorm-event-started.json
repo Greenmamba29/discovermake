@@ -1,0 +1,1 @@
+{"id":8568,"name":"Send Android push notifications for Livestorm event started","description":"Every time a Livestorm event starts, Make will automatically send a push notification to your Android device. ","url":"8568-send-android-push-notifications-for-livestorm-event-started","usedApps":["livestorm","android"],"usage":3}

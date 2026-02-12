@@ -1,0 +1,1 @@
+{"id":13077,"name":"Send data to Google Sheets after a custom webhook with a delay","description":"Trigger a custom webhook to send data to Google Sheets with a delay. Automate data logging and scheduling using Google Sheets and webhooks.","url":"13077-send-data-to-google-sheets-after-a-custom-webhook-with-a-delay","usedApps":["gateway","util","google-sheets"],"usage":12}

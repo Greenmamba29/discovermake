@@ -1,0 +1,1 @@
+{"id":3385,"name":"Company created on Mautic when a new card is added on Trello","description":"Every time a new Trello card is added, Make will automatically get the information of the company using Clearbit and add that company to Mautic.","url":"3385-company-created-on-mautic-when-a-new-card-is-added-on-trello","usedApps":["trello","clearbit","mautic"],"usage":2}

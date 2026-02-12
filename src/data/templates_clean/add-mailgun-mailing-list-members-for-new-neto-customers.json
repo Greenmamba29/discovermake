@@ -1,0 +1,1 @@
+{"id":7218,"name":"Add Mailgun mailing list members for new Neto customers","description":"Every time a new customer appears in your Neto, Make will add him to your Mailgun mailing list.","url":"7218-add-mailgun-mailing-list-members-for-new-neto-customers","usedApps":["neto","mailgun"],"usage":1}

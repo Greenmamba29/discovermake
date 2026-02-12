@@ -1,0 +1,1 @@
+{"id":8505,"name":"Create TeamViewer contacts for new Google Workspace users","description":"Every time a new user is created in Google Workspace Admin, Make will automatically create a new contact in TeamViewer.","url":"8505-create-teamviewer-contacts-for-new-google-workspace-users","usedApps":["google-g-suite","teamviewer"],"usage":7}

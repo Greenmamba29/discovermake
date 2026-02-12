@@ -1,0 +1,1 @@
+{"id":3977,"name":"Send new TradeGecko products data to Databox","description":"Every time you add a new product in TradeGecko, Make will automatically send data about the product to Databox.","url":"3977-send-new-tradegecko-products-data-to-databox","usedApps":["tradegecko","databox"],"usage":0}

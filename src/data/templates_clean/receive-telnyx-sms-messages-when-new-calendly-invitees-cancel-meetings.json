@@ -1,0 +1,1 @@
+{"id":10117,"name":"Receive Telnyx SMS messages when new Calendly invitees cancel meetings","description":"Send a new message via Telnyx when a new event occurs in Calendly.","url":"10117-receive-telnyx-sms-messages-when-new-calendly-invitees-cancel-meetings","usedApps":["calendly","telnyx"],"usage":12}

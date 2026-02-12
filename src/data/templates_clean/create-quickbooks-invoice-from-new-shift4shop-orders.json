@@ -1,0 +1,1 @@
+{"id":8340,"name":"Create QuickBooks invoice from new Shift4Shop orders","description":"When you receive a new Shift4Shop order, create a QuickBooks invoice.","url":"8340-create-quickbooks-invoice-from-new-shift4shop-orders","usedApps":["a3dcart","builtin","quickbooks"],"usage":21}

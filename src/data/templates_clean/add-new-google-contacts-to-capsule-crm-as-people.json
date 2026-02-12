@@ -1,0 +1,1 @@
+{"id":1919,"name":"Add new Google Contacts to Capsule CRM as people","description":"Every time a new contact is created in Google Contacts, Make will automatically create a new person in Capsule CRM.","url":"1919-add-new-google-contacts-to-capsule-crm-as-people","usedApps":["google-contacts","capsule-crm"],"usage":13}

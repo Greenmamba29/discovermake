@@ -1,0 +1,1 @@
+{"id":6740,"name":"Send Telegram messages for reminders in SmartTask","description":"Every time a reminders goes off in your SmartTask Make will send a Telegram message via your Telegram bot.","url":"6740-send-telegram-messages-for-reminders-in-smarttask","usedApps":["smarttask","telegram"],"usage":15}

@@ -1,0 +1,1 @@
+{"id":5549,"name":"Upload new files from Google Drive to Files.com","description":"Every time new files are uploaded to Google Drive folder, Make will automatically upload them to Files.com","url":"5549-upload-new-files-from-google-drive-to-files-com","usedApps":["google-drive","files-com"],"usage":20}

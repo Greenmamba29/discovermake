@@ -1,0 +1,1 @@
+{"id":2637,"name":"Create Pipefy cards from new Cognito Forms entries","description":"Every time someone fills out your Cognito Form, Make will automaticaly create a new card in Pipefy.","url":"2637-create-pipefy-cards-from-new-cognito-forms-entries","usedApps":["cognitoforms","pipefy"],"usage":4}

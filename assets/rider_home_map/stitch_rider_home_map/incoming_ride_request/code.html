@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Incoming Ride Request</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .glass {
+            background: rgba(25, 34, 51, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glass-bright {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glow-green {
+            box-shadow: 0 0 25px -5px rgba(34, 197, 94, 0.5);
+        }
+        .glow-red {
+            box-shadow: 0 0 20px -5px rgba(239, 68, 68, 0.3);
+        }
+        .progress-ring__circle {
+            transition: stroke-dashoffset 0.35s;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white overflow-hidden">
+<!-- Main Mobile Container -->
+<div class="relative mx-auto h-screen w-full max-w-[430px] bg-background-dark overflow-hidden shadow-2xl">
+<!-- Map Background -->
+<div class="absolute inset-0 z-0">
+<div class="w-full h-full bg-cover bg-center grayscale opacity-60" data-alt="Dark stylized city map with navigation routes" data-location="San Francisco, CA" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDSLbX_4b9T_AxdFAzsG3Sdxey1fvWY6B8N4VB0hKZYSvK6mzkT7dimXByK2uQTHHr1KX0PdC8dZ_0fQ6zK6KcYdkjZgoQm2G-1RfLn8tb8CgH9YpyXZlV8q6LH7IsPri_oUXzv3NDgwVWgfrSnk2qRBQ-RW0yo1Bir13feGsi9OfeHIjk7ZMmMlt2f8ANwCaVbrCm8eZAbuOV_mViCgMtGXqr6ZTkSR4EsQrW8owbztlo6m60NYJYi4uCzC-HAQhu78NWLutUPM0j4');">
+</div>
+<!-- Map Overlay Gradient -->
+<div class="absolute inset-0 bg-gradient-to-b from-background-dark/80 via-transparent to-background-dark"></div>
+</div>
+<!-- Safe Area Top (iOS style) -->
+<div class="relative z-20 h-12 w-full flex justify-between items-center px-8 pt-4">
+<span class="text-sm font-bold">9:41</span>
+<div class="flex gap-1.5 items-center">
+<span class="material-symbols-outlined text-sm">signal_cellular_4_bar</span>
+<span class="material-symbols-outlined text-sm">wifi</span>
+<span class="material-symbols-outlined text-sm">battery_full</span>
+</div>
+</div>
+<!-- Content Layout -->
+<div class="relative z-10 flex flex-col h-full px-6 pb-12 pt-4">
+<!-- Floating Header -->
+<div class="flex justify-between items-center mb-8">
+<div class="glass-bright px-4 py-1.5 rounded-full flex items-center gap-2">
+<div class="size-2 rounded-full bg-green-500 animate-pulse"></div>
+<span class="text-xs font-medium uppercase tracking-widest text-white/80">Online</span>
+</div>
+<button class="glass-bright size-10 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-xl">person</span>
+</button>
+</div>
+<!-- Central Request Card (Glassmorphism) -->
+<div class="flex-1 flex flex-col justify-center">
+<div class="glass rounded-xl p-8 relative overflow-hidden">
+<!-- Bounty Tag -->
+<div class="absolute top-0 right-0 bg-primary px-4 py-1 rounded-bl-lg flex items-center gap-1.5">
+<span class="material-symbols-outlined text-xs">bug_report</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Priority Bounty</span>
+</div>
+<!-- Countdown Timer -->
+<div class="flex flex-col items-center mb-8">
+<div class="relative size-32 flex items-center justify-center">
+<svg class="size-full" viewbox="0 0 100 100">
+<circle class="text-white/10" cx="50" cy="50" fill="transparent" r="44" stroke="currentColor" stroke-width="4"></circle>
+<circle class="text-primary progress-ring__circle" cx="50" cy="50" fill="transparent" r="44" stroke="currentColor" stroke-dasharray="276.46" stroke-dashoffset="69.1" stroke-linecap="round" stroke-width="4"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-4xl font-bold">12</span>
+<span class="text-[10px] uppercase text-white/50 tracking-widest">Seconds</span>
+</div>
+</div>
+</div>
+<!-- Ride Summary -->
+<div class="text-center space-y-1 mb-8">
+<h2 class="text-white/60 text-sm font-medium uppercase tracking-widest">Estimated Earnings</h2>
+<div class="text-6xl font-bold tracking-tighter">$24.80</div>
+</div>
+<!-- Detail Grid -->
+<div class="grid grid-cols-2 gap-4 mb-2">
+<div class="glass-bright rounded-lg p-4 flex flex-col items-center text-center">
+<span class="material-symbols-outlined text-primary mb-1">distance</span>
+<span class="text-xs text-white/50 mb-0.5">Pickup</span>
+<span class="font-bold text-lg">1.2 mi</span>
+</div>
+<div class="glass-bright rounded-lg p-4 flex flex-col items-center text-center">
+<span class="material-symbols-outlined text-primary mb-1">schedule</span>
+<span class="text-xs text-white/50 mb-0.5">Trip Time</span>
+<span class="font-bold text-lg">18 min</span>
+</div>
+</div>
+</div>
+<!-- Pickup Address -->
+<div class="mt-4 px-2 flex items-start gap-3">
+<div class="mt-1 flex flex-col items-center gap-1">
+<div class="size-2.5 rounded-full bg-primary ring-4 ring-primary/20"></div>
+<div class="w-0.5 h-6 bg-gradient-to-b from-primary to-transparent"></div>
+</div>
+<div>
+<p class="text-white/50 text-xs font-medium uppercase">Pickup Location</p>
+<p class="text-lg font-medium leading-tight">482 Guerrero St, Mission District</p>
+</div>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="mt-auto grid grid-cols-2 gap-4 pt-8">
+<button class="glass-bright glow-red h-16 rounded-xl flex items-center justify-center gap-2 group transition-all active:scale-95">
+<span class="material-symbols-outlined text-red-500">close</span>
+<span class="font-bold text-lg">Decline</span>
+</button>
+<button class="bg-gradient-to-br from-green-500 to-green-600 glow-green h-16 rounded-xl flex items-center justify-center gap-2 shadow-lg transition-all active:scale-95">
+<span class="material-symbols-outlined text-white">check_circle</span>
+<span class="font-bold text-lg text-white">Accept</span>
+</button>
+</div>
+<!-- Home Indicator (iOS style) -->
+<div class="absolute bottom-1 left-1/2 -translate-x-1/2 w-32 h-1 bg-white/20 rounded-full"></div>
+</div>
+<!-- Interactive Map Controls (Mini) -->
+<div class="absolute right-6 top-1/2 -translate-y-1/2 z-20 flex flex-col gap-2">
+<button class="glass-bright size-10 rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined">add</span>
+</button>
+<button class="glass-bright size-10 rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined">remove</span>
+</button>
+<button class="glass-bright size-10 rounded-lg flex items-center justify-center mt-4">
+<span class="material-symbols-outlined text-primary">my_location</span>
+</button>
+</div>
+</div>
+</body></html>

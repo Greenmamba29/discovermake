@@ -1,0 +1,1 @@
+{"id":7532,"name":"Add the links shortened by lc.cx to a Telegram channel","description":"Every time there is a new link shortened in lc.cx, Make will automatically post a message containing the link and additional information in Telegram.","url":"7532-add-the-links-shortened-by-lc-cx-to-a-telegram-channel","usedApps":["lccx","telegram"],"usage":1}

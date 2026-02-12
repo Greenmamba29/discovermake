@@ -1,0 +1,1 @@
+{"id":2792,"name":"Add Autopilot contacts from new Cognito Forms entries","description":"Every time someone fills out your Cognito Form, Make will automatically add a new contact to your Autopilot list.","url":"2792-add-autopilot-contacts-from-new-cognito-forms-entries","usedApps":["cognitoforms","autopilot"],"usage":1}

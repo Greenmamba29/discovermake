@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Admin Command Center</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#3B82F6", // Blue for main actions
+                        "background-light": "#F3F4F6", // Light gray for light mode
+                        "background-dark": "#0B1120", // Deep dark blue/black for dark mode
+                        "glass-dark": "rgba(30, 41, 59, 0.4)", // Translucent dark
+                        "glass-light": "rgba(255, 255, 255, 0.7)", // Translucent light
+                        "accent-purple": "#8B5CF6",
+                        "accent-green": "#10B981",
+                        "accent-blue": "#3B82F6",
+                        "accent-pink": "#EC4899",
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "1rem",
+                    },
+                    backdropBlur: {
+                        xs: '2px',
+                    }
+                },
+            },
+        };
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .glass-panel {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .light-glass-panel {
+             backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+             border: 1px solid rgba(255, 255, 255, 0.5);
+        }.hide-scroll::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scroll {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .glow-blue {
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+        }
+        .glow-purple {
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+        }
+        .glow-green {
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-gray-800 dark:text-gray-100 min-h-screen relative overflow-x-hidden antialiased">
+<div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+<div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-accent-blue/20 rounded-full blur-[100px] animate-pulse"></div>
+<div class="absolute bottom-[20%] right-[-10%] w-80 h-80 bg-accent-purple/20 rounded-full blur-[100px]"></div>
+<div class="absolute top-[40%] left-[20%] w-64 h-64 bg-accent-green/10 rounded-full blur-[80px]"></div>
+</div>
+<div class="w-full flex justify-between items-center px-6 py-3 text-sm font-medium z-50 relative">
+<span>9:41</span>
+<div class="flex space-x-2 items-center">
+<span class="material-icons text-xs">signal_cellular_alt</span>
+<span class="material-icons text-xs">wifi</span>
+<span class="material-icons text-xs">battery_full</span>
+</div>
+</div>
+<header class="px-6 pt-2 pb-6 flex justify-between items-center z-20 relative">
+<div class="flex items-center space-x-3">
+<div class="w-10 h-10 rounded-full bg-glass-light dark:bg-glass-dark glass-panel flex items-center justify-center text-accent-blue shadow-lg">
+<span class="material-icons">admin_panel_settings</span>
+</div>
+<div>
+<h1 class="text-xl font-bold tracking-tight">Admin Command</h1>
+<p class="text-xs text-gray-500 dark:text-gray-400">System Status: <span class="text-accent-green">Optimal</span></p>
+</div>
+</div>
+<button class="relative p-2 rounded-full bg-glass-light dark:bg-glass-dark glass-panel text-gray-600 dark:text-gray-300">
+<span class="material-icons">notifications</span>
+<span class="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full border border-white dark:border-gray-900"></span>
+</button>
+</header>
+<main class="px-5 pb-24 space-y-6 relative z-10">
+<div class="relative w-full h-72 rounded-3xl overflow-hidden shadow-2xl border border-gray-200 dark:border-gray-700/30">
+<img alt="Dark map background showing city streets at night" class="absolute inset-0 w-full h-full object-cover opacity-80 dark:opacity-60 grayscale-[20%]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3cYvf84rWlQlsOcQIr0HcrxrqRlOodga4s4s-2mrW3WwONHUchEZAxJAdc2hq0Fep5ITE0HxPgFdEu14PjMBjtiwTp26BJ1j6HZJxLXca7pkVCSR67t2K4asjAQ5dwOWEnDNtuAZ35IwBf7_Ft7_EttyZDLlzfhre8Zn9w_gQr0ZZ2sfiFgSCeaZ1S2JQAOogfdJ6nkQ6BM8hx6FLfsCo3Sv0ZuTTv1d-htAwFUgWhBpkrh_NoHr3vDiNIuS3rJuKWLSxfV_SiLT6"/>
+<div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background-light dark:to-background-dark opacity-90"></div>
+<div class="absolute top-1/3 left-1/4 w-3 h-3 bg-accent-blue rounded-full shadow-[0_0_15px_rgba(59,130,246,0.8)] animate-pulse"></div>
+<div class="absolute top-1/2 left-2/3 w-3 h-3 bg-accent-purple rounded-full shadow-[0_0_15px_rgba(139,92,246,0.8)] animate-pulse delay-75"></div>
+<div class="absolute bottom-1/3 right-1/4 w-3 h-3 bg-accent-green rounded-full shadow-[0_0_15px_rgba(16,185,129,0.8)] animate-pulse delay-150"></div>
+<svg class="absolute inset-0 w-full h-full pointer-events-none opacity-60">
+<path class="animate-[dash_20s_linear_infinite]" d="M100 120 Q 180 80, 240 160" fill="none" stroke="#3B82F6" stroke-dasharray="4 4" stroke-width="2"></path>
+<path d="M240 160 Q 280 200, 300 140" fill="none" stroke="#8B5CF6" stroke-width="2"></path>
+</svg>
+<div class="absolute top-4 left-1/2 transform -translate-x-1/2 bg-glass-light/90 dark:bg-glass-dark/90 glass-panel px-4 py-1.5 rounded-full text-xs font-semibold text-gray-800 dark:text-white border border-gray-300 dark:border-gray-600 flex items-center space-x-2">
+<span class="w-2 h-2 rounded-full bg-accent-green animate-pulse"></span>
+<span>Global Traffic: High</span>
+</div>
+<div class="absolute bottom-16 left-6 flex flex-col items-center">
+<div class="w-12 h-12 rounded-full bg-gradient-to-br from-gray-700 to-gray-900 border border-gray-500 shadow-xl flex items-center justify-center z-10 relative">
+<span class="material-icons text-white text-lg">code</span>
+</div>
+<div class="mt-2 bg-black/60 backdrop-blur-md px-3 py-1 rounded-lg border border-gray-700">
+<p class="text-[10px] font-medium text-white text-center leading-tight">Dev Cluster<br/><span class="text-gray-400">San Francisco</span></p>
+</div>
+</div>
+<div class="absolute top-16 right-6 flex flex-col items-center">
+<div class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-600 to-blue-800 border border-blue-400 shadow-xl flex items-center justify-center z-10 relative glow-blue">
+<span class="material-icons text-white text-lg">cloud_queue</span>
+</div>
+<div class="mt-2 bg-black/60 backdrop-blur-md px-3 py-1 rounded-lg border border-gray-700">
+<p class="text-[10px] font-medium text-white text-center leading-tight">AWS Node<br/><span class="text-blue-300">Active</span></p>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-white/60 dark:bg-glass-dark glass-panel p-4 rounded-2xl relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 w-20 h-20 bg-accent-green/10 rounded-full blur-xl group-hover:bg-accent-green/20 transition-all"></div>
+<div class="flex justify-between items-start mb-2">
+<div class="p-2 bg-accent-green/10 rounded-lg text-accent-green">
+<span class="material-icons text-xl">payments</span>
+</div>
+<span class="text-[10px] font-bold text-accent-green bg-accent-green/10 px-2 py-0.5 rounded-full">+12.5%</span>
+</div>
+<h3 class="text-gray-500 dark:text-gray-400 text-xs font-medium uppercase tracking-wider mb-1">Surge Revenue</h3>
+<p class="text-2xl font-bold text-gray-900 dark:text-white">$142.8k</p>
+</div>
+<div class="bg-white/60 dark:bg-glass-dark glass-panel p-4 rounded-2xl relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 w-20 h-20 bg-accent-blue/10 rounded-full blur-xl group-hover:bg-accent-blue/20 transition-all"></div>
+<div class="flex justify-between items-start mb-2">
+<div class="p-2 bg-accent-blue/10 rounded-lg text-accent-blue">
+<span class="material-icons text-xl">group_work</span>
+</div>
+<span class="text-[10px] font-bold text-accent-blue bg-accent-blue/10 px-2 py-0.5 rounded-full">24 Active</span>
+</div>
+<h3 class="text-gray-500 dark:text-gray-400 text-xs font-medium uppercase tracking-wider mb-1">Group Projects</h3>
+<p class="text-2xl font-bold text-gray-900 dark:text-white">86</p>
+</div>
+</div>
+<div class="bg-white/60 dark:bg-glass-dark glass-panel p-4 rounded-2xl relative overflow-hidden glow-purple border-l-4 border-l-accent-purple border-t border-t-white/10 border-r border-r-white/10 border-b border-b-white/10">
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-4">
+<div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-accent-purple to-pink-600 flex items-center justify-center shadow-lg">
+<span class="material-icons text-white">bug_report</span>
+</div>
+<div>
+<h3 class="text-lg font-bold text-gray-900 dark:text-white">Bug Bounties</h3>
+<p class="text-xs text-gray-500 dark:text-gray-400">3 critical, 12 moderate pending</p>
+</div>
+</div>
+<div class="text-right">
+<span class="block text-2xl font-bold text-white">15</span>
+<span class="text-[10px] text-gray-400">Unresolved</span>
+</div>
+</div>
+<div class="mt-4 w-full h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-accent-purple to-pink-500 w-[65%] rounded-full shadow-[0_0_10px_rgba(139,92,246,0.5)]"></div>
+</div>
+</div>
+<div class="space-y-3">
+<h3 class="text-sm font-semibold text-gray-600 dark:text-gray-300 ml-1">Issue Resolution Portal</h3>
+<div class="bg-white dark:bg-gray-800/40 glass-panel p-4 rounded-2xl flex items-center justify-between border border-red-500/30 shadow-lg shadow-red-500/5">
+<div class="flex items-center space-x-3">
+<div class="p-2 rounded-full bg-red-500/10 text-red-500">
+<span class="material-icons text-lg">warning</span>
+</div>
+<div>
+<h4 class="font-medium text-gray-900 dark:text-white text-sm">Server Latency Spike</h4>
+<p class="text-xs text-gray-500 dark:text-gray-400">US-East Region • Triage needed</p>
+</div>
+</div>
+<button class="px-3 py-1.5 rounded-lg bg-red-500 text-white text-xs font-medium hover:bg-red-600 transition-colors shadow-lg shadow-red-500/20">
+                    Resolve
+                </button>
+</div>
+<div class="bg-white dark:bg-gray-800/40 glass-panel p-4 rounded-2xl flex items-center justify-between border border-transparent hover:border-accent-blue/30 transition-all">
+<div class="flex items-center space-x-3">
+<div class="p-2 rounded-full bg-orange-500/10 text-orange-500">
+<span class="material-icons text-lg">slow_motion_video</span>
+</div>
+<div>
+<h4 class="font-medium text-gray-900 dark:text-white text-sm">Deployment Queue</h4>
+<p class="text-xs text-gray-500 dark:text-gray-400">Backup in staging env</p>
+</div>
+</div>
+<button class="px-3 py-1.5 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+                    View
+                </button>
+</div>
+<div class="bg-white dark:bg-gray-800/40 glass-panel p-4 rounded-2xl flex items-center justify-between border border-transparent hover:border-accent-blue/30 transition-all">
+<div class="flex items-center space-x-3">
+<div class="p-2 rounded-full bg-blue-500/10 text-blue-500">
+<span class="material-icons text-lg">verified_user</span>
+</div>
+<div>
+<h4 class="font-medium text-gray-900 dark:text-white text-sm">Access Request</h4>
+<p class="text-xs text-gray-500 dark:text-gray-400">New admin pending approval</p>
+</div>
+</div>
+<button class="px-3 py-1.5 rounded-lg bg-accent-blue text-white text-xs font-medium hover:bg-blue-600 transition-colors shadow-lg shadow-blue-500/20">
+                    Approve
+                </button>
+</div>
+</div>
+</main>
+<nav class="fixed bottom-0 left-0 w-full bg-white/80 dark:bg-[#0B1120]/90 backdrop-blur-xl border-t border-gray-200 dark:border-gray-800 pb-6 pt-2 z-50">
+<div class="flex justify-around items-center px-2">
+<button class="flex flex-col items-center space-y-1 p-2 text-accent-blue">
+<span class="material-icons">dashboard</span>
+<span class="text-[10px] font-medium">Command</span>
+</button>
+<button class="flex flex-col items-center space-y-1 p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
+<span class="material-icons">search</span>
+<span class="text-[10px] font-medium">Inspect</span>
+</button>
+<div class="relative -top-6">
+<button class="w-14 h-14 rounded-full bg-gradient-to-r from-accent-blue to-blue-600 text-white flex items-center justify-center shadow-lg shadow-blue-500/40 border-4 border-background-light dark:border-background-dark transform transition-transform active:scale-95">
+<span class="material-icons text-2xl">add</span>
+</button>
+</div>
+<button class="flex flex-col items-center space-y-1 p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
+<span class="material-icons">forum</span>
+<span class="text-[10px] font-medium">Alerts</span>
+</button>
+<button class="flex flex-col items-center space-y-1 p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
+<span class="material-icons">person</span>
+<span class="text-[10px] font-medium">Admin</span>
+</button>
+</div>
+</nav>
+
+</body></html>

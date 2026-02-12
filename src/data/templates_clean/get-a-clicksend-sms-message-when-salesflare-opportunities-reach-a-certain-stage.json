@@ -1,0 +1,1 @@
+{"id":2801,"name":"Get a ClickSend SMS message when Salesflare opportunities reach a certain stage","description":"Every time a Salesflare opportunity reaches a certain stage, Make will automatically send an SMS via ClickSend..","url":"2801-get-a-clicksend-sms-message-when-salesflare-opportunities-reach-a-certain-stage","usedApps":["salesflare","clicksend"],"usage":1}

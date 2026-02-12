@@ -1,0 +1,1 @@
+{"id":8892,"name":"Create Salesforce contacts from new Google Forms form submissions","description":"Use this template to automatically create a Salesforce contact when there's a new Google Forms form submission.","url":"8892-create-salesforce-contacts-from-new-google-forms-form-submissions","usedApps":["google-forms","salesforce"],"usage":128}
