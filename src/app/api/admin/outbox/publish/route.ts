@@ -1,11 +1,11 @@
 /**
- * POST|GET /api/admin/offers/expire -> ExpireOffersResponse
- * Expire stale shop offers and re-dispatch each order to the next capable shop.
+ * POST|GET /api/admin/outbox/publish -> PublishOutboxResponse
+ * Publish pending domain events from the transactional outbox (ADR-0002) to subscribers.
  * Auth: Bearer ADMIN_TOKEN or CRON_SECRET (GET is what Vercel Cron calls; see vercel.json).
  */
-import type { ExpireOffersResponse } from '@/contracts/admin';
+import type { PublishOutboxResponse } from '@/contracts/admin';
 import { requireAdminOrCron } from '@/server/auth/admin';
-import { expireStaleOffers } from '@/server/dispatch';
+import { publishPendingEvents } from '@/server/events/outbox';
 import { json, route } from '@/server/http';
 
 export const runtime = 'nodejs';
@@ -13,7 +13,7 @@ export const dynamic = 'force-dynamic';
 
 const handler = route(async (request) => {
     requireAdminOrCron(request);
-    return json<ExpireOffersResponse>({ expired: await expireStaleOffers() });
+    return json<PublishOutboxResponse>(await publishPendingEvents({ limit: 500 }));
 });
 
 export const POST = handler;

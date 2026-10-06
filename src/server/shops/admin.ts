@@ -1,14 +1,19 @@
 /**
  * Ops/admin operations (auth: Bearer ADMIN_TOKEN, enforced in the route handlers).
- *
- * Order list/detail use AdminOrderRow / AdminOrderDetail from src/contracts/admin.ts.
- * Shop onboarding (create shop + rate card + capabilities + one-time console token) uses
- * the local schemas below; they are candidates for src/contracts/admin.ts (see open issues).
+ * Contracts: src/contracts/admin.ts (orders, refunds, payouts, shop onboarding).
  */
 import { and, asc, desc, eq, inArray, ne } from 'drizzle-orm';
-import { z } from 'zod';
-import type { AdminDispatchResponse, AdminOrderDetail, AdminOrderRow } from '../../contracts/admin';
-import { Address, Email, IsoDateTime, ProcessId, ShopId, ThicknessOptionId, type Actor } from '../../contracts/common';
+import {
+    CreateShopRequest,
+    type AdminDispatchResponse,
+    type AdminOrderDetail,
+    type AdminOrderRow,
+    type AdminPayoutView,
+    type CreateShopResponse,
+    type IssueShopTokenRequest,
+    type ShopConsoleTokenView,
+} from '../../contracts/admin';
+import type { Actor } from '../../contracts/common';
 import type { OrderStatus } from '../../contracts/enums';
 import type { ShipmentView } from '../../contracts/shipments';
 import { generateToken, sha256Hex } from '../auth/tokens';
@@ -21,17 +26,20 @@ import {
     payments,
     payouts,
     processes,
+    services,
     shipments,
     shopAccessTokens,
     shopCapabilities,
     shopRateCards,
+    shopServices,
     shops,
     thicknessOptions,
 } from '../db/schema';
 import { dispatchOrder } from '../dispatch';
 import { ApiError } from '../http';
 import { newId } from '../ids';
-import { toUniversalStatus } from '../orders';
+import { markPayoutPaid } from '../ledger';
+import { refundOrder, toUniversalStatus } from '../orders';
 import { markShipmentDelivered } from '../shipping';
 
 export const SHOP_TOKEN_PREFIX = 'dmshop';
@@ -71,12 +79,13 @@ export async function getAdminOrder(orderId: string): Promise<AdminOrderDetail |
     const db = getDb();
     const [row] = await db.select({ order: orders, shopName: shops.name }).from(orders).leftJoin(shops, eq(shops.id, orders.shopId)).where(eq(orders.id, orderId));
     if (!row) return null;
-    const [history, pays, jobs, ledger, outs] = await Promise.all([
+    const [history, pays, jobs, ledger, outs, ships] = await Promise.all([
         db.select().from(orderStatusHistory).where(eq(orderStatusHistory.orderId, orderId)).orderBy(asc(orderStatusHistory.createdAt)),
         db.select().from(payments).where(eq(payments.orderId, orderId)).orderBy(asc(payments.createdAt)),
         db.select().from(manufacturingJobs).where(eq(manufacturingJobs.orderId, orderId)).orderBy(asc(manufacturingJobs.createdAt)),
         db.select().from(ledgerEntries).where(eq(ledgerEntries.orderId, orderId)).orderBy(asc(ledgerEntries.txnKey), asc(ledgerEntries.lineNo)),
         db.select().from(payouts).where(eq(payouts.orderId, orderId)).orderBy(asc(payouts.createdAt)),
+        db.select().from(shipments).where(eq(shipments.orderId, orderId)).orderBy(asc(shipments.createdAt)),
     ]);
     return {
         ...toAdminRow(row.order, row.shopName),
@@ -84,7 +93,15 @@ export async function getAdminOrder(orderId: string): Promise<AdminOrderDetail |
         payments: pays.map((p) => ({ id: p.id, provider: p.provider, providerRef: p.providerRef, amountCents: p.amountCents, status: p.status, createdAt: iso(p.createdAt) })),
         jobs: jobs.map((j) => ({ id: j.id, shopId: j.shopId, status: j.status, isRework: !!j.reworkOfJobId, createdAt: iso(j.createdAt) })),
         ledger: ledger.map((l) => ({ txnKey: l.txnKey, account: l.account, direction: l.direction, amountCents: l.amountCents, memo: l.memo, at: iso(l.createdAt) })),
-        payouts: outs.map((p) => ({ id: p.id, shopId: p.shopId, amountCents: p.amountCents, status: p.status, createdAt: iso(p.createdAt) })),
+        payouts: outs.map((p) => ({ id: p.id, shopId: p.shopId, amountCents: p.amountCents, status: p.status, method: p.method, createdAt: iso(p.createdAt) })),
+        shipments: ships.map((sh) => ({
+            id: sh.id,
+            status: sh.status,
+            carrier: sh.carrier,
+            trackingNumber: sh.trackingNumber,
+            createdAt: iso(sh.createdAt),
+            deliveredAt: sh.deliveredAt ? iso(sh.deliveredAt) : null,
+        })),
     };
 }
 
@@ -96,6 +113,36 @@ export async function adminDispatchOrder(orderId: string): Promise<AdminDispatch
     const result = await dispatchOrder(orderId);
     const [order] = await db.select({ status: orders.status }).from(orders).where(eq(orders.id, orderId));
     return { orderId, jobId: result?.jobId ?? null, shopId: result?.shopId ?? null, status: order.status };
+}
+
+/** Ops: full refund of a paid order before shipping (provider refund, REFUNDED, open jobs cancelled, ledger reversed). */
+export async function adminRefundOrder(orderId: string, actor: Actor, reason: string): Promise<AdminOrderDetail> {
+    const [exists] = await getDb().select({ id: orders.id }).from(orders).where(eq(orders.id, orderId));
+    if (!exists) throw new ApiError('NOT_FOUND', 'Order not found');
+    await refundOrder(orderId, actor, reason);
+    return (await getAdminOrder(orderId)) as AdminOrderDetail;
+}
+
+/** Ops: settle a manual payout (bank transfer / check) with its reference. Idempotent. */
+export async function adminMarkPayoutPaid(payoutId: string, reference: string): Promise<AdminPayoutView> {
+    let row: typeof payouts.$inferSelect | null;
+    try {
+        row = await markPayoutPaid(payoutId, reference);
+    } catch (err) {
+        throw new ApiError('CONFLICT', err instanceof Error ? err.message : String(err));
+    }
+    if (!row) throw new ApiError('NOT_FOUND', 'Payout not found');
+    return {
+        id: row.id,
+        orderId: row.orderId,
+        shopId: row.shopId,
+        amountCents: row.amountCents,
+        currency: row.currency,
+        status: row.status,
+        method: row.method,
+        providerRef: row.providerRef,
+        paidAt: row.paidAt ? iso(row.paidAt) : null,
+    };
 }
 
 /** Ops: confirm delivery of an order's latest active shipment (manual carrier or carrier outage). */
@@ -114,82 +161,7 @@ export async function adminMarkOrderDelivered(orderId: string, actor: Actor, del
 // Shop onboarding
 // ---------------------------------------------------------------------------
 
-const centsField = z.number().int().nonnegative().max(10_000_000);
-
-export const RateCardInput = z.object({
-    fiberLaserCentsPerHour: centsField,
-    co2LaserCentsPerHour: centsField,
-    brakeCentsPerBend: centsField,
-    brakeSetupCents: centsField,
-    orderSetupCents: centsField,
-    partHandlingCents: centsField,
-    finishingCentsPerFt2: centsField,
-    finishBatchSetupCents: centsField,
-    qaCentsPerPart: centsField.default(0),
-    packagingBaseCents: centsField,
-    materialMarkup: z.number().min(1).max(3).default(1),
-    platformMarginPct: z.number().min(0).max(0.9),
-    minimumOrderCents: centsField,
-    volumeDiscountMax: z.number().min(0).max(0.6).default(0.2),
-    serviceOverrides: z.record(z.number().int().nonnegative()).default({}),
-    notes: z.string().trim().max(500).optional(),
-});
-
-export const CapabilityInput = z.object({
-    thicknessOptionId: ThicknessOptionId,
-    processId: ProcessId,
-    bedWidthMm: z.number().positive().max(10_000),
-    bedHeightMm: z.number().positive().max(10_000),
-    maxBendLengthMm: z.number().positive().max(10_000).optional(),
-    machineLabel: z.string().trim().max(120).optional(),
-});
-
-export const CreateShopRequest = z.object({
-    name: z.string().trim().min(2).max(120),
-    slug: z
-        .string()
-        .trim()
-        .regex(/^[a-z0-9][a-z0-9-]{2,59}$/, 'lowercase letters, digits and dashes')
-        .optional(),
-    legalName: z.string().trim().max(200).optional(),
-    contactEmail: Email,
-    phone: z.string().trim().max(32).optional(),
-    address: Address,
-    status: z.enum(['PENDING', 'ACTIVE']).default('ACTIVE'),
-    timezone: z.string().trim().max(64).default('America/New_York'),
-    lat: z.number().min(-90).max(90).optional(),
-    lng: z.number().min(-180).max(180).optional(),
-    queueDays: z.number().int().min(0).max(60).default(2),
-    acceptWindowMinutes: z.number().int().min(15).max(10_080).default(120),
-    adapterLevel: z.enum(['L0', 'L1', 'L2', 'L3']).default('L1'),
-    certifications: z.array(z.string().trim().min(1).max(60)).max(20).default([]),
-    rateCard: RateCardInput.optional(),
-    capabilities: z.array(CapabilityInput).max(500).default([]),
-    tokenLabel: z.string().trim().min(1).max(60).default('console'),
-});
-export type CreateShopRequest = z.input<typeof CreateShopRequest>;
-
-export const IssueShopTokenRequest = z.object({
-    label: z.string().trim().min(1).max(60),
-    expiresAt: IsoDateTime.optional(),
-});
-
-export const ShopConsoleTokenView = z.object({
-    id: z.string(),
-    label: z.string(),
-    /** Plaintext console token. Shown ONCE; only its sha256 is stored. */
-    token: z.string(),
-    expiresAt: IsoDateTime.nullable(),
-});
-export type ShopConsoleTokenView = z.infer<typeof ShopConsoleTokenView>;
-
-export const CreateShopResponse = z.object({
-    shop: z.object({ id: ShopId, slug: z.string(), name: z.string(), status: z.string(), city: z.string(), region: z.string() }),
-    rateCardId: z.string().nullable(),
-    capabilityCount: z.number().int().nonnegative(),
-    consoleToken: ShopConsoleTokenView,
-});
-export type CreateShopResponse = z.infer<typeof CreateShopResponse>;
+export { CapabilityInput, CreateShopRequest, CreateShopResponse, IssueShopTokenRequest, RateCardInput, ShopConsoleTokenView } from '../../contracts/admin';
 
 function slugify(name: string): string {
     return (
@@ -209,6 +181,11 @@ export async function createShop(raw: CreateShopRequest): Promise<CreateShopResp
         const slug = input.slug ?? `${slugify(input.name)}-${newId('shop').slice(-4)}`;
         const [dupe] = await t.select({ id: shops.id }).from(shops).where(eq(shops.slug, slug));
         if (dupe) throw new ApiError('CONFLICT', `A shop with slug ${slug} already exists`);
+
+        const serviceIds = [...new Set(input.serviceIds)];
+        const svcRows = serviceIds.length ? await t.select({ id: services.id }).from(services).where(inArray(services.id, serviceIds)) : [];
+        const unknownSvc = serviceIds.filter((id) => !svcRows.some((r) => r.id === id));
+        if (unknownSvc.length) throw new ApiError('VALIDATION_FAILED', `Unknown service ids: ${unknownSvc.join(', ')}`);
 
         const thicknessIds = [...new Set(input.capabilities.map((c) => c.thicknessOptionId))];
         const processIds = [...new Set(input.capabilities.map((c) => c.processId))];
@@ -271,6 +248,10 @@ export async function createShop(raw: CreateShopRequest): Promise<CreateShopResp
             );
         }
 
+        if (serviceIds.length) {
+            await t.insert(shopServices).values(serviceIds.map((serviceId) => ({ id: newId('shopService'), shopId: shop.id, serviceId })));
+        }
+
         const token = generateToken(SHOP_TOKEN_PREFIX);
         const tokenId = newId('shopToken');
         await t.insert(shopAccessTokens).values({ id: tokenId, shopId: shop.id, tokenHash: sha256Hex(token), label: input.tokenLabel });
@@ -279,13 +260,14 @@ export async function createShop(raw: CreateShopRequest): Promise<CreateShopResp
             shop: { id: shop.id, slug: shop.slug, name: shop.name, status: shop.status, city: shop.city, region: shop.region },
             rateCardId,
             capabilityCount: input.capabilities.length,
+            serviceCount: serviceIds.length,
             consoleToken: { id: tokenId, label: input.tokenLabel, token, expiresAt: null },
         };
     });
 }
 
 /** Issue an additional console token for a shop (rotation). Plaintext returned once. */
-export async function issueShopToken(shopId: string, input: z.infer<typeof IssueShopTokenRequest>): Promise<ShopConsoleTokenView> {
+export async function issueShopToken(shopId: string, input: IssueShopTokenRequest): Promise<ShopConsoleTokenView> {
     const db = getDb();
     const [shop] = await db.select({ id: shops.id }).from(shops).where(eq(shops.id, shopId));
     if (!shop) throw new ApiError('NOT_FOUND', 'Shop not found');

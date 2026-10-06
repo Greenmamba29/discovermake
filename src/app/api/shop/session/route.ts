@@ -6,6 +6,7 @@
  */
 import { SHOP_SESSION_COOKIE, ShopLoginRequest, type ShopSessionResponse } from '@/contracts/shop';
 import type { OkResponse } from '@/contracts/common';
+import { env } from '@/server/env';
 import { ApiError, json, parseJson, route } from '@/server/http';
 import { assertSameOrigin, createShopSession, readShopSessionSecret, requireShopSession, revokeShopSession, sessionCookieOptions } from '@/server/shops';
 
@@ -17,7 +18,7 @@ export const POST = route(async (request) => {
     const { token } = await parseJson(request, ShopLoginRequest);
     const session = await createShopSession(token);
     if (!session) throw new ApiError('UNAUTHORIZED', 'Invalid or revoked Shop Console token', 401);
-    const body: ShopSessionResponse = { shop: session.shop, expiresAt: session.expiresAt.toISOString() };
+    const body: ShopSessionResponse = { shop: session.shop, expiresAt: session.expiresAt.toISOString(), shippingMode: env().CARRIER };
     const res = json(body);
     res.cookies.set(SHOP_SESSION_COOKIE, session.sessionSecret, sessionCookieOptions(session.expiresAt));
     return res;
@@ -25,7 +26,7 @@ export const POST = route(async (request) => {
 
 export const GET = route(async (request) => {
     const { shop, expiresAt } = await requireShopSession(request);
-    const body: ShopSessionResponse = { shop, expiresAt: expiresAt.toISOString() };
+    const body: ShopSessionResponse = { shop, expiresAt: expiresAt.toISOString(), shippingMode: env().CARRIER };
     return json(body);
 });
 

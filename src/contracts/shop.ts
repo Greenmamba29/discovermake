@@ -15,6 +15,7 @@
  */
 import { z } from 'zod';
 import {
+    CarrierProviderName,
     DeclineReason,
     InspectionCheckKind,
     InspectionOutcome,
@@ -44,6 +45,11 @@ export type ShopPrincipal = z.infer<typeof ShopPrincipal>;
 export const ShopSessionResponse = z.object({
     shop: ShopPrincipal,
     expiresAt: IsoDateTime,
+    /**
+     * Carrier adapter configured on the server: `easypost` = DiscoverMake buys the label;
+     * `manual` = the shop enters carrier + tracking (test double, never in production).
+     */
+    shippingMode: CarrierProviderName,
 });
 export type ShopSessionResponse = z.infer<typeof ShopSessionResponse>;
 

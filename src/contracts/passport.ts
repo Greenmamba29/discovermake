@@ -70,6 +70,12 @@ export const PassportPublicView = z.object({
 });
 export type PassportPublicView = z.infer<typeof PassportPublicView>;
 
+/** GET /api/passport/:id response: the public view plus a QR code (PNG data URL) of `verifyUrl`. */
+export const PassportPublicResponse = PassportPublicView.extend({
+    qrCodeDataUrl: z.string().startsWith('data:image/png;base64,'),
+});
+export type PassportPublicResponse = z.infer<typeof PassportPublicResponse>;
+
 export const PassportVerifyResponse = z.object({
     id: PassportId,
     valid: z.boolean(),

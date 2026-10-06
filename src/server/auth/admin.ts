@@ -21,3 +21,15 @@ export function requireAdmin(request: Request): void {
         throw new ApiError('UNAUTHORIZED', 'Admin token required', 401);
     }
 }
+
+/**
+ * Scheduled-job routes (offer expiry, outbox publish) accept the admin token OR the
+ * narrower CRON_SECRET, so the scheduler never needs full admin rights.
+ */
+export function requireAdminOrCron(request: Request): void {
+    if (isAdminRequest(request)) return;
+    const cron = env().CRON_SECRET;
+    const presented = bearerToken(request.headers);
+    if (cron && presented && safeEqual(presented, cron)) return;
+    throw new ApiError('UNAUTHORIZED', 'Admin token or cron secret required', 401);
+}

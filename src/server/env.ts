@@ -44,6 +44,8 @@ const EnvSchema = z.object({
     PASSPORT_SIGNING_SECRET: optionalString,
     JOB_PACKET_SIGNING_SECRET: optionalString,
     ADMIN_TOKEN: optionalString,
+    /** Bearer secret for scheduled jobs (Vercel Cron sends `Authorization: Bearer $CRON_SECRET`). Cron routes only. */
+    CRON_SECRET: optionalString,
 
     RESEND_API_KEY: optionalString,
     EMAIL_FROM: z.string().default('DiscoverMake <orders@discovermake.com>'),
