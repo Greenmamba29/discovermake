@@ -107,7 +107,9 @@ export function normalizeIntent(input: CreationIntent): CreationIntent {
         intent.unknowns = [];
         intent.materials_suggested = [];
         intent.processes_suggested = [];
-        return intent;
+        intent.constraints = [];
+        intent.required_specialists = [];
+        return CreationIntent.parse(intent);
     }
 
     // A dimension requirement must come from the buyer and carry a number; anything else

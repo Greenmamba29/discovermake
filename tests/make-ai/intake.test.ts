@@ -269,5 +269,7 @@ describe('normalizeIntent', () => {
         expect(out.unknowns).toEqual([]);
         expect(out.materials_suggested).toEqual([]);
         expect(out.processes_suggested).toEqual([]);
+        expect(out.constraints).toEqual([]);
+        expect(out.required_specialists).toEqual([]);
     });
 });
