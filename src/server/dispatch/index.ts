@@ -45,6 +45,10 @@ async function loadDispatchContext(tx: DbOrTx, order: OrderRow) {
     ]);
     if (!part || !build) throw new Error(`Order ${order.id} references a missing part or build`);
     if (!thickness) throw new Error(`Thickness option ${quote.config.thicknessOptionId} not found`);
+    // The design is frozen from checkout on (see isDesignFrozen); never send a shop geometry the buyer did not pay for.
+    if (part.designVersion !== quote.designVersion) {
+        throw new Error(`Part ${part.id} is at design version ${part.designVersion} but order ${order.orderNumber} paid for version ${quote.designVersion}; refund or re-quote instead of dispatching`);
+    }
     if (!part.features) throw new Error(`Part ${part.id} has no analyzed features; cannot build a job packet`);
     const [[material], [process]] = await Promise.all([
         tx.select().from(materials).where(eq(materials.id, thickness.materialId)),

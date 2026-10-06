@@ -11,6 +11,8 @@
 
 The specs are workflows 02, 04, 05, 09, 10 and 11, ADR-0001…0008, and spec §12, 13, 18, 19, 23, 28 and 29. The Make.com template marketplace was removed by owner decision; its specs are archived in `docs/archive/`.
 
+> **Status (2026-10-06): integrated.** The four parallel builds (quote, orders, shop, ui) are merged and wired. A real order runs end to end, proven by `tests/e2e/order.spec.ts` (fresh seeded DB, real UI and APIs, only the env-flagged doubles). §11 lists what changed during integration and §12 the decisions still owed by the owner. Setup and go-live steps live in the root `README.md`.
+
 > Next.js here is **16.x** (App Router, React 19). Route handler `params` is a `Promise`. Middleware is now `proxy.ts`. Read `node_modules/next/dist/docs/` before using an unfamiliar API.
 
 ---
@@ -54,6 +56,8 @@ tests/                  foundation/ quote/ orders/ shop/ e2e/ support/
 
 ## 2. File ownership (parallel agents)
 
+> Historical: this split governed the parallel build. After integration any change may touch any module, but cross-module calls still go through each module's `index.ts`.
+
 The agents work in parallel on disjoint paths. **Never edit a path you don't own.** If you need a change elsewhere, write it down in your result's `open_issues`.
 
 | Agent | Owns |
@@ -96,6 +100,7 @@ The auth column uses these values:
 |---|---|---|---|---|---|
 | GET | `/api/catalog` | – | `CatalogResponse` | public | quote |
 | POST | `/api/parts` | `CreatePartRequest` | `CreatePartResponse` (201) | public | quote |
+| POST, PUT | `/api/parts/:partId/upload` | multipart `file` field or raw DXF body | `PartView` | public | quote (direct-upload alternative to the signed PUT; 415 on bad content, 409 once the design is in an order) |
 | PUT | `upload.url` (S3 presigned or `/api/storage/local/<key>?…`) | raw DXF bytes, headers from `upload.headers` | 200 empty | signed URL | foundation |
 | GET | `/api/parts/:partId` | – | `PartView` | public | quote |
 | POST | `/api/parts/:partId/analyze` | `AnalyzePartRequest` | `PartView` | public | quote |
@@ -106,8 +111,9 @@ The auth column uses these values:
 | GET | `/api/orders/:orderId` | – | `OrderView` | order-token | orders |
 | POST | `/api/webhooks/stripe` | raw Stripe event | `{ received: true }` | signature (`STRIPE_WEBHOOK_SECRET`) | orders |
 | POST | `/api/webhooks/dev-payment` | `DevPaymentConfirmRequest` | `DevPaymentConfirmResponse` | dev only (`PAYMENT_PROVIDER=dev`, non-production) | orders |
+| POST | `/api/checkout/dev-confirm` | `DevPaymentConfirmRequest` | `DevPaymentConfirmResponse` | dev only | orders (alias of `/api/webhooks/dev-payment`, used by the UI) |
 | POST | `/api/shop/session` | `ShopLoginRequest` | `ShopSessionResponse` + Set-Cookie | console token | shop |
-| GET | `/api/shop/session` | – | `ShopSessionResponse` | shop-session | shop |
+| GET | `/api/shop/session` | – | `ShopSessionResponse` (incl. `shippingMode`) | shop-session | shop |
 | DELETE | `/api/shop/session` | – | `OkResponse` | shop-session | shop |
 | GET | `/api/shop/jobs?status=A,B` | query | `ShopJobListResponse` | shop-session | shop |
 | GET | `/api/shop/jobs/:jobId` | – | `ShopJobDetail` | shop-session | shop |
@@ -117,25 +123,36 @@ The auth column uses these values:
 | POST | `/api/shop/jobs/:jobId/uploads` | `QaUploadRequest` | `QaUploadResponse` (201) | shop-session | shop |
 | POST | `/api/shop/jobs/:jobId/inspection` | `InspectionSubmitRequest` | `InspectionResultView` (201) | shop-session | shop |
 | POST | `/api/shop/jobs/:jobId/shipment` | `CreateShipmentRequest` | `ShipmentView` (201) | shop-session | shop |
-| GET | `/api/passport/:passportId` | – | `PassportPublicView` | public | shop |
+| GET | `/api/passport/:passportId` | – | `PassportPublicResponse` (view + `qrCodeDataUrl`) | public | shop |
 | GET | `/api/passport/:passportId/verify` | – | `PassportVerifyResponse` | public | shop |
 | GET | `/api/admin/orders?status=A,B` | query | `AdminOrderListResponse` | admin | shop |
 | GET | `/api/admin/orders/:orderId` | – | `AdminOrderDetail` | admin | shop |
 | POST | `/api/admin/orders/:orderId/dispatch` | – | `AdminDispatchResponse` | admin | shop |
+| POST | `/api/admin/orders/:orderId/delivered` | `MarkDeliveredRequest` | `ShipmentView` | admin | shop (marks the order's latest shipment) |
+| POST | `/api/admin/orders/:orderId/refund` | `AdminRefundRequest` | `AdminOrderDetail` | admin | integration |
 | POST | `/api/admin/shipments/:shipmentId/delivered` | `MarkDeliveredRequest` | `ShipmentView` | admin | shop |
-| POST | `/api/admin/offers/expire` | – | `{ expired: number }` | admin | shop |
+| POST | `/api/admin/payouts/:payoutId/paid` | `MarkPayoutPaidRequest` | `AdminPayoutView` | admin | integration |
+| POST, GET | `/api/admin/offers/expire` | – | `ExpireOffersResponse` | admin or cron (`CRON_SECRET`) | shop |
+| POST, GET | `/api/admin/outbox/publish` | – | `PublishOutboxResponse` | admin or cron (`CRON_SECRET`) | integration |
+| POST | `/api/admin/shops` | `CreateShopRequest` | `CreateShopResponse` (201, console token shown once) | admin | shop |
+| POST | `/api/admin/shops/:shopId/tokens` | `IssueShopTokenRequest` | `ShopConsoleTokenView` (201) | admin | shop |
+| DELETE | `/api/admin/shops/:shopId/tokens/:tokenId` | – | `OkResponse` | admin | shop |
 | POST | `/api/webhooks/easypost` | raw EasyPost event | `{ received: true }` | signature (`EASYPOST_WEBHOOK_SECRET`) | shop |
+| POST | `/api/shop/carrier-webhook` | raw EasyPost event | `{ received: true }` | signature | shop (alias of `/api/webhooks/easypost`) |
 | GET, PUT | `/api/storage/local/[...key]` | signed query | bytes / 200 | signed URL (local driver only) | foundation |
 
-### UI pages (ui agent)
+### UI pages (as built)
+
+Route groups: `(marketing)` for `/`, `(app)` for the buyer flow, `(console)` for `/shop*` and `/admin`.
 
 | Path | Screen | Data |
 |---|---|---|
-| `/` | Home: "What do you want to make?" + DXF drop zone | `POST /api/parts`, then PUT to `upload.url`, then `POST /api/parts/:id/analyze`, then go to configure |
-| `/build/[buildId]/configure` | 01 Configure (3D preview from `PartView.preview`, DoorDash option groups, units prompt on NEEDS_INPUT) | `GET /api/builds/:id`, `GET /api/catalog`, `POST /api/quotes` |
-| `/build/[buildId]/quote?quote=` | 02 Instant Quote (tiers from ladder, line-item ⓘ, DFM ring and inline fixes) | `GET /api/quotes/:id` |
-| `/build/[buildId]/route?quote=` | 03 Manufacturing Route (recommended shop card from `QuoteView.route`) | `GET /api/quotes/:id` |
-| `/build/[buildId]/approve?quote=` | 04 Approve + Checkout (address, shipping options from the quote, terms) | `POST /api/checkout`, then redirect to `payment.redirectUrl` |
+| `/` | Home: "What do you want to make?" + DXF drop zone | `POST /api/parts`, then PUT to `upload.url`, then `POST /api/parts/:id/analyze`, then `/parts/:id` |
+| `/make` | Upload flow (+ "Try a sample mounting plate") | same as `/` |
+| `/parts/[partId]` | 01 Configure + 02 Instant Quote on one screen (3D preview, DoorDash option groups, units prompt, DFM fixes incl. `ADD_SERVICE`/`REMOVE_SERVICE`, ladder, ⓘ breakdown) | `GET /api/parts/:id`, `GET /api/catalog`, `POST /api/quotes` |
+| `/checkout/[quoteId]` | 04 Approve + Checkout (address, shipping options from the quote, terms) | `POST /api/checkout`, then `payment.redirectUrl` (Stripe) or the dev panel |
+| `/build/[buildId]/configure`, `/quote?quote=`, `/route?quote=`, `/approve?quote=` | Spec routes; forward to the pages above. `approve` is Stripe's `cancel_url` | – |
+| `/orders` | Paste an order link / reopen orders placed in this browser | – |
 | `/checkout/dev-pay?ref=` | Dev payment page (only when `PAYMENT_PROVIDER=dev`) | `POST /api/webhooks/dev-payment`, then `redirectUrl` |
 | `/orders/[orderId]?t=` | 06 Order Tracking (stepper, timeline, shop card, shipment, passport preview), polls every 3 s | `GET /api/orders/:id` |
 | `/orders/[orderId]/production?t=` | 05 Production Run | `GET /api/orders/:id` |
@@ -250,11 +267,16 @@ Shop  inspection ─► shops.submitInspection
        FAIL ─► advanceOrder(QA_FAILED) · job QA_FAILED · new rework job ACCEPTED · (inspection.failed)
               next milestone on rework job ─► advanceOrder(IN_PRODUCTION)
 Shop  ship       ─► shops.createShipment (requires QA_PASSED) ─► carrier.buyLabel · advanceOrder(SHIPPED) · (shipment.created)
+       after commit: easypost label copied to storage (labels/<shipmentId>.<ext>), served only as 15-min signed URLs
 Carrier webhook / admin delivered ─► shipping.markShipmentDelivered
        ─► advanceOrder(DELIVERED) (product.delivered) ─► passport.activatePassport (passport.activated)
-       ─► ledger.recordPayouts (payout.created) ─► advanceOrder(COMPLETE) (order.completed) ─► notify(order.delivered)
-Decline / offer expiry ─► (job.declined | job.expired) · advanceOrder(PAID) · dispatchOrder(excludeShopIds)
-       no candidates ─► stays PAID, notify(ops.alert); ops can refundOrder
+       ─► ledger.recordPayouts (payout.created) ─► advanceOrder(COMPLETE) (order.completed)   [tx 2]
+       after commit: ledger.executePendingPayouts (Stripe Connect transfer; manual payouts stay PENDING) · notify(order.delivered)
+Decline / offer expiry ─► (job.declined | job.expired) · advanceOrder(PAID) · after commit dispatchOrder(excludeShopIds)
+       no candidates ─► stays PAID, (dispatch.unmatched) + notify(ops.alert); ops dispatch again or refund
+Refund (POST /api/admin/orders/:id/refund) ─► provider refund ─► tx: payment REFUNDED · advanceOrder(REFUNDED) (order.refunded)
+       · dispatch.cancelOpenJobs (job.cancelled) · ledger.recordRefund
+Cron (vercel.json) ─► /api/admin/offers/expire every 10 min · /api/admin/outbox/publish every 5 min
 ```
 
 ### Ledger postings (`ledger_entries`, balanced per `txn_key`)
@@ -282,6 +304,7 @@ The tables and ids are:
 | `dfm_rulesets` | version string | |
 | `shops` | `shop_` | |
 | `shop_capabilities` | `cap_` | |
+| `shop_services` | `ssv_` | Finishes + secondary ops a shop performs; routing and dispatch require every selected service (migration 0001) |
 | `shop_rate_cards` | `rc_` | One active per shop |
 | `shop_access_tokens` | `stk_` | sha256 only |
 | `shop_sessions` | `sss_` | |
@@ -289,7 +312,7 @@ The tables and ids are:
 | `orders` | `ord_` | Order number `DMO-XXXXXX`. DB check: `total = subtotal + shipping + tax` |
 | `order_status_history` | `osh_` | |
 | `payments` | `pay_` | Unique `(provider, provider_ref)` |
-| `manufacturing_jobs` | `job_` | |
+| `manufacturing_jobs` | `job_` | `source_file_key` / `source_file_sha256` snapshot the quoted file at dispatch (migration 0001) |
 | `production_milestones` | `mst_` | |
 | `inspection_plans` | `ipl_` | One per job |
 | `inspection_results` | `irs_` | |
@@ -329,7 +352,7 @@ Schema: `src/server/db/schema.ts`. Migrations: `database/migrations`, generated 
   - 5 powder coat colors (`svc_powder_*`)
   - 2 Type II anodize finishes (`svc_anodize_clear`, `svc_anodize_black`)
 - **DFM rule set** `dfm-2026.10-r1`.
-- **Partner shop** `shop_philadelphia_precision`, "Philadelphia Precision Works", Philadelphia, PA. It has 50 capabilities and rate card `rc_philadelphia_precision_v1`:
+- **Partner shop** `shop_philadelphia_precision`, "Philadelphia Precision Works", Philadelphia, PA. It has 50 capabilities, all 12 services (`ssv_ppw_*`) and rate card `rc_philadelphia_precision_v1`:
   - fiber laser $150/h, CO₂ laser $90/h
   - brake $2.50/bend + $20 setup, order setup $15
   - finishing $3.50/ft² + $35 batch setup
@@ -362,11 +385,11 @@ Schema: `src/server/db/schema.ts`. Migrations: `database/migrations`, generated 
 | `PASSPORT_SIGNING_SECRET` | prod | passport | |
 | `JOB_PACKET_SIGNING_SECRET` | prod | dispatch/shops | |
 | `ADMIN_TOKEN` | for ops | auth/admin | Admin API disabled when unset |
+| `CRON_SECRET` | prod | auth/admin | Bearer for the two scheduled-job routes only (Vercel Cron sends it) |
 | `RESEND_API_KEY` | optional | notify | Console adapter when unset |
 | `EMAIL_FROM` | optional | notify | |
 | `OPS_EMAIL` | optional | notify | Target for `ops.alert` |
 | `SEED_SHOP_TOKEN` | dev/e2e | seed | Deterministic Shop Console token |
-| `GOOGLE_GENERATIVE_AI_API_KEY` | optional | (future Make AI) | Existing |
 
 ## 10. Commands
 
@@ -375,7 +398,43 @@ bun run db:migrate      # apply migrations to DATABASE_URL
 bun run db:seed         # idempotent catalog + dev shop (+ prints token once)
 bun run db:generate     # after a schema.ts change (foundation only)
 bun run typecheck       # tsc --noEmit
+bun run lint            # eslint (next/core-web-vitals), zero warnings allowed
 bun run test            # vitest (throwaway DB per suite)
-bun run test:e2e        # playwright: next dev on :3100, e2e DB, PAYMENT_PROVIDER=dev, CARRIER=manual
+bun run test:e2e        # playwright: next dev on :3100, fresh e2e DB (discovermake_e2e), PAYMENT_PROVIDER=dev, CARRIER=manual
 bun run build
 ```
+
+## 11. Integration changes (after the parallel build)
+
+Contracts and schema (migration `0001_r1_integration.sql`):
+- `MAX_PART_UPLOAD_BYTES` = 25 MB (was 50); the server enforces it with 413 and the UI checks it client-side.
+- `LADDER_QUANTITIES` = 1 / 10 / 25 / 50 / 100 / 250 (single source; the quote engine re-exports it).
+- `DfmFix.kind` gains `ADD_SERVICE` / `REMOVE_SERVICE` (`params.serviceId`); the configurator applies them in one tap.
+- `PartFeatures.smallestFeatureMm` documented as the narrowest web/tab, excluding hole-to-edge (`minHoleToEdgeMm`).
+- `JobPacket.part` gains `fileSha256` and `flatPatternSvgPath` (both signed). Jobs snapshot `source_file_key` / `source_file_sha256`; the console download URL and the passport file hash come from the snapshot.
+- New table `shop_services`; quote routing and dispatch only consider shops that offer every selected finish / secondary op. `CreateShopRequest.serviceIds` onboards them.
+- New events `dispatch.unmatched` and `job.cancelled`.
+- Admin contracts moved into `src/contracts/admin.ts` (shop onboarding, refund, payout settle, cron responses); `AdminOrderDetail` gains `shipments[]` and `payouts[].method`.
+- `ShopSessionResponse.shippingMode` tells the console which carrier adapter is live; `PassportPublicResponse` types the QR field.
+
+Behaviour:
+- Checkout also rejects quotes made under an older DFM rule set (same `isQuoteOrderable` predicate as `QuoteView.orderable`).
+- Refunds (ops or provider-initiated) cancel open shop jobs in the same transaction.
+- Only `dispatchOrder` raises the "no shop available" ops alert (the duplicate in the payment path is gone).
+- Purchased EasyPost labels are copied into storage; the shop only ever gets short-lived signed links.
+- Offer expiry and outbox publishing are scheduled (`vercel.json`), authenticated by `CRON_SECRET`.
+- The "not implemented" stubs and test fallbacks are gone; unused dependencies from the old product were removed.
+
+## 12. Open owner decisions and known gaps
+
+| Item | Today | Needed before scale |
+|---|---|---|
+| Binding quotes on uncalibrated coefficients | Every rate card / catalog coefficient is `calibrated=false`, yet quotes are BINDING so R1 can take orders | Calibrate with the golden-part suite (±8 % vs shop invoices) or gate BINDING on `calibrated` |
+| Quote-time shipping prices | Static versioned table on billable weight; platform absorbs carrier variance | Calibrate, or rate live through EasyPost at quote time |
+| Payout when re-dispatched | Payout = quote `shop_cost_cents` even if another shop takes the job; the shop sees it before accepting | Decide whether re-dispatch re-quotes |
+| Sales tax | 0 (tooltip says so) | Stripe Tax or equivalent |
+| DXF parsing isolation | In-process with 25 MB / 250k-edge limits | Sandboxed worker with CPU/time limits + AV scan |
+| EasyPost webhook signature | Legacy `X-Hmac-Signature` verified | Add the newer timestamped signature scheme |
+| Dispatch / QA defaults | Scoring weights and inspection tolerances are documented R1 defaults | Tune with real shop data |
+| Embedded payments | Hosted Stripe Checkout (`redirectUrl`) | Add `clientSecret` to `CheckoutResponse` if an embedded Payment Element is wanted |
+| Pre-0001 shops | Shops created before migration 0001 have no `shop_services` rows and are only routed jobs with no finish / secondary op | Backfill their services via the admin API |

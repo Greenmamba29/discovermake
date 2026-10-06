@@ -219,6 +219,7 @@ export async function createShop(raw: CreateShopRequest): Promise<CreateShopResp
                 acceptWindowMinutes: input.acceptWindowMinutes,
                 adapterLevel: input.adapterLevel,
                 certifications: input.certifications,
+                stripeAccountId: input.stripeAccountId ?? null,
             })
             .returning();
 

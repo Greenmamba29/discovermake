@@ -22,9 +22,38 @@ import {
     type Edge,
     type Vec,
 } from './edges';
+import { DxfParseError } from '../dxf/parse';
 
 /** Endpoint join tolerance (workflow 02: "join near-closed contours, tolerance 0.01 mm"). */
 export const JOIN_TOLERANCE_MM = 0.01;
+
+/** Most closed contours an instant quote analyses (containment is pairwise). */
+export const MAX_CLOSED_CONTOURS = 10_000;
+/**
+ * Work budget for contour building: one unit per containment bbox test and per
+ * polygon vertex visited by point-in-polygon, COMPARE_COST units per duplicate-arc
+ * comparison and per endpoint-index probe. Real parts (thousands of holes in a few outer boundaries) use a
+ * tiny fraction; adversarial stacks of overlapping arcs or deeply nested rings exhaust
+ * it in well under a second instead of running for minutes.
+ */
+export const MAX_CONTOUR_WORK = 80_000_000;
+
+function tooComplex(): DxfParseError {
+    return new DxfParseError('This drawing has too many overlapping, nested or closed contours for an instant quote. Simplify it or contact support.');
+}
+
+/** Cost of one distance-based comparison (duplicate arcs, endpoint probes) relative to a bbox test. */
+const COMPARE_COST = 20;
+
+/** Shared, throwing work counter (see MAX_CONTOUR_WORK). */
+export class WorkBudget {
+    private used = 0;
+    constructor(private readonly limit: number = MAX_CONTOUR_WORK) {}
+    spend(units = 1): void {
+        this.used += units;
+        if (this.used > this.limit) throw tooComplex();
+    }
+}
 
 export type ClosedContour = {
     edges: Edge[];
@@ -64,7 +93,7 @@ export type ContourSet = {
  * overlapping collinear line segments (overlaps are merged into one segment).
  * Collinear segments that only touch end-to-end are kept as-is.
  */
-export function cleanEdges(edges: Edge[], tol: number): { edges: Edge[]; removed: number } {
+export function cleanEdges(edges: Edge[], tol: number, budget: WorkBudget = new WorkBudget()): { edges: Edge[]; removed: number } {
     let removed = 0;
     const lines: Edge[] = [];
     const arcs: Edge[] = [];
@@ -91,6 +120,7 @@ export function cleanEdges(edges: Edge[], tol: number): { edges: Edge[]; removed
     for (const e of arcs as (Edge & { kind: 'arc' })[]) {
         const k = arcKey(e);
         const bucket = arcBuckets.get(k) ?? [];
+        budget.spend((bucket.length + 1) * COMPARE_COST);
         const dup = bucket.some((o) => {
             if (Math.abs(Math.abs(o.sweep) - Math.abs(e.sweep)) > 1e-6) return false;
             if (isFullCircle(o) && isFullCircle(e)) return true;
@@ -169,7 +199,10 @@ export function cleanEdges(edges: Edge[], tol: number): { edges: Edge[]; removed
 class NodeIndex {
     private cells = new Map<string, number[]>();
     readonly nodes: Vec[] = [];
-    constructor(private readonly tol: number) {}
+    constructor(
+        private readonly tol: number,
+        private readonly budget: WorkBudget,
+    ) {}
 
     private key(ix: number, iy: number) {
         return `${ix}|${iy}`;
@@ -184,6 +217,7 @@ class NodeIndex {
             for (let dy = -1; dy <= 1; dy++) {
                 const ids = this.cells.get(this.key(ix + dx, iy + dy));
                 if (!ids) continue;
+                this.budget.spend(ids.length * COMPARE_COST);
                 for (const id of ids) {
                     const d = dist(this.nodes[id], p);
                     if (d <= this.tol && d < bestD) {
@@ -207,8 +241,8 @@ class NodeIndex {
 type GraphEdge = { edge: Edge; n0: number; n1: number };
 
 /** Join edges into chains. Endpoints within `tol` are treated as coincident. */
-export function joinEdges(edges: Edge[], tol: number): { closed: Edge[][]; open: Edge[][] } {
-    const index = new NodeIndex(tol);
+export function joinEdges(edges: Edge[], tol: number, budget: WorkBudget = new WorkBudget()): { closed: Edge[][]; open: Edge[][] } {
+    const index = new NodeIndex(tol, budget);
     const closed: Edge[][] = [];
     const graph: GraphEdge[] = [];
     for (const e of edges) {
@@ -227,10 +261,17 @@ export function joinEdges(edges: Edge[], tol: number): { closed: Edge[][]; open:
         adjacency[g.n1].push(i);
     });
     const used = new Uint8Array(graph.length);
+    // Per-node scan cursor: used edges are skipped once, so high-degree nodes stay linear overall.
+    const cursor = new Uint32Array(adjacency.length);
 
     const nextFrom = (node: number): { idx: number; forward: boolean } | null => {
-        for (const idx of adjacency[node]) {
-            if (used[idx]) continue;
+        const list = adjacency[node];
+        while (cursor[node] < list.length) {
+            const idx = list[cursor[node]];
+            if (used[idx]) {
+                cursor[node]++;
+                continue;
+            }
             const g = graph[idx];
             return { idx, forward: g.n0 === node };
         }
@@ -286,8 +327,9 @@ function bboxInside(inner: BBox, outer: BBox, tol: number): boolean {
 /** Build the contour set from cleaned edges (all in mm). */
 export function buildContours(rawEdges: Edge[], opts: { tol?: number; tessellationTol: number }): ContourSet {
     const tol = opts.tol ?? JOIN_TOLERANCE_MM;
-    const { edges, removed } = cleanEdges(rawEdges, tol);
-    const chains = joinEdges(edges, tol);
+    const budget = new WorkBudget();
+    const { edges, removed } = cleanEdges(rawEdges, tol, budget);
+    const chains = joinEdges(edges, tol, budget);
 
     const closed: ClosedContour[] = chains.closed
         .map((chain) => {
@@ -305,6 +347,8 @@ export function buildContours(rawEdges: Edge[], opts: { tol?: number; tessellati
         })
         .filter((c) => c.area > tol * tol && c.polygon.length >= 2);
 
+    if (closed.length > MAX_CLOSED_CONTOURS) throw tooComplex();
+
     // Containment: sort by area descending so parents come first.
     const order = closed.map((_, i) => i).sort((a, b) => closed[b].area - closed[a].area);
     for (let oi = 0; oi < order.length; oi++) {
@@ -317,8 +361,10 @@ export function buildContours(rawEdges: Edge[], opts: { tol?: number; tessellati
         for (let oj = 0; oj < oi; oj++) {
             const j = order[oj];
             const p = closed[j];
+            budget.spend();
             if (p.area <= c.area) continue;
             if (!bboxInside(c.bbox, p.bbox, tol)) continue;
+            budget.spend(p.polygon.length);
             if (!pointInPolygon(probe, p.polygon)) continue;
             depth++;
             if (p.area < bestArea) {

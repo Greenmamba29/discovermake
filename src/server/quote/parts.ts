@@ -8,13 +8,13 @@
  *                                          shop always receives exactly what was quoted.
  */
 import { createHash } from 'node:crypto';
-import { and, desc, eq, inArray } from 'drizzle-orm';
+import { and, desc, eq, inArray, ne } from 'drizzle-orm';
 import type { Actor } from '../../contracts/common';
 import { SYSTEM_ACTOR } from '../../contracts/common';
 import type { PartUnits, UniversalStatus } from '../../contracts/enums';
 import { MAX_PART_UPLOAD_BYTES, type AnalyzePartRequest, type BuildView, type CreatePartRequest, type CreatePartResponse, type PartView } from '../../contracts/parts';
 import { getDb, withTx, type DbOrTx } from '../db';
-import { builds, parts, quotes } from '../db/schema';
+import { builds, orders, parts, quotes } from '../db/schema';
 import { emitEvent } from '../events/outbox';
 import { ApiError } from '../http';
 import { newBuildDisplayId, newId } from '../ids';
@@ -58,13 +58,25 @@ function isUniqueViolation(err: unknown, constraint: string): boolean {
     return e.cause ? isUniqueViolation(e.cause, constraint) : false;
 }
 
-/** True once any quote for the part was consumed by a paid order: its design is then frozen. */
-export async function hasOrderedQuote(db: DbOrTx, partId: string): Promise<boolean> {
-    const [row] = await db.select({ id: quotes.id }).from(quotes).where(and(eq(quotes.partId, partId), eq(quotes.status, 'ORDERED'))).limit(1);
-    return Boolean(row);
+/**
+ * True once the part's design must not change: a quote for it was ORDERED, or a
+ * checkout exists on one of its quotes (any order that is not CANCELLED, including
+ * PENDING_PAYMENT / PAYMENT_FAILED: money can still arrive for it, e.g. ACH). The
+ * shop must receive exactly the geometry and file the buyer paid for.
+ */
+export async function isDesignFrozen(db: DbOrTx, partId: string): Promise<boolean> {
+    const [ordered] = await db.select({ id: quotes.id }).from(quotes).where(and(eq(quotes.partId, partId), eq(quotes.status, 'ORDERED'))).limit(1);
+    if (ordered) return true;
+    const [live] = await db
+        .select({ id: orders.id })
+        .from(orders)
+        .innerJoin(quotes, eq(quotes.id, orders.quoteId))
+        .where(and(eq(quotes.partId, partId), ne(orders.status, 'CANCELLED')))
+        .limit(1);
+    return Boolean(live);
 }
 
-const FROZEN_MESSAGE = 'This design is already in an order and cannot change. Upload the revised file as a new part.';
+const FROZEN_MESSAGE = 'This design is already in an order (or a checkout is in progress) and cannot change. Upload the revised file as a new part.';
 
 export function toUploadError(err: unknown): ApiError | null {
     if (err instanceof UnsupportedFileError) return new ApiError('UNSUPPORTED_MEDIA_TYPE', err.message, 415, { reason: err.reason });
@@ -202,7 +214,7 @@ export async function uploadPartBytesImpl(partId: string, bytes: Uint8Array): Pr
     const db = getDb();
     const row = await loadPartWithBuild(db, partId);
     if (!row) throw new ApiError('NOT_FOUND', 'Part not found');
-    if (await hasOrderedQuote(db, partId)) throw new ApiError('CONFLICT', FROZEN_MESSAGE);
+    if (await isDesignFrozen(db, partId)) throw new ApiError('CONFLICT', FROZEN_MESSAGE);
     if (bytes.byteLength > QUOTE_MAX_UPLOAD_BYTES) throw new ApiError('PAYLOAD_TOO_LARGE', `Files up to ${QUOTE_MAX_UPLOAD_BYTES / 1024 / 1024} MB can be quoted instantly.`);
     try {
         sniffDxf(bytes);
@@ -245,8 +257,8 @@ export async function analyzePartImpl(partId: string, input: AnalyzePartRequest 
     }
     if (!head) throw new ApiError('CONFLICT', 'The file has not been uploaded yet. Send the bytes to the upload URL first.');
 
-    // Ordered designs are frozen: same bytes + units is a no-op, anything else is refused.
-    if (await hasOrderedQuote(db, partId)) {
+    // Ordered / checked-out designs are frozen: same bytes + units is a no-op, anything else is refused.
+    if (await isDesignFrozen(db, partId)) {
         if (input.units && input.units !== part.units) throw new ApiError('CONFLICT', FROZEN_MESSAGE);
         const current = await storage.getObject(key);
         if (current && part.fileSha256 && sha256(new Uint8Array(current)) !== part.fileSha256) throw new ApiError('CONFLICT', FROZEN_MESSAGE);
@@ -282,8 +294,15 @@ export async function analyzePartImpl(partId: string, input: AnalyzePartRequest 
     const sha = bytes ? sha256(bytes) : null;
     const now = new Date();
 
-    const updated = await withTx(async (tx) => {
+    const updated = await withTx(async (tx): Promise<PartRow | null> => {
         const [locked] = await tx.select().from(parts).where(eq(parts.id, partId)).for('update');
+        // Re-check under the part lock (checkout takes the same lock): a checkout created while
+        // the file was being analyzed wins, and the analysis result is discarded.
+        if (await isDesignFrozen(tx, partId)) {
+            await tx.update(parts).set({ status: part.status, updatedAt: new Date() }).where(eq(parts.id, partId));
+            await setBuildStatus(tx, locked.buildId, loaded.build.status);
+            return null;
+        }
         const system: Actor = SYSTEM_ACTOR;
         const correlationId = locked.buildId;
 
@@ -397,5 +416,6 @@ export async function analyzePartImpl(partId: string, input: AnalyzePartRequest 
         return row;
     });
 
+    if (!updated) throw new ApiError('CONFLICT', FROZEN_MESSAGE);
     return toPartView(updated, loaded.build);
 }

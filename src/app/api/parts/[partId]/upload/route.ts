@@ -7,22 +7,31 @@
  * sniffed immediately (ASCII DXF R12–R2018 only).
  */
 import { PartId } from '@/contracts';
-import { ApiError, json, route } from '@/server/http';
+import { ApiError, json, readBodyBytes, route } from '@/server/http';
 import { QUOTE_MAX_UPLOAD_BYTES, uploadPartBytes } from '@/server/quote';
 import { pathId } from '@/server/quote/route-helpers';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
+/** multipart adds a little framing overhead on top of the file itself */
+const MULTIPART_OVERHEAD_BYTES = 64 * 1024;
+
 async function readUpload(request: Request): Promise<Uint8Array> {
-    const declared = Number(request.headers.get('content-length') ?? 0);
-    // multipart adds a little framing overhead on top of the file itself
-    if (declared > QUOTE_MAX_UPLOAD_BYTES + 64 * 1024) throw new ApiError('PAYLOAD_TOO_LARGE', `Files up to ${QUOTE_MAX_UPLOAD_BYTES / 1024 / 1024} MB can be quoted instantly.`);
     const contentType = request.headers.get('content-type') ?? '';
-    if (contentType.toLowerCase().startsWith('multipart/form-data')) {
+    const multipart = contentType.toLowerCase().startsWith('multipart/form-data');
+    let body: Uint8Array<ArrayBuffer>;
+    try {
+        // Bounded read: chunked bodies (no Content-Length) are counted and cut off at the cap.
+        body = await readBodyBytes(request, QUOTE_MAX_UPLOAD_BYTES + (multipart ? MULTIPART_OVERHEAD_BYTES : 0));
+    } catch (err) {
+        if (err instanceof ApiError && err.code === 'PAYLOAD_TOO_LARGE') throw new ApiError('PAYLOAD_TOO_LARGE', `Files up to ${QUOTE_MAX_UPLOAD_BYTES / 1024 / 1024} MB can be quoted instantly.`);
+        throw err;
+    }
+    if (multipart) {
         let form: FormData;
         try {
-            form = await request.formData();
+            form = await new Response(body, { headers: { 'content-type': contentType } }).formData();
         } catch {
             throw new ApiError('BAD_REQUEST', 'Malformed multipart body');
         }
@@ -31,7 +40,7 @@ async function readUpload(request: Request): Promise<Uint8Array> {
         if (file.name && !/\.dxf$/i.test(file.name)) throw new ApiError('UNSUPPORTED_MEDIA_TYPE', 'R1 accepts .dxf files only (ASCII DXF, R12–R2018).', 415);
         return new Uint8Array(await file.arrayBuffer());
     }
-    return new Uint8Array(await request.arrayBuffer());
+    return body;
 }
 
 const handler = route<{ partId: string }>(async (request, { params }) => {

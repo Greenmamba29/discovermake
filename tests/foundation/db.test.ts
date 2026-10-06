@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { advanceOrder } from '@/server/orders';
 import { emitEvent, publishPendingEvents } from '@/server/events/outbox';
 import { seed, DEV_SHOP_ID } from '@/server/db/seed';
-import { builds, domainEvents, orders, orderStatusHistory, parts, quotes, shopAccessTokens, thicknessOptions } from '@/server/db/schema';
+import { builds, domainEvents, orders, orderStatusHistory, parts, quotes, shopAccessTokens, shops, thicknessOptions } from '@/server/db/schema';
 import { sha256Hex } from '@/server/auth/tokens';
 import { hashOrderAccessToken, verifyOrderAccessToken } from '@/server/auth/order-link';
 import { newBuildDisplayId, newOrderNumber } from '@/server/ids';
@@ -23,6 +23,22 @@ describe('foundation database', () => {
         expect(tok.tokenHash).toBe(sha256Hex(SHOP_TOKEN));
         expect(tok.tokenHash).not.toContain(SHOP_TOKEN);
     });
+});
+
+describe('catalog-only seed (production)', () => {
+    const ctx = useTestDb();
+
+    it('seeds the catalog without creating the fictional dev shop', async () => {
+        const r = await seed(ctx.db, { catalogOnly: true });
+        expect(r).toMatchObject({ materials: 8, shopId: null, rateCardId: null, shopToken: null });
+        expect((await ctx.db.select().from(thicknessOptions)).length).toBe(r.thicknessOptions);
+        expect(await ctx.db.select().from(shops)).toEqual([]);
+        expect(await ctx.db.select().from(shopAccessTokens)).toEqual([]);
+    });
+});
+
+describe('foundation database (orders)', () => {
+    const ctx = useTestDb({ seed: { shopToken: SHOP_TOKEN } });
 
     it('advances an order with history + outbox event in one transaction', async () => {
         const [build] = await ctx.db.insert(builds).values({ displayId: newBuildDisplayId(), name: 'Test bracket' }).returning();

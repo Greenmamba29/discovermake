@@ -5,6 +5,8 @@ import { verifyOrderAccessToken } from '@/server/auth/order-link';
 import { domainEvents, orders, parts, payments, quotes } from '@/server/db/schema';
 import { ApiError } from '@/server/http';
 import { createCheckout } from '@/server/orders';
+import { promisedShipDateFor } from '@/server/orders/checkout';
+import { localDateTime } from '@/server/quote/leadtime';
 import { POST as checkoutRoute } from '@/app/api/checkout/route';
 import { useTestDb } from '../support/db';
 import { checkoutBody, createQuoteFixture, quietConsole } from './fixtures';
@@ -44,7 +46,8 @@ describe('checkout (server-priced)', () => {
         expect(res.totals).toEqual({ subtotalCents: 5000, shippingCents: 2900, taxCents: 0, totalCents: 7900, currency: 'usd' });
         expect(res.payment.provider).toBe('dev');
         expect(res.payment.redirectUrl).toBe(`http://localhost:3100/checkout/dev-pay?ref=${res.payment.providerRef}`);
-        expect(res.promisedShipDate).toBe(quote.shipDate);
+        expect(res.promisedShipDate).toBe(promisedShipDateFor(quote, 'America/New_York'));
+        expect(res.promisedShipDate >= quote.shipDate).toBe(true);
 
         const [order] = await ctx.db.select().from(orders).where(eq(orders.id, res.orderId));
         expect(order.totalCents).toBe(7900);
@@ -63,6 +66,24 @@ describe('checkout (server-priced)', () => {
         expect(events).toHaveLength(1);
         expect(events[0].actorId).toMatch(/^buyer:guest_/);
         expect(events[0].actorId).not.toContain('maker@example.com');
+    });
+
+    it('rolls the quoted lead time forward from the order date (a 13-day-old quote never promises a past ship date)', async () => {
+        const { quote } = await createQuoteFixture(ctx.db, { validUntil: new Date(Date.now() + 86400_000) });
+        await ctx.db.update(quotes).set({ shipDate: '2020-01-07', leadTimeDays: 4 }).where(eq(quotes.id, quote.id));
+        const res = await createCheckout(checkoutBody(quote.id));
+        const today = localDateTime(new Date(), 'America/New_York').date;
+        expect(res.promisedShipDate > today).toBe(true);
+        expect(res.promisedShipDate).toBe(promisedShipDateFor({ shipDate: '2020-01-07', leadTimeDays: 4 }, 'America/New_York'));
+        const [order] = await ctx.db.select().from(orders).where(eq(orders.id, res.orderId));
+        expect(order.promisedShipDate).toBe(res.promisedShipDate);
+    });
+
+    it('promisedShipDateFor: keeps the quoted date on the quote day, rolls forward later', () => {
+        const q = { shipDate: '2026-10-07', leadTimeDays: 4 };
+        expect(promisedShipDateFor(q, 'America/New_York', new Date('2026-10-01T14:00:00Z'))).toBe('2026-10-07'); // Thu 10:00 ET
+        expect(promisedShipDateFor(q, 'America/New_York', new Date('2026-10-12T14:00:00Z'))).toBe('2026-10-16'); // Mon 10:00 ET
+        expect(promisedShipDateFor(q, 'America/New_York', new Date('2026-10-12T18:00:00Z'))).toBe('2026-10-19'); // after the noon cutoff
     });
 
     it('ignores client-supplied amounts (tampered totals never reach the order)', async () => {

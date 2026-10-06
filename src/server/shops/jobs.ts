@@ -377,7 +377,12 @@ function stripSignature(p: StoredPacket) {
     return rest;
 }
 
-/** Buy (easypost) or record (manual) the shipping label. Requires QA_PASSED. */
+/**
+ * Buy (easypost) or record (manual) the shipping label. Requires QA_PASSED.
+ * The label is bought while holding the order + job locks, after re-checking for an
+ * existing shipment: a double-click or a client retry waits for the first request and
+ * gets its shipment back instead of paying for a second label.
+ */
 export async function createShipment(shopId: string, jobId: string, input: CreateShipmentRequest): Promise<ShipmentView> {
     const job = await findShopJob(shopId, jobId);
     const db = getDb();
@@ -392,16 +397,9 @@ export async function createShipment(shopId: string, jobId: string, input: Creat
     if (!shop) throw notFound();
 
     const carrier = getCarrier();
-    const label = await carrier.buyLabel({
-        from: shop.address,
-        to: order.shippingAddress,
-        parcel: input.parcel,
-        method: order.shippingMethod,
-        reference: order.orderNumber,
-        manual: input.manual,
-    });
-
+    let label: Awaited<ReturnType<typeof carrier.buyLabel>> | null = null;
     let row: typeof shipments.$inferSelect;
+    let created = false;
     try {
         row = await withTx(async (t) => {
             const locked = await lockShopJob(t, shopId, jobId);
@@ -410,55 +408,67 @@ export async function createShipment(shopId: string, jobId: string, input: Creat
             if (locked.job.status !== 'QA_PASSED' || locked.order.status !== 'QA_PASSED') {
                 throw new ApiError('CONFLICT', 'Inspection must pass before a shipping label can be created');
             }
+            const bought = await carrier.buyLabel({
+                from: shop.address,
+                to: locked.order.shippingAddress,
+                parcel: input.parcel,
+                method: locked.order.shippingMethod,
+                reference: locked.order.orderNumber,
+                manual: input.manual,
+            });
+            label = bought;
             const now = new Date();
             const first: TrackingEvent = {
                 status: 'LABEL_CREATED',
-                message: `Label created · ${label.carrier} ${label.service}`,
+                message: `Label created · ${bought.carrier} ${bought.service}`,
                 location: `${shop.city}, ${shop.region}`,
                 occurredAt: now.toISOString(),
             };
-            const [created] = await t
+            const [inserted] = await t
                 .insert(shipments)
                 .values({
                     orderId: locked.order.id,
                     jobId,
                     provider: carrier.name,
-                    providerShipmentId: label.providerShipmentId,
-                    carrier: label.carrier,
-                    service: label.service,
-                    trackingNumber: label.trackingNumber,
-                    trackingUrl: label.trackingUrl,
-                    labelUrl: label.labelUrl,
-                    rateCents: label.rateCents,
+                    providerShipmentId: bought.providerShipmentId,
+                    carrier: bought.carrier,
+                    service: bought.service,
+                    trackingNumber: bought.trackingNumber,
+                    trackingUrl: bought.trackingUrl,
+                    labelUrl: bought.labelUrl,
+                    rateCents: bought.rateCents,
                     status: 'LABEL_CREATED',
                     events: [first],
                     parcel: input.parcel,
                     fromAddress: shop.address,
                     toAddress: locked.order.shippingAddress,
-                    estimatedDeliveryDate: label.estimatedDeliveryDate,
+                    estimatedDeliveryDate: bought.estimatedDeliveryDate,
                     shippedAt: now,
                 })
                 .returning();
             await t.update(manufacturingJobs).set({ status: 'SHIPPED', shippedAt: now, updatedAt: now }).where(eq(manufacturingJobs.id, jobId));
-            await advanceOrder(locked.order.id, 'SHIPPED', shopActor(shopId), { reason: `Shipped via ${label.carrier} ${label.service}`, data: { shipmentId: created.id, trackingNumber: label.trackingNumber } }, t);
+            await advanceOrder(locked.order.id, 'SHIPPED', shopActor(shopId), { reason: `Shipped via ${bought.carrier} ${bought.service}`, data: { shipmentId: inserted.id, trackingNumber: bought.trackingNumber } }, t);
             await emitEvent(t, {
                 type: 'shipment.created',
-                payload: { shipmentId: created.id, orderId: locked.order.id, jobId, carrier: label.carrier, service: label.service, trackingNumber: label.trackingNumber },
+                payload: { shipmentId: inserted.id, orderId: locked.order.id, jobId, carrier: bought.carrier, service: bought.service, trackingNumber: bought.trackingNumber },
                 actor: shopActor(shopId),
                 ...eventCtx(locked.order),
             });
-            return created;
+            created = true;
+            return inserted;
         });
     } catch (err) {
-        if (label.providerShipmentId) {
+        const orphan = label as Awaited<ReturnType<typeof carrier.buyLabel>> | null;
+        if (orphan?.providerShipmentId) {
             await notify('ops.alert', {
                 subject: `Orphaned shipping label for ${order.orderNumber}`,
-                message: `A ${label.carrier} label (${label.trackingNumber}, provider id ${label.providerShipmentId}) was bought but recording the shipment failed: ${err instanceof Error ? err.message : String(err)}. Void or reuse it.`,
+                message: `A ${orphan.carrier} label (${orphan.trackingNumber}, provider id ${orphan.providerShipmentId}) was bought but recording the shipment failed: ${err instanceof Error ? err.message : String(err)}. Void or reuse it.`,
                 orderId: order.id,
             });
         }
         throw err;
     }
+    if (!created) return { ...toShipmentView(row, { includeLabel: true }), labelUrl: await labelUrlFor(row) };
 
     // Keep our own copy of a purchased label; the shop then only ever gets short-lived signed links.
     if (row.provider === 'easypost' && row.labelUrl && !row.labelKey) {

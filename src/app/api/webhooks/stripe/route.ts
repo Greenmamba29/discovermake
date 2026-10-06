@@ -5,7 +5,7 @@
  * so Stripe retries; bad signatures answer 400.
  */
 import { env } from '@/server/env';
-import { ApiError, json, route } from '@/server/http';
+import { ApiError, json, MAX_WEBHOOK_BODY_BYTES, readBodyText, route } from '@/server/http';
 import { processPaymentWebhook } from '@/server/orders';
 import { StripePaymentProvider } from '@/server/payments';
 
@@ -14,7 +14,7 @@ export const dynamic = 'force-dynamic';
 
 export const POST = route(async (request) => {
     if (!env().STRIPE_WEBHOOK_SECRET) throw new ApiError('INTERNAL', 'Stripe webhook is not configured', 503);
-    const rawBody = await request.text();
+    const rawBody = await readBodyText(request, MAX_WEBHOOK_BODY_BYTES);
     let event;
     try {
         event = await new StripePaymentProvider().parseWebhook(rawBody, request.headers);

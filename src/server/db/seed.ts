@@ -473,14 +473,21 @@ export type SeedOptions = {
     shopToken?: string;
     /** Print progress. Default false. */
     log?: boolean;
+    /**
+     * Seed only the catalog (processes, materials, thicknesses, services, DFM rules) and skip
+     * the fictional dev partner shop. Production uses this: real shops are onboarded through
+     * POST /api/admin/shops.
+     */
+    catalogOnly?: boolean;
 };
 
 export type SeedResult = {
     materials: number;
     thicknessOptions: number;
     services: number;
-    shopId: string;
-    rateCardId: string;
+    /** Null when `catalogOnly`. */
+    shopId: string | null;
+    rateCardId: string | null;
     rulesetVersion: string;
     /** Plaintext token when one was created/set during this run; null when an existing token was kept. */
     shopToken: string | null;
@@ -578,6 +585,11 @@ export async function seed(db: Db = getDb(), opts: SeedOptions = {}): Promise<Se
             .insert(dfmRulesets)
             .values({ version: R1_RULESET_VERSION, rules: R1_DFM_RULES, active: true, notes: 'R1 default thresholds (to be calibrated)' })
             .onConflictDoUpdate({ target: dfmRulesets.version, set: { rules: R1_DFM_RULES, active: true } });
+
+        if (opts.catalogOnly) {
+            log('catalog only: dev partner shop skipped');
+            return { materials: MATERIAL_SEEDS.length, thicknessOptions: thicknessCount, services: SERVICE_SEEDS.length, shopId: null, rateCardId: null, rulesetVersion: R1_RULESET_VERSION, shopToken: null };
+        }
 
         // Dev partner shop
         const shopRow = {

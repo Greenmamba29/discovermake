@@ -4,13 +4,16 @@
  * Foundation-owned; not used when STORAGE_DRIVER=s3 (returns 404).
  */
 import { env, requireSecret } from '@/server/env';
-import { errorResponse, route } from '@/server/http';
+import { ApiError, errorResponse, readBodyBytes, route } from '@/server/http';
 import { getStorage, verifyLocalSignature } from '@/server/storage';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 type Params = { key: string[] };
+
+/** Ceiling for signed PUTs minted without an explicit maxBytes. */
+const LOCAL_PUT_MAX_BYTES = 50 * 1024 * 1024;
 
 function keyFrom(parts: string[]): string {
     return parts.map((p) => decodeURIComponent(p)).join('/');
@@ -43,10 +46,15 @@ export const PUT = route<Params>(async (request, { params }) => {
     if (v.contentType && contentType.split(';')[0].trim() !== v.contentType) {
         return errorResponse('UNSUPPORTED_MEDIA_TYPE', `Content-Type must be ${v.contentType}`, 415);
     }
-    const declared = Number(request.headers.get('content-length') ?? 0);
-    if (v.maxBytes && declared > v.maxBytes) return errorResponse('PAYLOAD_TOO_LARGE', 'Upload exceeds size limit', 413);
-    const body = new Uint8Array(await request.arrayBuffer());
-    if (v.maxBytes && body.byteLength > v.maxBytes) return errorResponse('PAYLOAD_TOO_LARGE', 'Upload exceeds size limit', 413);
+    // Bounded read: the cap is enforced on the bytes actually streamed, not on Content-Length.
+    const cap = v.maxBytes || LOCAL_PUT_MAX_BYTES;
+    let body: Uint8Array;
+    try {
+        body = await readBodyBytes(request, cap);
+    } catch (err) {
+        if (err instanceof ApiError && err.code === 'PAYLOAD_TOO_LARGE') return errorResponse('PAYLOAD_TOO_LARGE', 'Upload exceeds size limit', 413);
+        throw err;
+    }
     await getStorage().putObject(key, body, { contentType: v.contentType || contentType || undefined });
     return new Response(null, { status: 200, headers: { 'cache-control': 'no-store' } });
 });

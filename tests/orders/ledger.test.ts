@@ -5,6 +5,7 @@ import { DEV_SHOP_ID } from '@/server/db/seed';
 import { domainEvents, ledgerEntries, orders, payments, payouts, shops } from '@/server/db/schema';
 import { assertBalanced, getOrderLedger, ledgerBalances, markPayoutPaid, recordPaymentSplit, recordPayouts, UnbalancedLedgerError } from '@/server/ledger';
 import { advanceOrder, confirmDevPayment, createCheckout, IllegalTransitionError, refundOrder } from '@/server/orders';
+import { DevPaymentProvider } from '@/server/payments';
 import { useTestDb } from '../support/db';
 import { checkoutBody, createQuoteFixture, quietConsole } from './fixtures';
 
@@ -153,6 +154,50 @@ describe('ledger + payouts + refunds', () => {
             .from(domainEvents)
             .where(and(eq(domainEvents.orderId, order.id), eq(domainEvents.eventType, 'order.refunded')));
         expect(refunded).toHaveLength(1);
+    });
+
+    it('refunds a QA_PASSED order that has not shipped (ledger reversed)', async () => {
+        const order = await paidOrder();
+        await advanceOrder(order.id, 'DISPATCHED', SHOP);
+        await advanceOrder(order.id, 'ACCEPTED', SHOP, { shopId: DEV_SHOP_ID });
+        await advanceOrder(order.id, 'IN_PRODUCTION', SHOP);
+        await advanceOrder(order.id, 'QA_PASSED', SHOP);
+        await refundOrder(order.id, OPS, 'Shop never shipped');
+        const [after] = await ctx.db.select().from(orders).where(eq(orders.id, order.id));
+        expect(after.status).toBe('REFUNDED');
+        const b = ledgerBalances(await getOrderLedger(order.id));
+        expect(b.CASH).toBe(0);
+        expect(b.SHOP_PAYABLE).toBe(0);
+    });
+
+    it('holds the order lock while the provider refund is in flight, so production cannot advance past refundable', async () => {
+        const order = await paidOrder();
+        await advanceOrder(order.id, 'DISPATCHED', SHOP);
+        await advanceOrder(order.id, 'ACCEPTED', SHOP, { shopId: DEV_SHOP_ID });
+        await advanceOrder(order.id, 'IN_PRODUCTION', SHOP);
+        await advanceOrder(order.id, 'QA_PASSED', SHOP);
+        let concurrent: Promise<unknown> | null = null;
+        const original = DevPaymentProvider.prototype.refund;
+        const spy = vi.spyOn(DevPaymentProvider.prototype, 'refund').mockImplementation(async function (this: DevPaymentProvider, input) {
+            // The shop ships while the provider round trip is in flight.
+            concurrent = advanceOrder(order.id, 'SHIPPED', SHOP).then(
+                () => 'shipped',
+                (err: unknown) => err,
+            );
+            await new Promise((r) => setTimeout(r, 150));
+            return original.call(this, input);
+        });
+        try {
+            await refundOrder(order.id, OPS, 'Buyer cancelled');
+        } finally {
+            spy.mockRestore();
+        }
+        expect(await concurrent).toBeInstanceOf(IllegalTransitionError); // REFUNDED -> SHIPPED is refused
+        const [after] = await ctx.db.select().from(orders).where(eq(orders.id, order.id));
+        expect(after.status).toBe('REFUNDED');
+        const [payment] = await ctx.db.select().from(payments).where(eq(payments.orderId, order.id));
+        expect(payment.status).toBe('REFUNDED');
+        expect(ledgerBalances(await getOrderLedger(order.id)).CASH).toBe(0);
     });
 
     it('refuses to refund after shipping (state machine)', async () => {

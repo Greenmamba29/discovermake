@@ -7,7 +7,7 @@
  *   PAYMENT_FAILED              PAID                        QA_FAILED
  *
  *   CANCELLED: only before money moved (PENDING_PAYMENT, PAYMENT_FAILED).
- *   REFUNDED:  after payment, any time before shipping (PAID .. QA_FAILED).
+ *   REFUNDED:  after payment, any time before shipping (PAID .. QA_PASSED).
  *
  * The only writer of `orders.status` is `advanceOrder()` (src/server/orders/advance.ts),
  * which calls `assertTransition()` and records history + an `order.status_changed` event.
@@ -23,7 +23,7 @@ export const ORDER_TRANSITIONS: Readonly<Record<OrderStatus, readonly OrderStatu
     ACCEPTED: ['IN_PRODUCTION', 'REFUNDED'],
     IN_PRODUCTION: ['QA_PASSED', 'QA_FAILED', 'REFUNDED'],
     QA_FAILED: ['IN_PRODUCTION', 'REFUNDED'],
-    QA_PASSED: ['SHIPPED'],
+    QA_PASSED: ['SHIPPED', 'REFUNDED'],
     SHIPPED: ['DELIVERED'],
     DELIVERED: ['COMPLETE'],
     COMPLETE: [],

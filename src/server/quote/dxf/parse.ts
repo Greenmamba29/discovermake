@@ -62,6 +62,17 @@ export class DxfParseError extends Error {
 /** Hard cap on cut edges so a pathological file cannot stall the instant quote. */
 export const MAX_CUT_EDGES = 250_000;
 const MAX_INSERT_DEPTH = 8;
+/** Max instances one INSERT may expand to (rows x columns of a MINSERT array). */
+export const MAX_INSERT_ARRAY = 10_000;
+/**
+ * Global work budget for the entity walk: every visited entity counts, including
+ * ones that produce no cut edges (TEXT, bend lines, ignored layers, nested INSERTs),
+ * so block-reference amplification cannot spin the parser.
+ */
+export const MAX_ENTITY_VISITS = 1_000_000;
+export const MAX_BEND_LINES = 10_000;
+/** Real DXF splines are degree 1–5; de Boor is O(degree²) per point, so cap it. */
+export const MAX_SPLINE_DEGREE = 11;
 const ELLIPSE_SEGMENTS_FULL = 360;
 const SPLINE_SEGMENTS_PER_SPAN = 24;
 /** Arc tessellation tolerance for non-uniformly scaled block arcs (drawing units). */
@@ -137,16 +148,23 @@ function polylineEdges(points: Vec[], closed: boolean): Edge[] {
     return out;
 }
 
-function splineEdges(e: ISplineEntity): { edges: Edge[]; approximated: boolean } {
+function tooComplex(): DxfParseError {
+    return new DxfParseError(`This file has more than ${MAX_CUT_EDGES.toLocaleString('en-US')} cut segments, which is too complex for an instant quote. Simplify splines or contact support.`);
+}
+
+function splineEdges(e: ISplineEntity, budget: number): { edges: Edge[]; approximated: boolean } {
     const ctrl = (e.controlPoints ?? []).map((p) => ({ x: p.x, y: p.y }));
     const knots = e.knotValues ?? [];
     const degree = e.degreeOfSplineCurve ?? 3;
     const closed = Boolean(e.closed || e.periodic);
-    if (ctrl.length >= 2 && degree >= 1 && knots.length === ctrl.length + degree + 1) {
+    // Degrees beyond MAX_SPLINE_DEGREE fall back to the fit points / control polygon below (linear work).
+    if (ctrl.length >= 2 && degree >= 1 && degree <= MAX_SPLINE_DEGREE && knots.length === ctrl.length + degree + 1) {
         const lo = knots[degree];
         const hi = knots[ctrl.length];
         const spans: number[] = [];
         for (let i = degree; i < ctrl.length; i++) if (knots[i + 1] > knots[i]) spans.push(i);
+        // Refuse before evaluating when the tessellation alone would blow the edge cap.
+        if (spans.length * (degree === 1 ? 1 : SPLINE_SEGMENTS_PER_SPAN) > budget) throw tooComplex();
         const pts: Vec[] = [];
         for (const s of spans) {
             const a = knots[s];
@@ -199,7 +217,7 @@ function vertexEdges(vertices: { x: number; y: number; bulge?: number }[], close
     return out;
 }
 
-type Collector = RawDrawing & { edgeCount: number };
+type Collector = RawDrawing & { edgeCount: number; visits: number };
 
 function ocs(entityZ: number | undefined, m: Affine): Affine {
     return entityZ !== undefined && entityZ < 0 ? composeAffine(m, MIRROR_X) : m;
@@ -213,13 +231,23 @@ function emitEdges(out: Collector, edges: Edge[], m: Affine): void {
             out.edgeCount++;
         }
     }
-    if (out.edgeCount > MAX_CUT_EDGES) {
-        throw new DxfParseError(`This file has more than ${MAX_CUT_EDGES.toLocaleString('en-US')} cut segments, which is too complex for an instant quote. Simplify splines or contact support.`);
+    if (out.edgeCount > MAX_CUT_EDGES) throw tooComplex();
+}
+
+function tooManyEntities(): DxfParseError {
+    return new DxfParseError('This file expands to too many entities (block arrays or nested blocks) for an instant quote. Explode or simplify the drawing, or contact support.');
+}
+
+function pushBendLine(out: Collector, line: RawBendLine): void {
+    if (out.bendLines.length >= MAX_BEND_LINES) {
+        throw new DxfParseError(`This file has more than ${MAX_BEND_LINES.toLocaleString('en-US')} bend lines, which is too complex for an instant quote.`);
     }
+    out.bendLines.push(line);
 }
 
 function walk(out: Collector, dxf: IDxf, entities: IEntity[], m: Affine, depth: number, inheritedLayer: string | null): void {
     for (const ent of entities) {
+        if (++out.visits > MAX_ENTITY_VISITS) throw tooManyEntities();
         if (ent.inPaperSpace || ent.visible === false) continue;
         const layer = ent.layer && ent.layer !== '0' ? ent.layer : (inheritedLayer ?? ent.layer ?? '0');
         if (IGNORED_LAYERS.test(layer)) continue;
@@ -231,7 +259,7 @@ function walk(out: Collector, dxf: IDxf, entities: IEntity[], m: Affine, depth: 
                 const a = { x: l.vertices[0].x, y: l.vertices[0].y };
                 const b = { x: l.vertices[1].x, y: l.vertices[1].y };
                 if (bendLayer) {
-                    out.bendLines.push({ a: applyAffine(m, a), b: applyAffine(m, b), layer, angleDeg: parseBendAngle(layer) });
+                    pushBendLine(out, { a: applyAffine(m, a), b: applyAffine(m, b), layer, angleDeg: parseBendAngle(layer) });
                 } else {
                     emitEdges(out, [lineEdge(a, b)], m);
                 }
@@ -243,7 +271,7 @@ function walk(out: Collector, dxf: IDxf, entities: IEntity[], m: Affine, depth: 
                 const mm = ocs(p.extrusionDirectionZ, m);
                 if (bendLayer) {
                     for (let i = 0; i + 1 < verts.length; i++) {
-                        out.bendLines.push({ a: applyAffine(mm, verts[i]), b: applyAffine(mm, verts[i + 1]), layer, angleDeg: parseBendAngle(layer) });
+                        pushBendLine(out, { a: applyAffine(mm, verts[i]), b: applyAffine(mm, verts[i + 1]), layer, angleDeg: parseBendAngle(layer) });
                     }
                     break;
                 }
@@ -257,7 +285,7 @@ function walk(out: Collector, dxf: IDxf, entities: IEntity[], m: Affine, depth: 
                 const mm = ocs(p.extrusionDirection?.z, m);
                 if (bendLayer) {
                     for (let i = 0; i + 1 < verts.length; i++) {
-                        out.bendLines.push({ a: applyAffine(mm, verts[i]), b: applyAffine(mm, verts[i + 1]), layer, angleDeg: parseBendAngle(layer) });
+                        pushBendLine(out, { a: applyAffine(mm, verts[i]), b: applyAffine(mm, verts[i + 1]), layer, angleDeg: parseBendAngle(layer) });
                     }
                     break;
                 }
@@ -287,7 +315,7 @@ function walk(out: Collector, dxf: IDxf, entities: IEntity[], m: Affine, depth: 
             }
             case 'SPLINE': {
                 if (bendLayer) break;
-                const s = splineEdges(ent as ISplineEntity);
+                const s = splineEdges(ent as ISplineEntity, MAX_CUT_EDGES - out.edgeCount);
                 if (s.approximated) out.approximated = true;
                 emitEdges(out, s.edges, m);
                 break;
@@ -304,8 +332,9 @@ function walk(out: Collector, dxf: IDxf, entities: IEntity[], m: Affine, depth: 
                 const sx = ins.xScale ?? 1;
                 const sy = ins.yScale ?? 1;
                 const rot = ((ins.rotation ?? 0) * Math.PI) / 180;
-                const cols = Math.max(1, ins.columnCount ?? 1);
-                const rows = Math.max(1, ins.rowCount ?? 1);
+                const cols = Math.max(1, Math.floor(ins.columnCount ?? 1));
+                const rows = Math.max(1, Math.floor(ins.rowCount ?? 1));
+                if (!Number.isFinite(cols * rows) || cols * rows > MAX_INSERT_ARRAY) throw tooManyEntities();
                 const pos = ins.position ?? { x: 0, y: 0, z: 0 };
                 for (let r = 0; r < rows; r++) {
                     for (let c = 0; c < cols; c++) {
@@ -343,9 +372,11 @@ export function parseDxf(text: string): RawDrawing {
         entityCounts: countEntities(text),
         approximated: false,
         edgeCount: 0,
+        visits: 0,
     };
     walk(out, dxf, dxf.entities ?? [], IDENTITY, 0, null);
-    const { edgeCount: _edgeCount, ...drawing } = out;
+    const { edgeCount: _edgeCount, visits: _visits, ...drawing } = out;
     void _edgeCount;
+    void _visits;
     return drawing;
 }

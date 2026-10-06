@@ -164,6 +164,12 @@ export const CreateShopRequest = z.object({
     acceptWindowMinutes: z.number().int().min(15).max(10_080).default(120),
     adapterLevel: z.enum(['L0', 'L1', 'L2', 'L3']).default('L1'),
     certifications: z.array(z.string().trim().min(1).max(60)).max(20).default([]),
+    /** Stripe Connect account (`acct_...`) for automatic payouts on delivery; without it payouts are settled manually. */
+    stripeAccountId: z
+        .string()
+        .trim()
+        .regex(/^acct_[A-Za-z0-9]{6,60}$/, 'a Stripe Connect account id (acct_...)')
+        .optional(),
     rateCard: RateCardInput.optional(),
     capabilities: z.array(CapabilityInput).max(500).default([]),
     /** Finishes + secondary operations the shop performs (svc_bending, svc_powder_*, ...). */

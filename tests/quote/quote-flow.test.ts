@@ -8,7 +8,7 @@ import path from 'node:path';
 import { asc, eq, sql } from 'drizzle-orm';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { ApiErrorBody, BuildView, CatalogResponse, CreatePartResponse, PartView, QuoteView, type CreateQuoteRequest } from '@/contracts';
-import { domainEvents, parts, quotes, shopCapabilities } from '@/server/db/schema';
+import { domainEvents, orders, parts, quotes, shopCapabilities } from '@/server/db/schema';
 import { LocalDiskStorage, getStorage, setStorage } from '@/server/storage';
 import { analyzePart, createPartUpload, createQuote, getBuild, getCatalog, getQuote, markQuoteOrdered } from '@/server/quote';
 import { POST as postParts } from '@/app/api/parts/route';
@@ -20,6 +20,7 @@ import { GET as getCatalogRoute } from '@/app/api/catalog/route';
 import { POST as postQuotes } from '@/app/api/quotes/route';
 import { GET as getQuoteRoute } from '@/app/api/quotes/[quoteId]/route';
 import { PUT as putLocalStorage } from '@/app/api/storage/local/[...key]/route';
+import { createCheckout } from '@/server/orders';
 import { useTestDb as withTestDb } from '../support/db';
 import { fixture } from './fixtures/fixtures';
 
@@ -166,6 +167,36 @@ describe('upload -> analyze -> quote', () => {
         expect(frozen.fileKey).toBe(row.fileKey);
     });
 
+    it('freezes the design as soon as a checkout exists (before payment), so the shop gets what was paid for', async () => {
+        const created = await uploadViaSignedUrl('plate-holes-mm');
+        await analyze(created.partId);
+        const view = QuoteView.parse((await quote({ partId: created.partId, ...STEEL_16GA, quantity: 5 })).body);
+        const [before] = await ctx.db.select().from(parts).where(eq(parts.id, created.partId));
+        const checkout = await createCheckout({
+            quoteId: view.id,
+            shippingMethod: 'STANDARD',
+            buyer: { email: 'maker@example.com', name: 'Ada Maker' },
+            shippingAddress: { name: 'Ada Maker', line1: '100 Market St', city: 'Philadelphia', region: 'PA', postalCode: '19106', country: 'US' },
+            acceptTerms: true,
+        });
+        expect(checkout.status).toBe('PENDING_PAYMENT');
+
+        // Units flip and re-uploads are refused while the payment is pending.
+        expect(await analyzePart(created.partId)).toMatchObject({ designVersion: 1, status: 'READY' });
+        await expect(analyzePart(created.partId, { units: 'in' })).rejects.toMatchObject({ code: 'CONFLICT' });
+        const reupload = await postUpload(new Request(`${BASE}/api/parts/${created.partId}/upload`, { method: 'PUT', body: fixture('l-bracket-flat').build() }), params({ partId: created.partId }));
+        expect(reupload.status).toBe(409);
+        await getStorage().putObject(created.upload.key, fixture('l-bracket-flat').build()); // signed-URL re-PUT
+        await expect(analyzePart(created.partId)).rejects.toMatchObject({ code: 'CONFLICT' });
+        const [after] = await ctx.db.select().from(parts).where(eq(parts.id, created.partId));
+        expect(after).toMatchObject({ designVersion: before.designVersion, fileKey: before.fileKey, fileSha256: before.fileSha256, status: 'READY' });
+        expect(after.features).toEqual(before.features);
+
+        // An abandoned (cancelled) checkout releases the design again.
+        await ctx.db.update(orders).set({ status: 'CANCELLED' }).where(eq(orders.id, checkout.orderId));
+        expect(await analyzePart(created.partId, { units: 'in' })).toMatchObject({ designVersion: 2 });
+    });
+
     it('is deterministic for identical configurations', async () => {
         const created = await uploadViaSignedUrl('l-bracket-flat');
         await analyze(created.partId);
@@ -298,6 +329,39 @@ describe('validation and errors', () => {
         expect(bad.status).toBe(400);
         const missing = await postParts(jsonReq('/api/parts', { filename: 'x.dxf' }), params({}));
         expect(ApiErrorBody.parse(await missing.json()).error.code).toBe('VALIDATION_FAILED');
+    });
+
+    it('caps request bodies by bytes streamed, not by Content-Length (chunked uploads cannot exhaust memory)', async () => {
+        const created = await createPartUpload({ filename: 'chunked.dxf', sizeBytes: 100 });
+        let pulled = 0;
+        const chunk = new Uint8Array(1024 * 1024).fill(0x20);
+        const endless = () =>
+            new ReadableStream<Uint8Array>({
+                pull(controller) {
+                    pulled += chunk.byteLength;
+                    if (pulled > 200 * 1024 * 1024) controller.close(); // safety net for the test itself
+                    else controller.enqueue(chunk);
+                },
+            });
+        const streamed = (url: string, headers: Record<string, string> = {}) =>
+            new Request(url, { method: 'PUT', headers, body: endless(), duplex: 'half' } as RequestInit & { duplex: 'half' });
+        expect(streamed(`${BASE}/x`).headers.get('content-length')).toBeNull();
+
+        const direct = await postUpload(streamed(`${BASE}/api/parts/${created.partId}/upload`), params({ partId: created.partId }));
+        expect(direct.status).toBe(413);
+        expect(pulled).toBeLessThan(30 * 1024 * 1024);
+
+        pulled = 0;
+        const url = new URL(created.upload.url);
+        const key = url.pathname.replace('/api/storage/local/', '').split('/');
+        const signedPut = await putLocalStorage(streamed(created.upload.url, created.upload.headers), params({ key }));
+        expect(signedPut.status).toBe(413);
+        expect(pulled).toBeLessThan(30 * 1024 * 1024);
+
+        pulled = 0;
+        const json = await postParts(streamed(`${BASE}/api/parts`, { 'content-type': 'application/json' }), params({}));
+        expect(json.status).toBe(413);
+        expect(pulled).toBeLessThan(2 * 1024 * 1024);
     });
 
     it('analyze: 409 before upload, FAILED for unreadable content', async () => {

@@ -67,11 +67,54 @@ export function errorResponse(code: ApiErrorCode, message: string, status = stat
     return NextResponse.json(body, { status, headers: { 'cache-control': 'no-store' } });
 }
 
-/** Parse + validate a JSON body. Throws ApiError(400) on malformed JSON or schema mismatch. */
-export async function parseJson<Output, Input = Output>(request: Request, schema: ZodType<Output, ZodTypeDef, Input>): Promise<Output> {
+/** Default cap for JSON request bodies (every public JSON route). */
+export const MAX_JSON_BODY_BYTES = 256 * 1024;
+/** Cap for provider webhook bodies (Stripe / EasyPost events are far smaller). */
+export const MAX_WEBHOOK_BODY_BYTES = 1024 * 1024;
+
+/**
+ * Read a request body into memory, refusing anything over `maxBytes` with 413.
+ * Never trusts Content-Length alone: the stream is counted chunk by chunk and
+ * cancelled as soon as the cap is crossed (chunked bodies have no length header).
+ */
+export async function readBodyBytes(request: Request, maxBytes: number): Promise<Uint8Array<ArrayBuffer>> {
+    const tooLarge = () => new ApiError('PAYLOAD_TOO_LARGE', `Request body exceeds ${maxBytes} bytes`);
+    const declared = request.headers.get('content-length');
+    if (declared !== null && Number(declared) > maxBytes) throw tooLarge();
+    if (!request.body) return new Uint8Array(0);
+    const reader = request.body.getReader();
+    const chunks: Uint8Array[] = [];
+    let total = 0;
+    for (;;) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        total += value.byteLength;
+        if (total > maxBytes) {
+            await reader.cancel().catch(() => undefined);
+            throw tooLarge();
+        }
+        chunks.push(value);
+    }
+    const out = new Uint8Array(total);
+    let offset = 0;
+    for (const c of chunks) {
+        out.set(c, offset);
+        offset += c.byteLength;
+    }
+    return out;
+}
+
+/** Read a UTF-8 text body with a byte cap (see readBodyBytes). */
+export async function readBodyText(request: Request, maxBytes: number = MAX_JSON_BODY_BYTES): Promise<string> {
+    return new TextDecoder().decode(await readBodyBytes(request, maxBytes));
+}
+
+/** Parse + validate a JSON body. Throws ApiError(400) on malformed JSON or schema mismatch, 413 when too large. */
+export async function parseJson<Output, Input = Output>(request: Request, schema: ZodType<Output, ZodTypeDef, Input>, maxBytes: number = MAX_JSON_BODY_BYTES): Promise<Output> {
+    const text = await readBodyText(request, maxBytes);
     let raw: unknown;
     try {
-        raw = await request.json();
+        raw = JSON.parse(text);
     } catch {
         throw new ApiError('BAD_REQUEST', 'Request body must be valid JSON');
     }

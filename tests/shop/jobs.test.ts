@@ -1,5 +1,5 @@
 import { and, asc, eq } from 'drizzle-orm';
-import { beforeAll, describe, expect, it } from 'vitest';
+import { beforeAll, describe, expect, it, vi } from 'vitest';
 import { domainEvents, inspectionPlans, manufacturingJobs, orders, shipments } from '@/server/db/schema';
 import { verifyPacket } from '@/server/dispatch';
 import {
@@ -15,6 +15,7 @@ import {
 import { useTestDb } from '../support/db';
 import { createAcceptedJob, createPaidOrder, createQaPassedJob, createShopFixture, measurementsFor, quietConsole, uploadQaPhoto } from './fixtures';
 import { dispatchOrder } from '@/server/dispatch';
+import { ManualCarrier } from '@/server/shipping';
 
 const parcel = { lengthIn: 10, widthIn: 8, heightIn: 2, weightOz: 24 };
 const manual = { carrier: 'UPS', service: 'Ground', trackingNumber: '1Z999AA10123456784' };
@@ -139,6 +140,19 @@ describe('shop console jobs', () => {
         expect(await orderStatus(ctx.db, job.order.id)).toBe('SHIPPED');
         // Idempotent replay returns the same shipment.
         expect((await createShipment(job.shopId, rework.id, { parcel, manual })).id).toBe(shipment.id);
+    });
+
+    it('concurrent label requests buy exactly one label and return the same shipment', async () => {
+        const job = await createQaPassedJob(ctx.db);
+        const buy = vi.spyOn(ManualCarrier.prototype, 'buyLabel');
+        try {
+            const [a, b] = await Promise.all([createShipment(job.shopId, job.jobId, { parcel, manual }), createShipment(job.shopId, job.jobId, { parcel, manual })]);
+            expect(a.id).toBe(b.id);
+            expect(buy).toHaveBeenCalledTimes(1);
+        } finally {
+            buy.mockRestore();
+        }
+        expect(await ctx.db.select().from(shipments).where(eq(shipments.jobId, job.jobId))).toHaveLength(1);
     });
 
     it('a non-critical failure still passes; QA upload URLs are scoped to the job', async () => {

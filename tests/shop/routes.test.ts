@@ -197,6 +197,7 @@ describe('shop + admin + passport routes', () => {
                     },
                     capabilities: [{ thicknessOptionId: 'thk_al5052_063', processId: 'prc_fiber_laser', bedWidthMm: 1500, bedHeightMm: 3000, machineLabel: 'Trumpf 3030' }],
                     serviceIds: ['svc_deburr', 'svc_anodize_clear'],
+                    stripeAccountId: 'acct_1BrooklynLaser',
                 },
             }),
             params({}),
@@ -205,6 +206,9 @@ describe('shop + admin + passport routes', () => {
         const created = CreateShopResponse.parse(await create.json());
         expect(created.capabilityCount).toBe(1);
         expect(created.serviceCount).toBe(2);
+        const { shops: shopsTable } = await import('@/server/db/schema');
+        const [shopRow] = await ctx.db.select().from(shopsTable).where(eq(shopsTable.id, created.shop.id));
+        expect(shopRow.stripeAccountId).toBe('acct_1BrooklynLaser');
         expect(created.rateCardId).toMatch(/^rc_/);
         expect(created.consoleToken.token).toMatch(/^dmshop_/);
         const { shopAccessTokens } = await import('@/server/db/schema');

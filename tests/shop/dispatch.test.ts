@@ -1,7 +1,7 @@
 import { and, asc, eq } from 'drizzle-orm';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { DEV_SHOP_ID } from '@/server/db/seed';
-import { domainEvents, inspectionPlans, manufacturingJobs, orders } from '@/server/db/schema';
+import { domainEvents, inspectionPlans, manufacturingJobs, orders, parts } from '@/server/db/schema';
 import { buildInspectionChecks, dispatchOrder, estimateShopCostCents, expireStaleOffers, verifyPacket, withinTolerance } from '@/server/dispatch';
 import { acceptJob, declineJob, getJob } from '@/server/shops';
 import { useTestDb } from '../support/db';
@@ -140,6 +140,15 @@ describe('dispatch', () => {
 
         const bare = await createPaidOrder(ctx.db, { bend: true });
         expect((await dispatchOrder(bare.order.id))!.shopId).toBe(noPaint);
+    });
+
+    it('refuses to dispatch when the live part is not the design version that was paid for', async () => {
+        const { order, part } = await createPaidOrder(ctx.db);
+        await ctx.db.update(parts).set({ designVersion: part.designVersion + 1 }).where(eq(parts.id, part.id));
+        await expect(dispatchOrder(order.id)).rejects.toThrow(/design version/);
+        expect(await ctx.db.select().from(manufacturingJobs).where(eq(manufacturingJobs.orderId, order.id))).toHaveLength(0);
+        const [after] = await ctx.db.select({ status: orders.status }).from(orders).where(eq(orders.id, order.id));
+        expect(after.status).toBe('PAID');
     });
 
     it('refuses to dispatch an order that is not PAID', async () => {

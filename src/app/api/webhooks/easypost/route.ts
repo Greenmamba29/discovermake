@@ -4,14 +4,14 @@
  * webhook_events, applied to the shipment (DELIVERED runs the delivery orchestration).
  * Bad signatures answer 401; processing errors answer 500 so EasyPost retries.
  */
-import { ApiError, json, route } from '@/server/http';
+import { ApiError, json, MAX_WEBHOOK_BODY_BYTES, readBodyText, route } from '@/server/http';
 import { processCarrierWebhook, WebhookSignatureError } from '@/server/shipping';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export const POST = route(async (request) => {
-    const rawBody = await request.text();
+    const rawBody = await readBodyText(request, MAX_WEBHOOK_BODY_BYTES);
     try {
         await processCarrierWebhook(rawBody, request.headers);
     } catch (err) {

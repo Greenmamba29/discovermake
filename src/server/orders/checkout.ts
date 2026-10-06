@@ -11,13 +11,14 @@ import type { Actor } from '../../contracts/common';
 import { buildOrderUrl, createOrderAccessToken, hashOrderAccessToken } from '../auth/order-link';
 import { sha256Hex } from '../auth/tokens';
 import { getDb, withTx } from '../db';
-import { builds, orders, parts, payments, quotes, shopRateCards } from '../db/schema';
+import { builds, orders, parts, payments, quotes, shopRateCards, shops } from '../db/schema';
 import { env } from '../env';
 import { emitEvent } from '../events/outbox';
 import { ApiError } from '../http';
 import { newId, newOrderNumber } from '../ids';
 import { getPaymentProvider } from '../payments';
 import { isQuoteOrderable } from '../quote';
+import { addBusinessDays, orderStartDate } from '../quote/leadtime';
 import { SEALED_TOKEN_KEY, sealOrderToken } from './link-vault';
 
 type QuoteRow = typeof quotes.$inferSelect;
@@ -88,6 +89,18 @@ export async function priceQuoteForCheckout(quote: QuoteRow, shippingMethod: Che
     };
 }
 
+/**
+ * Ship date promised at checkout. Quotes stay binding for QUOTE_VALIDITY_DAYS, but
+ * their ship date was computed when the quote was made; the quoted lead time is
+ * re-applied from the moment of ordering (shop timezone, same-day cutoff, business
+ * days) so an order never starts with a ship date that already passed. Never earlier
+ * than the quoted date.
+ */
+export function promisedShipDateFor(quote: Pick<QuoteRow, 'shipDate' | 'leadTimeDays'>, timeZone: string, now: Date = new Date()): string {
+    const rolled = addBusinessDays(orderStartDate(now, timeZone), Math.max(1, quote.leadTimeDays));
+    return rolled > quote.shipDate ? rolled : quote.shipDate;
+}
+
 /** Pseudonymous, stable actor for a guest buyer (no raw email in the event log). */
 export function guestBuyerActor(email: string): Actor {
     return { kind: 'buyer', id: `guest_${sha256Hex(email.trim().toLowerCase()).slice(0, 24)}` };
@@ -106,6 +119,8 @@ export async function createCheckout(input: CheckoutRequest): Promise<CheckoutRe
     const pricing = await priceQuoteForCheckout(quote, input.shippingMethod);
     const [build] = await db.select().from(builds).where(eq(builds.id, quote.buildId));
     if (!build) throw new ApiError('NOT_FOUND', 'Build not found');
+    const [shop] = await db.select({ timezone: shops.timezone }).from(shops).where(eq(shops.id, quote.shopId));
+    if (!shop) throw new ApiError('CONFLICT', 'The quoted shop is no longer available. Get a new quote.');
 
     const orderType = orderTypeForQuantity(pricing.quantity);
     const actor = guestBuyerActor(input.buyer.email);
@@ -118,8 +133,16 @@ export async function createCheckout(input: CheckoutRequest): Promise<CheckoutRe
         const token = createOrderAccessToken();
         const orderUrl = buildOrderUrl(orderId, token, appUrl);
         const now = new Date();
+        const promisedShipDate = promisedShipDateFor(quote, shop.timezone, now);
         try {
             return await withTx(async (tx) => {
+                // Freeze the design from checkout on: lock the part row and re-verify the quoted
+                // version under the lock. analyzePart takes the same lock and refuses to change a
+                // part that has a live order, so the shop always gets the geometry that was paid for.
+                const [lockedPart] = await tx.select({ designVersion: parts.designVersion, status: parts.status }).from(parts).where(eq(parts.id, quote.partId)).for('update');
+                if (!lockedPart || lockedPart.status !== 'READY' || lockedPart.designVersion !== quote.designVersion) {
+                    throw new ApiError('CONFLICT', 'The design changed after this quote was made. Get a new quote for the current version.');
+                }
                 await tx.insert(orders).values({
                     id: orderId,
                     orderNumber,
@@ -142,7 +165,7 @@ export async function createCheckout(input: CheckoutRequest): Promise<CheckoutRe
                     shopCostCents: pricing.shopCostCents,
                     platformFeeCents: pricing.platformFeeCents,
                     currency: pricing.currency,
-                    promisedShipDate: quote.shipDate,
+                    promisedShipDate,
                     accessTokenHash: hashOrderAccessToken(orderId, token),
                     correlationId: quote.buildId,
                     termsAcceptedAt: now,
@@ -204,7 +227,7 @@ export async function createCheckout(input: CheckoutRequest): Promise<CheckoutRe
                         totalCents: pricing.totalCents,
                         currency: pricing.currency,
                     },
-                    promisedShipDate: quote.shipDate,
+                    promisedShipDate,
                     payment: { provider: provider.name, providerRef: session.providerRef, redirectUrl: session.redirectUrl },
                     orderUrl,
                 } satisfies CheckoutResponse);

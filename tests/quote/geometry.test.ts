@@ -8,7 +8,7 @@ import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { analyzeDxfBytes, resolveUnits } from '@/server/quote/analyze';
 import { DEFAULT_DFM_RULES, resolveRuleset, runGeometryDfm } from '@/server/quote/dfm';
-import { parseDxf } from '@/server/quote/dxf/parse';
+import { DxfParseError, MAX_BEND_LINES, parseDxf } from '@/server/quote/dxf/parse';
 import { assertDxfFilename, sniffDxf, UnsupportedFileError } from '@/server/quote/dxf/sniff';
 import { arcEdge, bulgeEdge, chainSignedArea, edgeLength, lineEdge, minWidth } from '@/server/quote/geometry/edges';
 import { buildContours } from '@/server/quote/geometry/contours';
@@ -257,5 +257,70 @@ describe('performance', () => {
         expect(a.status).toBe('READY');
         if (a.status === 'READY') expect(a.features.holes.length).toBe(holes);
         expect(ms).toBeLessThan(4000);
+    });
+});
+
+describe('pathological files are refused quickly (CPU / memory DoS)', () => {
+    const withInsertArray = (text: string, cols: number, rows: number) => text.replace(/(0\nINSERT\n(?:(?!0\n)[^\n]*\n[^\n]*\n)*?2\nB1\n)/, `$170\n${cols}\n71\n${rows}\n`);
+
+    it('caps INSERT arrays whose block yields no cut edges (TEXT only)', () => {
+        const w = new DxfWriter({ insUnits: 4 });
+        w.block('B1', [0, 0], (ww, target) => {
+            ww.circle([0, 0], 1, '0', target);
+        });
+        w.insert('B1', [0, 0]);
+        // Swap the block content for a TEXT entity (no cut edges -> never hits MAX_CUT_EDGES).
+        const text = withInsertArray(w.toString(), 100_000, 100_000).replace(/0\nCIRCLE\n(?:(?!0\n)[^\n]*\n[^\n]*\n)*/, '0\nTEXT\n8\n0\n10\n0.0\n20\n0.0\n40\n1.0\n1\nX\n');
+        expect(text).toContain('70\n100000\n71\n100000');
+        const t0 = performance.now();
+        expect(() => parseDxf(text)).toThrow(DxfParseError);
+        expect(performance.now() - t0).toBeLessThan(1000);
+    });
+
+    it('caps bend-line growth and refuses oversized INSERT arrays', () => {
+        const w = new DxfWriter({ insUnits: 4 });
+        w.block('B1', [0, 0], (ww, target) => {
+            ww.line([0, 0], [10, 0], 'BEND_90', target);
+        });
+        w.insert('B1', [0, 0]);
+        const src = w.toString();
+        // 50 x 50 = 2500 bend lines per INSERT; repeat the INSERT until past MAX_BEND_LINES.
+        const one = withInsertArray(src, 50, 50);
+        const ins = /0\nINSERT\n[\s\S]*?(?=0\nENDSEC)/.exec(one.slice(one.indexOf('ENTITIES')))![0];
+        const many = one.replace(ins, ins.repeat(Math.ceil(MAX_BEND_LINES / 2500) + 1));
+        const t0 = performance.now();
+        expect(() => parseDxf(many)).toThrow(/bend lines/);
+        expect(() => parseDxf(withInsertArray(src, 101, 100))).toThrow(/too many entities/);
+        expect(performance.now() - t0).toBeLessThan(1000);
+    });
+
+    it('does not run O(degree²) de Boor on a huge declared spline degree', () => {
+        const degree = 20_000;
+        const knots = Array.from({ length: degree + 3 }, (_, i) => (i <= degree ? 0 : 1));
+        const w = new DxfWriter({ insUnits: 4 });
+        rect(w, 0, 0, 100, 100);
+        w.spline(degree, knots, [
+            [10, 10],
+            [90, 90],
+        ]);
+        const t0 = performance.now();
+        const drawing = parseDxf(w.toString());
+        expect(performance.now() - t0).toBeLessThan(1000);
+        expect(drawing.approximated).toBe(true); // fell back to the control polygon
+    });
+
+    it('refuses deeply nested closed contours instead of stalling the containment pass', () => {
+        const w = new DxfWriter({ insUnits: 4 });
+        for (let i = 1; i <= 5000; i++) w.circle([0, 0], i * 0.5);
+        const t0 = performance.now();
+        expect(() => analyzeDxfBytes(enc(w.toString()))).toThrow(DxfParseError);
+        expect(performance.now() - t0).toBeLessThan(3000);
+    });
+
+    it('refuses stacks of overlapping arcs instead of running a quadratic duplicate scan', () => {
+        const arcs = Array.from({ length: 50_000 }, (_, i) => arcEdge({ x: 0, y: 0 }, 50, i * 1e-4, 0.5));
+        const t0 = performance.now();
+        expect(() => buildContours(arcs, { tessellationTol: 0.01 })).toThrow(DxfParseError);
+        expect(performance.now() - t0).toBeLessThan(2000);
     });
 });

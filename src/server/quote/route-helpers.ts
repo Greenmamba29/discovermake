@@ -2,11 +2,11 @@
  * Small helpers for the quote engine's route handlers (src/app/api/{parts,quotes,builds,catalog}).
  */
 import type { ZodType, ZodTypeDef } from 'zod';
-import { ApiError } from '../http';
+import { ApiError, MAX_JSON_BODY_BYTES, readBodyText } from '../http';
 
 /** Read a JSON body; an empty body becomes `{}` (for endpoints whose fields are all optional). */
 export async function readJsonBody(request: Request, opts: { allowEmpty?: boolean } = {}): Promise<unknown> {
-    const text = await request.text();
+    const text = await readBodyText(request, MAX_JSON_BODY_BYTES);
     if (!text.trim()) {
         if (opts.allowEmpty) return {};
         throw new ApiError('BAD_REQUEST', 'Request body must be valid JSON');
