@@ -31,6 +31,7 @@ import { newId, randomBase32 } from '../ids';
 import { notify } from '../notify';
 import { advanceOrder } from '../orders';
 import { getCarrier } from '../shipping';
+import { archiveShipmentLabel, labelUrlFor } from '../shipping/labels';
 import { toShipmentView } from '../shipping/views';
 import { getStorage, storageKeys } from '../storage';
 import { buildJobDetail, toInspectionResultView, toJobSummary, toMilestoneView, type JobRow } from './views';
@@ -381,7 +382,7 @@ export async function createShipment(shopId: string, jobId: string, input: Creat
     const job = await findShopJob(shopId, jobId);
     const db = getDb();
     const [existing] = await db.select().from(shipments).where(eq(shipments.jobId, jobId)).limit(1);
-    if (existing) return toShipmentView(existing, { includeLabel: true });
+    if (existing) return { ...toShipmentView(existing, { includeLabel: true }), labelUrl: await labelUrlFor(existing) };
     const [order] = await db.select().from(orders).where(eq(orders.id, job.orderId));
     if (!order) throw notFound();
     if (job.status !== 'QA_PASSED' || order.status !== 'QA_PASSED') {
@@ -459,6 +460,16 @@ export async function createShipment(shopId: string, jobId: string, input: Creat
         throw err;
     }
 
+    // Keep our own copy of a purchased label; the shop then only ever gets short-lived signed links.
+    if (row.provider === 'easypost' && row.labelUrl && !row.labelKey) {
+        try {
+            const labelKey = await archiveShipmentLabel(row.id);
+            if (labelKey) row = { ...row, labelKey };
+        } catch (err) {
+            console.error(`[shops] could not archive label for shipment ${row.id}; serving the provider URL`, err);
+        }
+    }
+
     await notify('order.shipped', {
         to: order.buyerEmail,
         orderId: order.id,
@@ -467,5 +478,5 @@ export async function createShipment(shopId: string, jobId: string, input: Creat
         trackingNumber: row.trackingNumber,
         trackingUrl: row.trackingUrl,
     });
-    return toShipmentView(row, { includeLabel: true });
+    return { ...toShipmentView(row, { includeLabel: true }), labelUrl: await labelUrlFor(row) };
 }

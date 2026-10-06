@@ -38,6 +38,7 @@ export { WebhookSignatureError } from './types';
 export { EasyPostCarrier, selectRate, easyPostSignature, EASYPOST_API_URL } from './easypost';
 export { ManualCarrier, publicTrackingUrl } from './manual';
 export { toShipmentView, type ShipmentRow } from './views';
+export { archiveShipmentLabel, labelUrlFor, LABEL_URL_TTL_SECONDS } from './labels';
 
 /** The configured carrier adapter (CARRIER=easypost|manual). */
 export function getCarrier(): CarrierAdapter {

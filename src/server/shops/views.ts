@@ -7,6 +7,7 @@ import type { InspectionPlanView, InspectionResultView, MilestoneView, ShopJobDe
 import type { DbOrTx } from '../db';
 import { inspectionPlans, inspectionResults, manufacturingJobs, parts, productionMilestones, shipments } from '../db/schema';
 import { packetForConsole } from '../dispatch/packet';
+import { labelUrlFor } from '../shipping/labels';
 import { toShipmentView } from '../shipping/views';
 
 export type JobRow = typeof manufacturingJobs.$inferSelect;
@@ -99,7 +100,7 @@ export async function buildJobDetail(db: DbOrTx, job: JobRow): Promise<ShopJobDe
         milestones: milestones.map(toMilestoneView),
         inspectionPlan: plan ? toInspectionPlanView(plan) : null,
         inspectionResults: results.map(toInspectionResultView),
-        shipment: shipment ? toShipmentView(shipment, { includeLabel: true }) : null,
+        shipment: shipment ? { ...toShipmentView(shipment, { includeLabel: true }), labelUrl: await labelUrlFor(shipment) } : null,
         declineReason: job.declineReason,
         acceptedAt: job.acceptedAt ? iso(job.acceptedAt) : null,
     };
