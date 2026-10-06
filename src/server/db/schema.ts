@@ -313,6 +313,12 @@ export const shops = pgTable('shops', {
     adapterLevel: text('adapter_level').notNull().default('L1'),
     certifications: jsonb('certifications').$type<string[]>().notNull().default([]),
     stripeAccountId: text('stripe_account_id'),
+    /**
+     * Stripe reports payouts_enabled on the Connect account (account.updated webhook or a
+     * live status read). The ledger only routes payouts to Connect when this is true, so a
+     * shop that started but did not finish onboarding keeps being paid manually.
+     */
+    stripePayoutsEnabled: boolean('stripe_payouts_enabled').notNull().default(false),
     createdAt: createdAt(),
     updatedAt: updatedAt(),
 });

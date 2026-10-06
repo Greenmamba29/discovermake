@@ -19,6 +19,7 @@ import {
     TrustLevel,
 } from './enums';
 import { IsoDateTime } from './common';
+import { CreationIntentKind, MakeAiRiskClass } from './make-ai';
 
 const id = z.string().min(1);
 const cents = z.number().int().nonnegative();
@@ -105,10 +106,25 @@ export const EVENT_PAYLOADS = {
     'passport.activated': z.object({ passportId: id, orderId: id, snapshotHash: z.string() }),
     'ledger.payment_recorded': z.object({ orderId: id, txnKey: z.string(), totalCents: cents }),
     'payout.created': z.object({ payoutId: id, orderId: id, shopId: id, amountCents: cents }),
+    /** A human must look at something (amount mismatch, money for a closed order). Delivered durably via the outbox; never shown to buyers. */
+    'ops.alert_requested': z.object({ subject: z.string().min(1).max(300), message: z.string().min(1).max(2000), orderId: id.nullable() }),
     /** A Stripe Connect Express account was created for a partner shop (shops.stripe_account_id set). */
     'shop.connect_account_created': z.object({ shopId: id, accountId: id }),
     /** Stripe reported a change to a shop's Connect account (account.updated). */
     'shop.connect_account_updated': z.object({ shopId: id, accountId: id, payoutsEnabled: z.boolean(), chargesEnabled: z.boolean(), detailsSubmitted: z.boolean() }),
+    /** Make AI turned a buyer description into a CreationIntent. No raw prompt or IP: only its length + sha256. */
+    'make_ai.intent_created': z.object({
+        intentId: id,
+        intent: CreationIntentKind,
+        riskClass: MakeAiRiskClass,
+        productType: z.string().max(120),
+        requirementCount: z.number().int().nonnegative(),
+        unknownCount: z.number().int().nonnegative(),
+        refused: z.boolean(),
+        model: z.string(),
+        promptChars: z.number().int().nonnegative(),
+        promptSha256: z.string().regex(/^[0-9a-f]{64}$/),
+    }),
 } as const;
 
 export type EventType = keyof typeof EVENT_PAYLOADS;

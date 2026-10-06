@@ -18,3 +18,4 @@ export * from './passport';
 export * from './admin';
 export * from './events';
 export * from './connect';
+export * from './make-ai';

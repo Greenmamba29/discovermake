@@ -221,6 +221,9 @@ export async function createShop(raw: CreateShopRequest): Promise<CreateShopResp
                 adapterLevel: input.adapterLevel,
                 certifications: input.certifications,
                 stripeAccountId: input.stripeAccountId ?? null,
+                // Ops attaching an existing account attest it is payout-ready; accounts created
+                // through Connect onboarding start false until Stripe reports payouts_enabled.
+                stripePayoutsEnabled: !!input.stripeAccountId,
             })
             .returning();
 

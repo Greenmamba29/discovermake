@@ -12,6 +12,12 @@ const optionalString = z
     .optional()
     .transform((v) => (v === undefined || v.trim() === '' ? undefined : v.trim()));
 
+/** Boolean feature flag: true only for "true" (trimmed, case-insensitive); any other value, or unset, is false and never fails env parsing. */
+const flag = z
+    .string()
+    .optional()
+    .transform((v) => v?.trim().toLowerCase() === 'true');
+
 const EnvSchema = z.object({
     NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
     APP_URL: z.string().url().default('http://localhost:3000'),
@@ -55,6 +61,15 @@ const EnvSchema = z.object({
 
     /** Dev/e2e only: deterministic Shop Console token created by the seed. */
     SEED_SHOP_TOKEN: optionalString,
+
+    /** Make AI intake (/api/make-ai/intake). Off unless "true" (case-insensitive). */
+    MAKE_AI_ENABLED: flag,
+    /** Shows the /make/ai page. Inlined into client bundles at build time. */
+    NEXT_PUBLIC_MAKE_AI_ENABLED: flag,
+    /** Gemini model id for Make AI (any id the @ai-sdk/google provider accepts). */
+    MAKE_AI_MODEL: optionalString.transform((v) => v ?? 'gemini-3.5-flash'),
+    /** Google AI Studio key for Make AI. Make AI answers 503 when unset. */
+    GOOGLE_GENERATIVE_AI_API_KEY: optionalString,
 });
 
 export type Env = z.infer<typeof EnvSchema>;

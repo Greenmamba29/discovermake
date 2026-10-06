@@ -170,6 +170,8 @@ describe('Stripe Connect shop payout onboarding', () => {
 
         const [shop] = await ctx.db.select().from(shops).where(eq(shops.id, DEV_SHOP_ID));
         expect(shop.stripeAccountId).toMatch(/^acct_test1/);
+        // Onboarding only started: the ledger must keep paying this shop manually.
+        expect(shop.stripePayoutsEnabled).toBe(false);
         const linkCall = calls.find((c) => c.path === '/v1/account_links')!;
         expect(linkCall.body.get('account')).toBe(shop.stripeAccountId);
         expect(linkCall.body.get('type')).toBe('account_onboarding');
@@ -203,6 +205,8 @@ describe('Stripe Connect shop payout onboarding', () => {
         await shopStatus(req('/api/shop/payouts/status', { headers: shopA }), noParams);
         const retrieves = calls.filter((c) => c.method === 'GET');
         expect(retrieves.map((c) => c.path)).toEqual([`/v1/accounts/${shop.stripeAccountId}`, `/v1/accounts/${shop.stripeAccountId}`]);
+        const [after] = await ctx.db.select().from(shops).where(eq(shops.id, DEV_SHOP_ID));
+        expect(after.stripePayoutsEnabled).toBe(false);
     });
 
     it("keeps shops isolated: a shop only ever sees and links its own account", async () => {
@@ -222,9 +226,12 @@ describe('Stripe Connect shop payout onboarding', () => {
 
         await shopStatus(req('/api/shop/payouts/status', { headers: shopB }), noParams);
         expect(calls.filter((c) => c.method === 'GET').map((c) => c.path)).toEqual([`/v1/accounts/${b.stripeAccountId}`]);
-        // Shop A's account is untouched.
+        // The live read synced shop B's payout routing flag; shop A's account is untouched.
+        const [bAfter] = await ctx.db.select().from(shops).where(eq(shops.id, shopBId));
+        expect(bAfter.stripePayoutsEnabled).toBe(true);
         const [aAfter] = await ctx.db.select().from(shops).where(eq(shops.id, DEV_SHOP_ID));
         expect(aAfter.stripeAccountId).toBe(a.stripeAccountId);
+        expect(aAfter.stripePayoutsEnabled).toBe(false);
     });
 
     it('admin onboarding requires the bearer token and creates or reuses the account', async () => {
@@ -276,6 +283,8 @@ describe('Stripe Connect shop payout onboarding', () => {
         expect(updated).toHaveLength(1);
         expect(updated[0].payload).toEqual({ shopId: DEV_SHOP_ID, accountId, payoutsEnabled: true, chargesEnabled: true, detailsSubmitted: true });
         expect(updated[0].actorId).toBe('payment_provider:stripe');
+        const [enabled] = await ctx.db.select().from(shops).where(eq(shops.id, DEV_SHOP_ID));
+        expect(enabled.stripePayoutsEnabled).toBe(true);
 
         // Replay (same event id, freshly signed): acknowledged, not re-applied.
         const replay = signed(accountUpdated('evt_conn_1', accountId, { payouts_enabled: true, charges_enabled: true }));
@@ -292,11 +301,29 @@ describe('Stripe Connect shop payout onboarding', () => {
         const foreign = signed(accountUpdated('evt_conn_3', accountId, { payouts_enabled: false }, { dm_app: 'staging.discovermake.com' }));
         expect((await webhookPost(foreign.payload, foreign.header)).status).toBe(200);
         expect(await shopEvents(ctx.db, 'shop.connect_account_updated')).toHaveLength(1);
+        const [stillEnabled] = await ctx.db.select().from(shops).where(eq(shops.id, DEV_SHOP_ID));
+        expect(stillEnabled.stripePayoutsEnabled).toBe(true);
 
         // Other event types are acknowledged and ignored.
         const other = signed({ ...accountUpdated('evt_conn_4', accountId, { payouts_enabled: true }), type: 'capability.updated' });
         expect((await webhookPost(other.payload, other.header)).status).toBe(200);
         expect(await shopEvents(ctx.db, 'shop.connect_account_updated')).toHaveLength(1);
+    });
+
+    it('refuses to hand out an onboarding link that is not Stripe-hosted https', async () => {
+        stubStripe();
+        const bad = new Stripe('sk_test_connect_suite', {
+            httpClient: Stripe.createFetchHttpClient((async (url: string | URL) => {
+                const u = new URL(String(url));
+                const body = u.pathname === '/v1/account_links' ? { object: 'account_link', url: 'https://evil.example/phish', created: 1, expires_at: 2 } : {};
+                return new Response(JSON.stringify(body), { status: 200, headers: { 'content-type': 'application/json' } });
+            }) as unknown as typeof fetch),
+            maxNetworkRetries: 0,
+        });
+        setStripeClientForTests(bad);
+        const res = await shopConnect(req('/api/shop/payouts/connect', { method: 'POST', headers: shopA }), noParams);
+        expect(res.status).toBe(502);
+        expect(JSON.stringify(await res.json())).not.toContain('evil.example');
     });
 
     it('rejects oversized webhook bodies before verifying them', async () => {

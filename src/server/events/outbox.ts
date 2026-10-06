@@ -92,7 +92,13 @@ export function subscribe(fn: EventSubscriber): () => void {
 
 export type PublishResult = { published: number; failed: number };
 
-/** After this many failed deliveries an event is parked (left unpublished, no longer retried) for ops. */
+/**
+ * After this many failed deliveries an event is parked (left unpublished, no longer
+ * retried) for ops. With the daily cron plus the per-minute lazy sweep, 10 attempts
+ * covers a multi-hour outage of a dependency (email, Stripe) without letting a
+ * permanently broken event retry forever. Find parked rows with
+ * `published_at IS NULL AND publish_attempts >= 10`.
+ */
 export const MAX_PUBLISH_ATTEMPTS = 10;
 
 /**

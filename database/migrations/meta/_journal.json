@@ -15,6 +15,13 @@
       "when": 1791290961603,
       "tag": "0001_r1_integration",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1791296745634,
+      "tag": "0002_connect_payouts_enabled",
+      "breakpoints": true
     }
   ]
 }

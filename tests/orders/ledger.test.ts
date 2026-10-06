@@ -112,7 +112,7 @@ describe('ledger + payouts + refunds', () => {
     it('marks payouts stripe_connect when the shop has a Connect account and Stripe is configured', async () => {
         const order = await paidOrder();
         await runToDelivered(order.id);
-        await ctx.db.update(shops).set({ stripeAccountId: 'acct_test_123' }).where(eq(shops.id, DEV_SHOP_ID));
+        await ctx.db.update(shops).set({ stripeAccountId: 'acct_test_123', stripePayoutsEnabled: true }).where(eq(shops.id, DEV_SHOP_ID));
         process.env.STRIPE_SECRET_KEY = 'sk_test_dummy';
         const { resetEnvCache } = await import('@/server/env');
         resetEnvCache();
@@ -124,7 +124,25 @@ describe('ledger + payouts + refunds', () => {
         } finally {
             delete process.env.STRIPE_SECRET_KEY;
             resetEnvCache();
-            await ctx.db.update(shops).set({ stripeAccountId: null }).where(eq(shops.id, DEV_SHOP_ID));
+            await ctx.db.update(shops).set({ stripeAccountId: null, stripePayoutsEnabled: false }).where(eq(shops.id, DEV_SHOP_ID));
+        }
+    });
+
+    it('keeps payouts manual while the Connect account cannot receive payouts yet (onboarding unfinished)', async () => {
+        const order = await paidOrder();
+        await runToDelivered(order.id);
+        await ctx.db.update(shops).set({ stripeAccountId: 'acct_test_unfinished', stripePayoutsEnabled: false }).where(eq(shops.id, DEV_SHOP_ID));
+        process.env.STRIPE_SECRET_KEY = 'sk_test_dummy';
+        const { resetEnvCache } = await import('@/server/env');
+        resetEnvCache();
+        try {
+            const { withTx } = await import('@/server/db');
+            const rows = await withTx((tx) => recordPayouts(order.id, tx));
+            expect(rows[0]).toMatchObject({ method: 'manual', status: 'PENDING' });
+        } finally {
+            delete process.env.STRIPE_SECRET_KEY;
+            resetEnvCache();
+            await ctx.db.update(shops).set({ stripeAccountId: null, stripePayoutsEnabled: false }).where(eq(shops.id, DEV_SHOP_ID));
         }
     });
 

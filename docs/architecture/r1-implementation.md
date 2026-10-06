@@ -140,7 +140,8 @@ The auth column uses these values:
 | POST | `/api/shop/payouts/connect` | – (optional `{}`) | `ShopConnectLinkResponse` (Stripe Connect onboarding link; creates the Express account once) | shop-session | shop (503 without `STRIPE_SECRET_KEY`) |
 | GET | `/api/shop/payouts/status` | – | `ShopPayoutStatusResponse` (live from Stripe) | shop-session | shop (503 without `STRIPE_SECRET_KEY`) |
 | POST | `/api/admin/shops/:shopId/connect` | – | `AdminShopConnectLinkResponse` | admin | shop (ops-assisted onboarding) |
-| POST | `/api/webhooks/stripe-connect` | raw Stripe Connect event | `{ received: true }` | signature (`STRIPE_CONNECT_WEBHOOK_SECRET`) | shop (`account.updated` -> `shop.connect_account_updated`) |
+| POST | `/api/webhooks/stripe-connect` | raw Stripe Connect event | `{ received: true }` | signature (`STRIPE_CONNECT_WEBHOOK_SECRET`) | shop (`account.updated` -> `shops.stripe_payouts_enabled` + `shop.connect_account_updated`) |
+| POST | `/api/make-ai/intake` | `MakeAiIntakeRequest` (`text` <= 2,000 chars) | `MakeAiIntakeResponse` (AI estimate, not a quote) | public, 10/min/IP + 120/min per instance (in-memory placeholder) | make-ai (404 unless `MAKE_AI_ENABLED=true`, 503 without key; emits `make_ai.intent_created`) |
 | POST | `/api/webhooks/easypost` | raw EasyPost event | `{ received: true }` | signature (`EASYPOST_WEBHOOK_SECRET`) | shop |
 | POST | `/api/shop/carrier-webhook` | raw EasyPost event | `{ received: true }` | signature | shop (alias of `/api/webhooks/easypost`) |
 | GET, PUT | `/api/storage/local/[...key]` | signed query | bytes / 200 | signed URL (local driver only) | foundation |
@@ -381,6 +382,7 @@ Schema: `src/server/db/schema.ts`. Migrations: `database/migrations`, generated 
 | `PAYMENT_PROVIDER` | yes | payments | `stripe` or `dev` (dev refuses when `NODE_ENV=production`) |
 | `STRIPE_SECRET_KEY` | stripe | payments | |
 | `STRIPE_WEBHOOK_SECRET` | stripe | webhooks/stripe | |
+| `STRIPE_CONNECT_WEBHOOK_SECRET` | stripe connect | webhooks/stripe-connect | Signing secret of the "events on connected accounts" endpoint; the webhook answers 503 when unset |
 | `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | stripe | ui | Only needed if embedding Stripe Elements |
 | `CARRIER` | yes | shipping | `easypost` or `manual` (manual refuses when `NODE_ENV=production`) |
 | `EASYPOST_API_KEY` | easypost | shipping | |
@@ -394,6 +396,10 @@ Schema: `src/server/db/schema.ts`. Migrations: `database/migrations`, generated 
 | `EMAIL_FROM` | optional | notify | |
 | `OPS_EMAIL` | optional | notify | Target for `ops.alert` |
 | `SEED_SHOP_TOKEN` | dev/e2e | seed | Deterministic Shop Console token |
+| `MAKE_AI_ENABLED` | optional | make-ai | `true` enables `POST /api/make-ai/intake` (404 otherwise) |
+| `NEXT_PUBLIC_MAKE_AI_ENABLED` | optional | ui | `true` shows `/make/ai` (inlined at build time) |
+| `MAKE_AI_MODEL` | optional | make-ai | Gemini model id, default `gemini-3.5-flash` |
+| `GOOGLE_GENERATIVE_AI_API_KEY` | make-ai | make-ai | Google AI Studio key; intake answers 503 when unset |
 
 ## 10. Commands
 
@@ -442,3 +448,7 @@ Behaviour:
 | Dispatch / QA defaults | Scoring weights and inspection tolerances are documented R1 defaults | Tune with real shop data |
 | Embedded payments | Hosted Stripe Checkout (`redirectUrl`) | Add `clientSecret` to `CheckoutResponse` if an embedded Payment Element is wanted |
 | Pre-0001 shops | Shops created before migration 0001 have no `shop_services` rows and are only routed jobs with no finish / secondary op | Backfill their services via the admin API |
+
+## 12a. Migration-map ports (2026-10-06)
+
+Migration `0002_connect_payouts_enabled.sql` adds `shops.stripe_payouts_enabled` (default false; backfilled true for shops that already had an `acct_…`). The ledger uses `stripe_connect` only when the shop has an account **and** this flag is true, so a shop that started but did not finish Connect onboarding keeps getting manual payouts. The flag is set from Stripe's `payouts_enabled` by the `account.updated` webhook and by every live `GET /api/shop/payouts/status`. `CreateShopRequest.stripeAccountId` (ops attaching an existing account) sets it true.

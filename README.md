@@ -84,11 +84,12 @@ Set these in your host's encrypted environment, never in git. Every variable is 
 | App | `NODE_ENV=production`, `APP_URL=https://your-domain` |
 | Database | `DATABASE_URL` (Postgres 16: Supabase, Neon, RDS…) |
 | Storage | `STORAGE_DRIVER=s3`, `S3_BUCKET`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`, `S3_REGION`, `S3_ENDPOINT` (R2, Supabase or MinIO; omit for AWS), `S3_FORCE_PATH_STYLE` |
-| Payments | `PAYMENT_PROVIDER=stripe`, `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET` |
+| Payments | `PAYMENT_PROVIDER=stripe`, `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `STRIPE_CONNECT_WEBHOOK_SECRET` (shop payout onboarding; signing secret of the Connect webhook endpoint) |
 | Shipping | `CARRIER=easypost`, `EASYPOST_API_KEY`, `EASYPOST_WEBHOOK_SECRET` |
 | Signing | `ORDER_LINK_SECRET`, `PASSPORT_SIGNING_SECRET`, `JOB_PACKET_SIGNING_SECRET`; plus `STORAGE_SIGNING_SECRET` only if you use local storage |
 | Ops | `ADMIN_TOKEN`, `CRON_SECRET`, `OPS_EMAIL` |
 | Email | `RESEND_API_KEY`, `EMAIL_FROM` (on a domain verified in Resend) |
+| Make AI (optional, off by default) | `MAKE_AI_ENABLED=true` turns on `POST /api/make-ai/intake` (404 otherwise); `NEXT_PUBLIC_MAKE_AI_ENABLED=true` shows `/make/ai` (inlined at build time, so rebuild after changing it); `GOOGLE_GENERATIVE_AI_API_KEY` (server only; intake answers 503 without it); `MAKE_AI_MODEL` (Gemini model id, default `gemini-3.5-flash`) |
 
 Generate each secret independently, for example with `openssl rand -base64 48`. Any missing signing secret makes production requests fail closed.
 
@@ -117,7 +118,10 @@ DATABASE_URL=... NODE_ENV=production bun run db:seed     # catalog only: never c
    - `charge.refunded`
 
    Put its signing secret in `STRIPE_WEBHOOK_SECRET`. Events are verified, recorded once each, and safe to replay.
-3. **Shop payouts:** enable Stripe Connect and give each shop a connected account (`acct_…`). On delivery the payout is sent as a transfer. Shops without a Connect account get a `PENDING` manual payout; settle it with `POST /api/admin/payouts/:payoutId/paid {"reference":"ACH-…"}` or from `/admin`.
+3. **Shop payouts (Stripe Connect):** enable Connect, then add a second webhook endpoint at `https://your-domain/api/webhooks/stripe-connect` for **events on connected accounts**, listening to `account.updated`, and put its signing secret in `STRIPE_CONNECT_WEBHOOK_SECRET`.
+   - Shops onboard themselves from the Shop Console (**Set up payouts** on `/shop/jobs`, status on `/shop/payouts`), or ops send them a link from `POST /api/admin/shops/:shopId/connect`. Either way an Express account is created once and the shop finishes Stripe's hosted onboarding.
+   - Payouts go out as Connect transfers on delivery only once Stripe reports `payouts_enabled` for the account (`shops.stripe_payouts_enabled`, kept in step by the webhook and by every status read). Until then, and for shops without a Connect account, the payout is a `PENDING` manual payout; settle it with `POST /api/admin/payouts/:payoutId/paid {"reference":"ACH-…"}` or from `/admin`.
+   - An existing `acct_…` passed as `stripeAccountId` when creating a shop is treated as payout-ready.
 
 ### 4. Shipping
 
@@ -184,7 +188,7 @@ How routing works:
   - Rotating `ORDER_LINK_SECRET` revokes every buyer link.
   - Rotating `PASSPORT_SIGNING_SECRET` makes existing passports fail verification.
 - [ ] `NODE_ENV=production`, `PAYMENT_PROVIDER=stripe`, `CARRIER=easypost`, `STORAGE_DRIVER=s3`. The test doubles refuse to start otherwise.
-- [ ] **Stripe live mode:** live keys, the live webhook endpoint and its secret, payment methods enabled, Connect enabled, and every shop's `acct_…` set.
+- [ ] **Stripe live mode:** live keys, the live webhook endpoint and its secret, payment methods enabled, Connect enabled with the `/api/webhooks/stripe-connect` endpoint and `STRIPE_CONNECT_WEBHOOK_SECRET`, and every shop's payouts active (or its `acct_…` set).
 - [ ] EasyPost production key, webhook URL and secret, and the shop return addresses verified.
 - [ ] Resend domain verified; `EMAIL_FROM` and `OPS_EMAIL` set.
 - [ ] Database backups and point-in-time recovery enabled. Ran `db:migrate` and a catalog-only `db:seed`.

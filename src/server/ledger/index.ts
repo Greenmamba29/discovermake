@@ -146,7 +146,7 @@ export async function recordPaymentSplit(orderId: string, tx?: DbOrTx): Promise<
  * platform fee) + ledger posting. Idempotent (unique order x shop). Emits `payout.created`.
  *
  * The payout row starts PENDING with method `stripe_connect` (shop has a Connect
- * account and Stripe is configured) or `manual` (ops pays and marks it paid).
+ * account with payouts enabled and Stripe is configured) or `manual` (ops pays and marks it paid).
  * Money movement happens AFTER commit in `executePendingPayouts(orderId)`; when this
  * function is called without a caller transaction it runs that step itself.
  */
@@ -173,7 +173,9 @@ export async function recordPayouts(orderId: string, tx?: DbOrTx): Promise<Payou
             .orderBy(desc(manufacturingJobs.createdAt))
             .limit(1);
 
-        const method = shop.stripeAccountId && env().STRIPE_SECRET_KEY ? 'stripe_connect' : 'manual';
+        // Connect only once Stripe reports payouts_enabled: a shop that started but did not
+        // finish onboarding has an account id but cannot receive transfers yet.
+        const method = shop.stripeAccountId && shop.stripePayoutsEnabled && env().STRIPE_SECRET_KEY ? 'stripe_connect' : 'manual';
         const [created] = await t
             .insert(payouts)
             .values({
@@ -242,7 +244,8 @@ export async function executePendingPayouts(orderId: string): Promise<PayoutRow[
 
     const settled: PayoutRow[] = [];
     for (const { payout, shop } of pending) {
-        if (!shop.stripeAccountId) continue;
+        // Payouts disabled on the account (e.g. Stripe paused it): leave the payout PENDING for ops.
+        if (!shop.stripeAccountId || !shop.stripePayoutsEnabled) continue;
         try {
             const { transferId } = await createConnectTransfer({
                 payoutId: payout.id,

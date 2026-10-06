@@ -209,6 +209,8 @@ describe('shop + admin + passport routes', () => {
         const { shops: shopsTable } = await import('@/server/db/schema');
         const [shopRow] = await ctx.db.select().from(shopsTable).where(eq(shopsTable.id, created.shop.id));
         expect(shopRow.stripeAccountId).toBe('acct_1BrooklynLaser');
+        // Ops attached an existing account: payouts route to Connect straight away.
+        expect(shopRow.stripePayoutsEnabled).toBe(true);
         expect(created.rateCardId).toMatch(/^rc_/);
         expect(created.consoleToken.token).toMatch(/^dmshop_/);
         const { shopAccessTokens } = await import('@/server/db/schema');

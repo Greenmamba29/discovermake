@@ -11,9 +11,11 @@
  *   dedupes in `webhook_events` (provider `stripe_connect`) and emits
  *   `shop.connect_account_updated` for `account.updated`.
  *
- * Once `stripe_account_id` is set, the ledger pays the shop by Connect transfer
- * (src/server/ledger `executePendingPayouts`). Without STRIPE_SECRET_KEY every entry
- * point answers 503 and ops keep settling payouts manually.
+ * `shops.stripe_payouts_enabled` mirrors Stripe's `payouts_enabled` (set by the webhook
+ * and by every live status read). Only when it is true does the ledger pay the shop by
+ * Connect transfer (src/server/ledger `executePendingPayouts`); a shop that started but
+ * did not finish onboarding keeps being paid manually. Without STRIPE_SECRET_KEY the shop
+ * and admin entry points answer 503 and ops keep settling payouts manually.
  */
 import { and, eq, isNull } from 'drizzle-orm';
 import Stripe from 'stripe';
@@ -71,6 +73,15 @@ function publicBusinessUrl(): string | undefined {
     }
 }
 
+function isStripeHostedUrl(raw: string): boolean {
+    try {
+        const u = new URL(raw);
+        return u.protocol === 'https:' && (u.hostname === 'stripe.com' || u.hostname.endsWith('.stripe.com'));
+    } catch {
+        return false;
+    }
+}
+
 export const SHOP_PAYOUTS_RETURN_PATH = '/shop/payouts?status=return';
 export const SHOP_PAYOUTS_REFRESH_PATH = '/shop/payouts?status=refresh';
 
@@ -115,7 +126,7 @@ async function ensureConnectAccount(shop: ShopRow, actor: Actor): Promise<{ acco
     return withTx(async (tx) => {
         const [updated] = await tx
             .update(shops)
-            .set({ stripeAccountId: account.id, updatedAt: new Date() })
+            .set({ stripeAccountId: account.id, stripePayoutsEnabled: account.payouts_enabled === true, updatedAt: new Date() })
             .where(and(eq(shops.id, shop.id), isNull(shops.stripeAccountId)))
             .returning({ id: shops.id });
         if (!updated) {
@@ -153,6 +164,11 @@ export async function createShopOnboardingLink(shopId: string, actor: Actor): Pr
     } catch (err) {
         stripeFailure(err, 'start payout setup');
     }
+    // The browser is sent straight to this URL: only ever hand out a Stripe-hosted https link.
+    if (!isStripeHostedUrl(link.url)) {
+        console.error('[connect] Stripe returned an unexpected onboarding URL host');
+        throw new ApiError('PAYMENT_ERROR', 'Stripe could not start payout setup. Try again in a moment.', 502);
+    }
     return { url: link.url, accountId, created };
 }
 
@@ -167,10 +183,18 @@ export async function getShopPayoutStatus(shopId: string): Promise<ShopPayoutSta
     } catch (err) {
         stripeFailure(err, 'load the payout account');
     }
+    const payoutsEnabled = account.payouts_enabled === true;
+    if (payoutsEnabled !== shop.stripePayoutsEnabled) {
+        // Keep the ledger's routing flag in step with Stripe even if a webhook was missed.
+        await getDb()
+            .update(shops)
+            .set({ stripePayoutsEnabled: payoutsEnabled, updatedAt: new Date() })
+            .where(and(eq(shops.id, shop.id), eq(shops.stripeAccountId, shop.stripeAccountId)));
+    }
     return {
         connected: true,
         chargesEnabled: account.charges_enabled === true,
-        payoutsEnabled: account.payouts_enabled === true,
+        payoutsEnabled,
         detailsSubmitted: account.details_submitted === true,
     };
 }
@@ -224,6 +248,10 @@ export async function processConnectWebhook(rawBody: string, headers: Headers): 
                 const [shop] = foreign ? [] : await tx.select({ id: shops.id }).from(shops).where(eq(shops.stripeAccountId, account.id)).limit(1);
                 if (shop) {
                     shopId = shop.id;
+                    await tx
+                        .update(shops)
+                        .set({ stripePayoutsEnabled: account.payouts_enabled === true, updatedAt: new Date() })
+                        .where(and(eq(shops.id, shop.id), eq(shops.stripeAccountId, account.id)));
                     await emitEvent(tx, {
                         type: 'shop.connect_account_updated',
                         payload: {

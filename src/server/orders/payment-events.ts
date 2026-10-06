@@ -6,7 +6,7 @@
  * in ONE transaction. Side effects (dispatch offer, emails) run after commit.
  */
 import { and, desc, eq } from 'drizzle-orm';
-import type { Actor } from '../../contracts/common';
+import { SYSTEM_ACTOR, type Actor } from '../../contracts/common';
 import type { DomainEventEnvelope } from '../../contracts/events';
 import type { PaymentProviderName } from '../../contracts/enums';
 import { withTx, getDb, type DbOrTx } from '../db';
@@ -77,6 +77,23 @@ async function runAfterCommit(effects: AfterCommit[]): Promise<void> {
     }
 }
 
+/**
+ * Record an ops alert as an outbox event inside the caller's transaction, so it is
+ * delivered even if the process dies after commit. orderId stays null on the row to keep
+ * it out of the buyer timeline; the payload still carries it for ops.
+ */
+async function requestOpsAlert(tx: DbOrTx, order: { id: string; correlationId: string; buildId: string | null }, alert: { subject: string; message: string }): Promise<string> {
+    const event = await emitEvent(tx, {
+        type: 'ops.alert_requested',
+        payload: { subject: alert.subject, message: alert.message, orderId: order.id },
+        actor: SYSTEM_ACTOR,
+        correlationId: order.correlationId,
+        buildId: order.buildId,
+        orderId: null,
+    });
+    return event.event_id;
+}
+
 /** Deliver outbox events now; failures stay unpublished for the relay to retry. */
 async function deliverDurably(eventIds: string[]): Promise<void> {
     if (!eventIds.length) return;
@@ -98,6 +115,11 @@ async function deliverDurably(eventIds: string[]): Promise<void> {
 export async function handleOrderEvent(event: DomainEventEnvelope): Promise<void> {
     if (event.event_type === 'production.authorized') {
         await dispatchAndConfirm((event.payload as { orderId: string }).orderId);
+        return;
+    }
+    if (event.event_type === 'ops.alert_requested') {
+        const { subject, message, orderId } = event.payload as { subject: string; message: string; orderId: string | null };
+        await notify('ops.alert', { subject, message, ...(orderId ? { orderId } : {}) });
         return;
     }
     if (event.event_type === 'payment.failed') {
@@ -158,7 +180,6 @@ async function dispatchAndConfirm(orderId: string): Promise<void> {
  */
 export async function handlePaymentSucceeded(input: PaymentSucceededInput): Promise<{ orderId: string; alreadyProcessed: boolean }> {
     const actor = providerActor(input.provider);
-    const effects: AfterCommit[] = [];
     const durable: string[] = [];
 
     const result = await withTx(async (tx) => {
@@ -182,12 +203,11 @@ export async function handlePaymentSucceeded(input: PaymentSucceededInput): Prom
                     updatedAt: new Date(),
                 })
                 .where(eq(payments.id, payment.id));
-            effects.push(() =>
-                notify('ops.alert', {
+            durable.push(
+                await requestOpsAlert(tx, order, {
                     subject: `Payment amount mismatch on ${order.orderNumber}`,
                     message: `Provider reported ${input.amountCents} ${currency} but the order total is ${order.totalCents} ${order.currency}. The order was NOT advanced. Investigate and refund or adjust.`,
-                    orderId: order.id,
-                }).then(() => undefined),
+                }),
             );
             return { ...base, alreadyProcessed: false };
         }
@@ -210,12 +230,11 @@ export async function handlePaymentSucceeded(input: PaymentSucceededInput): Prom
         if (!canTransition(order.status, 'PAID')) {
             // Money arrived for an order that can no longer be paid (e.g. cancelled). Keep the
             // payment fact, do not touch the order, and get a human to refund.
-            effects.push(() =>
-                notify('ops.alert', {
+            durable.push(
+                await requestOpsAlert(tx, order, {
                     subject: `Payment received for ${order.status} order ${order.orderNumber}`,
                     message: `A payment of ${input.amountCents} ${currency} succeeded but the order is ${order.status}. Refund it at the provider.`,
-                    orderId: order.id,
-                }).then(() => undefined),
+                }),
             );
             return { ...base, alreadyProcessed: false };
         }
@@ -243,7 +262,6 @@ export async function handlePaymentSucceeded(input: PaymentSucceededInput): Prom
         return { ...base, alreadyProcessed: false };
     });
 
-    await runAfterCommit(effects);
     await deliverDurably(durable);
     return result;
 }
