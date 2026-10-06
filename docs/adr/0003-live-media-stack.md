@@ -32,7 +32,7 @@ Candidates (stars as of Oct 2026):
    - **R4.5/R5:** **MediaMTX** in front for RTSP, SRT and industrial/robot cameras, and for universal protocol translation and recording near shops. It publishes into LiveKit.
 
    This reconciles "MediaMTX in front" (the live architecture memo) with "MediaMTX when factory sources expand" (scorecard §8).
-3. **Owncast** is an optional channel layer for creators who want a self-hosted broadcast plus chat. Its streams bridge in through RTMP. It is not on the critical path.
+3. **Owncast is the core broadcast and channel layer** (owner direction, 2026-10-06). It handles creator channels, scheduled programming and community chat. Broadcasts bridge into LiveKit rooms through RTMP → MediaMTX/Ingress whenever viewers need to interact (Make This, Remix, Ask Make AI, build slots).
 4. **DiscoverMake owns the Live Build Protocol** (workflow 06). Video platforms only carry the bytes.
 5. Streamplace: watch, and revisit for an AT Protocol bridge later.
 
