@@ -2,7 +2,7 @@ import { eq } from 'drizzle-orm';
 import { afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { orders, passports, shipments, webhookEvents } from '@/server/db/schema';
 import { resetEnvCache } from '@/server/env';
-import { applyTrackingUpdate, EasyPostCarrier, easyPostSignature, getCarrier, ManualCarrier, processCarrierWebhook, selectRate, WebhookSignatureError } from '@/server/shipping';
+import { applyTrackingUpdate, archiveShipmentLabel, labelUrlFor, EasyPostCarrier, easyPostSignature, getCarrier, ManualCarrier, processCarrierWebhook, selectRate, WebhookSignatureError } from '@/server/shipping';
 import { createShipment } from '@/server/shops';
 import { POST as easypostWebhook } from '@/app/api/webhooks/easypost/route';
 import { useTestDb } from '../support/db';
@@ -123,6 +123,29 @@ describe('tracking updates drive delivery', () => {
         const [o] = await ctx.db.select().from(orders).where(eq(orders.id, job.order.id));
         expect(o.status).toBe('COMPLETE');
         expect(await ctx.db.select().from(passports).where(eq(passports.orderId, job.order.id))).toHaveLength(1);
+    });
+
+    it('copies a purchased label into our storage and serves it only as a short-lived signed link', async () => {
+        const job = await createQaPassedJob(ctx.db);
+        const s = await createShipment(job.shopId, job.jobId, { parcel, manual: { carrier: 'USPS', service: 'Priority', trackingNumber: '9400LABEL0001' } });
+        const providerUrl = 'https://easypost-files.s3.amazonaws.com/files/postage_label/label.pdf';
+        await ctx.db.update(shipments).set({ provider: 'easypost', labelUrl: providerUrl }).where(eq(shipments.id, s.id));
+        const pdf = new TextEncoder().encode('%PDF-1.4 label');
+        const fetchFn = (async (url: string | URL | Request) => {
+            expect(String(url)).toBe(providerUrl);
+            return new Response(pdf, { status: 200, headers: { 'content-type': 'application/pdf' } });
+        }) as typeof fetch;
+
+        const key = await archiveShipmentLabel(s.id, fetchFn);
+        expect(key).toBe(`labels/${s.id}.pdf`);
+        expect(await archiveShipmentLabel(s.id, fetchFn)).toBe(key); // idempotent
+        const [row] = await ctx.db.select().from(shipments).where(eq(shipments.id, s.id));
+        expect(row.labelKey).toBe(key);
+        const link = await labelUrlFor(row);
+        expect(link).toMatch(new RegExp(`^http://localhost:3100/api/storage/local/labels/${s.id}\\.pdf\\?`));
+        expect(link).not.toContain('easypost-files');
+        const { getStorage } = await import('@/server/storage');
+        expect((await getStorage().getObject(key!))?.toString('utf8')).toBe('%PDF-1.4 label');
     });
 
     it('POST /api/webhooks/easypost verifies, dedupes and delivers', async () => {
