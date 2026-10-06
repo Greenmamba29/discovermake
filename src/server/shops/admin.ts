@@ -35,7 +35,7 @@ import {
     shops,
     thicknessOptions,
 } from '../db/schema';
-import { dispatchOrder } from '../dispatch';
+import { dispatchOrder, sweepStaleOffersLazily } from '../dispatch';
 import { ApiError } from '../http';
 import { newId } from '../ids';
 import { markPayoutPaid } from '../ledger';
@@ -65,6 +65,7 @@ function toAdminRow(o: OrderRow, shopName: string | null): AdminOrderRow {
 }
 
 export async function listAdminOrders(statuses?: OrderStatus[]): Promise<AdminOrderRow[]> {
+    await sweepStaleOffersLazily();
     const rows = await getDb()
         .select({ order: orders, shopName: shops.name })
         .from(orders)

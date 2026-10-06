@@ -22,7 +22,7 @@ import type {
 import type { CreateShipmentRequest, ShipmentView, TrackingEvent } from '../../contracts/shipments';
 import { getDb, withTx, type Tx } from '../db';
 import { inspectionPlans, inspectionResults, manufacturingJobs, orders, productionMilestones, shipments, shops } from '../db/schema';
-import { dispatchOrder } from '../dispatch';
+import { dispatchOrder, sweepStaleOffersLazily } from '../dispatch';
 import { MEASURED_CHECK_KINDS, withinTolerance } from '../dispatch/inspection-plan';
 import { signPacket, type StoredPacket } from '../dispatch/packet';
 import { emitEvent } from '../events/outbox';
@@ -82,6 +82,7 @@ async function assertPhotoKeys(jobId: string, keys: string[] | undefined): Promi
 
 /** Jobs for this shop, newest first. Default filter: every non-terminal status. */
 export async function listJobs(shopId: string, filter?: { status?: JobStatus[] }): Promise<ShopJobSummary[]> {
+    await sweepStaleOffersLazily();
     const statuses = filter?.status?.length ? filter.status : [...DEFAULT_JOB_LIST_STATUSES];
     const rows = await getDb()
         .select()

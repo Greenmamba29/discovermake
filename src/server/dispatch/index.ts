@@ -293,6 +293,29 @@ export async function expireStaleOffers(now: Date = new Date()): Promise<number>
     return expired;
 }
 
+/**
+ * Best-effort, throttled offer expiry for request paths (shop job list, admin board).
+ * Vercel Hobby only allows daily crons, so expiry must not depend on the cron alone.
+ * Runs at most once per minute per server instance and never throws.
+ */
+let lastLazySweepAt = 0;
+const LAZY_SWEEP_INTERVAL_MS = 60_000;
+
+export async function sweepStaleOffersLazily(now: Date = new Date()): Promise<void> {
+    if (now.getTime() - lastLazySweepAt < LAZY_SWEEP_INTERVAL_MS) return;
+    lastLazySweepAt = now.getTime();
+    try {
+        await expireStaleOffers(now);
+    } catch (err) {
+        console.error('[dispatch] lazy offer sweep failed', err);
+    }
+}
+
+/** Test hook: let the next lazy sweep run immediately. */
+export function resetLazySweepThrottle(): void {
+    lastLazySweepAt = 0;
+}
+
 /** Expire one offer (order -> job lock order). Returns null if it was no longer expirable. */
 async function expireOffer(jobId: string, orderId: string, now: Date): Promise<{ shopId: string } | null> {
     return withTx(async (t) => {

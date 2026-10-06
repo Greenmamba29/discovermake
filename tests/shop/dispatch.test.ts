@@ -2,8 +2,8 @@ import { and, asc, eq } from 'drizzle-orm';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { DEV_SHOP_ID } from '@/server/db/seed';
 import { domainEvents, inspectionPlans, manufacturingJobs, orders, parts } from '@/server/db/schema';
-import { buildInspectionChecks, dispatchOrder, estimateShopCostCents, expireStaleOffers, verifyPacket, withinTolerance } from '@/server/dispatch';
-import { acceptJob, declineJob, getJob } from '@/server/shops';
+import { buildInspectionChecks, dispatchOrder, estimateShopCostCents, expireStaleOffers, resetLazySweepThrottle, verifyPacket, withinTolerance } from '@/server/dispatch';
+import { acceptJob, declineJob, getJob, listJobs } from '@/server/shops';
 import { useTestDb } from '../support/db';
 import { createPaidOrder, createShopFixture, plateFeatures, quietConsole } from './fixtures';
 
@@ -127,6 +127,26 @@ describe('dispatch', () => {
         expect(jobs[1].shopId).not.toBe(first!.shopId);
         const types = (await ctx.db.select().from(domainEvents).where(eq(domainEvents.orderId, order.id))).map((e) => e.eventType);
         expect(types).toContain('job.expired');
+    });
+
+    it('sweeps expired offers when a shop opens its job list, without waiting for the cron', async () => {
+        const { order } = await createPaidOrder(ctx.db);
+        const first = await dispatchOrder(order.id);
+        await ctx.db.update(manufacturingJobs).set({ offerExpiresAt: new Date(Date.now() - 60_000) }).where(eq(manufacturingJobs.id, first!.jobId));
+
+        resetLazySweepThrottle();
+        // The next shop in line opens its console; the stale offer is expired and re-offered to it.
+        const reOffered = await ctx.db.select().from(manufacturingJobs).where(eq(manufacturingJobs.orderId, order.id));
+        expect(reOffered).toHaveLength(1);
+        const anyShopList = await listJobs(first!.shopId);
+        expect(anyShopList.find((j) => j.id === first!.jobId)).toBeUndefined();
+
+        const jobs = await ctx.db.select().from(manufacturingJobs).where(eq(manufacturingJobs.orderId, order.id)).orderBy(asc(manufacturingJobs.createdAt));
+        expect(jobs[0].status).toBe('EXPIRED');
+        expect(jobs[1].status).toBe('OFFERED');
+        expect(jobs[1].shopId).not.toBe(first!.shopId);
+        const nextShopJobs = await listJobs(jobs[1].shopId, { status: ['OFFERED'] });
+        expect(nextShopJobs.map((j) => j.id)).toContain(jobs[1].id);
     });
 
     it('only offers finished or secondary-op jobs to shops that offer those services', async () => {
