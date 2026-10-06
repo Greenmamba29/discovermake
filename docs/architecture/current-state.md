@@ -83,14 +83,8 @@ The physical-product DiscoverMake is therefore a **pivot built on a reusable app
 
 Vercel is implied (there is no `vercel.json`). `netlify-cli` and `firebase-tools` are dev dependencies without config. Reading gitignored files at runtime and using `exec("bun")` will fail on Vercel.
 
-## Open questions (block G1)
+## Resolved questions (owner, 2026-10-06)
 
-1. **Where is the deployed MVP?** The scorecard describes a deployed DiscoverMake MVP with product discovery, saved designs, creation inputs, persistent projects/uploads, manufacturing-brief exports and quote-readiness tracking. It scores that MVP 28/100. On 2026-10-06 none of that was found in:
-   - `discovermake`
-   - `discovermake-2.0`
-   - `jobsdiscovermake`
-   - any of the three connected Lovable workspaces (searched for "discover", "discovermake", "manufacturing" and "make")
-
-   Link that codebase so Phase 0 can map its entities into the canonical Build schema instead of rebuilding them.
-2. **Brand:** retire, spin off, or keep the Make.com template marketplace that currently uses the DiscoverMake name.
-3. **Accio Work workspace:** who owns the Accio Work account that will run the procurement agent group, and on which plan?
+1. **Existing code.** The owner confirmed that the existing DiscoverMake code is the three GitHub repos audited above. `discovermake` is the base. Useful assets from all three are migrated per `docs/architecture/migration-map.md`. Commodity capability comes from open-source projects.
+2. **Brand.** The Make.com template marketplace is retired. DiscoverMake is the physical-product platform.
+3. **Accio Work.** The owner holds the Accio Work account the procurement agents will run in (setup steps in the migration map and workflow 03).
