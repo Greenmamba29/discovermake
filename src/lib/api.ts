@@ -29,7 +29,7 @@ import type {
     OkResponse,
     OrderView,
     PartView,
-    PassportPublicView,
+    PassportPublicResponse,
     PassportVerifyResponse,
     QaUploadRequest,
     QaUploadResponse,
@@ -170,7 +170,7 @@ export const api = {
         apiFetch<OrderView>(`/api/orders/${enc(orderId)}`, { headers: { [ORDER_TOKEN_HEADER]: token } }),
 
     // ---- passport ----
-    getPassport: (id: string) => apiFetch<PassportPublicView>(`/api/passport/${enc(id)}`),
+    getPassport: (id: string) => apiFetch<PassportPublicResponse>(`/api/passport/${enc(id)}`),
     verifyPassport: (id: string) => apiFetch<PassportVerifyResponse>(`/api/passport/${enc(id)}/verify`),
 
     // ---- shop console ----

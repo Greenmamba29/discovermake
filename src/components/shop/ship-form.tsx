@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Package, Tag } from 'lucide-react';
 import { CreateShipmentRequest, type JobPacket, type ShipmentView } from '@/contracts';
 import { Field, TextInput } from '@/components/ui/field';
@@ -8,14 +8,23 @@ import { ConfirmAction } from '@/components/ui/confirm-action';
 import { Notice } from '@/components/ui/state';
 import { api, ApiClientError, errorMessage } from '@/lib/api';
 import { cn } from '@/lib/utils';
+import { useShopSession } from './use-shop-session';
 
 type Mode = 'label' | 'manual';
 
-/** Ship form: buy a label through DiscoverMake (CARRIER=easypost) or enter a label bought elsewhere (CARRIER=manual). */
+/**
+ * Ship form. The server's carrier adapter decides the mode (ShopSessionResponse.shippingMode):
+ * `easypost` = DiscoverMake buys the label; `manual` = the shop enters a label bought elsewhere.
+ */
 export function ShipForm({ jobId, packet, onShipped }: { jobId: string; packet: JobPacket; onShipped: (s: ShipmentView) => void }) {
     const longIn = Math.max(packet.part.bboxWidthMm, packet.part.bboxHeightMm) / 25.4;
     const shortIn = Math.min(packet.part.bboxWidthMm, packet.part.bboxHeightMm) / 25.4;
+    const session = useShopSession();
+    const serverMode: Mode | null = session.data ? (session.data.shippingMode === 'manual' ? 'manual' : 'label') : null;
     const [mode, setMode] = useState<Mode>('label');
+    useEffect(() => {
+        if (serverMode) setMode(serverMode);
+    }, [serverMode]);
     const [parcel, setParcel] = useState({ lengthIn: String(Math.ceil(longIn + 2)), widthIn: String(Math.ceil(shortIn + 2)), heightIn: '2', weightOz: '16' });
     const [manual, setManual] = useState({ carrier: '', service: '', trackingNumber: '', trackingUrl: '' });
     const [error, setError] = useState<string | null>(null);
@@ -41,7 +50,7 @@ export function ShipForm({ jobId, packet, onShipped }: { jobId: string; packet: 
             onShipped(await api.createShipment(jobId, parsed.data));
         } catch (err) {
             const msg = errorMessage(err);
-            // The server knows which carrier adapter is configured; follow its lead.
+            // Fallback if the session was not loaded: follow the configured adapter named in the error.
             if (err instanceof ApiClientError && err.status === 400 && /CARRIER=manual/.test(msg)) setMode('manual');
             if (err instanceof ApiClientError && err.status === 400 && /CARRIER=easypost/.test(msg)) setMode('label');
             setError(msg);
@@ -72,21 +81,29 @@ export function ShipForm({ jobId, packet, onShipped }: { jobId: string; packet: 
                         { key: 'label', icon: Tag, title: 'Buy label', body: 'DiscoverMake buys the label' },
                         { key: 'manual', icon: Package, title: 'I have a label', body: 'Enter carrier tracking' },
                     ] as const
-                ).map((o) => (
-                    <button
-                        key={o.key}
-                        type="button"
-                        role="radio"
-                        aria-checked={mode === o.key}
-                        onClick={() => setMode(o.key)}
-                        className={cn('flex flex-col items-start rounded-xl p-3 text-left ring-1 ring-inset', mode === o.key ? 'bg-graphite-800 ring-signal' : 'ring-graphite-700 hover:bg-graphite-850')}
-                        data-testid={`ship-mode-${o.key}`}
-                    >
-                        <o.icon className="h-4 w-4 text-fg-muted" aria-hidden />
-                        <span className="mt-1 text-sm font-semibold text-fg">{o.title}</span>
-                        <span className="text-xs text-fg-subtle">{o.body}</span>
-                    </button>
-                ))}
+                ).map((o) => {
+                    const unavailable = serverMode !== null && serverMode !== o.key;
+                    return (
+                        <button
+                            key={o.key}
+                            type="button"
+                            role="radio"
+                            aria-checked={mode === o.key}
+                            disabled={unavailable}
+                            onClick={() => setMode(o.key)}
+                            className={cn(
+                                'flex flex-col items-start rounded-xl p-3 text-left ring-1 ring-inset',
+                                mode === o.key ? 'bg-graphite-800 ring-signal' : 'ring-graphite-700 hover:bg-graphite-850',
+                                unavailable && 'cursor-not-allowed opacity-50 hover:bg-transparent',
+                            )}
+                            data-testid={`ship-mode-${o.key}`}
+                        >
+                            <o.icon className="h-4 w-4 text-fg-muted" aria-hidden />
+                            <span className="mt-1 text-sm font-semibold text-fg">{o.title}</span>
+                            <span className="text-xs text-fg-subtle">{unavailable ? 'Not enabled for this console' : o.body}</span>
+                        </button>
+                    );
+                })}
             </div>
             <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
                 {num('lengthIn', 'Length', 'in')}

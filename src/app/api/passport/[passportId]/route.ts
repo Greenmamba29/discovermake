@@ -1,9 +1,10 @@
 /**
- * GET /api/passport/:passportId -> PassportPublicView (+ qrCodeDataUrl)
+ * GET /api/passport/:passportId -> PassportPublicResponse (PassportPublicView + qrCodeDataUrl)
  * Public, no buyer PII. `verified` is recomputed from the stored snapshot on every read.
- * `qrCodeDataUrl` (additive field) is a PNG data URL encoding `verifyUrl` for packaging labels.
+ * `qrCodeDataUrl` is a PNG data URL encoding `verifyUrl` for packaging labels.
  */
 import { PassportId } from '@/contracts/common';
+import type { PassportPublicResponse } from '@/contracts/passport';
 import { ApiError, json, route } from '@/server/http';
 import { getPublicPassport, passportQrCodeDataUrl } from '@/server/passport';
 
@@ -15,5 +16,5 @@ export const GET = route<{ passportId: string }>(async (_request, { params }) =>
     if (!id.success) throw new ApiError('NOT_FOUND', 'Passport not found');
     const view = await getPublicPassport(id.data);
     if (!view) throw new ApiError('NOT_FOUND', 'Passport not found');
-    return json({ ...view, qrCodeDataUrl: await passportQrCodeDataUrl(view.id) });
+    return json<PassportPublicResponse>({ ...view, qrCodeDataUrl: await passportQrCodeDataUrl(view.id) });
 });
