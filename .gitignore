@@ -30,9 +30,15 @@ yarn-error.log*
 # project specific
 .agent
 /make-creds.json
-/templates-db
-/templates-db-clean
 
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local object storage (STORAGE_DRIVER=local)
+/.data/
+
+# playwright
+/test-results/
+/playwright-report/
+/playwright/.cache/

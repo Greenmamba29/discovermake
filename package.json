@@ -7,7 +7,14 @@
         "build": "next build",
         "start": "next start",
         "lint": "next lint",
-        "sync:notion": "bun scripts/sync-notion.ts"
+        "typecheck": "tsc --noEmit",
+        "db:generate": "drizzle-kit generate",
+        "db:migrate": "bun src/server/db/migrate.ts",
+        "db:seed": "bun src/server/db/seed.ts",
+        "db:setup": "bun run db:migrate && bun run db:seed",
+        "test": "vitest run",
+        "test:watch": "vitest",
+        "test:e2e": "playwright test"
     },
     "dependencies": {
         "@ai-sdk/google": "^3.0.1",
