@@ -11,19 +11,19 @@ import { analyzePart, createPartUpload, createQuote, uploadPartBytes } from '@/s
 import { useTestDb } from '../../tests/support/db';
 import { sampleBracketDxf } from './sample-dxf';
 
-useTestDb({ seed: true });
-let storageDir = '';
-
-beforeAll(async () => {
-    storageDir = await mkdtemp(path.join(os.tmpdir(), 'dm-sample-'));
-    setStorage(new LocalDiskStorage({ rootDir: storageDir, appUrl: 'http://localhost:3100', signingSecret: 'test-storage-secret' }));
-});
-afterAll(async () => {
-    setStorage(null);
-    if (storageDir) await rm(storageDir, { recursive: true, force: true });
-});
-
 describe('sample mounting plate DXF', () => {
+    useTestDb({ seed: true });
+    let storageDir = '';
+
+    beforeAll(async () => {
+        storageDir = await mkdtemp(path.join(os.tmpdir(), 'dm-sample-'));
+        setStorage(new LocalDiskStorage({ rootDir: storageDir, appUrl: 'http://localhost:3100', signingSecret: 'test-storage-secret' }));
+    });
+    afterAll(async () => {
+        setStorage(null);
+        if (storageDir) await rm(storageDir, { recursive: true, force: true });
+    });
+
     it('analyzes as a 120 x 80 mm plate with 5 cutouts and gets a binding quote', async () => {
         const bytes = new TextEncoder().encode(sampleBracketDxf());
         const created = await createPartUpload({ filename: 'sample-mounting-plate.dxf', contentType: 'application/dxf', sizeBytes: bytes.byteLength });
