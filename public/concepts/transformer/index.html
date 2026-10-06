@@ -1,0 +1,634 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>DiscoverMake Transformer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one full-bleed WebGL build stage with instrument-style HUD overlays, then a ledger mapping each stage to the system behind it. Deliberately single dark "studio floor" look. */
+:root {
+  --ground: #0c0e0d;
+  --panel: rgba(18, 21, 20, 0.82);
+  --panel-solid: #141716;
+  --line: rgba(226, 232, 228, 0.12);
+  --ink: #e9ece8;
+  --muted: #98a19b;
+  --signal: #5fe08a;
+  --signal-dim: rgba(95, 224, 138, 0.16);
+  --live: #ff5a4f;
+  --warm: #ffc985;
+  --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { background: var(--ground); color: var(--ink); }
+body { font-family: var(--display); font-size: 15px; line-height: 1.5; padding-inline: 16px; padding-block: 16px 48px; }
+.wrap { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px; }
+.wrap > * { min-width: 0; }
+
+header.top { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px 24px; }
+.brand { display: flex; align-items: center; gap: 12px; }
+.brand svg { width: 34px; height: 30px; flex: none; }
+.brand h1 { margin: 0; font-size: clamp(22px, 3.2vw, 30px); font-weight: 760; font-stretch: 112%; letter-spacing: -0.01em; }
+.tagline { font-stretch: 125%; font-weight: 600; letter-spacing: 0.32em; text-transform: uppercase; font-size: 12px; color: var(--muted); }
+.tagline b { color: var(--ink); font-weight: 700; }
+
+.stage {
+  position: relative; border-radius: 14px; overflow: hidden; border: 1px solid var(--line);
+  height: clamp(440px, 72vh, 760px); background: #0b0d0c; isolation: isolate;
+}
+.stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; }
+.hud { position: absolute; pointer-events: none; z-index: 2; }
+.hud > * { pointer-events: auto; }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+
+.prompt { top: 18px; left: 50%; transform: translateX(-50%); width: min(560px, calc(100% - 36px)); transition: opacity .4s; }
+.prompt .panel { display: flex; align-items: center; gap: 10px; padding: 10px 12px 10px 14px; }
+.prompt .text { flex: 1; min-width: 0; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.prompt .caret { display: inline-block; width: 7px; height: 15px; background: var(--signal); vertical-align: -2px; margin-left: 2px; animation: blink 1s steps(1) infinite; }
+.prompt .go { width: 28px; height: 28px; border-radius: 7px; background: var(--ink); color: var(--ground); display: grid; place-items: center; font-weight: 700; flex: none; }
+.chip-created { margin-top: 8px; display: inline-flex; gap: 8px; align-items: center; font-family: var(--mono); font-size: 12px; color: var(--signal); background: var(--signal-dim); border: 1px solid rgba(95,224,138,.35); padding: 4px 10px; border-radius: 999px; transition: opacity .3s; }
+@keyframes blink { 50% { opacity: 0; } }
+
+.metrics { top: 18px; right: 18px; width: 230px; padding: 14px; display: grid; gap: 12px; }
+.metrics .row { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.label { font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.val { font-family: var(--mono); font-size: 15px; font-variant-numeric: tabular-nums; }
+.mk { display: flex; align-items: center; gap: 12px; }
+.mk svg { width: 54px; height: 54px; flex: none; }
+.mk .num { font-family: var(--mono); font-size: 22px; font-weight: 500; }
+.status { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; padding: 3px 8px; border-radius: 999px; border: 1px solid var(--line); color: var(--ink); }
+.status.go { color: var(--signal); border-color: rgba(95,224,138,.4); background: var(--signal-dim); }
+.status.prod { color: var(--warm); border-color: rgba(255,201,133,.4); background: rgba(255,201,133,.1); }
+.build-id { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+
+.stagecard { left: 18px; bottom: 86px; width: min(420px, calc(100% - 36px)); padding: 14px 16px; }
+.stagecard .kicker { font-family: var(--mono); font-size: 11px; color: var(--signal); letter-spacing: .08em; }
+.stagecard h2 { margin: 2px 0 4px; font-size: 26px; font-stretch: 118%; font-weight: 760; letter-spacing: -0.01em; text-wrap: balance; }
+.stagecard p { margin: 0; color: #c9cfca; font-size: 14px; max-width: 46ch; }
+.stagecard .sys { margin-top: 10px; font-family: var(--mono); font-size: 11.5px; color: var(--muted); }
+
+.passport { right: 18px; bottom: 86px; width: 270px; padding: 14px; transition: opacity .5s, transform .5s; }
+.passport h3 { margin: 0 0 8px; font-size: 14px; font-stretch: 110%; display: flex; justify-content: space-between; align-items: center; }
+.passport dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; font-size: 12px; }
+.passport dt { color: var(--muted); }
+.passport dd { margin: 0; font-family: var(--mono); font-size: 11.5px; text-align: right; }
+.verified { color: var(--signal); font-family: var(--mono); font-size: 11px; }
+
+.controls { left: 18px; right: 18px; bottom: 16px; display: flex; gap: 10px; align-items: center; padding: 8px; }
+.play { width: 38px; height: 38px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel-solid); color: var(--ink); display: grid; place-items: center; cursor: pointer; flex: none; }
+.play:focus-visible, .chip:focus-visible, .scrub:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
+.chips { flex: 1; min-width: 0; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 6px; }
+.chip { position: relative; overflow: hidden; border: 1px solid var(--line); border-radius: 8px; background: var(--panel-solid); color: var(--muted); padding: 6px 8px; text-align: left; cursor: pointer; font: inherit; font-size: 12px; font-weight: 600; letter-spacing: .02em; }
+.chip span { font-family: var(--mono); font-weight: 400; font-size: 10.5px; margin-right: 6px; opacity: .8; }
+.chip.on { color: var(--ink); border-color: rgba(95,224,138,.45); }
+.chip i { position: absolute; left: 0; bottom: 0; height: 2px; width: 0; background: var(--signal); }
+.scrub { position: absolute; left: 0; right: 0; top: -10px; width: 100%; margin: 0; opacity: 0; height: 12px; cursor: pointer; }
+
+.tags { position: absolute; inset: 0; pointer-events: none; z-index: 1; overflow: hidden; }
+.tag { position: absolute; left: 0; top: 0; white-space: nowrap; transition: opacity .25s; }
+.tag > div { transform: translate(-50%, calc(-100% - 10px)); font-family: var(--mono); font-size: 11px; color: var(--ink); background: rgba(12,14,13,.78); border: 1px solid rgba(95,224,138,.35); padding: 4px 8px; border-radius: 6px; }
+.tag > div b { color: var(--signal); font-weight: 500; }
+.tag.sup > div { border-color: rgba(255,201,133,.45); }
+.tag.sup > div b { color: var(--warm); }
+
+.fallback { position: absolute; inset: 0; display: grid; place-items: center; color: var(--muted); padding: 24px; text-align: center; }
+
+section.ledger h2 { font-size: 20px; font-stretch: 115%; margin: 0 0 4px; }
+section.ledger > p { margin: 0 0 14px; color: var(--muted); max-width: 70ch; }
+.table { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; }
+table { width: 100%; border-collapse: collapse; min-width: 760px; font-size: 13.5px; }
+th, td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); font-weight: 600; background: var(--panel-solid); }
+tr:last-child td { border-bottom: 0; }
+td.n { font-family: var(--mono); color: var(--signal); width: 44px; }
+td.s { font-weight: 700; font-stretch: 112%; width: 110px; }
+td code { font-family: var(--mono); font-size: 12px; color: #cfd6d1; }
+.foot { color: var(--muted); font-size: 12.5px; display: flex; flex-wrap: wrap; gap: 6px 18px; justify-content: space-between; }
+
+@media (max-width: 860px) {
+  .metrics { left: 12px; right: 12px; top: 12px; width: auto; padding: 10px 12px; gap: 6px; }
+  .metrics-out { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+  .metrics .row { flex-direction: column; align-items: flex-start; gap: 2px; }
+  .mk svg, .build-id, .passport { display: none; }
+  .mk .num, .val { font-size: 13px; }
+  .status { font-size: 10px; padding: 2px 6px; }
+  .label { font-size: 9.5px; letter-spacing: .08em; }
+  .prompt { top: 84px; }
+  .stagecard { left: 12px; bottom: 68px; width: calc(100% - 24px); padding: 12px 14px; }
+  .stagecard h2 { font-size: 21px; }
+  .stagecard p { font-size: 13px; }
+  .stagecard .sys { display: none; }
+  .controls { left: 12px; right: 12px; bottom: 12px; }
+  .chip { font-size: 0; padding: 8px 4px; text-align: center; }
+  .chip span { font-size: 11px; margin: 0; }
+}
+@media (min-width: 861px) { .metrics-out { display: contents; } }
+@media (prefers-reduced-motion: reduce) { .prompt .caret { animation: none; } }
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <svg viewBox="0 0 34 30" aria-hidden="true"><path d="M17 1 33 29H22.5L17 19.4 11.5 29H1z" fill="#e9ece8"/><path d="M17 19.4 22.5 29h-11z" fill="#0c0e0d"/></svg>
+      <h1>DiscoverMake</h1>
+    </div>
+    <div class="tagline"><b>Discover.</b> Make. Build.</div>
+  </header>
+
+  <div class="stage" id="stage">
+    <canvas id="gl" aria-label="Animated 3D concept of a walnut desk lamp moving from idea to delivered product"></canvas>
+    <div class="tags" id="tags"></div>
+
+    <div class="hud prompt" id="prompt">
+      <div class="panel"><div class="text" id="promptText"></div><div class="go" aria-hidden="true">→</div></div>
+      <div class="chip-created" id="created">● Build DM-10482 created · requirements 9/9</div>
+    </div>
+
+    <div class="hud metrics panel" id="metrics">
+      <div class="metrics-out">
+        <div class="mk">
+          <svg viewBox="0 0 54 54" aria-hidden="true">
+            <circle cx="27" cy="27" r="22" fill="none" stroke="rgba(226,232,228,.12)" stroke-width="5"/>
+            <circle id="mkRing" cx="27" cy="27" r="22" fill="none" stroke="#5fe08a" stroke-width="5" stroke-linecap="round" stroke-dasharray="138.2" stroke-dashoffset="138.2" transform="rotate(-90 27 27)" style="transition: stroke-dashoffset .8s"/>
+          </svg>
+          <div><div class="label">Makeability</div><div class="num" id="mkNum">—</div></div>
+        </div>
+        <div class="row"><span class="label">Est. unit cost</span><span class="val" id="cost">—</span></div>
+        <div class="row"><span class="label">Lead time</span><span class="val" id="lead">—</span></div>
+        <div class="row"><span class="label">Status</span><span class="status" id="status">DRAFT</span></div>
+      </div>
+      <div class="build-id">Walnut Desk Lamp · v3 · 100 units</div>
+    </div>
+
+    <div class="hud stagecard panel" id="stagecard">
+      <div class="kicker" id="kicker">STAGE 1 / 6</div>
+      <h2 id="stageName">Discover</h2>
+      <p id="stageLine"></p>
+      <div class="sys" id="stageSys"></div>
+    </div>
+
+    <div class="hud passport panel" id="passport">
+      <h3>Product Passport <span class="verified">✓ verified</span></h3>
+      <dl>
+        <dt>Passport</dt><dd>DM-2026-10482</dd>
+        <dt>Materials</dt><dd>Walnut · 6061-T6 · brass</dd>
+        <dt>Arm</dt><dd>Laser cut + bent, OH</dd>
+        <dt>Assembly</dt><dd>Philadelphia, PA</dd>
+        <dt>QA</dt><dd>Passed · 0.1 mm</dd>
+        <dt>Creator</dt><dd>@amanda.builds</dd>
+      </dl>
+    </div>
+
+    <div class="hud controls panel">
+      <button class="play" id="play" aria-label="Pause">❚❚</button>
+      <div class="chips" id="chips" style="position:relative">
+        <input class="scrub" id="scrub" type="range" min="0" max="1000" value="0" aria-label="Scrub timeline">
+      </div>
+    </div>
+    <div class="fallback" id="fallback" hidden>This concept needs WebGL. Open it in a current desktop or mobile browser.</div>
+  </div>
+
+  <section class="ledger">
+    <h2>Six stages, one Build</h2>
+    <p>Every stage in the animation is a view of the same Build record. The object stays in the center of the screen. AI, sourcing and manufacturing work happens around it.</p>
+    <div class="table">
+      <table>
+        <thead><tr><th>#</th><th>Stage</th><th>What the customer sees</th><th>What runs behind it</th><th>DiscoverMake owns</th></tr></thead>
+        <tbody>
+          <tr><td class="n">01</td><td class="s">Discover</td><td>Types, talks, snaps a photo or taps Make This on a live stream</td><td><code>Make AI</code> intake → Requirements Agent → Creation Intent</td><td>Build ID, requirements, unknowns list</td></tr>
+          <tr><td class="n">02</td><td class="s">Make</td><td>Parts appear as a technical drawing with real dimensions</td><td><code>CadQuery</code> / text-to-CAD worker → STEP + DXF flat patterns</td><td>Build Graph, DesignVersion history</td></tr>
+          <tr><td class="n">03</td><td class="s">Materials</td><td>Swatches snap onto parts; price and Makeability update live</td><td>Materials Engineer + DFM rules (bend radius, kerf, min hole)</td><td>Makeability score, material tradeoffs</td></tr>
+          <tr><td class="n">04</td><td class="s">Source</td><td>Nothing. One price, one delivery date, like Prime</td><td><code>Accio</code> sourcing wrapper + supplier graph + OR-Tools routing</td><td>Delivery Promise, supplier scoring</td></tr>
+          <tr><td class="n">05</td><td class="s">Build</td><td>Watch the laser cut, the bend and the assembly, live if the shop allows</td><td>MAKE Network job router → shop adapter → <code>LiveKit</code> / <code>MediaMTX</code> cell camera</td><td>Signed manufacturing job, Live Build Protocol</td></tr>
+          <tr><td class="n">06</td><td class="s">Deliver</td><td>Uber-style tracking to the door, then a permanent passport</td><td>Carrier APIs + Temporal order workflow + QA results</td><td>Product Passport, remix lineage</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="foot"><span>Concept animation · sample data · drag the scene to orbit · space to pause</span><span>DiscoverMake — Discover. Make. Build.</span></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+(function () {
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const STAGES = [
+    { name: "Discover", dur: 3.6, status: "ANALYZING", mk: null, cost: "—", lead: "—",
+      line: "Someone describes a thing they want. Make AI turns the words into requirements and opens a Build.",
+      sys: "Make AI intake · Requirements Agent · Creation Intent" },
+    { name: "Make", dur: 4.2, status: "REVIEW", mk: 78, cost: "$212–268", lead: "estimating",
+      line: "The idea becomes parametric parts. The aluminum arm is drawn as a flat pattern, ready for a laser.",
+      sys: "CAD agent · CadQuery → STEP + DXF flat pattern" },
+    { name: "Materials", dur: 3.2, status: "REVIEW", mk: 89, cost: "$196", lead: "3–5 wk",
+      line: "Black walnut, 3 mm 6061-T6 and brass hardware snap onto the parts. Price and Makeability update live.",
+      sys: "Materials Engineer · DFM rules: bend radius, kerf, hole-to-edge" },
+    { name: "Source", dur: 3.8, status: "READY", mk: 92, cost: "$189", lead: "3–4 wk",
+      line: "In the background, the sourcing wrapper finds stock, shops and hardware. The customer just sees one price and one date.",
+      sys: "Accio sourcing wrapper · supplier graph · OR-Tools route" },
+    { name: "Build", dur: 5.6, status: "IN_PRODUCTION", mk: 94, cost: "$189", lead: "day 9 of 21",
+      line: "The blank is laser cut, press-brake bent, then every part flies home. Customers can watch the cell live.",
+      sys: "MAKE Network router · shop adapter · Live Build Protocol" },
+    { name: "Deliver", dur: 4.8, status: "COMPLETE", mk: 94, cost: "$189", lead: "delivered",
+      line: "The lamp switches on at the customer's desk. Its Product Passport records every material, shop and QA result.",
+      sys: "Carrier tracking · Temporal order workflow · Product Passport" }
+  ];
+  const starts = []; let acc = 0;
+  STAGES.forEach(s => { starts.push(acc); acc += s.dur; });
+  const TOTAL = acc, HOLD = 1.8;
+  const PROMPT = "A walnut desk lamp with a curved aluminum arm";
+
+  const $ = id => document.getElementById(id);
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+  const seg = (p, a, b) => clamp((p - a) / (b - a), 0, 1);
+  const ease = x => x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+  const lerp = (a, b, x) => a + (b - a) * x;
+
+  // ---------- timeline UI ----------
+  const chipsEl = $("chips"), scrub = $("scrub");
+  const chips = STAGES.map((s, i) => {
+    const b = document.createElement("button");
+    b.className = "chip"; b.type = "button";
+    b.innerHTML = "<span>0" + (i + 1) + "</span>" + s.name + "<i></i>";
+    b.setAttribute("aria-label", "Jump to stage " + (i + 1) + ", " + s.name);
+    b.addEventListener("click", () => { t = starts[i] + 0.001; });
+    chipsEl.appendChild(b);
+    return b;
+  });
+  let t = reduce ? TOTAL - 0.001 : 0, playing = !reduce, dragging = false;
+  const playBtn = $("play");
+  function setPlaying(p) { playing = p; playBtn.textContent = p ? "❚❚" : "▶"; playBtn.setAttribute("aria-label", p ? "Pause" : "Play"); }
+  setPlaying(playing);
+  playBtn.addEventListener("click", () => { if (!playing && t >= TOTAL) t = 0; setPlaying(!playing); });
+  document.addEventListener("keydown", e => { if (e.code === "Space" && e.target === document.body) { e.preventDefault(); playBtn.click(); } });
+  scrub.addEventListener("input", () => { dragging = true; t = scrub.value / 1000 * TOTAL; });
+  scrub.addEventListener("change", () => { dragging = false; });
+
+  // ---------- three.js scene ----------
+  const stageEl = $("stage"), canvas = $("gl");
+  let renderer;
+  try {
+    if (!window.THREE) throw new Error("three missing");
+    renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+  } catch (err) {
+    $("fallback").hidden = false; canvas.hidden = true; return;
+  }
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.outputEncoding = THREE.sRGBEncoding;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.05;
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x0b0d0c);
+  scene.fog = new THREE.Fog(0x0b0d0c, 70, 150);
+  const camera = new THREE.PerspectiveCamera(36, 1, 0.1, 400);
+  camera.position.set(38, 30, 52);
+  let controls = null;
+  if (THREE.OrbitControls) {
+    controls = new THREE.OrbitControls(camera, canvas);
+    controls.target.set(1, 11, 0);
+    controls.enableDamping = true; controls.dampingFactor = 0.08;
+    controls.enablePan = false; controls.minDistance = 30; controls.maxDistance = 110;
+    controls.maxPolarAngle = Math.PI * 0.49;
+    controls.autoRotate = !reduce; controls.autoRotateSpeed = 0.55;
+  } else { camera.lookAt(1, 11, 0); }
+
+  scene.add(new THREE.HemisphereLight(0xdfe7e2, 0x101211, 0.45));
+  const key = new THREE.DirectionalLight(0xffffff, 1.15);
+  key.position.set(22, 42, 26); key.castShadow = true;
+  key.shadow.mapSize.set(1024, 1024);
+  Object.assign(key.shadow.camera, { left: -34, right: 34, top: 34, bottom: -34, near: 1, far: 120 });
+  scene.add(key);
+  const rim = new THREE.DirectionalLight(0x9fd8b4, 0.45); rim.position.set(-30, 18, -28); scene.add(rim);
+
+  const floor = new THREE.Mesh(new THREE.CircleGeometry(70, 72), new THREE.MeshStandardMaterial({ color: 0x0a0c0b, roughness: 1 }));
+  floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true; scene.add(floor);
+  const grid = new THREE.GridHelper(84, 42, 0x5fe08a, 0x2a332e);
+  grid.material.transparent = true; grid.material.opacity = 0; grid.position.y = 0.01; scene.add(grid);
+
+  // walnut grain texture, drawn procedurally
+  function walnutTexture() {
+    const c = document.createElement("canvas"); c.width = c.height = 512;
+    const g = c.getContext("2d");
+    g.fillStyle = "#6a4328"; g.fillRect(0, 0, 512, 512);
+    for (let i = 0; i < 170; i++) {
+      const y = Math.random() * 512, amp = 2 + Math.random() * 7, f = 0.006 + Math.random() * 0.01, ph = Math.random() * 6;
+      g.strokeStyle = Math.random() < 0.55 ? "rgba(38,22,12," + (0.15 + Math.random() * 0.35) + ")" : "rgba(160,110,70," + (0.08 + Math.random() * 0.18) + ")";
+      g.lineWidth = 0.6 + Math.random() * 2.2;
+      g.beginPath();
+      for (let x = 0; x <= 512; x += 8) { const yy = y + Math.sin(x * f + ph) * amp; x ? g.lineTo(x, yy) : g.moveTo(x, yy); }
+      g.stroke();
+    }
+    const tex = new THREE.CanvasTexture(c);
+    tex.wrapS = tex.wrapT = THREE.RepeatWrapping; tex.encoding = THREE.sRGBEncoding;
+    return tex;
+  }
+  const M = {
+    walnut: new THREE.MeshStandardMaterial({ map: walnutTexture(), roughness: 0.62, metalness: 0.0 }),
+    alu: new THREE.MeshStandardMaterial({ color: 0xbfc4c7, roughness: 0.38, metalness: 0.55 }),
+    sheet: new THREE.MeshStandardMaterial({ color: 0xc6cbce, roughness: 0.32, metalness: 0.6, emissive: 0xff7a2a, emissiveIntensity: 0 }),
+    brass: new THREE.MeshStandardMaterial({ color: 0xc9a45c, roughness: 0.32, metalness: 0.65 }),
+    led: new THREE.MeshStandardMaterial({ color: 0x2a2620, roughness: 0.5, emissive: 0xffc985, emissiveIntensity: 0 })
+  };
+  const solids = Object.values(M);
+  solids.forEach(m => { m.transparent = true; m.opacity = 0; });
+  const wireMat = new THREE.LineBasicMaterial({ color: 0x5fe08a, transparent: true, opacity: 0 });
+
+  const meshes = [];
+  function mesh(geo, mat, parent, x, y, z) {
+    const m = new THREE.Mesh(geo, mat);
+    m.position.set(x, y, z); m.castShadow = true; m.receiveShadow = true;
+    m.add(new THREE.LineSegments(new THREE.EdgesGeometry(geo), wireMat));
+    parent.add(m); meshes.push(m); return m;
+  }
+  const capGeo = new THREE.CylinderGeometry(1.05, 1.05, 3.8, 28); capGeo.rotateX(Math.PI / 2);
+
+  // Parts. Each has an exploded pose (CAD / sourcing) and an assembled pose.
+  const base = new THREE.Group(); scene.add(base);
+  mesh(new THREE.BoxGeometry(18, 2.6, 11), M.walnut, base, 0, 1.3, 0);
+
+  const pivot = new THREE.Group(); scene.add(pivot);
+  mesh(new THREE.BoxGeometry(3.4, 3.2, 3.4), M.alu, pivot, 0, 0, 0);
+
+  const LOWER = 20, UPPER = 15;
+  const arm = new THREE.Group(); scene.add(arm);
+  const lowerPivot = new THREE.Group(); arm.add(lowerPivot);
+  mesh(new THREE.BoxGeometry(1.4, LOWER, 2.4), M.sheet, lowerPivot, 0, LOWER / 2, 0);
+  mesh(capGeo, M.brass, lowerPivot, 0, 0, 0);
+  const upperPivot = new THREE.Group(); upperPivot.position.y = LOWER; lowerPivot.add(upperPivot);
+  mesh(new THREE.BoxGeometry(1.4, UPPER, 2.4), M.sheet, upperPivot, 0, UPPER / 2, 0);
+  mesh(capGeo, M.brass, upperPivot, 0, 0, 0);
+  const tip = new THREE.Object3D(); tip.position.y = UPPER; upperPivot.add(tip);
+
+  const head = new THREE.Group(); scene.add(head);
+  mesh(new THREE.BoxGeometry(9.4, 2.4, 5.2), M.walnut, head, 4.9, 0, 0);
+  const ledPlane = new THREE.PlaneGeometry(7.8, 3.4); ledPlane.rotateX(Math.PI / 2);
+  const led = new THREE.Mesh(ledPlane, M.led); led.position.set(5.1, -1.22, 0); head.add(led);
+  mesh(new THREE.CylinderGeometry(0.9, 0.9, 5.6, 24).rotateX(Math.PI / 2), M.brass, head, 0, 0, 0);
+  const spot = new THREE.SpotLight(0xffc985, 0, 60, 0.75, 0.55, 1.4);
+  spot.position.set(5.1, -1.4, 0); head.add(spot);
+  const spotTarget = new THREE.Object3D(); spotTarget.position.set(5.6, -30, 0); head.add(spotTarget); spot.target = spotTarget;
+
+  const FOLD_LOWER = 0.18, FOLD_UPPER = -1.95;
+  function setFold(f) { lowerPivot.rotation.z = FOLD_LOWER * f; upperPivot.rotation.z = FOLD_UPPER * f; }
+  const pose = (x, y, z, rx, ry, rz) => ({ pos: new THREE.Vector3(x, y, z), q: new THREE.Quaternion().setFromEuler(new THREE.Euler(rx, ry, rz)) });
+  const parts = [
+    { obj: pivot, ex: pose(-12, 14, -9, 0.5, 0.8, 0.2), as: pose(-7, 4.2, 0, 0, 0, 0), lift: 6, spin: 2.4 },
+    { obj: arm, ex: pose(-17, 8, 10, 0, 0, -Math.PI / 2), as: pose(-7, 4.2, 0, 0, 0, 0), lift: 9, spin: 1.6 },
+    { obj: head, ex: pose(15, 22, -8, 0.45, -0.7, 0.25), as: null, lift: 7, spin: -2.2 }
+  ];
+  // Head's assembled pose = the arm tip when the arm is assembled and fully bent.
+  arm.position.copy(parts[1].as.pos); arm.quaternion.copy(parts[1].as.q); setFold(1);
+  scene.updateMatrixWorld(true);
+  const tipW = new THREE.Vector3(); tip.getWorldPosition(tipW);
+  parts[2].as = pose(tipW.x, tipW.y, tipW.z, 0, 0, -0.06);
+
+  function setExploded() {
+    parts.forEach(p => { p.obj.position.copy(p.ex.pos); p.obj.quaternion.copy(p.ex.q); });
+    setFold(0); scene.updateMatrixWorld(true);
+  }
+  setExploded();
+
+  // ---------- idea particles converge onto the exploded parts ----------
+  const N = 1700;
+  const startPts = new Float32Array(N * 3), targetPts = new Float32Array(N * 3);
+  const boxMeshes = meshes.filter(m => m.geometry.type === "BoxGeometry");
+  const areas = boxMeshes.map(m => { const p = m.geometry.parameters; return 2 * (p.width * p.height + p.width * p.depth + p.height * p.depth); });
+  const areaSum = areas.reduce((a, b) => a + b, 0);
+  const v3 = new THREE.Vector3();
+  for (let i = 0; i < N; i++) {
+    let r = Math.random() * areaSum, k = 0;
+    while (r > areas[k] && k < areas.length - 1) { r -= areas[k]; k++; }
+    const p = boxMeshes[k].geometry.parameters, w = p.width, h = p.height, d = p.depth;
+    const fa = [w * h, w * h, w * d, w * d, h * d, h * d];
+    let fr = Math.random() * fa.reduce((a, b) => a + b, 0), f = 0;
+    while (fr > fa[f] && f < 5) { fr -= fa[f]; f++; }
+    const u = Math.random() - 0.5, s = Math.random() - 0.5;
+    if (f < 2) v3.set(u * w, s * h, (f ? 0.5 : -0.5) * d);
+    else if (f < 4) v3.set(u * w, (f === 3 ? 0.5 : -0.5) * h, s * d);
+    else v3.set((f === 5 ? 0.5 : -0.5) * w, u * h, s * d);
+    v3.applyMatrix4(boxMeshes[k].matrixWorld);
+    targetPts.set([v3.x, v3.y, v3.z], i * 3);
+    const th = Math.random() * Math.PI * 2, ph = Math.acos(2 * Math.random() - 1), rad = 16 + Math.random() * 18;
+    startPts.set([Math.sin(ph) * Math.cos(th) * rad, 14 + Math.cos(ph) * rad * 0.6, Math.sin(ph) * Math.sin(th) * rad], i * 3);
+  }
+  const ptGeo = new THREE.BufferGeometry();
+  const ptPos = new Float32Array(startPts);
+  ptGeo.setAttribute("position", new THREE.BufferAttribute(ptPos, 3));
+  const ptMat = new THREE.PointsMaterial({ color: 0x8ff0b0, size: 0.32, transparent: true, opacity: 0.9, depthWrite: false, blending: THREE.AdditiveBlending });
+  const points = new THREE.Points(ptGeo, ptMat); scene.add(points);
+
+  // ---------- sourcing: supplier nodes, arcs and pulses ----------
+  const SUPPLIERS = [
+    { label: "<b>Black walnut</b> · Oregon mill · $14.10", a: 2.35, part: base, off: new THREE.Vector3(0, 1.3, 0) },
+    { label: "<b>6061-T6 3 mm</b> · laser + bend · Ohio · $31.40", a: 3.55, part: arm, off: null },
+    { label: "<b>2700K LED strip</b> · Shenzhen · $6.80", a: 0.6, part: head, off: new THREE.Vector3(4.9, 0, 0) },
+    { label: "<b>Brass hardware</b> · Accio match · $3.20", a: 5.0, part: pivot, off: new THREE.Vector3() }
+  ];
+  const nodeGeo = new THREE.SphereGeometry(0.9, 20, 16);
+  const tagsEl = $("tags");
+  SUPPLIERS.forEach(s => {
+    s.node = new THREE.Mesh(nodeGeo, new THREE.MeshBasicMaterial({ color: 0xffc985, transparent: true, opacity: 0 }));
+    s.node.position.set(Math.cos(s.a) * 27, 5, Math.sin(s.a) * 22); scene.add(s.node);
+    const from = new THREE.Vector3();
+    if (s.off) from.copy(s.off).applyMatrix4(s.part.matrixWorld); else from.set(0, 8, 10);
+    s.curve = new THREE.QuadraticBezierCurve3(s.node.position.clone(), s.node.position.clone().lerp(from, 0.5).add(new THREE.Vector3(0, 16, 0)), from);
+    const g = new THREE.BufferGeometry().setFromPoints(s.curve.getPoints(60));
+    s.line = new THREE.Line(g, new THREE.LineBasicMaterial({ color: 0xffc985, transparent: true, opacity: 0 }));
+    s.line.geometry.setDrawRange(0, 0); scene.add(s.line);
+    s.pulse = new THREE.Mesh(new THREE.SphereGeometry(0.45, 12, 10), new THREE.MeshBasicMaterial({ color: 0xffe2b8, transparent: true, opacity: 0 }));
+    scene.add(s.pulse);
+    s.tag = document.createElement("div"); s.tag.className = "tag sup"; s.tag.innerHTML = "<div>" + s.label + "</div>"; s.tag.style.opacity = 0;
+    tagsEl.appendChild(s.tag);
+  });
+
+  // part callouts during CAD + materials
+  const CALLOUTS = [
+    { obj: base, off: new THREE.Vector3(0, 2.8, 0), dim: "<b>Base</b> 180 × 110 × 26 mm", mat: "<b>Base</b> black walnut · CNC" },
+    { obj: pivot, off: new THREE.Vector3(0, 1.8, 0), dim: "<b>Pivot</b> 34 × 32 × 34 mm", mat: "<b>Pivot</b> 6061 · CNC milled" },
+    { obj: arm, off: new THREE.Vector3(-1, 17, 0), dim: "<b>Arm</b> flat pattern 350 × 24 mm", mat: "<b>Arm</b> 3 mm 6061-T6 · laser + bend" },
+    { obj: head, off: new THREE.Vector3(4.9, 1.4, 0), dim: "<b>Head</b> 94 × 52 × 24 mm", mat: "<b>Head</b> walnut · 2700K LED" }
+  ];
+  CALLOUTS.forEach(c => { c.tag = document.createElement("div"); c.tag.className = "tag"; c.tag.innerHTML = "<div></div>"; c.tag.style.opacity = 0; tagsEl.appendChild(c.tag); c.last = ""; });
+
+  // laser: spark + kerf line travelling along the flat blank
+  const spark = new THREE.Mesh(new THREE.SphereGeometry(0.42, 14, 12), new THREE.MeshBasicMaterial({ color: 0xffd6a8 }));
+  const sparkLight = new THREE.PointLight(0xff8a3d, 0, 14, 2); spark.add(sparkLight);
+  arm.add(spark); spark.visible = false;
+  const kerfGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(-0.72, 0, 0), new THREE.Vector3(-0.72, LOWER + UPPER, 0)]);
+  const kerf = new THREE.Line(kerfGeo, new THREE.LineBasicMaterial({ color: 0xff9a4d, transparent: true, opacity: 0 }));
+  arm.add(kerf);
+
+  // landing ring + warm light pool
+  const ring = new THREE.Mesh(new THREE.RingGeometry(0.92, 1, 72), new THREE.MeshBasicMaterial({ color: 0x5fe08a, transparent: true, opacity: 0, side: THREE.DoubleSide }));
+  ring.rotation.x = -Math.PI / 2; ring.position.set(0, 0.03, 0); scene.add(ring);
+  function poolTexture() {
+    const c = document.createElement("canvas"); c.width = c.height = 256;
+    const g = c.getContext("2d"), gr = g.createRadialGradient(128, 128, 0, 128, 128, 128);
+    gr.addColorStop(0, "rgba(255,201,133,0.9)"); gr.addColorStop(1, "rgba(255,201,133,0)");
+    g.fillStyle = gr; g.fillRect(0, 0, 256, 256); return new THREE.CanvasTexture(c);
+  }
+  const pool = new THREE.Mesh(new THREE.PlaneGeometry(26, 26), new THREE.MeshBasicMaterial({ map: poolTexture(), transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending }));
+  pool.rotation.x = -Math.PI / 2; pool.position.set(tipW.x + 5, 2.65, 0); scene.add(pool);
+
+  // ---------- per-frame update ----------
+  const Y = new THREE.Vector3(0, 1, 0), qSpin = new THREE.Quaternion(), proj = new THREE.Vector3(), tmp = new THREE.Vector3();
+  let W = 1, H = 1, lastStage = -1;
+  function place(el, world, alpha) {
+    proj.copy(world).project(camera);
+    const vis = proj.z < 1 && Math.abs(proj.x) < 1.1 && Math.abs(proj.y) < 1.1;
+    el.style.opacity = vis ? alpha : 0;
+    if (alpha > 0.01) el.style.transform = "translate(" + ((proj.x * 0.5 + 0.5) * W).toFixed(1) + "px," + ((-proj.y * 0.5 + 0.5) * H).toFixed(1) + "px)";
+  }
+  function applyPart(p, e) {
+    p.obj.position.lerpVectors(p.ex.pos, p.as.pos, e);
+    p.obj.position.y += Math.sin(Math.PI * e) * p.lift;
+    p.obj.quaternion.copy(p.ex.q).slerp(p.as.q, e);
+    qSpin.setFromAxisAngle(Y, Math.sin(Math.PI * e) * p.spin);
+    p.obj.quaternion.premultiply(qSpin);
+  }
+  function local(i, tt) { return clamp((tt - starts[i]) / STAGES[i].dur, 0, 1); }
+
+  function update(tt) {
+    const pD = local(0, tt), pM = local(1, tt), pT = local(2, tt), pS = local(3, tt), pB = local(4, tt), pV = local(5, tt);
+    let si = 0; for (let i = STAGES.length - 1; i >= 0; i--) if (tt >= starts[i]) { si = i; break; }
+
+    // particles
+    const conv = ease(seg(pD, 0.05, 0.92));
+    const swirl = (1 - conv) * 2.4;
+    const cs = Math.cos(swirl), sn = Math.sin(swirl);
+    for (let i = 0; i < N; i++) {
+      const j = i * 3, sx = startPts[j], sz = startPts[j + 2];
+      const rx = sx * cs - sz * sn, rz = sx * sn + sz * cs;
+      ptPos[j] = lerp(rx, targetPts[j], conv);
+      ptPos[j + 1] = lerp(startPts[j + 1], targetPts[j + 1], conv);
+      ptPos[j + 2] = lerp(rz, targetPts[j + 2], conv);
+    }
+    ptGeo.attributes.position.needsUpdate = true;
+    ptMat.opacity = (0.35 + 0.6 * seg(pD, 0, 0.25)) * (1 - seg(pM, 0, 0.45));
+    points.visible = ptMat.opacity > 0.01;
+
+    // wireframe, blueprint grid, solids
+    wireMat.opacity = seg(pM, 0.12, 0.55) * (1 - 0.82 * seg(pT, 0.2, 0.9)) * (1 - seg(pB, 0.3, 0.5));
+    grid.material.opacity = 0.55 * seg(pM, 0, 0.4) * (1 - seg(pB, 0.55, 0.95));
+    const so = ease(seg(pT, 0.08, 0.8));
+    solids.forEach(m => { m.opacity = so; m.depthWrite = so > 0.5; });
+
+    // build: laser, bend, fly-in
+    const laser = seg(pB, 0, 0.16);
+    spark.visible = laser > 0 && laser < 1;
+    spark.position.set(-0.85, laser * (LOWER + UPPER), 0);
+    sparkLight.intensity = spark.visible ? 2.2 : 0;
+    kerf.geometry.setDrawRange(0, 2);
+    kerf.scale.y = Math.max(laser, 0.0001);
+    kerf.material.opacity = seg(pB, 0, 0.03) * (1 - seg(pB, 0.16, 0.24));
+    M.sheet.emissiveIntensity = 0.55 * Math.sin(Math.PI * laser);
+    const fold = ease(seg(pB, 0.17, 0.42));
+    const e = [ease(seg(pB, 0.42, 0.62)), ease(seg(pB, 0.5, 0.74)), ease(seg(pB, 0.62, 0.86))];
+    parts.forEach((p, i) => applyPart(p, e[i]));
+    setFold(fold);
+    const land = seg(pB, 0.86, 1);
+    ring.material.opacity = land > 0 && land < 1 ? (1 - land) * 0.9 : 0;
+    ring.scale.setScalar(1 + land * 24);
+    ring.visible = ring.material.opacity > 0.01;
+    kerf.visible = kerf.material.opacity > 0.01;
+    grid.visible = grid.material.opacity > 0.01;
+
+    // deliver: light on
+    const on = ease(seg(pV, 0.05, 0.35));
+    M.led.emissiveIntensity = on * 2.6;
+    spot.intensity = on * 2.2;
+    pool.material.opacity = on * 0.55;
+    pool.visible = on > 0.01;
+    renderer.toneMappingExposure = 1.05 - on * 0.12;
+
+    scene.updateMatrixWorld();
+
+    // sourcing visuals
+    const nodeVis = seg(pS, 0, 0.22) * (1 - seg(pB, 0, 0.1));
+    const grow = ease(seg(pS, 0.12, 0.55));
+    const ship = seg(pS, 0.52, 1);
+    SUPPLIERS.forEach((s, i) => {
+      s.node.material.opacity = nodeVis;
+      s.node.visible = s.line.visible = nodeVis > 0.01;
+      s.line.material.opacity = nodeVis * 0.75;
+      s.line.geometry.setDrawRange(0, Math.floor(grow * 61));
+      const u = clamp(ship * 1.25 - i * 0.08, 0, 1);
+      s.pulse.material.opacity = u > 0 && u < 1 ? nodeVis : 0;
+      s.pulse.visible = s.pulse.material.opacity > 0.01;
+      s.curve.getPoint(u, s.pulse.position);
+      tmp.copy(s.node.position); tmp.y += 1.4;
+      place(s.tag, tmp, nodeVis * seg(pS, 0.2, 0.35));
+    });
+
+    // callouts
+    const cv = seg(pM, 0.45, 0.75) * (1 - seg(pS, 0, 0.18));
+    CALLOUTS.forEach(c => {
+      const txt = pT > 0.35 ? c.mat : c.dim;
+      if (txt !== c.last) { c.tag.firstChild.innerHTML = txt; c.last = txt; }
+      tmp.copy(c.off).applyMatrix4(c.obj.matrixWorld);
+      place(c.tag, tmp, cv);
+    });
+
+    // HUD
+    const typed = Math.floor(seg(pD, 0.02, 0.62) * PROMPT.length);
+    $("promptText").innerHTML = PROMPT.slice(0, typed).replace(/&/g, "&amp;") + '<span class="caret"></span>';
+    $("prompt").style.opacity = 1 - seg(pM, 0, 0.18);
+    $("created").style.opacity = seg(pD, 0.72, 0.85);
+    $("passport").style.opacity = seg(pV, 0.35, 0.55);
+    $("passport").style.transform = "translateY(" + ((1 - seg(pV, 0.35, 0.55)) * 10).toFixed(1) + "px)";
+    chips.forEach((c, i) => { c.lastChild.style.width = (local(i, tt) * 100).toFixed(1) + "%"; });
+    if (!dragging) scrub.value = Math.round(tt / TOTAL * 1000);
+
+    if (si !== lastStage) {
+      lastStage = si;
+      const s = STAGES[si];
+      chips.forEach((c, i) => c.classList.toggle("on", i === si));
+      $("kicker").textContent = "STAGE " + (si + 1) + " / 6";
+      $("stageName").textContent = s.name;
+      $("stageLine").textContent = s.line;
+      $("stageSys").textContent = s.sys;
+      $("mkNum").textContent = s.mk == null ? "—" : s.mk;
+      $("mkRing").style.strokeDashoffset = (138.2 * (1 - (s.mk || 0) / 100)).toFixed(1);
+      $("cost").textContent = s.cost;
+      $("lead").textContent = s.lead;
+      const st = $("status"); st.textContent = s.status;
+      st.className = "status" + (s.status === "IN_PRODUCTION" ? " prod" : (s.status === "READY" || s.status === "COMPLETE") ? " go" : "");
+    }
+  }
+
+  function resize() {
+    W = stageEl.clientWidth; H = stageEl.clientHeight;
+    renderer.setSize(W, H, false);
+    camera.aspect = W / H;
+    camera.fov = W < 600 ? 48 : 36;
+    camera.updateProjectionMatrix();
+  }
+  new ResizeObserver(resize).observe(stageEl); resize();
+
+  let last = performance.now();
+  function frame(now) {
+    const dt = Math.min(0.05, (now - last) / 1000); last = now;
+    if (playing && !dragging) { t += dt; if (t > TOTAL + HOLD) t = 0; }
+    update(Math.min(t, TOTAL - 0.0001));
+    if (controls) controls.update();
+    renderer.render(scene, camera);
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+
+</body>
+</html>
