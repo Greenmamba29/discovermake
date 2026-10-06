@@ -6,6 +6,7 @@
 import type { PublishOutboxResponse } from '@/contracts/admin';
 import { requireAdminOrCron } from '@/server/auth/admin';
 import { publishPendingEvents } from '@/server/events/outbox';
+import { ensureSubscribers } from '@/server/events/registry';
 import { json, route } from '@/server/http';
 
 export const runtime = 'nodejs';
@@ -13,6 +14,7 @@ export const dynamic = 'force-dynamic';
 
 const handler = route(async (request) => {
     requireAdminOrCron(request);
+    await ensureSubscribers();
     return json<PublishOutboxResponse>(await publishPendingEvents({ limit: 500 }));
 });
 

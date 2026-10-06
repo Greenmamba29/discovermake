@@ -31,7 +31,11 @@ export { packetForConsole, packetSignature, signPacket, verifyPacket, isPacketUn
 export type DispatchResult = { jobId: string; shopId: string; offerExpiresAt: Date };
 
 /** Jobs that mean "this order already has a shop working on / considering it". */
-export const OPEN_JOB_STATUSES: readonly JobStatus[] = ['OFFERED', 'ACCEPTED', 'IN_PRODUCTION', 'QA_PASSED', 'SHIPPED', 'DELIVERED'];
+/**
+ * Jobs that still own the order (block a new dispatch). Includes QA_FAILED (rework in
+ * progress). Shop queue depth in match.ts deliberately counts only workload statuses.
+ */
+export const OPEN_JOB_STATUSES: readonly JobStatus[] = ['OFFERED', 'ACCEPTED', 'IN_PRODUCTION', 'QA_FAILED', 'QA_PASSED', 'SHIPPED', 'DELIVERED'];
 
 type OrderRow = typeof orders.$inferSelect;
 
@@ -294,8 +298,9 @@ export async function expireStaleOffers(now: Date = new Date()): Promise<number>
 }
 
 /**
- * Best-effort, throttled offer expiry for request paths (shop job list, admin board).
- * Vercel Hobby only allows daily crons, so expiry must not depend on the cron alone.
+ * Best-effort, throttled maintenance for request paths (shop job list, admin board):
+ * expire stale offers and relay pending outbox events. Vercel Hobby only allows
+ * daily crons, so neither may depend on the cron alone.
  * Runs at most once per minute per server instance and never throws.
  */
 let lastLazySweepAt = 0;
@@ -308,6 +313,15 @@ export async function sweepStaleOffersLazily(now: Date = new Date()): Promise<vo
         await expireStaleOffers(now);
     } catch (err) {
         console.error('[dispatch] lazy offer sweep failed', err);
+    }
+    // Same reason for the outbox relay: redeliver side effects a crashed request left behind.
+    try {
+        const { ensureSubscribers } = await import('../events/registry');
+        const { publishPendingEvents } = await import('../events/outbox');
+        await ensureSubscribers();
+        await publishPendingEvents({ limit: 100 });
+    } catch (err) {
+        console.error('[dispatch] lazy outbox relay failed', err);
     }
 }
 

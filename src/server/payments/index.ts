@@ -21,7 +21,17 @@ export { StripePaymentProvider, STRIPE_ORDER_METADATA_KEY, createConnectTransfer
 
 /** Provider by name (webhooks are routed per provider regardless of PAYMENT_PROVIDER). */
 export function getPaymentProviderByName(name: PaymentProviderName): PaymentProvider {
-    return name === 'dev' ? new DevPaymentProvider() : new StripePaymentProvider();
+    switch (name) {
+        case 'stripe':
+            return new StripePaymentProvider();
+        case 'dev':
+            return new DevPaymentProvider();
+        default: {
+            // A stored or configured name we do not know must never fall through to real money.
+            const unknown: never = name;
+            throw new Error(`Unknown payment provider: ${String(unknown)}`);
+        }
+    }
 }
 
 /** The configured provider (PAYMENT_PROVIDER=stripe|dev). */

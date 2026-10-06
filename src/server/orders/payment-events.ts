@@ -7,10 +7,11 @@
  */
 import { and, desc, eq } from 'drizzle-orm';
 import type { Actor } from '../../contracts/common';
+import type { DomainEventEnvelope } from '../../contracts/events';
 import type { PaymentProviderName } from '../../contracts/enums';
 import { withTx, getDb, type DbOrTx } from '../db';
 import { orders, payments, quotes } from '../db/schema';
-import { emitEvent } from '../events/outbox';
+import { deliverEvent, emitEvent } from '../events/outbox';
 import { recordPaymentSplit, recordRefund } from '../ledger';
 import { notify } from '../notify';
 import { markQuoteOrdered } from '../quote';
@@ -76,6 +77,38 @@ async function runAfterCommit(effects: AfterCommit[]): Promise<void> {
     }
 }
 
+/** Deliver outbox events now; failures stay unpublished for the relay to retry. */
+async function deliverDurably(eventIds: string[]): Promise<void> {
+    if (!eventIds.length) return;
+    const { ensureSubscribers } = await import('../events/registry');
+    await ensureSubscribers();
+    for (const id of eventIds) {
+        try {
+            await deliverEvent(id);
+        } catch (err) {
+            console.error(`[orders] immediate delivery of event ${id} failed; the outbox relay will retry`, err);
+        }
+    }
+}
+
+/**
+ * Outbox subscriber for order side effects (registered in events/registry.ts).
+ * At-least-once: dispatchOrder is idempotent; a retried email may repeat.
+ */
+export async function handleOrderEvent(event: DomainEventEnvelope): Promise<void> {
+    if (event.event_type === 'production.authorized') {
+        await dispatchAndConfirm((event.payload as { orderId: string }).orderId);
+        return;
+    }
+    if (event.event_type === 'payment.failed') {
+        const { orderId, reason } = event.payload as { orderId: string; reason: string | null };
+        const [order] = await getDb().select().from(orders).where(eq(orders.id, orderId));
+        // Only email if the order is still failed (a later success wins).
+        if (!order || order.status !== 'PAYMENT_FAILED') return;
+        await notify('order.payment_failed', { to: order.buyerEmail, orderId: order.id, orderNumber: order.orderNumber, reason });
+    }
+}
+
 /** After a successful payment: offer the job to a shop, then confirm to the buyer. */
 async function dispatchAndConfirm(orderId: string): Promise<void> {
     const db = getDb();
@@ -126,6 +159,7 @@ async function dispatchAndConfirm(orderId: string): Promise<void> {
 export async function handlePaymentSucceeded(input: PaymentSucceededInput): Promise<{ orderId: string; alreadyProcessed: boolean }> {
     const actor = providerActor(input.provider);
     const effects: AfterCommit[] = [];
+    const durable: string[] = [];
 
     const result = await withTx(async (tx) => {
         const { payment, order } = await lockPayment(tx, input.provider, input.providerRef);
@@ -188,7 +222,7 @@ export async function handlePaymentSucceeded(input: PaymentSucceededInput): Prom
 
         await advanceOrder(order.id, 'PAID', actor, { causationId: completed.event_id, at: now, data: { paymentId: payment.id } }, tx);
         const [quote] = await tx.select({ id: quotes.id, status: quotes.status, designVersion: quotes.designVersion }).from(quotes).where(eq(quotes.id, order.quoteId));
-        await emitEvent(tx, {
+        const authorized = await emitEvent(tx, {
             type: 'production.authorized',
             payload: { orderId: order.id, quoteId: order.quoteId, designVersion: quote?.designVersion ?? 1 },
             actor,
@@ -203,18 +237,21 @@ export async function handlePaymentSucceeded(input: PaymentSucceededInput): Prom
         if (quote && quote.status !== 'ORDERED') await markQuoteOrdered(order.quoteId, tx);
         await recordPaymentSplit(order.id, tx);
 
-        effects.push(() => dispatchAndConfirm(order.id));
+        // Dispatch + confirmation run from the outbox event, so a crash after commit
+        // cannot lose them: the relay redelivers anything not marked published.
+        durable.push(authorized.event_id);
         return { ...base, alreadyProcessed: false };
     });
 
     await runAfterCommit(effects);
+    await deliverDurably(durable);
     return result;
 }
 
 /** Idempotent payment failure: payment FAILED, order -> PAYMENT_FAILED (if PENDING_PAYMENT). */
 export async function handlePaymentFailed(input: PaymentFailedInput): Promise<{ orderId: string }> {
     const actor = providerActor(input.provider);
-    const effects: AfterCommit[] = [];
+    const durable: string[] = [];
     const result = await withTx(async (tx) => {
         const { payment, order } = await lockPayment(tx, input.provider, input.providerRef);
         // A late failure never overrides money that already arrived; replays are no-ops.
@@ -232,13 +269,12 @@ export async function handlePaymentFailed(input: PaymentFailedInput): Promise<{ 
         });
         if (order.status === 'PENDING_PAYMENT') {
             await advanceOrder(order.id, 'PAYMENT_FAILED', actor, { causationId: failed.event_id, reason: input.reason ?? undefined, at: now }, tx);
-            effects.push(() =>
-                notify('order.payment_failed', { to: order.buyerEmail, orderId: order.id, orderNumber: order.orderNumber, reason: input.reason }).then(() => undefined),
-            );
+            // The buyer email goes out from the outbox event (see handleOrderEvent).
+            durable.push(failed.event_id);
         }
         return { orderId: order.id };
     });
-    await runAfterCommit(effects);
+    await deliverDurably(durable);
     return result;
 }
 

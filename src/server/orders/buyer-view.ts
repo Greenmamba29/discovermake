@@ -157,7 +157,9 @@ export function timelineLabel(row: Pick<EventRow, 'eventType' | 'payload'>, shop
         case 'production.completed':
             return 'Production complete';
         case 'shipment.created':
-            return `Shipped with ${String(p.carrier ?? 'carrier')} · tracking ${String(p.trackingNumber ?? '')}`.trim();
+            return typeof p.trackingNumber === 'string' && p.trackingNumber.trim()
+                ? `Shipped with ${String(p.carrier ?? 'carrier')} · tracking ${p.trackingNumber.trim()}`
+                : `Shipped with ${String(p.carrier ?? 'carrier')}`;
         case 'shipment.updated':
             return typeof p.message === 'string' && p.message ? p.message : `Shipment ${String(p.status ?? 'updated').toLowerCase().replace(/_/g, ' ')}`;
         case 'product.delivered':

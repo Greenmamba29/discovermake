@@ -11,7 +11,7 @@
  * `FOR UPDATE SKIP LOCKED`, hands them to subscribers, and marks them published.
  * R1 consumers are in-process; NATS/Kafka replaces the relay target later.
  */
-import { and, asc, isNull, sql } from 'drizzle-orm';
+import { and, asc, eq, isNull, lt, sql } from 'drizzle-orm';
 import {
     EVENT_PAYLOADS,
     EVENT_SCHEMA_VERSIONS,
@@ -92,6 +92,9 @@ export function subscribe(fn: EventSubscriber): () => void {
 
 export type PublishResult = { published: number; failed: number };
 
+/** After this many failed deliveries an event is parked (left unpublished, no longer retried) for ops. */
+export const MAX_PUBLISH_ATTEMPTS = 10;
+
 /**
  * Relay a batch of unpublished events to subscribers and mark them published.
  * Safe to run concurrently (SKIP LOCKED). A subscriber error leaves the row
@@ -108,31 +111,60 @@ export async function publishPendingEvents(opts: { limit?: number; db?: DbOrTx; 
         const rows = await tx
             .select()
             .from(domainEvents)
-            .where(and(isNull(domainEvents.publishedAt)))
+            .where(and(isNull(domainEvents.publishedAt), lt(domainEvents.publishAttempts, MAX_PUBLISH_ATTEMPTS)))
             .orderBy(asc(domainEvents.timestamp))
             .limit(limit)
             .for('update', { skipLocked: true });
 
         for (const row of rows) {
-            const envelope = toEnvelope(row);
-            try {
-                for (const h of handlers) await h(envelope);
-                await tx
-                    .update(domainEvents)
-                    .set({ publishedAt: new Date(), publishAttempts: sql`${domainEvents.publishAttempts} + 1`, lastError: null })
-                    .where(sql`${domainEvents.eventId} = ${row.eventId}`);
-                published++;
-            } catch (err) {
-                await tx
-                    .update(domainEvents)
-                    .set({ publishAttempts: sql`${domainEvents.publishAttempts} + 1`, lastError: String(err instanceof Error ? err.message : err).slice(0, 1000) })
-                    .where(sql`${domainEvents.eventId} = ${row.eventId}`);
-                failed++;
-            }
+            if (await deliverRow(tx, row, handlers)) published++;
+            else failed++;
         }
     });
 
     return { published, failed };
+}
+
+/**
+ * Deliver one event right away (used after a commit so side effects run without
+ * waiting for the relay). Skips rows that are already published or locked by a
+ * concurrent relay. If the process dies first, `publishPendingEvents` delivers it
+ * later: delivery is at-least-once, so subscribers must be idempotent.
+ */
+export async function deliverEvent(eventId: string, opts: { db?: DbOrTx; handlers?: EventSubscriber[] } = {}): Promise<boolean> {
+    const db = opts.db ?? getDb();
+    const handlers = opts.handlers ?? subscribers;
+    let delivered = false;
+    await db.transaction(async (tx) => {
+        const [row] = await tx
+            .select()
+            .from(domainEvents)
+            .where(and(eq(domainEvents.eventId, eventId), isNull(domainEvents.publishedAt)))
+            .for('update', { skipLocked: true });
+        if (row) delivered = await deliverRow(tx, row, handlers);
+    });
+    return delivered;
+}
+
+async function deliverRow(tx: DbOrTx, row: typeof domainEvents.$inferSelect, handlers: EventSubscriber[]): Promise<boolean> {
+    const envelope = toEnvelope(row);
+    try {
+        for (const h of handlers) await h(envelope);
+        await tx
+            .update(domainEvents)
+            .set({ publishedAt: new Date(), publishAttempts: sql`${domainEvents.publishAttempts} + 1`, lastError: null })
+            .where(sql`${domainEvents.eventId} = ${row.eventId}`);
+        return true;
+    } catch (err) {
+        await tx
+            .update(domainEvents)
+            .set({ publishAttempts: sql`${domainEvents.publishAttempts} + 1`, lastError: String(err instanceof Error ? err.message : err).slice(0, 1000) })
+            .where(sql`${domainEvents.eventId} = ${row.eventId}`);
+        if (row.publishAttempts + 1 >= MAX_PUBLISH_ATTEMPTS) {
+            console.error(`[outbox] event ${row.eventId} (${row.eventType}) parked after ${MAX_PUBLISH_ATTEMPTS} failed deliveries`, err);
+        }
+        return false;
+    }
 }
 
 export function toEnvelope(row: typeof domainEvents.$inferSelect): DomainEventEnvelope {

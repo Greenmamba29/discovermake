@@ -125,6 +125,37 @@ describe('tracking updates drive delivery', () => {
         expect(await ctx.db.select().from(passports).where(eq(passports.orderId, job.order.id))).toHaveLength(1);
     });
 
+    it('only downloads labels from carrier hosts and refuses redirects elsewhere or oversized files', async () => {
+        const job = await createQaPassedJob(ctx.db);
+        const s = await createShipment(job.shopId, job.jobId, { parcel, manual: { carrier: 'USPS', service: 'Priority', trackingNumber: '9400LABEL0002' } });
+        const calls: string[] = [];
+
+        // A non-carrier host is never fetched.
+        await ctx.db.update(shipments).set({ provider: 'easypost', labelUrl: 'https://169.254.169.254/latest/meta-data' }).where(eq(shipments.id, s.id));
+        const never = (async (url: string | URL | Request) => {
+            calls.push(String(url));
+            return new Response('x');
+        }) as typeof fetch;
+        expect(await archiveShipmentLabel(s.id, never)).toBeNull();
+        expect(calls).toEqual([]);
+
+        // A carrier URL that redirects to an internal address is rejected.
+        const providerUrl = 'https://easypost-files.s3.amazonaws.com/files/postage_label/redirect.pdf';
+        await ctx.db.update(shipments).set({ labelUrl: providerUrl }).where(eq(shipments.id, s.id));
+        const redirecting = (async (url: string | URL | Request) => {
+            calls.push(String(url));
+            return new Response(null, { status: 302, headers: { location: 'http://10.0.0.5/secret' } });
+        }) as typeof fetch;
+        await expect(archiveShipmentLabel(s.id, redirecting)).rejects.toThrow(/allowed carrier host/);
+        expect(calls).toEqual([providerUrl]);
+
+        // A label larger than the cap is rejected while streaming.
+        const huge = (async () => new Response(new Uint8Array(11 * 1024 * 1024), { status: 200, headers: { 'content-type': 'application/pdf' } })) as typeof fetch;
+        await expect(archiveShipmentLabel(s.id, huge)).rejects.toThrow(/too large/);
+        const [row] = await ctx.db.select().from(shipments).where(eq(shipments.id, s.id));
+        expect(row.labelKey).toBeNull();
+    });
+
     it('copies a purchased label into our storage and serves it only as a short-lived signed link', async () => {
         const job = await createQaPassedJob(ctx.db);
         const s = await createShipment(job.shopId, job.jobId, { parcel, manual: { carrier: 'USPS', service: 'Priority', trackingNumber: '9400LABEL0001' } });
