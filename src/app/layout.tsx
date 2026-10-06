@@ -1,15 +1,11 @@
 import type { Metadata } from 'next'
-import { SalesTicker } from '@/components/marketing/trust-signals'
+import { Toaster } from 'sonner'
 import './globals.css'
 
 export const metadata: Metadata = {
-    title: 'DiscoverMake | Premium AI Automation Templates',
-    description: 'The marketplace for professional AI-powered Make.com automation templates.',
+    title: 'DiscoverMake · Discover. Make. Build.',
+    description: 'Upload a part, get an instant binding quote, and get real laser-cut, bent and finished parts from a vetted partner shop.',
 }
-
-import { Navbar } from '@/components/navbar';
-import { AuthProvider } from '@/components/auth-provider';
-import { Toaster } from 'sonner';
 
 export default function RootLayout({
     children,
@@ -19,9 +15,7 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className="antialiased min-h-screen flex flex-col" suppressHydrationWarning>
-                <AuthProvider>
-                    {children}
-                </AuthProvider>
+                {children}
                 <Toaster position="bottom-right" richColors theme="dark" />
             </body>
         </html>

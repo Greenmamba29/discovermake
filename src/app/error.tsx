@@ -31,11 +31,11 @@ export default function Error({
 
                 <div className="space-y-2">
                     <AnimatedText
-                        text="Protocol Breakdown"
+                        text="Something went wrong"
                         className="text-3xl font-black text-white italic tracking-tighter uppercase"
                     />
                     <p className="text-gray-500 font-medium italic">
-                        The neural link has been severed. An unexpected error has occurred in the system kernel.
+                        An unexpected error occurred. Try again, or go back home.
                     </p>
                 </div>
 
@@ -53,7 +53,7 @@ export default function Error({
                         className="w-full h-12 text-xs uppercase italic font-black"
                         icon={<RotateCcw className="w-4 h-4" />}
                     >
-                        Attempt Re-Sync
+                        Try again
                     </IronButton>
                     <Link href="/" className="w-full">
                         <IronButton
@@ -61,7 +61,7 @@ export default function Error({
                             className="w-full h-12 text-xs uppercase italic font-black"
                             icon={<Home className="w-4 h-4" />}
                         >
-                            Return to Nexus
+                            Go home
                         </IronButton>
                     </Link>
                 </div>
