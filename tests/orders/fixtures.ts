@@ -29,7 +29,7 @@ export async function createQuoteFixture(db: Db, opts: QuoteFixtureOptions = {})
     const [build] = await db.insert(builds).values({ displayId: newBuildDisplayId(), name: 'Mounting bracket' }).returning();
     const [part] = await db
         .insert(parts)
-        .values({ buildId: build.id, fileKey: `parts/${build.id}/source.dxf`, filename: 'bracket.dxf', sizeBytes: 2048, status: 'READY', units: 'mm', designVersion: 1 })
+        .values({ buildId: build.id, fileKey: `parts/${build.id}/source.dxf`, filename: 'bracket.dxf', sizeBytes: 2048, status: 'READY', units: 'mm', designVersion: 1, rulesetVersion: R1_RULESET_VERSION })
         .returning();
     const [quote] = await db
         .insert(quotes)

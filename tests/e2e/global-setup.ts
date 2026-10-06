@@ -1,7 +1,9 @@
 /**
- * Playwright global setup: (re)create nothing destructive; ensure the e2e
- * database exists, apply migrations and run the idempotent seed with the
- * deterministic e2e Shop Console token.
+ * Playwright global setup: recreate the dedicated e2e database from scratch
+ * (it only ever holds e2e data), apply migrations and run the seed with the
+ * deterministic e2e Shop Console token. Refuses to touch any database whose
+ * name does not end in `_e2e` so a misconfigured E2E_DATABASE_URL cannot wipe
+ * a real database. Set E2E_KEEP_DB=1 to reuse the existing database instead.
  */
 import postgres from 'postgres';
 import { E2E_DATABASE_URL, E2E_SHOP_TOKEN } from '../../playwright.config';
@@ -16,8 +18,12 @@ export default async function globalSetup(): Promise<void> {
     adminUrl.pathname = '/postgres';
     const admin = postgres(adminUrl.toString(), { max: 1, onnotice: () => {} });
     try {
+        if (!/_e2e$/.test(dbName)) throw new Error(`Refusing to reset "${dbName}": the e2e database name must end in _e2e`);
         const exists = await admin`select 1 from pg_database where datname = ${dbName}`;
-        if (exists.length === 0) await admin.unsafe(`CREATE DATABASE "${dbName}"`);
+        if (exists.length > 0 && !process.env.E2E_KEEP_DB) {
+            await admin.unsafe(`DROP DATABASE "${dbName}" WITH (FORCE)`);
+        }
+        if (exists.length === 0 || !process.env.E2E_KEEP_DB) await admin.unsafe(`CREATE DATABASE "${dbName}"`);
     } finally {
         await admin.end({ timeout: 5 });
     }

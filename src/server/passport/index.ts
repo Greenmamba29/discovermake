@@ -16,7 +16,7 @@ import { SYSTEM_ACTOR } from '../../contracts/common';
 import { PassportSnapshot, type PassportPublicView, type PassportVerifyResponse } from '../../contracts/passport';
 import { canonicalJson, hmacHex, safeEqual, sha256Hex } from '../auth/tokens';
 import { getDb, withTx, type DbOrTx } from '../db';
-import { builds, inspectionPlans, inspectionResults, orders, parts, passports, productionMilestones, quotes, shipments, shops, thicknessOptions } from '../db/schema';
+import { builds, inspectionPlans, inspectionResults, manufacturingJobs, orders, parts, passports, productionMilestones, quotes, shipments, shops, thicknessOptions } from '../db/schema';
 import { env, requireSecret } from '../env';
 import { emitEvent } from '../events/outbox';
 import { newId } from '../ids';
@@ -64,7 +64,6 @@ async function buildSnapshot(t: DbOrTx, order: typeof orders.$inferSelect, passp
         t.select().from(thicknessOptions).where(eq(thicknessOptions.id, quote.config.thicknessOptionId)),
     ]);
     if (!part) throw missing('part not found');
-    if (!part.fileSha256) throw missing('part file hash was never verified');
     if (!thickness) throw missing('thickness option not found');
     if (!order.shopId) throw missing('no shop assigned');
     const [shop] = await t.select().from(shops).where(eq(shops.id, order.shopId));
@@ -78,6 +77,14 @@ async function buildSnapshot(t: DbOrTx, order: typeof orders.$inferSelect, passp
         .orderBy(desc(inspectionResults.createdAt))
         .limit(1);
     if (!passing) throw missing('no passing inspection result');
+    // The file hash comes from the snapshot taken at dispatch (what the shop actually made),
+    // falling back to the part row only for jobs dispatched before that snapshot existed.
+    const [passingJob] = await t
+        .select({ sourceFileSha256: manufacturingJobs.sourceFileSha256 })
+        .from(manufacturingJobs)
+        .where(eq(manufacturingJobs.id, passing.result.jobId));
+    const fileSha256 = passingJob?.sourceFileSha256 ?? part.fileSha256;
+    if (!fileSha256) throw missing('part file hash was never verified');
 
     const [shipment] = await t
         .select()
@@ -102,7 +109,7 @@ async function buildSnapshot(t: DbOrTx, order: typeof orders.$inferSelect, passp
         quoteId: quote.id,
         part: {
             filename: part.filename,
-            fileSha256: part.fileSha256,
+            fileSha256,
             bboxWidthMm: part.features?.bboxWidthMm ?? quote.summary.bboxWidthMm,
             bboxHeightMm: part.features?.bboxHeightMm ?? quote.summary.bboxHeightMm,
         },

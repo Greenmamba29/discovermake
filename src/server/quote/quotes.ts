@@ -8,7 +8,8 @@ import { QuoteConfig, tierForQuantity, type CreateQuoteRequest, type QuoteLadder
 import type { QuoteStatus, TrustLevel } from '../../contracts/enums';
 import type { DfmViolation } from '../../contracts/parts';
 import { getDb, withTx, type DbOrTx } from '../db';
-import { materials, parts, processes, quotes, shopCapabilities, shopRateCards, shops, thicknessOptions } from '../db/schema';
+import { shopsOfferingAll } from '../shops/services';
+import { materials, parts, processes, quotes, shopCapabilities, shopRateCards, shopServices, shops, thicknessOptions } from '../db/schema';
 import { emitEvent } from '../events/outbox';
 import { ApiError } from '../http';
 import { newId } from '../ids';
@@ -184,6 +185,9 @@ export async function createQuoteImpl(input: CreateQuoteRequest, now: Date = new
             : [];
         brakeShops = new Map(brakeCaps.map((c) => [c.shopId, c]));
     }
+    // Finishes + secondary ops: a shop is only routable when it offers every selected service.
+    const requiredServiceIds = [...new Set([...selected.map((s) => s.row.id), ...(finishRow ? [finishRow.id] : [])])];
+    const serviceShops = await shopsOfferingAll(requiredServiceIds, capRows.map((r) => r.shop.id), db);
     const longestBend = features.bendLines.reduce((m, b) => Math.max(m, b.lengthMm), 0);
     const thicknessLimit: SizeLimit = { widthMm: thickness.maxPartWidthMm, heightMm: thickness.maxPartHeightMm };
 
@@ -196,6 +200,7 @@ export async function createQuoteImpl(input: CreateQuoteRequest, now: Date = new
         const bed = { widthMm: cap.bedWidthMm, heightMm: cap.bedHeightMm };
         fallback ??= { shop, rateCard, laserCap: cap, bed };
         if (!fitsWithin(features.bboxWidthMm, features.bboxHeightMm, limitWithin(thicknessLimit, bed))) continue;
+        if (!serviceShops.has(shop.id)) continue;
         if (brakeShops) {
             const brake = brakeShops.get(shop.id);
             if (!brake || (brake.maxBendLengthMm != null && longestBend > brake.maxBendLengthMm)) continue;

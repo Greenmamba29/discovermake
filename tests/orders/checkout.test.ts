@@ -10,8 +10,8 @@ import { useTestDb } from '../support/db';
 import { checkoutBody, createQuoteFixture, quietConsole } from './fixtures';
 
 const { dispatchOrderMock } = vi.hoisted(() => ({ dispatchOrderMock: vi.fn(async (_id: string) => null) }));
-vi.mock('@/server/dispatch', () => ({ dispatchOrder: (id: string) => dispatchOrderMock(id), expireStaleOffers: async () => 0 }));
-vi.mock('@/server/quote', async (orig) => (await import('./mocks')).quoteModuleMock(orig));
+// Dispatch is a spy so order suites stay deterministic (tests/shop covers dispatch); the rest is real.
+vi.mock('@/server/dispatch', async (orig) => ({ ...(await orig<typeof import('@/server/dispatch')>()), dispatchOrder: (id: string) => dispatchOrderMock(id), expireStaleOffers: async () => 0 }));
 
 async function expectConflict(p: Promise<unknown>, pattern: RegExp) {
     const err = await p.then(
@@ -101,6 +101,12 @@ describe('checkout (server-priced)', () => {
         const { quote, part } = await createQuoteFixture(ctx.db);
         await ctx.db.update(parts).set({ designVersion: 2 }).where(eq(parts.id, part.id));
         await expectConflict(createCheckout(checkoutBody(quote.id)), /design changed/i);
+    });
+
+    it('rejects a quote made under an older DFM rule set', async () => {
+        const { quote, part } = await createQuoteFixture(ctx.db);
+        await ctx.db.update(parts).set({ rulesetVersion: 'dfm-2099.01-next' }).where(eq(parts.id, part.id));
+        await expectConflict(createCheckout(checkoutBody(quote.id)), /rules were updated/i);
     });
 
     it('rejects a snapshot whose line items do not add up (tampered snapshot)', async () => {

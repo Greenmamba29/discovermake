@@ -310,6 +310,8 @@ export async function submitInspection(shopId: string, jobId: string, input: Ins
                 status: 'ACCEPTED',
                 packet: reworkPacket,
                 packetSignature: reworkPacket.signature,
+                sourceFileKey: job.sourceFileKey,
+                sourceFileSha256: job.sourceFileSha256,
                 reworkOfJobId: job.id,
                 attempt: n + 1,
                 payoutCents: job.payoutCents,

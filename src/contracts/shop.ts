@@ -126,6 +126,10 @@ export const JobPacket = z.object({
         pierceCount: z.number().int(),
         holeCount: z.number().int(),
         bendCount: z.number().int(),
+        /** sha256 of the exact DXF bytes the quote was priced on (verify the download against it). */
+        fileSha256: z.string().nullable(),
+        /** Flat pattern as SVG path data (evenodd), covered by the packet signature. */
+        flatPatternSvgPath: z.string().nullable(),
     }),
     material: z.object({
         id: z.string(),

@@ -83,14 +83,9 @@ async function dispatchAndConfirm(orderId: string): Promise<void> {
     if (!order) return;
     try {
         const { dispatchOrder } = await import('../dispatch');
-        const result = await dispatchOrder(orderId);
-        if (!result) {
-            await notify('ops.alert', {
-                subject: `No partner shop available for ${order.orderNumber}`,
-                message: `Order ${order.orderNumber} is paid but no capable shop could be offered the job. Dispatch it manually from the admin API or refund it.`,
-                orderId,
-            });
-        }
+        // A null result (no capable shop) is alerted by dispatchOrder itself (ops.alert +
+        // dispatch.unmatched event); the order stays PAID for ops to dispatch or refund.
+        await dispatchOrder(orderId);
     } catch (err) {
         await notify('ops.alert', {
             subject: `Dispatch failed for ${order.orderNumber}`,
@@ -283,6 +278,9 @@ export async function applyFullRefund(
     if (order.status !== 'REFUNDED') {
         await advanceOrder(order.id, 'REFUNDED', input.actor, { reason: input.reason, causationId: refunded.event_id, at: now }, tx);
     }
+    // Withdraw the job from the Shop Console in the same transaction (offered/accepted/in-production jobs -> CANCELLED).
+    const { cancelOpenJobs } = await import('../dispatch');
+    await cancelOpenJobs(order.id, tx);
     await recordRefund(order.id, payment.amountCents, tx);
     return true;
 }

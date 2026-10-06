@@ -24,6 +24,7 @@ import {
     shopAccessTokens,
     shopCapabilities,
     shopRateCards,
+    shopServices,
     shops,
     thicknessOptions,
 } from './schema';
@@ -646,6 +647,16 @@ export async function seed(db: Db = getDb(), opts: SeedOptions = {}): Promise<Se
                 .onConflictDoUpdate({ target: shopCapabilities.id, set: excluded(Object.keys(c).filter((k) => k !== 'id')) });
         }
         log(`${capRows.length} shop capabilities`);
+
+        // Services the dev shop performs: every seeded secondary op and finish.
+        for (const svc of SERVICE_SEEDS) {
+            const row = { id: `ssv_ppw_${svc.id.replace(/^svc_/, '')}`, shopId: DEV_SHOP_ID, serviceId: svc.id, active: true };
+            await tx
+                .insert(shopServices)
+                .values(row)
+                .onConflictDoUpdate({ target: shopServices.id, set: { shopId: row.shopId, serviceId: row.serviceId, active: true } });
+        }
+        log(`${SERVICE_SEEDS.length} shop services`);
 
         // Rate card (defaults to be calibrated)
         const rateRow = {

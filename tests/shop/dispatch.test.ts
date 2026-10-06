@@ -24,7 +24,7 @@ describe('dispatch', () => {
     });
 
     it('offers the job to the cheapest capable shop, signs the packet, plans QA and moves the order to DISPATCHED', async () => {
-        const { order } = await createPaidOrder(ctx.db, { bend: true, quantity: 100, widthMm: 600, heightMm: 400 });
+        const { order, part } = await createPaidOrder(ctx.db, { bend: true, quantity: 100, widthMm: 600, heightMm: 400 });
         const result = await dispatchOrder(order.id);
         expect(result).not.toBeNull();
         // tinyBed (bed too small), suspended (not ACTIVE) and noBrake (bending ordered) are not capable.
@@ -38,6 +38,11 @@ describe('dispatch', () => {
         expect(job.packet.shipTo).toEqual(order.shippingAddress);
         expect(job.packet.material.thicknessOptionId).toBe('thk_al5052_063');
         expect(job.packet.services.map((s) => s.id)).toEqual(['svc_bending']);
+        // The exact quoted file is snapshotted onto the job and bound into the signed packet.
+        expect(job.sourceFileKey).toBe(part.fileKey);
+        expect(job.sourceFileSha256).toBe(part.fileSha256);
+        expect(job.packet.part.fileSha256).toBe(part.fileSha256);
+        expect(job.packet.part.flatPatternSvgPath).toBe(part.preview?.svgPath);
 
         const [plan] = await ctx.db.select().from(inspectionPlans).where(eq(inspectionPlans.jobId, job.id));
         expect(plan.checks.map((c) => c.id)).toEqual(expect.arrayContaining(['chk_bbox_w', 'chk_bbox_h', 'chk_hole_1', 'chk_bend_1', 'chk_count']));
@@ -99,6 +104,8 @@ describe('dispatch', () => {
         expect(await dispatchOrder(order.id)).toBeNull();
         const types = (await ctx.db.select().from(domainEvents).where(eq(domainEvents.orderId, order.id))).map((e) => e.eventType);
         expect(types.filter((t) => t === 'job.declined')).toHaveLength(2);
+        // No shop left: recorded in the outbox (and ops alerted), order stays PAID.
+        expect(types).toContain('dispatch.unmatched');
         void tinyBed;
         void suspended;
         void noBrake;
@@ -120,6 +127,19 @@ describe('dispatch', () => {
         expect(jobs[1].shopId).not.toBe(first!.shopId);
         const types = (await ctx.db.select().from(domainEvents).where(eq(domainEvents.orderId, order.id))).map((e) => e.eventType);
         expect(types).toContain('job.expired');
+    });
+
+    it('only offers finished or secondary-op jobs to shops that offer those services', async () => {
+        // Cheapest shop of all, with a press brake, but it does not powder coat.
+        const noPaint = (await createShopFixture(ctx.db, { name: 'Bare Metal Lasers', fiberCentsPerHour: 1000, brake: true, serviceIds: ['svc_bending'] })).shopId;
+
+        const finished = await createPaidOrder(ctx.db, { finish: true });
+        const offered = await dispatchOrder(finished.order.id);
+        expect(offered).not.toBeNull();
+        expect(offered!.shopId).not.toBe(noPaint);
+
+        const bare = await createPaidOrder(ctx.db, { bend: true });
+        expect((await dispatchOrder(bare.order.id))!.shopId).toBe(noPaint);
     });
 
     it('refuses to dispatch an order that is not PAID', async () => {
@@ -145,6 +165,7 @@ describe('dispatch scoring + inspection plan (pure)', () => {
             quantity: 10,
             bending: null,
             finished: false,
+            requiredServiceIds: [],
             quotedShopId: 'x',
         };
         const card = { fiberLaserCentsPerHour: 15000, co2LaserCentsPerHour: 9000, brakeCentsPerBend: 250, brakeSetupCents: 2000, orderSetupCents: 1500, partHandlingCents: 50, finishingCentsPerFt2: 350, finishBatchSetupCents: 3500, qaCentsPerPart: 25, packagingBaseCents: 400 };

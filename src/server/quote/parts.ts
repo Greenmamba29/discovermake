@@ -12,7 +12,7 @@ import { and, desc, eq, inArray } from 'drizzle-orm';
 import type { Actor } from '../../contracts/common';
 import { SYSTEM_ACTOR } from '../../contracts/common';
 import type { PartUnits, UniversalStatus } from '../../contracts/enums';
-import type { AnalyzePartRequest, BuildView, CreatePartRequest, CreatePartResponse, PartView } from '../../contracts/parts';
+import { MAX_PART_UPLOAD_BYTES, type AnalyzePartRequest, type BuildView, type CreatePartRequest, type CreatePartResponse, type PartView } from '../../contracts/parts';
 import { getDb, withTx, type DbOrTx } from '../db';
 import { builds, parts, quotes } from '../db/schema';
 import { emitEvent } from '../events/outbox';
@@ -25,8 +25,8 @@ import { buildDfmResult, processFitPenalties, runGeometryDfm } from './dfm';
 import { DxfParseError } from './dxf/parse';
 import { assertDxfFilename, sniffDxf, UnsupportedFileError } from './dxf/sniff';
 
-/** Upload cap for R1 part files (25 MB). The contract's 50 MB ceiling is the absolute wire limit. */
-export const QUOTE_MAX_UPLOAD_BYTES = 25 * 1024 * 1024;
+/** Upload cap for R1 part files (25 MB), shared with the client via the contract. */
+export const QUOTE_MAX_UPLOAD_BYTES = MAX_PART_UPLOAD_BYTES;
 /** Content-Type the signed PUT is bound to (the client must send exactly `upload.headers`). */
 export const DXF_CONTENT_TYPE = 'application/dxf';
 export const UPLOAD_URL_TTL_SECONDS = 30 * 60;

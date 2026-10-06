@@ -9,8 +9,8 @@ import { useTestDb } from '../support/db';
 import { checkoutBody, createQuoteFixture, quietConsole } from './fixtures';
 
 const { dispatchOrderMock } = vi.hoisted(() => ({ dispatchOrderMock: vi.fn(async (_id: string) => null) }));
-vi.mock('@/server/dispatch', () => ({ dispatchOrder: (id: string) => dispatchOrderMock(id), expireStaleOffers: async () => 0 }));
-vi.mock('@/server/quote', async (orig) => (await import('./mocks')).quoteModuleMock(orig));
+// Dispatch is a spy so order suites stay deterministic (tests/shop covers dispatch); the rest is real.
+vi.mock('@/server/dispatch', async (orig) => ({ ...(await orig<typeof import('@/server/dispatch')>()), dispatchOrder: (id: string) => dispatchOrderMock(id), expireStaleOffers: async () => 0 }));
 
 const SHOP: Actor = { kind: 'shop', id: DEV_SHOP_ID };
 const OPS: Actor = { kind: 'admin', id: 'ops' };

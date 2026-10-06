@@ -122,9 +122,6 @@ export function toErrorResponse(err: unknown): Response {
     if (err instanceof Error && err.name === 'OrderNotFoundError') {
         return errorResponse('NOT_FOUND', 'Order not found', 404);
     }
-    if (message === 'not implemented') {
-        return errorResponse('NOT_IMPLEMENTED', 'Not implemented yet', 501);
-    }
     console.error('[api] unhandled error', err);
     return errorResponse('INTERNAL', process.env.NODE_ENV === 'production' ? 'Internal error' : message, 500);
 }

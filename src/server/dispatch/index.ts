@@ -76,6 +76,7 @@ function requirementsFor(order: OrderRow, ctx: DispatchContext): JobRequirements
         quantity: order.quantity,
         bending: bendingOrdered ? { bendCount: features.bendCount, longestBendMm: Math.max(0, ...features.bendLines.map((b) => b.lengthMm)) } : null,
         finished: !!ctx.finish,
+        requiredServiceIds: [...new Set([...quote.config.services.map((s) => s.serviceId), ...(quote.config.finishServiceId ? [quote.config.finishServiceId] : [])])],
         quotedShopId: quote.shopId,
     };
 }
@@ -108,6 +109,8 @@ export function buildPacket(jobId: string, order: OrderRow, ctx: DispatchContext
             pierceCount: features.pierceCount,
             holeCount: features.holes.length,
             bendCount: features.bendCount,
+            fileSha256: ctx.part.fileSha256,
+            flatPatternSvgPath: ctx.part.preview?.svgPath ?? null,
         },
         material: {
             id: ctx.material.id,
@@ -168,7 +171,17 @@ export async function dispatchOrder(orderId: string, opts?: { excludeShopIds?: s
         const ctx = await loadDispatchContext(t, order);
         const candidates = await findCandidates(t, requirementsFor(order, ctx), excluded);
         const best = candidates[0];
-        if (!best) return { kind: 'none', orderNumber: order.orderNumber, excluded };
+        if (!best) {
+            await emitEvent(t, {
+                type: 'dispatch.unmatched',
+                payload: { orderId, excludedShopIds: excluded },
+                actor: SYSTEM_ACTOR,
+                correlationId: order.correlationId,
+                buildId: order.buildId,
+                orderId,
+            });
+            return { kind: 'none', orderNumber: order.orderNumber, excluded };
+        }
 
         const now = new Date();
         const offerExpiresAt = new Date(now.getTime() + best.shop.acceptWindowMinutes * 60_000);
@@ -186,6 +199,10 @@ export async function dispatchOrder(orderId: string, opts?: { excludeShopIds?: s
             status: 'OFFERED',
             packet: signed,
             packetSignature: signed.signature,
+            // Snapshot the exact file the quote was priced on: the shop downloads this key,
+            // whatever happens to the live part row later.
+            sourceFileKey: ctx.part.fileKey,
+            sourceFileSha256: ctx.part.fileSha256,
             attempt: jobs.length + 1,
             payoutCents: order.shopCostCents,
             offeredAt: now,
@@ -295,16 +312,31 @@ async function expireOffer(jobId: string, orderId: string, now: Date): Promise<{
 }
 
 /**
- * Cancel every open job of an order (refund / cancellation by ops). Call inside the same
- * transaction as the order transition. Returns the cancelled job ids. Idempotent.
+ * Cancel every open job of an order (refund / cancellation by ops), emitting `job.cancelled`
+ * per job. Call inside the same transaction as the order transition. Returns the cancelled
+ * job ids. Idempotent.
  */
-export async function cancelOpenJobs(orderId: string, tx?: DbOrTx): Promise<string[]> {
+export async function cancelOpenJobs(orderId: string, tx?: DbOrTx, reason = 'Order refunded'): Promise<string[]> {
     return withTx(async (t) => {
+        const [order] = await t.select().from(orders).where(eq(orders.id, orderId));
+        if (!order) return [];
+        const now = new Date();
         const rows = await t
             .update(manufacturingJobs)
-            .set({ status: 'CANCELLED', updatedAt: new Date() })
+            .set({ status: 'CANCELLED', offerExpiresAt: null, updatedAt: now })
             .where(and(eq(manufacturingJobs.orderId, orderId), inArray(manufacturingJobs.status, ['OFFERED', 'ACCEPTED', 'IN_PRODUCTION', 'QA_PASSED'])))
-            .returning({ id: manufacturingJobs.id });
+            .returning({ id: manufacturingJobs.id, shopId: manufacturingJobs.shopId });
+        for (const row of rows) {
+            await emitEvent(t, {
+                type: 'job.cancelled',
+                payload: { jobId: row.id, orderId, shopId: row.shopId, reason },
+                actor: SYSTEM_ACTOR,
+                correlationId: order.correlationId,
+                buildId: order.buildId,
+                orderId,
+                timestamp: now,
+            });
+        }
         return rows.map((r) => r.id);
     }, tx);
 }

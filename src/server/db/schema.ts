@@ -350,6 +350,29 @@ export const shopCapabilities = pgTable(
 );
 
 /**
+ * Secondary operations and finishes a shop can perform (bending, tapping, PEM,
+ * powder coat colours, anodize...). Quote routing and dispatch only consider a
+ * shop when it offers EVERY service the configuration selects. Bending also
+ * needs a press-brake row in `shop_capabilities` for the thickness.
+ */
+export const shopServices = pgTable(
+    'shop_services',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('shopService')),
+        shopId: text('shop_id')
+            .notNull()
+            .references(() => shops.id, { onDelete: 'cascade' }),
+        serviceId: text('service_id')
+            .notNull()
+            .references(() => services.id),
+        active: boolean('active').notNull().default(true),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [uniqueIndex('shop_services_uq').on(t.shopId, t.serviceId), index('shop_services_service_idx').on(t.serviceId)],
+);
+
+/**
  * Per-shop pricing coefficients (workflow 02 pricing model). Exactly one active
  * card per shop. Quotes reference the card they were priced with.
  */
@@ -619,6 +642,13 @@ export const manufacturingJobs = pgTable(
         /** Signed job packet (full, incl. shipTo; files are signed per request, not stored). */
         packet: jsonb('packet').$type<Omit<JobPacket, 'files'>>().notNull(),
         packetSignature: text('packet_signature').notNull(),
+        /**
+         * Immutable snapshot of the exact file the quote was priced on, taken at dispatch.
+         * The shop's download URL and the passport file hash come from here, never from the
+         * live `parts` row. Null only on jobs created before migration 0001.
+         */
+        sourceFileKey: text('source_file_key'),
+        sourceFileSha256: text('source_file_sha256'),
         /** Set on rework jobs opened after a QA failure. */
         reworkOfJobId: text('rework_of_job_id'),
         /** Dispatch attempt number for this order (1 = first offer). */

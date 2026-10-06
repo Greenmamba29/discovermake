@@ -133,7 +133,9 @@ describe('material DFM', () => {
     it('bends: needs bending selected, a bendable thickness, long flanges and holes clear of the bend', () => {
         const bent = analyzed('bent-bracket');
         expect(runMaterialDfm(bent.features, ctx({ bendingSelected: true, preview: bent.preview }))).toEqual([]);
-        expect(ids(runMaterialDfm(bent.features, ctx({ preview: bent.preview })))).toEqual(['bend_not_supported:BLOCKING']);
+        const unselected = runMaterialDfm(bent.features, ctx({ preview: bent.preview }));
+        expect(ids(unselected)).toEqual(['bend_not_supported:BLOCKING']);
+        expect(unselected[0].fix).toMatchObject({ kind: 'ADD_SERVICE', params: { serviceId: 'svc_bending' } });
         const notBendable = runMaterialDfm(bent.features, ctx({ thickness: CRS_250, bendingSelected: true, preview: bent.preview }));
         // 1/4" steel: not bendable, and the Ø5 holes are below its 6.35 mm minimum too.
         expect(ids(notBendable)).toEqual(['bend_not_supported:BLOCKING', 'min_hole_diameter:BLOCKING']);
@@ -145,7 +147,9 @@ describe('material DFM', () => {
         expect(v[0]).toMatchObject({ measuredMm: 4, thresholdMm: 6.08, location: [60, 4], fix: { kind: 'EXTEND_FLANGE' } });
 
         const plain = analyzed('plate-holes-mm');
-        expect(ids(runMaterialDfm(plain.features, ctx({ bendingSelected: true, preview: plain.preview })))).toEqual(['bend_lines_missing:BLOCKING']);
+        const noLines = runMaterialDfm(plain.features, ctx({ bendingSelected: true, preview: plain.preview }));
+        expect(ids(noLines)).toEqual(['bend_lines_missing:BLOCKING']);
+        expect(noLines[0].fix).toMatchObject({ kind: 'REMOVE_SERVICE', params: { serviceId: 'svc_bending' } });
 
         // Hole within 2.5t + r of the bend line.
         const nearBend = { ...bent.features, holes: [{ center: [30, 23] as [number, number], diameterMm: 2, circular: true, edgeDistanceMm: 20 }] };

@@ -17,6 +17,7 @@ import { emitEvent } from '../events/outbox';
 import { ApiError } from '../http';
 import { newId, newOrderNumber } from '../ids';
 import { getPaymentProvider } from '../payments';
+import { isQuoteOrderable } from '../quote';
 import { SEALED_TOKEN_KEY, sealOrderToken } from './link-vault';
 
 type QuoteRow = typeof quotes.$inferSelect;
@@ -51,6 +52,13 @@ export async function priceQuoteForCheckout(quote: QuoteRow, shippingMethod: Che
     const [part] = await db.select().from(parts).where(eq(parts.id, quote.partId));
     if (!part || part.status !== 'READY' || part.designVersion !== quote.designVersion) {
         throw new ApiError('CONFLICT', 'The design changed after this quote was made. Get a new quote for the current version.');
+    }
+    if (part.rulesetVersion !== quote.rulesetVersion) {
+        throw new ApiError('CONFLICT', 'Our manufacturability rules were updated after this quote was made. Get a new quote.');
+    }
+    // Same predicate the quote module uses for QuoteView.orderable, so checkout and the UI never disagree.
+    if (!isQuoteOrderable(quote, { designVersion: part.designVersion, rulesetVersion: part.rulesetVersion }, now)) {
+        throw new ApiError('CONFLICT', 'This quote is no longer orderable. Get a new quote.');
     }
     const [rateCard] = await db.select().from(shopRateCards).where(eq(shopRateCards.id, quote.rateCardId));
     if (!rateCard || !rateCard.active) {

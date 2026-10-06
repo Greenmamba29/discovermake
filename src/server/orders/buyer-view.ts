@@ -139,6 +139,8 @@ export function timelineLabel(row: Pick<EventRow, 'eventType' | 'payload'>, shop
         case 'job.declined':
         case 'job.expired':
             return 'Finding another partner shop';
+        case 'dispatch.unmatched':
+            return 'Our team is matching your order with a partner shop';
         case 'job.accepted':
             return `${shop} accepted your job`;
         case 'production.started':
@@ -169,7 +171,7 @@ export function timelineLabel(row: Pick<EventRow, 'eventType' | 'payload'>, shop
         case 'order.cancelled':
             return 'Order cancelled';
         default:
-            return null; // order.status_changed, ledger.*, payout.*, quote/part events
+            return null; // order.status_changed, job.cancelled, ledger.*, payout.*, quote/part events
     }
 }
 

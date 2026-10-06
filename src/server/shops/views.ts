@@ -94,7 +94,7 @@ export async function buildJobDetail(db: DbOrTx, job: JobRow): Promise<ShopJobDe
     if (!part) throw new Error(`Job ${job.id} references missing part ${job.partId}`);
     return {
         ...toJobSummary(job),
-        packet: await packetForConsole(job.packet, job.status, part),
+        packet: await packetForConsole(job.packet, job.status, { fileKey: job.sourceFileKey ?? part.fileKey, filename: part.filename }),
         preview: part.preview ?? null,
         milestones: milestones.map(toMilestoneView),
         inspectionPlan: plan ? toInspectionPlanView(plan) : null,

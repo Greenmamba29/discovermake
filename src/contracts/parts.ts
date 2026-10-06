@@ -15,8 +15,8 @@ import { z } from 'zod';
 import { DfmSeverity, PartFileFormat, PartStatus, PartUnits, UniversalStatus } from './enums';
 import { BuildDisplayId, BuildId, IsoDateTime, PartId, Point2, SignedUpload } from './common';
 
-/** 50 MB upload cap (workflow 02 §Security). */
-export const MAX_PART_UPLOAD_BYTES = 50 * 1024 * 1024;
+/** 25 MB upload cap for R1 instant quotes (workflow 02 §Security). Enforced server-side with 413. */
+export const MAX_PART_UPLOAD_BYTES = 25 * 1024 * 1024;
 
 export const CreatePartRequest = z.object({
     filename: z
@@ -81,6 +81,10 @@ export const PartFeatures = z.object({
     netAreaMm2: z.number().nonnegative(),
     /** Bounding-box area (instant-quote nesting heuristic input). */
     grossAreaMm2: z.number().nonnegative(),
+    /**
+     * Narrowest material web or tab between two contours, EXCLUDING hole-to-edge distances
+     * (those are `minHoleToEdgeMm`). Null when every contour is a circle (e.g. a washer).
+     */
     smallestFeatureMm: z.number().nonnegative().nullable(),
     smallestHoleMm: z.number().nonnegative().nullable(),
     minHoleToEdgeMm: z.number().nonnegative().nullable(),
@@ -111,7 +115,23 @@ export type PartPreview = z.infer<typeof PartPreview>;
 
 export const DfmFix = z.object({
     /** Machine-readable fix kind; the UI renders `label`. */
-    kind: z.enum(['ENLARGE_HOLE', 'MOVE_HOLE', 'WIDEN_FEATURE', 'EXTEND_FLANGE', 'CHANGE_THICKNESS', 'CHANGE_MATERIAL', 'SPLIT_PART', 'CLOSE_CONTOUR', 'CONVERT_TEXT', 'SET_UNITS', 'CONTACT_SUPPORT']),
+    kind: z.enum([
+        'ENLARGE_HOLE',
+        'MOVE_HOLE',
+        'WIDEN_FEATURE',
+        'EXTEND_FLANGE',
+        'CHANGE_THICKNESS',
+        'CHANGE_MATERIAL',
+        'SPLIT_PART',
+        'CLOSE_CONTOUR',
+        'CONVERT_TEXT',
+        'SET_UNITS',
+        /** params: `{ serviceId }` - select this secondary operation. */
+        'ADD_SERVICE',
+        /** params: `{ serviceId }` - deselect this secondary operation. */
+        'REMOVE_SERVICE',
+        'CONTACT_SUPPORT',
+    ]),
     label: z.string(),
     /** Optional suggested target, e.g. `{ thicknessOptionId: "thk_..." }` or `{ minDiameterMm: 3.2 }`. */
     params: z.record(z.unknown()).optional(),

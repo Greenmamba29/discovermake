@@ -4,20 +4,19 @@
  * milestones -> QA pass -> shipment -> delivered -> passport + payout -> COMPLETE.
  */
 import { asc, eq, sql } from 'drizzle-orm';
-import { beforeAll, describe, expect, it, vi } from 'vitest';
+import { beforeAll, describe, expect, it } from 'vitest';
 import { PassportPublicView, PassportSnapshot } from '@/contracts/passport';
 import { ShopJobDetail } from '@/contracts/shop';
 import { DEV_SHOP_ID } from '@/server/db/seed';
 import { domainEvents, ledgerEntries, manufacturingJobs, orders, passports, payouts, shipments } from '@/server/db/schema';
 import { getOrderLedger, ledgerBalances } from '@/server/ledger';
-import { createCheckout, getOrderForBuyer, handlePaymentSucceeded } from '@/server/orders';
+import { createCheckout, getOrderForBuyer, handlePaymentSucceeded, refundOrder } from '@/server/orders';
+import { ADMIN_ACTOR } from '@/server/auth/admin';
 import { activatePassport, getPublicPassport, verifyPassport } from '@/server/passport';
 import { markShipmentDelivered } from '@/server/shipping';
 import { acceptJob, createShipment, getJob, listJobs, recordMilestone, submitInspection } from '@/server/shops';
 import { useTestDb } from '../support/db';
 import { BUYER_ADDRESS, createQaPassedJob, createQuoteFixture, measurementsFor, quietConsole, uploadQaPhoto } from './fixtures';
-
-vi.mock('@/server/quote', async (orig) => (await import('./mocks')).quoteModuleMock(orig));
 
 describe('order lifecycle PAID -> COMPLETE', () => {
     const ctx = useTestDb({ seed: true });
@@ -207,5 +206,41 @@ describe('order lifecycle PAID -> COMPLETE', () => {
         expect(await ctx.db.select().from(passports).where(eq(passports.orderId, job.order.id))).toHaveLength(0);
         expect(await ctx.db.select().from(shipments).where(eq(shipments.orderId, job.order.id))).toHaveLength(0);
         expect(await ctx.db.select().from(ledgerEntries).where(eq(ledgerEntries.txnKey, `payout:${job.order.id}:${job.shopId}`))).toHaveLength(0);
+    });
+
+    it('refunding a dispatched order withdraws the job from the Shop Console', async () => {
+        const { quote } = await createQuoteFixture(ctx.db, { quantity: 4 });
+        const checkout = await createCheckout({
+            quoteId: quote.id,
+            shippingMethod: 'STANDARD',
+            buyer: { email: 'refund@example.com', name: 'Rae Fund' },
+            shippingAddress: BUYER_ADDRESS,
+            acceptTerms: true,
+        });
+        await handlePaymentSucceeded({
+            provider: 'dev',
+            providerRef: checkout.payment.providerRef,
+            providerPaymentId: null,
+            amountCents: checkout.totals.totalCents,
+            currency: 'usd',
+            eventId: 'evt_refund_job_1',
+        });
+        const [job] = await ctx.db.select().from(manufacturingJobs).where(eq(manufacturingJobs.orderId, checkout.orderId));
+        expect(job.status).toBe('OFFERED');
+
+        await refundOrder(checkout.orderId, ADMIN_ACTOR, 'Buyer cancelled before production');
+
+        const [after] = await ctx.db.select().from(manufacturingJobs).where(eq(manufacturingJobs.id, job.id));
+        expect(after.status).toBe('CANCELLED');
+        const [order] = await ctx.db.select().from(orders).where(eq(orders.id, checkout.orderId));
+        expect(order.status).toBe('REFUNDED');
+        const types = (await ctx.db.select().from(domainEvents).where(eq(domainEvents.orderId, checkout.orderId))).map((e) => e.eventType);
+        expect(types).toEqual(expect.arrayContaining(['order.refunded', 'job.cancelled']));
+        await expect(acceptJob(job.shopId, job.id)).rejects.toMatchObject({ code: 'CONFLICT' });
+        expect((await listJobs(job.shopId, { status: ['OFFERED'] })).map((j) => j.id)).not.toContain(job.id);
+        const balances = ledgerBalances(await getOrderLedger(checkout.orderId));
+        expect(balances.CASH).toBe(0);
+        expect(balances.SHOP_PAYABLE).toBe(0);
+        expect(Object.values(balances).reduce((sum, v) => sum + (v ?? 0), 0)).toBe(0);
     });
 });

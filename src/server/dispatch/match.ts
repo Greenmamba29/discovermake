@@ -3,8 +3,9 @@
  *
  * Candidates = ACTIVE shops with an active rate card and an active capability for
  * the quote's thickness option + its cutting process whose machine bed fits the part
- * (rotation allowed). When bending is ordered, the shop must also have a press brake
- * capability for that thickness option long enough for the longest bend line.
+ * (rotation allowed), and an active `shop_services` row for every finish / secondary
+ * operation the quote selected. When bending is ordered, the shop must also have a
+ * press brake capability for that thickness option long enough for the longest bend line.
  *
  * Score (lower wins, integer cents-equivalent):
  *   estimated shop cost from the shop's rate card (machine time, setup, handling, QA,
@@ -18,6 +19,7 @@
 import { and, eq, inArray, notInArray, sql } from 'drizzle-orm';
 import type { ProcessKind } from '../../contracts/enums';
 import type { DbOrTx } from '../db';
+import { shopsOfferingAll } from '../shops/services';
 import { manufacturingJobs, shopCapabilities, shopRateCards, shops } from '../db/schema';
 
 export const QUEUE_DAY_PENALTY_CENTS = 1500;
@@ -47,6 +49,8 @@ export type JobRequirements = {
     /** Bending ordered: number of bends per part and longest bend line. */
     bending: { bendCount: number; longestBendMm: number } | null;
     finished: boolean;
+    /** Finish + secondary-operation service ids the shop must offer (shop_services). */
+    requiredServiceIds: string[];
     /** Shop the quote was priced on (tie-break). */
     quotedShopId: string;
 };
@@ -103,6 +107,15 @@ export async function findCandidates(db: DbOrTx, req: JobRequirements, excludeSh
         );
 
     let eligible = rows.filter((r) => fitsBed(req.bboxWidthMm, req.bboxHeightMm, r.capability.bedWidthMm, r.capability.bedHeightMm));
+
+    if (req.requiredServiceIds.length && eligible.length) {
+        const ok = await shopsOfferingAll(
+            req.requiredServiceIds,
+            eligible.map((r) => r.shop.id),
+            db,
+        );
+        eligible = eligible.filter((r) => ok.has(r.shop.id));
+    }
 
     if (req.bending && eligible.length) {
         const brakes = await db

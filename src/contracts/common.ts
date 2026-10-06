@@ -21,6 +21,7 @@ export const ID_PREFIX = {
     service: 'svc',
     shop: 'shop',
     capability: 'cap',
+    shopService: 'ssv',
     rateCard: 'rc',
     shopToken: 'stk',
     shopSession: 'sss',

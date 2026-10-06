@@ -1,4 +1,5 @@
-import { defineConfig, devices } from '@playwright/test';
+import { existsSync } from 'node:fs';
+import { chromium, defineConfig, devices } from '@playwright/test';
 
 /**
  * End-to-end tests (`bun run test:e2e`). Runs `next dev` on port 3100 against a
@@ -28,6 +29,22 @@ export const E2E_ENV: Record<string, string> = {
     SEED_SHOP_TOKEN: E2E_SHOP_TOKEN,
 };
 
+/**
+ * Chromium to launch. Order: PLAYWRIGHT_CHROMIUM_EXECUTABLE, then the build pinned
+ * by @playwright/test (if `playwright install` has been run), then the
+ * preinstalled sandbox Chromium at /opt/pw-browsers/chromium.
+ */
+function chromiumExecutable(): string | undefined {
+    if (process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE) return process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE;
+    try {
+        if (existsSync(chromium.executablePath())) return undefined;
+    } catch {
+        // fall through to the preinstalled build
+    }
+    return existsSync('/opt/pw-browsers/chromium') ? '/opt/pw-browsers/chromium' : undefined;
+}
+const CHROMIUM_EXECUTABLE = chromiumExecutable();
+
 export default defineConfig({
     testDir: './tests/e2e',
     testMatch: /.*\.spec\.ts/,
@@ -48,8 +65,8 @@ export default defineConfig({
             name: 'chromium',
             use: {
                 ...devices['Desktop Chrome'],
-                // Sandboxes without the pinned browser build can point at a preinstalled Chromium.
-                launchOptions: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE ? { executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE } : {},
+                // Sandboxes without the pinned browser build fall back to a preinstalled Chromium.
+                launchOptions: CHROMIUM_EXECUTABLE ? { executablePath: CHROMIUM_EXECUTABLE } : {},
             },
         },
     ],

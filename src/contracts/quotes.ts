@@ -168,4 +168,4 @@ export function tierForQuantity(quantity: number): QuoteTier {
 }
 
 /** Quantities shown on the price ladder (workflow 02). */
-export const LADDER_QUANTITIES = [1, 10, 50, 100, 250] as const;
+export const LADDER_QUANTITIES = [1, 10, 25, 50, 100, 250] as const;

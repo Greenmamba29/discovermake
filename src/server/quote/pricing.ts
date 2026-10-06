@@ -18,12 +18,12 @@
  * All coefficients come from the shop rate card + catalog rows (ALL uncalibrated in R1)
  * and the PRICING_CONSTANTS below, versioned by PRICING_VERSION.
  */
-import type { QuoteLineItem } from '../../contracts/quotes';
+import { LADDER_QUANTITIES, type QuoteLineItem } from '../../contracts/quotes';
 
 export const PRICING_VERSION = 'px-2026.10-r1';
 
 /** Quantities on the price ladder (workflow 02 + R1 brief: 1/10/25/50/100/250). */
-export const QUOTE_LADDER_QUANTITIES = [1, 10, 25, 50, 100, 250] as const;
+export const QUOTE_LADDER_QUANTITIES = LADDER_QUANTITIES;
 
 /** Engine constants not stored per shop (uncalibrated R1 defaults). */
 export const PRICING_CONSTANTS = {

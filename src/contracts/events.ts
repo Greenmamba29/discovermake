@@ -90,6 +90,10 @@ export const EVENT_PAYLOADS = {
     'job.accepted': z.object({ jobId: id, orderId: id, shopId: id }),
     'job.declined': z.object({ jobId: id, orderId: id, shopId: id, reason: DeclineReason, note: z.string().nullable() }),
     'job.expired': z.object({ jobId: id, orderId: id, shopId: id }),
+    /** Dispatch found no capable shop; the order stays PAID until ops dispatch or refund it. */
+    'dispatch.unmatched': z.object({ orderId: id, excludedShopIds: z.array(z.string()) }),
+    /** Open jobs withdrawn from shops because the order was refunded or cancelled. */
+    'job.cancelled': z.object({ jobId: id, orderId: id, shopId: id, reason: z.string() }),
     'production.started': z.object({ jobId: id, orderId: id, shopId: id }),
     'production.milestone': z.object({ jobId: id, orderId: id, shopId: id, milestoneId: id, kind: MilestoneKind, note: z.string().nullable() }),
     'production.completed': z.object({ jobId: id, orderId: id, shopId: id }),

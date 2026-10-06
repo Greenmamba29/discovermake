@@ -12,7 +12,7 @@ import { createOrderAccessToken, hashOrderAccessToken } from '@/server/auth/orde
 import { generateToken, sha256Hex } from '@/server/auth/tokens';
 import type { Db } from '@/server/db';
 import { DEV_RATE_CARD_ID, DEV_SHOP_ID, R1_RULESET_VERSION } from '@/server/db/seed';
-import { builds, inspectionPlans, orders, parts, quotes, shopAccessTokens, shopCapabilities, shopRateCards, shops } from '@/server/db/schema';
+import { builds, inspectionPlans, orders, parts, quotes, services, shopAccessTokens, shopCapabilities, shopRateCards, shopServices, shops } from '@/server/db/schema';
 import { newBuildDisplayId, newId, newOrderNumber } from '@/server/ids';
 import { recordPaymentSplit } from '@/server/ledger';
 import { advanceOrder } from '@/server/orders';
@@ -118,7 +118,7 @@ export async function createQuoteFixture(db: Db, opts: QuoteFixtureOptions = {})
             designVersion: 1,
             shopId: DEV_SHOP_ID,
             rateCardId: DEV_RATE_CARD_ID,
-            config: { partId: part.id, materialId: 'mat_al_5052', thicknessOptionId: THK, finishServiceId: opts.finish ? 'svc_powder_black' : null, services, quantity },
+            config: { partId: part.id, materialId: 'mat_al_5052', thicknessOptionId: THK, finishServiceId: opts.finish ? 'svc_powder_black_matte' : null, services, quantity },
             summary: {
                 materialName: 'Aluminum 5052-H32',
                 thicknessLabel: '.063" (1.6 mm)',
@@ -200,6 +200,8 @@ export type ShopFixtureOptions = {
     queueDays?: number;
     rating?: number | null;
     status?: 'ACTIVE' | 'PENDING' | 'SUSPENDED';
+    /** Finishes / secondary ops the shop offers (shop_services). Default: every catalog service. */
+    serviceIds?: string[];
 };
 
 /** Insert a partner shop with a rate card, a fiber capability for THK (and optionally a brake) plus a console token. */
@@ -238,6 +240,8 @@ export async function createShopFixture(db: Db, opts: ShopFixtureOptions) {
     if (opts.brake) {
         await db.insert(shopCapabilities).values({ shopId, materialId: 'mat_al_5052', thicknessOptionId: THK, processId: BRAKE, bedWidthMm: 1250, bedHeightMm: 1250, maxBendLengthMm: 1250 });
     }
+    const serviceIds = opts.serviceIds ?? (await db.select({ id: services.id }).from(services)).map((s) => s.id);
+    if (serviceIds.length) await db.insert(shopServices).values(serviceIds.map((serviceId) => ({ shopId, serviceId })));
     const token = generateToken('dmshop');
     await db.insert(shopAccessTokens).values({ shopId, tokenHash: sha256Hex(token), label: 'console' });
     return { shopId, token };

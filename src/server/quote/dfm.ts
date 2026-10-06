@@ -380,7 +380,7 @@ export function runMaterialDfm(f: PartFeatures, ctx: MaterialDfmContext): DfmVio
             violation(ruleset, 'bend_not_supported', {
                 message: `The file has ${f.bendCount} bend line${f.bendCount > 1 ? 's' : ''} but bending is not selected.`,
                 count: f.bendCount,
-                fix: { kind: 'CONTACT_SUPPORT', label: 'Add press brake bending, or remove the BEND layer to order flat parts', params: { addServiceId: 'svc_bending' } },
+                fix: { kind: 'ADD_SERVICE', label: 'Add press brake bending, or remove the BEND layer to order flat parts', params: { serviceId: 'svc_bending' } },
             }),
         );
     }
@@ -388,7 +388,7 @@ export function runMaterialDfm(f: PartFeatures, ctx: MaterialDfmContext): DfmVio
         out.push(
             violation(ruleset, 'bend_lines_missing', {
                 message: 'Bending is selected but the file has no bend lines. Draw them as lines on a layer named "BEND".',
-                fix: { kind: 'CONTACT_SUPPORT', label: 'Add bend lines on a layer named BEND and re-upload, or remove bending' },
+                fix: { kind: 'REMOVE_SERVICE', label: 'Add bend lines on a layer named BEND and re-upload, or remove bending', params: { serviceId: 'svc_bending' } },
             }),
         );
     }
