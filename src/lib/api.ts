@@ -8,6 +8,10 @@
 import type {
     AdminDispatchResponse,
     AdminOrderDetail,
+    AdminPayoutView,
+    AdminRefundRequest,
+    ExpireOffersResponse,
+    MarkPayoutPaidRequest,
     AdminOrderListResponse,
     AnalyzePartRequest,
     BuildView,
@@ -196,9 +200,13 @@ export const api = {
         apiFetch<AdminDispatchResponse>(`/api/admin/orders/${enc(orderId)}/dispatch`, { method: 'POST', headers: { authorization: `Bearer ${token}` } }),
     adminMarkDelivered: (token: string, shipmentId: string, body: MarkDeliveredRequest = {}) =>
         apiFetch<ShipmentView>(`/api/admin/shipments/${enc(shipmentId)}/delivered`, { body, headers: { authorization: `Bearer ${token}` } }),
-    /** Marks the order's latest shipment delivered (POST /api/admin/orders/:orderId/delivered, shop agent route). */
+    /** Marks the order's latest shipment delivered (POST /api/admin/orders/:orderId/delivered). */
     adminMarkOrderDelivered: (token: string, orderId: string, body: MarkDeliveredRequest = {}) =>
         apiFetch<ShipmentView>(`/api/admin/orders/${enc(orderId)}/delivered`, { body, headers: { authorization: `Bearer ${token}` } }),
     adminExpireOffers: (token: string) =>
-        apiFetch<{ expired: number }>('/api/admin/offers/expire', { method: 'POST', headers: { authorization: `Bearer ${token}` } }),
+        apiFetch<ExpireOffersResponse>('/api/admin/offers/expire', { method: 'POST', headers: { authorization: `Bearer ${token}` } }),
+    adminRefund: (token: string, orderId: string, body: AdminRefundRequest) =>
+        apiFetch<AdminOrderDetail>(`/api/admin/orders/${enc(orderId)}/refund`, { body, headers: { authorization: `Bearer ${token}` } }),
+    adminMarkPayoutPaid: (token: string, payoutId: string, body: MarkPayoutPaidRequest) =>
+        apiFetch<AdminPayoutView>(`/api/admin/payouts/${enc(payoutId)}/paid`, { body, headers: { authorization: `Bearer ${token}` } }),
 };

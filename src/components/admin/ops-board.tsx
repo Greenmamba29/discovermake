@@ -167,9 +167,14 @@ function Board({ token, onSignOut }: { token: string; onSignOut: () => void }) {
     );
 }
 
+/** Orders a refund can still apply to (state machine: any time after payment, before shipping). */
+const REFUNDABLE: ReadonlySet<OrderStatus> = new Set(['PAID', 'DISPATCHED', 'ACCEPTED', 'IN_PRODUCTION', 'QA_FAILED', 'QA_PASSED']);
+
 function OrderRow({ token, order, open, onToggle, onNotice }: { token: string; order: AdminOrderRow; open: boolean; onToggle: () => void; onNotice: (n: { tone: 'success' | 'error'; text: string }) => void }) {
     const qc = useQueryClient();
     const detail = useQuery({ queryKey: ['admin-order', order.id], queryFn: () => api.adminOrder(token, order.id), enabled: open });
+    const [refundReason, setRefundReason] = useState('');
+    const [payoutRefs, setPayoutRefs] = useState<Record<string, string>>({});
     const refresh = () => {
         void qc.invalidateQueries({ queryKey: ['admin-orders'] });
         void qc.invalidateQueries({ queryKey: ['admin-order', order.id] });
@@ -228,6 +233,26 @@ function OrderRow({ token, order, open, onToggle, onNotice }: { token: string; o
                             />
                         )}
                     </div>
+                    {REFUNDABLE.has(order.status) && (
+                        <div className="flex flex-wrap items-end gap-2">
+                            <Field label="Refund reason" className="min-w-[16rem] flex-1">
+                                {({ id }) => <TextInput id={id} value={refundReason} placeholder="Buyer cancelled before production" onChange={(e) => setRefundReason(e.target.value)} data-testid="admin-refund-reason" />}
+                            </Field>
+                            <ConfirmAction
+                                label="Refund in full"
+                                confirmLabel="Refund now"
+                                prompt="Refund the buyer in full, withdraw the job from the shop and reverse the ledger? This cannot be undone."
+                                variant="secondary"
+                                size="sm"
+                                onConfirm={() => act(async () => {
+                                    if (refundReason.trim().length < 3) throw new Error('Enter a refund reason (3+ characters).');
+                                    await api.adminRefund(token, order.id, { reason: refundReason.trim() });
+                                    return `${order.orderNumber} refunded.`;
+                                })}
+                                testId="admin-refund"
+                            />
+                        </div>
+                    )}
                     {detail.isLoading && <Skeleton className="h-24" />}
                     {detail.data && (
                         <div className="grid gap-4 text-xs md:grid-cols-2">
@@ -269,8 +294,36 @@ function OrderRow({ token, order, open, onToggle, onNotice }: { token: string; o
                                 <p className="eyebrow mb-2 mt-4">Payouts</p>
                                 <ul className="space-y-1 font-mono text-fg-muted">
                                     {detail.data.payouts.map((p) => (
-                                        <li key={p.id}>
-                                            {p.shopId} · {money(p.amountCents, order.currency)} · <span className="text-fg">{p.status}</span>
+                                        <li key={p.id} className="space-y-1">
+                                            <div>
+                                                {p.shopId} · {money(p.amountCents, order.currency)} · {p.method} · <span className="text-fg">{p.status}</span>
+                                            </div>
+                                            {p.status === 'PENDING' && p.method === 'manual' && (
+                                                <div className="flex flex-wrap items-center gap-2 font-sans">
+                                                    <TextInput
+                                                        aria-label={`Payment reference for payout ${p.id}`}
+                                                        className="h-9 max-w-[14rem] text-xs"
+                                                        placeholder="ACH / check reference"
+                                                        value={payoutRefs[p.id] ?? ''}
+                                                        onChange={(e) => setPayoutRefs((r) => ({ ...r, [p.id]: e.target.value }))}
+                                                        data-testid={`admin-payout-ref-${p.id}`}
+                                                    />
+                                                    <ConfirmAction
+                                                        label="Mark paid"
+                                                        confirmLabel="Confirm paid"
+                                                        prompt="Record that this shop payout was sent?"
+                                                        variant="secondary"
+                                                        size="sm"
+                                                        onConfirm={() => act(async () => {
+                                                            const ref = (payoutRefs[p.id] ?? '').trim();
+                                                            if (!ref) throw new Error('Enter the payment reference first.');
+                                                            await api.adminMarkPayoutPaid(token, p.id, { reference: ref });
+                                                            return 'Payout marked paid.';
+                                                        })}
+                                                        testId={`admin-payout-paid-${p.id}`}
+                                                    />
+                                                </div>
+                                            )}
                                         </li>
                                     ))}
                                     {detail.data.payouts.length === 0 && <li>None yet</li>}
