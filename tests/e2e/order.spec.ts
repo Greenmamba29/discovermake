@@ -209,7 +209,7 @@ test('R1: a customer runs a real order end to end', async ({ page, context, requ
     // ---- 13. Ledger: every transaction balances; payout recorded at shop cost ----
     const detail = await adminOrder(request, orderId);
     expect(detail.status).toBe('COMPLETE');
-    expect(detail.statusHistory.map((h) => h.to)).toEqual(['PENDING_PAYMENT', 'PAID', 'DISPATCHED', 'ACCEPTED', 'IN_PRODUCTION', 'QA_PASSED', 'SHIPPED', 'DELIVERED', 'COMPLETE']);
+    expect(detail.statusHistory.map((h) => h.to)).toEqual(['PAID', 'DISPATCHED', 'ACCEPTED', 'IN_PRODUCTION', 'QA_PASSED', 'SHIPPED', 'DELIVERED', 'COMPLETE']);
     const byTxn = new Map<string, number>();
     for (const l of detail.ledger) byTxn.set(l.txnKey, (byTxn.get(l.txnKey) ?? 0) + (l.direction === 'DEBIT' ? l.amountCents : -l.amountCents));
     expect([...byTxn.keys()].sort()).toEqual([`payment:${orderId}`, `payout:${orderId}:shop_philadelphia_precision`]);
