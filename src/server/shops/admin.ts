@@ -10,6 +10,7 @@ import { z } from 'zod';
 import type { AdminDispatchResponse, AdminOrderDetail, AdminOrderRow } from '../../contracts/admin';
 import { Address, Email, IsoDateTime, ProcessId, ShopId, ThicknessOptionId, type Actor } from '../../contracts/common';
 import type { OrderStatus } from '../../contracts/enums';
+import type { ShipmentView } from '../../contracts/shipments';
 import { generateToken, sha256Hex } from '../auth/tokens';
 import { getDb, withTx } from '../db';
 import {
@@ -32,7 +33,6 @@ import { ApiError } from '../http';
 import { newId } from '../ids';
 import { toUniversalStatus } from '../orders';
 import { markShipmentDelivered } from '../shipping';
-import type { ShipmentView } from '../../contracts/shipments';
 
 export const SHOP_TOKEN_PREFIX = 'dmshop';
 

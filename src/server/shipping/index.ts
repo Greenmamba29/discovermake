@@ -65,7 +65,18 @@ export async function applyTrackingUpdate(update: TrackingUpdate): Promise<void>
     const carrierActor: Actor = { kind: 'carrier', id: found.provider };
 
     if (update.event.status === 'DELIVERED') {
-        await markShipmentDelivered(found.id, carrierActor, new Date(update.event.occurredAt));
+        try {
+            await markShipmentDelivered(found.id, carrierActor, new Date(update.event.occurredAt));
+        } catch (err) {
+            // A state conflict will never succeed on retry: alert ops instead of letting the carrier retry forever.
+            // Anything else (e.g. passport activation failed) propagates so the webhook is retried.
+            if (!(err instanceof ApiError && err.code === 'CONFLICT')) throw err;
+            await notify('ops.alert', {
+                subject: `Carrier reported delivery for shipment ${found.id} that cannot be applied`,
+                message: `${err.message}. Tracking ${found.trackingNumber}. Review the order and confirm delivery manually.`,
+                orderId: found.orderId,
+            });
+        }
         return;
     }
 
@@ -135,8 +146,7 @@ export async function markShipmentDelivered(shipmentId: string, actor: Actor, de
                 buildId: order.buildId,
                 orderId: order.id,
             });
-            const advanced = await advanceOrder(order.id, 'DELIVERED', actor, { reason: event.message, data: { shipmentId: s.id }, at }, t);
-            void advanced;
+            await advanceOrder(order.id, 'DELIVERED', actor, { reason: event.message, data: { shipmentId: s.id }, at }, t);
             await emitEvent(t, {
                 type: 'product.delivered',
                 payload: { orderId: order.id, shipmentId: s.id, deliveredAt: at.toISOString() },

@@ -58,6 +58,14 @@ function isUniqueViolation(err: unknown, constraint: string): boolean {
     return e.cause ? isUniqueViolation(e.cause, constraint) : false;
 }
 
+/** True once any quote for the part was consumed by a paid order: its design is then frozen. */
+export async function hasOrderedQuote(db: DbOrTx, partId: string): Promise<boolean> {
+    const [row] = await db.select({ id: quotes.id }).from(quotes).where(and(eq(quotes.partId, partId), eq(quotes.status, 'ORDERED'))).limit(1);
+    return Boolean(row);
+}
+
+const FROZEN_MESSAGE = 'This design is already in an order and cannot change. Upload the revised file as a new part.';
+
 export function toUploadError(err: unknown): ApiError | null {
     if (err instanceof UnsupportedFileError) return new ApiError('UNSUPPORTED_MEDIA_TYPE', err.message, 415, { reason: err.reason });
     return null;
@@ -194,6 +202,7 @@ export async function uploadPartBytesImpl(partId: string, bytes: Uint8Array): Pr
     const db = getDb();
     const row = await loadPartWithBuild(db, partId);
     if (!row) throw new ApiError('NOT_FOUND', 'Part not found');
+    if (await hasOrderedQuote(db, partId)) throw new ApiError('CONFLICT', FROZEN_MESSAGE);
     if (bytes.byteLength > QUOTE_MAX_UPLOAD_BYTES) throw new ApiError('PAYLOAD_TOO_LARGE', `Files up to ${QUOTE_MAX_UPLOAD_BYTES / 1024 / 1024} MB can be quoted instantly.`);
     try {
         sniffDxf(bytes);
@@ -235,6 +244,14 @@ export async function analyzePartImpl(partId: string, input: AnalyzePartRequest 
         head = await storage.headObject(part.fileKey);
     }
     if (!head) throw new ApiError('CONFLICT', 'The file has not been uploaded yet. Send the bytes to the upload URL first.');
+
+    // Ordered designs are frozen: same bytes + units is a no-op, anything else is refused.
+    if (await hasOrderedQuote(db, partId)) {
+        if (input.units && input.units !== part.units) throw new ApiError('CONFLICT', FROZEN_MESSAGE);
+        const current = await storage.getObject(key);
+        if (current && part.fileSha256 && sha256(new Uint8Array(current)) !== part.fileSha256) throw new ApiError('CONFLICT', FROZEN_MESSAGE);
+        return toPartView(part, loaded.build);
+    }
 
     await db.update(parts).set({ status: 'ANALYZING', updatedAt: new Date() }).where(eq(parts.id, partId));
     await setBuildStatus(db, part.buildId, 'ANALYZING');

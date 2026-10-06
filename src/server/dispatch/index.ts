@@ -293,3 +293,18 @@ async function expireOffer(jobId: string, orderId: string, now: Date): Promise<{
         return { shopId: job.shopId };
     });
 }
+
+/**
+ * Cancel every open job of an order (refund / cancellation by ops). Call inside the same
+ * transaction as the order transition. Returns the cancelled job ids. Idempotent.
+ */
+export async function cancelOpenJobs(orderId: string, tx?: DbOrTx): Promise<string[]> {
+    return withTx(async (t) => {
+        const rows = await t
+            .update(manufacturingJobs)
+            .set({ status: 'CANCELLED', updatedAt: new Date() })
+            .where(and(eq(manufacturingJobs.orderId, orderId), inArray(manufacturingJobs.status, ['OFFERED', 'ACCEPTED', 'IN_PRODUCTION', 'QA_PASSED'])))
+            .returning({ id: manufacturingJobs.id });
+        return rows.map((r) => r.id);
+    }, tx);
+}

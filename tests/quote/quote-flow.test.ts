@@ -154,6 +154,16 @@ describe('upload -> analyze -> quote', () => {
         await markQuoteOrdered(view.id); // idempotent
         const ordered = await getQuote(view.id);
         expect(ordered).toMatchObject({ status: 'ORDERED', orderable: false });
+
+        // The ordered design is frozen: same-file re-analyze is a no-op, changes are refused.
+        expect(await analyzePart(created.partId)).toMatchObject({ designVersion: 1, status: 'READY' });
+        await expect(analyzePart(created.partId, { units: 'in' })).rejects.toMatchObject({ code: 'CONFLICT' });
+        const reupload = await postUpload(new Request(`${BASE}/api/parts/${created.partId}/upload`, { method: 'PUT', body: fixture('l-bracket-flat').build() }), params({ partId: created.partId }));
+        expect(reupload.status).toBe(409);
+        await getStorage().putObject(created.upload.key, fixture('l-bracket-flat').build()); // signed-URL re-PUT
+        await expect(analyzePart(created.partId)).rejects.toMatchObject({ code: 'CONFLICT' });
+        const [frozen] = await ctx.db.select().from(parts).where(eq(parts.id, created.partId));
+        expect(frozen.fileKey).toBe(row.fileKey);
     });
 
     it('is deterministic for identical configurations', async () => {

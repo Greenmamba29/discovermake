@@ -361,7 +361,7 @@ export async function submitInspection(shopId: string, jobId: string, input: Ins
     if (out.repeatedFailure) {
         await notify('ops.alert', {
             subject: `QA failed again for ${out.order.orderNumber}`,
-            message: `Inspection failed ${'more than once'} on order ${out.order.orderNumber} (latest job ${jobId}). Review the rework or refund the order.`,
+            message: `Inspection failed more than once on order ${out.order.orderNumber} (latest job ${jobId}). Review the rework or refund the order.`,
             orderId: out.order.id,
         });
     }
