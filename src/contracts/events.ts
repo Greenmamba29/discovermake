@@ -105,6 +105,10 @@ export const EVENT_PAYLOADS = {
     'passport.activated': z.object({ passportId: id, orderId: id, snapshotHash: z.string() }),
     'ledger.payment_recorded': z.object({ orderId: id, txnKey: z.string(), totalCents: cents }),
     'payout.created': z.object({ payoutId: id, orderId: id, shopId: id, amountCents: cents }),
+    /** A Stripe Connect Express account was created for a partner shop (shops.stripe_account_id set). */
+    'shop.connect_account_created': z.object({ shopId: id, accountId: id }),
+    /** Stripe reported a change to a shop's Connect account (account.updated). */
+    'shop.connect_account_updated': z.object({ shopId: id, accountId: id, payoutsEnabled: z.boolean(), chargesEnabled: z.boolean(), detailsSubmitted: z.boolean() }),
 } as const;
 
 export type EventType = keyof typeof EVENT_PAYLOADS;

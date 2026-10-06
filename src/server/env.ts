@@ -34,6 +34,8 @@ const EnvSchema = z.object({
     PAYMENT_PROVIDER: z.enum(['stripe', 'dev']).default('stripe'),
     STRIPE_SECRET_KEY: optionalString,
     STRIPE_WEBHOOK_SECRET: optionalString,
+    /** Signing secret of the Connect webhook endpoint (/api/webhooks/stripe-connect, "events on connected accounts"). */
+    STRIPE_CONNECT_WEBHOOK_SECRET: optionalString,
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: optionalString,
 
     CARRIER: z.enum(['easypost', 'manual']).default('easypost'),

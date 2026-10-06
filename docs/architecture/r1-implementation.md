@@ -137,6 +137,10 @@ The auth column uses these values:
 | POST | `/api/admin/shops` | `CreateShopRequest` | `CreateShopResponse` (201, console token shown once) | admin | shop |
 | POST | `/api/admin/shops/:shopId/tokens` | `IssueShopTokenRequest` | `ShopConsoleTokenView` (201) | admin | shop |
 | DELETE | `/api/admin/shops/:shopId/tokens/:tokenId` | – | `OkResponse` | admin | shop |
+| POST | `/api/shop/payouts/connect` | – (optional `{}`) | `ShopConnectLinkResponse` (Stripe Connect onboarding link; creates the Express account once) | shop-session | shop (503 without `STRIPE_SECRET_KEY`) |
+| GET | `/api/shop/payouts/status` | – | `ShopPayoutStatusResponse` (live from Stripe) | shop-session | shop (503 without `STRIPE_SECRET_KEY`) |
+| POST | `/api/admin/shops/:shopId/connect` | – | `AdminShopConnectLinkResponse` | admin | shop (ops-assisted onboarding) |
+| POST | `/api/webhooks/stripe-connect` | raw Stripe Connect event | `{ received: true }` | signature (`STRIPE_CONNECT_WEBHOOK_SECRET`) | shop (`account.updated` -> `shop.connect_account_updated`) |
 | POST | `/api/webhooks/easypost` | raw EasyPost event | `{ received: true }` | signature (`EASYPOST_WEBHOOK_SECRET`) | shop |
 | POST | `/api/shop/carrier-webhook` | raw EasyPost event | `{ received: true }` | signature | shop (alias of `/api/webhooks/easypost`) |
 | GET, PUT | `/api/storage/local/[...key]` | signed query | bytes / 200 | signed URL (local driver only) | foundation |
