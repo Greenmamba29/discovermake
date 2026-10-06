@@ -1,7 +1,7 @@
 import { eq } from 'drizzle-orm';
 import { beforeAll, describe, expect, it } from 'vitest';
-import { AdminDispatchResponse, AdminOrderDetail, AdminOrderListResponse } from '@/contracts/admin';
-import { PassportPublicView, PassportVerifyResponse } from '@/contracts/passport';
+import { AdminDispatchResponse, AdminOrderDetail, AdminOrderListResponse, AdminPayoutView, CreateShopResponse, ExpireOffersResponse, PublishOutboxResponse } from '@/contracts/admin';
+import { PassportPublicResponse, PassportVerifyResponse } from '@/contracts/passport';
 import { ShopJobDetail, ShopJobListResponse, ShopSessionResponse } from '@/contracts/shop';
 import { ShipmentView } from '@/contracts/shipments';
 import { shopSessions } from '@/server/db/schema';
@@ -10,7 +10,12 @@ import { GET as adminListOrders } from '@/app/api/admin/orders/route';
 import { GET as adminGetOrder } from '@/app/api/admin/orders/[orderId]/route';
 import { POST as adminDispatch } from '@/app/api/admin/orders/[orderId]/dispatch/route';
 import { POST as adminOrderDelivered } from '@/app/api/admin/orders/[orderId]/delivered/route';
-import { POST as adminExpire } from '@/app/api/admin/offers/expire/route';
+import { GET as cronExpire, POST as adminExpire } from '@/app/api/admin/offers/expire/route';
+import { GET as cronOutbox } from '@/app/api/admin/outbox/publish/route';
+import { POST as adminRefund } from '@/app/api/admin/orders/[orderId]/refund/route';
+import { POST as adminPayoutPaid } from '@/app/api/admin/payouts/[payoutId]/paid/route';
+import { manufacturingJobs } from '@/server/db/schema';
+import { createCheckout, handlePaymentSucceeded } from '@/server/orders';
 import { GET as passportGet } from '@/app/api/passport/[passportId]/route';
 import { GET as passportVerify } from '@/app/api/passport/[passportId]/verify/route';
 import { DELETE as logout, GET as whoami, POST as login } from '@/app/api/shop/session/route';
@@ -23,10 +28,11 @@ import { POST as inspectionRoute } from '@/app/api/shop/jobs/[jobId]/inspection/
 import { POST as shipmentRoute } from '@/app/api/shop/jobs/[jobId]/shipment/route';
 import { getStorage } from '@/server/storage';
 import { useTestDb } from '../support/db';
-import { createPaidOrder, measurementsFor, quietConsole } from './fixtures';
+import { BUYER_ADDRESS, createPaidOrder, createQuoteFixture, measurementsFor, quietConsole } from './fixtures';
 
 const BASE = 'http://localhost:3100';
 const ADMIN = { authorization: 'Bearer test-admin-token' };
+const CRON = { authorization: 'Bearer test-cron-secret' };
 const params = <P>(p: P) => ({ params: Promise.resolve(p) });
 
 function req(path: string, init: { method?: string; body?: unknown; headers?: Record<string, string> } = {}) {
@@ -54,6 +60,17 @@ describe('shop + admin + passport routes', () => {
         expect((await adminExpire(req('/api/admin/offers/expire', { method: 'POST', headers: ADMIN }), params({}))).status).toBe(200);
     });
 
+    it('scheduled jobs accept the narrower CRON_SECRET, which cannot reach other admin routes', async () => {
+        const expire = await cronExpire(req('/api/admin/offers/expire', { headers: CRON }), params({}));
+        expect(expire.status).toBe(200);
+        ExpireOffersResponse.parse(await expire.json());
+        const outbox = await cronOutbox(req('/api/admin/outbox/publish', { headers: CRON }), params({}));
+        expect(outbox.status).toBe(200);
+        expect(PublishOutboxResponse.parse(await outbox.json()).failed).toBe(0);
+        expect((await cronOutbox(req('/api/admin/outbox/publish'), params({}))).status).toBe(401);
+        expect((await adminListOrders(req('/api/admin/orders', { headers: CRON }), params({}))).status).toBe(401);
+    });
+
     it('rejects bad tokens and unauthenticated console calls', async () => {
         const bad = await login(req('/api/shop/session', { method: 'POST', body: { token: 'dmshop_this_is_not_a_real_token_000' } }), params({}));
         expect(bad.status).toBe(401);
@@ -72,6 +89,7 @@ describe('shop + admin + passport routes', () => {
         expect(set).toMatch(/Path=\//);
         const session = ShopSessionResponse.parse(await res.json());
         expect(session.shop.shopId).toBe('shop_philadelphia_precision');
+        expect(session.shippingMode).toBe('manual');
         const cookie = sessionCookie(res);
         const auth = { cookie };
         expect(ShopSessionResponse.parse(await (await whoami(req('/api/shop/session', { headers: auth }), params({}))).json()).shop.name).toBe('Philadelphia Precision Works');
@@ -117,7 +135,18 @@ describe('shop + admin + passport routes', () => {
         expect(detail.status).toBe('COMPLETE');
         expect(detail.universalStatus).toBe('COMPLETE');
         expect(detail.payouts).toHaveLength(1);
+        expect(detail.payouts[0]).toMatchObject({ status: 'PENDING', method: 'manual' });
+        expect(detail.shipments).toEqual([expect.objectContaining({ status: 'DELIVERED', carrier: 'UPS', trackingNumber: '1ZROUTES00001' })]);
         expect(detail.ledger.some((l) => l.txnKey.startsWith('payout:'))).toBe(true);
+
+        // Ops settles the manual payout with a bank reference (idempotent).
+        const payoutId = detail.payouts[0].id;
+        expect((await adminPayoutPaid(req(`/api/admin/payouts/${payoutId}/paid`, { method: 'POST', headers: ADMIN, body: {} }), params({ payoutId }))).status).toBe(400);
+        const paid = AdminPayoutView.parse(await (await adminPayoutPaid(req(`/api/admin/payouts/${payoutId}/paid`, { method: 'POST', headers: ADMIN, body: { reference: 'ACH-20261006-01' } }), params({ payoutId }))).json());
+        expect(paid).toMatchObject({ status: 'PAID', providerRef: 'ACH-20261006-01' });
+        const again = await adminPayoutPaid(req(`/api/admin/payouts/${payoutId}/paid`, { method: 'POST', headers: ADMIN, body: { reference: 'ACH-20261006-01' } }), params({ payoutId }));
+        expect(again.status).toBe(200);
+        expect((await adminPayoutPaid(req('/api/admin/payouts/pout_missing0000000000/paid', { method: 'POST', headers: ADMIN, body: { reference: 'x' } }), params({ payoutId: 'pout_missing0000000000' }))).status).toBe(404);
         const list = AdminOrderListResponse.parse(await (await adminListOrders(req('/api/admin/orders?status=COMPLETE', { headers: ADMIN }), params({}))).json());
         expect(list.orders.map((o) => o.id)).toContain(order.id);
         expect(list.orders.find((o) => o.id === order.id)?.shopName).toBe('Philadelphia Precision Works');
@@ -128,9 +157,9 @@ describe('shop + admin + passport routes', () => {
         const { passports } = await import('@/server/db/schema');
         const [pp] = await ctx.db.select().from(passports).where(eq(passports.orderId, order.id));
         const pres = await passportGet(req(`/api/passport/${pp.id}`), params({ passportId: pp.id }));
-        const pjson = (await pres.json()) as Record<string, unknown>;
-        expect(PassportPublicView.parse(pjson).verified).toBe(true);
-        expect(String(pjson.qrCodeDataUrl)).toMatch(/^data:image\/png;base64,/);
+        const pjson = PassportPublicResponse.parse(await pres.json());
+        expect(pjson.verified).toBe(true);
+        expect(pjson.qrCodeDataUrl).toMatch(/^data:image\/png;base64,/);
         const vres = PassportVerifyResponse.parse(await (await passportVerify(req(`/api/passport/${pp.id}/verify`), params({ passportId: pp.id }))).json());
         expect(vres.valid).toBe(true);
         expect((await passportGet(req('/api/passport/pps_doesnotexist000000000'), params({ passportId: 'pps_doesnotexist000000000' }))).status).toBe(404);
@@ -167,13 +196,15 @@ describe('shop + admin + passport routes', () => {
                         minimumOrderCents: 2900,
                     },
                     capabilities: [{ thicknessOptionId: 'thk_al5052_063', processId: 'prc_fiber_laser', bedWidthMm: 1500, bedHeightMm: 3000, machineLabel: 'Trumpf 3030' }],
+                    serviceIds: ['svc_deburr', 'svc_anodize_clear'],
                 },
             }),
             params({}),
         );
         expect(create.status).toBe(201);
-        const created = (await create.json()) as { shop: { id: string }; consoleToken: { token: string }; capabilityCount: number; rateCardId: string };
+        const created = CreateShopResponse.parse(await create.json());
         expect(created.capabilityCount).toBe(1);
+        expect(created.serviceCount).toBe(2);
         expect(created.rateCardId).toMatch(/^rc_/);
         expect(created.consoleToken.token).toMatch(/^dmshop_/);
         const { shopAccessTokens } = await import('@/server/db/schema');
@@ -201,5 +232,39 @@ describe('shop + admin + passport routes', () => {
             params({}),
         );
         expect(bad.status).toBe(400);
+
+        const badService = await adminCreateShop(
+            req('/api/admin/shops', {
+                method: 'POST',
+                headers: ADMIN,
+                body: {
+                    name: 'Bad Service Co',
+                    contactEmail: 'x@badsvc.example',
+                    address: { name: 'X', line1: '1 St', city: 'Newark', region: 'NJ', postalCode: '07102', country: 'US' },
+                    serviceIds: ['svc_unicorn_polish'],
+                },
+            }),
+            params({}),
+        );
+        expect(badService.status).toBe(400);
+    });
+
+    it('ops refunds a dispatched order: provider refund, REFUNDED, job withdrawn; refund needs a reason', async () => {
+        const { quote } = await createQuoteFixture(ctx.db, { quantity: 3 });
+        const checkout = await createCheckout({ quoteId: quote.id, shippingMethod: 'STANDARD', buyer: { email: 'refund-route@example.com', name: 'Rio Fund' }, shippingAddress: BUYER_ADDRESS, acceptTerms: true });
+        await handlePaymentSucceeded({ provider: 'dev', providerRef: checkout.payment.providerRef, providerPaymentId: null, amountCents: checkout.totals.totalCents, currency: 'usd', eventId: 'evt_refund_route_1' });
+        const orderId = checkout.orderId;
+
+        expect((await adminRefund(req(`/api/admin/orders/${orderId}/refund`, { method: 'POST', body: { reason: 'Buyer request' } }), params({ orderId }))).status).toBe(401);
+        expect((await adminRefund(req(`/api/admin/orders/${orderId}/refund`, { method: 'POST', headers: ADMIN, body: {} }), params({ orderId }))).status).toBe(400);
+        const res = await adminRefund(req(`/api/admin/orders/${orderId}/refund`, { method: 'POST', headers: ADMIN, body: { reason: 'Buyer request before production' } }), params({ orderId }));
+        expect(res.status).toBe(200);
+        const detail = AdminOrderDetail.parse(await res.json());
+        expect(detail.status).toBe('REFUNDED');
+        expect(detail.payments[0].status).toBe('REFUNDED');
+        expect(detail.jobs.map((j) => j.status)).toEqual(['CANCELLED']);
+        expect(detail.ledger.some((l) => l.txnKey === `refund:${orderId}`)).toBe(true);
+        const jobs = await ctx.db.select().from(manufacturingJobs).where(eq(manufacturingJobs.orderId, orderId));
+        expect(jobs.every((j) => j.status === 'CANCELLED')).toBe(true);
     });
 });

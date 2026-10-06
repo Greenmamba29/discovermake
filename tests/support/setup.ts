@@ -13,3 +13,4 @@ process.env.PASSPORT_SIGNING_SECRET ||= 'test-passport-secret';
 process.env.JOB_PACKET_SIGNING_SECRET ||= 'test-job-packet-secret';
 process.env.STORAGE_SIGNING_SECRET ||= 'test-storage-secret';
 process.env.ADMIN_TOKEN ||= 'test-admin-token';
+process.env.CRON_SECRET ||= 'test-cron-secret';
