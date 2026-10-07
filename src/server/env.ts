@@ -70,6 +70,11 @@ const EnvSchema = z.object({
     MAKE_AI_MODEL: optionalString.transform((v) => v ?? 'gemini-3.5-flash'),
     /** Google AI Studio key for Make AI. Make AI answers 503 when unset. */
     GOOGLE_GENERATIVE_AI_API_KEY: optionalString,
+
+    /** CAD worker (services/cad-worker) base URL, e.g. https://cad.internal.example. CAD generation answers 503 when unset. */
+    CAD_WORKER_URL: optionalString,
+    /** Bearer token the CAD worker expects (its CAD_WORKER_TOKEN). */
+    CAD_WORKER_TOKEN: optionalString,
 });
 
 export type Env = z.infer<typeof EnvSchema>;

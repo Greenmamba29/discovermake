@@ -146,6 +146,14 @@ export const EVENT_PAYLOADS = {
     'design.version_approved': z.object({ buildId: id, version: z.number().int().positive(), approvedBy: z.string() }),
     'requirements.generated': z.object({ buildId: id, version: z.number().int().positive(), requirementCount: z.number().int().nonnegative(), unknownCount: z.number().int().nonnegative() }),
     'material.recommended': z.object({ buildId: id, version: z.number().int().positive(), material: z.string().max(120), confidence: z.number().min(0).max(1) }),
+    /** The CAD worker produced geometry for a design version; `partId` is set when a flat pattern was attached for instant quoting. */
+    'cad.generated': z.object({
+        buildId: id,
+        version: z.number().int().positive(),
+        family: z.enum(['sheet_panel', 'l_bracket', 'enclosure']),
+        partId: id.nullable(),
+        artifacts: z.array(z.object({ kind: z.enum(['STEP', 'DXF', 'GLB']), key: z.string(), sha256: z.string() })),
+    }),
 
     // ---- R2: sourcing bridge (ADR-0005, workflow 03) ----------------------
     'sourcing.requested': z.object({ jobId: id, buildId: id, designVersion: z.number().int().positive(), channel: SourcingChannel, quantity: z.number().int().positive() }),
