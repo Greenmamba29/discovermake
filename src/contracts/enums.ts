@@ -220,6 +220,144 @@ export const DFM_SEVERITIES = ['BLOCKING', 'WARNING'] as const;
 export const DfmSeverity = z.enum(DFM_SEVERITIES);
 export type DfmSeverity = z.infer<typeof DfmSeverity>;
 
-export const ACTOR_KINDS = ['system', 'buyer', 'shop', 'admin', 'carrier', 'payment_provider'] as const;
+/** `sourcing_agent` = an external sourcing agent (Accio Work) calling the DiscoverMake Sourcing MCP server (ADR-0005). */
+export const ACTOR_KINDS = ['system', 'buyer', 'shop', 'admin', 'carrier', 'payment_provider', 'sourcing_agent'] as const;
 export const ActorKind = z.enum(ACTOR_KINDS);
 export type ActorKind = z.infer<typeof ActorKind>;
+
+// ---------------------------------------------------------------------------
+// R2: Build Graph (ADR-0001) + sourcing bridge (ADR-0005, workflow 03)
+// ---------------------------------------------------------------------------
+
+/** Build trust states (workflow 03). Never make an AI concept look production-ready. */
+export const BUILD_TRUST_STATES = ['CONCEPT', 'ENGINEERING_REVIEW', 'MANUFACTURING_READY', 'SUPPLIER_CONFIRMED', 'ORDERABLE'] as const;
+export const BuildTrustState = z.enum(BUILD_TRUST_STATES);
+export type BuildTrustState = z.infer<typeof BuildTrustState>;
+
+/** How a Build was started (workflow 01 entry points). */
+export const BUILD_ORIGINS = ['upload', 'make_ai', 'remix', 'clone'] as const;
+export const BuildOrigin = z.enum(BUILD_ORIGINS);
+export type BuildOrigin = z.infer<typeof BuildOrigin>;
+
+/** DRAFT is editable; APPROVED is immutable (ADR-0001); SUPERSEDED once a newer version is approved. */
+export const DESIGN_VERSION_STATUSES = ['DRAFT', 'APPROVED', 'SUPERSEDED'] as const;
+export const DesignVersionStatus = z.enum(DESIGN_VERSION_STATUSES);
+export type DesignVersionStatus = z.infer<typeof DesignVersionStatus>;
+
+/** Build Graph node types (spec §6.1, the subset R2 writes). */
+export const BG_NODE_TYPES = [
+    'BUILD',
+    'REQUIREMENT',
+    'UNKNOWN',
+    'ASSEMBLY',
+    'PART',
+    'MATERIAL',
+    'PROCESS',
+    'FINISH',
+    'SUPPLIER',
+    'SHOP',
+    'QUOTE',
+    'ORDER',
+    'QA',
+    'SHIPMENT',
+    'PASSPORT',
+] as const;
+export const BgNodeType = z.enum(BG_NODE_TYPES);
+export type BgNodeType = z.infer<typeof BgNodeType>;
+
+/** Build Graph edge types (spec §6.2). */
+export const BG_EDGE_TYPES = [
+    'CONTAINS',
+    'MADE_OF',
+    'REQUIRES_PROCESS',
+    'FINISHED_WITH',
+    'CONSTRAINED_BY',
+    'BLOCKED_BY',
+    'SOURCED_FROM',
+    'MANUFACTURED_BY',
+    'QUOTED_AS',
+    'ORDERED_AS',
+    'INSPECTED_BY',
+    'SHIPPED_AS',
+    'DERIVED_FROM',
+] as const;
+export const BgEdgeType = z.enum(BG_EDGE_TYPES);
+export type BgEdgeType = z.infer<typeof BgEdgeType>;
+
+/** Where a node's content came from. AI output is never `user`. */
+export const BG_SOURCES = ['user', 'make_ai', 'quote_engine', 'sourcing_agent', 'ops', 'system'] as const;
+export const BgSource = z.enum(BG_SOURCES);
+export type BgSource = z.infer<typeof BgSource>;
+
+/**
+ * Sourcing job lifecycle (workflow 03).
+ * QUEUED -> LEASED (next_job, visibility timeout) -> IN_PROGRESS (first write under the lease)
+ * -> COMPLETE (complete_job) | CANCELLED (ops) | FAILED.
+ * An expired lease returns the job to QUEUED.
+ */
+export const SOURCING_JOB_STATUSES = ['QUEUED', 'LEASED', 'IN_PROGRESS', 'COMPLETE', 'CANCELLED', 'FAILED'] as const;
+export const SourcingJobStatus = z.enum(SOURCING_JOB_STATUSES);
+export type SourcingJobStatus = z.infer<typeof SourcingJobStatus>;
+
+/** Who works a sourcing job: the Accio Work agent group, or DiscoverMake ops at the sourcing desk (fallback). */
+export const SOURCING_CHANNELS = ['accio', 'desk'] as const;
+export const SourcingChannel = z.enum(SOURCING_CHANNELS);
+export type SourcingChannel = z.infer<typeof SourcingChannel>;
+
+export const NEGOTIATION_STATUSES = [
+    'contacted',
+    'rfq-sent',
+    'awaiting-reply',
+    'negotiating',
+    'supplier-estimate',
+    'supplier-confirmed',
+    'declined',
+    'no-response',
+] as const;
+export const NegotiationStatus = z.enum(NEGOTIATION_STATUSES);
+export type NegotiationStatus = z.infer<typeof NegotiationStatus>;
+
+export const SUPPLIER_OFFER_STATUSES = ['ACTIVE', 'STALE', 'WITHDRAWN', 'SELECTED', 'REJECTED'] as const;
+export const SupplierOfferStatus = z.enum(SUPPLIER_OFFER_STATUSES);
+export type SupplierOfferStatus = z.infer<typeof SupplierOfferStatus>;
+
+/**
+ * Decisions only a human in DiscoverMake may make (ADR-0005 approval boundary).
+ * A sourcing agent can only REQUEST these through `request_approval`.
+ */
+export const APPROVAL_KINDS = [
+    'RELEASE_FULL_PACKAGE',
+    'REQUEST_SAMPLE',
+    'PAY_DEPOSIT',
+    'PLACE_PURCHASE_ORDER',
+    'ACCEPT_MATERIAL_SUBSTITUTION',
+    'ACCEPT_TOLERANCE_CHANGE',
+    'APPROVE_TOOLING',
+    'START_PRODUCTION',
+    'CHANGE_COMPLIANCE',
+    'SELECT_SUPPLIER_OFFER',
+] as const;
+export const ApprovalKind = z.enum(APPROVAL_KINDS);
+export type ApprovalKind = z.infer<typeof ApprovalKind>;
+
+export const APPROVAL_STATUSES = ['PENDING', 'APPROVED', 'REJECTED', 'EXPIRED', 'CANCELLED'] as const;
+export const ApprovalStatus = z.enum(APPROVAL_STATUSES);
+export type ApprovalStatus = z.infer<typeof ApprovalStatus>;
+
+/** Who must decide an approval. */
+export const APPROVER_ROLES = ['ops', 'customer'] as const;
+export const ApproverRole = z.enum(APPROVER_ROLES);
+export type ApproverRole = z.infer<typeof ApproverRole>;
+
+export const SOURCING_DOCUMENT_KINDS = ['QUOTE', 'DRAWING', 'CERTIFICATE', 'SAMPLE_PHOTO', 'INVOICE', 'OTHER'] as const;
+export const SourcingDocumentKind = z.enum(SOURCING_DOCUMENT_KINDS);
+export type SourcingDocumentKind = z.infer<typeof SourcingDocumentKind>;
+
+/** Package tiers an external supplier may see. FULL needs a RELEASE_FULL_PACKAGE approval for that supplier. */
+export const PACKAGE_TIERS = ['REDACTED', 'FULL'] as const;
+export const PackageTier = z.enum(PACKAGE_TIERS);
+export type PackageTier = z.infer<typeof PackageTier>;
+
+export const INCOTERMS = ['EXW', 'FCA', 'FOB', 'CFR', 'CIF', 'CPT', 'CIP', 'DAP', 'DPU', 'DDP'] as const;
+export const Incoterm = z.enum(INCOTERMS);
+export type Incoterm = z.infer<typeof Incoterm>;

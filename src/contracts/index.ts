@@ -1,5 +1,5 @@
 /**
- * DiscoverMake R1 API contracts: the single source of truth for request/response
+ * DiscoverMake API contracts: the single source of truth for request/response
  * shapes shared by the server modules, route handlers and the UI.
  *
  * Import from `@/contracts` (or a specific file). Contracts must stay free of
@@ -19,3 +19,5 @@ export * from './admin';
 export * from './events';
 export * from './connect';
 export * from './make-ai';
+export * from './build-graph';
+export * from './sourcing';

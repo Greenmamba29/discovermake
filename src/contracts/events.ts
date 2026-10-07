@@ -8,7 +8,14 @@
  */
 import { z } from 'zod';
 import {
+    ApprovalKind,
+    ApprovalStatus,
+    ApproverRole,
     DeclineReason,
+    NegotiationStatus,
+    PackageTier,
+    SourcingChannel,
+    SourcingDocumentKind,
     InspectionOutcome,
     MilestoneKind,
     OrderStatus,
@@ -125,6 +132,36 @@ export const EVENT_PAYLOADS = {
         promptChars: z.number().int().nonnegative(),
         promptSha256: z.string().regex(/^[0-9a-f]{64}$/),
     }),
+
+    // ---- R2: Build Graph (ADR-0001) --------------------------------------
+    'build.forked': z.object({ buildId: id, derivedFromBuildId: id, fromVersion: z.number().int().positive(), kind: z.enum(['remix', 'clone']) }),
+    'design.version_created': z.object({
+        buildId: id,
+        version: z.number().int().positive(),
+        parentVersion: z.number().int().positive().nullable(),
+        summary: z.string().max(300),
+        nodeCount: z.number().int().nonnegative(),
+        edgeCount: z.number().int().nonnegative(),
+    }),
+    'design.version_approved': z.object({ buildId: id, version: z.number().int().positive(), approvedBy: z.string() }),
+    'requirements.generated': z.object({ buildId: id, version: z.number().int().positive(), requirementCount: z.number().int().nonnegative(), unknownCount: z.number().int().nonnegative() }),
+    'material.recommended': z.object({ buildId: id, version: z.number().int().positive(), material: z.string().max(120), confidence: z.number().min(0).max(1) }),
+
+    // ---- R2: sourcing bridge (ADR-0005, workflow 03) ----------------------
+    'sourcing.requested': z.object({ jobId: id, buildId: id, designVersion: z.number().int().positive(), channel: SourcingChannel, quantity: z.number().int().positive() }),
+    'sourcing.job_leased': z.object({ jobId: id, clientId: id, leaseExpiresAt: IsoDateTime }),
+    'sourcing.supplier_found': z.object({ jobId: id, supplierId: id, country: z.string(), verified: z.boolean() }),
+    'sourcing.offer_received': z.object({ jobId: id, offerId: id, supplierId: id, trustLevel: TrustLevel, unitPriceCents: cents, quantity: z.number().int().positive() }),
+    'sourcing.negotiation_updated': z.object({ jobId: id, supplierId: id, status: NegotiationStatus }),
+    'sourcing.document_attached': z.object({ jobId: id, documentId: id, kind: SourcingDocumentKind }),
+    /** Signed package URLs were handed to a sourcing agent (access log mirror). */
+    'sourcing.package_accessed': z.object({ jobId: id, clientId: id, tier: PackageTier, supplierId: id.nullable() }),
+    'sourcing.approval_requested': z.object({ approvalId: id, jobId: id.nullable(), buildId: id, kind: ApprovalKind, approverRole: ApproverRole }),
+    'sourcing.approval_decided': z.object({ approvalId: id, kind: ApprovalKind, status: ApprovalStatus, decidedBy: z.string() }),
+    /** A sourcing agent tried to cross the approval boundary; the bridge refused with APPROVAL_REQUIRED. */
+    'sourcing.boundary_blocked': z.object({ jobId: id.nullable(), clientId: id, tool: z.string().max(80), approvalKind: ApprovalKind }),
+    'sourcing.completed': z.object({ jobId: id, outcome: z.enum(['offers_submitted', 'no_viable_suppliers', 'needs_desk']), offerCount: z.number().int().nonnegative() }),
+    'supplier.selected': z.object({ buildId: id, jobId: id, offerId: id, approvalId: id }),
 } as const;
 
 export type EventType = keyof typeof EVENT_PAYLOADS;

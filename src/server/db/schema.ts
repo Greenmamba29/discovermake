@@ -27,7 +27,22 @@ import {
     uuid,
 } from 'drizzle-orm/pg-core';
 import {
+    APPROVAL_KINDS,
+    APPROVAL_STATUSES,
+    APPROVER_ROLES,
+    BG_EDGE_TYPES,
+    BG_NODE_TYPES,
+    BG_SOURCES,
+    BUILD_ORIGINS,
     BUILD_STATUSES,
+    DESIGN_VERSION_STATUSES,
+    INCOTERMS,
+    NEGOTIATION_STATUSES,
+    PACKAGE_TIERS,
+    SOURCING_CHANNELS,
+    SOURCING_DOCUMENT_KINDS,
+    SOURCING_JOB_STATUSES,
+    SUPPLIER_OFFER_STATUSES,
     CARRIER_PROVIDERS,
     DECLINE_REASONS,
     INSPECTION_OUTCOMES,
@@ -61,6 +76,8 @@ import type { QuoteConfig, QuoteConfigSummary, QuoteLadderRung, QuoteLineItem, S
 import type { InspectionCheck, InspectionMeasurement, JobPacket } from '../../contracts/shop';
 import type { Parcel, TrackingEvent } from '../../contracts/shipments';
 import type { PassportSnapshot } from '../../contracts/passport';
+import type { CreationIntent } from '../../contracts/make-ai';
+import type { ApprovalPolicy, SourcingRequest, SubmitOfferInput, SupplierEvidenceInput } from '../../contracts/sourcing';
 import { newId } from '../ids';
 
 // ---------------------------------------------------------------------------
@@ -94,6 +111,21 @@ export const passportStatusEnum = pgEnum('passport_status', PASSPORT_STATUSES);
 export const ledgerAccountEnum = pgEnum('ledger_account', LEDGER_ACCOUNTS);
 export const ledgerDirectionEnum = pgEnum('ledger_direction', LEDGER_DIRECTIONS);
 export const payoutStatusEnum = pgEnum('payout_status', PAYOUT_STATUSES);
+export const buildOriginEnum = pgEnum('build_origin', BUILD_ORIGINS);
+export const designVersionStatusEnum = pgEnum('design_version_status', DESIGN_VERSION_STATUSES);
+export const bgNodeTypeEnum = pgEnum('bg_node_type', BG_NODE_TYPES);
+export const bgEdgeTypeEnum = pgEnum('bg_edge_type', BG_EDGE_TYPES);
+export const bgSourceEnum = pgEnum('bg_source', BG_SOURCES);
+export const sourcingJobStatusEnum = pgEnum('sourcing_job_status', SOURCING_JOB_STATUSES);
+export const sourcingChannelEnum = pgEnum('sourcing_channel', SOURCING_CHANNELS);
+export const negotiationStatusEnum = pgEnum('negotiation_status', NEGOTIATION_STATUSES);
+export const supplierOfferStatusEnum = pgEnum('supplier_offer_status', SUPPLIER_OFFER_STATUSES);
+export const approvalKindEnum = pgEnum('approval_kind', APPROVAL_KINDS);
+export const approvalStatusEnum = pgEnum('approval_status', APPROVAL_STATUSES);
+export const approverRoleEnum = pgEnum('approver_role', APPROVER_ROLES);
+export const sourcingDocumentKindEnum = pgEnum('sourcing_document_kind', SOURCING_DOCUMENT_KINDS);
+export const packageTierEnum = pgEnum('package_tier', PACKAGE_TIERS);
+export const incotermEnum = pgEnum('incoterm', INCOTERMS);
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -112,7 +144,11 @@ const cents = (name: string) => integer(name);
 // Builds + parts
 // ---------------------------------------------------------------------------
 
-/** One Build per uploaded part in R1 (ADR-0001 Build Graph tables arrive in R2). */
+/**
+ * One persistent Build per creation (ADR-0001). R1 upload builds have one part and
+ * no graph rows; R2 Make AI / remix / clone builds carry a Build Graph per design
+ * version (`design_versions`, `bg_nodes`, `bg_edges`).
+ */
 export const builds = pgTable(
     'builds',
     {
@@ -121,10 +157,16 @@ export const builds = pgTable(
         name: text('name').notNull(),
         status: buildStatusEnum('status').notNull().default('DRAFT'),
         ownerEmail: text('owner_email'),
+        origin: buildOriginEnum('origin').notNull().default('upload'),
+        /** Latest design version number (graph builds). Upload builds track `parts.design_version`. */
+        currentVersion: integer('current_version').notNull().default(1),
+        derivedFromBuildId: text('derived_from_build_id'),
+        /** Make AI intent that started this build (origin = make_ai). */
+        intentId: text('intent_id'),
         createdAt: createdAt(),
         updatedAt: updatedAt(),
     },
-    (t) => [uniqueIndex('builds_display_id_uq').on(t.displayId)],
+    (t) => [uniqueIndex('builds_display_id_uq').on(t.displayId), index('builds_derived_from_idx').on(t.derivedFromBuildId)],
 );
 
 export const parts = pgTable(
@@ -918,4 +960,332 @@ export const webhookEvents = pgTable(
         error: text('error'),
     },
     (t) => [uniqueIndex('webhook_events_provider_event_uq').on(t.provider, t.eventId)],
+);
+
+// ---------------------------------------------------------------------------
+// R2: Make AI intents + Build Graph (ADR-0001)
+// ---------------------------------------------------------------------------
+
+/** A persisted Make AI CreationIntent ("Continue to Build" turns it into a Build). No raw prompt is stored. */
+export const makeIntents = pgTable(
+    'make_intents',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('makeIntent')),
+        intent: jsonb('intent').$type<CreationIntent>().notNull(),
+        model: text('model').notNull(),
+        promptSha256: text('prompt_sha256').notNull(),
+        promptChars: integer('prompt_chars').notNull(),
+        buildId: text('build_id').references(() => builds.id),
+        createdAt: createdAt(),
+    },
+    (t) => [index('make_intents_build_idx').on(t.buildId)],
+);
+
+/** Immutable once APPROVED. Every accepted change writes a new version (copy-on-write graph). */
+export const designVersions = pgTable(
+    'design_versions',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('designVersion')),
+        buildId: text('build_id')
+            .notNull()
+            .references(() => builds.id, { onDelete: 'cascade' }),
+        version: integer('version').notNull(),
+        status: designVersionStatusEnum('status').notNull().default('DRAFT'),
+        summary: text('summary').notNull(),
+        parentVersion: integer('parent_version'),
+        createdBy: text('created_by').notNull(),
+        approvedBy: text('approved_by'),
+        approvedAt: tstz('approved_at'),
+        createdAt: createdAt(),
+    },
+    (t) => [uniqueIndex('design_versions_build_version_uq').on(t.buildId, t.version)],
+);
+
+export const bgNodes = pgTable(
+    'bg_nodes',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('bgNode')),
+        buildId: text('build_id')
+            .notNull()
+            .references(() => builds.id, { onDelete: 'cascade' }),
+        designVersion: integer('design_version').notNull(),
+        /** Stable logical key across versions, e.g. `part:body`. */
+        key: text('key').notNull(),
+        type: bgNodeTypeEnum('type').notNull(),
+        label: text('label').notNull(),
+        data: jsonb('data').$type<Record<string, unknown>>().notNull().default({}),
+        confidence: doublePrecision('confidence'),
+        source: bgSourceEnum('source').notNull(),
+        provenance: text('provenance'),
+        createdAt: createdAt(),
+    },
+    (t) => [
+        uniqueIndex('bg_nodes_version_key_uq').on(t.buildId, t.designVersion, t.key),
+        index('bg_nodes_build_type_idx').on(t.buildId, t.type),
+        index('bg_nodes_data_gin').using('gin', t.data),
+        check('bg_nodes_confidence_ck', sql`${t.confidence} is null or (${t.confidence} >= 0 and ${t.confidence} <= 1)`),
+    ],
+);
+
+export const bgEdges = pgTable(
+    'bg_edges',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('bgEdge')),
+        buildId: text('build_id')
+            .notNull()
+            .references(() => builds.id, { onDelete: 'cascade' }),
+        designVersion: integer('design_version').notNull(),
+        type: bgEdgeTypeEnum('type').notNull(),
+        fromKey: text('from_key').notNull(),
+        toKey: text('to_key').notNull(),
+        data: jsonb('data').$type<Record<string, unknown>>().notNull().default({}),
+        createdAt: createdAt(),
+    },
+    (t) => [
+        uniqueIndex('bg_edges_version_uq').on(t.buildId, t.designVersion, t.type, t.fromKey, t.toKey),
+        index('bg_edges_from_idx').on(t.buildId, t.designVersion, t.fromKey),
+    ],
+);
+
+// ---------------------------------------------------------------------------
+// R2: Sourcing bridge (ADR-0005, workflow 03)
+// ---------------------------------------------------------------------------
+
+/** An MCP client allowed to call the Sourcing MCP server (one per Accio Work workspace). Token stored as sha256 only. */
+export const sourcingClients = pgTable(
+    'sourcing_clients',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('sourcingClient')),
+        name: text('name').notNull(),
+        tokenHash: text('token_hash').notNull(),
+        lastUsedAt: tstz('last_used_at'),
+        revokedAt: tstz('revoked_at'),
+        createdAt: createdAt(),
+    },
+    (t) => [uniqueIndex('sourcing_clients_token_hash_uq').on(t.tokenHash)],
+);
+
+export const sourcingJobs = pgTable(
+    'sourcing_jobs',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('sourcingJob')),
+        displayId: text('display_id').notNull(),
+        buildId: text('build_id')
+            .notNull()
+            .references(() => builds.id),
+        partId: text('part_id').references(() => parts.id),
+        designVersion: integer('design_version').notNull(),
+        /** The SourcingRequest handed to the agent, frozen at creation. */
+        request: jsonb('request').$type<SourcingRequest>().notNull(),
+        approvalPolicy: jsonb('approval_policy').$type<ApprovalPolicy>().notNull(),
+        status: sourcingJobStatusEnum('status').notNull().default('QUEUED'),
+        channel: sourcingChannelEnum('channel').notNull().default('accio'),
+        priority: integer('priority').notNull().default(0),
+        leaseId: uuid('lease_id'),
+        leasedByClientId: text('leased_by_client_id').references(() => sourcingClients.id),
+        leaseExpiresAt: tstz('lease_expires_at'),
+        leaseCount: integer('lease_count').notNull().default(0),
+        summary: text('summary'),
+        outcome: text('outcome'),
+        createdBy: text('created_by').notNull(),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+        completedAt: tstz('completed_at'),
+    },
+    (t) => [
+        uniqueIndex('sourcing_jobs_display_id_uq').on(t.displayId),
+        index('sourcing_jobs_queue_idx').on(t.status, t.priority, t.createdAt),
+        index('sourcing_jobs_build_idx').on(t.buildId),
+    ],
+);
+
+export const suppliers = pgTable(
+    'suppliers',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('supplier')),
+        name: text('name').notNull(),
+        platform: text('platform').notNull(),
+        platformRef: text('platform_ref'),
+        country: text('country').notNull(),
+        verified: boolean('verified').notNull().default(false),
+        profileUrl: text('profile_url'),
+        capabilities: jsonb('capabilities').$type<string[]>().notNull().default([]),
+        createdBy: text('created_by').notNull(),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [
+        uniqueIndex('suppliers_platform_ref_uq')
+            .on(t.platform, t.platformRef)
+            .where(sql`${t.platformRef} is not null`),
+    ],
+);
+
+export const supplierEvidence = pgTable(
+    'supplier_evidence',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('supplierEvidence')),
+        supplierId: text('supplier_id')
+            .notNull()
+            .references(() => suppliers.id, { onDelete: 'cascade' }),
+        jobId: text('job_id').references(() => sourcingJobs.id),
+        evidence: jsonb('evidence').$type<SupplierEvidenceInput>().notNull(),
+        createdAt: createdAt(),
+    },
+    (t) => [index('supplier_evidence_supplier_idx').on(t.supplierId)],
+);
+
+export const supplierOffers = pgTable(
+    'supplier_offers',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('supplierOffer')),
+        jobId: text('job_id')
+            .notNull()
+            .references(() => sourcingJobs.id),
+        supplierId: text('supplier_id')
+            .notNull()
+            .references(() => suppliers.id),
+        buildId: text('build_id')
+            .notNull()
+            .references(() => builds.id),
+        designVersion: integer('design_version').notNull(),
+        idempotencyKey: text('idempotency_key').notNull(),
+        quantity: integer('quantity').notNull(),
+        currency: text('currency').notNull().default('usd'),
+        unitPriceCents: cents('unit_price_cents').notNull(),
+        toolingCents: cents('tooling_cents').notNull().default(0),
+        sampleCostCents: cents('sample_cost_cents'),
+        shippingCents: cents('shipping_cents'),
+        moq: integer('moq').notNull(),
+        productionLeadDays: integer('production_lead_days').notNull(),
+        shippingLeadDays: integer('shipping_lead_days').notNull(),
+        incoterm: incotermEnum('incoterm').notNull(),
+        material: text('material').notNull(),
+        processes: jsonb('processes').$type<string[]>().notNull(),
+        certificationsClaimed: jsonb('certifications_claimed').$type<string[]>().notNull().default([]),
+        exceptions: jsonb('exceptions').$type<string[]>().notNull().default([]),
+        confidence: doublePrecision('confidence').notNull(),
+        negotiationStatus: negotiationStatusEnum('negotiation_status').notNull(),
+        trustLevel: trustLevelEnum('trust_level').notNull(),
+        status: supplierOfferStatusEnum('status').notNull().default('ACTIVE'),
+        validUntil: tstz('valid_until'),
+        /** The validated tool input, kept verbatim for audit. */
+        raw: jsonb('raw').$type<SubmitOfferInput>().notNull(),
+        submittedBy: text('submitted_by').notNull(),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [
+        uniqueIndex('supplier_offers_idempotency_uq').on(t.jobId, t.idempotencyKey),
+        index('supplier_offers_build_idx').on(t.buildId, t.status),
+        check('supplier_offers_confidence_ck', sql`${t.confidence} >= 0 and ${t.confidence} <= 1`),
+        check('supplier_offers_trust_ck', sql`${t.trustLevel} in ('SUPPLIER_ESTIMATE', 'SUPPLIER_CONFIRMED')`),
+    ],
+);
+
+export const sourcingNegotiations = pgTable(
+    'sourcing_negotiations',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('negotiation')),
+        jobId: text('job_id')
+            .notNull()
+            .references(() => sourcingJobs.id),
+        supplierId: text('supplier_id')
+            .notNull()
+            .references(() => suppliers.id),
+        status: negotiationStatusEnum('status').notNull(),
+        /** Append-only notes: [{ at, status, note }]. */
+        notes: jsonb('notes').$type<{ at: string; status: string; note: string }[]>().notNull().default([]),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [uniqueIndex('sourcing_negotiations_job_supplier_uq').on(t.jobId, t.supplierId)],
+);
+
+export const sourcingDocuments = pgTable(
+    'sourcing_documents',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('sourcingDocument')),
+        jobId: text('job_id')
+            .notNull()
+            .references(() => sourcingJobs.id),
+        supplierId: text('supplier_id').references(() => suppliers.id),
+        kind: sourcingDocumentKindEnum('kind').notNull(),
+        fileKey: text('file_key').notNull(),
+        filename: text('filename').notNull(),
+        contentType: text('content_type').notNull(),
+        sizeBytes: integer('size_bytes').notNull(),
+        sha256: text('sha256').notNull(),
+        uploadedBy: text('uploaded_by').notNull(),
+        createdAt: createdAt(),
+    },
+    (t) => [index('sourcing_documents_job_idx').on(t.jobId)],
+);
+
+/** Human decisions at the approval boundary (ADR-0005). Agents can only create PENDING rows. */
+export const approvals = pgTable(
+    'approvals',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('approval')),
+        jobId: text('job_id').references(() => sourcingJobs.id),
+        buildId: text('build_id')
+            .notNull()
+            .references(() => builds.id),
+        kind: approvalKindEnum('kind').notNull(),
+        status: approvalStatusEnum('status').notNull().default('PENDING'),
+        approverRole: approverRoleEnum('approver_role').notNull(),
+        requestedBy: text('requested_by').notNull(),
+        supplierId: text('supplier_id').references(() => suppliers.id),
+        supplierOfferId: text('supplier_offer_id').references(() => supplierOffers.id),
+        reason: text('reason').notNull(),
+        details: jsonb('details').$type<Record<string, unknown>>().notNull().default({}),
+        decidedBy: text('decided_by'),
+        decisionNote: text('decision_note'),
+        decidedAt: tstz('decided_at'),
+        expiresAt: tstz('expires_at'),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [
+        index('approvals_pending_idx')
+            .on(t.approverRole, t.createdAt)
+            .where(sql`${t.status} = 'PENDING'`),
+        index('approvals_job_idx').on(t.jobId),
+        index('approvals_build_idx').on(t.buildId),
+    ],
+);
+
+/** Every signed package URL handed to a sourcing agent. */
+export const sourcingAccessLog = pgTable(
+    'sourcing_access_log',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('sourcingAudit')),
+        jobId: text('job_id')
+            .notNull()
+            .references(() => sourcingJobs.id),
+        clientId: text('client_id').references(() => sourcingClients.id),
+        supplierId: text('supplier_id').references(() => suppliers.id),
+        tier: packageTierEnum('tier').notNull(),
+        fileKey: text('file_key').notNull(),
+        expiresAt: tstz('expires_at').notNull(),
+        createdAt: createdAt(),
+    },
+    (t) => [index('sourcing_access_log_job_idx').on(t.jobId)],
+);
+
+/** Audit log of every MCP tool call (args hashed, never stored raw). */
+export const sourcingToolCalls = pgTable(
+    'sourcing_tool_calls',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('sourcingAudit')),
+        clientId: text('client_id').references(() => sourcingClients.id),
+        tool: text('tool').notNull(),
+        jobId: text('job_id'),
+        ok: boolean('ok').notNull(),
+        errorCode: text('error_code'),
+        argsSha256: text('args_sha256').notNull(),
+        durationMs: integer('duration_ms').notNull(),
+        createdAt: createdAt(),
+    },
+    (t) => [index('sourcing_tool_calls_client_idx').on(t.clientId, t.createdAt)],
 );

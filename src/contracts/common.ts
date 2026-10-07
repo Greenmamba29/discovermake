@@ -38,6 +38,19 @@ export const ID_PREFIX = {
     ledger: 'led',
     payout: 'pout',
     webhook: 'whk',
+    designVersion: 'dv',
+    bgNode: 'bgn',
+    bgEdge: 'bge',
+    makeIntent: 'mki',
+    sourcingJob: 'src',
+    supplier: 'sup',
+    supplierEvidence: 'sev',
+    supplierOffer: 'off',
+    negotiation: 'neg',
+    sourcingDocument: 'sdoc',
+    approval: 'apr',
+    sourcingClient: 'scl',
+    sourcingAudit: 'sau',
 } as const;
 export type IdKind = keyof typeof ID_PREFIX;
 
@@ -63,6 +76,13 @@ export const OrderId = idOf('order');
 export const JobId = idOf('job');
 export const ShipmentId = idOf('shipment');
 export const PassportId = idOf('passport');
+export const DesignVersionId = idOf('designVersion');
+export const BgNodeId = idOf('bgNode');
+export const BgEdgeId = idOf('bgEdge');
+export const SourcingJobId = idOf('sourcingJob');
+export const SupplierId = idOf('supplier');
+export const SupplierOfferId = idOf('supplierOffer');
+export const ApprovalId = idOf('approval');
 
 /** Human display id for a Build, e.g. `DM-7K3QX`. Display only: never an access credential. */
 export const BuildDisplayId = z.string().regex(/^DM-[0-9A-Z]{5,8}$/);
