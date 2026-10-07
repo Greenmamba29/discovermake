@@ -1,1 +1,0 @@
-{"id":6992,"name":"Send Slack messages from new Textlocal messages","description":"Every time a new Textlocal message is created,  Make will automatically send a message in Slack.","url":"6992-send-slack-messages-from-new-textlocal-messages","usedApps":["textlocal","slack"],"usage":0}

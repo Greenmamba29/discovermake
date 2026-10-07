@@ -2,14 +2,8 @@ const path = require('path');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    images: {
-        remotePatterns: [
-            { protocol: 'https', hostname: 'images.unsplash.com' },
-            { protocol: 'https', hostname: 'lh3.googleusercontent.com' },
-            { protocol: 'https', hostname: 'i.pravatar.cc' },
-            { protocol: 'https', hostname: 'plus.unsplash.com' }
-        ]
-    },
+    // postgres-js and the AWS SDK are server-only runtime deps; keep them out of the bundle.
+    serverExternalPackages: ['postgres', '@aws-sdk/client-s3', '@aws-sdk/s3-request-presigner'],
     turbopack: {
         root: path.resolve('.'),
     },

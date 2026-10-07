@@ -1,1 +1,0 @@
-{"id":6266,"name":"Add new Contacts+ contacts to Google Contacts","description":"Every time a new contact is added to Contacts+, Make will automatically create a new Google contact.","url":"6266-add-new-contacts-contacts-to-google-contacts","usedApps":["contactsplus","google-contacts"],"usage":10}

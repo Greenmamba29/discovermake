@@ -1,1 +1,0 @@
-{"id":5583,"name":"Create Opsgenie Alert from new GitLab issues","description":"Every time a new GitLab issue is created,  Make will automatically creates a new Alert in Opsgenie.","url":"5583-create-opsgenie-alert-from-new-gitlab-issues","usedApps":["gitlab","opsgenie"],"usage":4}

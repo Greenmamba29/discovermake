@@ -1,0 +1,3 @@
+ALTER TABLE "shops" ADD COLUMN "stripe_payouts_enabled" boolean DEFAULT false NOT NULL;--> statement-breakpoint
+-- Accounts attached by ops before Connect onboarding existed were already payout-ready; keep routing them to Connect.
+UPDATE "shops" SET "stripe_payouts_enabled" = true WHERE "stripe_account_id" IS NOT NULL;

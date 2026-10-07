@@ -4,82 +4,97 @@
 
 @layer base {
   :root {
-    /* Premium Dark Mode Foundation - "Deep Space" */
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-
-    --card: 240 10% 9%;
-    /* Slightly lighter than bg */
-    --card-foreground: 0 0% 98%;
-
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-
-    /* "Neon" Primary - A vibrant indigo/violet */
-    --primary: 263 70% 50%;
-    --primary-foreground: 210 40% 98%;
-
-    /* "Electric" Secondary - A sharp teal/cyan for accents */
-    --secondary: 180 100% 50%;
-    --secondary-foreground: 240 5.9% 10%;
-
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 263 70% 50%;
-
+    /* Graphite app surface (workflow 10). HSL triplets keep shadcn-style tokens working. */
+    --background: 150 7% 5%; /* #0c0e0d */
+    --foreground: 100 5% 93%;
+    --border: 160 4% 18%;
+    --input: 160 4% 18%;
+    --ring: 140 66% 63%; /* signal green */
     --radius: 0.75rem;
-
-    /* Glassmorphism Variables */
-    --glass-border: 240 5% 20%;
-    --glass-bg: 240 10% 9% / 0.6;
-    --glass-blur: 12px;
+    color-scheme: dark;
   }
-}
 
-@layer base {
   * {
     @apply border-border;
   }
 
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
   body {
-    @apply bg-background text-foreground;
+    @apply bg-graphite-950 font-sans text-fg;
     font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Visible, consistent focus ring everywhere (WCAG 2.2 focus appearance). */
+  :focus-visible {
+    outline: 2px solid #5fe08a;
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+
+  .surface-paper :focus-visible {
+    outline-color: #1d6b3a;
+  }
+
+  ::selection {
+    background: rgba(95, 224, 138, 0.35);
+    color: inherit;
+  }
+
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type="number"] {
+    -moz-appearance: textfield;
   }
 }
 
-/* Custom Utilities for that "Wow" factor */
-@layer utilities {
-  .glass {
-    @apply bg-[hsl(var(--glass-bg))] backdrop-blur-[var(--glass-blur)] border border-[hsl(var(--glass-border))];
+@layer components {
+  .font-wide {
+    font-stretch: 112%;
+    font-variation-settings: "wdth" 112;
   }
-
-  .glass-hover {
-    @apply hover:bg-[hsl(var(--glass-bg))/0.8] transition-all duration-300;
+  .font-expanded {
+    font-stretch: 125%;
+    font-variation-settings: "wdth" 125;
   }
-
-  .text-glow {
-    text-shadow: 0 0 20px hsl(var(--primary)/0.5);
+  .tabular {
+    font-variant-numeric: tabular-nums;
   }
-
-  .border-glow {
-    box-shadow: 0 0 20px -5px hsl(var(--primary)/0.3);
+  .eyebrow {
+    @apply font-mono text-[11px] uppercase tracking-[0.14em] text-fg-subtle;
   }
-
-  /* Gradient text utility */
-  .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-gray-500;
+  .surface-paper .eyebrow {
+    @apply text-ink-subtle;
   }
+  .skeleton {
+    background: linear-gradient(90deg, #1a1d1c 0%, #272b2a 50%, #1a1d1c 100%);
+    background-size: 200% 100%;
+    @apply animate-shimmer rounded-md;
+  }
+  .surface-paper .skeleton {
+    background: linear-gradient(90deg, #ece7dc 0%, #f7f3ea 50%, #ece7dc 100%);
+    background-size: 200% 100%;
+  }
+  .grid-bg {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+}
 
-  .text-gradient-primary {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--secondary))];
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

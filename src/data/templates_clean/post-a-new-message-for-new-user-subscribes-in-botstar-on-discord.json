@@ -1,1 +1,0 @@
-{"id":6493,"name":"Post a new message for new user subscribes in BotStar on Discord","description":"Every time a user requests to contact a human operator in BotStart, Make will automatically post it on your Discord server.","url":"6493-post-a-new-message-for-new-user-subscribes-in-botstar-on-discord","usedApps":["botstar","discord"],"usage":2}

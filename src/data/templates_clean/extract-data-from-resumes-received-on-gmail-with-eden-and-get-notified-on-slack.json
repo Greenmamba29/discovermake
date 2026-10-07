@@ -1,1 +1,0 @@
-{"id":10411,"name":"Extract data  from resumes received on Gmail with Eden and get notified on Slack","description":"Use this template to extract data from resumes you receive on Gmail.\nCreated by tech@edenai.co","url":"10411-extract-data-from-resumes-received-on-gmail-with-eden-and-get-notified-on-slack","usedApps":["google-email","edenai","slack"],"usage":68}

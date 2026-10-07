@@ -1,68 +1,27 @@
-import { NextResponse } from 'next/server';
-import Stripe from 'stripe';
-import { db } from '@/lib/firebase';
-import { doc, updateDoc, arrayUnion, setDoc, serverTimestamp } from 'firebase/firestore';
+/**
+ * POST /api/webhooks/stripe  raw Stripe event -> { received: true }
+ * Signature verified with STRIPE_WEBHOOK_SECRET over the RAW body, deduped in
+ * webhook_events, then routed to the order handlers. Processing errors answer 500
+ * so Stripe retries; bad signatures answer 400.
+ */
+import { env } from '@/server/env';
+import { ApiError, json, MAX_WEBHOOK_BODY_BYTES, readBodyText, route } from '@/server/http';
+import { processPaymentWebhook } from '@/server/orders';
+import { StripePaymentProvider } from '@/server/payments';
 
-const stripe = process.env.STRIPE_SECRET_KEY
-    ? new Stripe(process.env.STRIPE_SECRET_KEY, {
-        apiVersion: '2025-01-27' as any,
-    })
-    : null;
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
-const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
-
-export async function POST(req: Request) {
-    if (!stripe || !webhookSecret) {
-        return NextResponse.json({ error: 'Stripe is not configured' }, { status: 503 });
-    }
-
-    const body = await req.text();
-    const sig = req.headers.get('stripe-signature')!;
-
-    let event: Stripe.Event;
-
+export const POST = route(async (request) => {
+    if (!env().STRIPE_WEBHOOK_SECRET) throw new ApiError('INTERNAL', 'Stripe webhook is not configured', 503);
+    const rawBody = await readBodyText(request, MAX_WEBHOOK_BODY_BYTES);
+    let event;
     try {
-        event = stripe.webhooks.constructEvent(body, sig, webhookSecret);
-    } catch (err: any) {
-        console.error(`Webhook Error: ${err.message}`);
-        return NextResponse.json({ error: `Webhook Error: ${err.message}` }, { status: 400 });
+        event = await new StripePaymentProvider().parseWebhook(rawBody, request.headers);
+    } catch (err) {
+        console.warn('[webhooks/stripe] rejected', err instanceof Error ? err.message : err);
+        throw new ApiError('BAD_REQUEST', 'Invalid Stripe webhook signature');
     }
-
-    // Handle the event
-    if (event.type === 'checkout.session.completed') {
-        const session = event.data.object as Stripe.Checkout.Session;
-        const { userId, templateId, plan } = session.metadata || {};
-
-        if (!userId) {
-            console.error('Missing userId in session metadata');
-            return NextResponse.json({ received: true });
-        }
-
-        const userRef = doc(db, 'users', userId);
-
-        if (plan === 'pro') {
-            await updateDoc(userRef, {
-                subscription_tier: 'pro',
-                subscription: 'Pro Monthly',
-                stripeCustomerId: session.customer as string,
-            });
-        } else if (templateId) {
-            // Record the individual purchase
-            await setDoc(doc(db, 'purchases', `${userId}_${templateId}`), {
-                uid: userId,
-                templateId,
-                amount: session.amount_total! / 100,
-                stripeSessionId: session.id,
-                createdAt: serverTimestamp(),
-                status: 'complete'
-            });
-
-            // Add to user's saved_templates/library
-            await updateDoc(userRef, {
-                saved_templates: arrayUnion(templateId)
-            });
-        }
-    }
-
-    return NextResponse.json({ received: true });
-}
+    await processPaymentWebhook('stripe', event, JSON.parse(rawBody));
+    return json({ received: true as const });
+});
