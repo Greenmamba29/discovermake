@@ -16,10 +16,12 @@ vi.mock('next/navigation', () => ({ useRouter: () => ({ push: vi.fn(), replace: 
 type Call = { method: string; url: string; auth: string | null; body: unknown };
 let calls: Call[];
 let approvals: ApprovalView[];
+let clients: { clientId: string; name: string; createdAt: string; lastUsedAt: string | null; revokedAt: string | null }[];
 
 beforeEach(() => {
     calls = [];
     approvals = [approvalView()];
+    clients = [];
     window.sessionStorage.clear();
     vi.stubGlobal(
         'fetch',
@@ -43,8 +45,15 @@ beforeEach(() => {
                 const jobs = [sourcingJobView(), sourcingJobView({ id: 'src_job2', displayId: 'SRC-9QQQQ', status: 'QUEUED', pendingApprovalCount: 0 })];
                 return ok(status ? jobs.filter((j) => j.status === status) : jobs);
             }
-            if (url === '/api/admin/sourcing/clients' && method === 'POST') return ok({ clientId: 'scl_new', name: 'Accio Work · metal', token: 'dmsrc_secret_123' }, 201);
-            if (url === '/api/admin/sourcing/clients/scl_new' && method === 'DELETE') return ok({ ok: true });
+            if (url === '/api/admin/sourcing/clients' && method === 'GET') return ok(clients);
+            if (url === '/api/admin/sourcing/clients' && method === 'POST') {
+                clients = [{ clientId: 'scl_new', name: 'Accio Work · metal', createdAt: '2026-10-07T00:00:00.000Z', lastUsedAt: null, revokedAt: null }];
+                return ok({ clientId: 'scl_new', name: 'Accio Work · metal', token: 'dmsrc_secret_123' }, 201);
+            }
+            if (url === '/api/admin/sourcing/clients/scl_new' && method === 'DELETE') {
+                clients = clients.map((c) => ({ ...c, revokedAt: '2026-10-07T00:01:00.000Z' }));
+                return ok({ ok: true });
+            }
             return ok({ error: { code: 'NOT_FOUND', message: 'nope' } }, 404);
         }),
     );
@@ -144,7 +153,7 @@ describe('SourcingDesk', () => {
         expect(writeText).toHaveBeenCalledWith('dmsrc_secret_123');
         expect(within(once).getByTestId('client-token-copy').textContent).toContain('Copied');
 
-        fireEvent.click(screen.getByTestId('client-revoke-scl_new'));
+        fireEvent.click(await screen.findByTestId('client-revoke-scl_new'));
         await act(async () => {
             fireEvent.click(screen.getByTestId('client-revoke-scl_new-confirm'));
         });

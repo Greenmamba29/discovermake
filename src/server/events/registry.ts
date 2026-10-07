@@ -12,6 +12,9 @@ export function ensureSubscribers(): Promise<void> {
     registration ??= (async () => {
         const { handleOrderEvent } = await import('../orders/payment-events');
         subscribe(handleOrderEvent);
+        // Sourcing bridge (ADR-0005): auto-request on REVIEW quotes, ops notices for approvals / desk hand-offs.
+        const { handleSourcingEvent } = await import('../sourcing/auto-request');
+        subscribe(handleSourcingEvent);
     })();
     return registration;
 }

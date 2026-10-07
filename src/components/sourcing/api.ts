@@ -11,6 +11,7 @@ import type {
     CreateSourcingClientResponse,
     CreateSourcingRequest,
     OkResponse,
+    RouteOfferView,
     SourcingJobStatus,
     SourcingJobView,
     SubmitOfferInput,
@@ -21,6 +22,9 @@ import { apiFetch } from '@/lib/api';
 
 const enc = encodeURIComponent;
 const bearer = (token: string) => ({ authorization: `Bearer ${token}` });
+
+/** GET /api/admin/sourcing/clients row. Never carries the token or its hash. */
+export type SourcingClientRow = { clientId: string; name: string; createdAt: string; lastUsedAt: string | null; revokedAt: string | null };
 
 /** One negotiation thread per supplier on a job (sourcing_negotiations). Fields beyond id/status are optional until the contract pins them. */
 export type SourcingNegotiationRow = {
@@ -66,7 +70,7 @@ export const sourcingApi = {
     requestSourcing: (buildId: string, body: CreateSourcingRequest) =>
         apiFetch<{ id: string; displayId: string; status: SourcingJobStatus }>(`/api/builds/${enc(buildId)}/sourcing`, { body }),
     selectOffer: (buildId: string, offerId: string) =>
-        apiFetch<ApprovalView>(`/api/builds/${enc(buildId)}/sourcing/offers/${enc(offerId)}/select`, { method: 'POST' }),
+        apiFetch<RouteOfferView>(`/api/builds/${enc(buildId)}/sourcing/offers/${enc(offerId)}/select`, { method: 'POST' }),
 
     // ---- ops sourcing desk ----
     adminJobs: (token: string, status?: SourcingJobStatus) =>
@@ -85,6 +89,7 @@ export const sourcingApi = {
         apiFetch<ApprovalView[]>(`/api/admin/sourcing/approvals?status=${enc(status)}`, { headers: bearer(token) }),
     adminDecide: (token: string, approvalId: string, body: ApprovalDecisionRequest) =>
         apiFetch<ApprovalView>(`/api/admin/sourcing/approvals/${enc(approvalId)}/decision`, { body, headers: bearer(token) }),
+    adminListClients: (token: string) => apiFetch<SourcingClientRow[]>('/api/admin/sourcing/clients', { headers: bearer(token) }),
     adminCreateClient: (token: string, name: string) =>
         apiFetch<CreateSourcingClientResponse>('/api/admin/sourcing/clients', { body: { name }, headers: bearer(token) }),
     adminRevokeClient: (token: string, clientId: string) =>

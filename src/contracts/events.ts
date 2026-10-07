@@ -170,6 +170,11 @@ export const EVENT_PAYLOADS = {
     'sourcing.boundary_blocked': z.object({ jobId: id.nullable(), clientId: id, tool: z.string().max(80), approvalKind: ApprovalKind }),
     'sourcing.completed': z.object({ jobId: id, outcome: z.enum(['offers_submitted', 'no_viable_suppliers', 'needs_desk']), offerCount: z.number().int().nonnegative() }),
     'supplier.selected': z.object({ buildId: id, jobId: id, offerId: id, approvalId: id }),
+    'sourcing.cancelled': z.object({ jobId: id, reason: z.string().max(1000).nullable() }),
+    /** A lease ended without completion: it ran out (visibility timeout) or its client was revoked. The job is QUEUED again. */
+    'sourcing.lease_released': z.object({ jobId: id, reason: z.enum(['expired', 'client_revoked']) }),
+    /** The build moved past the offer's design version; the offer can no longer be selected. */
+    'sourcing.offer_stale': z.object({ offerId: id, jobId: id, offerVersion: z.number().int().positive(), currentVersion: z.number().int().positive() }),
 } as const;
 
 export type EventType = keyof typeof EVENT_PAYLOADS;

@@ -6,6 +6,7 @@ import type { CreationIntent, CreationIntentKind, IntentUnknown, MakeAiRiskClass
 import { ButtonLink } from '@/components/ui/button';
 import { Notice } from '@/components/ui/state';
 import { cn } from '@/lib/utils';
+import { ContinueToBuild } from './continue-to-build';
 
 const INTENT_LABEL: Record<CreationIntentKind, string> = {
     create: 'New product',
@@ -123,8 +124,11 @@ function UnknownCard({ unknown, index }: { unknown: IntentUnknown; index: number
     );
 }
 
-/** Renders a CreationIntent as cards: summary, requirements checklist, unknowns, materials + processes, quote CTA. */
-export function CreationIntentView({ intent, model }: { intent: CreationIntent; model?: string }) {
+/**
+ * Renders a CreationIntent as cards: summary, requirements checklist, unknowns, materials + processes,
+ * "Continue to Build" (when `intentId` is given and the request is in scope) and the DXF quote CTA.
+ */
+export function CreationIntentView({ intent, model, intentId }: { intent: CreationIntent; model?: string; intentId?: string }) {
     const risk = RISK[intent.risk_class];
     const refused = intent.risk_class === 'regulated' || Boolean(intent.refusal_note);
     return (
@@ -215,6 +219,18 @@ export function CreationIntentView({ intent, model }: { intent: CreationIntent; 
                 </>
             )}
 
+            {intentId && !refused && (
+                <section aria-labelledby="intent-build" className="flex flex-col gap-4 rounded-2xl bg-graphite-900 p-5 ring-1 ring-signal/30 sm:flex-row sm:items-center sm:justify-between sm:p-6">
+                    <div>
+                        <h3 id="intent-build" className="font-display text-lg font-bold">
+                            Turn this plan into a build
+                        </h3>
+                        <p className="mt-1 text-sm text-fg-muted">Answer the open questions, review materials and approve a version in your Build Workspace.</p>
+                    </div>
+                    <ContinueToBuild intentId={intentId} className="shrink-0" />
+                </section>
+            )}
+
             <section aria-labelledby="intent-cta" className="flex flex-col gap-4 rounded-2xl bg-graphite-850 p-5 ring-1 ring-graphite-600 sm:flex-row sm:items-center sm:justify-between sm:p-6">
                 <div>
                     <h3 id="intent-cta" className="font-display text-lg font-bold">
@@ -225,7 +241,7 @@ export function CreationIntentView({ intent, model }: { intent: CreationIntent; 
                         Make AI only drafts a plan. Binding prices come from a flat-pattern DXF upload.
                     </p>
                 </div>
-                <ButtonLink href="/make" className="shrink-0">
+                <ButtonLink href="/make" variant={intentId && !refused ? 'secondary' : 'primary'} className="shrink-0">
                     <UploadCloud className="h-4 w-4" aria-hidden />
                     Have a DXF? Get an instant quote
                 </ButtonLink>

@@ -7,7 +7,7 @@ import { eq } from 'drizzle-orm';
 import { MockLanguageModelV4 } from 'ai/test';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { CreationIntent, MAKE_AI_MAX_INPUT_CHARS, MakeAiIntakeResponse } from '@/contracts/make-ai';
-import { domainEvents } from '@/server/db/schema';
+import { domainEvents, makeIntents } from '@/server/db/schema';
 import { resetEnvCache } from '@/server/env';
 import { MAX_JSON_BODY_BYTES } from '@/server/http';
 import { clientIp, createIntent, FixedWindowRateLimiter, MakeAiRateLimiter, makeAiRateLimiter, MAKE_AI_SYSTEM_PROMPT, normalizeIntent } from '@/server/make-ai';
@@ -162,6 +162,24 @@ describe('Make AI intake', () => {
         expect(stored).not.toContain('jane@example.com');
         expect(stored).not.toContain('Raspberry Pi with a solar battery');
         expect(stored).not.toContain('203.0.113.');
+
+        // The intent is persisted under the same id (for "Continue to Build"), again without the raw prompt.
+        const [row] = await ctx.db.select().from(makeIntents).where(eq(makeIntents.id, body.intentId));
+        expect(row).toMatchObject({ model: 'gemini-test-flash', promptChars: text.length, buildId: null });
+        expect(row!.promptSha256).toBe((event!.payload as { promptSha256: string }).promptSha256);
+        expect(row!.intent).toEqual(body.intent);
+        const persisted = JSON.stringify(row);
+        expect(persisted).not.toContain('jane@example.com');
+        expect(persisted).not.toContain('203.0.113.');
+    });
+
+    it('persists refused (regulated) intents too, with their refusal note', async () => {
+        mock.text = JSON.stringify({ ...RPI_INTENT, risk_class: 'regulated', refusal_note: 'DiscoverMake does not make weapon parts.' });
+        const res = await intake(post({ text: 'A suppressor baffle' }), noParams);
+        expect(res.status).toBe(200);
+        const body = MakeAiIntakeResponse.parse(await res.json());
+        const [row] = await ctx.db.select().from(makeIntents).where(eq(makeIntents.id, body.intentId));
+        expect(row!.intent).toMatchObject({ risk_class: 'regulated', refusal_note: 'DiscoverMake does not make weapon parts.', requirements: [] });
     });
 
     it('rejects model output that does not match the CreationIntent schema (502)', async () => {
@@ -180,6 +198,7 @@ describe('Make AI intake', () => {
         }
         const after = (await ctx.db.select().from(domainEvents).where(eq(domainEvents.eventType, 'make_ai.intent_created'))).length;
         expect(after).toBe(before); // no event for a rejected answer
+        expect((await ctx.db.select().from(makeIntents)).length).toBe(before); // and no persisted intent
     });
 
     it('maps provider failures to 502 without leaking the provider error', async () => {

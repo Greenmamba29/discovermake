@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, type FormEvent } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Check, Copy, KeyRound } from 'lucide-react';
 import type { CreateSourcingClientResponse } from '@/contracts';
 import { Button } from '@/components/ui/button';
@@ -20,8 +21,14 @@ export function ClientsPanel({ token }: { token: string }) {
     const [error, setError] = useState<string | null>(null);
     const [created, setCreated] = useState<CreateSourcingClientResponse | null>(null);
     const [copied, setCopied] = useState(false);
-    const [session, setSession] = useState<{ clientId: string; name: string; revoked: boolean }[]>([]);
-    const [revokeId, setRevokeId] = useState('');
+    const queryClient = useQueryClient();
+    const clientsKey = ['sourcing-clients', token];
+    const clients = useQuery({ queryKey: clientsKey, queryFn: () => sourcingApi.adminListClients(token) });
+    // Cancel any in-flight load first so a list fetched before this write can't win.
+    const refresh = async () => {
+        await queryClient.cancelQueries({ queryKey: clientsKey });
+        await queryClient.refetchQueries({ queryKey: clientsKey });
+    };
     const [notice, setNotice] = useState<{ tone: 'success' | 'error'; text: string } | null>(null);
 
     const create = async (e: FormEvent) => {
@@ -36,7 +43,7 @@ export function ClientsPanel({ token }: { token: string }) {
         try {
             const res = await sourcingApi.adminCreateClient(token, name.trim());
             setCreated(res);
-            setSession((s) => [{ clientId: res.clientId, name: res.name, revoked: false }, ...s]);
+            void refresh();
             setName('');
         } catch (err) {
             setError(errorMessage(err));
@@ -60,10 +67,9 @@ export function ClientsPanel({ token }: { token: string }) {
         setNotice(null);
         try {
             await sourcingApi.adminRevokeClient(token, clientId);
-            setSession((s) => s.map((c) => (c.clientId === clientId ? { ...c, revoked: true } : c)));
+            void refresh();
             if (created?.clientId === clientId) setCreated(null);
             setNotice({ tone: 'success', text: `Client ${clientId} revoked. Its token stops working immediately.` });
-            setRevokeId('');
         } catch (err) {
             setNotice({ tone: 'error', text: errorMessage(err) });
         }
@@ -106,42 +112,35 @@ export function ClientsPanel({ token }: { token: string }) {
 
             {notice && <Notice tone={notice.tone}>{notice.text}</Notice>}
 
-            {session.length > 0 && (
-                <div>
-                    <h2 className="eyebrow mb-2">Created in this session</h2>
-                    <ul className="divide-y divide-graphite-700 rounded-2xl bg-graphite-900 ring-1 ring-graphite-700">
-                        {session.map((c) => (
+            <div>
+                <h2 className="eyebrow mb-2">Accio clients</h2>
+                {clients.isPending ? (
+                    <p className="text-sm text-fg-muted">Loading clients…</p>
+                ) : clients.isError ? (
+                    <Notice tone="error">{errorMessage(clients.error)}</Notice>
+                ) : clients.data.length === 0 ? (
+                    <p className="text-sm text-fg-muted" data-testid="clients-empty">
+                        No clients yet. Create one for each Accio Work workspace.
+                    </p>
+                ) : (
+                    <ul className="divide-y divide-graphite-700 rounded-2xl bg-graphite-900 ring-1 ring-graphite-700" data-testid="clients-list">
+                        {clients.data.map((c) => (
                             <li key={c.clientId} className="flex flex-wrap items-center gap-3 px-4 py-3">
                                 <div className="min-w-0 flex-1">
                                     <p className="font-semibold">{c.name}</p>
-                                    <p className="font-mono text-[11px] text-fg-subtle">{c.clientId}</p>
+                                    <p className="font-mono text-[11px] text-fg-subtle">
+                                        {c.clientId} · last used {c.lastUsedAt ? new Date(c.lastUsedAt).toLocaleString() : 'never'}
+                                    </p>
                                 </div>
-                                {c.revoked ? (
+                                {c.revokedAt ? (
                                     <span className="text-xs text-fg-subtle">Revoked</span>
                                 ) : (
-                                    <ConfirmAction label="Revoke" confirmLabel="Revoke now" prompt="Revoke this client? Its token stops working immediately." variant="caution" size="sm" onConfirm={() => revoke(c.clientId)} testId={`client-revoke-${c.clientId}`} />
+                                    <ConfirmAction label="Revoke" confirmLabel="Revoke now" prompt="Revoke this client? Its token stops working immediately and its leased jobs return to the queue." variant="caution" size="sm" onConfirm={() => revoke(c.clientId)} testId={`client-revoke-${c.clientId}`} />
                                 )}
                             </li>
                         ))}
                     </ul>
-                </div>
-            )}
-
-            <div className="space-y-2 rounded-2xl bg-graphite-900 p-4 ring-1 ring-graphite-700">
-                <h2 className="font-display text-lg font-bold">Revoke a client</h2>
-                <Field label="Client id" hint="Starts with scl_. Revoking cannot be undone.">
-                    {({ id, describedBy }) => <TextInput id={id} className="font-mono" value={revokeId} onChange={(e) => setRevokeId(e.target.value)} aria-describedby={describedBy} placeholder="scl_…" data-testid="client-revoke-id" />}
-                </Field>
-                <ConfirmAction
-                    label="Revoke client"
-                    confirmLabel="Revoke now"
-                    prompt="Revoke this client? Its token stops working immediately."
-                    variant="caution"
-                    size="sm"
-                    disabled={!/^scl_[A-Za-z0-9_-]+$/.test(revokeId.trim())}
-                    onConfirm={() => revoke(revokeId.trim())}
-                    testId="client-revoke-by-id"
-                />
+                )}
             </div>
         </div>
     );

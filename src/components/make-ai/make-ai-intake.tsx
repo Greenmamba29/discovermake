@@ -130,7 +130,7 @@ export function MakeAiIntake() {
                     <h2 id="make-ai-result" ref={resultHeading} tabIndex={-1} className="mb-4 font-display text-xl font-bold focus:outline-none">
                         Make AI plan
                     </h2>
-                    <CreationIntentView key={result.intentId} intent={result.intent} model={result.model} />
+                    <CreationIntentView key={result.intentId} intent={result.intent} model={result.model} intentId={result.intentId} />
                 </section>
             )}
         </div>
