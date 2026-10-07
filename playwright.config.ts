@@ -27,6 +27,9 @@ export const E2E_ENV: Record<string, string> = {
     JOB_PACKET_SIGNING_SECRET: 'e2e-job-packet-secret',
     ADMIN_TOKEN: E2E_ADMIN_TOKEN,
     SEED_SHOP_TOKEN: E2E_SHOP_TOKEN,
+    // Make AI routes on, with no model key: builds are created from stored intents and the
+    // Materials Engineer is skipped (it never blocks build creation).
+    MAKE_AI_ENABLED: 'true',
 };
 
 /**

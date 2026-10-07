@@ -94,7 +94,7 @@ export function RouteOfferCard({
             )}
 
             <div className="mt-3">
-                {inactive || offer.status === 'SELECTED' ? (
+                {inactive ? (
                     <p className="text-xs font-medium text-fg-subtle">{OFFER_STATUS_COPY[offer.status]}</p>
                 ) : sel?.status === 'PENDING' ? (
                     <p className="flex items-start gap-1.5 text-sm text-amber" data-testid="offer-selection-pending">
@@ -103,7 +103,7 @@ export function RouteOfferCard({
                             Waiting for DiscoverMake to confirm this route. <span className="text-fg-muted">We&apos;ll confirm it with you before anything is ordered.</span>
                         </span>
                     </p>
-                ) : sel?.status === 'APPROVED' ? (
+                ) : sel?.status === 'APPROVED' || offer.status === 'SELECTED' ? (
                     <p className="flex items-start gap-1.5 text-sm text-signal" data-testid="offer-selection-approved">
                         <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
                         <span>
