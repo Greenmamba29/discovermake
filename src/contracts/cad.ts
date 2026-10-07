@@ -112,3 +112,51 @@ export const CadGenerateResponse = z.object({
     worker_version: z.string().optional(),
 });
 export type CadGenerateResponse = z.infer<typeof CadGenerateResponse>;
+
+// ---------------------------------------------------------------------------
+// Build-level CAD (POST/GET /api/builds/:buildId/cad)
+// ---------------------------------------------------------------------------
+
+/** Optional explicit spec (buyer-entered dimensions). Without it, the CAD agent proposes one from the approved version. */
+export const BuildCadRequest = z.object({ spec: CadSpec.optional() });
+export type BuildCadRequest = z.input<typeof BuildCadRequest>;
+
+export const BuildCadArtifactView = z.object({
+    kind: CadArtifactKind,
+    filename: z.string(),
+    bytes: z.number().int().positive(),
+    sha256: z.string(),
+    /** Signed, expiring GET URL. */
+    url: z.string().url(),
+    expiresAt: z.string(),
+});
+export type BuildCadArtifactView = z.infer<typeof BuildCadArtifactView>;
+
+export const BuildCadGenerated = z.object({
+    status: z.literal('generated'),
+    /** The new DRAFT design version that carries the geometry. */
+    version: z.number().int().positive(),
+    family: CadGenerateResponse.shape.family,
+    spec: CadSpec,
+    metrics: CadGenerateResponse.shape.metrics,
+    processes: z.array(z.string()),
+    warnings: z.array(z.string()),
+    /** Holes or other details the agent proposed but the buyer never specified (dropped, not invented). */
+    dropped: z.array(z.string()),
+    artifacts: z.array(BuildCadArtifactView),
+    /** Flat-pattern part attached for instant quoting (sheet families). */
+    partId: z.string().nullable(),
+    partStatus: z.string().nullable(),
+    /** true when the part can go straight to the instant quote on /parts/:partId. */
+    quotable: z.boolean(),
+});
+export type BuildCadGenerated = z.infer<typeof BuildCadGenerated>;
+
+export const BuildCadResponse = z.discriminatedUnion('status', [
+    BuildCadGenerated,
+    /** Dimensions are missing or untraceable: they were added as NEEDS_INPUT questions in a new version. */
+    z.object({ status: z.literal('needs_input'), version: z.number().int().positive(), questions: z.array(z.string()) }),
+    /** No supported parametric family fits: route the build to sourcing instead. */
+    z.object({ status: z.literal('not_supported'), reason: z.string() }),
+]);
+export type BuildCadResponse = z.infer<typeof BuildCadResponse>;

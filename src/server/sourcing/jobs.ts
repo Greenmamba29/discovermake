@@ -151,15 +151,21 @@ async function resolveRequest(db: DbOrTx, input: CreateSourcingJobInput): Promis
     let graphMaterial: string | null = null;
     let graphProcesses: string[] = [];
     let graphFinish: string | null = null;
+    let graphBbox: [number, number, number] | null = null;
     if (!quote) {
         const nodes = await db
-            .select({ type: bgNodes.type, label: bgNodes.label })
+            .select({ type: bgNodes.type, label: bgNodes.label, data: bgNodes.data })
             .from(bgNodes)
-            .where(and(eq(bgNodes.buildId, build.id), eq(bgNodes.designVersion, build.currentVersion), inArray(bgNodes.type, ['MATERIAL', 'PROCESS', 'FINISH'])))
+            .where(and(eq(bgNodes.buildId, build.id), eq(bgNodes.designVersion, build.currentVersion), inArray(bgNodes.type, ['MATERIAL', 'PROCESS', 'FINISH', 'PART'])))
             .orderBy(asc(bgNodes.createdAt));
-        graphMaterial = nodes.find((n) => n.type === 'MATERIAL')?.label ?? null;
+        const materials = nodes.filter((n) => n.type === 'MATERIAL');
+        // The Materials Engineer marks its pick `role: 'recommended'`; alternatives are not what we source.
+        graphMaterial = (materials.find((n) => n.data.role === 'recommended') ?? materials[0])?.label ?? null;
         graphProcesses = nodes.filter((n) => n.type === 'PROCESS').map((n) => n.label);
         graphFinish = nodes.find((n) => n.type === 'FINISH')?.label ?? null;
+        // Generated CAD (src/server/cad/build-cad.ts) records the part's bounding box.
+        const cad = nodes.find((n) => n.type === 'PART' && n.data.cad)?.data.cad as { metrics?: { bbox_mm?: [number, number, number] } } | undefined;
+        graphBbox = cad?.metrics?.bbox_mm ?? null;
     }
 
     const material = input.material ?? (quote ? `${quote.summary.materialName}, ${quote.summary.thicknessLabel}`.slice(0, 120) : graphMaterial);
@@ -169,7 +175,11 @@ async function resolveRequest(db: DbOrTx, input: CreateSourcingJobInput): Promis
 
     const features = part?.features ?? null;
     const dimensions =
-        features && features.bboxWidthMm > 0 && features.bboxHeightMm > 0 ? { x: round2(features.bboxWidthMm), y: round2(features.bboxHeightMm), z: round2(thicknessMm ?? 0) } : null;
+        features && features.bboxWidthMm > 0 && features.bboxHeightMm > 0
+            ? { x: round2(features.bboxWidthMm), y: round2(features.bboxHeightMm), z: round2(thicknessMm ?? 0) }
+            : graphBbox
+              ? { x: round2(graphBbox[0]), y: round2(graphBbox[1]), z: round2(graphBbox[2]) }
+              : null;
 
     return {
         partId: part?.id ?? null,

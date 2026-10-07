@@ -78,12 +78,14 @@ export function buildCadPrompt(view: BuildGraphView): string {
     return `Build ${view.build.displayId} "${view.build.name}", design version ${view.version.version}.\nNodes:\n${lines.join('\n')}`;
 }
 
-/** Numbers (in mm) the buyer actually supplied: user-sourced requirements and answered unknowns. */
+/** Numbers (in mm) the buyer actually supplied: user-sourced or buyer-stated requirements and answered unknowns. */
 export function buyerNumbers(nodes: BgNode[]): Map<string, number[]> {
     const out = new Map<string, number[]>();
     for (const n of nodes) {
         const answered = n.type === 'UNKNOWN' && n.data.status === 'answered';
-        if (!(n.source === 'user' || answered)) continue;
+        // Make AI records what the buyer actually stated as `requirementSource: 'user'` on its REQUIREMENT nodes.
+        const stated = n.source === 'user' || (n.type === 'REQUIREMENT' && n.data.requirementSource === 'user');
+        if (!(stated || answered)) continue;
         const text = answered ? String(n.data.value ?? n.data.answer ?? '') : typeof n.data.text === 'string' ? n.data.text : n.label;
         const nums = extractMm(text);
         if (nums.length) out.set(n.key, nums);

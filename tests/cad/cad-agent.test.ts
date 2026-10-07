@@ -27,6 +27,7 @@ const BRACKET_VIEW = view([
     node('req:A1', 'REQUIREMENT', 'Legs 50 mm and 80 mm, 40 mm wide', 'user', { text: 'Legs 50 mm and 80 mm, 40 mm wide' }),
     node('unknown:U1', 'UNKNOWN', 'Mounting hole?', 'make_ai', { status: 'answered', value: 'one 5 mm hole, 15 mm from the edge, centred at 20 mm' }),
     node('req:R9', 'REQUIREMENT', 'About 300 mm long', 'make_ai', { text: 'About 300 mm long' }),
+    node('req:R2', 'REQUIREMENT', 'Arm 120 mm', 'make_ai', { text: 'Arm 120 mm', requirementSource: 'user' }),
 ]);
 
 const base: CadProposal = { family: 'l_bracket', dimension_sources: [], missing_inputs: [], rationale: 'single bend bracket' };
@@ -38,7 +39,7 @@ describe('extractMm / buyerNumbers', () => {
     });
     it('only counts user-sourced requirements and answered unknowns', () => {
         const nums = buyerNumbers(BRACKET_VIEW.nodes);
-        expect([...nums.keys()].sort()).toEqual(['req:A1', 'unknown:U1']);
+        expect([...nums.keys()].sort()).toEqual(['req:A1', 'req:R2', 'unknown:U1']);
         expect(nums.get('req:A1')).toEqual([50, 80, 40]);
     });
 });

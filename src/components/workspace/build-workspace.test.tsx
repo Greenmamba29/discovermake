@@ -211,8 +211,8 @@ describe('StatusStrip', () => {
 });
 
 describe('WorkspaceSourcingSlot', () => {
-    it('renders nothing until the sourcing panel is integrated', () => {
-        const { container } = render(<WorkspaceSourcingSlot buildId={FIXTURE_BUILD_ID} designVersion={1} />);
+    it('stays hidden until the latest version is approved', () => {
+        const { container } = render(<WorkspaceSourcingSlot buildId={FIXTURE_BUILD_ID} designVersion={1} approved={false} />);
         expect(container.innerHTML).toBe('');
     });
 });

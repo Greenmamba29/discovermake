@@ -5,9 +5,10 @@ import type { BuildGraphView } from '@/contracts';
 import { EstimateBadge } from '@/components/make-ai/creation-intent-view';
 import { Button, ButtonLink } from '@/components/ui/button';
 import { Notice } from '@/components/ui/state';
+import { CadPanel } from './cad-panel';
 import { PanelCard } from './panels';
 import { WorkspaceSourcingSlot } from './workspace-sourcing-slot';
-import { buildBrief, materialsOf, nextAction, nodesOf, openUnknowns, partsOf, type WorkspaceSection } from './workspace-model';
+import { approvedVersion, buildBrief, latestVersion, materialsOf, nextAction, nodesOf, openUnknowns, partsOf, type WorkspaceSection } from './workspace-model';
 
 const RISK_COPY: Record<string, string> = { standard: 'Standard', elevated: 'Needs specialist review', regulated: 'Out of scope' };
 
@@ -16,6 +17,7 @@ export function OverviewPanel({ view, onGo, isCurrent }: { view: BuildGraphView;
     const brief = buildBrief(view);
     const next = nextAction(view);
     const recommended = materialsOf(view).find((m) => m.role === 'recommended');
+    const cadPart = nodesOf(view, 'PART').find((n) => n.data.cad);
     const stats = [
         { label: 'Requirements', value: nodesOf(view, 'REQUIREMENT').length, section: 'requirements' as const },
         { label: 'Open questions', value: openUnknowns(view).length, section: 'questions' as const },
@@ -75,6 +77,8 @@ export function OverviewPanel({ view, onGo, isCurrent }: { view: BuildGraphView;
                 </section>
             )}
 
+            <CadPanel view={view} isCurrent={isCurrent} />
+
             <dl className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                 {stats.map((s) => (
                     <div key={s.label} className="rounded-2xl bg-graphite-900 p-4 ring-1 ring-graphite-700">
@@ -99,7 +103,12 @@ export function OverviewPanel({ view, onGo, isCurrent }: { view: BuildGraphView;
                 </span>
             </Notice>
 
-            <WorkspaceSourcingSlot buildId={view.build.id} designVersion={view.version.version} />
+            <WorkspaceSourcingSlot
+                buildId={view.build.id}
+                designVersion={view.version.version}
+                approved={isCurrent && approvedVersion(view) === latestVersion(view)}
+                partId={typeof cadPart?.data.partId === 'string' ? cadPart.data.partId : null}
+            />
         </div>
     );
 }

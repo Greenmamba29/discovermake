@@ -207,5 +207,5 @@ export function nextAction(view: BuildGraphView): { title: string; detail: strin
     const open = openUnknowns(view).length;
     if (open > 0) return { title: `Answer ${open} question${open === 1 ? '' : 's'}`, detail: 'Make AI needs these before anything can be cut. We never guess sizes.', section: 'questions' };
     if (approvedVersion(view) !== latestVersion(view)) return { title: `Approve version ${latestVersion(view)}`, detail: 'Approving locks this version so it can be remixed, sourced and quoted exactly.', section: 'versions' };
-    return { title: 'Get a binding price', detail: 'This concept is approved. A flat-pattern DXF of the part turns it into an instant, binding quote.', section: 'overview' };
+    return { title: 'Get a binding price', detail: 'This version is approved. Generate CAD below, or upload your own flat-pattern DXF, to get an instant binding quote.', section: 'overview' };
 }
