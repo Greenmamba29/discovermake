@@ -14,6 +14,8 @@ These are the GitHub epics from spec §26, mapped to releases and sequenced. Eac
 
 The stories below are the first cut. They get estimated at G2.
 
+**R2 status (2026-10-07):** R2 "Make + Source" increment 1 is in: Build Graph + Build Workspace, Make AI → Build with question cards and the Materials Engineer, the CAD worker and CAD agent, the Accio sourcing MCP bridge with the approval boundary, the Sourcing desk and partner routes on the Manufacturing Route. See `docs/architecture/r2-implementation.md`.
+
 **R1 status (2026-10-06):** R1 "Cut" runs a real order end to end (upload → DFM → binding quote → checkout → payment → dispatch → Shop Console → QA → shipment → delivery → passport → payouts). The checkboxes below reflect what is in the repo; notes in *italics* record where R1 scope differed from the story.
 
 ## Sequencing
@@ -46,12 +48,12 @@ EPIC-001 Shared Platform ─┬─▶ EPIC-900 Commerce + Ordering ─▶ EPIC-5
 - [ ] 700-6 Golden-part suite (50 parts plus invoices) wired into CI · *R1: 18 generated DXF fixtures with known answers run in vitest; the invoice-calibrated 50-part suite is still open.*
 - [x] 700-7 Lead-time calculator fed by shop capacity · *queue days + machine hours, shop business days.*
 - [ ] 700-8 `SourcingProvider` interface plus shop-stock and catalog providers (R3)
-- [ ] 700-9 `services/accio-bridge` MCP server: 9 `discovermake.sourcing.*` tools, auth, leases, audit log (R2)
-- [ ] 700-9a `SourcingRequest` / `SupplierOffer` contracts and stale-version rejection (R2)
-- [ ] 700-9b Accio Work agent group configured and versioned in `mcp/discovermake-sourcing/` (R2)
-- [ ] 700-9c OPA approval boundary and `request_approval` UI for ops and customers (R2)
-- [ ] 700-9d Quote trust levels across Quote, Route and Checkout (R2)
-- [ ] 700-9e Sourcing desk admin UI (fallback) (R2)
+- [x] 700-9 `services/accio-bridge` MCP server: 9 `discovermake.sourcing.*` tools, auth, leases, audit log (R2) · *in-app at `POST /api/mcp/sourcing` (ADR-0005 notes).*
+- [x] 700-9a `SourcingRequest` / `SupplierOffer` contracts and stale-version rejection (R2)
+- [x] 700-9b Accio Work agent group configured and versioned in `mcp/discovermake-sourcing/` (R2) · *config is versioned; pasting it into the owner's Accio Work workspace is an owner step.*
+- [x] 700-9c OPA approval boundary and `request_approval` UI for ops and customers (R2) · *boundary as a tested TypeScript policy table; OPA sidecar in R3. Ops approve in the Sourcing desk; buyers choose confirmed routes on the Manufacturing Route.*
+- [x] 700-9d Quote trust levels across Quote, Route and Checkout (R2)
+- [x] 700-9e Sourcing desk admin UI (fallback) (R2) · *`/admin/sourcing`.*
 - [ ] 700-10 Delivery Promise engine plus credit policy (R3)
 - [ ] 700-11 OR-Tools dispatch and batching (R3)
 
@@ -82,22 +84,22 @@ EPIC-001 Shared Platform ─┬─▶ EPIC-900 Commerce + Ordering ─▶ EPIC-5
 - [x] S-3 Adapter L0 (email plus portal) and L1 (console)
 
 ## EPIC-600 · Build Graph (R2)
-- [ ] 600-1 Node and edge tables, common metadata, versioning (`DesignVersion`)
-- [ ] 600-2 `packages/build-graph` API: create, fork (remix), clone (Make This), diff
-- [ ] 600-3 Graph View (reactflow, reusing `visualizer.tsx`) and Object View (r3f)
+- [x] 600-1 Node and edge tables, common metadata, versioning (`DesignVersion`) · *copy-on-write per version, migration 0003.*
+- [x] 600-2 `packages/build-graph` API: create, fork (remix), clone (Make This), diff · *`src/server/build-graph` (monorepo move is 001-2).*
+- [ ] 600-3 Graph View (reactflow, reusing `visualizer.tsx`) and Object View (r3f) · *Graph View with version diff done; Object View (GLB viewer) is next.*
 
 ## EPIC-100 · MAKE (R2)
 - [ ] 100-1 Make prompt and attachment tray (text, image, CAD, voice)
-- [ ] 100-2 Requirements Agent with structured output and the NEEDS_INPUT question cards
-- [ ] 100-3 Materials Engineer (structured recommendation)
-- [ ] 100-4 CAD worker (CadQuery from structured spec) and evals
+- [x] 100-2 Requirements Agent with structured output and the NEEDS_INPUT question cards
+- [x] 100-3 Materials Engineer (structured recommendation) · *constrained to the catalog; anything else is "needs sourcing".*
+- [ ] 100-4 CAD worker (CadQuery from structured spec) and evals · *worker + CAD agent done (`services/cad-worker`, sheet panel / L-bracket / enclosure; flat patterns quote BINDING); cross-provider evals still open.*
 - [ ] 100-5 Acceptance test: enclosure prompt produces 11 artifacts
 
 ## EPIC-300 · Build Workspace (R2)
-- [ ] 300-1 BuildShell and the 11-section nav
+- [x] 300-1 BuildShell and the 11-section nav · *only sections with real data are shown (7 today).*
 - [ ] 300-2 ObjectViewport with annotations and measurements
 - [ ] 300-3 Make AI panel (suggestions, warnings, approvals)
-- [ ] 300-4 Status strip (Makeability, cost, lead time, confidence, version)
+- [ ] 300-4 Status strip (Makeability, cost, lead time, confidence, version) · *trust state, version, open questions and confidence done; cost and lead time come from the part's quote.*
 
 ## EPIC-400 · Creator Studio (R4)
 - [ ] 400-1 Build publisher (states, remix license, royalty %)

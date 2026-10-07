@@ -7,17 +7,17 @@ Each repo below becomes a **service or worker behind the Build Graph**. None is 
 | Repo | Role in DiscoverMake | License (verify) | Enters | Integration shape |
 |---|---|---|---|---|
 | earthtojake/text-to-cad | Natural language / image → CAD workflows | Verify before adoption | R2 | Study deeply. CAD agent worker |
-| CadQuery/cadquery | Parametric, scriptable geometry | Apache-2.0 | R2 (R1.5 for STEP) | Python `cad-worker` |
+| CadQuery/cadquery | Parametric, scriptable geometry | Apache-2.0 | **R2 (in use)** | `services/cad-worker` (Python): sheet panel, L-bracket, enclosure |
 | FreeCAD/FreeCAD | Validation, STEP, assemblies, sheet-metal unfold | LGPL-2.1+ | R1.5–R2 | Isolated worker, unmodified |
 | mrdoob/three.js | Browser 3D viewer | MIT | **R1** | Part preview, configure |
 | pmndrs/react-three-fiber | React renderer for Three.js | MIT | **R1** | Configure page, Build Workspace |
-| xyflow/xyflow | Build Graph visualizer | MIT | R1 (order page) / R2 | Already a dependency as `reactflow` |
+| xyflow/xyflow | Build Graph visualizer | MIT | R1 (order page) / **R2 (in use)** | `@xyflow/react`: order page + Build Workspace Graph View |
 | livekit/livekit | Interactive rooms, AI participants, viewers, data tracks | Apache-2.0 | R4 | Core LIVE layer |
 | owncast/owncast | Creator channels, scheduled broadcasts, community chat | MIT | R4 | **Core broadcast/channel layer** (ADR-0003) |
 | bluenviron/mediamtx | RTMP/RTSP/SRT/WebRTC factory and robot camera ingest | MIT | R4.5 | In front of LiveKit |
 | temporalio/temporal | Long-running manufacturing and order workflows | MIT | R2 | Replaces the R1 Postgres state machine (ADR-0007) |
 | openai/openai-agents-python | MAKE Agent + specialist orchestration | MIT | R2 | Python agents service |
-| modelcontextprotocol/typescript-sdk (+ python-sdk) | Accio Work bridge and other agent integrations | MIT | R2 | `services/accio-bridge` (ADR-0005) |
+| modelcontextprotocol/typescript-sdk (+ python-sdk) | Accio Work bridge and other agent integrations | MIT | **R2 (in use)** | `POST /api/mcp/sourcing` (ADR-0005 notes) |
 | supabase/supabase | Postgres, auth, storage, realtime | Apache-2.0 | R1 (Postgres) / R2 (Auth) | System of record (ADR-0006) |
 | medusajs/medusa | Cart, checkout, fulfillment primitives | MIT | R2+ | Selected modules only. R1 uses Stripe directly because R1 is quote-based, not catalog-based |
 | google/or-tools | Supplier, factory, machine and route optimization | Apache-2.0 | R3 (heuristic dispatch in R1) | Routing service |

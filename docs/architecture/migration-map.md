@@ -44,9 +44,9 @@ Once the secret is rotated, archive `discovermake-2.0` on GitHub (Settings → A
 
 ## Accio
 
-The owner holds the **Accio Work** account the agents will use. Setup for R2:
-1. Register the DiscoverMake Sourcing MCP server (`services/accio-bridge`) in Accio Work, using a per-workspace bearer token.
-2. Create the agent group from `mcp/discovermake-sourcing/accio-agent-group.md`.
-3. Schedule the Procurement Lead to poll `discovermake.sourcing.next_job`.
+The owner holds the **Accio Work** account the agents will use. The R2 bridge is built (`POST /api/mcp/sourcing`, see `docs/architecture/r2-implementation.md`). To connect it:
+1. Create an Accio client in `/admin/sourcing` → Accio clients. Copy the one-time `dmsc_…` token.
+2. Register `${APP_URL}/api/mcp/sourcing` as an MCP server in Accio Work, using that bearer token.
+3. Create the agent group from `mcp/discovermake-sourcing/accio-agent-group.md`, and schedule the Procurement Lead to poll `discovermake.sourcing.next_job` every 15 minutes.
 
 See workflow 03 and ADR-0005.
