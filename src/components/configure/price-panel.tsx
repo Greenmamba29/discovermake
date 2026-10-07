@@ -1,33 +1,15 @@
 'use client';
 
 import { useState } from 'react';
-import { BadgeCheck, CalendarClock, ChevronDown, Truck } from 'lucide-react';
+import { CalendarClock, ChevronDown, Truck } from 'lucide-react';
 import type { QuoteView } from '@/contracts';
 import { InfoTip } from '@/components/ui/info-tip';
 import { MakeabilityRing } from '@/components/ui/makeability-ring';
+import { TrustChip } from '@/components/trust/trust-chip';
 import { money, shortDate, dateTime } from '@/lib/format';
 import { cn } from '@/lib/utils';
 
-const TRUST_COPY: Record<QuoteView['trustLevel'], { label: string; tip: string }> = {
-    BINDING: { label: 'Binding quote', tip: 'This is the price you pay. It is locked until the quote expires, and checkout charges exactly this amount plus the shipping you choose.' },
-    SUPPLIER_CONFIRMED: { label: 'Shop confirmed', tip: 'A partner shop confirmed this price.' },
-    SUPPLIER_ESTIMATE: { label: 'Shop estimate', tip: 'An estimate from a partner shop. It becomes binding after review.' },
-    AI_ESTIMATE: { label: 'Estimate', tip: 'An automated estimate. A shop reviews it before you can order.' },
-};
-
 const TIER_LABEL: Record<QuoteView['tier'], string> = { PROTOTYPE: 'Prototype', SMALL_BATCH: 'Small batch', PRODUCTION_RUN: 'Production run' };
-
-export function TrustChip({ quote }: { quote: QuoteView }) {
-    const t = TRUST_COPY[quote.trustLevel];
-    const binding = quote.trustLevel === 'BINDING';
-    return (
-        <span className={cn('inline-flex items-center gap-1 rounded-full py-0.5 pl-2.5 pr-1 text-xs font-semibold', binding ? 'bg-signal/15 text-signal' : 'bg-amber/15 text-amber')} data-testid="trust-chip">
-            <BadgeCheck className="h-3.5 w-3.5" aria-hidden />
-            {t.label}
-            <InfoTip label={t.label} text={t.tip} />
-        </span>
-    );
-}
 
 /** Live price, makeability ring, ship date, quantity ladder and ⓘ line items for one immutable quote. */
 export function PricePanel({ quote, updating, onPickQuantity }: { quote: QuoteView; updating: boolean; onPickQuantity: (q: number) => void }) {
@@ -42,7 +24,7 @@ export function PricePanel({ quote, updating, onPickQuantity }: { quote: QuoteVi
             <div className="flex items-start gap-4">
                 <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
-                        <TrustChip quote={quote} />
+                        <TrustChip level={quote.trustLevel} />
                         <span className="rounded-full bg-graphite-750 px-2 py-0.5 text-[11px] font-medium text-fg-muted">{TIER_LABEL[quote.tier]}</span>
                     </div>
                     <p className="mt-3 font-display text-4xl font-extrabold tabular tracking-tight text-fg" aria-live="polite" data-testid="quote-subtotal" key={quote.id}>
