@@ -35,10 +35,11 @@ export class TokenBucketRateLimiter {
             }
             b = { tokens: this.capacity, updatedAt: now };
             this.buckets.set(key, b);
+        } else {
+            // Move to the end of the iteration order (most recently used).
+            this.buckets.delete(key);
+            this.buckets.set(key, b);
         }
-        // Move to the end of the iteration order (most recently used).
-        this.buckets.delete(key);
-        this.buckets.set(key, b);
         const elapsed = Math.max(0, now - b.updatedAt) / 1000;
         b.tokens = Math.min(this.capacity, b.tokens + elapsed * this.refillPerSecond);
         b.updatedAt = now;

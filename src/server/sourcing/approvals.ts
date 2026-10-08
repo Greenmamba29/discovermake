@@ -9,9 +9,10 @@
  *   R2 stops there: a selected offer is NOT turned into a checkout (checkout stays
  *   BINDING-only); ordering supplier-sourced routes end to end is R3.
  *
- * LOCK ORDER (all sourcing services): sourcing_jobs row -> approvals -> supplier_offers.
- * Every write path takes the job row lock first, so concurrent work on one job queues on
- * that single row and the later row locks can never deadlock.
+ * LOCK ORDER (all sourcing services): the sourcing_jobs row is always locked FIRST.
+ * Approvals and offers each belong to exactly one job, so every transaction that touches
+ * them already holds that job's lock and runs one at a time per job; the order of the row
+ * locks taken after it (an approval, an offer, or both) therefore cannot deadlock.
  */
 import { and, asc, desc, eq, inArray, isNull, ne } from 'drizzle-orm';
 import { actorId, type Actor } from '../../contracts/common';
@@ -142,7 +143,7 @@ export async function requestApproval(input: RequestApprovalArgs, writer: JobWri
 export async function requestOfferSelection(input: { buildId: string; offerId: string; actor: Actor }, opts: { now?: Date } = {}): Promise<{ approval: ApprovalRow; created: boolean }> {
     const now = opts.now ?? new Date();
     return withTx(async (tx) => {
-        // Lock order everywhere in sourcing: job -> approval -> offer (see LOCK ORDER above).
+        // Job row first (see LOCK ORDER above), then the offer.
         const [peek] = await tx
             .select({ jobId: supplierOffers.jobId })
             .from(supplierOffers)
@@ -210,7 +211,7 @@ async function emitDecided(tx: Tx, a: ApprovalRow, status: ApprovalStatus, actor
 /** Apply an approved SELECT_SUPPLIER_OFFER inside `tx`. */
 async function applySelection(tx: Tx, approval: ApprovalRow, actor: Actor, now: Date): Promise<void> {
     if (!approval.supplierOfferId || !approval.jobId) throw conflict('Selection approval has no offer');
-    // The job row is already locked by decideApproval; lock order: job -> approval -> offer.
+    // The job row is already locked by decideApproval (job first, see LOCK ORDER above).
     const [job] = await tx.select().from(sourcingJobs).where(eq(sourcingJobs.id, approval.jobId)).for('update');
     const [offer] = await tx.select().from(supplierOffers).where(eq(supplierOffers.id, approval.supplierOfferId)).for('update');
     if (!offer || !job) throw notFound('Offer');
@@ -246,8 +247,8 @@ async function applySelection(tx: Tx, approval: ApprovalRow, actor: Actor, now: 
 export async function decideApproval(approvalId: string, decision: ApprovalDecisionRequest, actor: Actor, opts: { now?: Date } = {}): Promise<ApprovalView> {
     const now = opts.now ?? new Date();
     return withTx(async (tx) => {
-        // Lock order: job -> approval -> offer. Cancelling a job locks the job and then its
-        // approvals, so the job row must be taken first here too.
+        // Job row first (see LOCK ORDER above): cancelling a job locks the job and then its
+        // approvals, so taking the approval first here could deadlock with it.
         const [peek] = await tx.select({ jobId: approvals.jobId }).from(approvals).where(eq(approvals.id, approvalId));
         if (!peek) throw notFound('Approval');
         if (peek.jobId) await tx.select({ id: sourcingJobs.id }).from(sourcingJobs).where(eq(sourcingJobs.id, peek.jobId)).for('update');
