@@ -69,6 +69,12 @@ export async function handleSourcingEvent(event: DomainEventEnvelope): Promise<v
     }
 }
 
+/**
+ * Per-instance throttle (same pattern as the R1 lazy offer sweep). With N instances the
+ * relay can run up to N times a minute, which is safe: `publishPendingEvents` claims rows
+ * with FOR UPDATE SKIP LOCKED and marks them published in the same transaction, so an event
+ * is never delivered twice; the cost is only N cheap polling queries per minute.
+ */
 let lastRelayAt = 0;
 const RELAY_INTERVAL_MS = 60_000;
 

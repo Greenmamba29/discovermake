@@ -105,7 +105,13 @@ export function extractMm(text: string): number[] {
     return out;
 }
 
-const near = (a: number, b: number) => Math.abs(a - b) <= Math.max(0.5, b * 0.005);
+/**
+ * A proposed length "traces" to a buyer number only when it is within 0.5 mm of it. That
+ * absorbs rounding of converted units (8 in = 203.2 mm -> 203) and nothing more: no relative
+ * tolerance, so a 1000 mm part cannot drift by 5 mm and still count as buyer-supplied.
+ */
+const TRACE_TOLERANCE_MM = 0.5;
+const near = (a: number, b: number) => Math.abs(a - b) <= TRACE_TOLERANCE_MM;
 
 /** Applies the guards to a model proposal. Pure: unit-tested without a model. */
 export function guardProposal(p: CadProposal, view: BuildGraphView): CadAgentResult {

@@ -20,15 +20,25 @@ export class TokenBucketRateLimiter {
     constructor(
         private readonly capacity: number,
         private readonly refillPerSecond: number,
+        private readonly maxKeys: number = MAX_TRACKED_KEYS,
     ) {}
 
     take(key: string, now: number = Date.now()): BucketDecision {
         let b = this.buckets.get(key);
         if (!b) {
-            if (this.buckets.size >= MAX_TRACKED_KEYS) this.buckets.clear();
+            // Evict the least recently used keys (Map iterates in insertion order and we
+            // re-insert on every hit), never everyone's state at once.
+            while (this.buckets.size >= this.maxKeys) {
+                const oldest = this.buckets.keys().next().value;
+                if (oldest === undefined) break;
+                this.buckets.delete(oldest);
+            }
             b = { tokens: this.capacity, updatedAt: now };
             this.buckets.set(key, b);
         }
+        // Move to the end of the iteration order (most recently used).
+        this.buckets.delete(key);
+        this.buckets.set(key, b);
         const elapsed = Math.max(0, now - b.updatedAt) / 1000;
         b.tokens = Math.min(this.capacity, b.tokens + elapsed * this.refillPerSecond);
         b.updatedAt = now;

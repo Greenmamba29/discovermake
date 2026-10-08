@@ -27,7 +27,8 @@ export async function revokeSourcingClient(clientId: string, now: Date = new Dat
     return withTx(async (tx) => {
         const [client] = await tx.select().from(sourcingClients).where(eq(sourcingClients.id, clientId)).for('update');
         if (!client) throw notFound('Sourcing client');
-        if (!client.revokedAt) await tx.update(sourcingClients).set({ revokedAt: now }).where(eq(sourcingClients.id, clientId));
+        if (client.revokedAt) return { releasedJobs: 0 }; // already revoked: its leases were released then
+        await tx.update(sourcingClients).set({ revokedAt: now }).where(eq(sourcingClients.id, clientId));
         return { releasedJobs: await releaseClientLeases(tx, clientId, now) };
     });
 }

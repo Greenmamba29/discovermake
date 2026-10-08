@@ -122,13 +122,12 @@ export async function generateBuildCad(buildId: string, opts: GenerateBuildCadOp
         edges.push({ type: 'CONTAINS', fromKey: ROOT_NODE_KEY, toKey: MAIN_PART_KEY, data: {} });
     }
 
+    // writeVersion locks the build and requires `parentVersion` to still be the latest, so a
+    // concurrent write makes this throw 409 (the buyer retries) instead of taking a different
+    // number: the new version is always `nextVersion`, which the part and artifact keys use.
     const written = await withTx(async (tx) =>
         writeVersion(tx, buildId, { parentVersion: latest.version, summary: `Generated CAD (${result.family.replace('_', ' ')})`, nodes, edges, actor }),
     );
-    if (written.version !== nextVersion) {
-        // A concurrent write took the version number; the part still points at the stored artifacts.
-        if (part) await db.update(parts).set({ designVersion: written.version }).where(eq(parts.id, part.id));
-    }
 
     return {
         status: 'generated',

@@ -157,8 +157,8 @@ export function evaluate(action: AgentAction, ctx: PolicyContext): PolicyDecisio
             return blocked(
                 rule.approvalKind,
                 ctx.supplierId
-                    ? `A human must approve ${rule.approvalKind} for supplier ${ctx.supplierId} first. Call request_approval with kind ${rule.approvalKind} and this supplier_id, then retry after it is APPROVED.`
-                    : `${rule.approvalKind} is approved per supplier: pass supplier_id, and call request_approval with kind ${rule.approvalKind} for that supplier first.`,
+                    ? `A human must approve ${rule.approvalKind} for supplier ${ctx.supplierId} first. Call request_approval with kind ${rule.approvalKind} and this supplier_id; once it is APPROVED, call get_attachments again with tier "FULL" and the same supplier_id.`
+                    : `${rule.approvalKind} is approved per supplier. Call request_approval with kind ${rule.approvalKind} and the supplier_id; once it is APPROVED, call get_attachments with tier "FULL" and that supplier_id.`,
             );
         }
         case 'human_only':

@@ -58,6 +58,12 @@ describe('guardProposal', () => {
         if (r.status === 'needs_input') expect(r.questions[0]).toMatch(/leg a.*300 mm/);
     });
 
+    it('only accepts lengths within 0.5 mm of a buyer number (no relative slack)', () => {
+        const drift = guardProposal({ ...base, leg_a_mm: 50.4, leg_b_mm: 81, width_mm: 40, thickness_mm: 1.52 }, BRACKET_VIEW);
+        expect(drift.status).toBe('needs_input');
+        if (drift.status === 'needs_input') expect(drift.questions.join(' ')).toMatch(/leg b/);
+    });
+
     it('asks for missing lengths instead of inventing them', () => {
         const r = guardProposal({ ...base, leg_a_mm: 50, thickness_mm: 1.52 }, BRACKET_VIEW);
         expect(r).toMatchObject({ status: 'needs_input' });

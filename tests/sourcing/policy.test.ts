@@ -95,4 +95,14 @@ describe('sourcing approval boundary', () => {
         expect(rl.take('b', t).allowed).toBe(true);
         expect(rl.take('a', t + 1000).allowed).toBe(true);
     });
+
+    it('evicts only the least recently used client when the key cap is reached', () => {
+        const rl = new TokenBucketRateLimiter(1, 0.001, 2);
+        const t = 1_000_000;
+        expect(rl.take('a', t).allowed).toBe(true); // a exhausted
+        expect(rl.take('b', t).allowed).toBe(true); // b exhausted
+        expect(rl.take('a', t).allowed).toBe(false); // a is now most recently used
+        expect(rl.take('c', t).allowed).toBe(true); // evicts b (LRU), not a
+        expect(rl.take('a', t).allowed).toBe(false); // a kept its exhausted bucket
+    });
 });

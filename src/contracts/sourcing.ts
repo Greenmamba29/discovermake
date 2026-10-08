@@ -91,6 +91,7 @@ export const SourcingRequest = z.object({
     target_unit_cost_cents: Cents.nullable(),
     material: text(120),
     process: z.array(text(80)).min(1).max(8),
+    /** Bounding box. For a 2D flat pattern, z is the sheet thickness, or 0 when no material is chosen yet. */
     dimensions_mm: z.object({ x: z.number().positive(), y: z.number().positive(), z: z.number().nonnegative() }).nullable(),
     critical_tolerances: z.array(CriticalTolerance).max(20),
     surface_finish: z.string().trim().max(120).nullable(),

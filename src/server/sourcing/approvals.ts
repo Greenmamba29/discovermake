@@ -8,6 +8,10 @@
  *   REJECTED, cancels competing selection requests and emits `supplier.selected`.
  *   R2 stops there: a selected offer is NOT turned into a checkout (checkout stays
  *   BINDING-only); ordering supplier-sourced routes end to end is R3.
+ *
+ * LOCK ORDER (all sourcing services): sourcing_jobs row -> approvals -> supplier_offers.
+ * Every write path takes the job row lock first, so concurrent work on one job queues on
+ * that single row and the later row locks can never deadlock.
  */
 import { and, asc, desc, eq, inArray, isNull, ne } from 'drizzle-orm';
 import { actorId, type Actor } from '../../contracts/common';
@@ -138,14 +142,16 @@ export async function requestApproval(input: RequestApprovalArgs, writer: JobWri
 export async function requestOfferSelection(input: { buildId: string; offerId: string; actor: Actor }, opts: { now?: Date } = {}): Promise<{ approval: ApprovalRow; created: boolean }> {
     const now = opts.now ?? new Date();
     return withTx(async (tx) => {
-        const [offer] = await tx
-            .select()
+        // Lock order everywhere in sourcing: job -> approval -> offer (see LOCK ORDER above).
+        const [peek] = await tx
+            .select({ jobId: supplierOffers.jobId })
             .from(supplierOffers)
-            .where(and(eq(supplierOffers.id, input.offerId), eq(supplierOffers.buildId, input.buildId)))
-            .for('update');
-        if (!offer) throw notFound('Offer');
-        const [job] = await tx.select().from(sourcingJobs).where(eq(sourcingJobs.id, offer.jobId)).for('update');
+            .where(and(eq(supplierOffers.id, input.offerId), eq(supplierOffers.buildId, input.buildId)));
+        if (!peek) throw notFound('Offer');
+        const [job] = await tx.select().from(sourcingJobs).where(eq(sourcingJobs.id, peek.jobId)).for('update');
         if (!job) throw notFound('Sourcing job');
+        const [offer] = await tx.select().from(supplierOffers).where(eq(supplierOffers.id, input.offerId)).for('update');
+        if (!offer) throw notFound('Offer');
         const current = await currentDesignVersion(tx, job);
         if (offer.designVersion !== current) {
             if (offer.status === 'ACTIVE') await tx.update(supplierOffers).set({ status: 'STALE', updatedAt: now }).where(eq(supplierOffers.id, offer.id));
@@ -204,8 +210,9 @@ async function emitDecided(tx: Tx, a: ApprovalRow, status: ApprovalStatus, actor
 /** Apply an approved SELECT_SUPPLIER_OFFER inside `tx`. */
 async function applySelection(tx: Tx, approval: ApprovalRow, actor: Actor, now: Date): Promise<void> {
     if (!approval.supplierOfferId || !approval.jobId) throw conflict('Selection approval has no offer');
-    const [offer] = await tx.select().from(supplierOffers).where(eq(supplierOffers.id, approval.supplierOfferId)).for('update');
+    // The job row is already locked by decideApproval; lock order: job -> approval -> offer.
     const [job] = await tx.select().from(sourcingJobs).where(eq(sourcingJobs.id, approval.jobId)).for('update');
+    const [offer] = await tx.select().from(supplierOffers).where(eq(supplierOffers.id, approval.supplierOfferId)).for('update');
     if (!offer || !job) throw notFound('Offer');
     const current = await currentDesignVersion(tx, job);
     if (offer.designVersion !== current) {
@@ -239,6 +246,11 @@ async function applySelection(tx: Tx, approval: ApprovalRow, actor: Actor, now: 
 export async function decideApproval(approvalId: string, decision: ApprovalDecisionRequest, actor: Actor, opts: { now?: Date } = {}): Promise<ApprovalView> {
     const now = opts.now ?? new Date();
     return withTx(async (tx) => {
+        // Lock order: job -> approval -> offer. Cancelling a job locks the job and then its
+        // approvals, so the job row must be taken first here too.
+        const [peek] = await tx.select({ jobId: approvals.jobId }).from(approvals).where(eq(approvals.id, approvalId));
+        if (!peek) throw notFound('Approval');
+        if (peek.jobId) await tx.select({ id: sourcingJobs.id }).from(sourcingJobs).where(eq(sourcingJobs.id, peek.jobId)).for('update');
         const [approval] = await tx.select().from(approvals).where(eq(approvals.id, approvalId)).for('update');
         if (!approval) throw notFound('Approval');
         assertCanDecide(approval, actor);

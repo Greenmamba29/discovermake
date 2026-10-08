@@ -11,6 +11,7 @@ import { SourcingError } from '@/server/sourcing/errors';
 import { LEASE_TTL_MS } from '@/server/sourcing/constants';
 import { cancelJob, completeJob, createSourcingJob, leaseNextJob, requeueJob, switchJobToDesk } from '@/server/sourcing/jobs';
 import { submitOffer } from '@/server/sourcing/offers';
+import { revokeSourcingClient } from '@/server/sourcing/clients';
 import { useTestDb } from '../support/db';
 import { ADMIN, bumpDesignVersion, createJobFixture, leaseJob, newClient, offerInput, quietConsole, supplierFor } from './fixtures';
 
@@ -116,6 +117,21 @@ describe('sourcing jobs', () => {
             .where(and(eq(domainEvents.eventType, 'sourcing.lease_released'), eq(domainEvents.buildId, job.buildId)));
         expect(released.map((e) => e.payload)).toEqual([{ jobId: job.id, reason: 'expired' }]);
         await ctx.db.update(sourcingJobs).set({ priority: 0 }).where(eq(sourcingJobs.id, job.id));
+    });
+
+    it('revoking a client returns its leases to the queue once; revoking again is a no-op', async () => {
+        const { job } = await createJobFixture(ctx.db);
+        const c = await newClient('revoked');
+        await leaseJob(ctx.db, job.id, c.clientId);
+        expect(await revokeSourcingClient(c.clientId)).toEqual({ releasedJobs: 1 });
+        const [row] = await ctx.db.select().from(sourcingJobs).where(eq(sourcingJobs.id, job.id));
+        expect(row).toMatchObject({ status: 'QUEUED', leaseId: null });
+        expect(await revokeSourcingClient(c.clientId)).toEqual({ releasedJobs: 0 });
+        const released = await ctx.db
+            .select()
+            .from(domainEvents)
+            .where(and(eq(domainEvents.eventType, 'sourcing.lease_released'), eq(domainEvents.buildId, job.buildId)));
+        expect(released.map((e) => e.payload)).toEqual([{ jobId: job.id, reason: 'client_revoked' }]);
     });
 
     it('concurrent next_job calls never lease the same job twice', async () => {
