@@ -101,7 +101,7 @@ export function PassportView({ passportId }: { passportId: string }) {
                 {s.quantity} × {s.material.name} {s.material.thicknessLabel}, made by {s.shop.name} in {s.shop.city}, {s.shop.region} on {longDate(p.manufacturedOn)}.
             </p>
 
-            <div className="mt-10 grid gap-8 md:grid-cols-[minmax(0,1fr)_260px]">
+            <div className="mt-10 grid grid-cols-[minmax(0,1fr)] gap-8 md:grid-cols-[minmax(0,1fr)_260px]">
                 <div className="space-y-8">
                     <section aria-labelledby="pp-make">
                         <h2 id="pp-make" className="font-display text-xl font-bold text-ink">
@@ -113,7 +113,8 @@ export function PassportView({ passportId }: { passportId: string }) {
                                 {s.part.bboxWidthMm.toFixed(1)} × {s.part.bboxHeightMm.toFixed(1)} mm
                             </Row>
                             <Row label="Material">
-                                {s.material.name} · {s.material.thicknessLabel} ({s.material.thicknessMm.toFixed(2)} mm)
+                                {s.material.name} · {s.material.thicknessLabel}
+                                {/mm\b/.test(s.material.thicknessLabel) ? '' : ` (${s.material.thicknessMm.toFixed(2)} mm)`}
                             </Row>
                             <Row label="Process">{s.process}</Row>
                             <Row label="Finish">{s.finish ?? 'As cut'}</Row>
@@ -171,7 +172,7 @@ export function PassportView({ passportId }: { passportId: string }) {
                                 {s.qa.outcome === 'PASS' ? 'Passed' : 'Failed'} · {s.qa.inspectorName} · {dateTime(s.qa.inspectedAt)}
                             </p>
                         </div>
-                        <div className="mt-3 overflow-x-auto rounded-2xl bg-paper-raised ring-1 ring-paper-line">
+                        <div className="mt-3 overflow-x-auto rounded-2xl bg-paper-raised ring-1 ring-paper-line focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink" tabIndex={0} role="region" aria-label="Inspection results (scrolls sideways on small screens)">
                             <table className="w-full min-w-[420px] text-sm" data-testid="passport-qa">
                                 <caption className="sr-only">Inspection checks with nominal and measured values</caption>
                                 <thead className="text-left text-[11px] uppercase tracking-wider text-ink-subtle">

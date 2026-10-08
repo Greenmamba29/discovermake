@@ -30,6 +30,7 @@ export const E2E_ENV: Record<string, string> = {
     // Make AI routes on, with no model key: builds are created from stored intents and the
     // Materials Engineer is skipped (it never blocks build creation).
     MAKE_AI_ENABLED: 'true',
+    NEXT_PUBLIC_MAKE_AI_ENABLED: 'true',
 };
 
 /**

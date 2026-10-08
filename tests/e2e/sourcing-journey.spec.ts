@@ -73,7 +73,11 @@ test('Accio Work sources a part over MCP and a human approves the route', async 
     const accio = mcp(request, client.token);
     const init = await accio.initialize();
     expect(init.result.instructions).toMatch(/Approval boundary/);
-    const next = await accio.call('next_job', {});
+    // Other specs may have left jobs in the queue: keep leasing until ours comes up (oldest first).
+    let next = await accio.call('next_job', {});
+    for (let i = 0; i < 20 && next.job && (next.job as { sourcing_request_id: string }).sourcing_request_id !== job.id; i++) {
+        next = await accio.call('next_job', {});
+    }
     const leasedJob = next.job as { sourcing_request_id: string; design_version: number; quantity: number };
     expect(leasedJob.sourcing_request_id).toBe(job.id);
     const lease = { sourcing_request_id: job.id, lease_id: next.lease_id as string };

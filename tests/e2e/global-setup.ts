@@ -5,6 +5,8 @@
  * name does not end in `_e2e` so a misconfigured E2E_DATABASE_URL cannot wipe
  * a real database. Set E2E_KEEP_DB=1 to reuse the existing database instead.
  */
+import { randomUUID } from 'node:crypto';
+import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import postgres from 'postgres';
 import { E2E_DATABASE_URL, E2E_SHOP_TOKEN } from '../../playwright.config';
 import { createDb } from '../../src/server/db';
@@ -34,4 +36,9 @@ export default async function globalSetup(): Promise<void> {
     } finally {
         await client.end({ timeout: 5 });
     }
+    // Run marker: specs that cache state across worker restarts key it by this id
+    // (the database above is recreated per run, so earlier state is gone).
+    mkdirSync('test-results', { recursive: true });
+    writeFileSync('test-results/.e2e-run-id', randomUUID());
+    rmSync('test-results/page-sweep', { recursive: true, force: true });
 }
