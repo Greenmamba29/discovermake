@@ -28,6 +28,7 @@ There is also a concept animation of the whole pipeline: [`public/concepts/trans
 | 11 | [Platform, data + security](11-platform-security-infra.md) | Stack, monorepo, data migration, secrets | Design → Ops |
 | 12 | [QA, release + operations](12-qa-release-operations.md) | Test strategy, traceability, launch, support | Test → Ops |
 | 13 | [Epics + backlog](13-epics-and-backlog.md) | GitHub epics, issues and sequencing | Impl |
+| 14 | [Completion plan](14-completion-plan.md) | Stages to finish the whole app, Mobbin page-sweep results and coverage | Impl |
 
 Architecture context:
 
