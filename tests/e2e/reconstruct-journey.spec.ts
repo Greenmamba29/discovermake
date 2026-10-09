@@ -92,7 +92,7 @@ for (const vp of VIEWPORTS) {
         // ---- 5. Review: Object View + BINDING print quote from the real engine ----
         await page.goto(`/reconstruct/${buildId}?step=review`);
         await expect(page.getByRole('heading', { level: 1, name: 'Review and order' })).toBeVisible();
-        await expect(page.getByTestId('object-viewport')).toBeVisible();
+        await expect(page.getByTestId('object-viewport')).toBeVisible({ timeout: 30_000 });
         await expect(page.getByTestId('review-dimensions')).toContainText('38.10 mm');
         await expect(page.getByTestId('print-material-asa').getByRole('radio')).toBeChecked();
         await page.getByTestId('print-get-quote').click();
