@@ -7,7 +7,8 @@
 import { and, eq, like } from 'drizzle-orm';
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import { POST as markPaidRoute } from '@/app/api/admin/creator-payouts/[payoutId]/paid/route';
-import { creatorAccounts, creatorEarnings, creatorPayouts, domainEvents, ledgerEntries, orders } from '@/server/db/schema';
+import { creatorAccounts, creatorEarnings, creatorPayouts, domainEvents, ledgerEntries, orders, shows } from '@/server/db/schema';
+import { createShow, upsertChannel } from '@/server/live';
 import { resetEnvCache } from '@/server/env';
 import { ledgerBalances } from '@/server/ledger';
 import { creatorBalance, creatorInsights, markCreatorPayoutPaid, requestCreatorPayout, splitCreatorEarnings } from '@/server/media';
@@ -169,5 +170,14 @@ describe('creator economics', () => {
         expect(new Set([o1.orderId, o2.orderId]).size).toBe(2);
         const week = await creatorInsights(creator.id, '7d');
         expect(week.series).toHaveLength(7);
+
+        // Show stats come from the Live tables of the creator's channel.
+        const channel = await upsertChannel(viewer, { name: 'Lamp channel', handle: `lamps_${Date.now().toString(36)}`.slice(0, 24), kind: 'creator', categories: ['workshop'] });
+        const show = await createShow(viewer, { title: 'Lamp night', format: 'live_drop', scheduledFor: new Date().toISOString(), featuredBuildIds: [fixture.build.id] });
+        await ctx.db.update(shows).set({ status: 'ENDED', startedAt: new Date(Date.now() - 600_000), endedAt: new Date(), peakViewers: 40, likeCount: 7 }).where(eq(shows.id, show.id));
+        const withShows = await creatorInsights(creator.id, '30d');
+        expect(channel.handle).toBeTruthy();
+        expect(withShows.shows).toEqual([expect.objectContaining({ showId: show.id, peakViewers: 40, uniqueViewers: 40, likes: 7, slotsClaimed: 0, slotConversionPct: 0 })]);
+        expect(withShows.totals).toMatchObject({ showViews: 40, likes: 7, slotConversionPct: 0 });
     });
 });

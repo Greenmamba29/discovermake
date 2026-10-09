@@ -146,7 +146,7 @@ export function LiveViewer({ showId }: { showId: string }) {
 
     return (
         <div
-            className="grid w-full [grid-template-areas:'stage'_'below'] lg:h-[calc(100vh-4rem)] lg:[grid-template-areas:'stage_side'_'stage_below'] lg:grid-cols-[minmax(0,1fr)_420px] lg:grid-rows-[auto_minmax(0,1fr)] lg:overflow-hidden"
+            className="grid w-full grid-cols-[minmax(0,1fr)] [grid-template-areas:'stage'_'below'] lg:h-[calc(100vh-4rem)] lg:[grid-template-areas:'stage_side'_'stage_below'] lg:grid-cols-[minmax(0,1fr)_420px] lg:grid-rows-[auto_minmax(0,1fr)] lg:overflow-hidden"
             data-testid="live-viewer"
             data-status={show.status}
         >

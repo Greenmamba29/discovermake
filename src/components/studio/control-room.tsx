@@ -69,11 +69,13 @@ export function ControlRoom({ showId }: { showId: string }) {
         );
     }
     const data = control.data;
-    const show = live.state?.show ?? data.snapshot.show;
-    const drop = live.state?.drop ?? data.snapshot.drop;
-    const chat = live.state ? visibleChat(live.state) : data.snapshot.recentChat;
-    const questions = live.state?.questions ?? data.snapshot.questions;
-    const featuredNow = live.state?.featured ?? data.snapshot.featured;
+    // Ended shows: the hook folds the replay log at position 0; the control room shows the final state.
+    const liveState = live.isReplay ? null : live.state;
+    const show = liveState?.show ?? data.snapshot.show;
+    const drop = liveState?.drop ?? data.snapshot.drop;
+    const chat = liveState ? visibleChat(liveState) : data.snapshot.recentChat;
+    const questions = liveState?.questions ?? data.snapshot.questions;
+    const featuredNow = liveState?.featured ?? data.snapshot.featured;
     const ended = show.status === 'ENDED' || show.status === 'CANCELLED';
 
     return (
@@ -112,13 +114,13 @@ export function ControlRoom({ showId }: { showId: string }) {
                     <FeaturedPanel showId={showId} items={data.featuredBuilds} currentBuildId={featuredNow?.buildId ?? null} disabled={ended} busy={busy} onFeature={(b) => send(`feature-${b}`, { intent: 'feature_product', buildId: b })} onAdded={() => void control.refetch()} />
                     {ended && <ClipStudio showId={showId} />}
                     <DropPanel drop={drop} featured={data.featuredBuilds} disabled={ended} busy={busy} send={send} />
-                    <AuctionPanel auction={live.state?.auction ?? data.snapshot.auction ?? null} featured={data.featuredBuilds} disabled={ended} busy={busy} send={send} />
+                    <AuctionPanel auction={liveState?.auction ?? data.snapshot.auction ?? null} featured={data.featuredBuilds} disabled={ended} busy={busy} send={send} />
                     <QuestionQueue questions={questions} busy={busy} onAnswer={(id, answer) => send(`answer-${id}`, { intent: 'answer_question', questionId: id, answer }, 'Answer sent.')} />
-                    <PollPanel disabled={ended} busy={busy} onCreate={(question, options) => send('poll', { intent: 'create_poll', question, options }, 'Poll is live.')} poll={live.state?.poll ?? data.snapshot.poll} />
+                    <PollPanel disabled={ended} busy={busy} onCreate={(question, options) => send('poll', { intent: 'create_poll', question, options }, 'Poll is live.')} poll={liveState?.poll ?? data.snapshot.poll} />
                 </div>
                 <aside className="space-y-6">
                     <GoLiveChecklist checklist={data.checklist} />
-                    <ModerationPanel chat={chat} slowMode={live.state?.slowModeSeconds ?? data.snapshot.slowModeSeconds} mutes={data.mutes} disabled={ended} busy={busy} send={send} />
+                    <ModerationPanel chat={chat} slowMode={liveState?.slowModeSeconds ?? data.snapshot.slowModeSeconds} mutes={data.mutes} disabled={ended} busy={busy} send={send} />
                     <MilestonePanel disabled={show.status !== 'LIVE'} busy={busy} send={send} />
                 </aside>
             </div>

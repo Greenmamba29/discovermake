@@ -118,7 +118,7 @@ export async function creatorInsights(userId: string, range: InsightRange, now: 
         ? await db
               .select()
               .from(shows)
-              .where(and(eq(shows.channelId, channel.id), from ? sql`coalesce(${shows.startedAt}, ${shows.scheduledFor}) >= ${from}` : undefined))
+              .where(and(eq(shows.channelId, channel.id), from ? sql`coalesce(${shows.startedAt}, ${shows.scheduledFor}) >= ${from.toISOString()}::timestamptz` : undefined))
               .orderBy(desc(shows.scheduledFor))
               .limit(20)
         : [];

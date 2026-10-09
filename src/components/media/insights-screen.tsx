@@ -81,7 +81,7 @@ function Body({ data }: { data: InsightsView }) {
                 ))}
             </dl>
             <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-                <section aria-labelledby="earnings-heading" className="rounded-2xl bg-graphite-900 p-4 ring-1 ring-graphite-700">
+                <section aria-labelledby="earnings-heading" className="min-w-0 rounded-2xl bg-graphite-900 p-4 ring-1 ring-graphite-700">
                     <h2 id="earnings-heading" className="font-display text-lg font-bold">
                         Earnings over time
                     </h2>
@@ -89,7 +89,7 @@ function Body({ data }: { data: InsightsView }) {
                         <EarningsChart series={data.series} currency={data.currency} />
                     </div>
                 </section>
-                <section aria-labelledby="mix-heading" className="rounded-2xl bg-graphite-900 p-4 ring-1 ring-graphite-700">
+                <section aria-labelledby="mix-heading" className="min-w-0 rounded-2xl bg-graphite-900 p-4 ring-1 ring-graphite-700">
                     <h2 id="mix-heading" className="font-display text-lg font-bold">
                         Product mix
                     </h2>
@@ -98,7 +98,7 @@ function Body({ data }: { data: InsightsView }) {
                     </div>
                 </section>
             </div>
-            <section aria-labelledby="best-heading" className="mt-6 rounded-2xl bg-graphite-900 p-4 ring-1 ring-graphite-700" data-testid="best-sellers">
+            <section aria-labelledby="best-heading" className="mt-6 min-w-0 rounded-2xl bg-graphite-900 p-4 ring-1 ring-graphite-700" data-testid="best-sellers">
                 <h2 id="best-heading" className="font-display text-lg font-bold">
                     Best sellers
                 </h2>
@@ -138,13 +138,13 @@ function Body({ data }: { data: InsightsView }) {
                 )}
             </section>
             <div className="mt-6 grid gap-6 lg:grid-cols-2">
-                <section aria-labelledby="tree-heading" className="rounded-2xl bg-graphite-900 p-4 ring-1 ring-graphite-700">
+                <section aria-labelledby="tree-heading" className="min-w-0 rounded-2xl bg-graphite-900 p-4 ring-1 ring-graphite-700">
                     <h2 id="tree-heading" className="font-display text-lg font-bold">
                         Remix tree
                     </h2>
                     {data.remixTree.length === 0 ? <p className="mt-2 text-sm text-fg-muted">No remixes of your builds yet.</p> : <div className="mt-3 space-y-4">{data.remixTree.map((n) => <RemixTreeView key={n.buildId} node={n} />)}</div>}
                 </section>
-                <section aria-labelledby="shows-heading" className="rounded-2xl bg-graphite-900 p-4 ring-1 ring-graphite-700" data-testid="show-stats">
+                <section aria-labelledby="shows-heading" className="min-w-0 rounded-2xl bg-graphite-900 p-4 ring-1 ring-graphite-700" data-testid="show-stats">
                     <h2 id="shows-heading" className="font-display text-lg font-bold">
                         Shows
                     </h2>

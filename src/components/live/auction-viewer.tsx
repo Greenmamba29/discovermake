@@ -32,11 +32,20 @@ export function AuctionCard({ auction, signedIn, isHost, onBid }: { auction: Auc
     const open = auction.status === 'OPEN';
     const leading = !!auction.viewerBid && auction.viewerBid.amountCents === auction.currentBidCents;
     const outbid = !!auction.viewerBid && !leading && open;
+    // Auctions close lazily: once the clock runs out, one read closes it and the signed
+    // `auction.closed` event reaches every viewer through the stream.
+    useEffect(() => {
+        if (!open) return;
+        const wait = new Date(auction.endsAt).getTime() - Date.now() + 750;
+        const t = setTimeout(() => void mediaApi.auction(auction.id).catch(() => undefined), Math.max(250, wait));
+        return () => clearTimeout(t);
+    }, [open, auction.id, auction.endsAt]);
     return (
-        <section aria-labelledby="auction-card-heading" className="rounded-2xl bg-graphite-900/95 p-3 ring-1 ring-graphite-700" data-testid="auction-card" data-status={auction.status} data-leading={leading ? 'true' : 'false'}>
+        <section aria-labelledby="auction-card-heading" className="min-w-0 rounded-2xl bg-graphite-900/95 p-3 ring-1 ring-graphite-700" data-testid="auction-card" data-status={auction.status} data-leading={leading ? 'true' : 'false'}>
             <div className="flex items-center justify-between gap-2">
-                <h2 id="auction-card-heading" className="flex min-w-0 items-center gap-1.5 truncate font-display text-sm font-bold">
-                    <Gavel className="h-4 w-4 shrink-0 text-fg-muted" aria-hidden /> {open ? 'Live auction' : 'Auction ended'} · {auction.title}
+                <h2 id="auction-card-heading" className="min-w-0 flex-1 truncate font-display text-sm font-bold">
+                    <Gavel className="mr-1.5 inline h-4 w-4 align-[-2px] text-fg-muted" aria-hidden />
+                    {open ? 'Live auction' : 'Auction ended'} · {auction.title}
                 </h2>
                 {open && <AuctionCountdown endsAt={auction.endsAt} extensions={auction.extensions} />}
             </div>
