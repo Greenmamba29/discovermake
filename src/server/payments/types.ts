@@ -16,6 +16,11 @@ export type CreatePaymentInput = {
     metadata: Record<string, string>;
     /** Optional: when the hosted session should stop accepting payment (clamped to provider limits). */
     expiresAt?: Date;
+    /**
+     * Optional provider idempotency key. Default `checkout:<orderId>` (one session per order);
+     * R3 balance payments pass `balance:<orderId>:<n>` so they never collide with the deposit session.
+     */
+    idempotencyKey?: string;
 };
 
 export type CreatePaymentResult = {

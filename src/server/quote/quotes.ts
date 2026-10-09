@@ -378,11 +378,13 @@ export async function createQuoteImpl(input: CreateQuoteRequest, now: Date = new
         return inserted;
     });
 
-    return toQuoteView(row, {
+    const view = toQuoteView(row, {
         part: { designVersion: partRow.designVersion, rulesetVersion: partRow.rulesetVersion },
         route: routeOf(finalChoice.shop, process.name, routed ? finalChoice.laserCap?.machineLabel ?? null : null),
         now,
     });
+    const { quoteViewExtras } = await import('../prime/quote-view');
+    return { ...view, ...(await quoteViewExtras(row, now)) };
 }
 
 function routeOf(shop: ShopRow, processName: string, machineLabel: string | null): QuoteRoute {
@@ -469,7 +471,10 @@ export async function getQuoteImpl(id: string, now: Date = new Date()): Promise<
             .limit(1);
         machineLabel = cap?.machineLabel ?? null;
     }
-    return toQuoteView(r.quote, { part: r.part, route: routeOf(r.shop, thk?.processName ?? r.quote.summary.processName, machineLabel), now });
+    const view = toQuoteView(r.quote, { part: r.part, route: routeOf(r.shop, thk?.processName ?? r.quote.summary.processName, machineLabel), now });
+    // R3: route kind, supplier route summary and the Delivery Promise (dynamic import: no cycle with prime).
+    const { quoteViewExtras } = await import('../prime/quote-view');
+    return { ...view, ...(await quoteViewExtras(r.quote, now)) };
 }
 
 /** READY -> ORDERED inside the caller's (payment) transaction. Idempotent. */

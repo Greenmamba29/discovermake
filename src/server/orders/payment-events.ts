@@ -15,6 +15,7 @@ import { deliverEvent, emitEvent } from '../events/outbox';
 import { recordPaymentSplit, recordRefund } from '../ledger';
 import { notify } from '../notify';
 import { markQuoteOrdered } from '../quote';
+import { applyBalancePaid, applyDepositPaid, applyFullPaymentCredit, expectedChargeCents, isSupplierRouteOrder, paymentPurpose } from '../prime/payments';
 import { advanceOrder } from './advance';
 import { orderUrlFromPaymentMetadata } from './link-vault';
 import { canTransition } from './state';
@@ -114,7 +115,16 @@ async function deliverDurably(eventIds: string[]): Promise<void> {
  */
 export async function handleOrderEvent(event: DomainEventEnvelope): Promise<void> {
     if (event.event_type === 'production.authorized') {
-        await dispatchAndConfirm((event.payload as { orderId: string }).orderId);
+        const orderId = (event.payload as { orderId: string }).orderId;
+        const [o] = await getDb().select({ quoteId: orders.quoteId }).from(orders).where(eq(orders.id, orderId));
+        // Supplier route (R3): production is authorized by the human PO approval; the buyer was
+        // confirmed when the deposit arrived, and there is no partner-shop dispatch.
+        if (o && (await isSupplierRouteOrder(getDb(), o))) return;
+        await dispatchAndConfirm(orderId);
+        return;
+    }
+    if (event.event_type === 'order.deposit_paid') {
+        await confirmOrder((event.payload as { orderId: string }).orderId);
         return;
     }
     if (event.event_type === 'ops.alert_requested') {
@@ -148,6 +158,14 @@ async function dispatchAndConfirm(orderId: string): Promise<void> {
             orderId,
         });
     }
+    await confirmOrder(orderId);
+}
+
+/** Email the buyer their order confirmation with the signed order link. */
+async function confirmOrder(orderId: string): Promise<void> {
+    const db = getDb();
+    const [order] = await db.select().from(orders).where(eq(orders.id, orderId));
+    if (!order) return;
     const [payment] = await db
         .select()
         .from(payments)
@@ -191,14 +209,17 @@ export async function handlePaymentSucceeded(input: PaymentSucceededInput): Prom
         }
 
         const currency = input.currency.toLowerCase();
-        if (input.amountCents !== payment.amountCents || currency !== payment.currency || payment.amountCents !== order.totalCents) {
+        // R3: the expected charge depends on the payment plan (deposit / balance / credit applied).
+        const purpose = paymentPurpose(payment.metadata);
+        const expectedCents = await expectedChargeCents(tx, order, purpose);
+        if (input.amountCents !== payment.amountCents || currency !== payment.currency || payment.amountCents !== expectedCents) {
             await tx
                 .update(payments)
                 .set({
                     failureReason: 'AMOUNT_MISMATCH',
                     metadata: {
                         ...payment.metadata,
-                        amountMismatch: { receivedCents: input.amountCents, receivedCurrency: currency, expectedCents: order.totalCents, eventId: input.eventId },
+                        amountMismatch: { receivedCents: input.amountCents, receivedCurrency: currency, expectedCents, eventId: input.eventId },
                     },
                     updatedAt: new Date(),
                 })
@@ -206,7 +227,7 @@ export async function handlePaymentSucceeded(input: PaymentSucceededInput): Prom
             durable.push(
                 await requestOpsAlert(tx, order, {
                     subject: `Payment amount mismatch on ${order.orderNumber}`,
-                    message: `Provider reported ${input.amountCents} ${currency} but the order total is ${order.totalCents} ${order.currency}. The order was NOT advanced. Investigate and refund or adjust.`,
+                    message: `Provider reported ${input.amountCents} ${currency} but this ${purpose} payment should be ${expectedCents} ${order.currency} (order total ${order.totalCents}). The order was NOT advanced. Investigate and refund or adjust.`,
                 }),
             );
             return { ...base, alreadyProcessed: false };
@@ -227,6 +248,12 @@ export async function handlePaymentSucceeded(input: PaymentSucceededInput): Prom
             timestamp: now,
         });
 
+        if (purpose === 'balance') {
+            // Supplier-route balance at shipment: the order is already paid and in progress.
+            await applyBalancePaid(tx, order, payment, now);
+            return { ...base, alreadyProcessed: false };
+        }
+
         if (!canTransition(order.status, 'PAID')) {
             // Money arrived for an order that can no longer be paid (e.g. cancelled). Keep the
             // payment fact, do not touch the order, and get a human to refund.
@@ -240,6 +267,14 @@ export async function handlePaymentSucceeded(input: PaymentSucceededInput): Prom
         }
 
         await advanceOrder(order.id, 'PAID', actor, { causationId: completed.event_id, at: now, data: { paymentId: payment.id } }, tx);
+        if (purpose === 'deposit') {
+            // Supplier route: the deposit is held (ledger `deposit:`), and the PO approvals are
+            // requested from `order.deposit_paid`. Production is authorized by the PO approval.
+            await markQuoteOrdered(order.quoteId, tx);
+            durable.push(await applyDepositPaid(tx, order, payment, now));
+            return { ...base, alreadyProcessed: false };
+        }
+        await applyFullPaymentCredit(tx, order, now);
         const [quote] = await tx.select({ id: quotes.id, status: quotes.status, designVersion: quotes.designVersion }).from(quotes).where(eq(quotes.id, order.quoteId));
         const authorized = await emitEvent(tx, {
             type: 'production.authorized',
@@ -336,6 +371,9 @@ export async function applyFullRefund(
     const { cancelOpenJobs } = await import('../dispatch');
     await cancelOpenJobs(order.id, tx);
     await recordRefund(order.id, payment.amountCents, tx);
+    // R3: a promise credit used on this order becomes available again.
+    const { restoreCredit } = await import('../promise/credits');
+    await restoreCredit(tx, order.id, now);
     return true;
 }
 
@@ -362,7 +400,8 @@ export async function handleProviderRefund(input: {
         const [order] = await tx.select().from(orders).where(eq(orders.id, payment.orderId)).for('update');
         if (!order) return { orderId: null };
 
-        if (input.fullyRefunded && payment.status === 'SUCCEEDED' && canTransition(order.status, 'REFUNDED')) {
+        // Supplier-route orders have several payments and their own ledger: ops reconciles those (refundSupplierOrder).
+        if (input.fullyRefunded && payment.status === 'SUCCEEDED' && canTransition(order.status, 'REFUNDED') && !(await isSupplierRouteOrder(tx, order))) {
             await applyFullRefund(tx, {
                 paymentId: payment.id,
                 refundRef: input.refundRef,

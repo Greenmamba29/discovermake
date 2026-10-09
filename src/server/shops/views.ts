@@ -57,6 +57,7 @@ export function toJobSummary(job: JobRow): ShopJobSummary {
         payoutCents: job.payoutCents,
         nextAction: nextActionFor(job.status),
         createdAt: iso(job.createdAt),
+        kind: p.receiving ? 'RECEIVING' : 'MANUFACTURE',
     };
 }
 
