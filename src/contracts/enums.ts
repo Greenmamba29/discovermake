@@ -245,7 +245,7 @@ export const BuildTrustState = z.enum(BUILD_TRUST_STATES);
 export type BuildTrustState = z.infer<typeof BuildTrustState>;
 
 /** How a Build was started (workflow 01 entry points). */
-export const BUILD_ORIGINS = ['upload', 'make_ai', 'remix', 'clone'] as const;
+export const BUILD_ORIGINS = ['upload', 'make_ai', 'remix', 'clone', 'reconstruct'] as const;
 export const BuildOrigin = z.enum(BUILD_ORIGINS);
 export type BuildOrigin = z.infer<typeof BuildOrigin>;
 

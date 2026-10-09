@@ -13,7 +13,7 @@
    "content_type": "model/step",
    "filename": "bracket.step",
    "kind": "STEP",
-   "sha256": "d9c506bc6efe838e435287a3636488ba96f3c127c1081da61e9b7b5c37e7683f"
+   "sha256": "23ce5a7420dd6b08f6a91ab0728e1813f12b167905fce30d9a36623ccbb924e8"
   },
   {
    "bytes": 44416,
@@ -44,11 +44,11 @@
    "sha256": "50d4006053e012ac3885d570f49e12ec8e516105f056462a30a82a12ef7f891a"
   },
   {
-   "bytes": 1988,
+   "bytes": 2131,
    "content_type": "application/json",
    "filename": "manifest.json",
    "kind": "MANIFEST",
-   "sha256": "871c2b475a70e5fc37ecd5d37c828edfd7af076325f3a309baea718e71c9c772"
+   "sha256": "c1cd042093c5bedc7bad60672299290f47a9b62055f3394b1b69224d6d079b1b"
   }
  ],
  "family": "l_bracket",
@@ -70,6 +70,7 @@
    40.0,
    127.358
   ],
+  "surface_area_mm2": 10678.5,
   "thickness_mm": 1.52,
   "volume_mm3": 7692.4
  },
@@ -79,5 +80,5 @@
  ],
  "ref": "eval:l-bracket-holes",
  "warnings": [],
- "worker_version": "0.2.0"
+ "worker_version": "0.3.0"
 }

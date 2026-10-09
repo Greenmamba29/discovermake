@@ -81,6 +81,7 @@ export async function createQuoteImpl(input: CreateQuoteRequest, now: Date = new
     const parsed = QuoteConfig.safeParse(input);
     if (!parsed.success) throw validation('Quote configuration is invalid', parsed.error.flatten());
     const config = parsed.data;
+    if (config.process === 'print') throw validation('Printed parts are quoted by the print engine (Reconstruct), not POST /api/quotes.');
     const db = getDb();
 
     let [part] = await db.select().from(parts).where(eq(parts.id, config.partId)).limit(1);
@@ -470,6 +471,11 @@ export async function getQuoteImpl(id: string, now: Date = new Date()): Promise<
             .where(and(eq(shopCapabilities.shopId, r.quote.shopId), eq(shopCapabilities.thicknessOptionId, r.quote.config.thicknessOptionId), eq(shopCapabilities.processId, thk.processId)))
             .limit(1);
         machineLabel = cap?.machineLabel ?? null;
+    }
+    if (r.quote.config.process === 'print' && r.quote.status !== 'REVIEW') {
+        // R6: printed parts route to a printer, not a thickness-option machine.
+        const { printMachineLabel } = await import('./printing/quotes');
+        machineLabel = await printMachineLabel(r.quote.id);
     }
     const view = toQuoteView(r.quote, { part: r.part, route: routeOf(r.shop, thk?.processName ?? r.quote.summary.processName, machineLabel), now });
     // R3: route kind, supplier route summary and the Delivery Promise (dynamic import: no cycle with prime).

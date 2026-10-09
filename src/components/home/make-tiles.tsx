@@ -9,14 +9,14 @@ type Tile = {
     body: string;
     icon: typeof Box;
     /** Instant quote today, or planned by Make AI and sourced through partners. */
-    route: { kind: 'upload' } | { kind: 'make-ai'; prompt: string; label: string };
+    route: { kind: 'upload' } | { kind: 'make-ai'; prompt: string; label: string } | { kind: 'link'; href: string; label: string };
 };
 
 /**
  * Make-anything tile grid (workflow 10: Uber "Suggestions" tiles → Laser cut · Bend · CNC ·
  * 3D print · Wood · Reconstruct). Every tile leads somewhere real: laser and bend go to the
- * instant-quote upload; the others open Make AI with a process-specific starter prompt, because
- * the partner network sources those processes.
+ * instant-quote upload, Reconstruct to the photo capture (/reconstruct, R6); the others open
+ * Make AI with a process-specific starter prompt, because the partner network sources them.
  */
 export const MAKE_TILES: readonly Tile[] = [
     { key: 'laser', title: 'Laser cut', body: 'Metal, acrylic and wood from a DXF. Instant binding quote.', icon: Scissors, route: { kind: 'upload' } },
@@ -57,13 +57,9 @@ export const MAKE_TILES: readonly Tile[] = [
     {
         key: 'reconstruct',
         title: 'Reconstruct',
-        body: 'Describe the broken part and Make AI plans a replacement. Photo capture comes later.',
+        body: 'Photograph the broken part, confirm its sizes with a caliper, get a binding price for a new one.',
         icon: Wrench,
-        route: {
-            kind: 'make-ai',
-            label: 'Describe the broken part',
-            prompt: 'Replace a broken part: the plastic knob on my stove snapped off its 6 mm D-shaft. It is about 38 mm across and 22 mm tall. Make 2 in heat-resistant nylon.',
-        },
+        route: { kind: 'link', href: '/reconstruct', label: 'Rebuild from a photo' },
     },
 ];
 
@@ -73,8 +69,8 @@ export function MakeTiles({ makeAiEnabled }: { makeAiEnabled: boolean }) {
             {MAKE_TILES.map((t) => {
                 const ai = t.route.kind === 'make-ai';
                 const enabled = !ai || makeAiEnabled;
-                const href = t.route.kind === 'make-ai' ? makeAiPromptHref(t.route.prompt) : '/make';
-                const cta = t.route.kind === 'make-ai' ? (makeAiEnabled ? t.route.label : 'Make AI preview') : 'Upload a DXF';
+                const href = t.route.kind === 'make-ai' ? makeAiPromptHref(t.route.prompt) : t.route.kind === 'link' ? t.route.href : '/make';
+                const cta = t.route.kind === 'make-ai' ? (makeAiEnabled ? t.route.label : 'Make AI preview') : t.route.kind === 'link' ? t.route.label : 'Upload a DXF';
                 const inner = (
                     <>
                         <span className="flex items-start justify-between gap-2">

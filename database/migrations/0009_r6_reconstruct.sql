@@ -1,0 +1,120 @@
+ALTER TYPE "public"."build_origin" ADD VALUE 'reconstruct';--> statement-breakpoint
+CREATE TABLE "print_materials" (
+	"id" text PRIMARY KEY NOT NULL,
+	"slug" text NOT NULL,
+	"name" text NOT NULL,
+	"description" text DEFAULT '' NOT NULL,
+	"swatch_hex" text DEFAULT '#9aa0a6' NOT NULL,
+	"process" text NOT NULL,
+	"density_kg_m3" double precision NOT NULL,
+	"price_cents_per_kg" integer NOT NULL,
+	"min_wall_mm" double precision DEFAULT 1.2 NOT NULL,
+	"max_bridge_mm" double precision DEFAULT 10 NOT NULL,
+	"heat_deflection_c" integer,
+	"calibrated" boolean DEFAULT false NOT NULL,
+	"active" boolean DEFAULT true NOT NULL,
+	"sort_order" integer DEFAULT 0 NOT NULL,
+	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
+	"updated_at" timestamp with time zone DEFAULT now() NOT NULL,
+	CONSTRAINT "print_materials_slug_unique" UNIQUE("slug")
+);
+--> statement-breakpoint
+CREATE TABLE "print_quote_details" (
+	"quote_id" text PRIMARY KEY NOT NULL,
+	"part_id" text NOT NULL,
+	"build_id" text NOT NULL,
+	"print_material_id" text NOT NULL,
+	"print_rate_card_id" text NOT NULL,
+	"capability_id" text,
+	"process" text NOT NULL,
+	"family" text NOT NULL,
+	"geometry" jsonb NOT NULL,
+	"critical_dims" jsonb DEFAULT '[]'::jsonb NOT NULL,
+	"stl_sha256" text NOT NULL,
+	"layer_height_mm" double precision NOT NULL,
+	"print_hours_per_part" double precision NOT NULL,
+	"unit_mass_g" double precision NOT NULL,
+	"notes" jsonb DEFAULT '[]'::jsonb NOT NULL,
+	"created_at" timestamp with time zone DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE "reconstruct_sessions" (
+	"id" text PRIMARY KEY NOT NULL,
+	"build_id" text NOT NULL,
+	"passport_id" text,
+	"part_type" text NOT NULL,
+	"description" text DEFAULT '' NOT NULL,
+	"options" jsonb DEFAULT '{}'::jsonb NOT NULL,
+	"measurements" jsonb DEFAULT '[]'::jsonb NOT NULL,
+	"print_material_slug" text,
+	"quantity" integer DEFAULT 1 NOT NULL,
+	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
+	"updated_at" timestamp with time zone DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE "shop_print_capabilities" (
+	"id" text PRIMARY KEY NOT NULL,
+	"shop_id" text NOT NULL,
+	"print_material_id" text NOT NULL,
+	"capability" text DEFAULT '3D_PRINT' NOT NULL,
+	"build_x_mm" double precision NOT NULL,
+	"build_y_mm" double precision NOT NULL,
+	"build_z_mm" double precision NOT NULL,
+	"printer_count" integer DEFAULT 1 NOT NULL,
+	"machine_label" text,
+	"active" boolean DEFAULT true NOT NULL,
+	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
+	"updated_at" timestamp with time zone DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE "shop_print_rate_cards" (
+	"id" text PRIMARY KEY NOT NULL,
+	"shop_id" text NOT NULL,
+	"version" integer DEFAULT 1 NOT NULL,
+	"active" boolean DEFAULT true NOT NULL,
+	"currency" text DEFAULT 'usd' NOT NULL,
+	"fdm_cents_per_hour" integer NOT NULL,
+	"fdm_mm3_per_hour" double precision NOT NULL,
+	"fdm_layer_height_mm" double precision DEFAULT 0.2 NOT NULL,
+	"fdm_layer_seconds" double precision NOT NULL,
+	"sls_cents_per_hour" integer NOT NULL,
+	"sls_mm3_per_hour" double precision NOT NULL,
+	"sls_layer_height_mm" double precision DEFAULT 0.1 NOT NULL,
+	"sls_layer_seconds" double precision DEFAULT 0 NOT NULL,
+	"shell_mm" double precision DEFAULT 1.2 NOT NULL,
+	"infill_pct" double precision DEFAULT 0.4 NOT NULL,
+	"order_setup_cents" integer NOT NULL,
+	"post_process_cents_per_part" integer NOT NULL,
+	"qa_cents_per_part" integer NOT NULL,
+	"part_handling_cents" integer NOT NULL,
+	"packaging_base_cents" integer NOT NULL,
+	"material_markup" double precision DEFAULT 1.1 NOT NULL,
+	"material_waste_pct" double precision DEFAULT 0.1 NOT NULL,
+	"platform_margin_pct" double precision NOT NULL,
+	"min_margin_pct" double precision NOT NULL,
+	"volume_discount_max" double precision NOT NULL,
+	"minimum_order_cents" integer NOT NULL,
+	"printer_hours_per_day" double precision DEFAULT 20 NOT NULL,
+	"calibrated" boolean DEFAULT false NOT NULL,
+	"notes" text,
+	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
+	"updated_at" timestamp with time zone DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
+ALTER TABLE "print_quote_details" ADD CONSTRAINT "print_quote_details_quote_id_quotes_id_fk" FOREIGN KEY ("quote_id") REFERENCES "public"."quotes"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "print_quote_details" ADD CONSTRAINT "print_quote_details_part_id_parts_id_fk" FOREIGN KEY ("part_id") REFERENCES "public"."parts"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "print_quote_details" ADD CONSTRAINT "print_quote_details_build_id_builds_id_fk" FOREIGN KEY ("build_id") REFERENCES "public"."builds"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "print_quote_details" ADD CONSTRAINT "print_quote_details_print_material_id_print_materials_id_fk" FOREIGN KEY ("print_material_id") REFERENCES "public"."print_materials"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "print_quote_details" ADD CONSTRAINT "print_quote_details_print_rate_card_id_shop_print_rate_cards_id_fk" FOREIGN KEY ("print_rate_card_id") REFERENCES "public"."shop_print_rate_cards"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "print_quote_details" ADD CONSTRAINT "print_quote_details_capability_id_shop_print_capabilities_id_fk" FOREIGN KEY ("capability_id") REFERENCES "public"."shop_print_capabilities"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "reconstruct_sessions" ADD CONSTRAINT "reconstruct_sessions_build_id_builds_id_fk" FOREIGN KEY ("build_id") REFERENCES "public"."builds"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "reconstruct_sessions" ADD CONSTRAINT "reconstruct_sessions_passport_id_passports_id_fk" FOREIGN KEY ("passport_id") REFERENCES "public"."passports"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "shop_print_capabilities" ADD CONSTRAINT "shop_print_capabilities_shop_id_shops_id_fk" FOREIGN KEY ("shop_id") REFERENCES "public"."shops"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "shop_print_capabilities" ADD CONSTRAINT "shop_print_capabilities_print_material_id_print_materials_id_fk" FOREIGN KEY ("print_material_id") REFERENCES "public"."print_materials"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "shop_print_rate_cards" ADD CONSTRAINT "shop_print_rate_cards_shop_id_shops_id_fk" FOREIGN KEY ("shop_id") REFERENCES "public"."shops"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+CREATE INDEX "print_quote_details_part_idx" ON "print_quote_details" USING btree ("part_id");--> statement-breakpoint
+CREATE UNIQUE INDEX "reconstruct_sessions_build_uq" ON "reconstruct_sessions" USING btree ("build_id");--> statement-breakpoint
+CREATE UNIQUE INDEX "shop_print_capabilities_uq" ON "shop_print_capabilities" USING btree ("shop_id","print_material_id");--> statement-breakpoint
+CREATE INDEX "shop_print_capabilities_material_idx" ON "shop_print_capabilities" USING btree ("print_material_id");--> statement-breakpoint
+CREATE UNIQUE INDEX "shop_print_rate_cards_version_uq" ON "shop_print_rate_cards" USING btree ("shop_id","version");--> statement-breakpoint
+CREATE UNIQUE INDEX "shop_print_rate_cards_one_active_uq" ON "shop_print_rate_cards" USING btree ("shop_id") WHERE "shop_print_rate_cards"."active" = true;

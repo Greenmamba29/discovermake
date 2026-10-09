@@ -142,11 +142,20 @@ export function JobDetail({ jobId }: { jobId: string }) {
                                     {p.part.bboxWidthMm.toFixed(1)} × {p.part.bboxHeightMm.toFixed(1)} mm
                                 </span>
                             </PacketRow>
-                            <PacketRow label="Geometry">
-                                <span className="font-mono text-xs">
-                                    cut {(p.part.cutLengthMm / 1000).toFixed(2)} m · {p.part.pierceCount} pierces · {p.part.holeCount} holes · {p.part.bendCount} bends
-                                </span>
-                            </PacketRow>
+                            {p.print ? (
+                                <PacketRow label="3D print">
+                                    <span className="font-mono text-xs" data-testid="packet-print">
+                                        {p.print.process} · {p.print.layerHeightMm} mm layers · {p.print.bboxMm.map((v) => v.toFixed(1)).join(' × ')} mm · {(p.print.volumeMm3 / 1000).toFixed(1)} cm³ · min wall {p.print.minWallMm} mm · {p.print.printHoursPerPart.toFixed(2)} h/part
+                                    </span>
+                                    <span className="mt-1 block text-xs text-fg-subtle">{p.print.orientation} STL sha256 {p.print.stlSha256.slice(0, 12)}…</span>
+                                </PacketRow>
+                            ) : (
+                                <PacketRow label="Geometry">
+                                    <span className="font-mono text-xs">
+                                        cut {(p.part.cutLengthMm / 1000).toFixed(2)} m · {p.part.pierceCount} pierces · {p.part.holeCount} holes · {p.part.bendCount} bends
+                                    </span>
+                                </PacketRow>
+                            )}
                             <PacketRow label="Material">
                                 {p.material.name} · {p.material.thicknessLabel} <span className="font-mono text-xs text-fg-subtle">({p.material.thicknessMm.toFixed(2)} mm)</span>
                             </PacketRow>

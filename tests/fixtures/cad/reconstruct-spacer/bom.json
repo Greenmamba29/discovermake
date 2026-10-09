@@ -1,0 +1,21 @@
+{
+  "family": "spacer_bushing",
+  "items": [
+    {
+      "file": "spacer.stl",
+      "item": 1,
+      "kind": "fabricated",
+      "name": "Flanged bushing 12 x 6.5 x 10 mm",
+      "notes": "",
+      "process": "3D printing (FDM or SLS)",
+      "quantity": 1,
+      "size_mm": [
+        18.0,
+        18.0,
+        10.0
+      ]
+    }
+  ],
+  "units": "mm",
+  "version": "dm-bom/1"
+}

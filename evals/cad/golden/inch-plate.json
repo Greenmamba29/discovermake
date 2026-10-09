@@ -9,11 +9,11 @@
    "sha256": "6704dcba05c0c0a68282ae630e457dc4c0b52554f3e363ce2cb5f716342219b5"
   },
   {
-   "bytes": 30210,
+   "bytes": 30208,
    "content_type": "model/step",
    "filename": "panel.step",
    "kind": "STEP",
-   "sha256": "712f8b53e05bc6b2902e537e0e07a16ecbe981d2713b3aa3248a33097dc7ad30"
+   "sha256": "db965c16be906bacc52063fd7bbeb3bfbcabff4eaa71a7527ccba39c0474b1b1"
   },
   {
    "bytes": 65996,
@@ -44,11 +44,11 @@
    "sha256": "b3ade308eadc07e68855ac534557a9e05b9c7235f6503b0174e19461e06d4b1c"
   },
   {
-   "bytes": 2066,
+   "bytes": 2207,
    "content_type": "application/json",
    "filename": "manifest.json",
    "kind": "MANIFEST",
-   "sha256": "27b0f053ffdcb2aa35d78bb990ea7b15dbf697b07ee0074cb457fb58f9a506d4"
+   "sha256": "a71ffc7456b646f9be16d8bcfcb4eb957ff56758e35c00ad3c80c9c94b28acb7"
   }
  ],
  "family": "sheet_panel",
@@ -64,6 +64,7 @@
    203.2,
    152.4
   ],
+  "surface_area_mm2": 62947.6,
   "thickness_mm": 1.6,
   "volume_mm3": 49345.6
  },
@@ -72,5 +73,5 @@
  ],
  "ref": "eval:inch-plate",
  "warnings": [],
- "worker_version": "0.2.0"
+ "worker_version": "0.3.0"
 }

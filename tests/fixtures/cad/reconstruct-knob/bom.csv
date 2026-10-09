@@ -1,0 +1,2 @@
+item,name,kind,quantity,process,thickness_mm,size_mm,file,spec,notes
+1,Replacement knob for a 6 mm D-shaft,fabricated,1,3D printing (FDM or SLS),,38.1 x 38.1 x 22,knob.stl,,

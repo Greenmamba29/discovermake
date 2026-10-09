@@ -13,7 +13,7 @@
    "content_type": "model/step",
    "filename": "panel.step",
    "kind": "STEP",
-   "sha256": "e730077036cdfe685692bea5b653cd55553a06a4ac5ff608853fce65a8cedd28"
+   "sha256": "f1decff37be75c12016a1c3ec1ea02dd66f0c59f9d7bdacea250ca3fd93a89d8"
   },
   {
    "bytes": 52164,
@@ -44,11 +44,11 @@
    "sha256": "04b58fe075fea7d160409ec455d434ac5c5b0e310418f40af92700175863f604"
   },
   {
-   "bytes": 1884,
+   "bytes": 2029,
    "content_type": "application/json",
    "filename": "manifest.json",
    "kind": "MANIFEST",
-   "sha256": "9936d58322c6929f136f0611650740d3be1617a5409c2135c2eb951fb4bc80fb"
+   "sha256": "080fb97f178e98f8df9a20c7f788c0bc4a40136d162246c1fb84d1fd283ed79a"
   }
  ],
  "family": "sheet_panel",
@@ -64,6 +64,7 @@
    200.0,
    100.0
   ],
+  "surface_area_mm2": 40800.2,
   "thickness_mm": 1.52,
   "volume_mm3": 30281.4
  },
@@ -72,5 +73,5 @@
  ],
  "ref": "eval:cover-plate",
  "warnings": [],
- "worker_version": "0.2.0"
+ "worker_version": "0.3.0"
 }

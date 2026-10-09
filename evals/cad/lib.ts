@@ -120,7 +120,7 @@ export function traceIssues(spec: CadSpec, view: BuildGraphView): string[] {
     const traces = (v: number) => numbers.some((n) => Math.abs(n - v) <= TRACE_TOLERANCE_MM);
     const issues: string[] = [];
     const s = spec as Record<string, unknown>;
-    for (const param of REQUIRED_PARAMS[spec.family]) if (typeof s[param] === 'number' && !traces(s[param] as number)) issues.push(`${param}=${s[param]}`);
+    for (const param of (REQUIRED_PARAMS as Record<string, readonly string[]>)[spec.family] ?? []) if (typeof s[param] === 'number' && !traces(s[param] as number)) issues.push(`${param}=${s[param]}`);
     if (spec.family === 'multi_bend_bracket') spec.flanges_mm.forEach((v, i) => !traces(v) && issues.push(`flanges_mm[${i}]=${v}`));
     const featureLists: Record<string, string[]> = { holes: ['x_mm', 'y_mm', 'diameter_mm'], holes_a: ['x_mm', 'y_mm', 'diameter_mm'], holes_b: ['x_mm', 'y_mm', 'diameter_mm'], floor_holes: ['x_mm', 'y_mm', 'diameter_mm'], slots: ['x_mm', 'y_mm', 'length_mm', 'width_mm'], countersinks: ['x_mm', 'y_mm', 'through_diameter_mm', 'head_diameter_mm'] };
     for (const [list, fields] of Object.entries(featureLists)) {

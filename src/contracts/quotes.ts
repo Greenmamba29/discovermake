@@ -49,6 +49,12 @@ export const QuoteConfig = z.object({
     /** Secondary ops (SECONDARY_OP services), incl. bending when the part has bend lines. */
     services: z.array(QuoteServiceSelection).max(10).default([]),
     quantity: z.number().int().positive().max(MAX_QUOTE_QUANTITY),
+    /**
+     * R6: 'print' = a printed part priced by the print quote engine (src/server/quote/printing):
+     * `materialId` is a print material (`mat_print_*`), `thicknessOptionId` its layer profile
+     * (`thk_print_*`). Absent = 'sheet' (the R1 laser engine). POST /api/quotes only makes sheet quotes.
+     */
+    process: z.enum(['sheet', 'print']).optional(),
 });
 export type QuoteConfig = z.infer<typeof QuoteConfig>;
 
@@ -73,6 +79,9 @@ export const QUOTE_LINE_CODES = [
     'FREIGHT_DUTIES',
     'RECEIVING_QA',
     'DELIVERY_GUARANTEE',
+    // R6 printed parts
+    'PRINTING',
+    'POST_PROCESSING',
 ] as const;
 export const QuoteLineCode = z.enum(QUOTE_LINE_CODES);
 export type QuoteLineCode = z.infer<typeof QuoteLineCode>;

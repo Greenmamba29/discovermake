@@ -22,6 +22,8 @@ from .common import Artifact, FlatPanel, Result
 
 BOM_VERSION = "dm-bom/1"
 MANIFEST_VERSION = "dm-cad-manifest/1"
+#: Metrics copied into the manifest (all families; ``min_wall_mm`` only for printed parts).
+MANIFEST_METRICS = ("bbox_mm", "volume_mm3", "surface_area_mm2", "min_wall_mm", "bridge_span_mm")
 
 
 def _num(v: float) -> float:
@@ -55,7 +57,8 @@ def bom_items(result: Result) -> list[dict]:
                 "quantity": s["quantity"],
                 "process": s["process"],
                 "size_mm": [_num(v) for v in s["size_mm"]],
-                "file": next((a.filename for a in result.artifacts if a.kind == "STEP"), None),
+                # Printed parts ship the STL the farm slices; machined / other solids the STEP.
+                "file": next((a.filename for a in result.artifacts if a.kind == "STL"), None) or next((a.filename for a in result.artifacts if a.kind == "STEP"), None),
                 "notes": "",
             }
         )
@@ -192,7 +195,11 @@ def _svg(result: Result, items: list[dict], spec) -> Artifact:
         label = f"Item {next((it['item'] for it in items if it['name'] == s['label']), '?')} · {s['label']} · qty {s['quantity']} · {s['process']} (top and side views)"
         body.append(f'<text class="t" x="{_f(_MARGIN)}" y="{_f(y)}">{escape(label)}</text>')
         y += 4
-        body.append(f'<rect class="cut" x="{_f(_MARGIN)}" y="{_f(y)}" width="{_f(sx)}" height="{_f(sy)}"/>')
+        if s.get("shape") == "round":
+            body.append(f'<circle class="cut" cx="{_f(_MARGIN + sx / 2)}" cy="{_f(y + sy / 2)}" r="{_f(sx / 2)}"/>')
+            body.append(f'<text class="d" x="{_f(_MARGIN + sx / 2)}" y="{_f(y + sy / 2 + 1.2)}" text-anchor="middle">&#8960;{_f(sx)}</text>')
+        else:
+            body.append(f'<rect class="cut" x="{_f(_MARGIN)}" y="{_f(y)}" width="{_f(sx)}" height="{_f(sy)}"/>')
         body.extend(_dims(_MARGIN, y, sx, sy))
         side_x = _MARGIN + sx + 30
         body.append(f'<rect class="cut" x="{_f(side_x)}" y="{_f(y)}" width="{_f(sx)}" height="{_f(sz)}"/>')
@@ -228,6 +235,8 @@ def _manifest(result: Result, spec, worker_version: str | None) -> Artifact:
         "artifacts": [{"kind": a.kind, "filename": a.filename, "content_type": a.content_type, "bytes": len(a.data), "sha256": a.sha256} for a in result.artifacts],
         "panels": [{"name": p.name, "filename": p.dxf.filename, "quantity": p.quantity} for p in result.panels],
         "processes": result.processes,
+        # Geometry the print quote engine prices from (volume, area, bbox) and checks (wall).
+        "metrics": {k: result.metrics[k] for k in MANIFEST_METRICS if k in result.metrics},
     }
     return Artifact("MANIFEST", "manifest.json", "application/json", (json.dumps(body, indent=2, sort_keys=True) + "\n").encode("utf-8"))
 

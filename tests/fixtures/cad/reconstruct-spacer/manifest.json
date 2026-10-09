@@ -1,0 +1,74 @@
+{
+  "artifacts": [
+    {
+      "bytes": 13908,
+      "content_type": "model/step",
+      "filename": "spacer.step",
+      "kind": "STEP",
+      "sha256": "05d2d145e265afc0e452e56c0800c40a1859c3a098558bcc20650a30c33dd849"
+    },
+    {
+      "bytes": 37884,
+      "content_type": "model/stl",
+      "filename": "spacer.stl",
+      "kind": "STL",
+      "sha256": "68b07e3dfe5aec9a0e9a37fc6a1df6d0dd36081258827f5aac9ed35e20bb3813"
+    },
+    {
+      "bytes": 26052,
+      "content_type": "model/gltf-binary",
+      "filename": "spacer.glb",
+      "kind": "GLB",
+      "sha256": "db2e4c845b588c85fc42c3f500b8b0bff5e9e0506dea1ec8c5559b87ffd3099e"
+    },
+    {
+      "bytes": 381,
+      "content_type": "application/json",
+      "filename": "bom.json",
+      "kind": "BOM",
+      "sha256": "5f37ec16a3a49edfda0ef9f9183eb407c55933de680c655b67076761adf47811"
+    },
+    {
+      "bytes": 169,
+      "content_type": "text/csv",
+      "filename": "bom.csv",
+      "kind": "CSV",
+      "sha256": "e2684ada5cf9bcc6019ff457b7a908b21495a27c2883bc1a0053b44e36ed9457"
+    },
+    {
+      "bytes": 1454,
+      "content_type": "image/svg+xml",
+      "filename": "drawing.svg",
+      "kind": "SVG",
+      "sha256": "c48175574739a5174971d0a516bf530abb44eebd92c0e2841f61f3640eba3dba"
+    }
+  ],
+  "family": "spacer_bushing",
+  "metrics": {
+    "bbox_mm": [
+      18.0,
+      18.0,
+      10.0
+    ],
+    "bridge_span_mm": 0.0,
+    "min_wall_mm": 2.0,
+    "surface_area_mm2": 1061.5,
+    "volume_mm3": 1081.9
+  },
+  "panels": [],
+  "processes": [
+    "3D printing"
+  ],
+  "spec": {
+    "chamfer_mm": 0.0,
+    "family": "spacer_bushing",
+    "flange_diameter_mm": 18.0,
+    "flange_thickness_mm": 2.0,
+    "inner_diameter_mm": 6.5,
+    "length_mm": 10.0,
+    "outer_diameter_mm": 12.0
+  },
+  "units": "mm",
+  "version": "dm-cad-manifest/1",
+  "worker_version": "0.3.0"
+}

@@ -184,10 +184,70 @@ export const SheetEnclosureSpec = z
     })
     .strict();
 
-export const CAD_FAMILIES = ['sheet_panel', 'l_bracket', 'enclosure', 'u_channel', 'multi_bend_bracket', 'slotted_plate', 'sheet_enclosure'] as const;
+// ---------------------------------------------------------------------------
+// R6 Reconstruct: printed replacement parts (mirror specs.py RoundKnob / SpacerBushing)
+// ---------------------------------------------------------------------------
+
+/** The worker refuses printed walls under this (unbuildable); the print DFM blocks under 1.2 mm. */
+export const PRINT_WALL_FLOOR_MM = 0.8;
+export const POINTER_NOTCH_DEPTH_MM = 0.6;
+
+/**
+ * A round control knob, printed bore-down: body Ø x height, a blind bore of `bore_depth_mm`
+ * from the underside for the shaft (+ `bore_clearance_mm` fit), a D-shaft flat
+ * `shaft_flat_depth_mm` deep (6 mm D-shafts: 1.5), optional grip flutes, pointer notch, chamfer.
+ */
+export const RoundKnobSpec = z
+    .object({
+        family: z.literal('round_knob'),
+        diameter_mm: z.number().min(8).max(120),
+        height_mm: z.number().min(5).max(80),
+        bore_type: z.enum(['d_shaft', 'round']).default('d_shaft'),
+        shaft_diameter_mm: z.number().min(2).max(25),
+        shaft_flat_depth_mm: z.number().min(0.2).max(6).nullable().default(null),
+        bore_depth_mm: z.number().min(2).max(78),
+        bore_clearance_mm: z.number().min(0).max(0.5).default(0.15),
+        grip_ribs: z.number().int().min(0).max(60).default(0),
+        rib_depth_mm: z.number().min(0.3).max(3).default(0.8),
+        pointer_notch: z.boolean().default(false),
+        chamfer_mm: z.number().min(0).max(5).default(0.5),
+    })
+    .strict();
+
+/** A plain or flanged spacer / bushing, printed flange-down. `length_mm` includes the flange. */
+export const SpacerBushingSpec = z
+    .object({
+        family: z.literal('spacer_bushing'),
+        outer_diameter_mm: z.number().min(3).max(200),
+        inner_diameter_mm: z.number().min(1).max(190),
+        length_mm: z.number().min(1).max(300),
+        flange_diameter_mm: z.number().min(4).max(300).nullable().default(null),
+        flange_thickness_mm: z.number().min(0.8).max(50).nullable().default(null),
+        chamfer_mm: z.number().min(0).max(3).default(0),
+    })
+    .strict();
+
+type RoundKnobShape = z.infer<typeof RoundKnobSpec>;
+type SpacerBushingShape = z.infer<typeof SpacerBushingSpec>;
+
+/** Thinnest wall of a printed part, exactly as specs.py computes it (the print DFM checks this). */
+export function printedMinWallMm(spec: RoundKnobShape | SpacerBushingShape): number {
+    const r3 = (n: number) => Math.round(n * 1000) / 1000;
+    if (spec.family === 'round_knob') {
+        const bore = spec.shaft_diameter_mm + spec.bore_clearance_mm;
+        const radial = (spec.diameter_mm - bore) / 2 - (spec.grip_ribs ? spec.rib_depth_mm : 0);
+        const cap = spec.height_mm - spec.bore_depth_mm - (spec.pointer_notch ? POINTER_NOTCH_DEPTH_MM : 0);
+        return r3(Math.min(radial, cap));
+    }
+    const walls = [(spec.outer_diameter_mm - spec.inner_diameter_mm) / 2];
+    if (spec.flange_thickness_mm != null) walls.push(spec.flange_thickness_mm);
+    return r3(Math.min(...walls));
+}
+
+export const CAD_FAMILIES = ['sheet_panel', 'l_bracket', 'enclosure', 'u_channel', 'multi_bend_bracket', 'slotted_plate', 'sheet_enclosure', 'round_knob', 'spacer_bushing'] as const;
 export const CadFamilyEnum = z.enum(CAD_FAMILIES);
 
-const CadSpecUnion = z.discriminatedUnion('family', [SheetPanelSpec, LBracketSpec, EnclosureSpec, UChannelSpec, MultiBendBracketSpec, SlottedPlateSpec, SheetEnclosureSpec]);
+const CadSpecUnion = z.discriminatedUnion('family', [SheetPanelSpec, LBracketSpec, EnclosureSpec, UChannelSpec, MultiBendBracketSpec, SlottedPlateSpec, SheetEnclosureSpec, RoundKnobSpec, SpacerBushingSpec]);
 type CadSpecShape = z.infer<typeof CadSpecUnion>;
 
 // ---------------------------------------------------------------------------
@@ -369,6 +429,27 @@ export function cadSpecIssues(s: CadSpecShape): Issue[] {
             if (s.gland_diameter_mm != null && s.gland_diameter_mm + 4 * t > Math.min(s.inner_y_mm - 2 * (r + t), s.inner_z_mm - r)) issues.push({ path: ['gland_diameter_mm'], message: 'does not fit the end cap' });
             break;
         }
+        case 'round_knob': {
+            if (s.bore_type === 'd_shaft') {
+                if (s.shaft_flat_depth_mm == null) issues.push({ path: ['shaft_flat_depth_mm'], message: 'a d_shaft bore needs shaft_flat_depth_mm' });
+                else if (s.shaft_flat_depth_mm >= s.shaft_diameter_mm / 2) issues.push({ path: ['shaft_flat_depth_mm'], message: 'must be less than the shaft radius' });
+            } else if (s.shaft_flat_depth_mm != null) issues.push({ path: ['shaft_flat_depth_mm'], message: 'is only for a d_shaft bore' });
+            if (s.bore_depth_mm > s.height_mm - PRINT_WALL_FLOOR_MM) issues.push({ path: ['bore_depth_mm'], message: `must leave at least ${PRINT_WALL_FLOOR_MM} mm of cap above the bore` });
+            if (printedMinWallMm(s) < PRINT_WALL_FLOOR_MM - 1e-9) issues.push({ path: ['diameter_mm'], message: `the wall around the bore is under ${PRINT_WALL_FLOOR_MM} mm` });
+            if (s.chamfer_mm && s.chamfer_mm >= Math.min(s.height_mm / 3, s.diameter_mm / 6)) issues.push({ path: ['chamfer_mm'], message: 'too large for this knob' });
+            if (s.grip_ribs && (Math.PI * s.diameter_mm) / s.grip_ribs < 2 * s.rib_depth_mm + 1) issues.push({ path: ['grip_ribs'], message: 'too many grip ribs for this diameter' });
+            if (s.pointer_notch && s.height_mm - s.bore_depth_mm < POINTER_NOTCH_DEPTH_MM + PRINT_WALL_FLOOR_MM) issues.push({ path: ['pointer_notch'], message: 'needs a thicker cap above the bore' });
+            break;
+        }
+        case 'spacer_bushing': {
+            if ((s.flange_diameter_mm == null) !== (s.flange_thickness_mm == null)) issues.push({ path: ['flange_diameter_mm'], message: 'a flange needs both flange_diameter_mm and flange_thickness_mm' });
+            if (s.flange_diameter_mm != null && s.flange_diameter_mm <= s.outer_diameter_mm) issues.push({ path: ['flange_diameter_mm'], message: 'must be larger than outer_diameter_mm' });
+            if (s.flange_thickness_mm != null && s.flange_thickness_mm >= s.length_mm) issues.push({ path: ['flange_thickness_mm'], message: 'must be less than length_mm' });
+            const wall = printedMinWallMm(s);
+            if (wall < PRINT_WALL_FLOOR_MM - 1e-9) issues.push({ path: ['inner_diameter_mm'], message: `the tube wall is under ${PRINT_WALL_FLOOR_MM} mm` });
+            else if (s.chamfer_mm && s.chamfer_mm >= wall / 2) issues.push({ path: ['chamfer_mm'], message: 'must be less than half the wall' });
+            break;
+        }
     }
     return issues;
 }
@@ -383,13 +464,18 @@ export type CadFamily = CadSpec['family'];
 /** Families whose flat patterns the R1 instant quote engine can price directly. */
 export const SHEET_FAMILIES: readonly CadFamily[] = ['sheet_panel', 'l_bracket', 'u_channel', 'multi_bend_bracket', 'slotted_plate', 'sheet_enclosure'];
 
-/** Geometry (STEP / DXF / GLB) plus the documents every result carries (BOM JSON + CSV, SVG drawing, manifest). */
-export const CadArtifactKind = z.enum(['STEP', 'DXF', 'GLB', 'BOM', 'CSV', 'SVG', 'MANIFEST']);
+/** R6 printed families: an STL for the print farm, priced by the print quote engine (src/server/quote/printing). */
+export const PRINTED_FAMILIES: readonly CadFamily[] = ['round_knob', 'spacer_bushing'];
+export type PrintedCadSpec = Extract<CadSpec, { family: 'round_knob' | 'spacer_bushing' }>;
+export const isPrintedSpec = (spec: CadSpec): spec is PrintedCadSpec => PRINTED_FAMILIES.includes(spec.family);
+
+/** Geometry (STEP / DXF / GLB, STL for printed parts) plus the documents every result carries (BOM JSON + CSV, SVG drawing, manifest). */
+export const CadArtifactKind = z.enum(['STEP', 'DXF', 'GLB', 'STL', 'BOM', 'CSV', 'SVG', 'MANIFEST']);
 export type CadArtifactKind = z.infer<typeof CadArtifactKind>;
 
 export const CadArtifact = z.object({
     kind: CadArtifactKind,
-    filename: z.string().regex(/^[a-z0-9_]+\.(step|dxf|glb|json|csv|svg)$/),
+    filename: z.string().regex(/^[a-z0-9_]+\.(step|dxf|glb|stl|json|csv|svg)$/),
     content_type: z.string(),
     bytes: z.number().int().positive(),
     sha256: z.string().regex(/^[0-9a-f]{64}$/),
@@ -422,6 +508,11 @@ export const CadGenerateResponse = z.object({
             part_count: z.number().int().optional(),
             panels: z.array(CadPanelMetric).optional(),
             countersink_count: z.number().int().optional(),
+            /** All families (manifest `metrics`): the print quote engine prices from it. */
+            surface_area_mm2: z.number().nonnegative().optional(),
+            /** Printed families: thinnest wall (print DFM) and the widest bridge (overhang note). */
+            min_wall_mm: z.number().nonnegative().optional(),
+            bridge_span_mm: z.number().nonnegative().optional(),
         })
         .passthrough(),
     processes: z.array(z.string()),

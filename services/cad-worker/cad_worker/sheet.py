@@ -388,12 +388,14 @@ def sheet_enclosure(spec: SheetEnclosure) -> Result:
 
     bb = union_bbox([wp for _, wp in shapes])
     volume = sum(wp.val().Volume() for _, wp in shapes)
+    area = sum(wp.val().Area() for _, wp in shapes)
     return Result(
         family=spec.family,
         artifacts=artifacts,
         metrics={
             "bbox_mm": bbox_list(bb),
             "volume_mm3": round(volume, 1),
+            "surface_area_mm2": round(area, 1),
             "part_count": len(shapes),
             "thickness_mm": t,
             "bend_count": 2 * len(shapes),
