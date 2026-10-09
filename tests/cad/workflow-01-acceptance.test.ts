@@ -167,7 +167,7 @@ describe(`workflow 01 acceptance: "${PROMPT}"`, () => {
     it('6 · persists the preliminary BOM on the graph and as JSON + CSV', () => {
         const bom = node(finalView, MAIN_PART_KEY)!.data.bom as { kind: string; quantity: number; name: string }[];
         expect(bom.filter((i) => i.kind === 'fabricated')).toHaveLength(4);
-        expect(bom.filter((i) => i.kind === 'purchased').map((i) => i.name).join(' ')).toMatch(/rivet.*M3.*gasket.*gland/is);
+        expect(bom.filter((i) => i.kind === 'purchased').map((i) => i.name).join(' ')).toMatch(/rivet[\s\S]*M3[\s\S]*gasket[\s\S]*gland/i);
         expect(cad.artifacts.map((a) => a.filename)).toEqual(expect.arrayContaining(['bom.json', 'bom.csv', 'drawing.svg', 'manifest.json']));
     });
 

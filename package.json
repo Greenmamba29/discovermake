@@ -14,7 +14,8 @@
         "db:setup": "bun run db:migrate && bun run db:seed",
         "test": "vitest run",
         "test:watch": "vitest",
-        "test:e2e": "playwright test"
+        "test:e2e": "playwright test",
+        "eval:cad": "bun --conditions=react-server evals/cad/run.ts"
     },
     "dependencies": {
         "@ai-sdk/google": "^4.0.88",

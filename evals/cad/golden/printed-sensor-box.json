@@ -1,0 +1,64 @@
+{
+ "artifacts": [
+  {
+   "bytes": 126228,
+   "content_type": "model/step",
+   "filename": "enclosure.step",
+   "kind": "STEP",
+   "sha256": "31899fa6067739c41e6ed7f980c1b53997df979ad8beff2c0bf3607b3c0bd5e0"
+  },
+  {
+   "bytes": 65540,
+   "content_type": "model/gltf-binary",
+   "filename": "enclosure.glb",
+   "kind": "GLB",
+   "sha256": "490b9eba6d5c29a2e6a65ce386f4072c1d994596b927b94e15c1dc47ded382e4"
+  },
+  {
+   "bytes": 633,
+   "content_type": "application/json",
+   "filename": "bom.json",
+   "kind": "BOM",
+   "sha256": "2933866be6df7f5492f34078677879a5d74460684b06b699de7015efe24390d2"
+  },
+  {
+   "bytes": 241,
+   "content_type": "text/csv",
+   "filename": "bom.csv",
+   "kind": "CSV",
+   "sha256": "613124f8099df8d997fdfe74fd1724067547c70112b8d73085ac960836e3bdb2"
+  },
+  {
+   "bytes": 2344,
+   "content_type": "image/svg+xml",
+   "filename": "drawing.svg",
+   "kind": "SVG",
+   "sha256": "9aa0431fdd12dd1cbe1751dae1808a9380613760b09feaff3d91e2e6cc9aaccb"
+  },
+  {
+   "bytes": 1476,
+   "content_type": "application/json",
+   "filename": "manifest.json",
+   "kind": "MANIFEST",
+   "sha256": "1383739334486f1594c39bfa5d331667f1ab08450db5ea885512ccf87540d161"
+  }
+ ],
+ "family": "enclosure",
+ "metrics": {
+  "bbox_mm": [
+   95.0,
+   70.0,
+   45.0
+  ],
+  "bom_item_count": 2,
+  "part_count": 2,
+  "volume_mm3": 66511.6
+ },
+ "processes": [
+  "3D printing",
+  "CNC milling"
+ ],
+ "ref": "eval:printed-sensor-box",
+ "warnings": [],
+ "worker_version": "0.2.0"
+}
