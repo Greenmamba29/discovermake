@@ -57,6 +57,10 @@ export async function processPaymentWebhook(provider: PaymentProviderName, event
 }
 
 async function dispatchEvent(provider: PaymentProviderName, event: PaymentWebhookEvent): Promise<string | null> {
+    // R3: one payment for several orders (cart checkout / B2B invoice) fans out per order.
+    const { dispatchGroupPaymentEvent } = await import('../cart/payment-group');
+    const grouped = await dispatchGroupPaymentEvent(provider, event);
+    if (grouped !== undefined) return grouped;
     switch (event.kind) {
         case 'payment.succeeded': {
             const r = await handlePaymentSucceeded({
