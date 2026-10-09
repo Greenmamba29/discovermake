@@ -150,7 +150,7 @@ test.describe('desktop (1280px)', () => {
 
         await page.getByTestId('top-nav-discover').click();
         await page.waitForURL('**/discover');
-        await expect(page.getByRole('heading', { level: 1, name: 'Start from a design' })).toBeVisible();
+        await expect(page.getByRole('heading', { level: 1, name: 'Watch it made. Make it yours.' })).toBeVisible();
         await expect(page.getByTestId('top-nav-discover')).toHaveAttribute('aria-current', 'page');
 
         await page.getByTestId('top-nav-make').click();

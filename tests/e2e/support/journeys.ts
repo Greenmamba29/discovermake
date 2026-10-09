@@ -60,6 +60,9 @@ export async function adminLogin(page: Page) {
     await page.goto('/admin');
     await page.getByTestId('admin-token-input').fill(E2E_ADMIN_TOKEN);
     await page.getByTestId('admin-login-submit').click();
+    // The board verifies the token with the API before storing it; wait so a following
+    // navigation to another /admin page finds the token in sessionStorage.
+    await expect(page.getByTestId('ops-sourcing-link')).toBeVisible();
 }
 
 /** Shop accepts, runs milestones, passes QA and ships; ops marks delivered. Returns the job and passport URLs. */

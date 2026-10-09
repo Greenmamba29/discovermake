@@ -11,19 +11,36 @@
  *
  * Plus a live auction with two bidders and the anti-snipe extension.
  */
-import { expect, test } from '@playwright/test';
+import { expect, test, type BrowserContextOptions } from '@playwright/test';
 import { confirm, quotePart, shopLogin } from './support/journeys';
 import { RUN, signedInContext } from './support/live';
 import { adminHeaders, configureToCheckout, payAs, publishViaStudio, showWithReplay } from './support/media';
 
-const CREATOR = { email: `media-creator-${RUN}@example.com`, name: 'Amanda Maker' };
-const VIEWER = { email: `media-viewer-${RUN}@example.com`, name: 'Vic Viewer' };
+/**
+ * The journeys also run on the mobile projects against the same database, so every account,
+ * handle and clip title carries the project: a second run never sees the first run's rows.
+ */
+function runTag(): string {
+    const project = test.info().project.name;
+    return project === 'chromium' ? RUN : `${RUN}${project.replace(/[^a-z0-9]/g, '').slice(-3)}`;
+}
+
+/** Phone contexts: the project's device profile (touch, mobile UA) on mobile projects, else 390 px. */
+function phone(): BrowserContextOptions {
+    const use = test.info().project.use;
+    if (!use.isMobile) return { viewport: { width: 390, height: 844 } };
+    return { viewport: use.viewport, userAgent: use.userAgent, deviceScaleFactor: use.deviceScaleFactor, isMobile: true, hasTouch: use.hasTouch };
+}
 
 test('a replay clip sells a remix, the royalty reaches the creator and is paid out, the buyer watches the build', async ({ browser }) => {
     test.setTimeout(300_000);
+    const tag = runTag();
+    const CREATOR = { email: `media-creator-${tag}@example.com`, name: 'Amanda Maker' };
+    const VIEWER = { email: `media-viewer-${tag}@example.com`, name: 'Vic Viewer' };
+    const clipTitle = `Lamp plate reveal ${tag}`;
     const creatorCtx = await signedInContext(browser, CREATOR, { width: 1280, height: 800 });
     const creator = await creatorCtx.newPage();
-    const handle = `amanda_m_${RUN}`.slice(0, 24);
+    const handle = `amanda_m_${tag}`.slice(0, 24);
     expect((await creatorCtx.request.patch('/api/me', { data: { becomeCreator: true, handle } })).ok()).toBe(true);
 
     // 1. A build with a binding quote, published with a 10% commercial remix licence.
@@ -41,16 +58,16 @@ test('a replay clip sells a remix, the royalty reaches the creator and is paid o
     await expect(creator.getByTestId('control-room')).toHaveAttribute('data-status', 'ENDED');
     const suggestion = creator.getByTestId('clip-suggestion').first();
     await expect(suggestion).toBeVisible({ timeout: 15_000 });
-    await suggestion.getByTestId('clip-suggestion-title').fill('Lamp plate reveal');
+    await suggestion.getByTestId('clip-suggestion-title').fill(clipTitle);
     await suggestion.getByTestId('clip-create').click();
-    await expect(creator.getByTestId('published-clip').filter({ hasText: 'Lamp plate reveal' })).toBeVisible({ timeout: 15_000 });
+    await expect(creator.getByTestId('published-clip').filter({ hasText: clipTitle })).toBeVisible({ timeout: 15_000 });
 
     // 3. A viewer on a phone finds the clip in Discover and taps Make Mine.
-    const viewerCtx = await signedInContext(browser, VIEWER, { width: 390, height: 844 });
+    const viewerCtx = await signedInContext(browser, VIEWER, undefined, phone());
     const viewer = await viewerCtx.newPage();
     await viewer.goto('/discover');
     await viewer.getByTestId('feed-tab-new').click();
-    const clipCard = viewer.locator('[data-testid="feed-clip"]').filter({ hasText: 'Lamp plate reveal' });
+    const clipCard = viewer.locator('[data-testid="feed-clip"]').filter({ hasText: clipTitle });
     await expect(clipCard).toBeVisible({ timeout: 15_000 });
     await clipCard.getByTestId('clip-open').click();
     await viewer.waitForURL(/\/clips\/clp_/);
@@ -83,7 +100,7 @@ test('a replay clip sells a remix, the royalty reaches the creator and is paid o
     const pending = await (await creatorCtx.request.get('/api/admin/creator-payouts', { headers: adminHeaders() })).json();
     const payout = pending.payouts.find((p: { amountCents: number; status: string }) => p.amountCents === owed && p.status === 'PENDING');
     expect(payout).toBeTruthy();
-    const paid = await creatorCtx.request.post(`/api/admin/creator-payouts/${payout.id}/paid`, { headers: adminHeaders(), data: { reference: `ACH-${RUN}` } });
+    const paid = await creatorCtx.request.post(`/api/admin/creator-payouts/${payout.id}/paid`, { headers: adminHeaders(), data: { reference: `ACH-${tag}` } });
     expect(paid.ok(), await paid.text()).toBe(true);
     await creator.reload();
     await expect(creator.getByTestId('payout-row').first()).toHaveAttribute('data-status', 'PAID');
@@ -120,9 +137,10 @@ test('a replay clip sells a remix, the royalty reaches the creator and is paid o
 
 test('a live auction: two bidders, the anti-snipe extension, the authorized top bid wins', async ({ browser }) => {
     test.setTimeout(240_000);
-    const hostCtx = await signedInContext(browser, { email: `auction-host-${RUN}@example.com`, name: 'Hal Host' }, { width: 1280, height: 800 });
+    const tag = runTag();
+    const hostCtx = await signedInContext(browser, { email: `auction-host-${tag}@example.com`, name: 'Hal Host' }, { width: 1280, height: 800 });
     const host = await hostCtx.newPage();
-    const handle = `hal_${RUN}`.slice(0, 24);
+    const handle = `hal_${tag}`.slice(0, 24);
     expect((await hostCtx.request.patch('/api/me', { data: { becomeCreator: true, handle } })).ok()).toBe(true);
     const quoted = await quotePart(host, 'auction-one-of-one.dxf');
     const buildId: string = (await (await hostCtx.request.get(`/api/parts/${quoted.partId}`)).json()).buildId;
@@ -142,7 +160,7 @@ test('a live auction: two bidders, the anti-snipe extension, the authorized top 
 
     const bidders = await Promise.all(
         [1, 2].map(async (n) => {
-            const ctx = await signedInContext(browser, { email: `bidder${n}-${RUN}@example.com`, name: `Bidder ${n}` }, { width: 390, height: 844 });
+            const ctx = await signedInContext(browser, { email: `bidder${n}-${tag}@example.com`, name: `Bidder ${n}` }, undefined, phone());
             const page = await ctx.newPage();
             await page.goto(`/live/${showId}`);
             await expect(page.getByTestId('auction-card')).toHaveAttribute('data-status', 'OPEN', { timeout: 15_000 });
@@ -169,7 +187,8 @@ test('a live auction: two bidders, the anti-snipe extension, the authorized top 
     await expect(one.page.getByTestId('auction-card')).toHaveAttribute('data-leading', 'true', { timeout: 15_000 });
 
     // Bidder 2 sees the new price, prepares a bid and sends it inside the last 10 seconds.
-    await expect(two.page.getByTestId('auction-current')).toContainText('$400.00', { timeout: 15_000 });
+    // "$400.00" alone also matches the starting-bid line; wait for bidder 1's bid itself.
+    await expect(two.page.getByTestId('auction-current')).toContainText(/\$400\.00 · .* · 1 bid\b/, { timeout: 15_000 });
     await two.page.getByTestId('auction-bid').click();
     await expect(two.page.getByTestId('bid-amount')).toHaveValue('410.00');
     await fill(two.page, 'Bidder Two');

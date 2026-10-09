@@ -3,7 +3,7 @@
  * Creator Studio setup (become a creator, channel, show planner).
  */
 import { randomUUID } from 'node:crypto';
-import { expect, type Browser, type BrowserContext, type Cookie, type Page } from '@playwright/test';
+import { expect, type Browser, type BrowserContext, type BrowserContextOptions, type Cookie, type Page } from '@playwright/test';
 import postgres from 'postgres';
 import { E2E_DATABASE_URL } from '../../../playwright.config';
 
@@ -26,8 +26,13 @@ export async function signIn(context: BrowserContext, who: { email: string; name
     expect(named.ok(), await named.text()).toBe(true);
 }
 
-export async function signedInContext(browser: Browser, who: { email: string; name: string }, viewport?: { width: number; height: number }): Promise<BrowserContext> {
-    const context = await browser.newContext(viewport ? { viewport } : {});
+export async function signedInContext(
+    browser: Browser,
+    who: { email: string; name: string },
+    viewport?: { width: number; height: number },
+    options: BrowserContextOptions = {},
+): Promise<BrowserContext> {
+    const context = await browser.newContext({ ...options, ...(viewport ? { viewport } : {}) });
     await signIn(context, who);
     return context;
 }

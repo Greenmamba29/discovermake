@@ -4,6 +4,8 @@
 - R1 "Cut" is merged (PR #1). A real order runs end to end.
 - R2 increment 1 "Make + Source" is in review (PR #2). It adds the Build Workspace, the CAD worker, the Accio sourcing bridge and the sourcing desk.
 
+> **Status, 2026-10-09: every stage below is built and integrated on PR #2.** Stages 1–5 and the GA hardening track are in place, apart from the items deliberately deferred. All gates are green: tsc, lint, vitest, pytest, the Playwright journeys on desktop plus Pixel 7 and iPhone 14 profiles, the page sweep, load and restore drills. See `docs/architecture/launch-readiness.md` for the evidence and the owner inputs needed to go live.
+
 This plan covers everything left between today and the full product in workflows 00–13: Discover, Make, Live, My Builds, Creator Studio, Media and Reconstruct. It follows the SDLC in workflow 00. Every stage ends at a **G3 gate**: its demo script runs on staging with real data, the full test suite is green, and the **Mobbin page sweep** is green.
 
 ## 1. Where the screens stand (page sweep, 2026-10-08)
