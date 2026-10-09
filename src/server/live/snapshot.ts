@@ -15,7 +15,8 @@ import { getDb } from '../db';
 import { liveEvents, showLikes, shows } from '../db/schema';
 import type { ShowAccess } from './access';
 import { mutedUntil } from './chat';
-import { currentDropForShow, maybeCloseDrop, viewerClaimsFor } from './drops';
+import { currentDropForShow, isFairQueueDrop, maybeCloseDrop, viewerClaimsFor } from './drops';
+import { auctionViewForShow } from './auctions';
 import { listLiveEvents, rowToLiveEvent } from './events';
 import { currentPoll, listQuestions } from './questions';
 import { loadChannelViews, toDropView, toShowView } from './views';
@@ -83,7 +84,7 @@ export async function buildSnapshot(access: ShowAccess): Promise<ShowSnapshot> {
     return {
         show: toShowView(show, channel),
         featured: parsedFocus?.success ? parsedFocus.data : null,
-        drop: drop ? toDropView(drop, claims.held) : null,
+        drop: drop ? toDropView(drop, claims.held, await isFairQueueDrop(db, drop.id)) : null,
         questions,
         recentChat,
         lastSeq,
@@ -94,5 +95,6 @@ export async function buildSnapshot(access: ShowAccess): Promise<ShowSnapshot> {
         viewerLiked: liked,
         viewerClaims: claims.claims,
         replayEvents,
+        auction: await auctionViewForShow(showId, viewerId),
     };
 }

@@ -24,3 +24,4 @@ export * from './sourcing';
 export * from './account';
 export * from './live';
 export * from './promise';
+export * from './media';

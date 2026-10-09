@@ -14,6 +14,14 @@
             "schedule": "30 6 * * *"
         },
         {
+            "path": "/api/admin/live/auctions/close",
+            "schedule": "35 6 * * *"
+        },
+        {
+            "path": "/api/admin/creator-payouts/run",
+            "schedule": "45 6 * * *"
+        },
+        {
             "path": "/api/admin/promise/retrain",
             "schedule": "30 6 * * 1"
         },

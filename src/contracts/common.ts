@@ -70,6 +70,14 @@ export const ID_PREFIX = {
     buyerCredit: 'crd',
     shopStock: 'sst',
     jobBatch: 'bat',
+    // R5 Media
+    clip: 'clp',
+    auction: 'auc',
+    auctionBid: 'bid',
+    creatorEarning: 'cre',
+    creatorPayout: 'cpo',
+    feedEvent: 'fev',
+    dropQueueEntry: 'dqe',
     // R6 Reconstruct
     reconstruct: 'rcn',
     // R3 Prime experience

@@ -24,7 +24,7 @@ import type { ClaimSlotsRequest, ClaimSlotsResponse, DropView, HostIntent, SlotC
 import { buildOrderUrl, createOrderAccessToken, hashOrderAccessToken } from '../auth/order-link';
 import type { ViewerContext } from '../auth/viewer';
 import { getDb, withTx, type DbOrTx } from '../db';
-import { drops, orders, payments, quotes, shops, slotClaims } from '../db/schema';
+import { dropQueues, drops, orders, payments, quotes, shops, slotClaims } from '../db/schema';
 import { env } from '../env';
 import { emitEvent } from '../events/outbox';
 import { ApiError } from '../http';
@@ -58,7 +58,7 @@ export function minimumSlotPriceCents(quote: Pick<QuoteRow, 'unitPriceCents' | '
 }
 
 /** The orderable BINDING quote at exactly `quantity` units for the build's part, creating one from the latest config if needed. */
-async function bindingQuoteAt(buildId: string, quantity: number): Promise<QuoteRow> {
+export async function bindingQuoteAt(buildId: string, quantity: number): Promise<QuoteRow> {
     const facts = await loadBuildFacts(buildId);
     if (!facts) throw new ApiError('NOT_FOUND', 'Build not found');
     const part = facts.part;
@@ -124,7 +124,9 @@ export async function startDrop(access: ShowAccess, intent: StartDropIntent, act
                 createdBy: actor.id,
             })
             .returning();
-        const view = toDropView(row, 0);
+        // R5: high-demand drops admit claims through the fair queue (queue.ts).
+        if (intent.fairQueue) await tx.insert(dropQueues).values({ dropId: row.id });
+        const view = toDropView(row, 0, intent.fairQueue);
         await appendLiveEvent(
             show.id,
             {
@@ -241,16 +243,194 @@ async function viewerClaimedSlots(db: DbOrTx, dropId: string, userId: string): P
     return Number(r?.n ?? 0);
 }
 
+export type ClaimBuyer = { userId: string; email: string; publicName: string };
+
+/** True when the drop runs a fair queue (R5): claims go through POST /api/live/drops/:id/queue. */
+export async function isFairQueueDrop(db: DbOrTx, dropId: string): Promise<boolean> {
+    const [row] = await db.select({ dropId: dropQueues.dropId }).from(dropQueues).where(eq(dropQueues.dropId, dropId)).limit(1);
+    return !!row;
+}
+
+/**
+ * The claim itself, with the drop row already locked by the caller (direct claims below, and the
+ * R5 fair queue in queue.ts, which admits entries one by one under the same lock). Pushes claims
+ * whose holds ran out onto `expiredToRelease` (released by the caller after commit).
+ */
+export async function claimSlotsLocked(tx: DbOrTx, drop: DropRow, buyer: ClaimBuyer, input: ClaimSlotsRequest, idempotencyKey: string | null, expiredToRelease: ClaimRow[]): Promise<ClaimSlotsResponse> {
+    const provider = getPaymentProvider();
+    const appUrl = env().APP_URL;
+    const userId = buyer.userId;
+    const dropId = drop.id;
+
+    if (idempotencyKey) {
+        const [existing] = await tx
+            .select({ claim: slotClaims, payment: payments })
+            .from(slotClaims)
+            .leftJoin(payments, eq(payments.orderId, slotClaims.orderId))
+            .where(and(eq(slotClaims.dropId, dropId), eq(slotClaims.userId, userId), eq(slotClaims.idempotencyKey, idempotencyKey)))
+            .limit(1);
+        if (existing) {
+            const orderUrl = orderUrlFromPaymentMetadata(existing.claim.orderId, existing.payment?.metadata);
+            const [order] = await tx.select({ totalCents: orders.totalCents }).from(orders).where(eq(orders.id, existing.claim.orderId));
+            return claimResponse(
+                existing.claim,
+                drop,
+                await viewerClaimedSlots(tx, dropId, userId),
+                orderUrl ?? new URL(`/orders/${existing.claim.orderId}`, appUrl).toString(),
+                { name: existing.payment?.provider ?? provider.name, providerRef: existing.payment?.providerRef ?? '' },
+                order?.totalCents ?? 0,
+                existing.payment?.status,
+            );
+        }
+    }
+
+    const now = new Date();
+    expiredToRelease.push(...(await expireStaleClaimsLocked(tx, drop, now)));
+    dropMustBeClaimable(drop, now);
+
+    const mine = await viewerClaimedSlots(tx, dropId, userId);
+    if (mine + input.quantity > drop.perBuyerLimit) {
+        const left = Math.max(0, drop.perBuyerLimit - mine);
+        throw new ApiError('CONFLICT', left === 0 ? `You already hold the maximum of ${drop.perBuyerLimit} slots for this drop.` : `You can claim ${left} more slot${left === 1 ? '' : 's'} on this drop.`, 409, { perBuyerLimit: drop.perBuyerLimit, held: mine });
+    }
+    const remaining = drop.totalSlots - drop.claimedSlots;
+    if (input.quantity > remaining) {
+        throw new ApiError('CONFLICT', remaining === 0 ? 'Sold out: every slot is claimed.' : `Only ${remaining} slot${remaining === 1 ? '' : 's'} left.`, 409, { remainingSlots: remaining });
+    }
+
+    const [quote] = await tx.select().from(quotes).where(eq(quotes.id, drop.quoteId));
+    if (!quote) throw new ApiError('CONFLICT', 'This drop is no longer available.');
+    const shipping = quote.shippingOptions.find((o) => o.method === input.shippingMethod);
+    if (!shipping) throw new ApiError('VALIDATION_FAILED', `Shipping method ${input.shippingMethod} is not available for this drop.`);
+    const [shop] = await tx.select({ timezone: shops.timezone }).from(shops).where(eq(shops.id, quote.shopId));
+
+    const quantity = input.quantity;
+    const subtotalCents = drop.priceCents * quantity;
+    const shopCostCents = Math.min(subtotalCents, Math.round((quote.shopCostCents * quantity) / Math.max(1, quote.quantity)));
+    const platformFeeCents = subtotalCents - shopCostCents;
+    const totalCents = subtotalCents + shipping.priceCents;
+    const orderId = newId('order');
+    const orderNumber = newOrderNumber();
+    const claimId = newId('slotClaim');
+    const token = createOrderAccessToken();
+    const orderUrl = buildOrderUrl(orderId, token, appUrl);
+    const expiresAt = new Date(Math.min(now.getTime() + CLAIM_HOLD_MINUTES * 60_000, drop.closesAt.getTime() + CLAIM_HOLD_MINUTES * 60_000));
+
+    await tx.insert(orders).values({
+        id: orderId,
+        orderNumber,
+        buildId: drop.buildId,
+        quoteId: quote.id,
+        orderType: 'BUILD_SLOT',
+        status: 'PENDING_PAYMENT',
+        buyerEmail: buyer.email,
+        buyerName: input.buyer.name,
+        buyerPhone: input.buyer.phone ?? null,
+        shippingAddress: input.shippingAddress,
+        shippingMethod: input.shippingMethod,
+        notes: `Build Slot · ${drop.title} · drop ${drop.id}`,
+        quantity,
+        unitPriceCents: drop.priceCents,
+        subtotalCents,
+        shippingCents: shipping.priceCents,
+        taxCents: 0,
+        totalCents,
+        shopCostCents,
+        platformFeeCents,
+        currency: drop.currency,
+        promisedShipDate: promisedShipDateFor(quote, shop?.timezone ?? 'America/New_York', drop.closesAt),
+        // R5: attribute the order to the signed-in buyer (creator royalties skip self-purchases).
+        buyerUserId: userId,
+        accessTokenHash: hashOrderAccessToken(orderId, token),
+        correlationId: drop.buildId,
+        termsAcceptedAt: now,
+        createdAt: now,
+        updatedAt: now,
+    });
+    await emitEvent(tx, {
+        type: 'order.created',
+        payload: { orderId, orderNumber, quoteId: quote.id, orderType: 'BUILD_SLOT', totalCents, currency: drop.currency },
+        actor: { kind: 'buyer', id: userId },
+        correlationId: drop.buildId,
+        buildId: drop.buildId,
+        orderId,
+        timestamp: now,
+    });
+
+    const returnTo = drop.showId ? `/live/${encodeURIComponent(drop.showId)}?claim=${encodeURIComponent(claimId)}` : `/orders/${orderId}`;
+    let session;
+    try {
+        session = await provider.createPayment({
+            orderId,
+            orderNumber,
+            amountCents: totalCents,
+            currency: drop.currency,
+            buyerEmail: buyer.email,
+            description: `${orderNumber} · ${quantity} Build Slot${quantity === 1 ? '' : 's'} · ${drop.title} (charged only if the drop reaches ${drop.thresholdSlots})`,
+            successUrl: new URL(returnTo, appUrl).toString(),
+            cancelUrl: new URL(`${returnTo}${returnTo.includes('?') ? '&' : '?'}cancelled=1`, appUrl).toString(),
+            metadata: { dm_drop_id: drop.id, dm_claim_id: claimId, dm_build_id: drop.buildId, dm_app: new URL(appUrl).host },
+            expiresAt,
+            captureMethod: 'manual',
+        });
+    } catch (err) {
+        console.error('[live] payment provider error on claim', err);
+        throw new ApiError('PAYMENT_ERROR', 'We could not start the payment hold. Please try again in a moment.');
+    }
+    await tx.insert(payments).values({
+        orderId,
+        provider: provider.name,
+        providerRef: session.providerRef,
+        amountCents: totalCents,
+        currency: drop.currency,
+        status: 'PENDING',
+        metadata: { [SEALED_TOKEN_KEY]: sealOrderToken(orderId, token), [CAPTURE_METHOD_METADATA_KEY]: 'manual', dropId: drop.id, claimId },
+        createdAt: now,
+        updatedAt: now,
+    });
+    const [claim] = await tx
+        .insert(slotClaims)
+        .values({ id: claimId, dropId, userId, buyerEmail: buyer.email, quantity, status: 'RESERVED', orderId, checkoutUrl: session.redirectUrl, idempotencyKey, expiresAt, createdAt: now, updatedAt: now })
+        .returning();
+    const [updated] = await tx
+        .update(drops)
+        .set({ claimedSlots: sql`${drops.claimedSlots} + ${quantity}`, updatedAt: now })
+        .where(eq(drops.id, dropId))
+        .returning();
+
+    if (drop.showId) {
+        await appendLiveEvent(
+            drop.showId,
+            {
+                event: 'build_slot.claimed',
+                actor: SYSTEM_LIVE_ACTOR,
+                buildId: drop.buildId,
+                payload: { dropId, quantity, claimedSlots: updated.claimedSlots, totalSlots: updated.totalSlots, remainingSlots: updated.totalSlots - updated.claimedSlots, thresholdSlots: updated.thresholdSlots, buyer: buyer.publicName },
+                at: now,
+                domain: {
+                    type: 'live.slot_claimed',
+                    payload: { dropId, claimId, orderId, quantity, claimedSlots: updated.claimedSlots },
+                    actor: LIVE_SYSTEM_ACTOR,
+                    correlationId: drop.showId,
+                    buildId: drop.buildId,
+                },
+            },
+            tx,
+        );
+        await appendLiveEvent(drop.showId, { event: 'order.created', actor: SYSTEM_LIVE_ACTOR, buildId: drop.buildId, payload: { orderType: 'BUILD_SLOT', dropId, quantity }, at: now }, tx);
+    }
+    return claimResponse(claim, updated, mine + quantity, orderUrl, { name: provider.name, providerRef: session.providerRef }, totalCents, 'PENDING');
+}
+
 /**
  * Claim Build Slots. Serialized per drop by the row lock; idempotent per
  * (drop, viewer, Idempotency-Key). The order total = slot price x quantity + the quote's
  * shipping price for the chosen method; the hold is authorized, never captured here.
+ * Fair-queue drops (R5) refuse direct claims: their claims are admitted by the queue.
  */
 export async function claimSlots(dropId: string, viewer: ViewerContext, input: ClaimSlotsRequest, idempotencyKey: string | null): Promise<ClaimSlotsResponse> {
     await maybeCloseDrop(dropId);
-    const provider = getPaymentProvider();
-    const appUrl = env().APP_URL;
-    const userId = viewer.user.id;
+    const buyer: ClaimBuyer = { userId: viewer.user.id, email: viewer.user.email, publicName: publicName(viewer) };
     const expiredToRelease: ClaimRow[] = [];
     let title = 'Live drop';
 
@@ -261,163 +441,8 @@ export async function claimSlots(dropId: string, viewer: ViewerContext, input: C
                 const [drop] = await tx.select().from(drops).where(eq(drops.id, dropId)).for('update');
                 if (!drop) throw new ApiError('NOT_FOUND', 'Drop not found');
                 title = drop.title;
-
-                if (idempotencyKey) {
-                    const [existing] = await tx
-                        .select({ claim: slotClaims, payment: payments })
-                        .from(slotClaims)
-                        .leftJoin(payments, eq(payments.orderId, slotClaims.orderId))
-                        .where(and(eq(slotClaims.dropId, dropId), eq(slotClaims.userId, userId), eq(slotClaims.idempotencyKey, idempotencyKey)))
-                        .limit(1);
-                    if (existing) {
-                        const orderUrl = orderUrlFromPaymentMetadata(existing.claim.orderId, existing.payment?.metadata);
-                        const [order] = await tx.select({ totalCents: orders.totalCents }).from(orders).where(eq(orders.id, existing.claim.orderId));
-                        return claimResponse(
-                            existing.claim,
-                            drop,
-                            await viewerClaimedSlots(tx, dropId, userId),
-                            orderUrl ?? new URL(`/orders/${existing.claim.orderId}`, appUrl).toString(),
-                            { name: existing.payment?.provider ?? provider.name, providerRef: existing.payment?.providerRef ?? '' },
-                            order?.totalCents ?? 0,
-                            existing.payment?.status,
-                        );
-                    }
-                }
-
-                const now = new Date();
-                expiredToRelease.push(...(await expireStaleClaimsLocked(tx, drop, now)));
-                dropMustBeClaimable(drop, now);
-
-                const mine = await viewerClaimedSlots(tx, dropId, userId);
-                if (mine + input.quantity > drop.perBuyerLimit) {
-                    const left = Math.max(0, drop.perBuyerLimit - mine);
-                    throw new ApiError('CONFLICT', left === 0 ? `You already hold the maximum of ${drop.perBuyerLimit} slots for this drop.` : `You can claim ${left} more slot${left === 1 ? '' : 's'} on this drop.`, 409, { perBuyerLimit: drop.perBuyerLimit, held: mine });
-                }
-                const remaining = drop.totalSlots - drop.claimedSlots;
-                if (input.quantity > remaining) {
-                    throw new ApiError('CONFLICT', remaining === 0 ? 'Sold out: every slot is claimed.' : `Only ${remaining} slot${remaining === 1 ? '' : 's'} left.`, 409, { remainingSlots: remaining });
-                }
-
-                const [quote] = await tx.select().from(quotes).where(eq(quotes.id, drop.quoteId));
-                if (!quote) throw new ApiError('CONFLICT', 'This drop is no longer available.');
-                const shipping = quote.shippingOptions.find((o) => o.method === input.shippingMethod);
-                if (!shipping) throw new ApiError('VALIDATION_FAILED', `Shipping method ${input.shippingMethod} is not available for this drop.`);
-                const [shop] = await tx.select({ timezone: shops.timezone }).from(shops).where(eq(shops.id, quote.shopId));
-
-                const quantity = input.quantity;
-                const subtotalCents = drop.priceCents * quantity;
-                const shopCostCents = Math.min(subtotalCents, Math.round((quote.shopCostCents * quantity) / Math.max(1, quote.quantity)));
-                const platformFeeCents = subtotalCents - shopCostCents;
-                const totalCents = subtotalCents + shipping.priceCents;
-                const orderId = newId('order');
-                const orderNumber = newOrderNumber();
-                const claimId = newId('slotClaim');
-                const token = createOrderAccessToken();
-                const orderUrl = buildOrderUrl(orderId, token, appUrl);
-                const expiresAt = new Date(Math.min(now.getTime() + CLAIM_HOLD_MINUTES * 60_000, drop.closesAt.getTime() + CLAIM_HOLD_MINUTES * 60_000));
-
-                await tx.insert(orders).values({
-                    id: orderId,
-                    orderNumber,
-                    buildId: drop.buildId,
-                    quoteId: quote.id,
-                    orderType: 'BUILD_SLOT',
-                    status: 'PENDING_PAYMENT',
-                    buyerEmail: viewer.user.email,
-                    buyerName: input.buyer.name,
-                    buyerPhone: input.buyer.phone ?? null,
-                    shippingAddress: input.shippingAddress,
-                    shippingMethod: input.shippingMethod,
-                    notes: `Build Slot · ${drop.title} · drop ${drop.id}`,
-                    quantity,
-                    unitPriceCents: drop.priceCents,
-                    subtotalCents,
-                    shippingCents: shipping.priceCents,
-                    taxCents: 0,
-                    totalCents,
-                    shopCostCents,
-                    platformFeeCents,
-                    currency: drop.currency,
-                    promisedShipDate: promisedShipDateFor(quote, shop?.timezone ?? 'America/New_York', drop.closesAt),
-                    accessTokenHash: hashOrderAccessToken(orderId, token),
-                    correlationId: drop.buildId,
-                    termsAcceptedAt: now,
-                    createdAt: now,
-                    updatedAt: now,
-                });
-                await emitEvent(tx, {
-                    type: 'order.created',
-                    payload: { orderId, orderNumber, quoteId: quote.id, orderType: 'BUILD_SLOT', totalCents, currency: drop.currency },
-                    actor: { kind: 'buyer', id: userId },
-                    correlationId: drop.buildId,
-                    buildId: drop.buildId,
-                    orderId,
-                    timestamp: now,
-                });
-
-                const returnTo = drop.showId ? `/live/${encodeURIComponent(drop.showId)}?claim=${encodeURIComponent(claimId)}` : `/orders/${orderId}`;
-                let session;
-                try {
-                    session = await provider.createPayment({
-                        orderId,
-                        orderNumber,
-                        amountCents: totalCents,
-                        currency: drop.currency,
-                        buyerEmail: viewer.user.email,
-                        description: `${orderNumber} · ${quantity} Build Slot${quantity === 1 ? '' : 's'} · ${drop.title} (charged only if the drop reaches ${drop.thresholdSlots})`,
-                        successUrl: new URL(returnTo, appUrl).toString(),
-                        cancelUrl: new URL(`${returnTo}${returnTo.includes('?') ? '&' : '?'}cancelled=1`, appUrl).toString(),
-                        metadata: { dm_drop_id: drop.id, dm_claim_id: claimId, dm_build_id: drop.buildId, dm_app: new URL(appUrl).host },
-                        expiresAt,
-                        captureMethod: 'manual',
-                    });
-                } catch (err) {
-                    console.error('[live] payment provider error on claim', err);
-                    throw new ApiError('PAYMENT_ERROR', 'We could not start the payment hold. Please try again in a moment.');
-                }
-                await tx.insert(payments).values({
-                    orderId,
-                    provider: provider.name,
-                    providerRef: session.providerRef,
-                    amountCents: totalCents,
-                    currency: drop.currency,
-                    status: 'PENDING',
-                    metadata: { [SEALED_TOKEN_KEY]: sealOrderToken(orderId, token), [CAPTURE_METHOD_METADATA_KEY]: 'manual', dropId: drop.id, claimId },
-                    createdAt: now,
-                    updatedAt: now,
-                });
-                const [claim] = await tx
-                    .insert(slotClaims)
-                    .values({ id: claimId, dropId, userId, buyerEmail: viewer.user.email, quantity, status: 'RESERVED', orderId, checkoutUrl: session.redirectUrl, idempotencyKey, expiresAt, createdAt: now, updatedAt: now })
-                    .returning();
-                const [updated] = await tx
-                    .update(drops)
-                    .set({ claimedSlots: sql`${drops.claimedSlots} + ${quantity}`, updatedAt: now })
-                    .where(eq(drops.id, dropId))
-                    .returning();
-
-                if (drop.showId) {
-                    await appendLiveEvent(
-                        drop.showId,
-                        {
-                            event: 'build_slot.claimed',
-                            actor: SYSTEM_LIVE_ACTOR,
-                            buildId: drop.buildId,
-                            payload: { dropId, quantity, claimedSlots: updated.claimedSlots, totalSlots: updated.totalSlots, remainingSlots: updated.totalSlots - updated.claimedSlots, thresholdSlots: updated.thresholdSlots, buyer: publicName(viewer) },
-                            at: now,
-                            domain: {
-                                type: 'live.slot_claimed',
-                                payload: { dropId, claimId, orderId, quantity, claimedSlots: updated.claimedSlots },
-                                actor: LIVE_SYSTEM_ACTOR,
-                                correlationId: drop.showId,
-                                buildId: drop.buildId,
-                            },
-                        },
-                        tx,
-                    );
-                    await appendLiveEvent(drop.showId, { event: 'order.created', actor: SYSTEM_LIVE_ACTOR, buildId: drop.buildId, payload: { orderType: 'BUILD_SLOT', dropId, quantity }, at: now }, tx);
-                }
-                return claimResponse(claim, updated, mine + quantity, orderUrl, { name: provider.name, providerRef: session.providerRef }, totalCents, 'PENDING');
+                if (await isFairQueueDrop(tx, dropId)) throw new ApiError('CONFLICT', 'This drop uses a fair queue: join the queue to claim a slot.', 409, { fairQueue: true });
+                return claimSlotsLocked(tx, drop, buyer, input, idempotencyKey, expiredToRelease);
             });
             if (expiredToRelease.length) await releaseClaims(expiredToRelease, 'Your slot hold expired before the payment was authorized.', 'EXPIRED', title);
             return result;
@@ -431,6 +456,13 @@ export async function claimSlots(dropId: string, viewer: ViewerContext, input: C
     }
     throw new ApiError('INTERNAL', 'Could not allocate an order number');
 }
+
+/** Release claims whose holds ran out (queue processing collects them under the drop lock). */
+export async function releaseExpiredClaims(claims: ClaimRow[], dropTitle: string): Promise<number> {
+    return claims.length ? releaseClaims(claims, 'Your slot hold expired before the payment was authorized.', 'EXPIRED', dropTitle) : 0;
+}
+
+export type { ClaimRow };
 
 // ---------------------------------------------------------------------------
 // Closing + settlement
@@ -592,7 +624,7 @@ export async function getDropView(dropId: string, viewerId: string | null): Prom
     const db = getDb();
     const [drop] = await db.select().from(drops).where(eq(drops.id, dropId));
     if (!drop) return null;
-    return toDropView(drop, viewerId ? await viewerClaimedSlots(db, dropId, viewerId) : 0);
+    return toDropView(drop, viewerId ? await viewerClaimedSlots(db, dropId, viewerId) : 0, await isFairQueueDrop(db, dropId));
 }
 
 /** The viewer's claims on a drop, with their signed order links. */

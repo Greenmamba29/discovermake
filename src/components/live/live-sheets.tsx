@@ -4,7 +4,8 @@ import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react';
 import { CheckCircle2, ExternalLink, Loader2, Lock } from 'lucide-react';
-import { ClaimSlotsRequest, type ClaimSlotsResponse, type DropView, type FeaturedProduct, type QuoteView, type ShippingMethod } from '@/contracts';
+import { ClaimSlotsRequest, type ClaimSlotsResponse, type DropQueueResponse, type DropView, type FeaturedProduct, type QuoteView, type ShippingMethod } from '@/contracts';
+import { mediaApi } from '@/components/media/media-api';
 import { Button, buttonClass } from '@/components/ui/button';
 import { Field, SelectInput, TextArea, TextInput } from '@/components/ui/field';
 import { QtyStepper } from '@/components/ui/qty-stepper';
@@ -281,6 +282,7 @@ export function ClaimSheet({ open, onClose, drop, onClaimed }: { open: boolean; 
     const [quantity, setQuantity] = useState(1);
     const [form, setForm] = useState({ name: '', line1: '', city: '', region: '', postalCode: '', method: 'STANDARD' as ShippingMethod, terms: false });
     const [claim, setClaim] = useState<ClaimSlotsResponse | null>(null);
+    const [queue, setQueue] = useState<DropQueueResponse | null>(null);
     const [authorized, setAuthorized] = useState(false);
     const [busy, setBusy] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -290,10 +292,24 @@ export function ClaimSheet({ open, onClose, drop, onClaimed }: { open: boolean; 
         if (open) {
             idem.current = typeof crypto !== 'undefined' && 'randomUUID' in crypto ? crypto.randomUUID() : String(Date.now());
             setClaim(null);
+            setQueue(null);
             setAuthorized(false);
             setError(null);
         }
     }, [open]);
+
+    // R5 fair queue: poll the position until the entry is admitted (a held claim) or rejected.
+    const queued = queue?.status === 'QUEUED' ? queue : null;
+    useEffect(() => {
+        if (!queued) return;
+        const t = setTimeout(() => {
+            mediaApi
+                .queueStatus(queued.dropId)
+                .then(setQueue)
+                .catch((err) => setError(errorMessage(err)));
+        }, 1000);
+        return () => clearTimeout(t);
+    }, [queued]);
 
     const max = drop ? Math.max(1, Math.min(drop.perBuyerLimit - drop.viewerClaimedSlots, drop.totalSlots - drop.claimedSlots)) : 1;
     const body = useMemo(
@@ -320,6 +336,10 @@ export function ClaimSheet({ open, onClose, drop, onClaimed }: { open: boolean; 
         }
         setBusy(true);
         try {
+            if (drop.fairQueue) {
+                setQueue(await mediaApi.joinQueue(drop.id, parsed.data));
+                return;
+            }
             const r = await liveApi.claim(drop.id, parsed.data, idem.current);
             setClaim(r);
             onClaimed(r);
@@ -349,9 +369,54 @@ export function ClaimSheet({ open, onClose, drop, onClaimed }: { open: boolean; 
         }
     };
 
+    const authorizeQueued = async () => {
+        const c = queue?.claim;
+        if (!c) return;
+        if (c.payment?.provider !== 'dev') {
+            if (c.checkoutUrl) window.location.assign(c.checkoutUrl);
+            return;
+        }
+        setBusy(true);
+        setError(null);
+        try {
+            await api.devConfirm({ providerRef: c.payment.providerRef, outcome: 'succeeded' });
+            setAuthorized(true);
+        } catch (err) {
+            setError(errorMessage(err));
+        } finally {
+            setBusy(false);
+        }
+    };
+
     return (
         <Sheet open={open} onClose={onClose} title={`Claim a Build Slot · ${money(drop.priceCents)}`} testId="claim-sheet">
-            {!claim ? (
+            {queue && !claim ? (
+                <div className="space-y-4" data-testid="queue-status" data-status={authorized ? 'AUTHORIZED' : queue.status}>
+                    {queue.status === 'QUEUED' && (
+                        <Notice tone="info" title={`You are number ${queue.position ?? '…'} in line`}>
+                            High demand: claims that arrive in the same second are ordered at random, then admitted one by one. {queue.queueLength} waiting. Keep this open.
+                        </Notice>
+                    )}
+                    {queue.status === 'REJECTED' && (
+                        <Notice tone="warning" title="No slot this time" testId="queue-rejected">
+                            {queue.reason ?? 'The drop could not take your claim.'}
+                        </Notice>
+                    )}
+                    {queue.status === 'ADMITTED' && queue.claim && (
+                        <>
+                            <Notice tone="success" title={authorized ? 'Payment authorized' : `You are in: ${queue.quantity} slot${queue.quantity === 1 ? '' : 's'} held`}>
+                                {authorized ? 'Your hold is in place. You are charged only if the drop reaches its goal.' : `Authorize the hold of ${money(queue.claim.totalCents)} (incl. shipping) to keep your slot.`}
+                            </Notice>
+                            {!authorized && (
+                                <Button className="w-full" onClick={authorizeQueued} loading={busy} data-testid="queue-authorize">
+                                    {queue.claim.payment?.provider === 'dev' ? `Authorize test payment · ${money(queue.claim.totalCents)}` : 'Authorize payment'}
+                                </Button>
+                            )}
+                        </>
+                    )}
+                    {error && <Notice tone="error">{error}</Notice>}
+                </div>
+            ) : !claim ? (
                 <form onSubmit={submit} noValidate className="space-y-4">
                     <p className="text-sm text-fg-muted">
                         You are reserving capacity in a production run. Your card is only authorized now and charged when the drop reaches {drop.thresholdSlots} slots by {dateTime(drop.closesAt)}. Otherwise the hold is released.
@@ -395,7 +460,7 @@ export function ClaimSheet({ open, onClose, drop, onClaimed }: { open: boolean; 
                     </label>
                     {error && <Notice tone="error" testId="claim-error">{error}</Notice>}
                     <Button type="submit" className="w-full" loading={busy} data-testid="claim-submit">
-                        <Lock className="h-4 w-4" aria-hidden /> Hold {quantity} slot{quantity === 1 ? '' : 's'}
+                        <Lock className="h-4 w-4" aria-hidden /> {drop.fairQueue ? `Join the queue for ${quantity} slot${quantity === 1 ? '' : 's'}` : `Hold ${quantity} slot${quantity === 1 ? '' : 's'}`}
                     </Button>
                 </form>
             ) : (

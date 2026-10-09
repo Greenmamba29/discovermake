@@ -4,7 +4,10 @@ import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowLeft, Heart, MessageCircleQuestion, Pause, Play, Share2, ShoppingBag } from 'lucide-react';
-import type { ClaimSlotsResponse, PollView, ViewerClaim } from '@/contracts/live';
+import type { AuctionView, ClaimSlotsResponse, PlaceBidResponse, PollView, ViewerClaim } from '@/contracts/live';
+import type { ReplayChapter } from '@/contracts/media';
+import { mediaApi } from '@/components/media/media-api';
+import { AuctionCard, BidSheet } from './auction-viewer';
 import { ButtonLink } from '@/components/ui/button';
 import { ErrorState } from '@/components/ui/state';
 import { PageSkeleton } from '@/components/ui/skeleton';
@@ -27,7 +30,11 @@ import { VideoStage } from './video-stage';
 export function LiveViewer({ showId }: { showId: string }) {
     const live = useLiveShow(showId, { onEvent: (e) => e.event === 'drop.closed' && setTimeout(() => void live.refetch(), 300) });
     const token = useQuery({ queryKey: ['live-token', showId], queryFn: () => liveApi.token(showId), staleTime: 10 * 60_000, enabled: !!live.snapshot });
-    const [sheet, setSheet] = useState<'configure' | 'remix' | 'claim' | null>(null);
+    const [sheet, setSheet] = useState<'configure' | 'remix' | 'claim' | 'bid' | null>(null);
+    const [bidAmount, setBidAmount] = useState<number | null>(null);
+    const [auctionOverride, setAuctionOverride] = useState<AuctionView | null>(null);
+    const [seek, setSeek] = useState<{ ms: number; n: number } | null>(null);
+    const chapters = useQuery({ queryKey: ['show-clips', showId], queryFn: () => mediaApi.showClips(showId), enabled: !!live.snapshot && live.isReplay, staleTime: 60_000 });
     const [liked, setLiked] = useState<boolean | null>(null);
     const [following, setFollowing] = useState<boolean | null>(null);
     const [pollOverride, setPollOverride] = useState<PollView | null>(null);
@@ -47,6 +54,18 @@ export function LiveViewer({ showId }: { showId: string }) {
 
     const chat = useMemo(() => (state ? visibleChat(state) : []), [state]);
 
+    // Shared replay links: /live/:showId?t=<seconds> opens the recording at that moment.
+    const isReplayShow = live.isReplay;
+    const setPositionMs = live.setPositionMs;
+    useEffect(() => {
+        if (!isReplayShow || typeof window === 'undefined') return;
+        const t = Number(new URL(window.location.href).searchParams.get('t'));
+        if (Number.isFinite(t) && t > 0) {
+            setSeek({ ms: t * 1000, n: Date.now() });
+            setPositionMs(t * 1000);
+        }
+    }, [isReplayShow, setPositionMs]);
+
     if (live.isLoading) return <PageSkeleton label="Joining the show" />;
     if (live.error || !snapshot || !state) {
         const notFound = live.error instanceof ApiClientError && live.error.status === 404;
@@ -58,6 +77,8 @@ export function LiveViewer({ showId }: { showId: string }) {
     const isHost = snapshot.viewerRole === 'host' || snapshot.viewerRole === 'cohost';
     const featured = state.featured;
     const drop = state.drop ? { ...state.drop, viewerClaimedSlots: viewerHeld ?? state.drop.viewerClaimedSlots } : null;
+    const liveAuction = state.auction ?? snapshot.auction ?? null;
+    const auction = liveAuction && auctionOverride && auctionOverride.id === liveAuction.id ? { ...liveAuction, viewerBid: auctionOverride.viewerBid, viewerIsLeading: !!auctionOverride.viewerBid && auctionOverride.viewerBid.amountCents === liveAuction.currentBidCents } : liveAuction;
     const poll = pollOverride && state.poll && pollOverride.id === state.poll.id ? { ...state.poll, viewerVote: pollOverride.viewerVote } : state.poll;
     const isLiked = liked ?? snapshot.viewerLiked;
     const isFollowing = following ?? show.channel.viewerFollows;
@@ -97,6 +118,24 @@ export function LiveViewer({ showId }: { showId: string }) {
             // share sheet dismissed
         }
     };
+    const onBidPlaced = (r: PlaceBidResponse) => setAuctionOverride(r.auction);
+    const jumpTo = (ms: number) => {
+        setSeek({ ms, n: Date.now() });
+        live.setPositionMs(ms);
+    };
+    const shareMoment = async () => {
+        const url = new URL(`/live/${showId}`, window.location.origin);
+        url.searchParams.set('t', String(Math.floor(live.positionMs / 1000)));
+        try {
+            if (navigator.share) await navigator.share({ title: show.title, url: url.toString() });
+            else {
+                await navigator.clipboard.writeText(url.toString());
+                setNotice('Link to this moment copied.');
+            }
+        } catch {
+            // dismissed
+        }
+    };
     const onClaimed = (r: ClaimSlotsResponse) => {
         setViewerHeld(r.drop.viewerClaimedSlots);
         // The snapshot carries the viewer's claims with their signed order links.
@@ -107,13 +146,13 @@ export function LiveViewer({ showId }: { showId: string }) {
 
     return (
         <div
-            className="grid w-full [grid-template-areas:'stage'_'below'] lg:h-[calc(100vh-4rem)] lg:[grid-template-areas:'stage_side'_'stage_below'] lg:grid-cols-[minmax(0,1fr)_420px] lg:grid-rows-[auto_minmax(0,1fr)] lg:overflow-hidden"
+            className="grid w-full grid-cols-[minmax(0,1fr)] [grid-template-areas:'stage'_'below'] lg:h-[calc(100vh-4rem)] lg:[grid-template-areas:'stage_side'_'stage_below'] lg:grid-cols-[minmax(0,1fr)_420px] lg:grid-rows-[auto_minmax(0,1fr)] lg:overflow-hidden"
             data-testid="live-viewer"
             data-status={show.status}
         >
             {/* Stage */}
             <section className="relative h-[calc(100svh-4rem)] overflow-hidden bg-black [grid-area:stage] lg:h-full" aria-label="Live video">
-                <VideoStage show={show} source={source} token={token.data ?? null} onTime={live.isReplay ? live.setPositionMs : undefined} />
+                <VideoStage show={show} source={source} token={token.data ?? null} onTime={live.isReplay ? live.setPositionMs : undefined} seek={live.isReplay ? seek : null} />
                 <div className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/80 to-transparent" aria-hidden />
                 <header className="absolute inset-x-0 top-0 flex items-start gap-2 p-3">
                     <Link href="/live" className="pointer-events-auto rounded-full bg-black/60 p-2 text-white hover:bg-black/80" aria-label="Back to Live">
@@ -178,6 +217,17 @@ export function LiveViewer({ showId }: { showId: string }) {
                     {replayControls}
                     <NowShowingCard featured={featured} onMakeMine={() => setSheet('configure')} onRemix={() => setSheet('remix')} compact />
                     {drop && <SlotCounter drop={drop} ending={state.dropEnding} onClaim={() => setSheet('claim')} canClaim={canClaim} claimHint={claimHint} />}
+                    {auction && (auction.status === 'OPEN' || auction.viewerBid || live.isReplay) && (
+                        <AuctionCard
+                            auction={auction}
+                            signedIn={signedIn && !live.isReplay}
+                            isHost={isHost}
+                            onBid={(amount) => {
+                                setBidAmount(amount);
+                                setSheet('bid');
+                            }}
+                        />
+                    )}
                     <Composer ref={composerRef} showId={showId} signedIn={signedIn} disabledReason={mutedReason} />
                 </div>
             </div>
@@ -185,6 +235,7 @@ export function LiveViewer({ showId }: { showId: string }) {
             {/* Below the fold on phones, lower side column on desktop */}
             <div className="space-y-3 p-3 [grid-area:below] lg:overflow-y-auto lg:border-l lg:border-t lg:border-graphite-700 lg:p-4" tabIndex={0} role="region" aria-label="Questions, polls and your slots">
                 {claims && claims.length > 0 && <MyClaims claims={claims} />}
+                {live.isReplay && <Chapters chapters={chapters.data?.chapters ?? []} positionMs={live.positionMs} onJump={jumpTo} onShare={shareMoment} />}
                 {state.milestones.length > 0 && <Milestones events={state.milestones.map((m) => ({ seq: m.seq, label: m.event, note: (m.payload as { note?: string | null }).note ?? null }))} />}
                 {poll && <PollCard poll={poll} showId={showId} signedIn={signedIn && !live.isReplay} onVoted={setPollOverride} />}
                 <QuestionsList questions={state.questions} />
@@ -196,6 +247,7 @@ export function LiveViewer({ showId }: { showId: string }) {
             <ConfigureSheet open={sheet === 'configure'} onClose={() => setSheet(null)} featured={featured} />
             <RemixSheet open={sheet === 'remix'} onClose={() => setSheet(null)} featured={featured} />
             <ClaimSheet open={sheet === 'claim'} onClose={() => setSheet(null)} drop={drop} onClaimed={onClaimed} />
+            <BidSheet open={sheet === 'bid'} onClose={() => setSheet(null)} auction={auction} initialAmountCents={bidAmount} onPlaced={onBidPlaced} />
         </div>
     );
 }
@@ -205,6 +257,37 @@ function RailButton({ label, onClick, active, testId, children }: { label: strin
         <button type="button" onClick={onClick} aria-label={label} className={cn('flex h-11 w-11 flex-col items-center justify-center rounded-full bg-black/60 text-white hover:bg-black/80', active && 'text-live')} data-testid={testId}>
             {children}
         </button>
+    );
+}
+
+function Chapters({ chapters, positionMs, onJump, onShare }: { chapters: ReplayChapter[]; positionMs: number; onJump: (ms: number) => void; onShare: () => void }) {
+    const fmt = (ms: number) => `${Math.floor(ms / 60_000)}:${String(Math.floor((ms % 60_000) / 1000)).padStart(2, '0')}`;
+    const current = [...chapters].reverse().find((c) => c.atMs <= positionMs);
+    return (
+        <section aria-labelledby="chapters-heading" className="rounded-2xl bg-graphite-900 p-3 ring-1 ring-graphite-700" data-testid="replay-chapters">
+            <div className="flex items-center justify-between gap-2">
+                <h2 id="chapters-heading" className="font-display text-base font-bold">
+                    Chapters
+                </h2>
+                <button type="button" onClick={onShare} className="inline-flex min-h-[36px] items-center gap-1 rounded-lg px-2 text-xs font-semibold text-fg-muted hover:text-fg" data-testid="share-moment">
+                    <Share2 className="h-3.5 w-3.5" aria-hidden /> Share this moment ({fmt(positionMs)})
+                </button>
+            </div>
+            {chapters.length === 0 ? (
+                <p className="mt-1 text-sm text-fg-muted">No chapters for this replay.</p>
+            ) : (
+                <ol className="mt-1 space-y-0.5">
+                    {chapters.map((c, i) => (
+                        <li key={`${c.atMs}-${i}`}>
+                            <button type="button" onClick={() => onJump(c.atMs)} aria-current={current === c ? 'true' : undefined} className={cn('flex min-h-[36px] w-full items-center gap-2 rounded-lg px-2 text-left text-sm hover:bg-graphite-800', current === c ? 'text-signal' : 'text-fg-muted')} data-testid="replay-chapter">
+                                <span className="w-12 shrink-0 font-mono text-xs tabular">{fmt(c.atMs)}</span>
+                                <span className="truncate">{c.title}</span>
+                            </button>
+                        </li>
+                    ))}
+                </ol>
+            )}
+        </section>
     );
 }
 

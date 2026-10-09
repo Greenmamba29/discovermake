@@ -23,6 +23,10 @@ export const ChannelId = z.string().regex(/^chn_[A-Za-z0-9_-]+$/);
 export const ShowId = z.string().regex(/^shw_[A-Za-z0-9_-]+$/);
 export const DropId = z.string().regex(/^drp_[A-Za-z0-9_-]+$/);
 export const SlotClaimId = z.string().regex(/^slc_[A-Za-z0-9_-]+$/);
+/** R5: one-of-one live auctions and their bids; fair-queue entries for high-demand drops. */
+export const AuctionId = z.string().regex(/^auc_[A-Za-z0-9_-]+$/);
+export const AuctionBidId = z.string().regex(/^bid_[A-Za-z0-9_-]+$/);
+export const DropQueueEntryId = z.string().regex(/^dqe_[A-Za-z0-9_-]+$/);
 /** Public show id shown in the UI, e.g. `LIVE-984`. */
 export const ShowDisplayId = z.string().regex(/^LIVE-\d+$/);
 
@@ -115,6 +119,9 @@ export const DropView = z.object({
     opensAt: IsoDateTime,
     closesAt: IsoDateTime,
     viewerClaimedSlots: z.number().int().nonnegative(),
+    // ---- R5 extensions (additive) ----
+    /** High-demand drop: claims enter a fair queue (random tie-break within the same second) instead of racing. */
+    fairQueue: z.boolean().optional(),
 });
 export type DropView = z.infer<typeof DropView>;
 
@@ -175,6 +182,10 @@ export const LIVE_EVENT_TYPES = [
     // show lifecycle
     'show.started',
     'show.ended',
+    // ---- R5: live auctions (server-signed) ----
+    'auction.started',
+    'auction.bid',
+    'auction.closed',
 ] as const;
 export const LiveEventType = z.enum(LIVE_EVENT_TYPES);
 export type LiveEventType = z.infer<typeof LiveEventType>;
@@ -194,6 +205,9 @@ export const SIGNED_LIVE_EVENTS = [
     'order.completed',
     'show.started',
     'show.ended',
+    'auction.started',
+    'auction.bid',
+    'auction.closed',
 ] as const satisfies readonly LiveEventType[];
 export type SignedLiveEventType = (typeof SIGNED_LIVE_EVENTS)[number];
 export const isSignedLiveEvent = (e: LiveEventType): e is SignedLiveEventType => (SIGNED_LIVE_EVENTS as readonly string[]).includes(e);
@@ -294,6 +308,9 @@ export const ShowSnapshot = z.object({
     viewerClaims: z.array(ViewerClaim),
     /** Replays (ENDED shows) only: the whole event log, so the overlay replays in sync with `currentTime`. */
     replayEvents: z.array(LiveEvent).nullable(),
+    // ---- R5 extensions (additive) ----
+    /** The show's current (open, else latest) auction. */
+    auction: z.lazy(() => AuctionView).nullable().optional(),
 });
 export type ShowSnapshot = z.infer<typeof ShowSnapshot>;
 
@@ -353,6 +370,8 @@ export const HostIntent = z.discriminatedUnion('intent', [
         thresholdSlots: z.number().int().min(1),
         perBuyerLimit: z.number().int().min(1).max(50).default(2),
         durationMinutes: z.number().int().min(5).max(60 * 24 * 7),
+        /** R5: high-demand drop. Claims join a fair queue (POST /api/live/drops/:id/queue) instead of racing. */
+        fairQueue: z.boolean().optional(),
     }),
     z.object({ intent: z.literal('close_drop') }),
     z.object({ intent: z.literal('answer_question'), questionId: z.string(), answer: z.string().trim().min(1).max(1000) }),
@@ -361,6 +380,17 @@ export const HostIntent = z.discriminatedUnion('intent', [
     z.object({ intent: z.literal('mute_viewer'), viewerId: z.string(), minutes: z.number().int().min(1).max(1440) }),
     z.object({ intent: z.literal('slow_mode'), seconds: z.number().int().min(0).max(300) }),
     z.object({ intent: z.literal('machine_milestone'), event: z.enum(['machine.started', 'machine.completed', 'inspection.passed', 'prototype.completed']), note: z.string().max(200).optional() }),
+    // ---- R5: one-of-one live auction (Whatnot Custom + Bid) ----
+    z.object({
+        intent: z.literal('start_auction'),
+        buildId: BuildId,
+        /** First bid; must cover the binding unit price at quantity 1 (creators cannot sell below cost). */
+        startingBidCents: Cents.min(100),
+        /** Bid ladder: every bid beats the current one by at least this much. */
+        minIncrementCents: Cents.min(100).max(1_000_000).default(500),
+        durationSeconds: z.number().int().min(20).max(60 * 60 * 24),
+    }),
+    z.object({ intent: z.literal('close_auction') }),
 ]).superRefine((v, ctx) => {
     if (v.intent === 'start_drop' && v.thresholdSlots > v.totalSlots) {
         ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['thresholdSlots'], message: 'thresholdSlots cannot exceed totalSlots' });
@@ -411,6 +441,131 @@ export const ClaimSlotsResponse = z.object({
     expiresAt: IsoDateTime,
 });
 export type ClaimSlotsResponse = z.infer<typeof ClaimSlotsResponse>;
+
+// ---------------------------------------------------------------------------
+// R5: fair queue for high-demand drops
+// ---------------------------------------------------------------------------
+
+/**
+ * POST /api/live/drops/:dropId/queue ClaimSlotsRequest -> DropQueueResponse (signed in).
+ * GET  /api/live/drops/:dropId/queue -> the viewer's entry (position while QUEUED).
+ *
+ * Entries are ordered by (enqueue second, random tie-break, id) and admitted one by one under
+ * the drop row lock once their second has passed; an admitted entry is an ordinary RESERVED
+ * claim (authorize the hold at `claim.checkoutUrl`). REJECTED entries carry the reason
+ * (sold out, per-buyer limit, drop closed).
+ */
+export const DROP_QUEUE_STATUSES = ['QUEUED', 'ADMITTED', 'REJECTED'] as const;
+export const DropQueueStatus = z.enum(DROP_QUEUE_STATUSES);
+export type DropQueueStatus = z.infer<typeof DropQueueStatus>;
+export const DropQueueResponse = z.object({
+    entryId: DropQueueEntryId,
+    dropId: DropId,
+    status: DropQueueStatus,
+    /** 1 = next to be admitted. Null once the entry left the queue. */
+    position: z.number().int().positive().nullable(),
+    queueLength: z.number().int().nonnegative(),
+    quantity: z.number().int().positive(),
+    claim: z
+        .object({
+            claimId: SlotClaimId,
+            orderId: OrderId,
+            checkoutUrl: z.string().nullable(),
+            status: SlotClaimStatus,
+            payment: z.object({ provider: PaymentProviderName, providerRef: z.string() }).nullable(),
+            totalCents: Cents,
+        })
+        .nullable(),
+    reason: z.string().nullable(),
+    drop: DropView,
+});
+export type DropQueueResponse = z.infer<typeof DropQueueResponse>;
+
+// ---------------------------------------------------------------------------
+// R5: live auctions (one-of-ones)
+// ---------------------------------------------------------------------------
+
+/**
+ *   OPEN      taking bids until `endsAt` (a bid in the last 10 s adds 15 s: anti-snipe)
+ *   SOLD      closed with a winner: the winner's authorized hold was captured, every other hold released
+ *   UNSOLD    closed without an authorized bid: every hold released
+ *   CANCELLED the host cancelled it before any bid
+ */
+export const AUCTION_STATUSES = ['OPEN', 'SOLD', 'UNSOLD', 'CANCELLED'] as const;
+export const AuctionStatus = z.enum(AUCTION_STATUSES);
+export type AuctionStatus = z.infer<typeof AuctionStatus>;
+
+/** PLACED counts on the ladder; WON / LOST / VOID after close (VOID = never authorized). */
+export const AUCTION_BID_STATUSES = ['PLACED', 'WON', 'LOST', 'VOID'] as const;
+export const AuctionBidStatus = z.enum(AUCTION_BID_STATUSES);
+export type AuctionBidStatus = z.infer<typeof AuctionBidStatus>;
+
+export const ANTI_SNIPE_WINDOW_MS = 10_000;
+export const ANTI_SNIPE_EXTENSION_MS = 15_000;
+
+export const ViewerBid = z.object({
+    bidId: AuctionBidId,
+    amountCents: Cents,
+    status: AuctionBidStatus,
+    /** The hold for this bid is authorized at the provider (only authorized bids can win). */
+    authorized: z.boolean(),
+    checkoutUrl: z.string().nullable(),
+    orderUrl: z.string().nullable(),
+});
+export type ViewerBid = z.infer<typeof ViewerBid>;
+
+export const AuctionView = z.object({
+    id: AuctionId,
+    showId: ShowId.nullable(),
+    buildId: BuildId,
+    title: z.string(),
+    currency: z.string(),
+    startingBidCents: Cents,
+    minIncrementCents: Cents,
+    currentBidCents: Cents.nullable(),
+    /** The smallest bid accepted right now (ladder). */
+    nextMinimumBidCents: Cents,
+    bidCount: z.number().int().nonnegative(),
+    leadingBidder: z.string().nullable(),
+    status: AuctionStatus,
+    endsAt: IsoDateTime,
+    originalEndsAt: IsoDateTime,
+    extensions: z.number().int().nonnegative(),
+    closedAt: IsoDateTime.nullable(),
+    winner: z.string().nullable(),
+    viewerIsLeading: z.boolean(),
+    /** The viewer's highest bid on this auction. */
+    viewerBid: ViewerBid.nullable(),
+});
+export type AuctionView = z.infer<typeof AuctionView>;
+
+/** POST /api/live/auctions/:auctionId/bids (signed in): a bid authorizes a hold for its amount + shipping. */
+export const PlaceBidRequest = z.object({
+    amountCents: Cents.min(100),
+    buyer: z.object({ name: z.string().trim().min(1).max(120), phone: z.string().trim().max(32).optional() }),
+    shippingAddress: Address,
+    shippingMethod: ShippingMethod.default('STANDARD'),
+    /** "Charged only if I win; every other hold is released at close." Must be literally true. */
+    acceptTerms: z.literal(true),
+});
+export type PlaceBidRequest = z.infer<typeof PlaceBidRequest>;
+export const PlaceBidResponse = z.object({
+    bidId: AuctionBidId,
+    orderId: OrderId,
+    amountCents: Cents,
+    totalCents: Cents,
+    /** Where the bidder authorizes the hold (Stripe manual capture, or the dev pay page). */
+    checkoutUrl: z.string().nullable(),
+    orderUrl: z.string().url(),
+    extended: z.boolean(),
+    auction: AuctionView,
+    payment: z.object({ provider: PaymentProviderName, providerRef: z.string() }),
+});
+export type PlaceBidResponse = z.infer<typeof PlaceBidResponse>;
+
+/** POST|GET /api/admin/live/auctions/close (admin or cron): close every auction past its end. */
+export const CloseAuctionsResponse = z.object({ closed: z.number().int().nonnegative() });
+export type CloseAuctionsResponse = z.infer<typeof CloseAuctionsResponse>;
 
 /** Go-live checklist (Creator Studio). */
 export const GoLiveChecklist = z.object({
@@ -525,5 +680,5 @@ export type ChatResponse = z.infer<typeof ChatResponse>;
 export type LikeResponse = z.infer<typeof LikeResponse>;
 export type AskResponse = z.infer<typeof AskResponse>;
 export type PollVoteResponse = z.infer<typeof PollVoteResponse>;
-export const HostIntentResponse = z.object({ event: LiveEvent.nullable(), drop: DropView.optional() });
+export const HostIntentResponse = z.object({ event: LiveEvent.nullable(), drop: DropView.optional(), auction: AuctionView.optional() });
 export type HostIntentResponse = z.infer<typeof HostIntentResponse>;

@@ -20,6 +20,7 @@ import { createBuildWithCad } from './support/cad-build';
 import { createReconstructState } from './support/reconstruct';
 import { adminLogin, fulfil, payOrder, quotePart, shopLogin } from './support/journeys';
 import { buildLiveSweepState, type LiveSweepState } from './support/live';
+import { buildMediaSweepState, type MediaSweepState } from './support/media';
 import { primeSupplierState, type PrimeUrls } from './support/prime';
 
 const OUT = path.join(process.cwd(), 'test-results', 'page-sweep');
@@ -42,6 +43,8 @@ type Urls = {
     cadWorkspaceUrl: string;
     /** R4 Live: a LIVE show with a featured product and an open drop, an ENDED replay, its control room. */
     live: LiveSweepState;
+    /** R5 Media: published build, channel, clip, a Make This order (Watch My Build), a live auction. */
+    media: MediaSweepState;
     /** R3 experience: two binding quotes (different parts) for the build cart screen. */
     cartQuoteIds: string[];
     /** R6 Reconstruct: a knob build with a measured photo, and one with confirmed readings, CAD and a BINDING print quote. */
@@ -59,7 +62,7 @@ type Screen = {
     pattern: (page: Page) => Promise<void>;
     /** Failed requests that are expected on this screen, matched against "<status> <path>". */
     allowHttp?: RegExp[];
-    /** App surface with the mobile bottom nav (Discover · Make · Builds · Me). Focused flows and consoles have none. */
+    /** App surface with the mobile bottom nav (Discover · Make · Live · Builds · Me). Focused flows and consoles have none. */
     bottomNav?: boolean;
 };
 
@@ -144,16 +147,70 @@ const SCREENS: Screen[] = [
     },
     {
         name: 'discover',
-        mobbin: 'Pinterest home feed / Behance creative fields: interest chips over a masonry grid of starters',
+        mobbin: 'Pinterest home feed / Behance: For you · Live · New · Trending tabs and search over a masonry feed; starters below as "Start from a template"',
         url: () => '/discover',
         bottomNav: true,
         pattern: async (page) => {
+            // Feed tabs (For you selected) over a masonry grid of published builds and clips, with search.
+            const tabs = page.getByRole('tablist', { name: 'Discover feeds' });
+            await expect(tabs.getByRole('tab')).toHaveText(['For you', 'Live', 'New', 'Trending']);
+            await expect(tabs.getByRole('tab', { name: 'For you' })).toHaveAttribute('aria-selected', 'true');
+            await expect(page.getByRole('search').getByRole('searchbox', { name: 'Search builds, channels and clips' })).toBeVisible();
+            await expect(page.getByTestId('feed-grid').locator('[data-testid="feed-build"], [data-testid="feed-clip"]').first()).toBeVisible({ timeout: 15_000 });
+            // Start from a template: the starter catalog with interest chips.
+            const templates = page.getByTestId('discover-templates');
+            await expect(templates.getByRole('heading', { level: 2, name: 'Start from a template' })).toBeVisible();
             await expect(page.getByRole('button', { name: 'All', exact: true })).toHaveAttribute('aria-pressed', 'true');
             await expect(page.getByTestId('interest-filters').getByRole('button')).toHaveCount(17);
             expect(await page.getByTestId('discover-grid').getByRole('article').count()).toBeGreaterThanOrEqual(12);
-            // Every card starts a real flow: an instant quote or a Make AI brief.
             await expect(page.getByTestId('discover-start-wall-bracket')).toBeVisible();
             await expect(page.getByTestId('discover-start-drone-frame')).toHaveAttribute('href', /^\/make\/ai\?prompt=/);
+        },
+    },
+    {
+        name: 'build-page',
+        bottomNav: true,
+        mobbin: 'Behance project / Etsy listing: cover, creator, licence, binding price, Make This · Remix · Buy, remix tree',
+        url: (u) => u.media.buildUrl,
+        pattern: async (page) => {
+            await expect(page.getByRole('heading', { level: 1, name: 'Sweep walnut lamp plate' })).toBeVisible();
+            await expect(page.getByTestId('creator-link')).toHaveAttribute('href', /^\/c\//);
+            await expect(page.getByTestId('license-chip')).toContainText('Commercial remix · 10% royalty');
+            await expect(page.getByTestId('public-build-price')).toContainText('binding quote');
+            await expect(page.getByTestId('make-this')).toBeEnabled();
+            await expect(page.getByTestId('remix')).toBeEnabled();
+            await expect(page.getByTestId('buy')).toHaveAttribute('href', /\/checkout\/qte_/);
+            await expect(page.getByTestId('remix-tree').getByTestId('remix-node').first()).toBeVisible();
+            await expect(page.locator('meta[property="og:title"]')).toHaveAttribute('content', 'Sweep walnut lamp plate');
+        },
+    },
+    {
+        name: 'channel',
+        bottomNav: true,
+        mobbin: 'Whatnot seller profile: avatar header, Follow, followers, live and upcoming shows, builds grid, clips, replays',
+        url: (u) => u.media.channelUrl,
+        pattern: async (page) => {
+            const header = page.getByTestId('channel-header');
+            await expect(header.getByRole('heading', { level: 1 })).toBeVisible();
+            await expect(header.getByTestId('channel-follow')).toHaveText('Follow');
+            await expect(header.getByTestId('channel-followers')).toContainText('follower');
+            await expect(page.getByTestId('channel-show').filter({ hasText: 'Sweep one-of-one auction' })).toHaveAttribute('data-status', 'LIVE');
+            await expect(page.getByTestId('channel-builds').getByTestId('feed-build').first()).toBeVisible();
+            await expect(page.getByTestId('channel-clips').getByTestId('feed-clip').first()).toBeVisible();
+            await expect(page.getByTestId('channel-replays').getByTestId('channel-show').first()).toHaveAttribute('data-status', 'ENDED');
+        },
+    },
+    {
+        name: 'clip-player',
+        bottomNav: true,
+        mobbin: 'TikTok Shop video: vertical player playing the clip range, product pinned with Make Mine / Buy chips, link to the full replay',
+        url: (u) => u.media.clipUrl,
+        pattern: async (page) => {
+            await expect(page.getByRole('heading', { level: 1, name: 'Sweep lamp reveal' })).toBeVisible();
+            await expect(page.getByTestId('clip-video')).toBeAttached();
+            await expect(page.getByTestId('clip-make-mine')).toBeAttached();
+            await expect(page.getByTestId('clip-buy')).toHaveAttribute('href', /\/checkout\/qte_/);
+            await expect(page.getByTestId('clip-replay-link')).toHaveAttribute('href', /\/live\/shw_[^?]+\?t=\d+/);
         },
     },
     {
@@ -645,6 +702,75 @@ const SCREENS: Screen[] = [
         },
     },
     {
+        name: 'studio-insights',
+        bottomNav: true,
+        mobbin: 'SoundCloud Insights / DoorDash Merchant product mix / Square best sellers: range selector, stat tiles, chart with a table view, best sellers',
+        url: () => '/studio/insights',
+        before: async (page) => page.context().addCookies(mediaCreatorCookies()),
+        pattern: async (page) => {
+            await expect(page.getByRole('group', { name: 'Date range' }).getByRole('button')).toHaveCount(4);
+            await expect(page.getByTestId('range-30d')).toHaveAttribute('aria-pressed', 'true');
+            await expect(page.getByTestId('tile-royalties')).not.toContainText('$0.00');
+            await expect(page.getByTestId('earnings-chart').getByRole('img')).toBeVisible();
+            await expect(page.getByTestId('earnings-chart').getByText('Show as a table')).toBeVisible();
+            await expect(page.getByTestId('product-mix')).toBeVisible();
+            await expect(page.getByTestId('best-seller-row').first()).toBeVisible();
+            await expect(page.getByTestId('studio-nav-insights')).toHaveAttribute('aria-current', 'page');
+        },
+    },
+    {
+        name: 'studio-payouts',
+        bottomNav: true,
+        mobbin: 'Stripe Express / Whatnot seller payouts: available balance, pay out CTA, payout history, earnings ledger',
+        url: () => '/studio/payouts',
+        before: async (page) => page.context().addCookies(mediaCreatorCookies()),
+        pattern: async (page) => {
+            await expect(page.getByTestId('balance-available')).not.toHaveAttribute('data-cents', '0');
+            await expect(page.getByTestId('request-payout')).toBeEnabled();
+            await expect(page.getByTestId('earning-row').first()).toHaveAttribute('data-kind', 'MAKE_THIS_ROYALTY');
+            await expect(page.getByTestId('payout-method')).toContainText('Minimum payout');
+        },
+    },
+    {
+        name: 'studio-publish',
+        bottomNav: true,
+        mobbin: 'Behance / Etsy publish flow: your builds with visibility, licence and royalty, one form per build',
+        url: () => '/studio/publish',
+        before: async (page) => page.context().addCookies(mediaCreatorCookies()),
+        pattern: async (page) => {
+            const row = page.getByTestId('publish-row').filter({ hasText: 'Sweep walnut lamp plate' });
+            await expect(row.getByTestId('publish-status')).toHaveText('Public');
+            await row.getByTestId('publish-toggle').click();
+            await expect(row.getByTestId('publish-license-commercial')).toBeChecked();
+            await expect(row.getByTestId('publish-royalty')).toHaveValue('10');
+        },
+    },
+    {
+        name: 'watch-my-build',
+        bottomNav: true,
+        mobbin: "Domino's Tracker / Uber Eats order progress: the buyer's own production stream with timestamps and shop photos",
+        url: (u) => u.media.watchUrl,
+        pattern: async (page) => {
+            await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+            await expect(page.getByTestId('watch-posts').getByTestId('watch-post').first()).toBeVisible();
+            await expect(page.getByTestId('watch-post').last()).toHaveAttribute('data-kind', 'paid');
+            await expect(page.getByTestId('watch-post').last().locator('time')).toHaveAttribute('datetime', /\d{4}-\d{2}-\d{2}T/);
+        },
+    },
+    {
+        name: 'auction-view',
+        mobbin: 'Whatnot live auction: current bid and leader, countdown, "Bid $X" and Custom over the stream',
+        url: (u) => u.media.auctionShowUrl,
+        pattern: async (page) => {
+            const card = page.getByTestId('auction-card');
+            await expect(card).toHaveAttribute('data-status', 'OPEN');
+            await expect(card.getByTestId('auction-countdown')).toBeVisible();
+            await expect(card.getByTestId('auction-current')).toContainText('$400.00');
+            await expect(card.getByTestId('auction-bid')).toContainText('Bid $400.00');
+            await expect(card.getByTestId('auction-custom')).toBeVisible();
+        },
+    },
+    {
         name: 'reconstruct-capture',
         bottomNav: true,
         mobbin: 'Camera capture with guided steps (Step 1 of 4): rear camera, photo tiles, tips',
@@ -714,6 +840,9 @@ const SCREENS: Screen[] = [
 /** Cookies of the Live sweep creator (set in beforeAll); studio screens reuse the session. */
 let liveCreatorCookies: LiveSweepState['creatorCookies'] = [];
 const sweepCreatorCookies = () => liveCreatorCookies;
+/** Cookies of the Media sweep creator (published build, royalty earned). */
+let mediaCreatorCookiesValue: MediaSweepState['creatorCookies'] = [];
+const mediaCreatorCookies = () => mediaCreatorCookiesValue;
 
 /** Sign this browser context in with an email code (dev returns the code). Own IP per call so in-memory limits never trip. */
 async function signInByEmail(page: Page, email: string) {
@@ -764,6 +893,7 @@ async function buildState(browser: Browser): Promise<Urls> {
     const second = await quotePart(page, 'sweep-cart.dxf');
     await context.close();
     const live = await buildLiveSweepState(browser, quotePart);
+    const media = await buildMediaSweepState(browser, quotePart);
 
     const [orderPath, query] = orderUrl.split('?');
     return {
@@ -780,6 +910,7 @@ async function buildState(browser: Browser): Promise<Urls> {
         reconstructMeasuredBuildId: reconstructMeasured.buildId,
         reconstructReviewBuildId: reconstructReviewed.buildId,
         live,
+        media,
         ...prime,
         cartQuoteIds: [fresh.quoteId, second.quoteId],
     };
@@ -789,7 +920,7 @@ test.describe('Mobbin page sweep', () => {
     let urls: Urls;
 
     test.beforeAll(async ({ browser }) => {
-        test.setTimeout(480_000);
+        test.setTimeout(600_000);
         mkdirSync(OUT, { recursive: true });
         // A failed test restarts the worker and re-runs beforeAll: reuse this run's state.
         const runId = existsSync(RUN_ID_FILE) ? readFileSync(RUN_ID_FILE, 'utf8') : 'none';
@@ -802,6 +933,7 @@ test.describe('Mobbin page sweep', () => {
             writeFileSync(cache, JSON.stringify({ runId, urls }));
         }
         liveCreatorCookies = urls.live.creatorCookies;
+        mediaCreatorCookiesValue = urls.media.creatorCookies;
     });
 
     for (const screen of SCREENS) {
@@ -837,6 +969,7 @@ test.describe('Mobbin page sweep', () => {
                 const bottomNav = page.getByTestId('bottom-nav');
                 if (viewport === 'phone' && screen.bottomNav) {
                     await expect(bottomNav).toBeVisible();
+                    // Discover · Make · Live · Builds · Me (src/components/site/nav-items.ts BOTTOM_NAV).
                     await expect(bottomNav.getByRole('link')).toHaveCount(5);
                     expect(await bottomNav.locator('[aria-current="page"]').count()).toBeLessThanOrEqual(1);
                 } else if (viewport === 'phone') {

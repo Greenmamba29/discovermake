@@ -91,6 +91,8 @@ import type { InterestSlug, OnboardingIntent, UserRole } from '../../contracts/a
 import type { PromiseLegPrediction, SupplierQuoteComposition } from '../../contracts/promise';
 import { CHANNEL_KINDS, DROP_STATUSES, SHOW_FORMATS, SHOW_STATUSES, SLOT_CLAIM_STATUSES } from '../../contracts/live';
 import type { ChannelCategory, LiveActorKind, LiveEventType } from '../../contracts/live';
+import { AUCTION_BID_STATUSES, AUCTION_STATUSES, DROP_QUEUE_STATUSES } from '../../contracts/live';
+import { BUILD_VISIBILITIES, CLIP_ORIGINS, CREATOR_EARNING_KINDS, REMIX_LICENSES } from '../../contracts/media';
 import { newId } from '../ids';
 
 // ---------------------------------------------------------------------------
@@ -2568,4 +2570,286 @@ export const ratings = pgTable(
         check('ratings_stars_ck', sql`${t.stars} between 1 and 5`),
         check('ratings_status_ck', sql`${t.status} in ('pending','approved','rejected')`),
     ],
+);
+
+// ---------------------------------------------------------------------------
+// R5 Media (workflows 07 / 08 / 09, docs/architecture/r5-media.md)
+// ---------------------------------------------------------------------------
+//
+// User references are plain `text` user ids, like the Live tables. Money is integer cents.
+
+export const buildVisibilityEnum = pgEnum('build_visibility', BUILD_VISIBILITIES);
+export const remixLicenseEnum = pgEnum('remix_license', REMIX_LICENSES);
+export const clipOriginEnum = pgEnum('clip_origin', CLIP_ORIGINS);
+export const creatorEarningKindEnum = pgEnum('creator_earning_kind', CREATOR_EARNING_KINDS);
+export const auctionStatusEnum = pgEnum('auction_status', AUCTION_STATUSES);
+export const auctionBidStatusEnum = pgEnum('auction_bid_status', AUCTION_BID_STATUSES);
+export const dropQueueStatusEnum = pgEnum('drop_queue_status', DROP_QUEUE_STATUSES);
+
+/**
+ * A build's publication: visibility, remix licence and royalty % (0–30). One row per build,
+ * written only by the build owner. `search_text` feeds the full-text index (title,
+ * description, tags, creator); Discover, channels and `/b/:buildId` read public rows only.
+ */
+export const buildPublications = pgTable(
+    'build_publications',
+    {
+        buildId: text('build_id')
+            .primaryKey()
+            .references(() => builds.id, { onDelete: 'cascade' }),
+        ownerUserId: text('owner_user_id').notNull(),
+        visibility: buildVisibilityEnum('visibility').notNull().default('private'),
+        license: remixLicenseEnum('license').notNull().default('personal'),
+        royaltyPct: integer('royalty_pct').notNull().default(10),
+        title: text('title').notNull(),
+        description: text('description'),
+        tags: jsonb('tags').$type<string[]>().notNull().default([]),
+        /** Tags that are onboarding interest slugs (seed For You). */
+        interests: jsonb('interests').$type<InterestSlug[]>().notNull().default([]),
+        coverAttachmentId: text('cover_attachment_id').references(() => buildAttachments.id, { onDelete: 'set null' }),
+        searchText: text('search_text').notNull().default(''),
+        /** First time the build went public (kept when it goes private again). */
+        publishedAt: tstz('published_at'),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [
+        index('build_publications_public_idx')
+            .on(t.publishedAt)
+            .where(sql`${t.visibility} = 'public'`),
+        index('build_publications_owner_idx').on(t.ownerUserId),
+        index('build_publications_fts_idx').using('gin', sql`to_tsvector('english', ${t.searchText})`),
+        check('build_publications_royalty_ck', sql`${t.royaltyPct} >= 0 and ${t.royaltyPct} <= 30`),
+    ],
+);
+
+/** A creator's Stripe Connect Express account (the shop Connect flow, keyed by user). */
+export const creatorAccounts = pgTable('creator_accounts', {
+    userId: text('user_id').primaryKey(),
+    stripeAccountId: text('stripe_account_id'),
+    stripePayoutsEnabled: boolean('stripe_payouts_enabled').notNull().default(false),
+    createdAt: createdAt(),
+    updatedAt: updatedAt(),
+});
+
+/**
+ * Creator subledger. Every row mirrors one balanced ledger transaction (`txn_key`):
+ * accruals DEBIT PLATFORM_REVENUE / CREDIT CREATOR_PAYABLE, reversals the opposite.
+ * `amount_cents` is signed (reversals negative). One row per (order, creator, kind).
+ */
+export const creatorEarnings = pgTable(
+    'creator_earnings',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('creatorEarning')),
+        creatorUserId: text('creator_user_id').notNull(),
+        kind: creatorEarningKindEnum('kind').notNull(),
+        orderId: text('order_id')
+            .notNull()
+            .references(() => orders.id),
+        /** The ordered build. */
+        buildId: text('build_id')
+            .notNull()
+            .references(() => builds.id),
+        /** The licensing build (royalties) or the drop / auction build (revenue). */
+        sourceBuildId: text('source_build_id').references(() => builds.id),
+        amountCents: integer('amount_cents').notNull(),
+        currency: text('currency').notNull().default('usd'),
+        txnKey: text('txn_key').notNull(),
+        createdAt: createdAt(),
+    },
+    (t) => [
+        uniqueIndex('creator_earnings_order_kind_uq').on(t.orderId, t.creatorUserId, t.kind),
+        index('creator_earnings_creator_idx').on(t.creatorUserId, t.createdAt),
+        check('creator_earnings_amount_ck', sql`${t.amountCents} <> 0`),
+    ],
+);
+
+/** Creator payouts (balance -> Stripe Connect transfer, or a manual payout ops mark paid). */
+export const creatorPayouts = pgTable(
+    'creator_payouts',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('creatorPayout')),
+        creatorUserId: text('creator_user_id').notNull(),
+        amountCents: integer('amount_cents').notNull(),
+        currency: text('currency').notNull().default('usd'),
+        status: payoutStatusEnum('status').notNull().default('PENDING'),
+        /** 'stripe_connect' | 'manual' */
+        method: text('method').notNull().default('manual'),
+        providerRef: text('provider_ref'),
+        failureReason: text('failure_reason'),
+        paidAt: tstz('paid_at'),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [index('creator_payouts_creator_idx').on(t.creatorUserId, t.createdAt), check('creator_payouts_amount_ck', sql`${t.amountCents} > 0`)],
+);
+
+/** A clip: a time range of a show's replay with a featured build. The player seeks; nothing is transcoded. */
+export const clips = pgTable(
+    'clips',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('clip')),
+        showId: text('show_id')
+            .notNull()
+            .references(() => shows.id, { onDelete: 'cascade' }),
+        channelId: text('channel_id')
+            .notNull()
+            .references(() => channels.id, { onDelete: 'cascade' }),
+        buildId: text('build_id').references(() => builds.id),
+        title: text('title').notNull(),
+        startMs: integer('start_ms').notNull(),
+        endMs: integer('end_ms').notNull(),
+        /** Offset of the pinned product (its `product.focus`) from the show start. */
+        productAtMs: integer('product_at_ms'),
+        origin: clipOriginEnum('origin').notNull(),
+        /** Live Build Protocol seq the clip was suggested from (system clips are unique per event). */
+        eventSeq: integer('event_seq'),
+        createdBy: text('created_by').notNull(),
+        searchText: text('search_text').notNull().default(''),
+        createdAt: createdAt(),
+    },
+    (t) => [
+        index('clips_show_idx').on(t.showId, t.startMs),
+        index('clips_created_idx').on(t.createdAt),
+        uniqueIndex('clips_system_event_uq')
+            .on(t.showId, t.eventSeq)
+            .where(sql`${t.origin} = 'system'`),
+        index('clips_fts_idx').using('gin', sql`to_tsvector('english', ${t.searchText})`),
+        check('clips_range_ck', sql`${t.startMs} >= 0 and ${t.endMs} > ${t.startMs}`),
+    ],
+);
+
+/** High-demand drops whose claims go through the fair queue (a row per queued drop). */
+export const dropQueues = pgTable('drop_queues', {
+    dropId: text('drop_id')
+        .primaryKey()
+        .references(() => drops.id, { onDelete: 'cascade' }),
+    createdAt: createdAt(),
+});
+
+/**
+ * Fair-queue entries. Admitted in (enqueued_second, tie_break, id) order under the drop row
+ * lock once their second has passed, so claims that arrive in the same second are ordered at
+ * random instead of by network luck.
+ */
+export const dropQueueEntries = pgTable(
+    'drop_queue_entries',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('dropQueueEntry')),
+        dropId: text('drop_id')
+            .notNull()
+            .references(() => drops.id, { onDelete: 'cascade' }),
+        userId: text('user_id').notNull(),
+        buyerEmail: text('buyer_email').notNull(),
+        buyerName: text('buyer_name').notNull(),
+        quantity: integer('quantity').notNull(),
+        /** The validated ClaimSlotsRequest (ship-to, method), replayed when the entry is admitted. */
+        request: jsonb('request').$type<Record<string, unknown>>().notNull(),
+        /** Unix second the claim arrived: everyone in the same second is ordered by `tie_break`. */
+        enqueuedSecond: integer('enqueued_second').notNull(),
+        tieBreak: integer('tie_break').notNull(),
+        status: dropQueueStatusEnum('status').notNull().default('QUEUED'),
+        claimId: text('claim_id').references(() => slotClaims.id),
+        reason: text('reason'),
+        processedAt: tstz('processed_at'),
+        createdAt: createdAt(),
+    },
+    (t) => [
+        index('drop_queue_entries_order_idx').on(t.dropId, t.status, t.enqueuedSecond, t.tieBreak),
+        uniqueIndex('drop_queue_entries_one_queued_uq')
+            .on(t.dropId, t.userId)
+            .where(sql`${t.status} = 'QUEUED'`),
+        check('drop_queue_entries_quantity_ck', sql`${t.quantity} > 0`),
+    ],
+);
+
+/** One-of-one live auctions. The bid ladder and the anti-snipe extension run under this row's lock. */
+export const auctions = pgTable(
+    'auctions',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('auction')),
+        showId: text('show_id').references(() => shows.id),
+        channelId: text('channel_id')
+            .notNull()
+            .references(() => channels.id),
+        buildId: text('build_id')
+            .notNull()
+            .references(() => builds.id),
+        /** Orderable BINDING quote at quantity 1 (price floor + the shop's cost). */
+        quoteId: text('quote_id')
+            .notNull()
+            .references(() => quotes.id),
+        title: text('title').notNull(),
+        currency: text('currency').notNull().default('usd'),
+        startingBidCents: integer('starting_bid_cents').notNull(),
+        minIncrementCents: integer('min_increment_cents').notNull(),
+        currentBidCents: integer('current_bid_cents'),
+        leadingBidId: text('leading_bid_id'),
+        leadingBidderName: text('leading_bidder_name'),
+        bidCount: integer('bid_count').notNull().default(0),
+        status: auctionStatusEnum('status').notNull().default('OPEN'),
+        opensAt: tstz('opens_at').notNull(),
+        endsAt: tstz('ends_at').notNull(),
+        originalEndsAt: tstz('original_ends_at').notNull(),
+        extensions: integer('extensions').notNull().default(0),
+        winningBidId: text('winning_bid_id'),
+        closedAt: tstz('closed_at'),
+        createdBy: text('created_by').notNull(),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [
+        index('auctions_show_idx').on(t.showId),
+        index('auctions_open_idx')
+            .on(t.endsAt)
+            .where(sql`${t.status} = 'OPEN'`),
+        check('auctions_amounts_ck', sql`${t.startingBidCents} > 0 and ${t.minIncrementCents} > 0 and ${t.bidCount} >= 0`),
+    ],
+);
+
+/** Each bid is a LIVE_DROP order with an authorize-only payment; only authorized bids can win. */
+export const auctionBids = pgTable(
+    'auction_bids',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('auctionBid')),
+        auctionId: text('auction_id')
+            .notNull()
+            .references(() => auctions.id),
+        userId: text('user_id').notNull(),
+        buyerEmail: text('buyer_email').notNull(),
+        bidderName: text('bidder_name').notNull(),
+        amountCents: integer('amount_cents').notNull(),
+        orderId: text('order_id')
+            .notNull()
+            .references(() => orders.id),
+        checkoutUrl: text('checkout_url'),
+        status: auctionBidStatusEnum('status').notNull().default('PLACED'),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [
+        index('auction_bids_auction_idx').on(t.auctionId, t.amountCents),
+        index('auction_bids_user_idx').on(t.userId),
+        uniqueIndex('auction_bids_order_uq').on(t.orderId),
+        uniqueIndex('auction_bids_amount_uq').on(t.auctionId, t.amountCents),
+    ],
+);
+
+/** Discover feed impressions / clicks / Make This (training data for a future learned ranker). */
+export const feedEvents = pgTable(
+    'feed_events',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('feedEvent')),
+        /** `usr_…` when signed in, else `dev:<device hash prefix>`. */
+        viewerKey: text('viewer_key').notNull(),
+        userId: text('user_id'),
+        kind: text('kind').notNull(),
+        itemKind: text('item_kind').notNull(),
+        itemId: text('item_id').notNull(),
+        tab: text('tab').notNull(),
+        position: integer('position'),
+        score: doublePrecision('score'),
+        createdAt: createdAt(),
+    },
+    (t) => [index('feed_events_item_idx').on(t.itemId, t.kind, t.createdAt), index('feed_events_viewer_idx').on(t.viewerKey, t.createdAt)],
 );

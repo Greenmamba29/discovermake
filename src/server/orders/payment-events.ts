@@ -290,6 +290,9 @@ export async function handlePaymentSucceeded(input: PaymentSucceededInput): Prom
         // the buyer paid the snapshot price, so we make it; the quote simply stays ORDERED.
         if (quote && quote.status !== 'ORDERED') await markQuoteOrdered(order.quoteId, tx);
         await recordPaymentSplit(order.id, tx);
+        // R5: creator royalties (up the remix lineage) and drop / auction revenue, in the same transaction.
+        const { accrueCreatorEarnings } = await import('../media/economics');
+        await accrueCreatorEarnings(order.id, tx);
 
         // Dispatch + confirmation run from the outbox event, so a crash after commit
         // cannot lose them: the relay redelivers anything not marked published.
@@ -371,6 +374,9 @@ export async function applyFullRefund(
     const { cancelOpenJobs } = await import('../dispatch');
     await cancelOpenJobs(order.id, tx);
     await recordRefund(order.id, payment.amountCents, tx);
+    // R5: claw back creator royalties / revenue earned on this order.
+    const { reverseCreatorEarnings } = await import('../media/economics');
+    await reverseCreatorEarnings(order.id, tx);
     // R3: a promise credit used on this order becomes available again.
     const { restoreCredit } = await import('../promise/credits');
     await restoreCredit(tx, order.id, now);

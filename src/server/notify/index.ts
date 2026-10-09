@@ -24,6 +24,10 @@ export type NotifyPayloads = {
     'ops.alert': { subject: string; message: string; orderId?: string };
     /** R2 accounts: 6-digit sign-in code (a credential: never logged in full). */
     'auth.sign_in_code': { to: string; code: string; challengeId: string; expiresMinutes: number };
+    /** R5 auctions: someone placed a higher bid; `showUrl` brings the bidder back to the auction. */
+    'auction.outbid': { to: string; auctionTitle: string; amountCents: number; currency: string; nextMinimumCents: number; showUrl: string };
+    /** R5 auctions: the bidder won; their authorized hold was captured. */
+    'auction.won': { to: string; auctionTitle: string; amountCents: number; currency: string; orderNumber: string };
 };
 
 export type NotifyKind = keyof NotifyPayloads;

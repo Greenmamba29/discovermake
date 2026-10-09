@@ -13,6 +13,9 @@ export const LIVE_RATE_LIMITS = {
     like: { limit: 30, windowMs: 60_000 },
     claim: { limit: 10, windowMs: 60_000 },
     vote: { limit: 20, windowMs: 60_000 },
+    // R5: auction bids and fair-queue joins / position polls
+    bid: { limit: 20, windowMs: 60_000 },
+    queue: { limit: 90, windowMs: 60_000 },
 } as const;
 
 export type LiveLimitKind = keyof typeof LIVE_RATE_LIMITS;

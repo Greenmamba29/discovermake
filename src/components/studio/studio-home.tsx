@@ -14,6 +14,7 @@ import { cn } from '@/lib/utils';
 import { liveApi } from '@/components/live/live-api';
 import { LiveBadge } from '@/components/live/live-badge';
 import { CATEGORY_LABELS } from '@/components/live/live-home';
+import { StudioNav } from '@/components/media/studio-nav';
 import { GoLiveChecklist } from './go-live-checklist';
 
 export const FORMAT_LABELS: Record<(typeof SHOW_FORMATS)[number], string> = {
@@ -60,7 +61,19 @@ export function StudioHome() {
         <div className="mx-auto w-full max-w-6xl px-4 pb-16 pt-6 sm:px-6">
             <p className="eyebrow">Creator Studio</p>
             <h1 className="mt-1 font-display font-wide text-3xl font-extrabold">{data.channel ? data.channel.name : 'Your channel'}</h1>
-            {data.channel && <p className="mt-1 text-sm text-fg-muted">@{data.channel.handle} · {data.channel.followerCount} followers</p>}
+            {data.channel && (
+                <p className="mt-1 text-sm text-fg-muted">
+                    <Link href={`/c/${data.channel.handle}`} className="underline-offset-2 hover:underline" data-testid="studio-channel-link">
+                        @{data.channel.handle}
+                    </Link>{' '}
+                    · {data.channel.followerCount} followers
+                </p>
+            )}
+            {data.viewer.isCreator && (
+                <div className="mt-4">
+                    <StudioNav />
+                </div>
+            )}
             <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
                 <div className="min-w-0 space-y-6">
                     {!data.viewer.isCreator ? <BecomeCreator onDone={() => void studio.refetch()} /> : <ChannelForm channel={data.channel} onSaved={() => void studio.refetch()} />}
