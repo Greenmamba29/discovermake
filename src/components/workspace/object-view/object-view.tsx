@@ -35,7 +35,7 @@ const ObjectViewport3D = dynamic(() => import('./object-viewport-3d'), {
 });
 
 const FAMILY_LABEL: Record<CadFamily, string> = { sheet_panel: 'Flat sheet panel', l_bracket: 'Bent L-bracket', enclosure: 'Enclosure with lid' };
-const KIND_LABEL: Record<BuildCadArtifactView['kind'], string> = { STEP: 'STEP (CAD)', DXF: 'DXF (flat pattern)', GLB: 'GLB (3D preview)' };
+const KIND_LABEL: Record<BuildCadArtifactView['kind'], string> = { STEP: 'CAD model', DXF: 'Flat pattern', GLB: '3D preview' };
 
 class ViewerBoundary extends Component<{ fallback: ReactNode; children: ReactNode }, { failed: boolean }> {
     state = { failed: false };
@@ -91,18 +91,20 @@ function Dimensions({ record, unit }: { record: BuildCadGenerated; unit: LengthU
     const rows = dimensionRows(bbox, unit);
     const volumeCm3 = record.metrics.volume_mm3 / 1000;
     return (
-        <dl className="grid grid-cols-3 gap-3" data-testid="object-dimensions" aria-label="Overall dimensions">
-            {rows.map((r) => (
-                <div key={r.axis} className="min-w-0 rounded-xl bg-graphite-850 p-2.5 ring-1 ring-inset ring-graphite-700">
-                    <dt className="eyebrow">
-                        {r.axis} · {r.label}
-                    </dt>
-                    <dd className="mt-0.5 font-mono text-sm tabular text-fg" data-testid={`object-dim-${r.axis}`}>
-                        {r.text}
-                    </dd>
-                </div>
-            ))}
-            <div className="col-span-3 flex flex-wrap gap-x-4 gap-y-1 text-xs text-fg-muted">
+        <>
+            <dl className="divide-y divide-graphite-700 rounded-xl bg-graphite-850 px-3 ring-1 ring-inset ring-graphite-700" data-testid="object-dimensions" aria-label="Overall dimensions">
+                {rows.map((r) => (
+                    <div key={r.axis} className="flex items-baseline justify-between gap-3 py-2">
+                        <dt className="text-sm text-fg-muted">
+                            <span className="font-mono text-xs text-fg-subtle">{r.axis}</span> {r.label}
+                        </dt>
+                        <dd className="font-mono text-sm tabular text-fg" data-testid={`object-dim-${r.axis}`}>
+                            {r.text}
+                        </dd>
+                    </div>
+                ))}
+            </dl>
+            <p className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-xs text-fg-muted">
                 <span>
                     Volume <span className="font-mono text-fg">{unit === 'in' ? `${(volumeCm3 / 16.387064).toFixed(2)} in³` : `${volumeCm3.toFixed(1)} cm³`}</span>
                 </span>
@@ -112,8 +114,8 @@ function Dimensions({ record, unit }: { record: BuildCadGenerated; unit: LengthU
                     </span>
                 ) : null}
                 {record.metrics.bend_count ? <span>{record.metrics.bend_count} bend{record.metrics.bend_count === 1 ? '' : 's'}</span> : null}
-            </div>
-        </dl>
+            </p>
+        </>
     );
 }
 
@@ -132,7 +134,10 @@ function DownloadPanel({ artifacts }: { artifacts: BuildCadArtifactView[] }) {
                     >
                         <span className="flex min-w-0 items-center gap-2">
                             <Download className="h-4 w-4 shrink-0 text-fg-subtle" aria-hidden />
-                            <span className="truncate font-semibold">Download {KIND_LABEL[a.kind]}</span>
+                            <span className="min-w-0 truncate">
+                                <span className="font-semibold">{a.kind}</span> <span className="text-fg-muted">{KIND_LABEL[a.kind]}</span>
+                                <span className="sr-only"> download</span>
+                            </span>
                         </span>
                         <span className="shrink-0 font-mono text-xs text-fg-subtle">{Math.max(1, Math.round(a.bytes / 1024))} KB</span>
                     </a>
