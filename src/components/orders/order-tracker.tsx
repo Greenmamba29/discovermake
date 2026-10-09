@@ -130,6 +130,21 @@ export function OrderTracker({ orderId, token }: { orderId: string; token: strin
 
                     {order.supplierRoute && <SupplierRouteTracker orderId={order.id} token={token} route={order.supplierRoute} currency={order.currency} />}
 
+                    {['PAID', 'DISPATCHED', 'ACCEPTED', 'IN_PRODUCTION', 'QA_FAILED', 'QA_PASSED', 'SHIPPED', 'DELIVERED', 'COMPLETE'].includes(order.status) && (
+                        <section aria-labelledby="watch-heading" className="flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-graphite-900 p-4 ring-1 ring-graphite-700 sm:p-5" data-testid="watch-card">
+                            <div className="min-w-0">
+                                <h2 id="watch-heading" className="flex items-center gap-2 font-display text-lg font-bold">
+                                    {['ACCEPTED', 'IN_PRODUCTION', 'QA_FAILED', 'QA_PASSED'].includes(order.status) && <span className="h-2 w-2 animate-pulse rounded-full bg-live" aria-hidden />}
+                                    {['ACCEPTED', 'IN_PRODUCTION', 'QA_FAILED', 'QA_PASSED'].includes(order.status) ? 'Currently in production' : 'Your build stream'}
+                                </h2>
+                                <p className="text-sm text-fg-muted">Every step the shop posts, with photos, and its camera when it is live.</p>
+                            </div>
+                            <Link href={orderLink(order.id, token, '/watch')} className="inline-flex h-11 items-center gap-2 rounded-xl bg-signal px-4 text-[15px] font-semibold text-signal-ink hover:bg-signal-strong" data-testid="watch-button">
+                                Watch
+                            </Link>
+                        </section>
+                    )}
+
                     {order.shipment && <ShipmentCard shipment={order.shipment} />}
 
                     <section aria-labelledby="updates-heading" className="rounded-2xl bg-graphite-900 p-4 ring-1 ring-graphite-700 sm:p-5">

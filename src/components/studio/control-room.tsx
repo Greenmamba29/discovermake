@@ -17,6 +17,8 @@ import { liveApi } from '@/components/live/live-api';
 import { LiveBadge } from '@/components/live/live-badge';
 import { visibleChat } from '@/components/live/live-state';
 import { useLiveShow } from '@/components/live/use-live-show';
+import { ClipStudio } from '@/components/media/clip-studio';
+import { AuctionPanel } from './auction-panel';
 import { GoLiveChecklist } from './go-live-checklist';
 import { parseBuildIds } from './studio-home';
 
@@ -108,7 +110,9 @@ export function ControlRoom({ showId }: { showId: string }) {
             <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
                 <div className="min-w-0 space-y-6">
                     <FeaturedPanel showId={showId} items={data.featuredBuilds} currentBuildId={featuredNow?.buildId ?? null} disabled={ended} busy={busy} onFeature={(b) => send(`feature-${b}`, { intent: 'feature_product', buildId: b })} onAdded={() => void control.refetch()} />
+                    {ended && <ClipStudio showId={showId} />}
                     <DropPanel drop={drop} featured={data.featuredBuilds} disabled={ended} busy={busy} send={send} />
+                    <AuctionPanel auction={live.state?.auction ?? data.snapshot.auction ?? null} featured={data.featuredBuilds} disabled={ended} busy={busy} send={send} />
                     <QuestionQueue questions={questions} busy={busy} onAnswer={(id, answer) => send(`answer-${id}`, { intent: 'answer_question', questionId: id, answer }, 'Answer sent.')} />
                     <PollPanel disabled={ended} busy={busy} onCreate={(question, options) => send('poll', { intent: 'create_poll', question, options }, 'Poll is live.')} poll={live.state?.poll ?? data.snapshot.poll} />
                 </div>
@@ -223,6 +227,7 @@ function DropPanel({ drop, featured, disabled, busy, send }: { drop: ControlRoom
     const [threshold, setThreshold] = useState('10');
     const [limit, setLimit] = useState('2');
     const [minutes, setMinutes] = useState('30');
+    const [fairQueue, setFairQueue] = useState(false);
     const selected = buyable.find((f) => f.buildId === (buildId || buyable[0]?.buildId));
     const open = drop?.status === 'OPEN';
 
@@ -239,8 +244,9 @@ function DropPanel({ drop, featured, disabled, busy, send }: { drop: ControlRoom
                 thresholdSlots: Number(threshold),
                 perBuyerLimit: Number(limit),
                 durationMinutes: Number(minutes),
+                ...(fairQueue ? { fairQueue: true } : {}),
             },
-            'Drop is live.',
+            fairQueue ? 'Drop is live with a fair queue.' : 'Drop is live.',
         );
     };
     return (
@@ -297,6 +303,13 @@ function DropPanel({ drop, featured, disabled, busy, send }: { drop: ControlRoom
                                 <Field label="Per buyer">{({ id }) => <TextInput id={id} inputMode="numeric" value={limit} onChange={(e) => setLimit(e.target.value)} data-testid="drop-limit" />}</Field>
                                 <Field label="Minutes">{({ id }) => <TextInput id={id} inputMode="numeric" value={minutes} onChange={(e) => setMinutes(e.target.value)} data-testid="drop-minutes" />}</Field>
                             </div>
+                            <label className="flex items-start gap-2 text-sm">
+                                <input type="checkbox" checked={fairQueue} onChange={(e) => setFairQueue(e.target.checked)} className="mt-1" data-testid="drop-fair-queue" />
+                                <span>
+                                    <span className="font-medium">Fair queue for high demand</span>
+                                    <span className="block text-xs text-fg-subtle">Claims that arrive in the same second are ordered at random, then admitted one by one; buyers see their place in line.</span>
+                                </span>
+                            </label>
                             <p className="text-xs text-fg-subtle">The price must cover the binding quote at the production quantity. Buyers are only charged if the drop reaches it.</p>
                             <Button type="submit" loading={busy === 'drop'} disabled={!price} data-testid="drop-start">
                                 Start drop

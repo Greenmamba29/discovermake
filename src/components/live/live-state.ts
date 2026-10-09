@@ -6,7 +6,7 @@
  * and every count is set from the event's absolute value, so a snapshot followed by an
  * overlapping stream never double-counts. Replays fold the log up to the player position.
  */
-import { DropView, FeaturedProduct, LiveEvent, type PollView, type QuestionView, type ShowSnapshot, type ShowView } from '@/contracts/live';
+import { DropView, FeaturedProduct, LiveEvent, type AuctionView, type PollView, type QuestionView, type ShowSnapshot, type ShowView } from '@/contracts/live';
 
 export type LiveState = {
     show: ShowView;
@@ -20,6 +20,8 @@ export type LiveState = {
     milestones: LiveEvent[];
     lastSeq: number;
     slowModeSeconds: number;
+    /** R5: the show's live auction (viewer fields come from the snapshot / bid responses). */
+    auction: AuctionView | null;
 };
 
 const MAX_CHAT = 120;
@@ -37,12 +39,13 @@ export function stateFromSnapshot(s: ShowSnapshot): LiveState {
         milestones: [],
         lastSeq: s.lastSeq,
         slowModeSeconds: s.slowModeSeconds,
+        auction: s.auction ?? null,
     };
 }
 
 /** Empty state for replays: the show, before its first event. */
 export function replayBase(s: ShowSnapshot): LiveState {
-    return { ...stateFromSnapshot(s), featured: null, drop: null, questions: [], chat: [], poll: null, lastSeq: 0, show: { ...s.show, likeCount: 0, viewerCount: 0 } };
+    return { ...stateFromSnapshot(s), featured: null, drop: null, questions: [], chat: [], poll: null, auction: null, lastSeq: 0, show: { ...s.show, likeCount: 0, viewerCount: 0 } };
 }
 
 /** Accept only well-formed events; server-signed types without `sig` are rejected by the contract. */
@@ -141,6 +144,12 @@ export function applyEvent(state: LiveState, e: LiveEvent): LiveState {
             if (n !== null) s.show = { ...s.show, viewerCount: n };
             return s;
         }
+        case 'auction.started':
+        case 'auction.bid':
+        case 'auction.closed': {
+            s.auction = mergeAuction(s.auction, p.auction, e);
+            return s;
+        }
         case 'machine.started':
         case 'machine.completed':
         case 'inspection.passed':
@@ -150,6 +159,43 @@ export function applyEvent(state: LiveState, e: LiveEvent): LiveState {
         default:
             return s;
     }
+}
+
+/**
+ * Merge the public auction fields carried by a signed `auction.*` event into the client view,
+ * keeping the viewer's own fields (their bid, whether they lead) from the snapshot.
+ */
+export function mergeAuction(prev: AuctionView | null, raw: unknown, e: Pick<LiveEvent, 'event' | 'showId' | 'buildId' | 'payload'>): AuctionView | null {
+    if (!raw || typeof raw !== 'object') return prev;
+    const a = raw as Record<string, unknown>;
+    const id = typeof a.id === 'string' ? a.id : null;
+    if (!id) return prev;
+    const same = prev && prev.id === id ? prev : null;
+    const p = e.payload as Record<string, unknown>;
+    const leadingBidder = typeof a.leadingBidder === 'string' ? a.leadingBidder : null;
+    const merged: AuctionView = {
+        id,
+        showId: e.showId,
+        buildId: e.buildId ?? same?.buildId ?? '',
+        title: String(a.title ?? same?.title ?? 'Auction'),
+        currency: String(a.currency ?? same?.currency ?? 'usd'),
+        startingBidCents: num(a.startingBidCents) ?? same?.startingBidCents ?? 0,
+        minIncrementCents: num(a.minIncrementCents) ?? same?.minIncrementCents ?? 0,
+        currentBidCents: num(a.currentBidCents),
+        nextMinimumBidCents: num(a.nextMinimumBidCents) ?? same?.nextMinimumBidCents ?? 0,
+        bidCount: num(a.bidCount) ?? same?.bidCount ?? 0,
+        leadingBidder,
+        status: a.status === 'SOLD' || a.status === 'UNSOLD' || a.status === 'CANCELLED' ? a.status : 'OPEN',
+        endsAt: typeof a.endsAt === 'string' ? a.endsAt : (same?.endsAt ?? new Date().toISOString()),
+        originalEndsAt: typeof a.originalEndsAt === 'string' ? a.originalEndsAt : (same?.originalEndsAt ?? new Date().toISOString()),
+        extensions: num(a.extensions) ?? same?.extensions ?? 0,
+        closedAt: e.event === 'auction.closed' ? (same?.closedAt ?? new Date().toISOString()) : null,
+        winner: e.event === 'auction.closed' ? (typeof p.winner === 'string' ? p.winner : null) : null,
+        // The viewer leads while their highest bid is the current bid (a higher bid means they were outbid).
+        viewerIsLeading: !!same?.viewerBid && same.viewerBid.amountCents === num(a.currentBidCents),
+        viewerBid: same?.viewerBid ?? null,
+    };
+    return merged;
 }
 
 /** Fold a replay log up to `positionMs` of the broadcast. */

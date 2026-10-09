@@ -20,14 +20,25 @@ export function VideoStage({
     token,
     onTime,
     className,
+    seek,
 }: {
     show: ShowView;
     source: VideoSource;
     token: LiveTokenResponse | null;
     onTime?: (ms: number) => void;
     className?: string;
+    /** R5 replays: jump the recording to `ms` (chapters, shared `?t=` links); `n` makes repeats distinct. */
+    seek?: { ms: number; n: number } | null;
 }) {
     const videoRef = useRef<HTMLVideoElement>(null);
+    const pendingSeek = useRef<number | null>(null);
+
+    useEffect(() => {
+        if (!seek) return;
+        const v = videoRef.current;
+        if (v && v.readyState >= 1) v.currentTime = seek.ms / 1000;
+        else pendingSeek.current = seek.ms;
+    }, [seek]);
     const audioRef = useRef<HTMLAudioElement>(null);
     const [muted, setMuted] = useState(true);
     const [problem, setProblem] = useState<string | null>(null);
@@ -110,6 +121,12 @@ export function VideoStage({
                         muted={muted}
                         loop={false}
                         controls={source.kind === 'mp4'}
+                        onLoadedMetadata={(e) => {
+                            if (pendingSeek.current !== null) {
+                                e.currentTarget.currentTime = pendingSeek.current / 1000;
+                                pendingSeek.current = null;
+                            }
+                        }}
                         onTimeUpdate={(e) => onTime?.(Math.round(e.currentTarget.currentTime * 1000))}
                         onSeeked={(e) => onTime?.(Math.round(e.currentTarget.currentTime * 1000))}
                         aria-label={`${show.title} video`}
