@@ -3,7 +3,7 @@
  * browser, Accio over the real MCP endpoint, ops with the admin token): a supplier-route order
  * whose freight has shipped inbound to the partner, plus a fresh binding supplier quote.
  */
-import { expect, type APIRequestContext, type Page } from '@playwright/test';
+import { expect, type APIRequestContext, type APIResponse, type Page } from '@playwright/test';
 import postgres from 'postgres';
 import { E2E_ADMIN_TOKEN, E2E_DATABASE_URL } from '../../../playwright.config';
 import { sampleBracketDxf } from '../../../src/lib/sample-dxf';
@@ -21,12 +21,18 @@ export async function setPrimeCapability(active: boolean) {
     }
 }
 
+/** Parse a setup response, failing with its status and body (not a JSON SyntaxError) when it is not 2xx. */
+async function okJson(res: APIResponse, what: string) {
+    if (!res.ok()) throw new Error(`${what}: HTTP ${res.status()} ${(await res.text()).slice(0, 300)}`);
+    return res.json();
+}
+
 async function mcpCall(request: APIRequestContext, token: string, tool: string, args: Record<string, unknown>, id: number) {
     const res = await request.post('/api/mcp/sourcing', {
         headers: { authorization: `Bearer ${token}`, accept: 'application/json, text/event-stream', 'content-type': 'application/json' },
         data: { jsonrpc: '2.0', id, method: 'tools/call', params: { name: `discovermake.sourcing.${tool}`, arguments: args } },
     });
-    const body = await res.json();
+    const body = await okJson(res, `mcp ${tool}`);
     expect(body.result.isError, `${tool}: ${JSON.stringify(body.result.structuredContent)}`).toBeFalsy();
     return body.result.structuredContent as Record<string, unknown>;
 }
@@ -40,11 +46,11 @@ export async function primeSupplierState(page: Page, request: APIRequestContext)
         await page.getByTestId('upload-input').setInputFiles({ name: 'sweep-prime.dxf', mimeType: 'application/dxf', buffer: Buffer.from(sampleBracketDxf()) });
         await page.waitForURL(/\/parts\/prt_[A-Za-z0-9_-]+$/, { timeout: 30_000 });
         const partId = page.url().split('/').pop()!;
-        const quote = await (await page.request.post('/api/quotes', { data: { partId, materialId: 'mat_al_6061', thicknessOptionId: PRIME_CAPABILITY.thicknessOptionId, finishServiceId: null, services: [], quantity: 250 } })).json();
+        const quote = await okJson(await page.request.post('/api/quotes', { data: { partId, materialId: 'mat_al_6061', thicknessOptionId: PRIME_CAPABILITY.thicknessOptionId, finishServiceId: null, services: [], quantity: 250 } }), 'quote');
         const buildId: string = quote.buildId;
-        const job = await (await page.request.post(`/api/builds/${buildId}/sourcing`, { data: { partId, quantity: 250, targetRegions: ['VN'] } })).json();
+        const job = await okJson(await page.request.post(`/api/builds/${buildId}/sourcing`, { data: { partId, quantity: 250, targetRegions: ['VN'] } }), 'sourcing request');
 
-        const client = await (await request.post('/api/admin/sourcing/clients', { headers: ADMIN, data: { name: 'Accio Work · sweep' } })).json();
+        const client = await okJson(await request.post('/api/admin/sourcing/clients', { headers: ADMIN, data: { name: 'Accio Work · sweep' } }), 'sourcing client');
         let n = 0;
         let next = await mcpCall(request, client.token, 'next_job', {}, ++n);
         for (let i = 0; i < 20 && next.job && (next.job as { sourcing_request_id: string }).sourcing_request_id !== job.id; i++) next = await mcpCall(request, client.token, 'next_job', {}, ++n);
@@ -76,9 +82,9 @@ export async function primeSupplierState(page: Page, request: APIRequestContext)
         const offerId = offer.supplier_offer_id as string;
         await mcpCall(request, client.token, 'complete_job', { ...lease, outcome: 'offers_submitted', summary: 'Sweep offer.' }, ++n);
 
-        const selected = await (await page.request.post(`/api/builds/${buildId}/sourcing/offers/${offerId}/select`)).json();
+        const selected = await okJson(await page.request.post(`/api/builds/${buildId}/sourcing/offers/${offerId}/select`), 'select offer');
         await request.post(`/api/admin/sourcing/approvals/${selected.selection.approvalId}/decision`, { headers: ADMIN, data: { decision: 'APPROVED' } });
-        const binding = await (await page.request.post(`/api/builds/${buildId}/sourcing/offers/${offerId}/quote`)).json();
+        const binding = await okJson(await page.request.post(`/api/builds/${buildId}/sourcing/offers/${offerId}/quote`), 'binding supplier quote');
 
         const checkout = await (
             await page.request.post('/api/checkout', {
