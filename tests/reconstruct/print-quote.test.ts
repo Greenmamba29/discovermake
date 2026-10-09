@@ -12,6 +12,7 @@ import { getQuote } from '@/server/quote';
 import {
     createPrintQuote,
     effectiveMarginPct,
+    printVolumeCurve,
     effectiveVolumeMm3,
     fitsBuildVolume,
     PRINT_LADDER_QUANTITIES,
@@ -36,6 +37,13 @@ const rc = toPrintRateCard({ ...devPrintRateCard('shop_x'), createdAt: new Date(
 const material = (slug: string) => toPrintMaterial({ ...PRINT_MATERIAL_SEEDS.find((m) => m.slug === slug)!, calibrated: false, active: true, sortOrder: 0, createdAt: new Date(), updatedAt: new Date() } as never);
 
 describe('print pricing (pure)', () => {
+    it('uses a print volume curve that saturates at the top of the print ladder', () => {
+        expect(printVolumeCurve(1)).toBe(0);
+        expect(printVolumeCurve(10)).toBeCloseTo(0.5, 5);
+        expect(printVolumeCurve(100)).toBe(1);
+        expect(printVolumeCurve(1000)).toBe(1);
+    });
+
     it('prices the golden knob from its manifest', () => {
         expect(KNOB.bboxMm).toEqual([38.1, 38.1, 22]);
         const p = pricePrint({ geometry: KNOB, material: material('asa'), rateCard: rc, quantity: 1 });

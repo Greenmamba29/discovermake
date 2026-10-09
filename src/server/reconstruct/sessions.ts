@@ -306,8 +306,11 @@ export async function generateReconstruct(buildId: string, opts: { owner?: Owner
     if (plan.status === 'needs_input') return plan;
     if (!isCadWorkerConfigured()) throw new ApiError('NOT_IMPLEMENTED', 'The CAD service is unavailable right now. Your confirmed readings are saved; try Generate again later.', 503, { reason: 'CAD_UNAVAILABLE' });
     const actor = actorFor(buildId, opts.owner);
-    const latest = await latestVersionRow(getDb(), buildId);
-    if (latest && latest.status === 'DRAFT') await approveVersion(buildId, latest.version, { actor });
+    // Read and approve in one transaction: approveVersion locks the build row and re-validates.
+    await withTx(async (tx) => {
+        const latest = await latestVersionRow(tx, buildId);
+        if (latest && latest.status === 'DRAFT') await approveVersion(buildId, latest.version, { actor, db: tx });
+    });
     const spec = CadSpec.parse(plan.spec);
     const result = await generateBuildCad(buildId, { spec, actor, fetchImpl: opts.fetchImpl });
     if (result.status !== 'generated') throw new ApiError('CONFLICT', result.status === 'not_supported' ? result.reason : 'CAD needs more input.');

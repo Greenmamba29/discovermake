@@ -20,7 +20,6 @@
  * uncalibrated R6 defaults, see docs/architecture/r6-reconstruct.md "Calibration").
  */
 import type { QuoteLineItem } from '../../../contracts/quotes';
-import { volumeCurve } from '../pricing';
 
 export const PRINT_PRICING_VERSION = 'px-print-2026.10-r6';
 /** Ladder for printed parts (Stage 5 brief: 1/10/25/50/100). */
@@ -129,8 +128,18 @@ export function unitMassG(g: Pick<PrintGeometry, 'volumeMm3' | 'surfaceAreaMm2'>
 }
 
 /** Margin at this quantity: the volume discount is taken out of the margin, never below the floor. */
+/**
+ * Print volume curve: 0 at one part, 1 at the top of the print ladder (100), log-shaped like
+ * the sheet curve but saturating at print quantities instead of the sheet ladder's.
+ */
+export const PRINT_VOLUME_SATURATION_QTY = 100;
+export function printVolumeCurve(quantity: number): number {
+    if (quantity <= 1) return 0;
+    return Math.min(1, Math.log(quantity) / Math.log(PRINT_VOLUME_SATURATION_QTY));
+}
+
 export function effectiveMarginPct(rc: Pick<PrintRateCardPricing, 'platformMarginPct' | 'minMarginPct' | 'volumeDiscountMax'>, quantity: number): number {
-    return Math.max(rc.minMarginPct, rc.platformMarginPct * (1 - rc.volumeDiscountMax * volumeCurve(quantity)));
+    return Math.max(rc.minMarginPct, rc.platformMarginPct * (1 - rc.volumeDiscountMax * printVolumeCurve(quantity)));
 }
 
 type Component = { code: QuoteLineItem['code']; label: string; explainer: string; perPart: number; perOrder: number; keepZero?: boolean };
@@ -200,7 +209,8 @@ export function pricePrint(input: { geometry: PrintGeometry; material: PrintMate
     const rawCostCents = components.reduce((s, c) => s + c.perPart * q + c.perOrder, 0);
     const lineItems: QuoteLineItem[] = [];
     for (const c of components) {
-        const unitCents = Math.round((c.perPart + c.perOrder / q) * (1 + margin));
+        // Round each line UP: the sum of lines can then never fall below cost, even at a 0% margin floor.
+        const unitCents = Math.ceil((c.perPart + c.perOrder / q) * (1 + margin) - 1e-9);
         if (unitCents <= 0 && !c.keepZero) continue;
         lineItems.push({ code: c.code, label: c.label, explainer: c.explainer, unitCents: Math.max(0, unitCents), quantity: q, totalCents: Math.max(0, unitCents) * q });
     }

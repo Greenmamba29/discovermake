@@ -178,7 +178,20 @@ export async function dispatchOrder(orderId: string, opts?: { excludeShopIds?: s
 
         const excluded = [...new Set([...(opts?.excludeShopIds ?? []), ...jobs.filter((j) => j.status === 'DECLINED' || j.status === 'EXPIRED').map((j) => j.shopId)])];
         // R6: a printed part (print quote) is matched to printers; everything after this is shared.
-        const printPlan = await planPrintDispatch(t, order, excluded);
+        const planned = await planPrintDispatch(t, order, excluded);
+        if (planned && 'blocked' in planned) {
+            // Not dispatchable as paid (e.g. the part changed after payment): park it for ops.
+            await emitEvent(t, {
+                type: 'dispatch.unmatched',
+                payload: { orderId, excludedShopIds: excluded, reason: planned.blocked, detail: planned.message },
+                actor: SYSTEM_ACTOR,
+                correlationId: order.correlationId,
+                buildId: order.buildId,
+                orderId,
+            });
+            return { kind: 'none', orderNumber: order.orderNumber, excluded };
+        }
+        const printPlan = planned;
         const ctx = printPlan ?? (await loadDispatchContext(t, order));
         const candidates = printPlan ? printPlan.candidates : await findCandidates(t, requirementsFor(order, ctx as DispatchContext), excluded);
         const best = candidates[0];

@@ -144,6 +144,9 @@ export async function createPrintQuote(input: CreatePrintQuoteInput, now: Date =
     const routed = Boolean(chosen);
     if (!chosen) {
         // No printer fits (or nobody has the capability): price on the best available card, REVIEW.
+        // Invariant: both sources below only return shops with an ACTIVE print rate card (`rows` was
+        // filtered on it above, and the fallback query filters on it), so a REVIEW quote never prices
+        // on a disabled card.
         const [any] = rows.length
             ? [{ shop: rows[0]!.shop, card: rows[0]!.card, shopCard: rows[0]!.shopCard }]
             : await db
