@@ -131,11 +131,11 @@ test('a live auction: two bidders, the anti-snipe extension, the authorized top 
     const showId = (await created.json()).id as string;
     expect((await hostCtx.request.post(`/api/live/shows/${showId}/intents`, { data: { intent: 'start_show' } })).ok()).toBe(true);
 
-    // Host starts a 40 s auction from the control room.
+    // Host starts a 90 s auction from the control room (room for cold dev compiles before the last 10 s).
     await host.goto(`/studio/shows/${showId}`);
     await host.getByTestId('auction-start').fill('400');
     await host.getByTestId('auction-increment').fill('10');
-    await host.getByTestId('auction-seconds').fill('40');
+    await host.getByTestId('auction-seconds').fill('90');
     await host.getByTestId('auction-start-submit').click();
     await expect(host.getByTestId('control-auction')).toHaveAttribute('data-status', 'OPEN', { timeout: 15_000 });
     const auctionId: string = (await (await hostCtx.request.get(`/api/live/shows/${showId}`)).json()).auction.id;
