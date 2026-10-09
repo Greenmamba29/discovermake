@@ -17,7 +17,7 @@ export const dynamic = 'force-dynamic';
 
 export const POST = route<{ buildId: string }>(async (request, { params }) => {
     const buildId = pathId((await params).buildId, BuildId, 'Build');
-    const limited = limitWrite(request);
+    const limited = await limitWrite(request);
     if (limited) return limited;
     const body = await parseJson(request, AnswersRequest, MAX_JSON_BODY_BYTES);
     return json(await answerUnknowns(buildId, body.answers), { status: 201 });

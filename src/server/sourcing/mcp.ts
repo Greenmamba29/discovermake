@@ -297,7 +297,7 @@ export async function callSourcingTool(name: string, rawArgs: unknown, ctx: Tool
     try {
         const short = shortName(name);
         if (!short) return fail('NOT_FOUND', `Unknown tool ${name.slice(0, 100)}. Tools: ${SOURCING_TOOLS.map(toolName).join(', ')}`);
-        const budget = mcpRateLimiter.take(ctx.client.id);
+        const budget = await mcpRateLimiter.take(ctx.client.id);
         if (!budget.allowed) return fail('RATE_LIMITED', `Too many calls. Retry in ${budget.retryAfterSeconds} s.`);
         const def = TOOL_DEFS[short];
         const parsed = def.input.safeParse(rawArgs ?? {});

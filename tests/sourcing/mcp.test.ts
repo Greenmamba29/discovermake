@@ -258,7 +258,7 @@ describe('Sourcing MCP server (route handler, JSON-RPC)', () => {
         const jsonOnly = await rpc(token, 'tools/list', undefined, { accept: 'application/json' });
         expect(jsonOnly.status).toBe(200);
 
-        for (let i = 0; i < 80; i++) mcpRateLimiter.take(clientId);
+        for (let i = 0; i < 80; i++) await mcpRateLimiter.take(clientId);
         const limited = await call(token, 'next_job', {});
         expect(SourcingToolError.parse(limited.structuredContent).error.code).toBe('RATE_LIMITED');
         mcpRateLimiter.reset();

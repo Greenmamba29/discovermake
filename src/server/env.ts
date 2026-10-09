@@ -75,6 +75,9 @@ const EnvSchema = z.object({
     CAD_WORKER_URL: optionalString,
     /** Bearer token the CAD worker expects (its CAD_WORKER_TOKEN). */
     CAD_WORKER_TOKEN: optionalString,
+
+    /** Rate-limit store: "postgres" (shared table, default in production) or "memory" (per instance, default elsewhere). */
+    RATE_LIMIT_STORE: optionalString.pipe(z.enum(['postgres', 'memory']).optional()),
 });
 
 export type Env = z.infer<typeof EnvSchema>;

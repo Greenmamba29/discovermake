@@ -21,7 +21,7 @@ export const maxDuration = 60;
 export const POST = route(async (request) => {
     assertMakeAiAvailable();
 
-    const decision = makeAiRateLimiter.hit(clientIp(request));
+    const decision = await makeAiRateLimiter.hit(clientIp(request));
     if (!decision.allowed) {
         const res = errorResponse('RATE_LIMITED', 'Too many Make AI requests. Wait a minute and try again.', 429);
         res.headers.set('retry-after', String(decision.retryAfterSeconds));

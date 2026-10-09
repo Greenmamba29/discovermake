@@ -29,7 +29,7 @@ export const GET = route<{ buildId: string }>(async (_request, { params }) => {
 
 export const POST = route<{ buildId: string }>(async (request, { params }) => {
     const buildId = pathId((await params).buildId, BuildId, 'Build');
-    const limited = limitWrite(request);
+    const limited = await limitWrite(request);
     if (limited) return limited;
     const body = await parseJson(request, BuildCadRequest, MAX_JSON_BODY_BYTES);
     if (!isCadWorkerConfigured()) throw new ApiError('NOT_IMPLEMENTED', 'CAD generation is not available yet.', 501);
