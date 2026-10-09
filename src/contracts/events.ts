@@ -175,6 +175,19 @@ export const EVENT_PAYLOADS = {
     'sourcing.lease_released': z.object({ jobId: id, reason: z.enum(['expired', 'client_revoked']) }),
     /** The build moved past the offer's design version; the offer can no longer be selected. */
     'sourcing.offer_stale': z.object({ offerId: id, jobId: id, offerVersion: z.number().int().positive(), currentVersion: z.number().int().positive() }),
+
+    // ---- R2: accounts (ADR-0009) -----------------------------------------
+    /** A sign-in created a new account. No email in the payload (the user row has it). */
+    'user.created': z.object({ userId: id, method: z.enum(['email', 'passkey', 'google', 'apple']) }),
+    'user.signed_in': z.object({
+        userId: id,
+        method: z.enum(['email', 'passkey', 'google', 'apple']),
+        created: z.boolean(),
+        claimedBuilds: z.number().int().nonnegative(),
+        claimedOrders: z.number().int().nonnegative(),
+    }),
+    /** A guest build (this device's, or a legacy build behind a claimed order) now belongs to a user. */
+    'build.claimed': z.object({ buildId: id, userId: id }),
 } as const;
 
 export type EventType = keyof typeof EVENT_PAYLOADS;
