@@ -182,6 +182,8 @@ export const MyBuildRow = z.object({
     partId: PartId.nullable(),
     /** Small preview (SVG path data from the part preview, or null). */
     previewSvg: z.string().nullable(),
+    /** viewBox size for `previewSvg` (the path is drawn in 0..width x 0..height mm). Additive R2 field. */
+    previewSize: z.object({ widthMm: z.number().nonnegative(), heightMm: z.number().nonnegative() }).nullable(),
     derivedFromBuildId: BuildId.nullable(),
     lastOrder: z
         .object({

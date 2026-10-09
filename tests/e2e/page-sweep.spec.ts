@@ -52,11 +52,6 @@ type Screen = {
 
 /** No Stripe in e2e: payout status answers 503 by design and the card falls back to manual settlement. */
 const NO_STRIPE = /^503 \/api\/shop\/payouts\/status$/;
-/**
- * The app shell, Home and Discover read GET /api/me and /api/me/builds and degrade to "signed out,
- * no builds" when they are absent (the account API ships separately). Allowed on every screen.
- */
-const ACCOUNT_API_OPTIONAL = /^404 \/api\/me(\/builds|\/preferences)?$/;
 /** Onboarding progress as sessionStorage holds it, so each step can be opened directly. */
 function onboardingAt(step: number) {
     return async (page: Page) => {
@@ -321,6 +316,43 @@ const SCREENS: Screen[] = [
         },
     },
     {
+        name: 'signin',
+        mobbin: 'Behance · deferred signup: sign in only to save; passkey or email code, no password',
+        url: () => '/signin?next=/builds&mode=create',
+        pattern: async (page) => {
+            await expect(page.getByTestId('signin-email')).toBeVisible();
+            await expect(page.getByTestId('signin-passkey')).toBeVisible();
+            await expect(page.getByRole('heading', { level: 1 })).toHaveText('Save your build');
+        },
+    },
+    {
+        name: 'me',
+        mobbin: 'Account hub: profile, creator handle, passkeys, sign out',
+        url: () => '/me',
+        before: (page) => signInByEmail(page, 'sweep-me@example.com'),
+        pattern: async (page) => {
+            await expect(page.getByTestId('me-email')).toContainText('sweep-me@example.com');
+            await expect(page.getByTestId('me-add-passkey')).toBeVisible();
+            await expect(page.getByTestId('me-signout')).toBeVisible();
+        },
+    },
+    {
+        name: 'my-builds',
+        mobbin: 'Yami · status tabs with counts + Glovo / Subway order-again rows (Reorder · Remix · Repair)',
+        url: () => '/builds',
+        // The sweep buyer's delivered order is claimed by email at sign-in.
+        before: (page) => signInByEmail(page, 'sweep-buyer@example.com'),
+        pattern: async (page) => {
+            await expect(page.getByRole('tab')).toHaveCount(5);
+            await expect(page.getByRole('tab', { name: /Ordered/ })).toBeVisible();
+            const row = page.locator('[data-testid^="build-row-"]').first();
+            await expect(row).toBeVisible();
+            await expect(row.locator('[data-status]')).toBeVisible();
+            for (const action of ['build-reorder', 'build-remix', 'build-repair']) await expect(row.getByTestId(action)).toBeVisible();
+            await expect(row.getByTestId('build-reorder')).toBeEnabled();
+        },
+    },
+    {
         name: 'not-found',
         bottomNav: true,
         mobbin: 'Empty / error state',
@@ -331,6 +363,14 @@ const SCREENS: Screen[] = [
         },
     },
 ];
+
+/** Sign this browser context in with an email code (dev returns the code). Own IP per call so in-memory limits never trip. */
+async function signInByEmail(page: Page, email: string) {
+    const headers = { 'x-forwarded-for': `198.18.${Math.floor(Math.random() * 250)}.${Math.floor(Math.random() * 250) + 1}` };
+    const start = await (await page.request.post('/api/auth/email/start', { data: { email }, headers })).json();
+    const verified = await page.request.post('/api/auth/email/verify', { data: { challengeId: start.challengeId, code: start.devCode }, headers });
+    expect(verified.ok(), 'email sign-in').toBe(true);
+}
 
 /** Builds real state once: a delivered order with a passport, a sourcing job, a Make AI workspace. */
 async function buildState(browser: Browser): Promise<Urls> {
@@ -412,7 +452,7 @@ test.describe('Mobbin page sweep', () => {
                 });
                 page.on('response', (r) => {
                     const hit = `${r.status()} ${new URL(r.url()).pathname}`;
-                    if (r.status() >= 400 && ![ACCOUNT_API_OPTIONAL, ...(screen.allowHttp ?? [])].some((re) => re.test(hit))) problems.push(`http ${hit}`);
+                    if (r.status() >= 400 && !(screen.allowHttp ?? []).some((re) => re.test(hit))) problems.push(`http ${hit}`);
                 });
                 page.on('pageerror', (err) => problems.push(`pageerror: ${err.message}`));
                 const target = screen.url(urls);

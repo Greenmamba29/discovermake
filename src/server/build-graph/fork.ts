@@ -18,7 +18,10 @@ import { latestApprovedVersionRow, loadVersionGraph, toEdgeInput, toNodeInput, w
 
 export type ForkKind = 'remix' | 'clone';
 
-export async function forkBuild(buildId: string, kind: ForkKind, name?: string, opts: { db?: DbOrTx } = {}): Promise<BuildForkResponse> {
+/** Who the new build belongs to (R2 accounts, ADR-0009): the signed-in user and/or the guest device hash. */
+export type ForkOwner = { ownerUserId: string | null; deviceHash: string | null };
+
+export async function forkBuild(buildId: string, kind: ForkKind, name?: string, opts: { db?: DbOrTx; owner?: ForkOwner } = {}): Promise<BuildForkResponse> {
     const db = opts.db ?? getDb();
     return withDisplayId((displayId) =>
         db.transaction(async (tx) => {
@@ -29,7 +32,7 @@ export async function forkBuild(buildId: string, kind: ForkKind, name?: string, 
             const graph = await loadVersionGraph(tx, buildId, approved.version);
 
             const id = newId('build');
-            const actor = guestActor(id);
+            const actor = opts.owner?.ownerUserId ? { kind: 'buyer' as const, id: opts.owner.ownerUserId } : guestActor(id);
             const newName = clip(name ?? (kind === 'remix' ? `${source.name} (remix)` : source.name), 120);
             const nodes: BgNodeInput[] = graph.nodes.map(toNodeInput);
             const edges: BgEdgeInput[] = graph.edges.map(toEdgeInput);
@@ -67,6 +70,8 @@ export async function forkBuild(buildId: string, kind: ForkKind, name?: string, 
                 origin: kind,
                 derivedFromBuildId: source.id,
                 currentVersion: 1,
+                ownerUserId: opts.owner?.ownerUserId ?? null,
+                deviceHash: opts.owner?.deviceHash ?? null,
             });
             await emitEvent(tx, { type: 'build.created', payload: { buildId: id, displayId, name: newName }, actor, correlationId: id, buildId: id });
             await writeVersion(tx, id, {

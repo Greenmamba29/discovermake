@@ -8,9 +8,11 @@
  *   400  malformed body; 404 unknown intent; 403 refused (regulated) intent
  * Emits `build.created`, `design.version_created`, `requirements.generated` and
  * `material.recommended` (when the Materials Engineer answered).
+ * The new build belongs to the signed-in user and/or this device (ADR-0009).
  */
 import { z } from 'zod';
 import { limitWrite } from '@/server/build-graph';
+import { resolveBuildOwner } from '@/server/auth/viewer';
 import { ApiError, json, MAX_JSON_BODY_BYTES, parseJson, route } from '@/server/http';
 import { createBuildFromIntent, isMakeAiEnabled, makeAiRateLimiter } from '@/server/make-ai';
 
@@ -26,6 +28,9 @@ export const POST = route(async (request) => {
     const limited = limitWrite(request, makeAiRateLimiter, 'Too many Make AI requests. Wait a minute and try again.');
     if (limited) return limited;
     const body = await parseJson(request, MakeAiBuildRequest, MAX_JSON_BODY_BYTES);
-    const result = await createBuildFromIntent(body.intentId, { abortSignal: request.signal });
-    return json(result, { status: result.created ? 201 : 200 });
+    const owner = await resolveBuildOwner(request);
+    const result = await createBuildFromIntent(body.intentId, { abortSignal: request.signal, owner });
+    const res = json(result, { status: result.created ? 201 : 200 });
+    if (result.created) owner.apply(res);
+    return res;
 });

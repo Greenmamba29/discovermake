@@ -12,7 +12,7 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export const POST = route<{ payoutId: string }>(async (request, { params }) => {
-    requireAdmin(request);
+    await requireAdmin(request);
     const payoutId = (await params).payoutId;
     if (!/^pout_[A-Za-z0-9_-]{1,60}$/.test(payoutId)) throw new ApiError('NOT_FOUND', 'Payout not found');
     const { reference } = await parseJson(request, MarkPayoutPaidRequest);

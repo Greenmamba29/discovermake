@@ -106,6 +106,59 @@ Ordering through a supplier route (deposit, PO, supplier fulfilment leg, Deliver
 
 - Object View (GLB in r3f) and CAD evals across model providers.
 - More CAD families (U-channel, multi-bend, plates with slots).
-- R2 accounts: owner-only edits and approvals, replacing the `TODO(R2 accounts)` markers.
 - Database triggers that make approved graph rows immutable at the database level.
 - Supplier-route ordering, OR-Tools route comparison and the Delivery Promise (R3).
+
+## Accounts and My Builds (Stage 1, ADR-0009)
+
+**What a person can do.**
+- **Guest.** Upload or describe a part, quote it and order it with no account. Everything made in a browser shows under **My Builds** (`/builds`), with a "Sign in to keep these builds" banner.
+- **Sign in** at `/signin` with:
+  - an email code;
+  - a passkey (usernameless);
+  - Google or Apple, when they are configured.
+
+  `?next=` takes same-site paths only. `?mode=create` shows the "Save your build" copy.
+- **On sign-in.** The browser's guest builds and the email's guest orders move to the account. Guest onboarding answers are kept.
+- **`/me`.** Display name, become a creator (handle), passkeys (add / remove), preferences, sign out. Ops and shop users also get shortcuts to their consoles.
+- **My Builds.** Tabs All / Created / Remixed / Ordered / Following with counts and universal status pills. Every row has three actions:
+  - **Reorder:** a fresh quote with the last order's options, straight to checkout.
+  - **Remix:** forks the approved version into a new workspace.
+  - **Repair:** opens `/parts/:partId?replacement=1` for a replacement quote of that part.
+- **Only the owner can change a build.** That means the signed-in owner, or the guest device that made it. Others get 403, and the workspace shows them a read-only notice.
+
+**Modules.**
+| Path | What |
+|---|---|
+| `src/server/auth/viewer.ts` | `getViewer`, `requireViewer`, `requireRole`, `hasRole`, `getDeviceHash`, `assertCanEditBuild`, owner stamping helpers |
+| `src/server/auth/{device,sessions,cookies}.ts` | `dm_device` and `dm_session` cookies, sliding sessions, same-origin check, safe `next` |
+| `src/server/auth/{email-code,passkeys,oidc,users,sign-in}.ts` | sign-in methods; `completeSignIn` (roles, claims, preferences, session, events) |
+| `src/server/auth/build-access.ts`, `page.ts` | route guards by build / part id; Server Component helpers |
+| `src/server/accounts/{me,my-builds,follows}.ts` | Me API, My Builds tabs and Reorder, follows |
+| `src/components/account/**` | `/signin`, `/me`, `/builds` screens and the browser passkey client |
+
+**API.**
+| Route | Notes |
+|---|---|
+| `POST /api/auth/email/start` · `POST /api/auth/email/verify` | 6-digit code; `devCode` outside production without Resend |
+| `POST /api/auth/passkey/{register,login}/{options,verify}` | register needs a session; login is usernameless |
+| `GET /api/auth/oauth/:provider` · `GET\|POST /api/auth/oauth/:provider/callback` | google, apple (404 when unconfigured) |
+| `POST /api/auth/signout` | revokes the session |
+| `GET\|PATCH /api/me` · `PUT /api/me/preferences` · `DELETE /api/me/passkeys/:id` | `GET /api/me` works signed out |
+| `GET /api/me/builds?tab=` · `POST /api/me/builds/:id/reorder` | guest = this device's builds |
+| `POST\|DELETE /api/builds/:id/follow` | signed in |
+
+**Owner actions.**
+1. Run `bun run db:migrate` (applies `0004_r2_accounts`).
+2. Set `AUTH_SECRET` (32+ random chars) and `RESEND_API_KEY`. Email sign-in answers 503 in production without Resend.
+3. Set `ADMIN_EMAILS` to the ops team's emails. They get the ops board without the shared token. `ADMIN_TOKEN` keeps working.
+4. Optional:
+   - **Google:** `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`, with redirect URI `${APP_URL}/api/auth/oauth/google/callback`.
+   - **Apple:** `APPLE_CLIENT_ID` (Services ID), `APPLE_TEAM_ID`, `APPLE_KEY_ID` and `APPLE_PRIVATE_KEY` (.p8), with return URL `${APP_URL}/api/auth/oauth/apple/callback`.
+5. Passkeys need nothing beyond `APP_URL`, which must be the real public origin (it is the WebAuthn relying party).
+
+**Not yet.**
+- Shop memberships per user. Today the `shop` role comes from a shop's contact email, and the Shop Console still uses console tokens.
+- Org accounts.
+- A shared store for the per-IP sign-in limits.
+- The ops board UI still asks for the token. The API already accepts an ops session.

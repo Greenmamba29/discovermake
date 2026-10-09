@@ -8,7 +8,7 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export const GET = route(async (request) => {
-    requireAdmin(request);
+    await requireAdmin(request);
     const q = parseQuery(request, ListApprovalsQuery);
     return json(await listApprovals({ statuses: q.status, role: q.role }));
 });

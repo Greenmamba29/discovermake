@@ -16,7 +16,7 @@
 export { answerUnknowns, AnswerInput, AnswersRequest, answerRequirementKey, MAX_ANSWERS_PER_REQUEST } from './answers';
 export { guestActor, isUniqueViolation, loadBuild, setGraphBuildStatus, withDisplayId, type BuildRow } from './builds';
 export { loadBuildCatalog, type BuildCatalog, type CatalogMaterial, type CatalogProcess, type CatalogService } from './catalog';
-export { forkBuild, type ForkKind } from './fork';
+export { forkBuild, type ForkKind, type ForkOwner } from './fork';
 export { clip, compareEdges, compareNodes, diffGraphs, isOpenUnknown, MAX_GRAPH_EDGES, MAX_GRAPH_NODES, ROOT_NODE_KEY, slugify, stableStringify, validateGraph } from './graph';
 export {
     graphFromIntent,
