@@ -5,6 +5,7 @@
  * instance counts against the same windows; per-instance memory in development and tests.
  * Keys are stored hashed and expire with their window (an IP is never logged or persisted raw).
  */
+import { env } from '../env';
 import { CompositeRateLimiter, FixedWindowRateLimiter, RateLimiter, type RateLimitDecision } from '../rate-limit';
 
 export { FixedWindowRateLimiter, type RateLimitDecision };
@@ -26,14 +27,21 @@ export const makeAiRateLimiter = new MakeAiRateLimiter(
 );
 
 /**
- * Best-effort client IP. Prefers headers set by the platform (Vercel overwrites
- * x-real-ip / x-vercel-forwarded-for). For x-forwarded-for it takes the RIGHTMOST
- * entry, the one appended by the proxy nearest to us: a client can prepend any value
- * it likes, but cannot change what our own proxy appends.
+ * Client IP for rate limits and the MCP CIDR allowlist. Only headers that the deployment's
+ * proxy overwrites are trusted, chosen by TRUSTED_PROXY (default: `vercel` on Vercel, else `xff`):
+ *   vercel  - `x-vercel-forwarded-for` (Vercel overwrites it), else the rightmost XFF hop;
+ *   real-ip - `x-real-ip` set by our own nginx/ingress, else the rightmost XFF hop;
+ *   xff     - the rightmost `x-forwarded-for` hop, the one our nearest proxy appended;
+ *   none    - no proxy in front: no header is trusted and the IP is 'unknown'.
+ * A client can prepend any XFF value it likes but cannot change what our proxy appends,
+ * and it can never choose which header we read.
  */
 export function clientIp(request: Request): string {
-    for (const name of ['x-vercel-forwarded-for', 'x-real-ip']) {
-        const v = request.headers.get(name)?.split(',')[0]?.trim();
+    const mode = trustedProxyMode();
+    if (mode === 'none') return 'unknown';
+    const header = mode === 'vercel' ? 'x-vercel-forwarded-for' : mode === 'real-ip' ? 'x-real-ip' : null;
+    if (header) {
+        const v = request.headers.get(header)?.split(',')[0]?.trim();
         if (v) return v.slice(0, 64);
     }
     const parts = (request.headers.get('x-forwarded-for') ?? '')
@@ -42,4 +50,12 @@ export function clientIp(request: Request): string {
         .filter(Boolean);
     const last = parts[parts.length - 1];
     return last ? last.slice(0, 64) : 'unknown';
+}
+
+export type TrustedProxyMode = 'vercel' | 'real-ip' | 'xff' | 'none';
+
+export function trustedProxyMode(): TrustedProxyMode {
+    const configured = env().TRUSTED_PROXY;
+    if (configured) return configured;
+    return process.env.VERCEL ? 'vercel' : 'xff';
 }

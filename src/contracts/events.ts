@@ -29,6 +29,7 @@ import {
 } from './enums';
 import { IsoDateTime } from './common';
 import { CreationIntentKind, MakeAiRiskClass } from './make-ai';
+import { CAD_FAMILIES, CadArtifactKind } from './cad';
 
 const id = z.string().min(1);
 const cents = z.number().int().nonnegative();
@@ -152,9 +153,9 @@ export const EVENT_PAYLOADS = {
     'cad.generated': z.object({
         buildId: id,
         version: z.number().int().positive(),
-        family: z.enum(['sheet_panel', 'l_bracket', 'enclosure', 'u_channel', 'multi_bend_bracket', 'slotted_plate', 'sheet_enclosure']),
+        family: z.enum(CAD_FAMILIES),
         partId: id.nullable(),
-        artifacts: z.array(z.object({ kind: z.enum(['STEP', 'DXF', 'GLB', 'BOM', 'CSV', 'SVG', 'MANIFEST']), key: z.string(), sha256: z.string() })),
+        artifacts: z.array(z.object({ kind: CadArtifactKind, key: z.string(), sha256: z.string() })),
     }),
     /** Workflow 01 "Makeability" + "Preliminary quote": the R1 engine priced every flat pattern of a CAD version. */
     'makeability.completed': z.object({ buildId: id, version: z.number().int().positive(), makeabilityScore: z.number().int().min(0).max(100), partCount: z.number().int().nonnegative() }),
@@ -261,6 +262,21 @@ export const EVENT_PAYLOADS = {
     'live.drop_started': z.object({ dropId: id, showId: id.nullable(), buildId: id, quoteId: id, priceCents: cents, totalSlots: z.number().int().positive(), thresholdSlots: z.number().int().positive(), closesAt: IsoDateTime }),
     'live.slot_claimed': z.object({ dropId: id, claimId: id, orderId: id, quantity: z.number().int().positive(), claimedSlots: z.number().int().nonnegative() }),
     'live.drop_closed': z.object({ dropId: id, status: z.enum(['CONFIRMED', 'FAILED']), claimedSlots: z.number().int().nonnegative(), thresholdSlots: z.number().int().positive(), captured: z.number().int().nonnegative(), released: z.number().int().nonnegative() }),
+    // ---- R6 Reconstruct ----
+    /** A buyer started rebuilding a broken part from photos (optionally linked to its passport). */
+    'reconstruct.started': z.object({ buildId: id, partType: z.enum(['knob', 'spacer', 'bracket']), passportId: id.nullable() }),
+    /** A caliper / ruler reading was confirmed (the only dimensions CAD may use). */
+    'reconstruct.dimension_confirmed': z.object({
+        buildId: id,
+        version: z.number().int().positive(),
+        param: z.string(),
+        valueMm: z.number().positive(),
+        unit: z.enum(['mm', 'in']),
+        photoEstimateMm: z.number().nullable(),
+        deltaPct: z.number().nullable(),
+    }),
+    /** CAD generated from the confirmed readings (family + spec from the Reconstruct planner). */
+    'reconstruct.cad_generated': z.object({ buildId: id, version: z.number().int().positive(), family: z.string(), printed: z.boolean(), quoteId: id.nullable() }),
     // ---- R3: Prime experience (docs/architecture/r3-prime-experience.md) ----
     'membership.trial_started': z.object({ membershipId: id, userId: id, plan: z.enum(['monthly', 'annual']), trialEndsAt: IsoDateTime }),
     'membership.status_changed': z.object({

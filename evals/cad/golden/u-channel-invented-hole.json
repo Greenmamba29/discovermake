@@ -9,11 +9,11 @@
    "sha256": "f314b2437f5aa18a0a38229b31c37e921f6f2338f5eb1e28d8de25d316fe88f0"
   },
   {
-   "bytes": 46950,
+   "bytes": 46948,
    "content_type": "model/step",
    "filename": "channel.step",
    "kind": "STEP",
-   "sha256": "f50f76b87235b838ec5245ba59680cd9d5442fa208d978a7003f9b0f09954016"
+   "sha256": "ad1c504fc464da2ed4b5e818d007ccc3c10b301c59031006e6ee5d5588b971ef"
   },
   {
    "bytes": 23240,
@@ -44,11 +44,11 @@
    "sha256": "ef6be366ceb9b9559b85b183b6ac1a0eecda1745f55f170a282f951e75e07471"
   },
   {
-   "bytes": 1812,
+   "bytes": 1957,
    "content_type": "application/json",
    "filename": "manifest.json",
    "kind": "MANIFEST",
-   "sha256": "f9b12d829756428cecb15e5132f9b9516b94965eb2fe547484e72d2e17d13130"
+   "sha256": "d9be4395b337375eda45883ecf1afd5876fce03083380dd0833c629a4f8d903d"
   }
  ],
  "family": "u_channel",
@@ -76,6 +76,7 @@
    120.0,
    114.716
   ],
+  "surface_area_mm2": 28315.1,
   "thickness_mm": 1.52,
   "volume_mm3": 20976.5
  },
@@ -85,5 +86,5 @@
  ],
  "ref": "eval:u-channel-invented-hole",
  "warnings": [],
- "worker_version": "0.2.0"
+ "worker_version": "0.3.0"
 }

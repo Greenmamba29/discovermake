@@ -261,6 +261,9 @@ describe('Sourcing MCP server (route handler, JSON-RPC)', () => {
         for (let i = 0; i < 80; i++) await mcpRateLimiter.take(clientId);
         const limited = await call(token, 'next_job', {});
         expect(SourcingToolError.parse(limited.structuredContent).error.code).toBe('RATE_LIMITED');
-        mcpRateLimiter.reset();
+        // Unknown tool names spend budget too (each still writes an audit row): no unlimited spam.
+        const unknown = await call(token, 'definitely_not_a_tool', {});
+        expect(SourcingToolError.parse(unknown.structuredContent).error.code).toBe('RATE_LIMITED');
+        await mcpRateLimiter.reset();
     });
 });

@@ -13,7 +13,7 @@
    "content_type": "model/step",
    "filename": "bracket.step",
    "kind": "STEP",
-   "sha256": "fe1a7f02266b83b05d3856a25336d19da099c62829313d519a26034cf112debd"
+   "sha256": "8dd4d2bcd551b90210cd9ea7538a703067afb2ab0526fd358168694630a5ac81"
   },
   {
    "bytes": 42872,
@@ -44,11 +44,11 @@
    "sha256": "7f7f3e0ac64528c5ef5aabb9ff74d18ae556972984d37d23a7899634e1b8351a"
   },
   {
-   "bytes": 1916,
+   "bytes": 2058,
    "content_type": "application/json",
    "filename": "manifest.json",
    "kind": "MANIFEST",
-   "sha256": "2fdcdb6c7f33a8115660528c4430912b0b35785f2c8f44137aec5b046858f434"
+   "sha256": "22911025e7a1ae4d3eb731797249d7120e6fcc3f699a878a8e2864fb319307ee"
   }
  ],
  "family": "multi_bend_bracket",
@@ -81,6 +81,7 @@
    129.433
   ],
   "profile": "hat-profile",
+  "surface_area_mm2": 13547.8,
   "thickness_mm": 1.52,
   "volume_mm3": 9880.4
  },
@@ -90,5 +91,5 @@
  ],
  "ref": "eval:hat-stiffener",
  "warnings": [],
- "worker_version": "0.2.0"
+ "worker_version": "0.3.0"
 }

@@ -246,12 +246,31 @@ describe('MakeAiRateLimiter', () => {
         expect((await rl.hit('203.0.113.4', 60_000)).allowed).toBe(true);
     });
 
-    it('reads the client IP from platform headers, else the rightmost x-forwarded-for entry', () => {
+    it('reads the client IP only from the header TRUSTED_PROXY names, else the rightmost x-forwarded-for hop', () => {
         const r = (h: Record<string, string>) => new Request('http://localhost/x', { headers: h });
-        expect(clientIp(r({ 'x-forwarded-for': '1.1.1.1, 198.51.100.9' }))).toBe('198.51.100.9');
-        expect(clientIp(r({ 'x-real-ip': '198.51.100.10', 'x-forwarded-for': '1.1.1.1' }))).toBe('198.51.100.10');
-        expect(clientIp(r({ 'x-vercel-forwarded-for': '198.51.100.11', 'x-real-ip': '1.1.1.1' }))).toBe('198.51.100.11');
-        expect(clientIp(r({}))).toBe('unknown');
+        const withMode = (mode: string | undefined, fn: () => void) => {
+            const prev = process.env.TRUSTED_PROXY;
+            if (mode === undefined) delete process.env.TRUSTED_PROXY;
+            else process.env.TRUSTED_PROXY = mode;
+            resetEnvCache();
+            try {
+                fn();
+            } finally {
+                if (prev === undefined) delete process.env.TRUSTED_PROXY;
+                else process.env.TRUSTED_PROXY = prev;
+                resetEnvCache();
+            }
+        };
+        // Default off Vercel: xff. Platform headers a client can send are ignored.
+        withMode(undefined, () => {
+            expect(clientIp(r({ 'x-forwarded-for': '1.1.1.1, 198.51.100.9' }))).toBe('198.51.100.9');
+            expect(clientIp(r({ 'x-real-ip': '198.51.100.10', 'x-forwarded-for': '1.1.1.1' }))).toBe('1.1.1.1');
+            expect(clientIp(r({ 'x-vercel-forwarded-for': '198.51.100.11' }))).toBe('unknown');
+            expect(clientIp(r({}))).toBe('unknown');
+        });
+        withMode('vercel', () => expect(clientIp(r({ 'x-vercel-forwarded-for': '198.51.100.11', 'x-real-ip': '1.1.1.1' }))).toBe('198.51.100.11'));
+        withMode('real-ip', () => expect(clientIp(r({ 'x-real-ip': '198.51.100.10', 'x-vercel-forwarded-for': '1.1.1.1' }))).toBe('198.51.100.10'));
+        withMode('none', () => expect(clientIp(r({ 'x-forwarded-for': '198.51.100.9' }))).toBe('unknown'));
     });
 });
 

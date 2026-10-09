@@ -17,6 +17,7 @@ import type { Address } from '../../contracts/common';
 import { generateToken, sha256Hex } from '../auth/tokens';
 import { getDb, type Db } from './index';
 import { seedLiveDemo } from './seed-live';
+import { seedPrintCatalog, seedPrintShop } from '../quote/printing/catalog';
 import {
     dfmRulesets,
     materials,
@@ -614,6 +615,9 @@ export async function seed(db: Db = getDb(), opts: SeedOptions = {}): Promise<Se
             .values({ version: R1_RULESET_VERSION, rules: R1_DFM_RULES, active: true, notes: 'R1 default thresholds (to be calibrated)' })
             .onConflictDoUpdate({ target: dfmRulesets.version, set: { rules: R1_DFM_RULES, active: true } });
 
+        // R6: the 3D-print catalog (PLA, PETG, ASA, Nylon PA12).
+        log(`${await seedPrintCatalog(tx)} print materials`);
+
         if (opts.catalogOnly) {
             log('catalog only: dev partner shop skipped');
             return { materials: MATERIAL_SEEDS.length, thicknessOptions: thicknessCount, services: SERVICE_SEEDS.length, shopId: null, rateCardId: null, rulesetVersion: R1_RULESET_VERSION, shopToken: null };
@@ -739,6 +743,10 @@ export async function seed(db: Db = getDb(), opts: SeedOptions = {}): Promise<Se
                 .values({ id: s.id, shopId: DEV_SHOP_ID, kind: s.kind, sku: s.sku, description: s.description, materialId: s.materialId, thicknessOptionId: s.thicknessOptionId, quantity: s.quantity, unit: s.unit })
                 .onConflictDoNothing({ target: shopStock.id });
         }
+
+        // R6: the dev partner also prints (FDM farm + one SLS printer) with its own print rate card.
+        const printShop = await seedPrintShop(tx, DEV_SHOP_ID);
+        log(`${printShop.capabilities} print capabilities, print rate card ${printShop.rateCardId}`);
 
         // Shop Console token (hash only)
         const requested = opts.shopToken ?? process.env.SEED_SHOP_TOKEN?.trim() ?? '';

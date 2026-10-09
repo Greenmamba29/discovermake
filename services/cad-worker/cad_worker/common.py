@@ -23,6 +23,8 @@ import ezdxf
 
 INSUNITS_MM = 4
 _STEP_STAMP = re.compile(rb"(FILE_NAME\('[^']*',)'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}'")
+#: OCCT numbers the PRODUCT of every export in a process ("... translator 7.9 3"): pin it.
+_STEP_PRODUCT = re.compile(rb"(Open CASCADE STEP translator [0-9.]+) \d+")
 
 # Deterministic DXF output: fixed creation/update timestamps and GUIDs, so the same
 # spec always yields the same bytes (and sha256). Golden files and caching rely on it.
@@ -31,7 +33,7 @@ ezdxf.options.write_fixed_meta_data_for_testing = True
 
 @dataclass
 class Artifact:
-    kind: str  # STEP | DXF | GLB | BOM | CSV | SVG | MANIFEST
+    kind: str  # STEP | DXF | GLB | STL | BOM | CSV | SVG | MANIFEST
     filename: str
     content_type: str
     data: bytes
@@ -108,6 +110,7 @@ def step_artifact(shape: cq.Workplane | cq.Assembly, name: str) -> Artifact:
     # The only run-dependent bytes in OCCT's STEP output are the FILE_NAME timestamp: pin it so
     # the same spec gives the same STEP (and sha256), like the DXF.
     data = _STEP_STAMP.sub(rb"\g<1>'1970-01-01T00:00:00'", data, count=1)
+    data = _STEP_PRODUCT.sub(rb"\g<1> 1", data)
     return Artifact("STEP", f"{name}.step", "model/step", data)
 
 
@@ -120,6 +123,25 @@ def glb_artifact(parts: list[tuple[str, cq.Workplane, tuple[float, float, float]
         assy.export(path, "GLTF", binary=True)
         with open(path, "rb") as f:
             return Artifact("GLB", f"{name}.glb", "model/gltf-binary", f.read())
+
+
+#: STL tessellation: 0.02 mm chord deviation, 0.2 rad angular. Fine enough for a printer
+#: (well under one 0.1 mm layer), coarse enough to keep a knob under 1 MB.
+STL_TOLERANCE_MM = 0.02
+STL_ANGULAR_TOLERANCE = 0.2
+
+
+def stl_artifact(shape: cq.Workplane, name: str) -> Artifact:
+    """Binary STL in millimetres (what slicers expect). OCCT's tessellation is deterministic
+    for a given shape, and the binary header is fixed, so the bytes are reproducible."""
+    with tempfile.TemporaryDirectory() as d:
+        path = os.path.join(d, f"{name}.stl")
+        cq.exporters.export(shape, path, cq.exporters.ExportTypes.STL, tolerance=STL_TOLERANCE_MM, angularTolerance=STL_ANGULAR_TOLERANCE, opt={"ascii": False})
+        with open(path, "rb") as f:
+            data = f.read()
+    # Pin the 80-byte header (OCCT may write a version string there).
+    header = b"DiscoverMake CAD worker binary STL, units mm".ljust(80, b" ")
+    return Artifact("STL", f"{name}.stl", "model/stl", header + data[80:])
 
 
 def dxf_doc() -> "ezdxf.document.Drawing":
@@ -186,6 +208,7 @@ def solid_metrics(solid: cq.Workplane, *, flat: tuple[float, float], thickness: 
     return {
         "bbox_mm": bbox_list(v.BoundingBox()),
         "volume_mm3": round(v.Volume(), 1),
+        "surface_area_mm2": round(v.Area(), 1),
         "flat_size_mm": [round(flat[0], 3), round(flat[1], 3)],
         "thickness_mm": thickness,
         "bend_count": bends,

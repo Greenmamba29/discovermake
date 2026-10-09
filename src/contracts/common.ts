@@ -70,6 +70,8 @@ export const ID_PREFIX = {
     buyerCredit: 'crd',
     shopStock: 'sst',
     jobBatch: 'bat',
+    // R6 Reconstruct
+    reconstruct: 'rcn',
     // R3 Prime experience
     membership: 'mem',
     membershipEvent: 'mev',

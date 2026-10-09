@@ -13,7 +13,7 @@
    "content_type": "model/step",
    "filename": "bracket.step",
    "kind": "STEP",
-   "sha256": "79c50e8472731623146cab7be65e31baeae556f2060d957dd4a1fa42a9af665e"
+   "sha256": "e9786885dc089df6beae10b5c9e6ecbfbab0742ec968b9931736a7cb5c3359a5"
   },
   {
    "bytes": 23160,
@@ -44,11 +44,11 @@
    "sha256": "f92b3a107c35884ba9e79337a4267c2fa1fb0e8ad9fe6e5babc38f65adcc2db9"
   },
   {
-   "bytes": 1871,
+   "bytes": 2012,
    "content_type": "application/json",
    "filename": "manifest.json",
    "kind": "MANIFEST",
-   "sha256": "a1d077e861adf53ac243247d844a5a506e0020b5db07d628949f2440719428ec"
+   "sha256": "1728734f029ce4bcdeeeedb7d03fdb50b9f342fbfbc03dfaeff0a0d2cf53fe05"
   }
  ],
  "family": "multi_bend_bracket",
@@ -77,6 +77,7 @@
    84.716
   ],
   "profile": "z-profile",
+  "surface_area_mm2": 7180.2,
   "thickness_mm": 1.52,
   "volume_mm3": 5168.2
  },
@@ -86,5 +87,5 @@
  ],
  "ref": "eval:z-bracket",
  "warnings": [],
- "worker_version": "0.2.0"
+ "worker_version": "0.3.0"
 }

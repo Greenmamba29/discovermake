@@ -9,6 +9,8 @@ Writes:
   * ``tests/fixtures/cad/acceptance/``: every artifact of the workflow 01 enclosure
     (``ACCEPTANCE_SPEC``) plus ``response.json`` (the worker response without the base64
     bodies). The acceptance test serves these when no CAD worker is running.
+  * ``tests/fixtures/cad/reconstruct-*/``: the R6 printed goldens (``RECONSTRUCT_GOLDEN``),
+    same layout as the acceptance fixture.
   * ``evals/cad/golden/<case>.json``: the worker response for each eval case's expected
     spec, with the DXF bodies inline (the eval quotes them) and the other artifacts as
     metadata only.
@@ -109,6 +111,34 @@ ACCEPTANCE_SPEC = {
 }
 
 
+#: R6 Reconstruct goldens: what the worker returns for the specs the Reconstruct planner makes
+#: from the e2e / G3 demo's caliper readings (a 1.5 in (38.1 mm) x 22 mm stove knob on a
+#: standard 6 mm D-shaft, 12 grip flutes and a pointer notch; bore depth = height - 2 mm cap)
+#: and a flanged spacer. ``tests/e2e/support/reconstruct.ts`` and the print-quote tests serve
+#: these when no CAD worker runs; the quote engine prices them for real from the manifest.
+RECONSTRUCT_GOLDEN = {
+    "reconstruct-knob": {
+        "family": "round_knob",
+        "diameter_mm": 38.1,
+        "height_mm": 22,
+        "bore_type": "d_shaft",
+        "shaft_diameter_mm": 6,
+        "shaft_flat_depth_mm": 1.5,
+        "bore_depth_mm": 20,
+        "grip_ribs": 12,
+        "pointer_notch": True,
+    },
+    "reconstruct-spacer": {
+        "family": "spacer_bushing",
+        "outer_diameter_mm": 12,
+        "inner_diameter_mm": 6.5,
+        "length_mm": 10,
+        "flange_diameter_mm": 18,
+        "flange_thickness_mm": 2,
+    },
+}
+
+
 def _repo_root() -> str:
     return os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
 
@@ -136,6 +166,16 @@ def write_flat_goldens(out_dir: str) -> None:
         dxf = next(a for a in result.artifacts if a.kind == "DXF")
         _write(os.path.join(out_dir, name), dxf.data)
         print(f"wrote {name} ({len(dxf.data)} bytes)")
+
+
+def write_golden_dir(out_dir: str, spec: dict) -> None:
+    """Every artifact plus ``response.json`` (the worker response without base64 bodies)."""
+    result = generate(GenerateRequest(spec=spec).spec, worker_version=__version__)
+    for a in result.artifacts:
+        _write(os.path.join(out_dir, a.filename), a.data)
+    body = response_json(result, inline=set())
+    _write(os.path.join(out_dir, "response.json"), (json.dumps(body, indent=2, sort_keys=True) + "\n").encode("utf-8"))
+    print(f"wrote {spec['family']} fixture ({len(result.artifacts)} artifacts) to {out_dir}")
 
 
 def write_acceptance(out_dir: str) -> None:
@@ -170,6 +210,8 @@ def main(argv: list[str]) -> None:
     out = argv[1] if len(argv) > 1 else os.path.join(root, "tests", "fixtures", "cad")
     write_flat_goldens(out)
     write_acceptance(os.path.join(out, "acceptance"))
+    for name, spec in RECONSTRUCT_GOLDEN.items():
+        write_golden_dir(os.path.join(out, name), spec)
     write_eval_goldens(os.path.join(root, "evals", "cad", "cases.json"), os.path.join(root, "evals", "cad", "golden"))
 
 

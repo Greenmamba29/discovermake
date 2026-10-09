@@ -169,7 +169,7 @@ export const JobPacket = z.object({
     shipTo: Address.nullable(),
     files: z.array(
         z.object({
-            kind: z.enum(['SOURCE_DXF']),
+            kind: z.enum(['SOURCE_DXF', 'SOURCE_STL']),
             filename: z.string(),
             /** Signed, expiring download URL (generated per request, never stored). */
             url: z.string().url(),
@@ -189,6 +189,21 @@ export const JobPacket = z.object({
             inboundTracking: z.string().nullable(),
             /** Pass -> ship to the buyer through the existing label flow. */
             instructions: z.string(),
+        })
+        .optional(),
+    /** R6: printed parts (print quotes). The source file is the STL; `part` cut/bend fields are 0. */
+    print: z
+        .object({
+            process: z.enum(['FDM', 'SLS']),
+            family: z.string(),
+            layerHeightMm: z.number(),
+            bboxMm: z.tuple([z.number(), z.number(), z.number()]),
+            volumeMm3: z.number(),
+            minWallMm: z.number(),
+            printHoursPerPart: z.number(),
+            unitMassG: z.number(),
+            orientation: z.string(),
+            stlSha256: z.string(),
         })
         .optional(),
     signature: z.string(),
