@@ -33,3 +33,11 @@ describe('Live contract', () => {
         expect(VideoSource.safeParse({ kind: 'mp4', url: '//evil.example/r.mp4' }).success).toBe(false);
     });
 });
+
+describe('media paths', () => {
+    it('rejects traversal and backslashes in same-origin paths', () => {
+        for (const url of ['/../etc/passwd', '/media/../secret.mp4', '/media/./r.mp4', '/..\\windows', '/a b.mp4']) {
+            expect(VideoSource.safeParse({ kind: 'mp4', url }).success, url).toBe(false);
+        }
+    });
+});

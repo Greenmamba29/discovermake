@@ -26,7 +26,12 @@ export const SlotClaimId = z.string().regex(/^slc_[A-Za-z0-9_-]+$/);
 export const ShowDisplayId = z.string().regex(/^LIVE-\d+$/);
 
 /** Absolute URL, or a same-origin path (committed replay fixtures under /public). */
-const MediaUrl = z.string().refine((v) => /^\/[^/]/.test(v) || z.string().url().safeParse(v).success, 'expected an absolute URL or a same-origin path');
+const MediaUrl = z.string().refine((v) => isSameOriginPath(v) || z.string().url().safeParse(v).success, 'expected an absolute URL or a same-origin path');
+
+/** `/media/replay.mp4`: one leading slash, no `..` segments, no backslashes or whitespace. */
+function isSameOriginPath(v: string): boolean {
+    return v.startsWith('/') && !v.startsWith('//') && !/[\\\s]/.test(v) && !v.split('/').some((seg) => seg === '..' || seg === '.');
+}
 
 export const CHANNEL_KINDS = ['creator', 'factory', 'campus'] as const;
 export const ChannelKind = z.enum(CHANNEL_KINDS);
@@ -165,7 +170,7 @@ export const LiveEventType = z.enum(LIVE_EVENT_TYPES);
 export type LiveEventType = z.infer<typeof LiveEventType>;
 
 /** Events only the server may emit; they always carry `sig`. */
-export const SIGNED_LIVE_EVENTS: readonly LiveEventType[] = [
+export const SIGNED_LIVE_EVENTS = [
     'product.focus',
     'variant.focus',
     'material.change',
@@ -179,7 +184,9 @@ export const SIGNED_LIVE_EVENTS: readonly LiveEventType[] = [
     'order.completed',
     'show.started',
     'show.ended',
-];
+] as const satisfies readonly LiveEventType[];
+export type SignedLiveEventType = (typeof SIGNED_LIVE_EVENTS)[number];
+export const isSignedLiveEvent = (e: LiveEventType): e is SignedLiveEventType => (SIGNED_LIVE_EVENTS as readonly string[]).includes(e);
 
 export const LIVE_ACTOR_KINDS = ['host', 'cohost', 'viewer', 'agent', 'system', 'machine'] as const;
 export const LiveActorKind = z.enum(LIVE_ACTOR_KINDS);
@@ -198,13 +205,18 @@ export const LiveEventBase = z.object({
     /** HMAC-SHA256 (LIVE_EVENT_SIGNING_SECRET) over the canonical event without `sig`. */
     sig: z.string().optional(),
 });
+type LiveEventFields = Omit<z.infer<typeof LiveEventBase>, 'event' | 'sig'>;
+/** The type mirrors the runtime rule: signed event types always carry `sig`. */
+export type LiveEvent =
+    | (LiveEventFields & { event: SignedLiveEventType; sig: string })
+    | (LiveEventFields & { event: Exclude<LiveEventType, SignedLiveEventType>; sig?: string });
+
 /** Commerce-affecting events (`SIGNED_LIVE_EVENTS`) are rejected without `sig`; servers and clients still verify it. */
 export const LiveEvent = LiveEventBase.superRefine((e, ctx) => {
-    if (SIGNED_LIVE_EVENTS.includes(e.event) && !e.sig) {
+    if (isSignedLiveEvent(e.event) && !e.sig) {
         ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['sig'], message: `${e.event} must be server-signed` });
     }
-});
-export type LiveEvent = z.infer<typeof LiveEventBase>;
+}) as unknown as z.ZodType<LiveEvent, z.ZodTypeDef, unknown>;
 
 export const QuestionView = z.object({
     id: z.string(),
