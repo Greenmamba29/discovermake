@@ -12,6 +12,7 @@ import { resetEnvCache } from '@/server/env';
 import { MAX_JSON_BODY_BYTES } from '@/server/http';
 import { clientIp, createIntent, FixedWindowRateLimiter, MakeAiRateLimiter, makeAiRateLimiter, MAKE_AI_SYSTEM_PROMPT, normalizeIntent } from '@/server/make-ai';
 import { POST as intake } from '@/app/api/make-ai/intake/route';
+import { RateLimiter } from '@/server/rate-limit';
 import { useTestDb } from '../support/db';
 
 type GenerateResult = Awaited<ReturnType<MockLanguageModelV4['doGenerate']>>;
@@ -238,11 +239,11 @@ describe('Make AI intake', () => {
 });
 
 describe('MakeAiRateLimiter', () => {
-    it('caps the whole instance even when every request comes from a new IP', () => {
-        const rl = new MakeAiRateLimiter(new FixedWindowRateLimiter(10, 60_000), new FixedWindowRateLimiter(3, 60_000));
-        expect([1, 2, 3].map((i) => rl.hit(`203.0.113.${i}`, 0).allowed)).toEqual([true, true, true]);
-        expect(rl.hit('203.0.113.4', 0)).toEqual({ allowed: false, retryAfterSeconds: 60 });
-        expect(rl.hit('203.0.113.4', 60_000).allowed).toBe(true);
+    it('caps the whole fleet even when every request comes from a new IP', async () => {
+        const rl = new MakeAiRateLimiter(new RateLimiter('t_ip', { kind: 'fixed_window', limit: 10, windowMs: 60_000 }, 'memory'), new RateLimiter('t_all', { kind: 'fixed_window', limit: 3, windowMs: 60_000 }, 'memory'));
+        for (const i of [1, 2, 3]) expect((await rl.hit(`203.0.113.${i}`, 0)).allowed).toBe(true);
+        expect(await rl.hit('203.0.113.4', 0)).toEqual({ allowed: false, retryAfterSeconds: 60 });
+        expect((await rl.hit('203.0.113.4', 60_000)).allowed).toBe(true);
     });
 
     it('reads the client IP from platform headers, else the rightmost x-forwarded-for entry', () => {

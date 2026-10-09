@@ -5,4 +5,4 @@ It never executes model-written code: the CAD agent picks a parametric family an
 fills its parameters, and this worker validates every bound before building.
 """
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"

@@ -16,7 +16,7 @@ import { authChallenges } from '../db/schema';
 import { env, isProduction, requireSecret } from '../env';
 import { ApiError } from '../http';
 import { newId } from '../ids';
-import { FixedWindowRateLimiter } from '../make-ai/rate-limit';
+import { RateLimiter } from '../rate-limit';
 import { notify } from '../notify';
 import { hmacHex, safeEqual } from './tokens';
 import { normalizeEmail } from './users';
@@ -26,9 +26,9 @@ export const EMAIL_CODE_MAX_ATTEMPTS = 5;
 export const EMAIL_CODES_PER_EMAIL_PER_HOUR = 5;
 export const EMAIL_CODE_IP_LIMIT = { limit: 10, windowMs: 10 * 60_000 } as const;
 
-export const emailStartIpLimiter = new FixedWindowRateLimiter(EMAIL_CODE_IP_LIMIT.limit, EMAIL_CODE_IP_LIMIT.windowMs);
+export const emailStartIpLimiter = new RateLimiter('auth_email_start_ip', { kind: 'fixed_window', limit: EMAIL_CODE_IP_LIMIT.limit, windowMs: EMAIL_CODE_IP_LIMIT.windowMs });
 /** Verify attempts per IP (across challenges), so one client cannot spray guesses. */
-export const emailVerifyIpLimiter = new FixedWindowRateLimiter(30, 10 * 60_000);
+export const emailVerifyIpLimiter = new RateLimiter('auth_email_verify_ip', { kind: 'fixed_window', limit: 30, windowMs: 10 * 60_000 });
 
 export function hashEmailCode(challengeId: string, code: string): string {
     return hmacHex(requireSecret('AUTH_SECRET'), `${challengeId}.${code}`);
@@ -53,7 +53,7 @@ export async function startEmailSignIn(
     if (isProduction() && !apiKey) throw new ApiError('INTERNAL', 'Email sign-in is not available right now. Try a passkey.', 503);
 
     if (opts.ip) {
-        const d = emailStartIpLimiter.hit(opts.ip, now.getTime());
+        const d = await emailStartIpLimiter.hit(opts.ip, now.getTime());
         if (!d.allowed) throw rateLimited('Too many codes requested from this network. Wait a few minutes and try again.', d.retryAfterSeconds);
     }
     const [{ count }] = await db
@@ -83,7 +83,7 @@ export async function verifyEmailCode(challengeId: string, code: string, opts: {
     const db = opts.db ?? getDb();
     const now = opts.now ?? new Date();
     if (opts.ip) {
-        const d = emailVerifyIpLimiter.hit(opts.ip, now.getTime());
+        const d = await emailVerifyIpLimiter.hit(opts.ip, now.getTime());
         if (!d.allowed) throw rateLimited('Too many attempts. Wait a few minutes and try again.', d.retryAfterSeconds);
     }
     const [row] = await db.select().from(authChallenges).where(and(eq(authChallenges.id, challengeId), eq(authChallenges.kind, 'email')));

@@ -1,6 +1,6 @@
 [project]
 name = "discovermake-cad-worker"
-version = "0.1.0"
+version = "0.2.0"
 description = "DiscoverMake CAD worker: structured CadSpec -> CadQuery -> STEP / DXF flat pattern / GLB (R2, EPIC-100-4)"
 requires-python = ">=3.11"
 license = { text = "UNLICENSED" }

@@ -13,9 +13,9 @@ const fresh = () => `e${Math.random().toString(36).slice(2)}@Example.com`;
 
 describe('email sign-in codes', () => {
     const ctx = useTestDb();
-    beforeEach(() => {
-        emailStartIpLimiter.reset();
-        emailVerifyIpLimiter.reset();
+    beforeEach(async () => {
+        await emailStartIpLimiter.reset();
+        await emailVerifyIpLimiter.reset();
     });
 
     it('stores an HMAC of the code (never the code) and returns devCode without an email provider', async () => {

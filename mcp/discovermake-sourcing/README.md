@@ -27,6 +27,11 @@ Accio Work's secret store and nowhere else.
 - List clients (no secrets are returned): `GET /api/admin/sourcing/clients`
 - Revoke a client: `DELETE /api/admin/sourcing/clients/<clientId>`. The token stops
   working immediately and the client's leased jobs return to the queue.
+- Limit a client (per-workspace allowlist):
+  `PUT /api/admin/sourcing/clients/<clientId>/allowlist` with
+  `{"allowedTools": ["next_job", "get_job"], "allowedCidrs": ["203.0.113.0/24"]}`. Use `null` for "all nine tools" or "any IP"; the same fields are accepted at creation and in the Accio clients panel.
+  - Tools outside the list disappear from `tools/list`, and calls to them return `TOOL_NOT_ALLOWED`.
+  - Requests from other IPs get HTTP 403 (JSON-RPC `-32003`, `IP_NOT_ALLOWED`). The IP is read from the platform header, else from the rightmost `x-forwarded-for` hop.
 
 ## 2. Register the MCP server in Accio Work
 

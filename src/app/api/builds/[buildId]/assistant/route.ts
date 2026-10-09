@@ -36,11 +36,11 @@ export const POST = route<{ buildId: string }>(async (request, { params }) => {
     const buildId = pathId((await params).buildId, BuildId, 'Build');
     const body = await parseJson(request, AssistantRequest, ASSISTANT_MAX_BODY_BYTES);
     if (body.action === 'ask') {
-        const limited = limitWrite(request, assistantAskLimiter, 'Make AI is getting a lot of questions from you. Wait a minute and ask again.');
+        const limited = await limitWrite(request, assistantAskLimiter, 'Make AI is getting a lot of questions from you. Wait a minute and ask again.');
         if (limited) return limited;
         return json(await askAssistant(buildId, body.message));
     }
-    const limited = limitWrite(request);
+    const limited = await limitWrite(request);
     if (limited) return limited;
     const build = await requireBuild(buildId);
     await assertCanEditBuild(request, build);

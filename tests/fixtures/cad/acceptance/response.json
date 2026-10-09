@@ -1,0 +1,152 @@
+{
+  "artifacts": [
+    {
+      "bytes": 17231,
+      "content_type": "application/dxf",
+      "filename": "body_flat.dxf",
+      "kind": "DXF",
+      "sha256": "40d670afcee52c7bf71e0a0a2308a19990673b33dc0449dfe284680d4e9d7eb4"
+    },
+    {
+      "bytes": 16393,
+      "content_type": "application/dxf",
+      "filename": "end_cap_flat.dxf",
+      "kind": "DXF",
+      "sha256": "3544b427e03708ec0b943f5fb3778acb629e8a4bde18b1a8b4d89e481cb85f65"
+    },
+    {
+      "bytes": 16504,
+      "content_type": "application/dxf",
+      "filename": "end_cap_gland_flat.dxf",
+      "kind": "DXF",
+      "sha256": "ee65017d57521381818428785e5ee06485b631fd8269b49d4997e3c8c331e1d8"
+    },
+    {
+      "bytes": 16389,
+      "content_type": "application/dxf",
+      "filename": "lid_flat.dxf",
+      "kind": "DXF",
+      "sha256": "a3fb3c2bcd60ca2bb5b5f6759d6226b8f498151134c908d1c5234bd51651d07c"
+    },
+    {
+      "bytes": 311938,
+      "content_type": "model/step",
+      "filename": "enclosure.step",
+      "kind": "STEP",
+      "sha256": "098758c9b5cbaf219dcf8a67211497b3f5066e8f73f036ead0e788ab251a071b"
+    },
+    {
+      "bytes": 482960,
+      "content_type": "model/gltf-binary",
+      "filename": "enclosure.glb",
+      "kind": "GLB",
+      "sha256": "630f63e41aeb9cabd8e542bbc6e230b8182f364202562c27c6cfc1b0af7287dc"
+    },
+    {
+      "bytes": 2588,
+      "content_type": "application/json",
+      "filename": "bom.json",
+      "kind": "BOM",
+      "sha256": "93f39f4a9ddc42752a98f3f11d541c88a5fc840de56c8b5ad40a41f0804525c4"
+    },
+    {
+      "bytes": 1014,
+      "content_type": "text/csv",
+      "filename": "bom.csv",
+      "kind": "CSV",
+      "sha256": "bbbbec2575407770ac4913d16442455755af7edc7dc350ff86bda8e4926de0d1"
+    },
+    {
+      "bytes": 5394,
+      "content_type": "image/svg+xml",
+      "filename": "drawing.svg",
+      "kind": "SVG",
+      "sha256": "74e0cef2b9a6ed688d041d525d97812d65099ea6ca1cf42621c4c58531c61205"
+    },
+    {
+      "bytes": 2862,
+      "content_type": "application/json",
+      "filename": "manifest.json",
+      "kind": "MANIFEST",
+      "sha256": "da7f5c9d42a1757e18ed4b8400f77368e253827ca9759146ff9b8c14d081c1ea"
+    }
+  ],
+  "family": "sheet_enclosure",
+  "metrics": {
+    "bbox_mm": [
+      127.402,
+      183.203,
+      75.202
+    ],
+    "bend_count": 8,
+    "bom_item_count": 9,
+    "cavity_mm": [
+      180.0,
+      120.0,
+      70.0
+    ],
+    "panels": [
+      {
+        "bend_count": 2,
+        "filename": "body_flat.dxf",
+        "flat_size_mm": [
+          183.2,
+          260.838
+        ],
+        "hole_count": 12,
+        "label": "Body (floor + side walls)",
+        "name": "body",
+        "quantity": 1
+      },
+      {
+        "bend_count": 2,
+        "filename": "end_cap_flat.dxf",
+        "flat_size_mm": [
+          68.4,
+          144.438
+        ],
+        "hole_count": 4,
+        "label": "End cap",
+        "name": "end_cap",
+        "quantity": 1
+      },
+      {
+        "bend_count": 2,
+        "filename": "end_cap_gland_flat.dxf",
+        "flat_size_mm": [
+          68.4,
+          144.438
+        ],
+        "hole_count": 5,
+        "label": "End cap with cable-gland hole",
+        "name": "end_cap_gland",
+        "quantity": 1
+      },
+      {
+        "bend_count": 2,
+        "filename": "lid_flat.dxf",
+        "flat_size_mm": [
+          183.2,
+          151.838
+        ],
+        "hole_count": 4,
+        "label": "Lid with drip lips",
+        "name": "lid",
+        "quantity": 1
+      }
+    ],
+    "part_count": 4,
+    "thickness_mm": 1.6,
+    "volume_mm3": 152289.7
+  },
+  "processes": [
+    "laser cutting",
+    "press brake bending",
+    "hardware insertion"
+  ],
+  "ref": null,
+  "warnings": [
+    "Weatherproofing relies on the gasket and the lid drip lips; specify an IP rating test if one is required."
+  ],
+  "worker_version": "0.2.0"
+}

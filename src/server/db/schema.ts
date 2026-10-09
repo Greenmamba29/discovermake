@@ -1075,6 +1075,10 @@ export const sourcingClients = pgTable(
         tokenHash: text('token_hash').notNull(),
         lastUsedAt: tstz('last_used_at'),
         revokedAt: tstz('revoked_at'),
+        /** Stage 1 allowlist: MCP tool short names this workspace may list and call (null = all nine). */
+        allowedTools: text('allowed_tools').array(),
+        /** Stage 1 allowlist: client IP ranges (CIDR) the token is accepted from (null = any). */
+        allowedCidrs: text('allowed_cidrs').array(),
         createdAt: createdAt(),
     },
     (t) => [uniqueIndex('sourcing_clients_token_hash_uq').on(t.tokenHash)],
@@ -1516,4 +1520,28 @@ export const passportReplacements = pgTable(
         createdAt: createdAt(),
     },
     (t) => [index('passport_replacements_passport_idx').on(t.replacementOfPassportId, t.createdAt)],
+);
+
+// ---------------------------------------------------------------------------
+// Rate limiting (Stage 1 hardening): shared buckets for every instance
+// ---------------------------------------------------------------------------
+
+/**
+ * One row per (limiter, key): a fixed window (`count` until `expires_at`) or a token bucket
+ * (`tokens` at `updated_at`). Written by one atomic upsert per hit (src/server/rate-limit);
+ * `key_hash` is the sha256 of the limited key (an IP or client id), never the key itself.
+ * Rows past `expires_at` are equivalent to a fresh bucket and are swept periodically.
+ */
+export const rateLimitBuckets = pgTable(
+    'rate_limit_buckets',
+    {
+        bucket: text('bucket').notNull(),
+        keyHash: text('key_hash').notNull(),
+        count: integer('count').notNull().default(0),
+        tokens: doublePrecision('tokens').notNull().default(0),
+        allowed: boolean('allowed').notNull().default(true),
+        updatedAt: tstz('updated_at').notNull().defaultNow(),
+        expiresAt: tstz('expires_at').notNull(),
+    },
+    (t) => [uniqueIndex('rate_limit_buckets_key_uq').on(t.bucket, t.keyHash), index('rate_limit_buckets_expires_idx').on(t.expiresAt)],
 );

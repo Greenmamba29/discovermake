@@ -16,7 +16,8 @@
         "test:watch": "vitest",
         "test:e2e": "playwright test",
         "load:test": "bun scripts/load/run.ts",
-        "ops:restore-drill": "bash scripts/ops/restore-drill.sh"
+        "ops:restore-drill": "bash scripts/ops/restore-drill.sh",
+        "eval:cad": "bun --conditions=react-server evals/cad/run.ts"
     },
     "dependencies": {
         "@ai-sdk/google": "^4.0.88",

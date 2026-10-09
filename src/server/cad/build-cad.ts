@@ -5,25 +5,34 @@
  *     1. needs the build's latest version to be APPROVED with no open questions;
  *     2. uses the buyer's explicit spec, or asks the CAD agent (which refuses untraceable
  *        dimensions: those become NEEDS_INPUT questions in a new version);
- *     3. runs the CAD worker, stores the artifacts, attaches a quotable flat-pattern part
- *        (sheet families) to the same build;
- *     4. writes a new DRAFT design version whose PART node carries the CAD record
- *        (`data.cad`: family, spec, metrics, artifact keys + sha256, part id).
+ *     3. runs the CAD worker, stores every artifact (STEP, DXFs, GLB, BOM, drawing, manifest)
+ *        and attaches one quotable flat-pattern part per panel (sheet families);
+ *     4. prices every panel with the R1 quote engine (Makeability, price range, production
+ *        time; see ./estimate.ts);
+ *     5. writes a new DRAFT design version (workflow 01 artifacts 3-10 persisted on the graph):
+ *          part:main      PART  `data.cad` (family, spec, metrics, artifact keys + sha256, parts),
+ *                               `data.bom` (preliminary BOM), `data.processes`
+ *          part:<item>    PART  one per BOM line (panels with their part ids; purchased hardware)
+ *          proc:*         PROCESS  the CAD result's processes, matched to the catalog
+ *          quote:preliminary QUOTE  the estimate (QUOTED_AS from part:main)
  *   getBuildCad(buildId) reads the latest CAD record back with fresh signed URLs.
  */
 import 'server-only';
-import { eq } from 'drizzle-orm';
+import { eq, inArray } from 'drizzle-orm';
 import type { BgEdgeInput, BgNode, BgNodeInput } from '@/contracts/build-graph';
-import { CadSpec, SHEET_FAMILIES, type BuildCadArtifactView, type BuildCadGenerated, type BuildCadResponse, type CadSpecInput } from '@/contracts/cad';
+import { CadSpec, SHEET_FAMILIES, type BuildCadArtifactView, type BuildCadEstimate, type BuildCadGenerated, type BuildCadPart, type BuildCadResponse, type CadSpecInput } from '@/contracts/cad';
 import type { Actor } from '@/contracts';
 import {
+    clip,
     getGraph,
     guestActor,
     isOpenUnknown,
     latestApprovedVersionRow,
     latestVersionRow,
+    loadBuildCatalog,
     loadVersionGraph,
     MAIN_PART_KEY,
+    matchProcess,
     ROOT_NODE_KEY,
     setGraphBuildStatus,
     slugify,
@@ -33,14 +42,33 @@ import {
 } from '@/server/build-graph';
 import { getDb, withTx } from '@/server/db';
 import { parts } from '@/server/db/schema';
+import { emitEvent } from '@/server/events/outbox';
 import { ApiError } from '@/server/http';
 import { getStorage } from '@/server/storage';
 import { proposeCadSpec } from './agent';
-import { generateCad } from './client';
-import { attachCadResult, type StoredCadArtifact } from './pipeline';
+import { generateCad, type CadResult } from './client';
+import { catalogThicknessHints, estimateCadParts } from './estimate';
+import { attachCadResult, type CadPanelPart, type StoredCadArtifact } from './pipeline';
 import type { LanguageModel } from 'ai';
 
 export const CAD_URL_TTL_SECONDS = 15 * 60;
+export const PRELIMINARY_QUOTE_KEY = 'quote:preliminary';
+
+/** One line of the worker's bom.json. */
+export type CadBomItem = {
+    item: number;
+    name: string;
+    kind: 'fabricated' | 'purchased';
+    quantity: number;
+    process?: string;
+    thickness_mm?: number;
+    flat_size_mm?: [number, number];
+    size_mm?: number[];
+    bend_count?: number;
+    file?: string | null;
+    spec?: string;
+    notes?: string;
+};
 
 /** What the PART node stores under `data.cad`. */
 export type CadRecord = {
@@ -52,6 +80,8 @@ export type CadRecord = {
     dropped: string[];
     artifacts: StoredCadArtifact[];
     partId: string | null;
+    parts?: { partId: string; filename: string; label: string; quantity: number }[];
+    estimate?: BuildCadEstimate | null;
     specSource: 'buyer' | 'make_ai';
     generatedAt: string;
 };
@@ -81,7 +111,7 @@ export async function generateBuildCad(buildId: string, opts: GenerateBuildCadOp
     if (opts.spec) {
         spec = CadSpec.parse(opts.spec);
     } else {
-        const proposal = await proposeCadSpec(view, { model: opts.model });
+        const proposal = await proposeCadSpec(view, { model: opts.model, hints: { catalogThicknesses: await catalogThicknessHints() } });
         if (proposal.status === 'not_supported') return proposal;
         if (proposal.status === 'needs_input') {
             const version = await addQuestions(buildId, approved.version, view.nodes, proposal.questions, actor);
@@ -94,7 +124,9 @@ export async function generateBuildCad(buildId: string, opts: GenerateBuildCadOp
 
     const nextVersion = latest.version + 1;
     const result = await generateCad(spec, { ref: `${buildId}@v${nextVersion}`, fetchImpl: opts.fetchImpl });
-    const { artifacts, part } = await attachCadResult({ buildId, version: nextVersion, result, actor });
+    const { artifacts, part, parts: panelParts } = await attachCadResult({ buildId, version: nextVersion, result, actor });
+    const estimate = SHEET_FAMILIES.includes(result.family) ? await estimateCadParts({ spec, parts: panelParts, nodes: view.nodes }) : null;
+    const bom = readBom(result);
     const record: CadRecord = {
         family: result.family,
         spec,
@@ -104,6 +136,8 @@ export async function generateBuildCad(buildId: string, opts: GenerateBuildCadOp
         dropped,
         artifacts,
         partId: part?.id ?? null,
+        parts: panelParts.map((p) => ({ partId: p.part.id, filename: p.filename, label: p.label, quantity: p.quantity })),
+        estimate,
         specSource,
         generatedAt: new Date().toISOString(),
     };
@@ -111,24 +145,49 @@ export async function generateBuildCad(buildId: string, opts: GenerateBuildCadOp
     const graph = await loadVersionGraph(db, buildId, approved.version);
     const nodes = graph.nodes.map(toNodeInput);
     const edges = graph.edges.map(toEdgeInput);
+    const provenance = `cad-worker:${result.worker_version ?? 'unknown'}`;
     const existing = nodes.find((n) => n.key === MAIN_PART_KEY);
-    const cadData = { cad: record, partId: record.partId, dimensionsStatus: 'cad' };
+    const cadData = { cad: record, partId: record.partId, dimensionsStatus: 'cad', bom, processes: result.processes };
     if (existing) {
         existing.data = { ...existing.data, ...cadData };
         existing.source = 'system';
-        existing.provenance = `cad-worker:${result.worker_version ?? 'unknown'}`;
+        existing.provenance = provenance;
     } else {
-        nodes.push({ key: MAIN_PART_KEY, type: 'PART', label: view.build.name.slice(0, 200), data: cadData, confidence: null, source: 'system', provenance: `cad-worker:${result.worker_version ?? 'unknown'}` });
+        nodes.push({ key: MAIN_PART_KEY, type: 'PART', label: view.build.name.slice(0, 200), data: cadData, confidence: null, source: 'system', provenance });
         edges.push({ type: 'CONTAINS', fromKey: ROOT_NODE_KEY, toKey: MAIN_PART_KEY, data: {} });
     }
+    await addDecomposition(nodes, edges, bom, panelParts, provenance);
+    await addProcesses(nodes, edges, result.processes, view.nodes);
+    if (estimate) addEstimateNode(nodes, edges, estimate);
 
     // writeVersion locks the build and requires `parentVersion` to still be the latest, so a
     // concurrent write makes this throw 409 (the buyer retries) instead of taking a different
     // number: the new version is always `nextVersion`, which the part and artifact keys use.
-    const written = await withTx(async (tx) =>
-        writeVersion(tx, buildId, { parentVersion: latest.version, summary: `Generated CAD (${result.family.replace('_', ' ')})`, nodes, edges, actor }),
-    );
+    const written = await withTx(async (tx) => {
+        const v = await writeVersion(tx, buildId, { parentVersion: latest.version, summary: `Generated CAD (${result.family.replace(/_/g, ' ')})`, nodes, edges, actor });
+        if (estimate) {
+            await emitEvent(tx, { type: 'makeability.completed', payload: { buildId, version: v.version, makeabilityScore: estimate.makeabilityScore, partCount: panelParts.length }, actor, correlationId: buildId, buildId });
+            await emitEvent(tx, {
+                type: 'quote.preliminary',
+                payload: {
+                    buildId,
+                    version: v.version,
+                    quantity: estimate.quantity,
+                    lowCents: estimate.priceRange.lowCents,
+                    highCents: estimate.priceRange.highCents,
+                    productionDaysMin: estimate.productionDays.min,
+                    productionDaysMax: estimate.productionDays.max,
+                    trustLevel: estimate.trustLevel,
+                },
+                actor,
+                correlationId: buildId,
+                buildId,
+            });
+        }
+        return v;
+    });
 
+    const partViews: BuildCadPart[] = panelParts.map((p) => ({ partId: p.part.id, filename: p.filename, label: p.label, quantity: p.quantity, status: p.part.status }));
     return {
         status: 'generated',
         version: written.version,
@@ -141,9 +200,91 @@ export async function generateBuildCad(buildId: string, opts: GenerateBuildCadOp
         artifacts: await signArtifacts(artifacts),
         partId: record.partId,
         partStatus: part?.status ?? null,
-        quotable: Boolean(part && part.status === 'READY' && SHEET_FAMILIES.includes(record.family)),
+        parts: partViews,
+        quotable: isQuotable(record.family, partViews),
+        estimate,
     };
 }
+
+function isQuotable(family: CadRecord['family'], partViews: BuildCadPart[]): boolean {
+    return partViews.length > 0 && partViews.every((p) => p.status === 'READY') && SHEET_FAMILIES.includes(family);
+}
+
+function readBom(result: CadResult): CadBomItem[] {
+    const art = result.artifacts.find((a) => a.kind === 'BOM');
+    if (!art) return [];
+    try {
+        const parsed = JSON.parse(Buffer.from(art.data).toString('utf8')) as { items?: CadBomItem[] };
+        return Array.isArray(parsed.items) ? parsed.items.slice(0, 100) : [];
+    } catch {
+        return [];
+    }
+}
+
+/** One PART node per BOM line under part:main (workflow 01 "part decomposition"). */
+async function addDecomposition(nodes: BgNodeInput[], edges: BgEdgeInput[], bom: CadBomItem[], panelParts: CadPanelPart[], provenance: string): Promise<void> {
+    const taken = new Set(nodes.map((n) => n.key));
+    // A previous CAD version's decomposition is replaced, not merged.
+    const stale = new Set(nodes.filter((n) => n.type === 'PART' && n.data.role === 'cad_item').map((n) => n.key));
+    for (let i = nodes.length - 1; i >= 0; i--) if (stale.has(nodes[i]!.key)) nodes.splice(i, 1);
+    for (let i = edges.length - 1; i >= 0; i--) if (stale.has(edges[i]!.fromKey) || stale.has(edges[i]!.toKey)) edges.splice(i, 1);
+    for (const k of stale) taken.delete(k);
+    for (const item of bom) {
+        const base = `part:${item.kind === 'purchased' ? 'hw-' : ''}${slugify(item.name, 60) || `item-${item.item}`}`;
+        let key = base;
+        for (let n = 2; taken.has(key); n++) key = `${base}-${n}`;
+        taken.add(key);
+        const panel = item.file ? panelParts.find((p) => p.filename === item.file) : undefined;
+        nodes.push({
+            key,
+            type: 'PART',
+            label: clip(item.name, 200),
+            data: {
+                role: 'cad_item',
+                bomItem: item.item,
+                kind: item.kind,
+                quantity: item.quantity,
+                ...(item.process ? { process: item.process } : {}),
+                ...(item.thickness_mm !== undefined ? { thicknessMm: item.thickness_mm } : {}),
+                ...(item.flat_size_mm ? { flatSizeMm: item.flat_size_mm } : {}),
+                ...(item.size_mm ? { sizeMm: item.size_mm } : {}),
+                ...(item.spec ? { spec: item.spec } : {}),
+                ...(item.file ? { file: item.file } : {}),
+                ...(panel ? { partId: panel.part.id } : {}),
+            },
+            confidence: null,
+            source: 'system',
+            provenance,
+        });
+        edges.push({ type: 'CONTAINS', fromKey: MAIN_PART_KEY, toKey: key, data: { quantity: item.quantity } });
+    }
+}
+
+/** The CAD result's processes, matched to the catalog (workflow 01 "process recommendation"). */
+async function addProcesses(nodes: BgNodeInput[], edges: BgEdgeInput[], processes: string[], current: BgNode[]): Promise<void> {
+    const catalog = await loadBuildCatalog(getDb());
+    const materialSlugs = current.filter((n) => n.type === 'MATERIAL' && typeof n.data.catalogSlug === 'string').map((n) => n.data.catalogSlug as string);
+    for (const name of processes) {
+        // The worker says "laser cutting"; the catalog knows fiber vs CO2. Prefer the fiber laser for sheet metal.
+        const spec = matchProcess(/laser cutting/i.test(name) ? `Fiber laser cutting` : name, catalog, materialSlugs);
+        if (!nodes.some((n) => n.key === spec.key)) {
+            nodes.push({ key: spec.key, type: spec.type, label: spec.label, data: { ...spec.data, recommendedBy: 'cad' }, confidence: null, source: 'system', provenance: 'cad-worker' });
+        }
+        const type = spec.type === 'FINISH' ? 'FINISHED_WITH' : 'REQUIRES_PROCESS';
+        if (!edges.some((e) => e.type === type && e.fromKey === MAIN_PART_KEY && e.toKey === spec.key)) edges.push({ type, fromKey: MAIN_PART_KEY, toKey: spec.key, data: {} });
+    }
+}
+
+function addEstimateNode(nodes: BgNodeInput[], edges: BgEdgeInput[], estimate: BuildCadEstimate): void {
+    const label = `Preliminary quote · ${formatUsd(estimate.priceRange.lowCents)}–${formatUsd(estimate.priceRange.highCents)} · ${estimate.productionDays.min}–${estimate.productionDays.max} business days`;
+    const node: BgNodeInput = { key: PRELIMINARY_QUOTE_KEY, type: 'QUOTE', label: clip(label, 200), data: { ...estimate }, confidence: null, source: 'quote_engine', provenance: 'r1-quote-engine' };
+    const at = nodes.findIndex((n) => n.key === PRELIMINARY_QUOTE_KEY);
+    if (at >= 0) nodes[at] = node;
+    else nodes.push(node);
+    if (!edges.some((e) => e.type === 'QUOTED_AS' && e.toKey === PRELIMINARY_QUOTE_KEY)) edges.push({ type: 'QUOTED_AS', fromKey: MAIN_PART_KEY, toKey: PRELIMINARY_QUOTE_KEY, data: {} });
+}
+
+const formatUsd = (cents: number) => `$${(cents / 100).toFixed(2)}`;
 
 /** The most recent CAD record on the build (latest version that has one), with fresh URLs. */
 export async function getBuildCad(buildId: string): Promise<BuildCadGenerated | null> {
@@ -153,11 +294,10 @@ export async function getBuildCad(buildId: string): Promise<BuildCadGenerated | 
     const node = view.nodes.find((n) => n.key === MAIN_PART_KEY && n.data.cad);
     if (!node) return null;
     const record = node.data.cad as CadRecord;
-    let partStatus: string | null = null;
-    if (record.partId) {
-        const [row] = await db.select({ status: parts.status }).from(parts).where(eq(parts.id, record.partId));
-        partStatus = row?.status ?? null;
-    }
+    const recordParts = record.parts ?? (record.partId ? [{ partId: record.partId, filename: record.artifacts.find((a) => a.kind === 'DXF')?.filename ?? 'flat.dxf', label: 'Flat pattern', quantity: 1 }] : []);
+    const statusRows = recordParts.length ? await db.select({ id: parts.id, status: parts.status }).from(parts).where(inArray(parts.id, recordParts.map((p) => p.partId))) : [];
+    const statusOf = (id: string) => statusRows.find((r) => r.id === id)?.status ?? null;
+    const partViews: BuildCadPart[] = recordParts.map((p) => ({ ...p, status: statusOf(p.partId) }));
     return {
         status: 'generated',
         version: node.designVersion,
@@ -169,8 +309,10 @@ export async function getBuildCad(buildId: string): Promise<BuildCadGenerated | 
         dropped: record.dropped,
         artifacts: await signArtifacts(record.artifacts),
         partId: record.partId,
-        partStatus,
-        quotable: partStatus === 'READY' && SHEET_FAMILIES.includes(record.family),
+        partStatus: record.partId ? statusOf(record.partId) : null,
+        parts: partViews,
+        quotable: isQuotable(record.family, partViews),
+        estimate: record.estimate ?? null,
     };
 }
 

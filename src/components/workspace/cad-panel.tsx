@@ -19,9 +19,18 @@ import { PanelCard } from './panels';
 import { cadQueryKey, workspaceApi } from './workspace-api';
 import { approvedVersion, latestVersion, openUnknowns } from './workspace-model';
 
-const FAMILY_LABEL: Record<CadFamily, string> = { sheet_panel: 'Flat sheet panel', l_bracket: 'Bent L-bracket', enclosure: 'Enclosure with lid' };
+const FAMILY_LABEL: Record<CadFamily, string> = {
+    sheet_panel: 'Flat sheet panel',
+    l_bracket: 'Bent L-bracket',
+    enclosure: 'Enclosure with lid',
+    u_channel: 'Bent U-channel',
+    multi_bend_bracket: 'Multi-bend bracket (Z / hat)',
+    slotted_plate: 'Plate with slots and countersinks',
+    sheet_enclosure: 'Sheet-metal enclosure',
+};
 
-const FIELDS: Record<CadFamily, { key: string; label: string }[]> = {
+/** Families the buyer can size with plain numbers (multi-bend and slotted plates need Make AI or the API). */
+const FIELDS: Partial<Record<CadFamily, { key: string; label: string }[]>> = {
     sheet_panel: [
         { key: 'width_mm', label: 'Width (mm)' },
         { key: 'height_mm', label: 'Height (mm)' },
@@ -40,7 +49,23 @@ const FIELDS: Record<CadFamily, { key: string; label: string }[]> = {
         { key: 'inner_z_mm', label: 'Inside height (mm)' },
         { key: 'wall_mm', label: 'Wall (mm)' },
     ],
+    u_channel: [
+        { key: 'flange_a_mm', label: 'Flange A, outside (mm)' },
+        { key: 'base_mm', label: 'Base, outside (mm)' },
+        { key: 'flange_b_mm', label: 'Flange B, outside (mm)' },
+        { key: 'length_mm', label: 'Length (mm)' },
+        { key: 'thickness_mm', label: 'Thickness (mm)' },
+        { key: 'inside_bend_radius_mm', label: 'Inside bend radius (mm)' },
+    ],
+    sheet_enclosure: [
+        { key: 'inner_x_mm', label: 'Inside length (mm)' },
+        { key: 'inner_y_mm', label: 'Inside width (mm)' },
+        { key: 'inner_z_mm', label: 'Inside height (mm)' },
+        { key: 'thickness_mm', label: 'Sheet thickness (mm)' },
+        { key: 'inside_bend_radius_mm', label: 'Inside bend radius (mm)' },
+    ],
 };
+const MANUAL_FAMILIES = Object.keys(FIELDS) as CadFamily[];
 
 export function CadPanel({ view, isCurrent }: { view: BuildGraphView; isCurrent: boolean }) {
     const buildId = view.build.id;
@@ -144,11 +169,11 @@ function ManualSpecForm({ busy, onSubmit }: { busy: boolean; onSubmit: (spec: Ca
 
     const submit = (e: FormEvent) => {
         e.preventDefault();
-        const numbers = Object.fromEntries(FIELDS[family].filter((f) => values[f.key]?.trim()).map((f) => [f.key, Number(values[f.key])]));
+        const numbers = Object.fromEntries((FIELDS[family] ?? []).filter((f) => values[f.key]?.trim()).map((f) => [f.key, Number(values[f.key])]));
         const parsed = CadSpec.safeParse({ family, ...numbers });
         if (!parsed.success) {
             const issue = parsed.error.issues[0];
-            const field = FIELDS[family].find((f) => f.key === issue?.path[0]);
+            const field = (FIELDS[family] ?? []).find((f) => f.key === issue?.path[0]);
             setError(`${field?.label ?? 'A dimension'}: ${issue?.message ?? 'check the value'}`);
             return;
         }
@@ -161,7 +186,7 @@ function ManualSpecForm({ busy, onSubmit }: { busy: boolean; onSubmit: (spec: Ca
             <Field label="Shape">
                 {({ id }) => (
                     <SelectInput id={id} value={family} onChange={(e) => setFamily(e.target.value as CadFamily)} data-testid="cad-family">
-                        {(Object.keys(FAMILY_LABEL) as CadFamily[]).map((f) => (
+                        {MANUAL_FAMILIES.map((f) => (
                             <option key={f} value={f}>
                                 {FAMILY_LABEL[f]}
                             </option>
@@ -170,7 +195,7 @@ function ManualSpecForm({ busy, onSubmit }: { busy: boolean; onSubmit: (spec: Ca
                 )}
             </Field>
             <div className="grid gap-3 sm:grid-cols-2">
-                {FIELDS[family].map((f) => (
+                {(FIELDS[family] ?? []).map((f) => (
                     <Field key={`${family}-${f.key}`} label={f.label}>
                         {({ id }) => (
                             <TextInput id={id} inputMode="decimal" value={values[f.key] ?? ''} onChange={(e) => setValues((v) => ({ ...v, [f.key]: e.target.value }))} data-testid={`cad-field-${f.key}`} />

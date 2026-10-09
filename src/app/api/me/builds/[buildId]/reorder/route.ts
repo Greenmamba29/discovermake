@@ -17,7 +17,7 @@ export const dynamic = 'force-dynamic';
 export const POST = route<{ buildId: string }>(async (request, { params }) => {
     const buildId = pathId((await params).buildId, BuildId, 'Build');
     assertSameOrigin(request);
-    const limited = limitWrite(request);
+    const limited = await limitWrite(request);
     if (limited) return limited;
     const viewer = await getViewer(request);
     return json(await reorderBuild({ viewer, deviceHash: getDeviceHash(request) }, buildId), { status: 201 });

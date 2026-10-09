@@ -1,128 +1,38 @@
-"""CadSpec -> artifacts (STEP, DXF flat pattern, GLB) with CadQuery.
+"""CadSpec -> artifacts (STEP, DXF flat patterns, GLB, BOM, drawing, manifest) with CadQuery.
+
+Every family returns its geometry artifacts; ``generate`` then appends the
+documents every build needs (workflow 01 acceptance): a BOM as JSON and CSV, an SVG
+drawing with overall dimensions, and a manifest that lists the spec and the sha256 of
+every other artifact.
 
 Sheet-metal DXFs follow the DiscoverMake quote-engine conventions
-(``src/server/quote/dxf/parse.ts``): millimetres ($INSUNITS = 4), cut geometry
-on layer ``CUT``, bend lines on a layer containing ``BEND`` with the angle in its
-name (``BEND_90``). That lets a generated flat pattern go straight into the R1
-instant quote engine.
+(``src/server/quote/dxf/parse.ts``), see ``common.py``. That lets a generated flat
+pattern go straight into the R1 instant quote engine.
 """
 
 from __future__ import annotations
 
-import base64
-import hashlib
-import io
 import math
-import os
-import tempfile
-from dataclasses import dataclass, field
 
 import cadquery as cq
-import ezdxf
 
-from .specs import FAMILY_PROCESS, Enclosure, LBracket, SheetPanel
+from . import outputs, sheet
+from .common import (
+    Artifact,
+    FlatPanel,
+    Result,
+    bbox_list,
+    dxf_artifact,
+    dxf_doc,
+    glb_artifact,
+    rounded_rect,
+    solid_metrics,
+    step_artifact,
+    union_bbox,
+)
+from .specs import FAMILY_PROCESS, Enclosure, LBracket, MultiBendBracket, SheetEnclosure, SheetPanel, SlottedPlate, UChannel
 
-INSUNITS_MM = 4
-
-# Deterministic DXF output: fixed creation/update timestamps and GUIDs, so the same
-# spec always yields the same bytes (and sha256). Golden files and caching rely on it.
-ezdxf.options.write_fixed_meta_data_for_testing = True
-
-
-@dataclass
-class Artifact:
-    kind: str  # STEP | DXF | GLB
-    filename: str
-    content_type: str
-    data: bytes
-
-    def to_json(self) -> dict:
-        return {
-            "kind": self.kind,
-            "filename": self.filename,
-            "content_type": self.content_type,
-            "bytes": len(self.data),
-            "sha256": hashlib.sha256(self.data).hexdigest(),
-            "content_base64": base64.b64encode(self.data).decode("ascii"),
-        }
-
-
-@dataclass
-class Result:
-    family: str
-    artifacts: list[Artifact]
-    metrics: dict
-    processes: list[str]
-    warnings: list[str] = field(default_factory=list)
-
-    def to_json(self) -> dict:
-        return {
-            "family": self.family,
-            "artifacts": [a.to_json() for a in self.artifacts],
-            "metrics": self.metrics,
-            "processes": self.processes,
-            "warnings": self.warnings,
-        }
-
-
-# ---------------------------------------------------------------------------
-# Exporters
-# ---------------------------------------------------------------------------
-
-
-def _step(shape: cq.Workplane | cq.Assembly, name: str) -> Artifact:
-    with tempfile.TemporaryDirectory() as d:
-        path = os.path.join(d, f"{name}.step")
-        if isinstance(shape, cq.Assembly):
-            shape.export(path, "STEP")
-        else:
-            cq.exporters.export(shape, path, cq.exporters.ExportTypes.STEP)
-        with open(path, "rb") as f:
-            return Artifact("STEP", f"{name}.step", "model/step", f.read())
-
-
-def _glb(parts: list[tuple[str, cq.Workplane, tuple[float, float, float]]], name: str) -> Artifact:
-    assy = cq.Assembly(name=f"{name}_model")
-    for label, wp, color in parts:
-        assy.add(wp, name=label, color=cq.Color(*color))
-    with tempfile.TemporaryDirectory() as d:
-        path = os.path.join(d, f"{name}.glb")
-        assy.export(path, "GLTF", binary=True)
-        with open(path, "rb") as f:
-            return Artifact("GLB", f"{name}.glb", "model/gltf-binary", f.read())
-
-
-def _dxf_doc() -> ezdxf.document.Drawing:
-    doc = ezdxf.new("R2010", setup=False)
-    doc.header["$INSUNITS"] = INSUNITS_MM
-    doc.header["$MEASUREMENT"] = 1
-    doc.layers.add("CUT", color=7)
-    return doc
-
-
-def _dxf_bytes(doc: ezdxf.document.Drawing, name: str) -> Artifact:
-    buf = io.StringIO()
-    doc.write(buf)
-    return Artifact("DXF", f"{name}.dxf", "application/dxf", buf.getvalue().encode("utf-8"))
-
-
-def _rounded_rect(msp, w: float, h: float, r: float) -> None:
-    """Closed outline as one LWPOLYLINE (bulges for the rounded corners)."""
-    if r <= 0:
-        msp.add_lwpolyline([(0, 0), (w, 0), (w, h), (0, h)], close=True, dxfattribs={"layer": "CUT"})
-        return
-    b = math.tan(math.pi / 8)  # 90-degree arc
-    pts = [
-        (r, 0, 0),
-        (w - r, 0, b),
-        (w, r, 0),
-        (w, h - r, b),
-        (w - r, h, 0),
-        (r, h, b),
-        (0, h - r, 0),
-        (0, r, b),
-    ]
-    msp.add_lwpolyline(pts, format="xyb", close=True, dxfattribs={"layer": "CUT"})
+__all__ = ["Artifact", "Result", "bracket_flat_length", "generate"]
 
 
 # ---------------------------------------------------------------------------
@@ -138,17 +48,19 @@ def sheet_panel(spec: SheetPanel) -> Result:
     for hole in spec.holes:
         solid = solid.cut(cq.Workplane("XY").center(hole.x_mm, hole.y_mm).circle(hole.diameter_mm / 2).extrude(t))
 
-    doc = _dxf_doc()
+    doc = dxf_doc()
     msp = doc.modelspace()
-    _rounded_rect(msp, w, h, spec.corner_radius_mm)
+    rounded_rect(msp, w, h, spec.corner_radius_mm)
     for hole in spec.holes:
         msp.add_circle((hole.x_mm, hole.y_mm), hole.diameter_mm / 2, dxfattribs={"layer": "CUT"})
 
+    dxf = dxf_artifact(doc, "panel_flat")
     return Result(
         family=spec.family,
-        artifacts=[_dxf_bytes(doc, "panel_flat"), _step(solid, "panel"), _glb([("panel", solid, (0.72, 0.74, 0.78))], "panel")],
-        metrics=_metrics(solid, flat=(w, h), thickness=t, bends=0),
+        artifacts=[dxf, step_artifact(solid, "panel"), glb_artifact([("panel", solid, (0.72, 0.74, 0.78))], "panel")],
+        metrics=solid_metrics(solid, flat=(w, h), thickness=t, bends=0),
         processes=FAMILY_PROCESS[spec.family],
+        panels=[FlatPanel("panel", "Panel", 1, doc, dxf, (w, h), t, 0, len(spec.holes))],
     )
 
 
@@ -191,10 +103,10 @@ def l_bracket(spec: LBracket) -> Result:
         solid = solid.cut(cyl)
 
     flat_a, ba, flat_b, total = bracket_flat_length(spec)
-    doc = _dxf_doc()
+    doc = dxf_doc()
     doc.layers.add("BEND_90", color=1)
     msp = doc.modelspace()
-    _rounded_rect(msp, w, total, 0)
+    rounded_rect(msp, w, total, 0)
     bend_y = flat_a + ba / 2
     msp.add_line((0, bend_y), (w, bend_y), dxfattribs={"layer": "BEND_90"})
     for hole in spec.holes_a:
@@ -205,15 +117,17 @@ def l_bracket(spec: LBracket) -> Result:
     warnings = []
     if r < t:
         warnings.append("Inside bend radius is below the material thickness; many shops need r >= t.")
+    dxf = dxf_artifact(doc, "bracket_flat")
     return Result(
         family=spec.family,
-        artifacts=[_dxf_bytes(doc, "bracket_flat"), _step(solid, "bracket"), _glb([("bracket", solid, (0.72, 0.74, 0.78))], "bracket")],
+        artifacts=[dxf, step_artifact(solid, "bracket"), glb_artifact([("bracket", solid, (0.72, 0.74, 0.78))], "bracket")],
         metrics={
-            **_metrics(solid, flat=(w, total), thickness=t, bends=1),
+            **solid_metrics(solid, flat=(w, total), thickness=t, bends=1),
             "flat_pattern": {"flange_a_mm": round(flat_a, 3), "bend_allowance_mm": round(ba, 3), "flange_b_mm": round(flat_b, 3), "bend_line_y_mm": round(bend_y, 3)},
         },
         processes=FAMILY_PROCESS[spec.family],
         warnings=warnings,
+        panels=[FlatPanel("bracket", "L-bracket", 1, doc, dxf, (w, total), t, 1, len(spec.holes_a) + len(spec.holes_b))],
     )
 
 
@@ -271,49 +185,50 @@ def enclosure(spec: Enclosure) -> Result:
     for label, wp in shapes:
         assy.add(wp, name=label)
     volume = sum(wp.val().Volume() for _, wp in shapes)
-    bb = _union_bbox([wp for _, wp in shapes])
+    bb = union_bbox([wp for _, wp in shapes])
+    solids = [{"name": "base", "label": "Enclosure base", "quantity": 1, "process": "3D printing or CNC milling", "size_mm": [round(ox, 3), round(oy, 3), round(oz, 3)]}]
+    if spec.lid:
+        solids.append({"name": "lid", "label": "Lip lid", "quantity": 1, "process": "3D printing or CNC milling", "size_mm": [round(ox, 3), round(oy, 3), round(wall + 3, 3)]})
+    hardware = []
+    if spec.standoffs and spec.lid:
+        hardware.append({"name": "Self-tapping screw for the standoffs", "quantity": len(spec.standoffs), "spec": f"for a {spec.standoffs[0].hole_diameter_mm} mm pilot hole", "notes": "Size to the board's mounting holes."})
     return Result(
         family=spec.family,
-        artifacts=[_step(assy, "enclosure"), _glb(parts, "enclosure")],
+        artifacts=[step_artifact(assy, "enclosure"), glb_artifact(parts, "enclosure")],
         metrics={
-            "bbox_mm": _bbox(bb),
+            "bbox_mm": bbox_list(bb),
             "volume_mm3": round(volume, 1),
             "part_count": len(shapes),
         },
         processes=FAMILY_PROCESS[spec.family],
+        solids=solids,
+        hardware=hardware,
     )
 
 
 # ---------------------------------------------------------------------------
 
 
-def _bbox(bb) -> list[float]:
-    return [round(bb.xlen, 3), round(bb.ylen, 3), round(bb.zlen, 3)]
-
-
-def _union_bbox(wps: list[cq.Workplane]):
-    bb = wps[0].val().BoundingBox()
-    for wp in wps[1:]:
-        bb = bb.add(wp.val().BoundingBox())
-    return bb
-
-
-def _metrics(solid: cq.Workplane, *, flat: tuple[float, float], thickness: float, bends: int) -> dict:
-    v = solid.val()
-    return {
-        "bbox_mm": _bbox(v.BoundingBox()),
-        "volume_mm3": round(v.Volume(), 1),
-        "flat_size_mm": [round(flat[0], 3), round(flat[1], 3)],
-        "thickness_mm": thickness,
-        "bend_count": bends,
-    }
-
-
-def generate(spec) -> Result:
+def _family_result(spec) -> Result:
     if isinstance(spec, SheetPanel):
         return sheet_panel(spec)
     if isinstance(spec, LBracket):
         return l_bracket(spec)
     if isinstance(spec, Enclosure):
         return enclosure(spec)
+    if isinstance(spec, UChannel):
+        return sheet.u_channel(spec)
+    if isinstance(spec, MultiBendBracket):
+        return sheet.multi_bend_bracket(spec)
+    if isinstance(spec, SlottedPlate):
+        return sheet.slotted_plate(spec)
+    if isinstance(spec, SheetEnclosure):
+        return sheet.sheet_enclosure(spec)
     raise TypeError(f"unsupported spec family: {type(spec).__name__}")
+
+
+def generate(spec, *, worker_version: str | None = None) -> Result:
+    """Geometry for ``spec`` plus the BOM (JSON + CSV), the SVG drawing and the manifest."""
+    result = _family_result(spec)
+    outputs.add_documents(result, spec, worker_version=worker_version)
+    return result

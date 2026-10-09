@@ -21,7 +21,7 @@ export const DELETE = route<Params>(async (request, { params }) => {
     const p = await params;
     const buildId = pathId(p.buildId, BuildId, 'Build');
     const attachmentId = pathId(p.attachmentId, BuildAttachmentId, 'Attachment');
-    const limited = limitWrite(request, attachmentWriteLimiter, 'Too many changes in a short time. Wait a minute and try again.');
+    const limited = await limitWrite(request, attachmentWriteLimiter, 'Too many changes in a short time. Wait a minute and try again.');
     if (limited) return limited;
     const build = await requireBuild(buildId);
     await assertCanEditBuild(request, build);

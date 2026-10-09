@@ -28,7 +28,7 @@ export const GET = route<{ buildId: string }>(async (_request, { params }) => {
 
 export const POST = route<{ buildId: string }>(async (request, { params }) => {
     const buildId = pathId((await params).buildId, BuildId, 'Build');
-    const limited = limitWrite(request, attachmentWriteLimiter, 'Too many uploads in a short time. Wait a minute and try again.');
+    const limited = await limitWrite(request, attachmentWriteLimiter, 'Too many uploads in a short time. Wait a minute and try again.');
     if (limited) return limited;
     const body = await parseJson(request, CreateAttachmentRequest, MAX_JSON_BODY_BYTES);
     const build = await requireBuild(buildId);

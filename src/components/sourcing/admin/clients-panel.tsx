@@ -10,9 +10,11 @@ import { Field, TextInput } from '@/components/ui/field';
 import { Notice } from '@/components/ui/state';
 import { errorMessage } from '@/lib/api';
 import { sourcingApi } from '../api';
+import { allowlistSummary, ClientAllowlistEditor } from './client-allowlist';
 
 /**
- * Accio clients (MCP bearer tokens): create one per Accio Work workspace and revoke it.
+ * Accio clients (MCP bearer tokens): create one per Accio Work workspace, limit it to some
+ * tools and IP ranges (per-workspace allowlist), and revoke it.
  * The token is shown exactly once; only its sha256 is stored server-side.
  */
 export function ClientsPanel({ token }: { token: string }) {
@@ -30,6 +32,7 @@ export function ClientsPanel({ token }: { token: string }) {
         await queryClient.refetchQueries({ queryKey: clientsKey });
     };
     const [notice, setNotice] = useState<{ tone: 'success' | 'error'; text: string } | null>(null);
+    const [editing, setEditing] = useState<string | null>(null);
 
     const create = async (e: FormEvent) => {
         e.preventDefault();
@@ -131,11 +134,31 @@ export function ClientsPanel({ token }: { token: string }) {
                                     <p className="font-mono text-[11px] text-fg-subtle">
                                         {c.clientId} · last used {c.lastUsedAt ? new Date(c.lastUsedAt).toLocaleString() : 'never'}
                                     </p>
+                                    <p className="break-words text-xs text-fg-muted" data-testid={`client-allowlist-${c.clientId}`}>
+                                        Allowlist: {allowlistSummary(c)}
+                                    </p>
                                 </div>
                                 {c.revokedAt ? (
                                     <span className="text-xs text-fg-subtle">Revoked</span>
                                 ) : (
-                                    <ConfirmAction label="Revoke" confirmLabel="Revoke now" prompt="Revoke this client? Its token stops working immediately and its leased jobs return to the queue." variant="caution" size="sm" onConfirm={() => revoke(c.clientId)} testId={`client-revoke-${c.clientId}`} />
+                                    <div className="flex flex-wrap gap-2">
+                                        <Button variant="secondary" size="sm" onClick={() => setEditing(editing === c.clientId ? null : c.clientId)} aria-expanded={editing === c.clientId} data-testid={`client-allowlist-edit-${c.clientId}`}>
+                                            Allowlist
+                                        </Button>
+                                        <ConfirmAction label="Revoke" confirmLabel="Revoke now" prompt="Revoke this client? Its token stops working immediately and its leased jobs return to the queue." variant="caution" size="sm" onConfirm={() => revoke(c.clientId)} testId={`client-revoke-${c.clientId}`} />
+                                    </div>
+                                )}
+                                {editing === c.clientId && !c.revokedAt && (
+                                    <ClientAllowlistEditor
+                                        token={token}
+                                        client={c}
+                                        onCancel={() => setEditing(null)}
+                                        onSaved={(row) => {
+                                            setEditing(null);
+                                            void refresh();
+                                            setNotice({ tone: 'success', text: `Allowlist for ${row.name} saved: ${allowlistSummary(row)}. It applies to the next MCP request.` });
+                                        }}
+                                    />
                                 )}
                             </li>
                         ))}

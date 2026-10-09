@@ -9,7 +9,7 @@ export const dynamic = 'force-dynamic';
 
 export const POST = route(async (request) => {
     assertSameOrigin(request);
-    const limited = limitWrite(request, undefined, 'Too many sign-in attempts. Wait a minute and try again.');
+    const limited = await limitWrite(request, undefined, 'Too many sign-in attempts. Wait a minute and try again.');
     if (limited) return limited;
     return json(await passkeyLoginOptions());
 });

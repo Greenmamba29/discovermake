@@ -16,6 +16,7 @@ import { ApiError, statusForCode } from '../http';
 export function apiCodeFor(code: SourcingErrorCode): ApiErrorCode {
     switch (code) {
         case 'APPROVAL_REQUIRED':
+        case 'TOOL_NOT_ALLOWED':
             return 'FORBIDDEN';
         case 'STALE_DESIGN_VERSION':
         case 'LEASE_INVALID':

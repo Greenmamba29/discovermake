@@ -24,7 +24,7 @@ const MAX_BODY_BYTES = 1024;
 
 export const POST = route<{ passportId: string }>(async (request, { params }) => {
     const passportId = pathId((await params).passportId, PassportId, 'Passport');
-    const limited = limitWrite(request, replacementLimiter, 'Too many replacement requests. Wait a minute and try again.');
+    const limited = await limitWrite(request, replacementLimiter, 'Too many replacement requests. Wait a minute and try again.');
     if (limited) return limited;
     const text = await readBodyText(request, MAX_BODY_BYTES);
     let raw: unknown = {};

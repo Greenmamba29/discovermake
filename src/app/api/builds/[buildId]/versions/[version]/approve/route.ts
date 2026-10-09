@@ -21,7 +21,7 @@ export const POST = route<{ buildId: string; version: string }>(async (request, 
     const p = await params;
     const buildId = pathId(p.buildId, BuildId, 'Build');
     if (!/^[1-9]\d{0,8}$/.test(p.version)) throw new ApiError('NOT_FOUND', 'Version not found');
-    const limited = limitWrite(request);
+    const limited = await limitWrite(request);
     if (limited) return limited;
     await assertCanEditBuildId(request, buildId);
     const viewer = await getViewer(request);

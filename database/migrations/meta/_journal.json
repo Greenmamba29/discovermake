@@ -43,6 +43,13 @@
       "when": 1791574506879,
       "tag": "0005_r2_attachments",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1791575194461,
+      "tag": "0006_stage1_hardening",
+      "breakpoints": true
     }
   ]
 }

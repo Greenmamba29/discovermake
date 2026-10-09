@@ -25,7 +25,7 @@ const MakeAiBuildRequest = z.object({ intentId: z.string().trim().min(1).max(64)
 
 export const POST = route(async (request) => {
     if (!isMakeAiEnabled()) throw new ApiError('NOT_FOUND', 'Not found', 404);
-    const limited = limitWrite(request, makeAiRateLimiter, 'Too many Make AI requests. Wait a minute and try again.');
+    const limited = await limitWrite(request, makeAiRateLimiter, 'Too many Make AI requests. Wait a minute and try again.');
     if (limited) return limited;
     const body = await parseJson(request, MakeAiBuildRequest, MAX_JSON_BODY_BYTES);
     const owner = await resolveBuildOwner(request);

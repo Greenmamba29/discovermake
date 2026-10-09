@@ -88,7 +88,7 @@ def test_enclosure_has_base_and_lid():
     r = generate(spec(ENCLOSURE))
     assert r.metrics["part_count"] == 2
     assert r.metrics["bbox_mm"] == pytest.approx([95, 70, 45], abs=0.01)
-    assert {a.kind for a in r.artifacts} == {"STEP", "GLB"}
+    assert {a.kind for a in r.artifacts} == {"STEP", "GLB", "BOM", "CSV", "SVG", "MANIFEST"}
     assert r.processes == ["3D printing", "CNC milling"]
 
 

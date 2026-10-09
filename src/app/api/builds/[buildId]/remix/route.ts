@@ -18,7 +18,7 @@ export const dynamic = 'force-dynamic';
 
 export const POST = route<{ buildId: string }>(async (request, { params }) => {
     const buildId = pathId((await params).buildId, BuildId, 'Build');
-    const limited = limitWrite(request);
+    const limited = await limitWrite(request);
     if (limited) return limited;
     const body = validate(await readJsonBody(request, { allowEmpty: true }), BuildForkRequest);
     const owner = await resolveBuildOwner(request);

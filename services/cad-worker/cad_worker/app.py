@@ -49,7 +49,7 @@ def _run(payload: dict) -> dict:
     """Runs in a worker process."""
     req = GenerateRequest.model_validate(payload)
     started = time.monotonic()
-    result = generate(req.spec).to_json()
+    result = generate(req.spec, worker_version=__version__).to_json()
     result["ref"] = req.ref
     result["duration_ms"] = int((time.monotonic() - started) * 1000)
     result["worker_version"] = __version__

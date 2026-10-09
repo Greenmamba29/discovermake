@@ -34,8 +34,24 @@ const ObjectViewport3D = dynamic(() => import('./object-viewport-3d'), {
     loading: () => <div className="skeleton h-full w-full rounded-none" aria-hidden />,
 });
 
-const FAMILY_LABEL: Record<CadFamily, string> = { sheet_panel: 'Flat sheet panel', l_bracket: 'Bent L-bracket', enclosure: 'Enclosure with lid' };
-const KIND_LABEL: Record<BuildCadArtifactView['kind'], string> = { STEP: 'CAD model', DXF: 'Flat pattern', GLB: '3D preview' };
+const FAMILY_LABEL: Record<CadFamily, string> = {
+    sheet_panel: 'Flat sheet panel',
+    l_bracket: 'Bent L-bracket',
+    enclosure: 'Enclosure with lid',
+    u_channel: 'U-channel',
+    multi_bend_bracket: 'Multi-bend bracket',
+    slotted_plate: 'Slotted plate',
+    sheet_enclosure: 'Sheet-metal enclosure',
+};
+const KIND_LABEL: Record<BuildCadArtifactView['kind'], string> = {
+    STEP: 'CAD model',
+    DXF: 'Flat pattern',
+    GLB: '3D preview',
+    BOM: 'Bill of materials',
+    CSV: 'BOM (CSV)',
+    SVG: 'Dimensioned drawing',
+    MANIFEST: 'Artifact manifest',
+};
 
 class ViewerBoundary extends Component<{ fallback: ReactNode; children: ReactNode }, { failed: boolean }> {
     state = { failed: false };
