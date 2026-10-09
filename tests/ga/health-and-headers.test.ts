@@ -3,7 +3,6 @@ import { useTestDb as withTestDb } from '../support/db';
 import { GET } from '@/app/api/health/route';
 import { LEGAL_DOCS, LEGAL_SLUGS, legalEffectiveDate } from '@/lib/legal';
 
-// eslint-disable-next-line @typescript-eslint/no-require-imports
 const nextConfig = require('../../next.config.js');
 
 describe('GET /api/health', () => {
