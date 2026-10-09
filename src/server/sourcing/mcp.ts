@@ -310,13 +310,14 @@ export async function callSourcingTool(name: string, rawArgs: unknown, ctx: Tool
         return toolErrorResult({ error: { code, message, ...(approvalKind ? { approval_kind: approvalKind } : {}) } });
     };
     try {
+        // Every call spends budget, including unknown or disallowed tools: each one still writes an audit row.
+        const budget = await mcpRateLimiter.take(ctx.client.id);
+        if (!budget.allowed) return fail('RATE_LIMITED', `Too many calls. Retry in ${budget.retryAfterSeconds} s.`);
         const short = shortName(name);
         if (!short) return fail('NOT_FOUND', `Unknown tool ${name.slice(0, 100)}. Tools: ${SOURCING_TOOLS.map(toolName).join(', ')}`);
         if (!toolAllowed(ctx.client, short)) {
             return fail('TOOL_NOT_ALLOWED', `${toolName(short)} is not enabled for this workspace. Allowed tools: ${allowedTools(ctx.client).map(toolName).join(', ')}. Ask DiscoverMake ops to change the allowlist.`);
         }
-        const budget = await mcpRateLimiter.take(ctx.client.id);
-        if (!budget.allowed) return fail('RATE_LIMITED', `Too many calls. Retry in ${budget.retryAfterSeconds} s.`);
         const def = TOOL_DEFS[short];
         const parsed = def.input.safeParse(rawArgs ?? {});
         if (!parsed.success) return fail('VALIDATION_FAILED', `Invalid arguments: ${zodMessage(parsed.error)}`);

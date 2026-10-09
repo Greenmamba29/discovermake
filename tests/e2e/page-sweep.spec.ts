@@ -16,7 +16,6 @@ import { expect, test, type Browser, type Page } from '@playwright/test';
 import postgres from 'postgres';
 import { randomUUID } from 'node:crypto';
 import { E2E_ADMIN_TOKEN, E2E_DATABASE_URL } from '../../playwright.config';
-import { BOTTOM_NAV } from '../../src/components/site/nav-items';
 import { createBuildWithCad } from './support/cad-build';
 import { createReconstructState } from './support/reconstruct';
 import { adminLogin, fulfil, payOrder, quotePart, shopLogin } from './support/journeys';
@@ -740,7 +739,7 @@ test.describe('Mobbin page sweep', () => {
                 const bottomNav = page.getByTestId('bottom-nav');
                 if (viewport === 'phone' && screen.bottomNav) {
                     await expect(bottomNav).toBeVisible();
-                    await expect(bottomNav.getByRole('link')).toHaveCount(BOTTOM_NAV.length);
+                    await expect(bottomNav.getByRole('link')).toHaveCount(5);
                     expect(await bottomNav.locator('[aria-current="page"]').count()).toBeLessThanOrEqual(1);
                 } else if (viewport === 'phone') {
                     await expect(bottomNav).toHaveCount(0);
