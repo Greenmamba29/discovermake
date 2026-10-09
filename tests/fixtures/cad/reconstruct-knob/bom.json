@@ -1,0 +1,21 @@
+{
+  "family": "round_knob",
+  "items": [
+    {
+      "file": "knob.stl",
+      "item": 1,
+      "kind": "fabricated",
+      "name": "Replacement knob for a 6 mm D-shaft",
+      "notes": "",
+      "process": "3D printing (FDM or SLS)",
+      "quantity": 1,
+      "size_mm": [
+        38.1,
+        38.1,
+        22.0
+      ]
+    }
+  ],
+  "units": "mm",
+  "version": "dm-bom/1"
+}

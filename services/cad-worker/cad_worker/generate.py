@@ -16,7 +16,7 @@ import math
 
 import cadquery as cq
 
-from . import outputs, sheet
+from . import outputs, printed, sheet
 from .common import (
     Artifact,
     FlatPanel,
@@ -30,7 +30,7 @@ from .common import (
     step_artifact,
     union_bbox,
 )
-from .specs import FAMILY_PROCESS, Enclosure, LBracket, MultiBendBracket, SheetEnclosure, SheetPanel, SlottedPlate, UChannel
+from .specs import FAMILY_PROCESS, Enclosure, LBracket, MultiBendBracket, RoundKnob, SheetEnclosure, SheetPanel, SlottedPlate, SpacerBushing, UChannel
 
 __all__ = ["Artifact", "Result", "bracket_flat_length", "generate"]
 
@@ -185,6 +185,7 @@ def enclosure(spec: Enclosure) -> Result:
     for label, wp in shapes:
         assy.add(wp, name=label)
     volume = sum(wp.val().Volume() for _, wp in shapes)
+    area = sum(wp.val().Area() for _, wp in shapes)
     bb = union_bbox([wp for _, wp in shapes])
     solids = [{"name": "base", "label": "Enclosure base", "quantity": 1, "process": "3D printing or CNC milling", "size_mm": [round(ox, 3), round(oy, 3), round(oz, 3)]}]
     if spec.lid:
@@ -198,6 +199,7 @@ def enclosure(spec: Enclosure) -> Result:
         metrics={
             "bbox_mm": bbox_list(bb),
             "volume_mm3": round(volume, 1),
+            "surface_area_mm2": round(area, 1),
             "part_count": len(shapes),
         },
         processes=FAMILY_PROCESS[spec.family],
@@ -224,6 +226,10 @@ def _family_result(spec) -> Result:
         return sheet.slotted_plate(spec)
     if isinstance(spec, SheetEnclosure):
         return sheet.sheet_enclosure(spec)
+    if isinstance(spec, RoundKnob):
+        return printed.round_knob(spec)
+    if isinstance(spec, SpacerBushing):
+        return printed.spacer_bushing(spec)
     raise TypeError(f"unsupported spec family: {type(spec).__name__}")
 
 

@@ -36,11 +36,11 @@
    "sha256": "9aa0431fdd12dd1cbe1751dae1808a9380613760b09feaff3d91e2e6cc9aaccb"
   },
   {
-   "bytes": 1476,
+   "bytes": 1614,
    "content_type": "application/json",
    "filename": "manifest.json",
    "kind": "MANIFEST",
-   "sha256": "1383739334486f1594c39bfa5d331667f1ab08450db5ea885512ccf87540d161"
+   "sha256": "dabc256552e50abab7a1cf893a3a154e530e88e79c0c6528987757e9525e71f3"
   }
  ],
  "family": "enclosure",
@@ -52,6 +52,7 @@
   ],
   "bom_item_count": 2,
   "part_count": 2,
+  "surface_area_mm2": 55185.4,
   "volume_mm3": 66511.6
  },
  "processes": [
@@ -60,5 +61,5 @@
  ],
  "ref": "eval:printed-sensor-box",
  "warnings": [],
- "worker_version": "0.2.0"
+ "worker_version": "0.3.0"
 }

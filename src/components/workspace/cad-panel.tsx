@@ -27,6 +27,8 @@ const FAMILY_LABEL: Record<CadFamily, string> = {
     multi_bend_bracket: 'Multi-bend bracket (Z / hat)',
     slotted_plate: 'Plate with slots and countersinks',
     sheet_enclosure: 'Sheet-metal enclosure',
+    round_knob: 'Printed round knob',
+    spacer_bushing: 'Printed spacer / bushing',
 };
 
 /** Families the buyer can size with plain numbers (multi-bend and slotted plates need Make AI or the API). */

@@ -42,11 +42,14 @@ const FAMILY_LABEL: Record<CadFamily, string> = {
     multi_bend_bracket: 'Multi-bend bracket',
     slotted_plate: 'Slotted plate',
     sheet_enclosure: 'Sheet-metal enclosure',
+    round_knob: 'Printed round knob',
+    spacer_bushing: 'Printed spacer / bushing',
 };
 const KIND_LABEL: Record<BuildCadArtifactView['kind'], string> = {
     STEP: 'CAD model',
     DXF: 'Flat pattern',
     GLB: '3D preview',
+    STL: '3D print file (STL)',
     BOM: 'Bill of materials',
     CSV: 'BOM (CSV)',
     SVG: 'Dimensioned drawing',

@@ -1,0 +1,2 @@
+item,name,kind,quantity,process,thickness_mm,size_mm,file,spec,notes
+1,Flanged bushing 12 x 6.5 x 10 mm,fabricated,1,3D printing (FDM or SLS),,18 x 18 x 10,spacer.stl,,

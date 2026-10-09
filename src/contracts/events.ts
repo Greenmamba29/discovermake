@@ -27,6 +27,7 @@ import {
 } from './enums';
 import { IsoDateTime } from './common';
 import { CreationIntentKind, MakeAiRiskClass } from './make-ai';
+import { CAD_FAMILIES, CadArtifactKind } from './cad';
 
 const id = z.string().min(1);
 const cents = z.number().int().nonnegative();
@@ -150,9 +151,9 @@ export const EVENT_PAYLOADS = {
     'cad.generated': z.object({
         buildId: id,
         version: z.number().int().positive(),
-        family: z.enum(['sheet_panel', 'l_bracket', 'enclosure', 'u_channel', 'multi_bend_bracket', 'slotted_plate', 'sheet_enclosure']),
+        family: z.enum(CAD_FAMILIES),
         partId: id.nullable(),
-        artifacts: z.array(z.object({ kind: z.enum(['STEP', 'DXF', 'GLB', 'BOM', 'CSV', 'SVG', 'MANIFEST']), key: z.string(), sha256: z.string() })),
+        artifacts: z.array(z.object({ kind: CadArtifactKind, key: z.string(), sha256: z.string() })),
     }),
     /** Workflow 01 "Makeability" + "Preliminary quote": the R1 engine priced every flat pattern of a CAD version. */
     'makeability.completed': z.object({ buildId: id, version: z.number().int().positive(), makeabilityScore: z.number().int().min(0).max(100), partCount: z.number().int().nonnegative() }),

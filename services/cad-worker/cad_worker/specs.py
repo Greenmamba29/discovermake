@@ -400,6 +400,116 @@ class SheetEnclosure(_Strict):
         return self
 
 
+# ---------------------------------------------------------------------------
+# R6 Reconstruct: printed replacement parts (FDM / SLS)
+# ---------------------------------------------------------------------------
+#
+# Every product-defining number of these families is a buyer CALIPER reading (or a shaft
+# standard the buyer picked); the web app's Reconstruct planner refuses to fill them from a
+# photo estimate. Process choices (chamfer, rib depth, fit clearance) have defaults.
+
+#: Geometric floor for printed walls. The print quote engine's DFM blocks below 1.2 mm
+#: (``PRINT_MIN_WALL_MM`` in src/server/quote/printing); the worker only refuses what
+#: cannot be built at all.
+PRINT_WALL_FLOOR_MM = 0.8
+
+
+class RoundKnob(_Strict):
+    """A round control knob, printed bore-down.
+
+    ``diameter_mm`` x ``height_mm`` is the body; a blind bore of ``bore_depth_mm`` comes up
+    from the underside for the shaft (``shaft_diameter_mm``, plus ``bore_clearance_mm`` for
+    the printed fit). A D-shaft bore keeps a flat ``shaft_flat_depth_mm`` deep (6 mm D-shafts:
+    1.5 mm, i.e. 4.5 mm across the flat). Optional vertical grip flutes, a pointer notch on
+    the top face and a top-edge chamfer.
+    """
+
+    family: Literal["round_knob"]
+    diameter_mm: float = Field(ge=8, le=120)
+    height_mm: float = Field(ge=5, le=80)
+    bore_type: Literal["d_shaft", "round"] = "d_shaft"
+    shaft_diameter_mm: float = Field(ge=2, le=25)
+    shaft_flat_depth_mm: float | None = Field(default=None, ge=0.2, le=6)
+    bore_depth_mm: float = Field(ge=2, le=78)
+    bore_clearance_mm: float = Field(default=0.15, ge=0, le=0.5)
+    grip_ribs: int = Field(default=0, ge=0, le=60)
+    rib_depth_mm: float = Field(default=0.8, ge=0.3, le=3)
+    pointer_notch: bool = False
+    chamfer_mm: float = Field(default=0.5, ge=0, le=5)
+
+    @model_validator(mode="after")
+    def _check(self) -> "RoundKnob":
+        if self.bore_type == "d_shaft":
+            if self.shaft_flat_depth_mm is None:
+                raise ValueError("a d_shaft bore needs shaft_flat_depth_mm")
+            if self.shaft_flat_depth_mm >= self.shaft_diameter_mm / 2:
+                raise ValueError("shaft_flat_depth_mm must be less than the shaft radius")
+        elif self.shaft_flat_depth_mm is not None:
+            raise ValueError("shaft_flat_depth_mm is only for a d_shaft bore")
+        if self.bore_depth_mm > self.height_mm - PRINT_WALL_FLOOR_MM:
+            raise ValueError(f"bore_depth_mm must leave at least {PRINT_WALL_FLOOR_MM} mm of cap above the bore")
+        if self.min_wall_mm() < PRINT_WALL_FLOOR_MM - 1e-9:
+            raise ValueError(f"the wall around the bore is {self.min_wall_mm():.2f} mm; at least {PRINT_WALL_FLOOR_MM} mm is needed (smaller shaft, fewer or shallower ribs, or a larger knob)")
+        if self.chamfer_mm and self.chamfer_mm >= min(self.height_mm / 3, self.diameter_mm / 6):
+            raise ValueError("chamfer_mm is too large for this knob")
+        if self.grip_ribs:
+            pitch = math.pi * self.diameter_mm / self.grip_ribs
+            if pitch < 2 * self.rib_depth_mm + 1.0:
+                raise ValueError("too many grip_ribs for this diameter (flutes would merge)")
+        if self.pointer_notch and self.height_mm - self.bore_depth_mm < POINTER_NOTCH_DEPTH_MM + PRINT_WALL_FLOOR_MM:
+            raise ValueError("a pointer notch needs a thicker cap above the bore")
+        return self
+
+    def bore_diameter(self) -> float:
+        return self.shaft_diameter_mm + self.bore_clearance_mm
+
+    def min_wall_mm(self) -> float:
+        radial = (self.diameter_mm - self.bore_diameter()) / 2 - (self.rib_depth_mm if self.grip_ribs else 0)
+        cap = self.height_mm - self.bore_depth_mm - (POINTER_NOTCH_DEPTH_MM if self.pointer_notch else 0)
+        return round(min(radial, cap), 3)
+
+
+#: Pointer notch on the knob's top face: a 1.2 mm wide groove this deep, from 25% of the radius to the rim.
+POINTER_NOTCH_DEPTH_MM = 0.6
+POINTER_NOTCH_WIDTH_MM = 1.2
+
+
+class SpacerBushing(_Strict):
+    """A plain or flanged spacer / bushing (tube), printed flange-down.
+
+    ``length_mm`` is the overall length including the flange.
+    """
+
+    family: Literal["spacer_bushing"]
+    outer_diameter_mm: float = Field(ge=3, le=200)
+    inner_diameter_mm: float = Field(ge=1, le=190)
+    length_mm: float = Field(ge=1, le=300)
+    flange_diameter_mm: float | None = Field(default=None, ge=4, le=300)
+    flange_thickness_mm: float | None = Field(default=None, ge=0.8, le=50)
+    chamfer_mm: float = Field(default=0, ge=0, le=3)
+
+    @model_validator(mode="after")
+    def _check(self) -> "SpacerBushing":
+        if (self.flange_diameter_mm is None) != (self.flange_thickness_mm is None):
+            raise ValueError("a flange needs both flange_diameter_mm and flange_thickness_mm")
+        if self.flange_diameter_mm is not None:
+            if self.flange_diameter_mm <= self.outer_diameter_mm:
+                raise ValueError("flange_diameter_mm must be larger than outer_diameter_mm")
+            if self.flange_thickness_mm >= self.length_mm:  # type: ignore[operator]
+                raise ValueError("flange_thickness_mm must be less than length_mm")
+        if self.min_wall_mm() < PRINT_WALL_FLOOR_MM - 1e-9:
+            raise ValueError(f"the tube wall is {self.min_wall_mm():.2f} mm; at least {PRINT_WALL_FLOOR_MM} mm is needed")
+        if self.chamfer_mm and self.chamfer_mm >= self.min_wall_mm() / 2:
+            raise ValueError("chamfer_mm must be less than half the wall")
+        return self
+
+    def min_wall_mm(self) -> float:
+        walls = [(self.outer_diameter_mm - self.inner_diameter_mm) / 2]
+        if self.flange_thickness_mm is not None:
+            walls.append(self.flange_thickness_mm)
+        return round(min(walls), 3)
+
+
 def lid_gap_mm(r: float) -> float:
     """Compressed gasket under a sheet-enclosure lid: at least the inside bend radius, so the
     lid's bend never touches the wall tops."""
@@ -443,7 +553,7 @@ def _segment_distance(a1, b1, a2, b2) -> float:
 
 
 CadSpec = Annotated[
-    Union[SheetPanel, LBracket, Enclosure, UChannel, MultiBendBracket, SlottedPlate, SheetEnclosure],
+    Union[SheetPanel, LBracket, Enclosure, UChannel, MultiBendBracket, SlottedPlate, SheetEnclosure, RoundKnob, SpacerBushing],
     Field(discriminator="family"),
 ]
 
@@ -469,7 +579,12 @@ FAMILY_PROCESS = {
     "multi_bend_bracket": ["laser cutting", "press brake bending"],
     "slotted_plate": ["laser cutting", "countersinking"],
     "sheet_enclosure": ["laser cutting", "press brake bending", "hardware insertion"],
+    "round_knob": ["3D printing"],
+    "spacer_bushing": ["3D printing"],
 }
 
 #: Families whose flat patterns the R1 instant quote engine prices directly.
 SHEET_FAMILIES = ("sheet_panel", "l_bracket", "u_channel", "multi_bend_bracket", "slotted_plate", "sheet_enclosure")
+
+#: R6 printed families: STL for the print farm, priced by the print quote engine from the manifest.
+PRINTED_FAMILIES = ("round_knob", "spacer_bushing")
