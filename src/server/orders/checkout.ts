@@ -67,6 +67,11 @@ export async function priceQuoteForCheckout(quote: QuoteRow, shippingMethod: Che
     if (!rateCard || !rateCard.active) {
         throw new ApiError('CONFLICT', 'Pricing changed after this quote was made. Get a new quote.');
     }
+    if (quote.config.process === 'print') {
+        // R6: a printed part was priced on the shop's print rate card; it must still be the active one.
+        const { printRateCardIsActive } = await import('../quote/printing');
+        if (!(await printRateCardIsActive(quote.id))) throw new ApiError('CONFLICT', 'Pricing changed after this quote was made. Get a new quote.');
+    }
 
     // Snapshot integrity: never trust a snapshot that does not add up.
     const lineSum = quote.lineItems.reduce((s, li) => s + li.totalCents, 0);

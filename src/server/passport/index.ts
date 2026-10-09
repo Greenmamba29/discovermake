@@ -16,6 +16,7 @@ import { SYSTEM_ACTOR } from '../../contracts/common';
 import { PassportSnapshot, type PassportPublicView, type PassportVerifyResponse } from '../../contracts/passport';
 import { canonicalJson, hmacHex, safeEqual, sha256Hex } from '../auth/tokens';
 import { getDb, withTx, type DbOrTx } from '../db';
+import { loadPrintQuoteDetails } from '../quote/printing/quotes';
 import { builds, inspectionPlans, inspectionResults, manufacturingJobs, orders, parts, passports, productionMilestones, quotes, shipments, shops, thicknessOptions } from '../db/schema';
 import { env, requireSecret } from '../env';
 import { emitEvent } from '../events/outbox';
@@ -64,7 +65,9 @@ async function buildSnapshot(t: DbOrTx, order: typeof orders.$inferSelect, passp
         t.select().from(thicknessOptions).where(eq(thicknessOptions.id, quote.config.thicknessOptionId)),
     ]);
     if (!part) throw missing('part not found');
-    if (!thickness) throw missing('thickness option not found');
+    // R6: a printed part has a layer profile, not a sheet thickness (print_quote_details).
+    const printed = quote.config.process === 'print' ? await loadPrintQuoteDetails(quote.id, t) : null;
+    if (!thickness && !printed) throw missing('thickness option not found');
     if (!order.shopId) throw missing('no shop assigned');
     const [shop] = await t.select().from(shops).where(eq(shops.id, order.shopId));
     if (!shop) throw missing('shop not found');
@@ -113,7 +116,7 @@ async function buildSnapshot(t: DbOrTx, order: typeof orders.$inferSelect, passp
             bboxWidthMm: part.features?.bboxWidthMm ?? quote.summary.bboxWidthMm,
             bboxHeightMm: part.features?.bboxHeightMm ?? quote.summary.bboxHeightMm,
         },
-        material: { name: quote.summary.materialName, thicknessLabel: quote.summary.thicknessLabel, thicknessMm: thickness.thicknessMm },
+        material: { name: quote.summary.materialName, thicknessLabel: quote.summary.thicknessLabel, thicknessMm: thickness?.thicknessMm ?? printed!.layerHeightMm },
         process: quote.summary.processName,
         finish: quote.summary.finishName,
         services: quote.summary.serviceNames,
