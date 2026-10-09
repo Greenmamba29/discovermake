@@ -229,9 +229,8 @@ The site header and bottom nav are owned elsewhere; the integrator adds the Live
 - **Push transport:** Postgres `LISTEN/NOTIFY` or LiveKit data tracks instead of 1 s polling in the SSE
   handler (payloads and seq semantics stay the same).
 - **One batch per drop** for production (dispatch currently creates one job per slot order).
-- Per-show co-hosts, Bring Viewer On, Clip Moment, live auctions (R5), creator commissions and payouts
-  (Stage 4), a channel page UI (`GET /api/live/channels/:handle` exists), shared (Redis) rate limits,
-  For You ranking and swipe-to-next.
+- Per-show co-hosts, Bring Viewer On, swipe-to-next. Clip Moment, live auctions, the fair queue,
+  creator payouts, the channel page and For You ranking shipped in R5: see `r5-media.md`.
 
 ## 11. Tests
 
