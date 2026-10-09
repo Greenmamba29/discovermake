@@ -131,6 +131,13 @@ describe('Reconstruct: broken knob to a BINDING print quote and a printer job', 
         const [q] = await ctx.db.select({ status: quotes.status }).from(quotes).where(eq(quotes.id, quote.id));
         expect(q!.status).toBe('ORDERED');
 
+        // My Builds "Reorder" re-quotes the printed part on the print engine.
+        const { reorderBuild } = await import('@/server/accounts/my-builds');
+        const again = await reorderBuild({ viewer: null, deviceHash: null }, buildId);
+        const reordered = (await getQuote(again.quoteId))!;
+        expect(reordered).toMatchObject({ trustLevel: 'BINDING', orderable: true, partId: quote.partId });
+        expect(reordered.config.process).toBe('print');
+
         const types = (await ctx.db.select({ type: domainEvents.eventType }).from(domainEvents).where(eq(domainEvents.buildId, buildId))).map((e) => e.type);
         expect(types).toEqual(expect.arrayContaining(['reconstruct.started', 'reconstruct.dimension_confirmed', 'reconstruct.cad_generated', 'quote.created']));
     });

@@ -248,7 +248,8 @@ export function PassportView({ passportId }: { passportId: string }) {
                             Activated {dateTime(p.activatedAt)} · rules {s.rulesetVersion} · order {s.orderNumber}
                         </p>
                     </div>
-                    {ok && (
+                    {/* Printed parts (R6) are replaced through Reconstruct below, not the sheet-file replacement. */}
+                    {ok && !/3D printing/i.test(s.process) && (
                         <ReplacementAction
                             passportId={p.id}
                             summary={`Same file, ${s.material.name} ${s.material.thicknessLabel}${s.finish ? `, ${s.finish}` : ''}.`}

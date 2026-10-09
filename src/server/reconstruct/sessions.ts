@@ -13,7 +13,7 @@
  */
 import 'server-only';
 import { createHash } from 'node:crypto';
-import { and, desc, eq } from 'drizzle-orm';
+import { and, desc, eq, sql } from 'drizzle-orm';
 import type { Actor } from '@/contracts';
 import type { BgEdgeInput, BgNodeInput, BuildGraphView } from '@/contracts/build-graph';
 import { CadSpec, isPrintedSpec, printedMinWallMm, type PrintedCadSpec } from '@/contracts/cad';
@@ -209,13 +209,16 @@ export async function updateReconstruct(buildId: string, input: UpdateReconstruc
     const req = UpdateReconstructRequest.parse(input);
     const session = await loadSession(buildId);
     if (req.printMaterialSlug && !(await loadPrintMaterialBySlug(getDb(), req.printMaterialSlug))) throw new ApiError('VALIDATION_FAILED', 'Unknown print material', 400);
+    const patch = req.options ? Object.fromEntries(Object.entries(req.options).filter(([, v]) => v !== undefined)) : null;
+    if (patch) ReconstructOptions.parse({ ...optionsOf(session), ...patch });
+    // Choices merge atomically (jsonb ||), so two quick changes never overwrite each other.
     await getDb()
         .update(reconstructSessions)
         .set({
-            options: req.options ? ReconstructOptions.parse({ ...optionsOf(session), ...req.options }) : session.options,
-            description: req.description ?? session.description,
-            printMaterialSlug: req.printMaterialSlug ?? session.printMaterialSlug,
-            quantity: req.quantity ?? session.quantity,
+            ...(patch ? { options: sql`${reconstructSessions.options} || ${JSON.stringify(patch)}::jsonb` } : {}),
+            ...(req.description !== undefined ? { description: req.description } : {}),
+            ...(req.printMaterialSlug ? { printMaterialSlug: req.printMaterialSlug } : {}),
+            ...(req.quantity ? { quantity: req.quantity } : {}),
             updatedAt: new Date(),
         })
         .where(eq(reconstructSessions.id, session.id));

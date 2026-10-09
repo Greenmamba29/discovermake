@@ -145,7 +145,7 @@ export async function reorderBuild(p: BuildsPrincipal, buildId: string, db: DbOr
         if (!mine) throw new ApiError('FORBIDDEN', 'Only the owner or buyer of this build can reorder it.', 403);
     }
     const [last] = await db
-        .select({ config: quotes.config })
+        .select({ config: quotes.config, quoteId: quotes.id })
         .from(orders)
         .innerJoin(quotes, eq(quotes.id, orders.quoteId))
         .where(where)
@@ -154,7 +154,8 @@ export async function reorderBuild(p: BuildsPrincipal, buildId: string, db: DbOr
     if (!last) throw new ApiError('CONFLICT', 'Order this build once before you reorder it.', 409);
     let quote;
     try {
-        quote = await createQuote(last.config);
+        // R6: a printed part re-quotes on the print engine from its print snapshot.
+        quote = last.config.process === 'print' ? await (await import('../quote/printing/reorder')).reorderPrintQuote(last.quoteId) : await createQuote(last.config);
     } catch (err) {
         if (err instanceof ApiError && (err.status === 400 || err.status === 404 || err.status === 409)) {
             throw new ApiError('CONFLICT', 'This part no longer quotes with the options you ordered. Open it to pick new options.', 409);

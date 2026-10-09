@@ -153,9 +153,17 @@ function MeasureStep({ view, next }: { view: ReconstructView; next: string }) {
 
 function OptionsPanel({ view }: { view: ReconstructView }) {
     const setView = useSetView(view.buildId);
-    const update = useMutation({ mutationFn: (options: Partial<ReconstructOptions>) => reconstructApi.update(view.buildId, { options }), onSuccess: setView });
-    const o = view.options;
-    const disabled = !view.canEdit || update.isPending;
+    // Optimistic: the control shows the buyer's choice at once; the server's view follows.
+    const [o, setO] = useState<ReconstructOptions>(view.options);
+    const save = useMutation({ mutationFn: (options: Partial<ReconstructOptions>) => reconstructApi.update(view.buildId, { options }), onSuccess: setView, onError: () => setO(view.options) });
+    const update = {
+        mutate: (patch: Partial<ReconstructOptions>) => {
+            setO((prev) => ({ ...prev, ...patch }));
+            save.mutate(patch);
+        },
+        error: save.error,
+    };
+    const disabled = !view.canEdit;
     const field = 'flex flex-col gap-1 text-sm font-medium';
     return (
         <section aria-labelledby="options-heading" className="rounded-xl bg-graphite-900 p-4 ring-1 ring-graphite-700" data-testid="reconstruct-options">
@@ -344,7 +352,7 @@ function ReviewStep({ view, back }: { view: ReconstructView; back: string }) {
                     <h2 id="dims-heading" className="flex items-center gap-2 font-display text-lg font-bold">
                         <Ruler className="h-5 w-5" aria-hidden /> Confirmed dimensions
                     </h2>
-                    <div className="mt-3 overflow-x-auto rounded-xl ring-1 ring-graphite-700">
+                    <div className="mt-3 overflow-x-auto rounded-xl ring-1 ring-graphite-700" tabIndex={0} role="region" aria-label="Confirmed dimensions (scrolls sideways on small screens)">
                         <table className="w-full min-w-[420px] text-left text-sm">
                             <thead className="bg-graphite-900 text-xs text-fg-muted">
                                 <tr>
