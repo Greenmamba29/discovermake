@@ -16,7 +16,7 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export const PUT = route<{ clientId: string }>(async (request, { params }) => {
-    requireAdmin(request);
+    await requireAdmin(request);
     const clientId = pathId((await params).clientId, idOf('sourcingClient'), 'Sourcing client');
     const body = await parseJson(request, SourcingClientAllowlist);
     return json(await updateSourcingClientAllowlist(clientId, body));

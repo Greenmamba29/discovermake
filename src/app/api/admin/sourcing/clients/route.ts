@@ -13,12 +13,12 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export const GET = route(async (request) => {
-    requireAdmin(request);
+    await requireAdmin(request);
     return json(await listSourcingClients());
 });
 
 export const POST = route(async (request) => {
-    requireAdmin(request);
+    await requireAdmin(request);
     const body = await parseJson(request, CreateSourcingClientRequest);
     return json(await createSourcingClient(body.name, { allowedTools: body.allowedTools, allowedCidrs: body.allowedCidrs }), { status: 201 });
 });
