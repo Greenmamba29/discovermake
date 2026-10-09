@@ -183,7 +183,7 @@ export function LiveViewer({ showId }: { showId: string }) {
             </div>
 
             {/* Below the fold on phones, lower side column on desktop */}
-            <div className="space-y-3 p-3 [grid-area:below] lg:overflow-y-auto lg:border-l lg:border-t lg:border-graphite-700 lg:p-4">
+            <div className="space-y-3 p-3 [grid-area:below] lg:overflow-y-auto lg:border-l lg:border-t lg:border-graphite-700 lg:p-4" tabIndex={0} role="region" aria-label="Questions, polls and your slots">
                 {claims && claims.length > 0 && <MyClaims claims={claims} />}
                 {state.milestones.length > 0 && <Milestones events={state.milestones.map((m) => ({ seq: m.seq, label: m.event, note: (m.payload as { note?: string | null }).note ?? null }))} />}
                 {poll && <PollCard poll={poll} showId={showId} signedIn={signedIn && !live.isReplay} onVoted={setPollOverride} />}

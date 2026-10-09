@@ -18,6 +18,7 @@ import { randomUUID } from 'node:crypto';
 import { E2E_ADMIN_TOKEN, E2E_DATABASE_URL } from '../../playwright.config';
 import { createBuildWithCad } from './support/cad-build';
 import { adminLogin, fulfil, payOrder, quotePart, shopLogin } from './support/journeys';
+import { buildLiveSweepState, type LiveSweepState } from './support/live';
 
 const OUT = path.join(process.cwd(), 'test-results', 'page-sweep');
 /** Written by global-setup once per run (the e2e database is recreated per run). */
@@ -37,6 +38,8 @@ type Urls = {
     sourcingJobUrl: string;
     /** A workspace whose build has generated CAD (Object View, Files, Ask Make AI). */
     cadWorkspaceUrl: string;
+    /** R4 Live: a LIVE show with a featured product and an open drop, an ENDED replay, its control room. */
+    live: LiveSweepState;
 };
 
 type Screen = {
@@ -393,6 +396,73 @@ const SCREENS: Screen[] = [
         },
     },
     {
+        name: 'live-home',
+        mobbin: 'Whatnot · home live feed: category chips, Live tiles with viewer badges, go-live entry',
+        url: () => '/live',
+        pattern: async (page) => {
+            for (const chip of ['chip-mega-builds', 'chip-factory-floor', 'chip-drops']) await expect(page.getByTestId(chip)).toBeVisible();
+            const tile = page.getByTestId('live-now').getByTestId('show-tile').first();
+            await expect(tile).toBeVisible();
+            await expect(tile.getByTestId('live-badge')).toContainText(/live/i);
+            await expect(page.getByTestId('replays').getByTestId('show-tile').first()).toBeVisible();
+            await expect(page.getByTestId('go-live-cta')).toBeVisible();
+        },
+    },
+    {
+        name: 'live-viewer',
+        mobbin: 'Whatnot · live show: seller header + viewer count, action rail, chat over video, product card (Make Mine · Remix · Buy), Build Slot counter',
+        url: (u) => u.live.liveShowUrl,
+        pattern: async (page) => {
+            await expect(page.getByTestId('live-badge')).toContainText(/live/i);
+            const card = page.getByTestId('now-showing');
+            await expect(card).toBeVisible();
+            for (const action of ['make-mine', 'remix', 'buy']) await expect(card.getByTestId(action)).toBeVisible();
+            await expect(card.getByTestId('buy')).toHaveAttribute('href', /\/checkout\/qte_/);
+            await expect(page.getByTestId('slots-left')).toHaveText(/^\d+ \/ 50 slots left$/);
+            await expect(page.getByRole('navigation', { name: 'Show actions' }).getByRole('button').first()).toBeVisible();
+            await expect(page.getByTestId('chat-list')).toBeVisible();
+        },
+    },
+    {
+        name: 'live-replay',
+        mobbin: 'Whatnot · live show, as a shoppable replay: the product card follows the recording',
+        url: (u) => u.live.replayShowUrl,
+        pattern: async (page) => {
+            await expect(page.getByTestId('live-badge')).toHaveText(/replay/i);
+            await expect(page.getByTestId('video-stage')).toHaveAttribute('data-source', 'mp4');
+            await expect(page.getByTestId('now-showing').or(page.getByTestId('now-showing-empty'))).toBeVisible();
+        },
+    },
+    {
+        name: 'studio',
+        bottomNav: true,
+        mobbin: 'Whatnot · home feed "Get started · Go live · Step N of M" checklist; show planner',
+        url: () => '/studio',
+        before: async (page) => page.context().addCookies(sweepCreatorCookies()),
+        pattern: async (page) => {
+            const checklist = page.getByTestId('go-live-checklist');
+            await expect(checklist).toBeVisible();
+            await expect(checklist).toContainText(/Step \d+ of \d+/);
+            await expect(page.getByTestId('show-planner')).toBeVisible();
+            await expect(page.getByTestId('studio-show').first()).toBeVisible();
+        },
+    },
+    {
+        name: 'control-room',
+        bottomNav: true,
+        mobbin: 'Live studio controls (TikTok Live Studio / OBS): feature product, drop, Q&A, moderation, stats',
+        url: (u) => u.live.controlRoomUrl,
+        before: async (page) => page.context().addCookies(sweepCreatorCookies()),
+        pattern: async (page) => {
+            await expect(page.getByTestId('control-room')).toHaveAttribute('data-status', 'LIVE');
+            await expect(page.getByTestId('featured-panel')).toContainText('Now showing');
+            await expect(page.getByTestId('control-drop')).toHaveAttribute('data-status', 'OPEN');
+            await expect(page.getByTestId('live-stats')).toBeVisible();
+            await expect(page.getByTestId('go-live-checklist')).toBeVisible();
+            await expect(page.getByTestId('end-show')).toBeVisible();
+        },
+    },
+    {
         name: 'not-found',
         bottomNav: true,
         mobbin: 'Empty / error state',
@@ -403,6 +473,10 @@ const SCREENS: Screen[] = [
         },
     },
 ];
+
+/** Cookies of the Live sweep creator (set in beforeAll); studio screens reuse the session. */
+let liveCreatorCookies: LiveSweepState['creatorCookies'] = [];
+const sweepCreatorCookies = () => liveCreatorCookies;
 
 /** Sign this browser context in with an email code (dev returns the code). Own IP per call so in-memory limits never trip. */
 async function signInByEmail(page: Page, email: string) {
@@ -447,6 +521,7 @@ async function buildState(browser: Browser): Promise<Urls> {
     const made = await (await request.post('/api/make-ai/builds', { data: { intentId } })).json();
     const withCad = await createBuildWithCad(request);
     await context.close();
+    const live = await buildLiveSweepState(browser, quotePart);
 
     const [orderPath, query] = orderUrl.split('?');
     return {
@@ -460,6 +535,7 @@ async function buildState(browser: Browser): Promise<Urls> {
         workspaceUrl: `/build/${made.buildId}/workspace`,
         sourcingJobUrl: `/admin/sourcing/jobs/${job.id}`,
         cadWorkspaceUrl: withCad.workspaceUrl,
+        live,
     };
 }
 
@@ -467,7 +543,7 @@ test.describe('Mobbin page sweep', () => {
     let urls: Urls;
 
     test.beforeAll(async ({ browser }) => {
-        test.setTimeout(240_000);
+        test.setTimeout(360_000);
         mkdirSync(OUT, { recursive: true });
         // A failed test restarts the worker and re-runs beforeAll: reuse this run's state.
         const runId = existsSync(RUN_ID_FILE) ? readFileSync(RUN_ID_FILE, 'utf8') : 'none';
@@ -479,6 +555,7 @@ test.describe('Mobbin page sweep', () => {
             urls = await buildState(browser);
             writeFileSync(cache, JSON.stringify({ runId, urls }));
         }
+        liveCreatorCookies = urls.live.creatorCookies;
     });
 
     for (const screen of SCREENS) {

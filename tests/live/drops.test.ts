@@ -14,7 +14,7 @@ import { confirmDevPayment } from '@/server/orders';
 import { DevPaymentProvider } from '@/server/payments';
 import { useTestDb } from '../support/db';
 import { quietConsole } from '../orders/fixtures';
-import { claimBody, req, setupShow, uniqueUser, viewerOf } from './fixtures';
+import { claimBody, req, setupShow, makeUser, viewerOf } from './fixtures';
 
 vi.mock('@/server/dispatch', async (orig) => ({ ...(await orig<typeof import('@/server/dispatch')>()), dispatchOrder: async () => null }));
 
@@ -78,7 +78,7 @@ describe('Live drops and Build Slots', () => {
 
     it('never oversells under concurrent claims and respects the per-buyer limit', async () => {
         const { drop } = await openDrop({ totalSlots: 12, thresholdSlots: 10, perBuyerLimit: 2 });
-        const buyers = Array.from({ length: 10 }, () => uniqueUser('buyer'));
+        const buyers = await Promise.all(Array.from({ length: 10 }, () => makeUser('buyer')));
         // Every buyer tries to take 2 slots at once, and one buyer also tries 3 parallel single claims.
         const greedy = buyers[0];
         const attempts = [
@@ -111,7 +111,7 @@ describe('Live drops and Build Slots', () => {
 
     it('an Idempotency-Key replays the same claim instead of taking more slots', async () => {
         const { drop } = await openDrop({ totalSlots: 20, perBuyerLimit: 5 });
-        const buyer = uniqueUser('idem');
+        const buyer = await makeUser('idem');
         const send = () => claimsRoute(req(`/api/live/drops/${drop.id}/claims`, { user: buyer, body: claimBody(2), headers: { 'idempotency-key': 'claim-123' } }), dropParams(drop.id));
         const a = await (await send()).json();
         const b = await (await send()).json();
@@ -133,7 +133,7 @@ describe('Live drops and Build Slots', () => {
         const cancel = vi.spyOn(DevPaymentProvider.prototype, 'cancelAuthorization');
         const claims = [];
         for (let i = 0; i < 6; i++) {
-            const res = await claimSlots(drop.id, await viewerOf(uniqueUser('confirm')), claimBody(2), null);
+            const res = await claimSlots(drop.id, await viewerOf(await makeUser('confirm')), claimBody(2), null);
             claims.push(res);
         }
         // Five buyers authorize (10 slots = threshold); the sixth never does.
@@ -172,7 +172,7 @@ describe('Live drops and Build Slots', () => {
         const capture = vi.spyOn(DevPaymentProvider.prototype, 'capture');
         const cancel = vi.spyOn(DevPaymentProvider.prototype, 'cancelAuthorization');
         const claims = [];
-        for (let i = 0; i < 3; i++) claims.push(await claimSlots(drop.id, await viewerOf(uniqueUser('fail')), claimBody(2), null));
+        for (let i = 0; i < 3; i++) claims.push(await claimSlots(drop.id, await viewerOf(await makeUser('fail')), claimBody(2), null));
         for (const c of claims) await authorize(c.payment.providerRef);
 
         const closed = await closeDrop(drop.id, SYSTEM_LIVE_ACTOR, 'deadline');
@@ -188,7 +188,7 @@ describe('Live drops and Build Slots', () => {
 
         // A hold authorized after the drop failed is released immediately.
         const s2 = await openDrop({ totalSlots: 20, thresholdSlots: 10 });
-        const late = await claimSlots(s2.drop.id, await viewerOf(uniqueUser('late')), claimBody(1), null);
+        const late = await claimSlots(s2.drop.id, await viewerOf(await makeUser('late')), claimBody(1), null);
         await closeDrop(s2.drop.id, SYSTEM_LIVE_ACTOR, 'deadline');
         await authorize(late.payment.providerRef);
         const [p] = await ctx.db.select().from(payments).where(eq(payments.orderId, late.orderId));

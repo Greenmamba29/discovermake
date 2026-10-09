@@ -13,7 +13,7 @@ import { domainEvents, liveEvents } from '@/server/db/schema';
 import { appendLiveEvent, buildSnapshot, handleIntent, liveEventStream, loadShowAccess, resetLiveRateLimits, verifyLiveEvent } from '@/server/live';
 import { useTestDb } from '../support/db';
 import { quietConsole } from '../orders/fixtures';
-import { req, setupShow, uniqueUser } from './fixtures';
+import { req, setupShow, makeUser } from './fixtures';
 
 vi.mock('@/server/dispatch', async (orig) => ({ ...(await orig<typeof import('@/server/dispatch')>()), dispatchOrder: async () => null }));
 
@@ -84,7 +84,7 @@ describe('Live Build Protocol', () => {
         const { show, fixture } = await setupShow(ctx.db);
         const count = async () => (await ctx.db.select().from(liveEvents).where(eq(liveEvents.showId, show.id))).length;
         const n = await count();
-        const viewer = uniqueUser('viewer');
+        const viewer = await makeUser('viewer');
         for (const intent of [{ intent: 'feature_product', buildId: fixture.build.id }, { intent: 'end_show' }, { intent: 'close_drop' }]) {
             const r = await intentsRoute(req(`/api/live/shows/${show.id}/intents`, { body: intent, user: viewer }), params(show.id));
             expect(r.status).toBe(403);
@@ -99,7 +99,7 @@ describe('Live Build Protocol', () => {
     it('builds a snapshot with the last focus, recent chat minus removed lines, questions and lastSeq', async () => {
         const { show, fixture, hostAccess, host } = await setupShow(ctx.db);
         await handleIntent(await hostAccess(), { intent: 'feature_product', buildId: fixture.build.id });
-        const viewer = uniqueUser('snap');
+        const viewer = await makeUser('snap');
         const c1 = await chatRoute(req(`/api/live/shows/${show.id}/chat`, { body: { text: 'first!' }, user: viewer }), params(show.id));
         expect(c1.status).toBe(201);
         const first = ((await c1.json()) as { event: LiveEvent }).event;

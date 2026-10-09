@@ -1,10 +1,9 @@
 /**
  * DiscoverMake Live acceptance journey (spec §9.10, workflow 06), through the real UI and APIs.
  *
- * Two browser contexts: a creator and a viewer, signed in through the accounts stub's
- * dev-only `x-dm-test-user` header (it disappears when the R2 accounts module lands).
+ * Two browser contexts, both signed in for real (email code; `devCode` outside production).
  *
- *   creator: channel -> schedule a show featuring two builds -> go live -> feature a product
+ *   creator: becomes a creator, sets up a channel -> schedule a show featuring two builds -> go live -> feature a product
  *   viewer:  enters, sees the product, asks the creator (host answers), asks Make AI,
  *            sees the card change in realtime when the host features another build,
  *            Make Mine opens the configure sheet without leaving the stream, Buy reaches checkout
@@ -17,7 +16,7 @@ import { approvedGraphBuild, LIVE_CREATOR, LIVE_VIEWER, setUpShow, signedInConte
 
 test('a creator goes live, a viewer shops the stream and claims a Build Slot', async ({ browser }) => {
     test.setTimeout(240_000);
-    const creator = await signedInContext(browser, LIVE_CREATOR.header);
+    const creator = await signedInContext(browser, LIVE_CREATOR);
     const host = await creator.newPage();
 
     // Two products: an uploaded part with an orderable BINDING quote, and an approved Make AI build.
@@ -33,7 +32,7 @@ test('a creator goes live, a viewer shops the stream and claims a Build Slot', a
     await expect(host.getByTestId(`featured-${productA}`)).toContainText('Now showing');
 
     // Viewer enters and sees the featured product.
-    const viewerCtx = await signedInContext(browser, LIVE_VIEWER.header, { width: 390, height: 844 });
+    const viewerCtx = await signedInContext(browser, LIVE_VIEWER, { width: 390, height: 844 });
     const viewer = await viewerCtx.newPage();
     await viewer.goto(`/live/${showId}`);
     await expect(viewer.getByTestId('live-badge')).toContainText(/live/i);

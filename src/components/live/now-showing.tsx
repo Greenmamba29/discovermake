@@ -37,14 +37,14 @@ export function NowShowingCard({ featured, onMakeMine, onRemix, compact }: { fea
                 {facts.length ? facts.join(' · ') : 'No binding price yet: Make Mine to configure your own.'}
             </p>
             <div className="mt-3 grid grid-cols-3 gap-2">
-                <Button size="sm" onClick={onMakeMine} disabled={!featured.canMakeThis} data-testid="make-mine">
+                <Button size="sm" className="whitespace-nowrap px-2" onClick={onMakeMine} disabled={!featured.canMakeThis} data-testid="make-mine">
                     <Sparkles className="h-4 w-4" aria-hidden /> Make Mine
                 </Button>
-                <Button size="sm" variant="secondary" onClick={onRemix} disabled={!featured.canRemix} data-testid="remix" title={featured.canRemix ? undefined : 'Remix needs an approved design version'}>
+                <Button size="sm" variant="secondary" className="whitespace-nowrap px-2" onClick={onRemix} disabled={!featured.canRemix} data-testid="remix" title={featured.canRemix ? undefined : 'Remix needs an approved design version'}>
                     <Wand2 className="h-4 w-4" aria-hidden /> Remix
                 </Button>
                 {featured.canBuy && featured.quoteId ? (
-                    <Link href={`/checkout/${featured.quoteId}`} className={buttonClass('secondary', 'sm')} data-testid="buy">
+                    <Link href={`/checkout/${featured.quoteId}`} className={buttonClass('secondary', 'sm', 'whitespace-nowrap px-2')} data-testid="buy">
                         <Package className="h-4 w-4" aria-hidden /> Buy
                     </Link>
                 ) : (

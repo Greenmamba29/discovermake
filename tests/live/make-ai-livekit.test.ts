@@ -17,7 +17,7 @@ import { factsFor, numbersIn, usesOnlyKnownNumbers } from '@/server/live/make-ai
 import { useTestDb } from '../support/db';
 import { textResult } from '../build-graph/fixtures';
 import { quietConsole } from '../orders/fixtures';
-import { req, setupShow, uniqueUser } from './fixtures';
+import { req, setupShow, makeUser } from './fixtures';
 
 vi.mock('@/server/dispatch', async (orig) => ({ ...(await orig<typeof import('@/server/dispatch')>()), dispatchOrder: async () => null }));
 
@@ -63,7 +63,7 @@ describe('Ask Make AI on a live show', () => {
     it('when Make AI is disabled or keyless, answers deterministically from the build record and says so', async () => {
         const { show, fixture, hostAccess } = await setupShow(ctx.db);
         await handleIntent(await hostAccess(), { intent: 'feature_product', buildId: fixture.build.id });
-        const viewer = uniqueUser('asker');
+        const viewer = await makeUser('asker');
         const res = await questionsRoute(req(`/api/live/shows/${show.id}/questions`, { user: viewer, body: { mode: 'make_ai', text: 'What is it made of and how much is it?' } }), params(show.id));
         expect(res.status).toBe(201);
         const { question } = await res.json();
@@ -129,7 +129,7 @@ describe('LiveKit token service and webhooks', () => {
         expect(hostClaims.sub).toBe(host.id);
         expect(hostClaims.video).toMatchObject({ room: row.livekitRoom, roomJoin: true, roomAdmin: true, canPublish: true, canPublishData: true, canSubscribe: true });
 
-        const viewer = uniqueUser('watcher');
+        const viewer = await makeUser('watcher');
         const viewTok = await (await tokenRoute(req(`/api/live/shows/${show.id}/token`, { method: 'POST', user: viewer }), params(show.id))).json();
         const v = decodeJwt(viewTok.livekit.token);
         expect(viewTok.role).toBe('viewer');
