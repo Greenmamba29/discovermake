@@ -5,9 +5,11 @@
  * POST /api/builds/:buildId/sourcing  CreateSourcingRequest -> job summary
  *   (201 created, 200 when an open request for the same part/version/quantity exists).
  *   429 over 5 requests / minute / IP (in-memory placeholder, Retry-After header).
+ *   403 unless the caller may edit the build (owner, its device, or ops; ADR-0009).
  */
 import { BuildId } from '@/contracts/common';
 import { CreateSourcingRequest } from '@/contracts/sourcing';
+import { assertCanEditBuildId } from '@/server/auth/build-access';
 import { errorResponse, json, parseJson, route } from '@/server/http';
 import { clientIp, FixedWindowRateLimiter } from '@/server/make-ai/rate-limit';
 import { pathId } from '@/server/quote/route-helpers';
@@ -35,6 +37,7 @@ export const POST = route<{ buildId: string }>(async (request, { params }) => {
         res.headers.set('retry-after', String(decision.retryAfterSeconds));
         return res;
     }
+    await assertCanEditBuildId(request, buildId);
     const body = await parseJson(request, CreateSourcingRequest);
     const { job, created } = await requestBuyerSourcing(buildId, body);
     return json(job, { status: created ? 201 : 200 });

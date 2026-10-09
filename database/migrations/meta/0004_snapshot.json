@@ -1,5 +1,5 @@
 {
-  "id": "11efa043-ea37-4f9b-ae12-375e31772b33",
+  "id": "a9830d56-f2b1-4c4c-b96a-6ed3eb922ca3",
   "prevId": "8fac3cb7-f2f8-4db4-8849-c7ea23fd966c",
   "version": "7",
   "dialect": "postgresql",
@@ -223,6 +223,139 @@
             "id"
           ],
           "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.auth_challenges": {
+      "name": "auth_challenges",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "kind": {
+          "name": "kind",
+          "type": "auth_challenge_kind",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "code_hash": {
+          "name": "code_hash",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "challenge": {
+          "name": "challenge",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "attempts": {
+          "name": "attempts",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "expires_at": {
+          "name": "expires_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "consumed_at": {
+          "name": "consumed_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "auth_challenges_email_idx": {
+          "name": "auth_challenges_email_idx",
+          "columns": [
+            {
+              "expression": "email",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "created_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "auth_challenges_user_idx": {
+          "name": "auth_challenges_user_idx",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "kind",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "auth_challenges_user_id_users_id_fk": {
+          "name": "auth_challenges_user_id_users_id_fk",
+          "tableFrom": "auth_challenges",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
@@ -543,6 +676,89 @@
       },
       "isRLSEnabled": false
     },
+    "public.build_follows": {
+      "name": "build_follows",
+      "schema": "",
+      "columns": {
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "build_id": {
+          "name": "build_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "build_follows_build_idx": {
+          "name": "build_follows_build_idx",
+          "columns": [
+            {
+              "expression": "build_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "build_follows_user_id_users_id_fk": {
+          "name": "build_follows_user_id_users_id_fk",
+          "tableFrom": "build_follows",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "build_follows_build_id_builds_id_fk": {
+          "name": "build_follows_build_id_builds_id_fk",
+          "tableFrom": "build_follows",
+          "tableTo": "builds",
+          "columnsFrom": [
+            "build_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "build_follows_user_id_build_id_pk": {
+          "name": "build_follows_user_id_build_id_pk",
+          "columns": [
+            "user_id",
+            "build_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
     "public.builds": {
       "name": "builds",
       "schema": "",
@@ -606,6 +822,18 @@
           "primaryKey": false,
           "notNull": false
         },
+        "owner_user_id": {
+          "name": "owner_user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "device_hash": {
+          "name": "device_hash",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp with time zone",
@@ -651,124 +879,33 @@
           "concurrently": false,
           "method": "btree",
           "with": {}
-        }
-      },
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.buyer_credits": {
-      "name": "buyer_credits",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "primaryKey": true,
-          "notNull": true
         },
-        "buyer_email": {
-          "name": "buyer_email",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "source_order_id": {
-          "name": "source_order_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "amount_cents": {
-          "name": "amount_cents",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "reason": {
-          "name": "reason",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "responsible_leg": {
-          "name": "responsible_leg",
-          "type": "promise_leg",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "status": {
-          "name": "status",
-          "type": "credit_status",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'AVAILABLE'"
-        },
-        "redeemed_order_id": {
-          "name": "redeemed_order_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "reserved_at": {
-          "name": "reserved_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "redeemed_at": {
-          "name": "redeemed_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {
-        "buyer_credits_source_order_uq": {
-          "name": "buyer_credits_source_order_uq",
+        "builds_owner_user_idx": {
+          "name": "builds_owner_user_idx",
           "columns": [
             {
-              "expression": "source_order_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "buyer_credits_email_idx": {
-          "name": "buyer_credits_email_idx",
-          "columns": [
-            {
-              "expression": "buyer_email",
+              "expression": "owner_user_id",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
             },
             {
-              "expression": "status",
+              "expression": "updated_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "builds_device_hash_idx": {
+          "name": "builds_device_hash_idx",
+          "columns": [
+            {
+              "expression": "device_hash",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -781,25 +918,12 @@
         }
       },
       "foreignKeys": {
-        "buyer_credits_source_order_id_orders_id_fk": {
-          "name": "buyer_credits_source_order_id_orders_id_fk",
-          "tableFrom": "buyer_credits",
-          "tableTo": "orders",
+        "builds_owner_user_id_users_id_fk": {
+          "name": "builds_owner_user_id_users_id_fk",
+          "tableFrom": "builds",
+          "tableTo": "users",
           "columnsFrom": [
-            "source_order_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "buyer_credits_redeemed_order_id_orders_id_fk": {
-          "name": "buyer_credits_redeemed_order_id_orders_id_fk",
-          "tableFrom": "buyer_credits",
-          "tableTo": "orders",
-          "columnsFrom": [
-            "redeemed_order_id"
+            "owner_user_id"
           ],
           "columnsTo": [
             "id"
@@ -811,12 +935,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
-      "checkConstraints": {
-        "buyer_credits_amount_ck": {
-          "name": "buyer_credits_amount_ck",
-          "value": "\"buyer_credits\".\"amount_cents\" > 0"
-        }
-      },
+      "checkConstraints": {},
       "isRLSEnabled": false
     },
     "public.design_versions": {
@@ -925,6 +1044,51 @@
           "onUpdate": "no action"
         }
       },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.device_preferences": {
+      "name": "device_preferences",
+      "schema": "",
+      "columns": {
+        "device_hash": {
+          "name": "device_hash",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "intent": {
+          "name": "intent",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "interests": {
+          "name": "interests",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'[]'::jsonb"
+        },
+        "onboarded_at": {
+          "name": "onboarded_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
@@ -2125,222 +2289,36 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.order_payment_plans": {
-      "name": "order_payment_plans",
+    "public.oauth_accounts": {
+      "name": "oauth_accounts",
       "schema": "",
       "columns": {
-        "order_id": {
-          "name": "order_id",
+        "id": {
+          "name": "id",
           "type": "text",
           "primaryKey": true,
           "notNull": true
         },
-        "kind": {
-          "name": "kind",
-          "type": "payment_plan_kind",
-          "typeSchema": "public",
+        "provider": {
+          "name": "provider",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         },
-        "deposit_cents": {
-          "name": "deposit_cents",
-          "type": "integer",
+        "provider_user_id": {
+          "name": "provider_user_id",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         },
-        "balance_cents": {
-          "name": "balance_cents",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "default": 0
-        },
-        "credit_cents": {
-          "name": "credit_cents",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "default": 0
-        },
-        "credit_id": {
-          "name": "credit_id",
+        "user_id": {
+          "name": "user_id",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
-        },
-        "deposit_payment_id": {
-          "name": "deposit_payment_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "balance_payment_id": {
-          "name": "balance_payment_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "deposit_paid_at": {
-          "name": "deposit_paid_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "balance_requested_at": {
-          "name": "balance_requested_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "balance_paid_at": {
-          "name": "balance_paid_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "created_at": {
           "name": "created_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "order_payment_plans_order_id_orders_id_fk": {
-          "name": "order_payment_plans_order_id_orders_id_fk",
-          "tableFrom": "order_payment_plans",
-          "tableTo": "orders",
-          "columnsFrom": [
-            "order_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {
-        "order_payment_plans_amounts_ck": {
-          "name": "order_payment_plans_amounts_ck",
-          "value": "\"order_payment_plans\".\"deposit_cents\" >= 0 and \"order_payment_plans\".\"balance_cents\" >= 0 and \"order_payment_plans\".\"credit_cents\" >= 0 and \"order_payment_plans\".\"credit_cents\" <= \"order_payment_plans\".\"deposit_cents\""
-        }
-      },
-      "isRLSEnabled": false
-    },
-    "public.order_promises": {
-      "name": "order_promises",
-      "schema": "",
-      "columns": {
-        "order_id": {
-          "name": "order_id",
-          "type": "text",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "promised_date": {
-          "name": "promised_date",
-          "type": "date",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "p90_date": {
-          "name": "p90_date",
-          "type": "date",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "shown": {
-          "name": "shown",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "start_date": {
-          "name": "start_date",
-          "type": "date",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "legs": {
-          "name": "legs",
-          "type": "jsonb",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "buffer_days": {
-          "name": "buffer_days",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "default": 0
-        },
-        "risk_score": {
-          "name": "risk_score",
-          "type": "double precision",
-          "primaryKey": false,
-          "notNull": true,
-          "default": 0
-        },
-        "zone": {
-          "name": "zone",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "carrier_service": {
-          "name": "carrier_service",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "status": {
-          "name": "status",
-          "type": "promise_status",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'ON_TRACK'"
-        },
-        "last_p90_date": {
-          "name": "last_p90_date",
-          "type": "date",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "at_risk_at": {
-          "name": "at_risk_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "resolved_at": {
-          "name": "resolved_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "updated_at": {
-          "name": "updated_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": true,
@@ -2348,11 +2326,32 @@
         }
       },
       "indexes": {
-        "order_promises_status_idx": {
-          "name": "order_promises_status_idx",
+        "oauth_accounts_provider_user_uq": {
+          "name": "oauth_accounts_provider_user_uq",
           "columns": [
             {
-              "expression": "status",
+              "expression": "provider",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "provider_user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "oauth_accounts_user_idx": {
+          "name": "oauth_accounts_user_idx",
+          "columns": [
+            {
+              "expression": "user_id",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -2365,12 +2364,12 @@
         }
       },
       "foreignKeys": {
-        "order_promises_order_id_orders_id_fk": {
-          "name": "order_promises_order_id_orders_id_fk",
-          "tableFrom": "order_promises",
-          "tableTo": "orders",
+        "oauth_accounts_user_id_users_id_fk": {
+          "name": "oauth_accounts_user_id_users_id_fk",
+          "tableFrom": "oauth_accounts",
+          "tableTo": "users",
           "columnsFrom": [
-            "order_id"
+            "user_id"
           ],
           "columnsTo": [
             "id"
@@ -2640,6 +2639,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "buyer_user_id": {
+          "name": "buyer_user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
         "access_token_hash": {
           "name": "access_token_hash",
           "type": "text",
@@ -2770,6 +2775,21 @@
           "concurrently": false,
           "method": "btree",
           "with": {}
+        },
+        "orders_buyer_user_idx": {
+          "name": "orders_buyer_user_idx",
+          "columns": [
+            {
+              "expression": "buyer_user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
         }
       },
       "foreignKeys": {
@@ -2805,6 +2825,19 @@
           "tableTo": "shops",
           "columnsFrom": [
             "shop_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "orders_buyer_user_id_users_id_fk": {
+          "name": "orders_buyer_user_id_users_id_fk",
+          "tableFrom": "orders",
+          "tableTo": "users",
+          "columnsFrom": [
+            "buyer_user_id"
           ],
           "columnsTo": [
             "id"
@@ -2968,6 +3001,113 @@
           "tableTo": "builds",
           "columnsFrom": [
             "build_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.passkeys": {
+      "name": "passkeys",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "public_key": {
+          "name": "public_key",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "counter": {
+          "name": "counter",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "transports": {
+          "name": "transports",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'{}'::text[]"
+        },
+        "device_type": {
+          "name": "device_type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "backed_up": {
+          "name": "backed_up",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "last_used_at": {
+          "name": "last_used_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "passkeys_user_idx": {
+          "name": "passkeys_user_idx",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "passkeys_user_id_users_id_fk": {
+          "name": "passkeys_user_id_users_id_fk",
+          "tableFrom": "passkeys",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
           ],
           "columnsTo": [
             "id"
@@ -3627,230 +3767,6 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.promise_models": {
-      "name": "promise_models",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "leg": {
-          "name": "leg",
-          "type": "promise_leg",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "scope": {
-          "name": "scope",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "slip_p90_days": {
-          "name": "slip_p90_days",
-          "type": "double precision",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "sample_count": {
-          "name": "sample_count",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "trained_at": {
-          "name": "trained_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {
-        "promise_models_leg_scope_uq": {
-          "name": "promise_models_leg_scope_uq",
-          "columns": [
-            {
-              "expression": "leg",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "scope",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.promise_observations": {
-      "name": "promise_observations",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "order_id": {
-          "name": "order_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "leg": {
-          "name": "leg",
-          "type": "promise_leg",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "shop_id": {
-          "name": "shop_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "process": {
-          "name": "process",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "carrier_service": {
-          "name": "carrier_service",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "zone": {
-          "name": "zone",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "supplier_id": {
-          "name": "supplier_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "incoterm": {
-          "name": "incoterm",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "predicted_days": {
-          "name": "predicted_days",
-          "type": "double precision",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "actual_days": {
-          "name": "actual_days",
-          "type": "double precision",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "source": {
-          "name": "source",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'order'"
-        },
-        "observed_at": {
-          "name": "observed_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {
-        "promise_observations_order_leg_uq": {
-          "name": "promise_observations_order_leg_uq",
-          "columns": [
-            {
-              "expression": "order_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "leg",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "where": "\"promise_observations\".\"order_id\" is not null",
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "promise_observations_leg_idx": {
-          "name": "promise_observations_leg_idx",
-          "columns": [
-            {
-              "expression": "leg",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "observed_at",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
-      "foreignKeys": {
-        "promise_observations_order_id_orders_id_fk": {
-          "name": "promise_observations_order_id_orders_id_fk",
-          "tableFrom": "promise_observations",
-          "tableTo": "orders",
-          "columnsFrom": [
-            "order_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
     "public.quotes": {
       "name": "quotes",
       "schema": "",
@@ -4124,80 +4040,6 @@
           "value": "\"quotes\".\"shop_cost_cents\" + \"quotes\".\"platform_fee_cents\" = \"quotes\".\"subtotal_cents\""
         }
       },
-      "isRLSEnabled": false
-    },
-    "public.receiving_sites": {
-      "name": "receiving_sites",
-      "schema": "",
-      "columns": {
-        "shop_id": {
-          "name": "shop_id",
-          "type": "text",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "active": {
-          "name": "active",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true,
-          "default": true
-        },
-        "receiving_fee_cents": {
-          "name": "receiving_fee_cents",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "default": 4500
-        },
-        "per_unit_cents": {
-          "name": "per_unit_cents",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "default": 15
-        },
-        "notes": {
-          "name": "notes",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "receiving_sites_shop_id_shops_id_fk": {
-          "name": "receiving_sites_shop_id_shops_id_fk",
-          "tableFrom": "receiving_sites",
-          "tableTo": "shops",
-          "columnsFrom": [
-            "shop_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
       "isRLSEnabled": false
     },
     "public.services": {
@@ -5342,172 +5184,6 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.shop_stock": {
-      "name": "shop_stock",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "shop_id": {
-          "name": "shop_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "kind": {
-          "name": "kind",
-          "type": "shop_stock_kind",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "sku": {
-          "name": "sku",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "description": {
-          "name": "description",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "material_id": {
-          "name": "material_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "thickness_option_id": {
-          "name": "thickness_option_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "quantity": {
-          "name": "quantity",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "default": 0
-        },
-        "unit": {
-          "name": "unit",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'sheet'"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {
-        "shop_stock_shop_sku_uq": {
-          "name": "shop_stock_shop_sku_uq",
-          "columns": [
-            {
-              "expression": "shop_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "sku",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "shop_stock_thickness_idx": {
-          "name": "shop_stock_thickness_idx",
-          "columns": [
-            {
-              "expression": "thickness_option_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
-      "foreignKeys": {
-        "shop_stock_shop_id_shops_id_fk": {
-          "name": "shop_stock_shop_id_shops_id_fk",
-          "tableFrom": "shop_stock",
-          "tableTo": "shops",
-          "columnsFrom": [
-            "shop_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "shop_stock_material_id_materials_id_fk": {
-          "name": "shop_stock_material_id_materials_id_fk",
-          "tableFrom": "shop_stock",
-          "tableTo": "materials",
-          "columnsFrom": [
-            "material_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "shop_stock_thickness_option_id_thickness_options_id_fk": {
-          "name": "shop_stock_thickness_option_id_thickness_options_id_fk",
-          "tableFrom": "shop_stock",
-          "tableTo": "thickness_options",
-          "columnsFrom": [
-            "thickness_option_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {
-        "shop_stock_quantity_ck": {
-          "name": "shop_stock_quantity_ck",
-          "value": "\"shop_stock\".\"quantity\" >= 0"
-        }
-      },
-      "isRLSEnabled": false
-    },
     "public.shops": {
       "name": "shops",
       "schema": "",
@@ -6532,341 +6208,6 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.supplier_legs": {
-      "name": "supplier_legs",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "order_id": {
-          "name": "order_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "quote_id": {
-          "name": "quote_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "offer_id": {
-          "name": "offer_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "job_id": {
-          "name": "job_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "supplier_id": {
-          "name": "supplier_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "po_approval_id": {
-          "name": "po_approval_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "deposit_approval_id": {
-          "name": "deposit_approval_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "supplier_deposit_cents": {
-          "name": "supplier_deposit_cents",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "default": 0
-        },
-        "po_number": {
-          "name": "po_number",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "incoterm": {
-          "name": "incoterm",
-          "type": "incoterm",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "direct_ship": {
-          "name": "direct_ship",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true,
-          "default": false
-        },
-        "receiving_shop_id": {
-          "name": "receiving_shop_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "receiving_job_id": {
-          "name": "receiving_job_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "status": {
-          "name": "status",
-          "type": "supplier_leg_status",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'PO_PLACED'"
-        },
-        "inbound_carrier": {
-          "name": "inbound_carrier",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "inbound_tracking": {
-          "name": "inbound_tracking",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "pre_shipment_inspection": {
-          "name": "pre_shipment_inspection",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "history": {
-          "name": "history",
-          "type": "jsonb",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'[]'::jsonb"
-        },
-        "production_started_at": {
-          "name": "production_started_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "shipped_inbound_at": {
-          "name": "shipped_inbound_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "received_at": {
-          "name": "received_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "delivered_at": {
-          "name": "delivered_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {
-        "supplier_legs_order_uq": {
-          "name": "supplier_legs_order_uq",
-          "columns": [
-            {
-              "expression": "order_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "supplier_legs_po_number_uq": {
-          "name": "supplier_legs_po_number_uq",
-          "columns": [
-            {
-              "expression": "po_number",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "supplier_legs_job_idx": {
-          "name": "supplier_legs_job_idx",
-          "columns": [
-            {
-              "expression": "job_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
-      "foreignKeys": {
-        "supplier_legs_order_id_orders_id_fk": {
-          "name": "supplier_legs_order_id_orders_id_fk",
-          "tableFrom": "supplier_legs",
-          "tableTo": "orders",
-          "columnsFrom": [
-            "order_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "supplier_legs_quote_id_quotes_id_fk": {
-          "name": "supplier_legs_quote_id_quotes_id_fk",
-          "tableFrom": "supplier_legs",
-          "tableTo": "quotes",
-          "columnsFrom": [
-            "quote_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "supplier_legs_offer_id_supplier_offers_id_fk": {
-          "name": "supplier_legs_offer_id_supplier_offers_id_fk",
-          "tableFrom": "supplier_legs",
-          "tableTo": "supplier_offers",
-          "columnsFrom": [
-            "offer_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "supplier_legs_job_id_sourcing_jobs_id_fk": {
-          "name": "supplier_legs_job_id_sourcing_jobs_id_fk",
-          "tableFrom": "supplier_legs",
-          "tableTo": "sourcing_jobs",
-          "columnsFrom": [
-            "job_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "supplier_legs_supplier_id_suppliers_id_fk": {
-          "name": "supplier_legs_supplier_id_suppliers_id_fk",
-          "tableFrom": "supplier_legs",
-          "tableTo": "suppliers",
-          "columnsFrom": [
-            "supplier_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "supplier_legs_po_approval_id_approvals_id_fk": {
-          "name": "supplier_legs_po_approval_id_approvals_id_fk",
-          "tableFrom": "supplier_legs",
-          "tableTo": "approvals",
-          "columnsFrom": [
-            "po_approval_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "supplier_legs_deposit_approval_id_approvals_id_fk": {
-          "name": "supplier_legs_deposit_approval_id_approvals_id_fk",
-          "tableFrom": "supplier_legs",
-          "tableTo": "approvals",
-          "columnsFrom": [
-            "deposit_approval_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "supplier_legs_receiving_shop_id_shops_id_fk": {
-          "name": "supplier_legs_receiving_shop_id_shops_id_fk",
-          "tableFrom": "supplier_legs",
-          "tableTo": "shops",
-          "columnsFrom": [
-            "receiving_shop_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "supplier_legs_receiving_job_id_manufacturing_jobs_id_fk": {
-          "name": "supplier_legs_receiving_job_id_manufacturing_jobs_id_fk",
-          "tableFrom": "supplier_legs",
-          "tableTo": "manufacturing_jobs",
-          "columnsFrom": [
-            "receiving_job_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
     "public.supplier_offers": {
       "name": "supplier_offers",
       "schema": "",
@@ -7153,180 +6494,6 @@
         "supplier_offers_trust_ck": {
           "name": "supplier_offers_trust_ck",
           "value": "\"supplier_offers\".\"trust_level\" in ('SUPPLIER_ESTIMATE', 'SUPPLIER_CONFIRMED')"
-        }
-      },
-      "isRLSEnabled": false
-    },
-    "public.supplier_quotes": {
-      "name": "supplier_quotes",
-      "schema": "",
-      "columns": {
-        "quote_id": {
-          "name": "quote_id",
-          "type": "text",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "offer_id": {
-          "name": "offer_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "job_id": {
-          "name": "job_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "supplier_id": {
-          "name": "supplier_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "selection_approval_id": {
-          "name": "selection_approval_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "receiving_shop_id": {
-          "name": "receiving_shop_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "composition": {
-          "name": "composition",
-          "type": "jsonb",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "risk_score": {
-          "name": "risk_score",
-          "type": "double precision",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "deposit_pct": {
-          "name": "deposit_pct",
-          "type": "double precision",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {
-        "supplier_quotes_offer_idx": {
-          "name": "supplier_quotes_offer_idx",
-          "columns": [
-            {
-              "expression": "offer_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
-      "foreignKeys": {
-        "supplier_quotes_quote_id_quotes_id_fk": {
-          "name": "supplier_quotes_quote_id_quotes_id_fk",
-          "tableFrom": "supplier_quotes",
-          "tableTo": "quotes",
-          "columnsFrom": [
-            "quote_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "supplier_quotes_offer_id_supplier_offers_id_fk": {
-          "name": "supplier_quotes_offer_id_supplier_offers_id_fk",
-          "tableFrom": "supplier_quotes",
-          "tableTo": "supplier_offers",
-          "columnsFrom": [
-            "offer_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "supplier_quotes_job_id_sourcing_jobs_id_fk": {
-          "name": "supplier_quotes_job_id_sourcing_jobs_id_fk",
-          "tableFrom": "supplier_quotes",
-          "tableTo": "sourcing_jobs",
-          "columnsFrom": [
-            "job_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "supplier_quotes_supplier_id_suppliers_id_fk": {
-          "name": "supplier_quotes_supplier_id_suppliers_id_fk",
-          "tableFrom": "supplier_quotes",
-          "tableTo": "suppliers",
-          "columnsFrom": [
-            "supplier_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "supplier_quotes_selection_approval_id_approvals_id_fk": {
-          "name": "supplier_quotes_selection_approval_id_approvals_id_fk",
-          "tableFrom": "supplier_quotes",
-          "tableTo": "approvals",
-          "columnsFrom": [
-            "selection_approval_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "supplier_quotes_receiving_shop_id_shops_id_fk": {
-          "name": "supplier_quotes_receiving_shop_id_shops_id_fk",
-          "tableFrom": "supplier_quotes",
-          "tableTo": "shops",
-          "columnsFrom": [
-            "receiving_shop_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {
-        "supplier_quotes_deposit_ck": {
-          "name": "supplier_quotes_deposit_ck",
-          "value": "\"supplier_quotes\".\"deposit_pct\" >= 0 and \"supplier_quotes\".\"deposit_pct\" <= 1"
         }
       },
       "isRLSEnabled": false
@@ -7641,6 +6808,254 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
+    "public.user_sessions": {
+      "name": "user_sessions",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "secret_hash": {
+          "name": "secret_hash",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "device_hash": {
+          "name": "device_hash",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "expires_at": {
+          "name": "expires_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "last_seen_at": {
+          "name": "last_seen_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "user_agent": {
+          "name": "user_agent",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "revoked_at": {
+          "name": "revoked_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "user_sessions_secret_hash_uq": {
+          "name": "user_sessions_secret_hash_uq",
+          "columns": [
+            {
+              "expression": "secret_hash",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "user_sessions_user_idx": {
+          "name": "user_sessions_user_idx",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "user_sessions_device_idx": {
+          "name": "user_sessions_device_idx",
+          "columns": [
+            {
+              "expression": "device_hash",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "user_sessions_user_id_users_id_fk": {
+          "name": "user_sessions_user_id_users_id_fk",
+          "tableFrom": "user_sessions",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.users": {
+      "name": "users",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email_verified_at": {
+          "name": "email_verified_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "display_name": {
+          "name": "display_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "handle": {
+          "name": "handle",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "roles": {
+          "name": "roles",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'{buyer}'::text[]"
+        },
+        "intent": {
+          "name": "intent",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "interests": {
+          "name": "interests",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'[]'::jsonb"
+        },
+        "onboarded_at": {
+          "name": "onboarded_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "users_email_uq": {
+          "name": "users_email_uq",
+          "columns": [
+            {
+              "expression": "email",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "users_handle_uq": {
+          "name": "users_handle_uq",
+          "columns": [
+            {
+              "expression": "handle",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "where": "\"users\".\"handle\" is not null",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "users_email_lower_ck": {
+          "name": "users_email_lower_ck",
+          "value": "\"users\".\"email\" = lower(\"users\".\"email\")"
+        }
+      },
+      "isRLSEnabled": false
+    },
     "public.webhook_events": {
       "name": "webhook_events",
       "schema": "",
@@ -7762,6 +7177,16 @@
         "customer"
       ]
     },
+    "public.auth_challenge_kind": {
+      "name": "auth_challenge_kind",
+      "schema": "public",
+      "values": [
+        "email",
+        "passkey_register",
+        "passkey_login",
+        "oauth"
+      ]
+    },
     "public.bg_edge_type": {
       "name": "bg_edge_type",
       "schema": "public",
@@ -7848,16 +7273,6 @@
         "manual"
       ]
     },
-    "public.credit_status": {
-      "name": "credit_status",
-      "schema": "public",
-      "values": [
-        "AVAILABLE",
-        "RESERVED",
-        "REDEEMED",
-        "VOID"
-      ]
-    },
     "public.decline_reason": {
       "name": "decline_reason",
       "schema": "public",
@@ -7929,12 +7344,7 @@
         "TAX_PAYABLE",
         "PROCESSOR_FEES",
         "PAYOUTS_IN_TRANSIT",
-        "REFUNDS",
-        "CUSTOMER_DEPOSITS",
-        "SUPPLIER_PAYABLE",
-        "RISK_RESERVE",
-        "BUYER_CREDITS",
-        "PROMISE_CREDIT_EXPENSE"
+        "REFUNDS"
       ]
     },
     "public.ledger_direction": {
@@ -8050,14 +7460,6 @@
         "REVOKED"
       ]
     },
-    "public.payment_plan_kind": {
-      "name": "payment_plan_kind",
-      "schema": "public",
-      "values": [
-        "FULL",
-        "DEPOSIT_BALANCE"
-      ]
-    },
     "public.payment_provider": {
       "name": "payment_provider",
       "schema": "public",
@@ -8102,28 +7504,6 @@
         "FIBER_LASER",
         "CO2_LASER",
         "PRESS_BRAKE"
-      ]
-    },
-    "public.promise_leg": {
-      "name": "promise_leg",
-      "schema": "public",
-      "values": [
-        "MATERIAL_ARRIVAL",
-        "SHOP_QUEUE",
-        "PROCESS",
-        "QA",
-        "PACK",
-        "CARRIER_TRANSIT"
-      ]
-    },
-    "public.promise_status": {
-      "name": "promise_status",
-      "schema": "public",
-      "values": [
-        "ON_TRACK",
-        "AT_RISK",
-        "MET",
-        "MISSED"
       ]
     },
     "public.quote_status": {
@@ -8194,14 +7574,6 @@
         "SUSPENDED"
       ]
     },
-    "public.shop_stock_kind": {
-      "name": "shop_stock_kind",
-      "schema": "public",
-      "values": [
-        "SHEET",
-        "HARDWARE"
-      ]
-    },
     "public.sourcing_channel": {
       "name": "sourcing_channel",
       "schema": "public",
@@ -8232,19 +7604,6 @@
         "COMPLETE",
         "CANCELLED",
         "FAILED"
-      ]
-    },
-    "public.supplier_leg_status": {
-      "name": "supplier_leg_status",
-      "schema": "public",
-      "values": [
-        "PO_PLACED",
-        "IN_PRODUCTION_AT_SUPPLIER",
-        "SHIPPED_INBOUND",
-        "RECEIVED_AT_PARTNER",
-        "QA_FAILED",
-        "DELIVERED",
-        "CANCELLED"
       ]
     },
     "public.supplier_offer_status": {

@@ -8,9 +8,9 @@ import { makeView } from './workspace.fixtures';
 
 describe('workspace model', () => {
     it('lists only sections backed by nodes in the version', () => {
-        expect(availableSections(makeView())).toEqual(['overview', 'requirements', 'questions', 'materials', 'parts', 'graph', 'versions']);
+        expect(availableSections(makeView())).toEqual(['overview', 'object', 'requirements', 'questions', 'materials', 'parts', 'attachments', 'assistant', 'graph', 'versions']);
         const bare = makeView({ nodes: [makeView().nodes[0]!], edges: [] });
-        expect(availableSections(bare)).toEqual(['overview', 'graph', 'versions']);
+        expect(availableSections(bare)).toEqual(['overview', 'object', 'attachments', 'assistant', 'graph', 'versions']);
     });
 
     it('reads questions, requirements, materials and parts from node data', () => {

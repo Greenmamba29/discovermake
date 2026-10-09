@@ -22,6 +22,16 @@ export const ChannelId = z.string().regex(/^chn_[A-Za-z0-9_-]+$/);
 export const ShowId = z.string().regex(/^shw_[A-Za-z0-9_-]+$/);
 export const DropId = z.string().regex(/^drp_[A-Za-z0-9_-]+$/);
 export const SlotClaimId = z.string().regex(/^slc_[A-Za-z0-9_-]+$/);
+/** Public show id shown in the UI, e.g. `LIVE-984`. */
+export const ShowDisplayId = z.string().regex(/^LIVE-\d+$/);
+
+/** Absolute URL, or a same-origin path (committed replay fixtures under /public). */
+const MediaUrl = z.string().refine((v) => isSameOriginPath(v) || z.string().url().safeParse(v).success, 'expected an absolute URL or a same-origin path');
+
+/** `/media/replay.mp4`: one leading slash, no `..` segments, no backslashes or whitespace. */
+function isSameOriginPath(v: string): boolean {
+    return v.startsWith('/') && !v.startsWith('//') && !/[\\\s]/.test(v) && !v.split('/').some((seg) => seg === '..' || seg === '.');
+}
 
 export const CHANNEL_KINDS = ['creator', 'factory', 'campus'] as const;
 export const ChannelKind = z.enum(CHANNEL_KINDS);
@@ -39,7 +49,7 @@ export const ShowFormat = z.enum(SHOW_FORMATS);
 export const VideoSource = z.discriminatedUnion('kind', [
     z.object({ kind: z.literal('livekit'), roomName: z.string() }),
     z.object({ kind: z.literal('hls'), url: z.string().url() }),
-    z.object({ kind: z.literal('mp4'), url: z.string() }),
+    z.object({ kind: z.literal('mp4'), url: MediaUrl }),
     z.object({ kind: z.literal('none') }),
 ]);
 export type VideoSource = z.infer<typeof VideoSource>;
@@ -100,7 +110,7 @@ export type DropView = z.infer<typeof DropView>;
 
 export const ShowView = z.object({
     id: ShowId,
-    displayId: z.string(),
+    displayId: ShowDisplayId,
     channel: ChannelView,
     title: z.string(),
     format: ShowFormat,
@@ -160,7 +170,7 @@ export const LiveEventType = z.enum(LIVE_EVENT_TYPES);
 export type LiveEventType = z.infer<typeof LiveEventType>;
 
 /** Events only the server may emit; they always carry `sig`. */
-export const SIGNED_LIVE_EVENTS: readonly LiveEventType[] = [
+export const SIGNED_LIVE_EVENTS = [
     'product.focus',
     'variant.focus',
     'material.change',
@@ -174,12 +184,14 @@ export const SIGNED_LIVE_EVENTS: readonly LiveEventType[] = [
     'order.completed',
     'show.started',
     'show.ended',
-];
+] as const satisfies readonly LiveEventType[];
+export type SignedLiveEventType = (typeof SIGNED_LIVE_EVENTS)[number];
+export const isSignedLiveEvent = (e: LiveEventType): e is SignedLiveEventType => (SIGNED_LIVE_EVENTS as readonly string[]).includes(e);
 
 export const LIVE_ACTOR_KINDS = ['host', 'cohost', 'viewer', 'agent', 'system', 'machine'] as const;
 export const LiveActorKind = z.enum(LIVE_ACTOR_KINDS);
 
-export const LiveEvent = z.object({
+export const LiveEventBase = z.object({
     v: z.literal(1),
     event: LiveEventType,
     showId: ShowId,
@@ -193,7 +205,18 @@ export const LiveEvent = z.object({
     /** HMAC-SHA256 (LIVE_EVENT_SIGNING_SECRET) over the canonical event without `sig`. */
     sig: z.string().optional(),
 });
-export type LiveEvent = z.infer<typeof LiveEvent>;
+type LiveEventFields = Omit<z.infer<typeof LiveEventBase>, 'event' | 'sig'>;
+/** The type mirrors the runtime rule: signed event types always carry `sig`. */
+export type LiveEvent =
+    | (LiveEventFields & { event: SignedLiveEventType; sig: string })
+    | (LiveEventFields & { event: Exclude<LiveEventType, SignedLiveEventType>; sig?: string });
+
+/** Commerce-affecting events (`SIGNED_LIVE_EVENTS`) are rejected without `sig`; servers and clients still verify it. */
+export const LiveEvent = LiveEventBase.superRefine((e, ctx) => {
+    if (isSignedLiveEvent(e.event) && !e.sig) {
+        ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['sig'], message: `${e.event} must be server-signed` });
+    }
+}) as unknown as z.ZodType<LiveEvent, z.ZodTypeDef, unknown>;
 
 export const QuestionView = z.object({
     id: z.string(),
@@ -268,6 +291,7 @@ export const HostIntent = z.discriminatedUnion('intent', [
     z.object({
         intent: z.literal('start_drop'),
         buildId: BuildId,
+        /** Build Slots are paid (authorize, then capture): at least $1.00, above card minimums. Free give-aways are not drops. */
         priceCents: Cents.min(100),
         totalSlots: z.number().int().min(1).max(10_000),
         thresholdSlots: z.number().int().min(1),
@@ -281,7 +305,11 @@ export const HostIntent = z.discriminatedUnion('intent', [
     z.object({ intent: z.literal('mute_viewer'), viewerId: z.string(), minutes: z.number().int().min(1).max(1440) }),
     z.object({ intent: z.literal('slow_mode'), seconds: z.number().int().min(0).max(300) }),
     z.object({ intent: z.literal('machine_milestone'), event: z.enum(['machine.started', 'machine.completed', 'inspection.passed', 'prototype.completed']), note: z.string().max(200).optional() }),
-]);
+]).superRefine((v, ctx) => {
+    if (v.intent === 'start_drop' && v.thresholdSlots > v.totalSlots) {
+        ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['thresholdSlots'], message: 'thresholdSlots cannot exceed totalSlots' });
+    }
+});
 export type HostIntent = z.infer<typeof HostIntent>;
 
 /** POST /api/live/shows/:id/chat (signed in; slow mode + keyword filter + mute enforced). */

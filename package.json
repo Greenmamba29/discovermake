@@ -14,7 +14,9 @@
         "db:setup": "bun run db:migrate && bun run db:seed",
         "test": "vitest run",
         "test:watch": "vitest",
-        "test:e2e": "playwright test"
+        "test:e2e": "playwright test",
+        "load:test": "bun scripts/load/run.ts",
+        "ops:restore-drill": "bash scripts/ops/restore-drill.sh"
     },
     "dependencies": {
         "@ai-sdk/google": "^4.0.88",

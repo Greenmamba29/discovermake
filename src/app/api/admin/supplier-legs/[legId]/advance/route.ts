@@ -14,7 +14,7 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export const POST = route<{ legId: string }>(async (request, { params }) => {
-    requireAdmin(request);
+    await requireAdmin(request);
     const legId = pathId((await params).legId, SupplierLegId, 'Supplier leg');
     const body = await parseJson(request, AdvanceSupplierLegRequest);
     return json(await advanceSupplierLeg(legId, body, { ...ADMIN_ACTOR }));

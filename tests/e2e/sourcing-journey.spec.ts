@@ -61,7 +61,8 @@ test('Accio Work sources a part over MCP and a human approves the route', async 
     const buildId: string = part.buildId;
 
     // ---- Buyer: ask partners for offers at volume ----
-    const created = await request.post(`/api/builds/${buildId}/sourcing`, { data: { partId, quantity: 250, targetRegions: ['VN', 'CN'] } });
+    // As the buyer's browser (its device owns the build, ADR-0009).
+    const created = await page.request.post(`/api/builds/${buildId}/sourcing`, { data: { partId, quantity: 250, targetRegions: ['VN', 'CN'] } });
     expect(created.status()).toBe(201);
     const job = await created.json();
 

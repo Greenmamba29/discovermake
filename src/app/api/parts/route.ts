@@ -4,8 +4,10 @@
  * Creates a Build + Part and returns a signed upload target. The client then PUTs
  * the raw DXF bytes to `upload.url` with exactly `upload.headers` (or POSTs them to
  * /api/parts/:partId/upload) and calls POST /api/parts/:partId/analyze.
+ * The build belongs to the signed-in user and/or this device (sets `dm_device` when missing).
  */
 import { CreatePartRequest } from '@/contracts';
+import { resolveBuildOwner } from '@/server/auth/viewer';
 import { ApiError, json, route } from '@/server/http';
 import { assertDxfFilename, createPartUpload, QUOTE_MAX_UPLOAD_BYTES, UnsupportedFileError } from '@/server/quote';
 import { readJsonBody, validate } from '@/server/quote/route-helpers';
@@ -31,6 +33,8 @@ export const POST = route(async (request) => {
         }
     }
     const body = validate(raw, CreatePartRequest);
-    const created = await createPartUpload(body);
-    return json(created, { status: 201 });
+    const owner = await resolveBuildOwner(request);
+    const res = json(await createPartUpload(body, owner), { status: 201 });
+    owner.apply(res);
+    return res;
 });

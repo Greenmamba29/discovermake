@@ -71,6 +71,20 @@ const EnvSchema = z.object({
     /** Google AI Studio key for Make AI. Make AI answers 503 when unset. */
     GOOGLE_GENERATIVE_AI_API_KEY: optionalString,
 
+    // ---- R2 accounts (ADR-0009) ----
+    /** HMAC key for email sign-in codes. Dev fallback outside production; required in production. */
+    AUTH_SECRET: optionalString,
+    /** Comma-separated emails that get the `ops` + `admin` roles at sign-in. */
+    ADMIN_EMAILS: optionalString,
+    /** Google sign-in (OIDC). Enabled only when both are set. */
+    GOOGLE_CLIENT_ID: optionalString,
+    GOOGLE_CLIENT_SECRET: optionalString,
+    /** Sign in with Apple. Enabled only when all four are set. APPLE_PRIVATE_KEY is the .p8 PEM (\n escapes allowed). */
+    APPLE_CLIENT_ID: optionalString,
+    APPLE_TEAM_ID: optionalString,
+    APPLE_KEY_ID: optionalString,
+    APPLE_PRIVATE_KEY: optionalString,
+
     /** CAD worker (services/cad-worker) base URL, e.g. https://cad.internal.example. CAD generation answers 503 when unset. */
     CAD_WORKER_URL: optionalString,
     /** Bearer token the CAD worker expects (its CAD_WORKER_TOKEN). */
@@ -126,7 +140,7 @@ export function assertNotProduction(feature: string): void {
  * production a clearly-labelled dev fallback is returned so local dev works
  * without ceremony.
  */
-export function requireSecret(name: 'ORDER_LINK_SECRET' | 'PASSPORT_SIGNING_SECRET' | 'JOB_PACKET_SIGNING_SECRET' | 'STORAGE_SIGNING_SECRET'): string {
+export function requireSecret(name: 'ORDER_LINK_SECRET' | 'PASSPORT_SIGNING_SECRET' | 'JOB_PACKET_SIGNING_SECRET' | 'STORAGE_SIGNING_SECRET' | 'AUTH_SECRET'): string {
     const value = env()[name];
     if (value) return value;
     if (isProduction()) throw new Error(`Missing required secret ${name}`);

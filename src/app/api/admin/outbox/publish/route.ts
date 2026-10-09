@@ -13,7 +13,7 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 const handler = route(async (request) => {
-    requireAdminOrCron(request);
+    await requireAdminOrCron(request);
     await ensureSubscribers();
     return json<PublishOutboxResponse>(await publishPendingEvents({ limit: 500 }));
 });

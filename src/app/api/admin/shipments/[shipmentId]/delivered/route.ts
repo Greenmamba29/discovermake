@@ -13,7 +13,7 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export const POST = route<{ shipmentId: string }>(async (request, { params }) => {
-    requireAdmin(request);
+    await requireAdmin(request);
     const id = ShipmentId.safeParse((await params).shipmentId);
     if (!id.success) throw new ApiError('NOT_FOUND', 'Shipment not found');
     const body = await parseJson(request, MarkDeliveredRequest);

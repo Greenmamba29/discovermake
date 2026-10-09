@@ -38,8 +38,10 @@ afterAll(async () => {
 
 const BASE = 'http://localhost:3100';
 const params = <P>(p: P) => ({ params: Promise.resolve(p) });
+/** One guest browser for the whole suite: builds created through POST /api/parts belong to this device (ADR-0009). */
+const DEVICE_COOKIE_HEADER = 'dm_device=quoteflowsuitedevicecookie000000000';
 const jsonReq = (url: string, body: unknown, method = 'POST') =>
-    new Request(`${BASE}${url}`, { method, headers: { 'content-type': 'application/json' }, body: typeof body === 'string' ? body : JSON.stringify(body) });
+    new Request(`${BASE}${url}`, { method, headers: { 'content-type': 'application/json', cookie: DEVICE_COOKIE_HEADER }, body: typeof body === 'string' ? body : JSON.stringify(body) });
 
 async function uploadViaSignedUrl(name: string, content = fixture(name).build()) {
     const bytes = new TextEncoder().encode(content);
@@ -159,7 +161,7 @@ describe('upload -> analyze -> quote', () => {
         // The ordered design is frozen: same-file re-analyze is a no-op, changes are refused.
         expect(await analyzePart(created.partId)).toMatchObject({ designVersion: 1, status: 'READY' });
         await expect(analyzePart(created.partId, { units: 'in' })).rejects.toMatchObject({ code: 'CONFLICT' });
-        const reupload = await postUpload(new Request(`${BASE}/api/parts/${created.partId}/upload`, { method: 'PUT', body: fixture('l-bracket-flat').build() }), params({ partId: created.partId }));
+        const reupload = await postUpload(new Request(`${BASE}/api/parts/${created.partId}/upload`, { method: 'PUT', headers: { cookie: DEVICE_COOKIE_HEADER }, body: fixture('l-bracket-flat').build() }), params({ partId: created.partId }));
         expect(reupload.status).toBe(409);
         await getStorage().putObject(created.upload.key, fixture('l-bracket-flat').build()); // signed-URL re-PUT
         await expect(analyzePart(created.partId)).rejects.toMatchObject({ code: 'CONFLICT' });
@@ -184,7 +186,7 @@ describe('upload -> analyze -> quote', () => {
         // Units flip and re-uploads are refused while the payment is pending.
         expect(await analyzePart(created.partId)).toMatchObject({ designVersion: 1, status: 'READY' });
         await expect(analyzePart(created.partId, { units: 'in' })).rejects.toMatchObject({ code: 'CONFLICT' });
-        const reupload = await postUpload(new Request(`${BASE}/api/parts/${created.partId}/upload`, { method: 'PUT', body: fixture('l-bracket-flat').build() }), params({ partId: created.partId }));
+        const reupload = await postUpload(new Request(`${BASE}/api/parts/${created.partId}/upload`, { method: 'PUT', headers: { cookie: DEVICE_COOKIE_HEADER }, body: fixture('l-bracket-flat').build() }), params({ partId: created.partId }));
         expect(reupload.status).toBe(409);
         await getStorage().putObject(created.upload.key, fixture('l-bracket-flat').build()); // signed-URL re-PUT
         await expect(analyzePart(created.partId)).rejects.toMatchObject({ code: 'CONFLICT' });
@@ -398,7 +400,7 @@ describe('validation and errors', () => {
         const q1 = QuoteView.parse((await quote({ partId: created.partId, ...STEEL_16GA, quantity: 1 })).body);
 
         // Raw-body re-upload of different geometry.
-        const raw = await postUpload(new Request(`${BASE}/api/parts/${created.partId}/upload`, { method: 'PUT', body: fixture('rounded-rect-bulge').build() }), params({ partId: created.partId }));
+        const raw = await postUpload(new Request(`${BASE}/api/parts/${created.partId}/upload`, { method: 'PUT', headers: { cookie: DEVICE_COOKIE_HEADER }, body: fixture('rounded-rect-bulge').build() }), params({ partId: created.partId }));
         expect(raw.status).toBe(200);
         const v2 = await analyze(created.partId);
         expect(v2.designVersion).toBe(2);

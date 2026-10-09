@@ -114,7 +114,7 @@ function isUniqueViolation(err: unknown, constraint: string): boolean {
     return e?.cause ? isUniqueViolation(e.cause, constraint) : false;
 }
 
-export async function createCheckout(input: CheckoutRequest): Promise<CheckoutResponse> {
+export async function createCheckout(input: CheckoutRequest, opts: { buyerUserId?: string | null } = {}): Promise<CheckoutResponse> {
     const db = getDb();
     const [quote] = await db.select().from(quotes).where(eq(quotes.id, input.quoteId));
     if (!quote) throw new ApiError('NOT_FOUND', 'Quote not found');
@@ -125,7 +125,7 @@ export async function createCheckout(input: CheckoutRequest): Promise<CheckoutRe
     if (!shop) throw new ApiError('CONFLICT', 'The quoted shop is no longer available. Get a new quote.');
 
     const orderType = orderTypeForQuantity(pricing.quantity);
-    const actor = guestBuyerActor(input.buyer.email);
+    const actor: Actor = opts.buyerUserId ? { kind: 'buyer', id: opts.buyerUserId } : guestBuyerActor(input.buyer.email);
     const provider = getPaymentProvider();
     const appUrl = env().APP_URL;
 
@@ -153,6 +153,7 @@ export async function createCheckout(input: CheckoutRequest): Promise<CheckoutRe
                     orderType,
                     status: 'PENDING_PAYMENT',
                     buyerEmail: input.buyer.email,
+                    buyerUserId: opts.buyerUserId ?? null,
                     buyerName: input.buyer.name,
                     buyerPhone: input.buyer.phone ?? null,
                     shippingAddress: input.shippingAddress,

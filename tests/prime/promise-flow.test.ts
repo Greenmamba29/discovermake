@@ -11,7 +11,7 @@ import { getOrderLedger, ledgerBalances } from '@/server/ledger';
 import { createCheckout, getOrderForBuyer, handlePaymentSucceeded } from '@/server/orders';
 import { availableCreditCents } from '@/server/promise/credits';
 import { quotePromises, recheckOrderPromise, setOrderPromise } from '@/server/promise/engine';
-import { syntheticObservations } from '@/server/promise/training';
+import { syntheticObservations, type Observation } from '@/server/promise/training';
 import { markShipmentDelivered } from '@/server/shipping';
 import { createShipment } from '@/server/shops';
 import { GET as retrainRoute } from '@/app/api/admin/promise/retrain/route';
@@ -127,7 +127,7 @@ describe('Delivery Promise', () => {
 
         const synthetic = syntheticObservations(31, 600);
         // Plus a carrier that is reliably slow on STANDARD: +5 business days.
-        const slow = Array.from({ length: 40 }, (_, i) => ({ id: `slow_${i}`, group: `slow_${i}`, leg: 'CARRIER_TRANSIT' as const, predictedDays: 4, actualDays: 9, carrierService: 'STANDARD', zone: 'Z3' }));
+        const slow: Observation[] = Array.from({ length: 40 }, (_, i) => ({ id: `slow_${i}`, group: `slow_${i}`, leg: 'CARRIER_TRANSIT' as const, predictedDays: 4, actualDays: 9, carrierService: 'STANDARD', zone: 'Z3' }));
         const rows = [...synthetic, ...slow].map((o) => ({
             leg: o.leg,
             shopId: o.shopId ?? null,

@@ -34,7 +34,8 @@ test('a Make AI plan becomes a versioned Build, gets answered, approved and remi
         await sql.end();
     }
 
-    const res = await request.post('/api/make-ai/builds', { data: { intentId } });
+    // page.request shares the browser's cookies: the build belongs to this browser's device (ADR-0009).
+    const res = await page.request.post('/api/make-ai/builds', { data: { intentId } });
     expect(res.status()).toBe(201);
     const { buildId } = await res.json();
 

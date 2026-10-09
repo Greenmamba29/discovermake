@@ -13,7 +13,7 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 const handler = route(async (request) => {
-    requireAdminOrCron(request);
+    await requireAdminOrCron(request);
     return json<RetrainPromiseResponse>(await retrainPromiseModels());
 });
 

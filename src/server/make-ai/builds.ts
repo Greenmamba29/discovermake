@@ -41,7 +41,10 @@ async function existingBuild(db: DbOrTx, buildId: string): Promise<CreateBuildFr
     return { buildId: row.id, displayId: row.displayId, created: false };
 }
 
-export async function createBuildFromIntent(intentId: string, opts: MaterialsEngineerOptions & { db?: DbOrTx } = {}): Promise<CreateBuildFromIntentResult> {
+export async function createBuildFromIntent(
+    intentId: string,
+    opts: MaterialsEngineerOptions & { db?: DbOrTx; owner?: { ownerUserId: string | null; deviceHash: string | null } } = {},
+): Promise<CreateBuildFromIntentResult> {
     const db = opts.db ?? getDb();
     const [row] = await db.select().from(makeIntents).where(eq(makeIntents.id, intentId));
     if (!row) throw new ApiError('NOT_FOUND', 'Make AI plan not found');
@@ -60,7 +63,7 @@ export async function createBuildFromIntent(intentId: string, opts: MaterialsEng
 
             const intent = locked.intent;
             const buildId = newId('build');
-            const actor = guestActor(buildId);
+            const actor = opts.owner?.ownerUserId ? { kind: 'buyer' as const, id: opts.owner.ownerUserId } : guestActor(buildId);
             const name = buildName(intent);
             const graph = graphFromIntent({ intent, intentId, model: locked.model, name, displayId, catalog, advice });
 
@@ -72,6 +75,8 @@ export async function createBuildFromIntent(intentId: string, opts: MaterialsEng
                 origin: 'make_ai',
                 intentId,
                 currentVersion: 1,
+                ownerUserId: opts.owner?.ownerUserId ?? null,
+                deviceHash: opts.owner?.deviceHash ?? null,
             });
             await tx.update(makeIntents).set({ buildId }).where(eq(makeIntents.id, intentId));
             await emitEvent(tx, { type: 'build.created', payload: { buildId, displayId, name }, actor, correlationId: intentId, buildId });
