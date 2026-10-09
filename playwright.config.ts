@@ -7,7 +7,7 @@ import { chromium, defineConfig, devices } from '@playwright/test';
  * the explicit test doubles enabled: PAYMENT_PROVIDER=dev, CARRIER=manual,
  * STORAGE_DRIVER=local. These doubles refuse to run when NODE_ENV=production.
  */
-export const E2E_PORT = 3100;
+export const E2E_PORT = Number(process.env.E2E_PORT || 3100);
 export const E2E_BASE_URL = `http://localhost:${E2E_PORT}`;
 export const E2E_DATABASE_URL = process.env.E2E_DATABASE_URL || 'postgresql://dm:dm@localhost:5432/discovermake_e2e';
 export const E2E_SHOP_TOKEN = process.env.E2E_SHOP_TOKEN || 'dmshop_e2e_console_token_do_not_use_in_prod_000';
