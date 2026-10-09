@@ -71,7 +71,7 @@ describe('Sourcing MCP server (route handler, JSON-RPC)', () => {
         const raw = await list.text();
         expect(raw).not.toContain(token);
         expect(raw).not.toContain(row.tokenHash);
-        expect(JSON.parse(raw)[0]).toEqual({ clientId, name: 'Accio Work · DiscoverMake', createdAt: expect.any(String), lastUsedAt: null, revokedAt: null });
+        expect(JSON.parse(raw)[0]).toEqual({ clientId, name: 'Accio Work · DiscoverMake', createdAt: expect.any(String), lastUsedAt: null, revokedAt: null, allowedTools: null, allowedCidrs: null });
         expect((await createClient(req('/api/admin/sourcing/clients', { method: 'POST', body: { name: 'x' } }), params({}))).status).toBe(401);
     });
 

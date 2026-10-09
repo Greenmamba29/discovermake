@@ -5,8 +5,12 @@
  * Transport: stateless Streamable HTTP (no session ids) with JSON responses, built on
  * `WebStandardStreamableHTTPServerTransport`; one McpServer + transport per request.
  * Auth: `Authorization: Bearer dmsc_...` checked against `sourcing_clients.token_hash`
- * (revoked clients excluded). Body cap 8 MB. Per-client token bucket (in-memory, see
+ * (revoked clients excluded). Body cap 8 MB. Per-client token bucket (shared store, see
  * ./rate-limit.ts). Every `tools/call` is written to `sourcing_tool_calls` (args sha256 only).
+ * Per-workspace allowlist (Stage 1): a client's `allowed_cidrs` is checked against the request
+ * IP (the shared `clientIp` helper: platform header, else the rightmost x-forwarded-for hop)
+ * before anything else (403, JSON-RPC -32003); tools outside `allowed_tools` are left out of
+ * tools/list and refused on call with TOOL_NOT_ALLOWED.
  *
  * Tool calls are dispatched by `callSourcingTool` instead of the SDK's built-in handler,
  * so that argument errors come back as `SourcingToolError` bodies (VALIDATION_FAILED)
@@ -45,6 +49,8 @@ import { getAttachments } from './attachments';
 import { argsSha256, recordToolCall } from './audit';
 import { relayOutboxLazily } from './auto-request';
 import { authenticateSourcingClient, type SourcingClientIdentity } from './clients';
+import { ipAllowed } from '../../lib/cidr';
+import { clientIp } from '../make-ai/rate-limit';
 import { MCP_MAX_BODY_BYTES } from './constants';
 import { attachDocument } from './documents';
 import { SourcingError } from './errors';
@@ -276,6 +282,15 @@ function shortName(name: string): SourcingToolName | null {
     return (SOURCING_TOOLS as readonly string[]).includes(short) ? (short as SourcingToolName) : null;
 }
 
+/** The tools this client may list and call (all nine when it has no allowlist). */
+export function allowedTools(client: Pick<SourcingClientIdentity, 'allowedTools'>): readonly SourcingToolName[] {
+    return client.allowedTools ? SOURCING_TOOLS.filter((t) => client.allowedTools!.includes(t)) : SOURCING_TOOLS;
+}
+
+function toolAllowed(client: Pick<SourcingClientIdentity, 'allowedTools'>, short: SourcingToolName): boolean {
+    return !client.allowedTools || client.allowedTools.includes(short);
+}
+
 function jobIdOf(args: unknown): string | null {
     const id = (args as { sourcing_request_id?: unknown } | null)?.sourcing_request_id;
     return typeof id === 'string' && SourcingJobId.safeParse(id).success ? id : null;
@@ -297,6 +312,9 @@ export async function callSourcingTool(name: string, rawArgs: unknown, ctx: Tool
     try {
         const short = shortName(name);
         if (!short) return fail('NOT_FOUND', `Unknown tool ${name.slice(0, 100)}. Tools: ${SOURCING_TOOLS.map(toolName).join(', ')}`);
+        if (!toolAllowed(ctx.client, short)) {
+            return fail('TOOL_NOT_ALLOWED', `${toolName(short)} is not enabled for this workspace. Allowed tools: ${allowedTools(ctx.client).map(toolName).join(', ')}. Ask DiscoverMake ops to change the allowlist.`);
+        }
         const budget = await mcpRateLimiter.take(ctx.client.id);
         if (!budget.allowed) return fail('RATE_LIMITED', `Too many calls. Retry in ${budget.retryAfterSeconds} s.`);
         const def = TOOL_DEFS[short];
@@ -326,7 +344,7 @@ export async function callSourcingTool(name: string, rawArgs: unknown, ctx: Tool
 /** A fresh McpServer for one request (stateless), with the 9 tools registered for the authenticated client. */
 export function createSourcingMcpServer(ctx: ToolContext): McpServer {
     const server = new McpServer({ name: MCP_SERVER_NAME, version: MCP_SERVER_VERSION }, { capabilities: { tools: {} }, instructions: SERVER_INSTRUCTIONS });
-    for (const short of SOURCING_TOOLS) {
+    for (const short of allowedTools(ctx.client)) {
         const def = TOOL_DEFS[short];
         server.registerTool(
             toolName(short),
@@ -367,6 +385,11 @@ export async function handleSourcingMcpRequest(request: Request): Promise<Respon
         return jsonRpcError(401, -32001, 'Unauthorized: send Authorization: Bearer <token from POST /api/admin/sourcing/clients>', {
             'www-authenticate': 'Bearer realm="discovermake-sourcing"',
         });
+    }
+    const ip = clientIp(request);
+    if (!ipAllowed(ip, client.allowedCidrs)) {
+        await recordToolCall({ clientId: client.id, tool: '(request)', jobId: null, ok: false, errorCode: 'IP_NOT_ALLOWED', argsSha256: argsSha256(null), durationMs: 0 });
+        return jsonRpcError(403, -32003, 'Forbidden: IP_NOT_ALLOWED: this workspace token is not accepted from your IP address. Ask DiscoverMake ops to update the allowlist.');
     }
 
     let body: unknown;

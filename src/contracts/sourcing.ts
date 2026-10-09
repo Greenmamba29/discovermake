@@ -237,6 +237,7 @@ export const SOURCING_ERROR_CODES = [
     'CONFLICT',
     'RATE_LIMITED',
     'UNAUTHORIZED',
+    'TOOL_NOT_ALLOWED', // the tool is outside this workspace's allowlist (sourcing_clients.allowed_tools)
 ] as const;
 export const SourcingErrorCode = z.enum(SOURCING_ERROR_CODES);
 export type SourcingErrorCode = z.infer<typeof SourcingErrorCode>;
@@ -397,8 +398,38 @@ export const BuildSourcingView = z.object({
 });
 export type BuildSourcingView = z.infer<typeof BuildSourcingView>;
 
+/** The nine MCP tools by short name (`discovermake.sourcing.<name>`); mirrors SOURCING_TOOLS in src/server/sourcing/policy.ts. */
+export const SOURCING_TOOL_NAMES = ['next_job', 'get_job', 'get_attachments', 'submit_supplier', 'submit_offer', 'update_negotiation', 'attach_document', 'request_approval', 'complete_job'] as const;
+export const SourcingToolShortName = z.enum(SOURCING_TOOL_NAMES);
+
+/** An IPv4 / IPv6 address or CIDR range; the server re-checks and normalizes it (src/lib/cidr.ts). */
+export const CidrText = z.string().trim().min(2).max(64).regex(/^[0-9a-fA-F:.]+(\/\d{1,3})?$/, 'expected an IP address or CIDR range, e.g. 203.0.113.0/24');
+
+/**
+ * Per-workspace MCP allowlist (Stage 1 hardening). `null` = no restriction: all nine tools, any
+ * IP. Tools outside `allowedTools` are hidden from tools/list and refused with TOOL_NOT_ALLOWED;
+ * requests from an IP outside `allowedCidrs` are refused before any tool runs (403).
+ */
+export const SourcingClientAllowlist = z.object({
+    allowedTools: z.array(SourcingToolShortName).min(1).max(SOURCING_TOOL_NAMES.length).nullable(),
+    allowedCidrs: z.array(CidrText).min(1).max(50).nullable(),
+});
+export type SourcingClientAllowlist = z.infer<typeof SourcingClientAllowlist>;
+
 /** Admin: register an Accio Work workspace (or any MCP client) and get its one-time bearer token. */
-export const CreateSourcingClientRequest = z.object({ name: text(120) });
+export const CreateSourcingClientRequest = z.object({ name: text(120) }).merge(SourcingClientAllowlist.partial());
+
+/** Admin listing row. Never includes the token or its hash. */
+export const SourcingClientView = z.object({
+    clientId: z.string(),
+    name: z.string(),
+    createdAt: z.string(),
+    lastUsedAt: z.string().nullable(),
+    revokedAt: z.string().nullable(),
+    allowedTools: z.array(SourcingToolShortName).nullable(),
+    allowedCidrs: z.array(z.string()).nullable(),
+});
+export type SourcingClientView = z.infer<typeof SourcingClientView>;
 export const CreateSourcingClientResponse = z.object({
     clientId: idOf('sourcingClient'),
     name: z.string(),

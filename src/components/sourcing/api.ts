@@ -24,7 +24,16 @@ const enc = encodeURIComponent;
 const bearer = (token: string) => ({ authorization: `Bearer ${token}` });
 
 /** GET /api/admin/sourcing/clients row. Never carries the token or its hash. */
-export type SourcingClientRow = { clientId: string; name: string; createdAt: string; lastUsedAt: string | null; revokedAt: string | null };
+export type SourcingClientRow = {
+    clientId: string;
+    name: string;
+    createdAt: string;
+    lastUsedAt: string | null;
+    revokedAt: string | null;
+    /** Per-workspace allowlist (absent from older servers): null = all tools / any IP. */
+    allowedTools?: string[] | null;
+    allowedCidrs?: string[] | null;
+};
 
 /** One negotiation thread per supplier on a job (sourcing_negotiations). Fields beyond id/status are optional until the contract pins them. */
 export type SourcingNegotiationRow = {
@@ -92,6 +101,8 @@ export const sourcingApi = {
     adminListClients: (token: string) => apiFetch<SourcingClientRow[]>('/api/admin/sourcing/clients', { headers: bearer(token) }),
     adminCreateClient: (token: string, name: string) =>
         apiFetch<CreateSourcingClientResponse>('/api/admin/sourcing/clients', { body: { name }, headers: bearer(token) }),
+    adminUpdateClientAllowlist: (token: string, clientId: string, body: { allowedTools: string[] | null; allowedCidrs: string[] | null }) =>
+        apiFetch<SourcingClientRow>(`/api/admin/sourcing/clients/${enc(clientId)}/allowlist`, { method: 'PUT', body, headers: bearer(token) }),
     adminRevokeClient: (token: string, clientId: string) =>
         apiFetch<OkResponse | null>(`/api/admin/sourcing/clients/${enc(clientId)}`, { method: 'DELETE', headers: bearer(token) }),
 };
