@@ -57,6 +57,13 @@
       "when": 1791577339098,
       "tag": "0007_r4_live",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1791577736596,
+      "tag": "0008_r3_prime_core",
+      "breakpoints": true
     }
   ]
 }

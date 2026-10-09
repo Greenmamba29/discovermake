@@ -10,6 +10,7 @@ import { PageSkeleton } from '@/components/ui/skeleton';
 import { api, errorMessage } from '@/lib/api';
 import { money, shortDate } from '@/lib/format';
 import { RouteCard } from './route-card';
+import { RouteComparison } from '@/components/prime/route-comparison';
 
 const NOT_ORDERABLE_COPY: Record<QuoteView['status'], { title: string; body: string }> = {
     REVIEW: { title: 'This configuration needs a shop review', body: 'A partner shop confirms the price before it can be ordered. Meanwhile we can ask manufacturing partners to quote it.' },
@@ -68,6 +69,9 @@ export function RouteScreen({ quoteId }: { quoteId: string }) {
                 <ButtonLink href={`/parts/${quote.partId}?from=${quote.id}`} variant="secondary" size="lg">
                     Change configuration
                 </ButtonLink>
+            </div>
+            <div className="mt-10">
+                <RouteComparison buildId={quote.buildId} quoteId={quote.id} />
             </div>
             <div className="mt-10">
                 {orderable ? (

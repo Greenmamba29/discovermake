@@ -22,6 +22,11 @@ export type CreatePaymentInput = {
      * Default `automatic`.
      */
     captureMethod?: 'automatic' | 'manual';
+    /**
+     * Optional provider idempotency key. Default `checkout:<orderId>` (one session per order);
+     * R3 balance payments pass `balance:<orderId>:<n>` so they never collide with the deposit session.
+     */
+    idempotencyKey?: string;
 };
 
 export type CaptureInput = { providerRef: string; providerPaymentId: string | null; amountCents: number };

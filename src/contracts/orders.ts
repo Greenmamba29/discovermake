@@ -15,6 +15,7 @@ import { QuoteConfigSummary } from './quotes';
 import { PartPreview } from './parts';
 import { MilestoneView } from './shop';
 import { ShipmentView } from './shipments';
+import { OrderPromiseView, OrderSupplierRouteView } from './promise';
 
 export const ORDER_TOKEN_HEADER = 'x-order-token';
 export const ORDER_TOKEN_QUERY = 't';
@@ -95,5 +96,9 @@ export const OrderView = z.object({
     createdAt: IsoDateTime,
     paidAt: IsoDateTime.nullable(),
     deliveredAt: IsoDateTime.nullable(),
+    /** R3: the Delivery Promise set at checkout (absent on orders placed before R3). */
+    promise: OrderPromiseView.optional(),
+    /** R3: supplier-route orders (deposit + balance, supplier fulfilment leg). Buyer-safe. */
+    supplierRoute: OrderSupplierRouteView.optional(),
 });
 export type OrderView = z.infer<typeof OrderView>;

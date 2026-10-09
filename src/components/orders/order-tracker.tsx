@@ -11,6 +11,7 @@ import { FlatPattern } from '@/components/part/part-preview';
 import { ApiClientError, errorMessage } from '@/lib/api';
 import { dateTime, money, shortDate } from '@/lib/format';
 import { ShipmentCard } from './shipment-card';
+import { SupplierRouteTracker } from '@/components/prime/supplier-route-tracker';
 import { Timeline } from './timeline';
 import { TrackingStepper } from './tracking-stepper';
 import { isTerminalOrder, useOrder } from './use-order';
@@ -21,6 +22,8 @@ export function etaLine(o: OrderView): string {
     if (o.status === 'PENDING_PAYMENT') return 'Production starts as soon as payment is confirmed';
     if (o.status === 'PAYMENT_FAILED') return 'Nothing was charged';
     if (o.status === 'CANCELLED' || o.status === 'REFUNDED') return o.status === 'REFUNDED' ? 'Your payment was refunded' : 'This order was cancelled';
+    // R3 Delivery Promise: one committed date, shown only when its P90 fits.
+    if (o.promise?.show) return `Arrives ${shortDate(o.promise.date)}`;
     if (o.shipment?.estimatedDeliveryDate) return `Arrives ${shortDate(o.shipment.estimatedDeliveryDate)}`;
     if (o.shipment) return `Shipped ${shortDate(o.shipment.shippedAt ?? o.shipment.createdAt)}`;
     return `Ships by ${shortDate(o.promisedShipDate)}`;
@@ -97,6 +100,11 @@ export function OrderTracker({ orderId, token }: { orderId: string; token: strin
                     Nothing was charged and production has not started.
                 </Notice>
             )}
+            {order.promise?.status === 'MISSED' && order.promise.creditCents != null && (
+                <Notice tone="warning" className="mt-4" title="We missed your delivery date" testId="promise-credit">
+                    {money(order.promise.creditCents, order.currency)} credit is on your account and comes off your next order automatically.
+                </Notice>
+            )}
             {order.status === 'QA_FAILED' && (
                 <Notice tone="warning" className="mt-4" title="A part did not pass inspection">
                     The shop is remaking it at no cost to you. Nothing ships until inspection passes.
@@ -120,6 +128,8 @@ export function OrderTracker({ orderId, token }: { orderId: string; token: strin
                         </Link>
                     )}
 
+                    {order.supplierRoute && <SupplierRouteTracker orderId={order.id} token={token} route={order.supplierRoute} currency={order.currency} />}
+
                     {order.shipment && <ShipmentCard shipment={order.shipment} />}
 
                     <section aria-labelledby="updates-heading" className="rounded-2xl bg-graphite-900 p-4 ring-1 ring-graphite-700 sm:p-5">
@@ -142,7 +152,13 @@ export function OrderTracker({ orderId, token }: { orderId: string; token: strin
                         <h2 id="shop-heading" className="eyebrow">
                             Made by
                         </h2>
-                        {order.shop ? (
+                        {order.supplierRoute && (
+                            <p className="mt-3 text-sm text-fg" data-testid="supplier-made-by">
+                                {order.supplierRoute.label}
+                                {order.shop ? <span className="text-fg-muted"> · inspected and shipped by {order.shop.name}</span> : null}
+                            </p>
+                        )}
+                        {order.supplierRoute ? null : order.shop ? (
                             <div className="mt-3 flex gap-3">
                                 <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-graphite-750" aria-hidden>
                                     <Factory className="h-6 w-6" />

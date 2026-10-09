@@ -10,6 +10,7 @@ import { z } from 'zod';
 import { BuildId } from '../../contracts/common';
 import { SourcingChannel, SourcingJobStatus, ApprovalStatus, ApproverRole } from '../../contracts/enums';
 import { CreateSourcingRequest, SubmitOfferInput, SubmitSupplierInput, type ApprovalView, type SourcingJobView, type SupplierOfferView } from '../../contracts/sourcing';
+import type { SupplierLegOpsView } from '../../contracts/promise';
 import { getDb } from '../db';
 import { sourcingDocuments, sourcingNegotiations, suppliers } from '../db/schema';
 import { getStorage } from '../storage';
@@ -48,6 +49,8 @@ export type SourcingJobDetail = {
     approvals: ApprovalView[];
     negotiations: SourcingNegotiationView[];
     documents: SourcingDocumentView[];
+    /** R3: supplier fulfilment legs (purchase orders) created from this job's offers. */
+    legs: SupplierLegOpsView[];
 };
 
 export async function getSourcingJobDetail(jobId: string): Promise<SourcingJobDetail | null> {
@@ -71,5 +74,6 @@ export async function getSourcingJobDetail(jobId: string): Promise<SourcingJobDe
         approvals: await listApprovals({ jobId }),
         negotiations: negotiations.map((r) => toNegotiationView(r.n, r.supplierName)),
         documents,
+        legs: await (await import('../prime/views')).legsForJob(jobId, db),
     };
 }

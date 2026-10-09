@@ -19,6 +19,7 @@ import { E2E_ADMIN_TOKEN, E2E_DATABASE_URL } from '../../playwright.config';
 import { createBuildWithCad } from './support/cad-build';
 import { adminLogin, fulfil, payOrder, quotePart, shopLogin } from './support/journeys';
 import { buildLiveSweepState, type LiveSweepState } from './support/live';
+import { primeSupplierState, type PrimeUrls } from './support/prime';
 
 const OUT = path.join(process.cwd(), 'test-results', 'page-sweep');
 /** Written by global-setup once per run (the e2e database is recreated per run). */
@@ -40,7 +41,7 @@ type Urls = {
     cadWorkspaceUrl: string;
     /** R4 Live: a LIVE show with a featured product and an open drop, an ENDED replay, its control room. */
     live: LiveSweepState;
-};
+} & PrimeUrls;
 
 type Screen = {
     name: string;
@@ -185,6 +186,12 @@ const SCREENS: Screen[] = [
         pattern: async (page) => {
             await expect(page.getByText('Recommended').first()).toBeVisible();
             await expect(page.getByTestId('route-trust-chip').or(page.getByTestId('trust-chip')).first()).toBeVisible();
+            // R3: routes compared side by side (cost, P90 date, quality, CO2) under Suppliers · Processes · Impact.
+            const compare = page.getByTestId('route-comparison');
+            await expect(compare.getByRole('tablist', { name: 'Route details' })).toBeVisible();
+            await expect(compare.getByRole('tab')).toHaveText(['Suppliers', 'Processes', 'Impact']);
+            await expect(compare.getByRole('tab', { name: 'Suppliers' })).toHaveAttribute('aria-selected', 'true');
+            await expect(compare.locator('[data-recommended]')).toHaveCount(1);
         },
     },
     {
@@ -197,6 +204,17 @@ const SCREENS: Screen[] = [
         },
     },
     {
+        name: 'supplier-checkout',
+        mobbin: 'DoorDash · Placing an order: one committed date, the deposit due today and the balance at shipment spelled out',
+        url: (u) => u.supplierCheckoutUrl,
+        pattern: async (page) => {
+            await expect(page.getByTestId('supplier-route-card')).toBeVisible();
+            await expect(page.getByTestId('checkout-deposit')).toBeVisible();
+            await expect(page.getByTestId('checkout-balance')).toBeVisible();
+            await expect(page.locator('[data-testid^="shipping-option-date-"]').first()).toHaveText(/^(Arrives|Ships by) /);
+        },
+    },
+    {
         name: 'order-tracking',
         bottomNav: true,
         mobbin: 'Uber · ride in progress: one plain status sentence, ETA first, the shop visible',
@@ -204,6 +222,22 @@ const SCREENS: Screen[] = [
         pattern: async (page) => {
             await expect(page.getByTestId('order-status')).toBeVisible();
             await expect(page.getByTestId('passport-card')).toBeVisible();
+        },
+    },
+    {
+        name: 'supplier-order-tracking',
+        bottomNav: true,
+        mobbin: 'Uber Eats · order progress: one sentence per step, the current step highlighted, the next payment as one action',
+        url: (u) => u.supplierOrderUrl,
+        pattern: async (page) => {
+            await expect(page.getByTestId('order-status')).toBeVisible();
+            const route = page.getByTestId('supplier-route');
+            await expect(route).toBeVisible();
+            await expect(route.getByRole('listitem')).toHaveCount(6);
+            await expect(page.getByTestId('supplier-step-SHIPPED_INBOUND')).toHaveAttribute('data-state', 'done');
+            await expect(page.getByTestId('supplier-step-RECEIVED_AT_PARTNER')).toHaveAttribute('data-state', 'current');
+            // The buyer never sees who the supplier is.
+            await expect(page.getByText('Sweep Anodizing Works')).toHaveCount(0);
         },
     },
     {
@@ -316,6 +350,31 @@ const SCREENS: Screen[] = [
         },
     },
     {
+        name: 'shop-receiving-job',
+        allowHttp: [NO_STRIPE],
+        mobbin: 'Kitchen display · inbound delivery: what is arriving, from where, the check on arrival as one action',
+        url: (u) => u.receivingJobUrl,
+        before: shopLogin,
+        pattern: async (page) => {
+            const panel = page.getByTestId('receiving-panel');
+            await expect(panel).toBeVisible();
+            await expect(panel).toContainText('MAEU0000001');
+            await expect(page.getByTestId('receive-freight')).toBeVisible();
+        },
+    },
+    {
+        name: 'shop-stock',
+        allowHttp: [NO_STRIPE],
+        mobbin: 'Shopify POS · inventory: one row per SKU with quantity on hand, inline adjust, add item',
+        url: () => '/shop/stock',
+        before: shopLogin,
+        pattern: async (page) => {
+            await expect(page.getByTestId('stock-list').getByRole('listitem').first()).toBeVisible();
+            await expect(page.getByTestId('stock-new-sku')).toBeVisible();
+            await expect(page.getByTestId('shop-nav-stock')).toHaveAttribute('aria-current', 'page');
+        },
+    },
+    {
         name: 'shop-payouts',
         allowHttp: [NO_STRIPE],
         mobbin: 'Payouts / Stripe Connect status',
@@ -359,6 +418,23 @@ const SCREENS: Screen[] = [
         },
         pattern: async (page) => {
             await expect(page.getByTestId('job-status')).toBeVisible();
+        },
+    },
+    {
+        name: 'sourcing-job-legs',
+        mobbin: 'Flexport · shipment detail: PO, supplier, incoterm, inbound tracking and the next milestone as buttons',
+        url: (u) => u.primeSourcingJobUrl,
+        before: async (page) => {
+            await page.goto('/admin/sourcing');
+            await page.getByTestId('sourcing-admin-token-input').fill(E2E_ADMIN_TOKEN);
+            await page.getByTestId('sourcing-admin-login-submit').click();
+        },
+        pattern: async (page) => {
+            await expect(page.getByTestId('job-status')).toBeVisible();
+            const leg = page.locator('[data-testid^="leg-leg_"]').first();
+            await expect(leg).toBeVisible();
+            await expect(leg.getByTestId('leg-status')).toHaveText('SHIPPED_INBOUND');
+            await expect(leg).toContainText('MAEU0000001');
         },
     },
     {
@@ -527,6 +603,7 @@ async function buildState(browser: Browser): Promise<Urls> {
     }
     const made = await (await request.post('/api/make-ai/builds', { data: { intentId } })).json();
     const withCad = await createBuildWithCad(request);
+    const prime = await primeSupplierState(page, request);
     await context.close();
     const live = await buildLiveSweepState(browser, quotePart);
 
@@ -543,6 +620,7 @@ async function buildState(browser: Browser): Promise<Urls> {
         sourcingJobUrl: `/admin/sourcing/jobs/${job.id}`,
         cadWorkspaceUrl: withCad.workspaceUrl,
         live,
+        ...prime,
     };
 }
 

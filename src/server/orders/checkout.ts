@@ -20,6 +20,8 @@ import { getPaymentProvider } from '../payments';
 import { isQuoteOrderable } from '../quote';
 import { addBusinessDays, orderStartDate } from '../quote/leadtime';
 import { SEALED_TOKEN_KEY, sealOrderToken } from './link-vault';
+import { createPaymentPlan, PAYMENT_PURPOSE_KEY } from '../prime/payments';
+import { setOrderPromise } from '../promise/engine';
 
 type QuoteRow = typeof quotes.$inferSelect;
 
@@ -183,6 +185,11 @@ export async function createCheckout(input: CheckoutRequest, opts: { buyerUserId
                     timestamp: now,
                 });
 
+                // R3: the first charge (full, or the supplier-route deposit) minus any promise credit,
+                // and the Delivery Promise with its per-leg P90s.
+                const charge = await createPaymentPlan(tx, { orderId, totalCents: pricing.totalCents, buyerEmail: input.buyer.email, quoteId: quote.id, now });
+                await setOrderPromise(tx, { order: { id: orderId, correlationId: quote.buildId, buildId: quote.buildId, promisedShipDate }, quote, method: input.shippingMethod, shipToRegion: input.shippingAddress.region, now });
+
                 // Provider session inside the transaction: if it fails, no order is left behind.
                 // (A provider session orphaned by a failed commit simply expires unpaid.)
                 let session;
@@ -190,10 +197,10 @@ export async function createCheckout(input: CheckoutRequest, opts: { buyerUserId
                     session = await provider.createPayment({
                         orderId,
                         orderNumber,
-                        amountCents: pricing.totalCents,
+                        amountCents: charge.chargeCents,
                         currency: pricing.currency,
                         buyerEmail: input.buyer.email,
-                        description: `${orderNumber} · ${pricing.quantity} x ${quote.summary.partFilename} (${quote.summary.materialName} ${quote.summary.thicknessLabel})`,
+                        description: `${orderNumber} · ${pricing.quantity} x ${quote.summary.partFilename} (${quote.summary.materialName} ${quote.summary.thicknessLabel})${charge.purpose === 'deposit' ? ' · deposit' : ''}`,
                         successUrl: orderUrl,
                         cancelUrl: new URL(`/build/${encodeURIComponent(quote.buildId)}/approve?quote=${encodeURIComponent(quote.id)}&cancelled=1`, appUrl).toString(),
                         metadata: { dm_quote_id: quote.id, dm_build_id: quote.buildId, dm_app: new URL(appUrl).host },
@@ -208,10 +215,10 @@ export async function createCheckout(input: CheckoutRequest, opts: { buyerUserId
                     orderId,
                     provider: provider.name,
                     providerRef: session.providerRef,
-                    amountCents: pricing.totalCents,
+                    amountCents: charge.chargeCents,
                     currency: pricing.currency,
                     status: 'PENDING',
-                    metadata: { [SEALED_TOKEN_KEY]: sealOrderToken(orderId, token) },
+                    metadata: { [SEALED_TOKEN_KEY]: sealOrderToken(orderId, token), [PAYMENT_PURPOSE_KEY]: charge.purpose },
                     createdAt: now,
                     updatedAt: now,
                 });
@@ -229,8 +236,10 @@ export async function createCheckout(input: CheckoutRequest, opts: { buyerUserId
                         currency: pricing.currency,
                     },
                     promisedShipDate,
-                    payment: { provider: provider.name, providerRef: session.providerRef, redirectUrl: session.redirectUrl },
+                    payment: { provider: provider.name, providerRef: session.providerRef, redirectUrl: session.redirectUrl, amountCents: charge.chargeCents, purpose: charge.purpose },
                     orderUrl,
+                    ...(charge.creditCents > 0 ? { creditAppliedCents: charge.creditCents } : {}),
+                    ...(charge.purpose === 'deposit' ? { balanceDueCents: charge.balanceCents } : {}),
                 } satisfies CheckoutResponse);
             });
         } catch (err) {

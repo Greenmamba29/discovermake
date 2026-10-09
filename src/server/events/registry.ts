@@ -15,6 +15,9 @@ export function ensureSubscribers(): Promise<void> {
         // Sourcing bridge (ADR-0005): auto-request on REVIEW quotes, ops notices for approvals / desk hand-offs.
         const { handleSourcingEvent } = await import('../sourcing/auto-request');
         subscribe(handleSourcingEvent);
+        // R3 Prime: deposit paid -> purchase-order approvals (job row locked first).
+        const { handlePrimeEvent } = await import('../prime/events');
+        subscribe(handlePrimeEvent);
     })();
     return registration;
 }

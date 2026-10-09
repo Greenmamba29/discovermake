@@ -91,7 +91,7 @@ export class StripePaymentProvider implements PaymentProvider {
                 cancel_url: input.cancelUrl,
                 expires_at: sessionExpiry(input.expiresAt),
             },
-            { idempotencyKey: `checkout:${input.orderId}` },
+            { idempotencyKey: input.idempotencyKey ?? `checkout:${input.orderId}` },
         );
         if (!session.url) throw new Error('Stripe did not return a Checkout URL');
         return { providerRef: session.id, redirectUrl: session.url };
