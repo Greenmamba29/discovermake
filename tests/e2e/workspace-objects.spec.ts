@@ -16,7 +16,7 @@ import { fulfil, payOrder, quotePart } from './support/journeys';
 const PNG = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', 'base64');
 
 test('Object View shows the CAD model with dimensions, units and downloads', async ({ page, request }) => {
-    const { workspaceUrl } = await createBuildWithCad(request);
+    const { workspaceUrl } = await createBuildWithCad(page.request);
     await page.goto(`${workspaceUrl}?section=object`);
     await expect(page.getByTestId('section-object')).toHaveAttribute('aria-current', 'page');
 
@@ -69,7 +69,7 @@ test('Object View shows the CAD model with dimensions, units and downloads', asy
 });
 
 test('attach an image and a DXF; "Use as a part" reaches an instant quote', async ({ page, request }) => {
-    const { workspaceUrl } = await createBuildWithCad(request);
+    const { workspaceUrl } = await createBuildWithCad(page.request);
     await page.goto(`${workspaceUrl}?section=attachments`);
     await expect(page.getByTestId('attachment-empty')).toBeVisible();
 
@@ -95,14 +95,14 @@ test('attach an image and a DXF; "Use as a part" reaches an instant quote', asyn
 });
 
 test('Ask Make AI without a model key: honest unavailable state, manual requirement still works', async ({ page, request }) => {
-    const { buildId, workspaceUrl } = await createBuildWithCad(request);
+    const { buildId, workspaceUrl } = await createBuildWithCad(page.request);
     await page.goto(`${workspaceUrl}?section=assistant`);
     await expect(page.getByTestId('assistant-unavailable')).toContainText(/not connected to a model/);
     await page.getByTestId('assistant-manual-text').fill('Fits a 120 mm fan');
     await page.getByTestId('assistant-manual-category').selectOption('dimension');
     await page.getByTestId('assistant-manual-submit').click();
     await expect(page.getByTestId('assistant-manual-saved')).toHaveText('Saved as version 3.');
-    const graph = await (await request.get(`/api/builds/${buildId}/graph`)).json();
+    const graph = await (await page.request.get(`/api/builds/${buildId}/graph`)).json();
     expect(graph.version.version).toBe(3);
     expect(graph.nodes.some((n: { key: string; source: string }) => n.key === 'req:buyer_1' && n.source === 'user')).toBe(true);
 });

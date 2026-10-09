@@ -246,6 +246,7 @@ const SCREENS: Screen[] = [
     },
     {
         name: 'object-view',
+        bottomNav: true,
         mobbin: 'Microsoft Copilot · 3D object with a Recreate / Download panel',
         url: (u) => `${u.cadWorkspaceUrl}?section=object`,
         pattern: async (page) => {
@@ -261,6 +262,7 @@ const SCREENS: Screen[] = [
     },
     {
         name: 'workspace-files',
+        bottomNav: true,
         mobbin: 'Attachment tray: file tiles with thumbnails, type icons and progress',
         url: (u) => `${u.cadWorkspaceUrl}?section=attachments`,
         pattern: async (page) => {
@@ -271,6 +273,7 @@ const SCREENS: Screen[] = [
     },
     {
         name: 'workspace-ask-make-ai',
+        bottomNav: true,
         mobbin: 'LinkedIn · quick replies above the composer (Make AI panel, honest unavailable state without a key)',
         url: (u) => `${u.cadWorkspaceUrl}?section=assistant`,
         pattern: async (page) => {
@@ -357,6 +360,7 @@ const SCREENS: Screen[] = [
     },
     {
         name: 'signin',
+        bottomNav: true,
         mobbin: 'Behance · deferred signup: sign in only to save; passkey or email code, no password',
         url: () => '/signin?next=/builds&mode=create',
         pattern: async (page) => {
@@ -367,6 +371,7 @@ const SCREENS: Screen[] = [
     },
     {
         name: 'me',
+        bottomNav: true,
         mobbin: 'Account hub: profile, creator handle, passkeys, sign out',
         url: () => '/me',
         before: (page) => signInByEmail(page, 'sweep-me@example.com'),
@@ -378,6 +383,7 @@ const SCREENS: Screen[] = [
     },
     {
         name: 'my-builds',
+        bottomNav: true,
         mobbin: 'Yami · status tabs with counts + Glovo / Subway order-again rows (Reorder · Remix · Repair)',
         url: () => '/builds',
         // The sweep buyer's delivered order is claimed by email at sign-in.

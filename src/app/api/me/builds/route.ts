@@ -6,7 +6,7 @@
 import { z } from 'zod';
 import { MyBuildsTab, type MyBuildsResponse } from '@/contracts/account';
 import { listMyBuilds } from '@/server/accounts/my-builds';
-import { applyDevice, applySessionRefresh, getViewer, resolveDevice } from '@/server/auth/viewer';
+import { applySessionRefresh, getDeviceHash, getViewer } from '@/server/auth/viewer';
 import { json, parseQuery, route } from '@/server/http';
 
 export const runtime = 'nodejs';
@@ -20,9 +20,8 @@ const Query = z.object({
 export const GET = route(async (request) => {
     const q = parseQuery(request, Query);
     const viewer = await getViewer(request);
-    const device = resolveDevice(request);
-    const res = json<MyBuildsResponse>(await listMyBuilds({ viewer, deviceHash: device.isNew ? null : device.hash }, q.tab, q.limit));
-    applyDevice(res, device);
+    // Read-only: never mints a device (see GET /api/me).
+    const res = json<MyBuildsResponse>(await listMyBuilds({ viewer, deviceHash: getDeviceHash(request) }, q.tab, q.limit));
     await applySessionRefresh(request, res);
     return res;
 });

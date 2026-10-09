@@ -4,7 +4,7 @@
  */
 import { UpdateProfileRequest, type MeResponse } from '@/contracts/account';
 import { getMe, updateProfile } from '@/server/accounts/me';
-import { applyDevice, applySessionRefresh, assertSameOrigin, getViewer, requireViewer, resolveDevice } from '@/server/auth/viewer';
+import { applySessionRefresh, assertSameOrigin, getDeviceHash, getViewer, requireViewer } from '@/server/auth/viewer';
 import { json, parseJson, route } from '@/server/http';
 
 export const runtime = 'nodejs';
@@ -12,9 +12,9 @@ export const dynamic = 'force-dynamic';
 
 export const GET = route(async (request) => {
     const viewer = await getViewer(request);
-    const device = resolveDevice(request);
-    const res = json<MeResponse>(await getMe({ userId: viewer?.user.id ?? null, deviceHash: device.hash }));
-    applyDevice(res, device);
+    // Read-only: never mint a device here. Parallel first-load requests each minting one would
+    // race, and the last Set-Cookie would orphan builds stamped with another (src/proxy.ts mints).
+    const res = json<MeResponse>(await getMe({ userId: viewer?.user.id ?? null, deviceHash: getDeviceHash(request) }));
     await applySessionRefresh(request, res);
     return res;
 });
