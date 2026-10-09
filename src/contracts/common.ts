@@ -56,6 +56,12 @@ export const ID_PREFIX = {
     authChallenge: 'ach',
     oauthAccount: 'oac',
     buildAttachment: 'att',
+    channel: 'chn',
+    show: 'shw',
+    drop: 'drp',
+    slotClaim: 'slc',
+    liveEvent: 'lev',
+    liveQuestion: 'lvq',
 } as const;
 export type IdKind = keyof typeof ID_PREFIX;
 
