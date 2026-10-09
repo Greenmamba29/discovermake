@@ -18,6 +18,8 @@ export type NotifyPayloads = {
     'order.in_production': { to: string; orderId: string; orderNumber: string; shopName: string };
     'order.shipped': { to: string; orderId: string; orderNumber: string; carrier: string; trackingNumber: string; trackingUrl: string | null };
     'order.delivered': { to: string; orderId: string; orderNumber: string; passportUrl: string | null };
+    /** Buyer (R4 Build Slots): the drop did not reach its goal or the hold expired; the authorization was released. */
+    'build_slot.released': { to: string; orderId: string; orderNumber: string; dropTitle: string; reason: string };
     /** Ops: something needs a human (amount mismatch, no shop accepted, QA failed twice, carrier exception). */
     'ops.alert': { subject: string; message: string; orderId?: string };
     /** R2 accounts: 6-digit sign-in code (a credential: never logged in full). */

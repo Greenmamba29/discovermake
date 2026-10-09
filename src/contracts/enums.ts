@@ -105,7 +105,11 @@ export const PAYMENT_PROVIDERS = ['stripe', 'dev'] as const;
 export const PaymentProviderName = z.enum(PAYMENT_PROVIDERS);
 export type PaymentProviderName = z.infer<typeof PaymentProviderName>;
 
-export const PAYMENT_STATUSES = ['PENDING', 'SUCCEEDED', 'FAILED', 'REFUNDED', 'CANCELLED'] as const;
+/**
+ * AUTHORIZED (R4 Build Slots): funds held at the provider (Stripe PaymentIntent with
+ * `capture_method: manual`), not captured yet. Captured -> SUCCEEDED; released -> CANCELLED.
+ */
+export const PAYMENT_STATUSES = ['PENDING', 'SUCCEEDED', 'FAILED', 'REFUNDED', 'CANCELLED', 'AUTHORIZED'] as const;
 export const PaymentStatus = z.enum(PAYMENT_STATUSES);
 export type PaymentStatus = z.infer<typeof PaymentStatus>;
 
@@ -180,6 +184,12 @@ export const LEDGER_ACCOUNTS = [
     'PROCESSOR_FEES', // payment processor fees (expense)
     'PAYOUTS_IN_TRANSIT', // shop payout created, transfer not yet settled
     'REFUNDS', // contra-revenue for refunds
+    // R3 Prime (supplier route + Delivery Promise)
+    'CUSTOMER_DEPOSITS', // buyer money held for a supplier-route order until it is recognized
+    'SUPPLIER_PAYABLE', // owed to an external supplier (landed cost of a purchase order)
+    'RISK_RESERVE', // risk reserve collected on supplier-route quotes
+    'BUYER_CREDITS', // promise credits owed to buyers (redeemable on a later checkout)
+    'PROMISE_CREDIT_EXPENSE', // cost of missed delivery promises, memo names the responsible leg
 ] as const;
 export const LedgerAccount = z.enum(LEDGER_ACCOUNTS);
 export type LedgerAccount = z.infer<typeof LedgerAccount>;
@@ -361,3 +371,46 @@ export type PackageTier = z.infer<typeof PackageTier>;
 export const INCOTERMS = ['EXW', 'FCA', 'FOB', 'CFR', 'CIF', 'CPT', 'CIP', 'DAP', 'DPU', 'DDP'] as const;
 export const Incoterm = z.enum(INCOTERMS);
 export type Incoterm = z.infer<typeof Incoterm>;
+
+// ---------------------------------------------------------------------------
+// R3 Prime: supplier-route ordering + Delivery Promise (workflow 03, docs/architecture/r3-prime.md)
+// ---------------------------------------------------------------------------
+
+/** How a quote is fulfilled: a partner shop makes it, or an external supplier makes it and a partner receives it. */
+export const QUOTE_ROUTE_KINDS = ['shop', 'supplier'] as const;
+export const QuoteRouteKind = z.enum(QUOTE_ROUTE_KINDS);
+export type QuoteRouteKind = z.infer<typeof QuoteRouteKind>;
+
+/**
+ * Supplier fulfilment leg (one per supplier-route order, created when ops approves the PO).
+ * PO_PLACED -> IN_PRODUCTION_AT_SUPPLIER -> SHIPPED_INBOUND -> RECEIVED_AT_PARTNER -> DELIVERED,
+ * QA at receipt can fail (QA_FAILED -> rework -> RECEIVED_AT_PARTNER, or refund -> CANCELLED);
+ * a direct-ship leg goes SHIPPED_INBOUND -> DELIVERED. See src/server/prime/legs.ts.
+ */
+export const SUPPLIER_LEG_STATUSES = ['PO_PLACED', 'IN_PRODUCTION_AT_SUPPLIER', 'SHIPPED_INBOUND', 'RECEIVED_AT_PARTNER', 'QA_FAILED', 'DELIVERED', 'CANCELLED'] as const;
+export const SupplierLegStatus = z.enum(SUPPLIER_LEG_STATUSES);
+export type SupplierLegStatus = z.infer<typeof SupplierLegStatus>;
+
+/** Delivery Promise legs (workflow 03 promise formula). The risk buffer is added on top. */
+export const PROMISE_LEGS = ['MATERIAL_ARRIVAL', 'SHOP_QUEUE', 'PROCESS', 'QA', 'PACK', 'CARRIER_TRANSIT'] as const;
+export const PromiseLeg = z.enum(PROMISE_LEGS);
+export type PromiseLeg = z.infer<typeof PromiseLeg>;
+
+export const PROMISE_STATUSES = ['ON_TRACK', 'AT_RISK', 'MET', 'MISSED'] as const;
+export const PromiseStatus = z.enum(PROMISE_STATUSES);
+export type PromiseStatus = z.infer<typeof PromiseStatus>;
+
+/** Buyer credits (missed promises). RESERVED = held by a checkout that has not been paid yet. */
+export const CREDIT_STATUSES = ['AVAILABLE', 'RESERVED', 'REDEEMED', 'VOID'] as const;
+export const CreditStatus = z.enum(CREDIT_STATUSES);
+export type CreditStatus = z.infer<typeof CreditStatus>;
+
+/** FULL = one payment at checkout; DEPOSIT_BALANCE = deposit at checkout, balance at shipment (supplier route). */
+export const PAYMENT_PLAN_KINDS = ['FULL', 'DEPOSIT_BALANCE'] as const;
+export const PaymentPlanKind = z.enum(PAYMENT_PLAN_KINDS);
+export type PaymentPlanKind = z.infer<typeof PaymentPlanKind>;
+
+/** Partner shop inventory (shop stock sourcing provider). */
+export const SHOP_STOCK_KINDS = ['SHEET', 'HARDWARE'] as const;
+export const ShopStockKind = z.enum(SHOP_STOCK_KINDS);
+export type ShopStockKind = z.infer<typeof ShopStockKind>;

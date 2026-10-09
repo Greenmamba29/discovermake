@@ -3,7 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useMemo, useRef, useState, type FormEvent } from 'react';
-import { ArrowLeft, Lock, Truck } from 'lucide-react';
+import { ArrowLeft, Globe2, Lock, Truck } from 'lucide-react';
 import { CheckoutRequest, type CheckoutResponse, type QuoteView, type ShippingMethod } from '@/contracts';
 import { Button, ButtonLink } from '@/components/ui/button';
 import { Field, SelectInput, TextArea, TextInput } from '@/components/ui/field';
@@ -129,6 +129,8 @@ function CheckoutBody({ quote, preview, cancelled }: { quote: QuoteView; preview
     const selected = quote.shippingOptions.find((o) => o.method === form.shippingMethod) ?? null;
     const shippingCents = selected?.priceCents ?? 0;
     const totalCents = quote.subtotalCents + shippingCents; // display only; the server prices from the quote snapshot
+    const supplier = quote.routeKind === 'supplier' ? (quote.supplierRoute ?? null) : null;
+    const depositCents = supplier ? Math.min(totalCents, Math.ceil(totalCents * supplier.depositPct)) : totalCents;
 
     const errors = useMemo(() => {
         const parsed = CheckoutRequest.safeParse(buildRequest(quote.id, form));
@@ -268,7 +270,13 @@ function CheckoutBody({ quote, preview, cancelled }: { quote: QuoteView; preview
 
                     <fieldset disabled={Boolean(order)}>
                         <legend className="font-display text-xl font-bold">Shipping method</legend>
-                        <p className="mt-1 text-sm text-fg-subtle">Ships from {quote.route.city}, {quote.route.region} by {shortDate(quote.shipDate)}. Dates are delivery estimates.</p>
+                        <p className="mt-1 text-sm text-fg-subtle">
+                            {supplier
+                                ? `Made by a ${supplier.label.toLowerCase()}${supplier.receivingPartner ? `, inspected in ${supplier.receivingPartner.city}, ${supplier.receivingPartner.region}` : ''} before it ships to you.`
+                                : quote.promise
+                                  ? `Ships from ${quote.route.city}, ${quote.route.region}. A date is shown only when we can stand behind it.`
+                                  : `Ships from ${quote.route.city}, ${quote.route.region} by ${shortDate(quote.shipDate)}. Dates are delivery estimates.`}
+                        </p>
                         <div className="mt-4 grid gap-3 sm:grid-cols-3" role="radiogroup" aria-label="Shipping method">
                             {quote.shippingOptions.map((o) => {
                                 const checked = form.shippingMethod === o.method;
@@ -287,7 +295,9 @@ function CheckoutBody({ quote, preview, cancelled }: { quote: QuoteView; preview
                                             <span className="font-semibold text-fg">{o.method === 'STANDARD' ? 'Standard' : o.method === 'EXPEDITED' ? 'Expedited' : 'Express'}</span>
                                             <span className="font-mono text-sm tabular text-fg">{money(o.priceCents, quote.currency)}</span>
                                         </span>
-                                        <span className="mt-1 text-sm text-signal">Arrives {shortDate(o.deliveryDate)}</span>
+                                        <span className="mt-1 text-sm text-signal" data-testid={`shipping-option-date-${o.method}`}>
+                                            {arrivalText(quote, o)}
+                                        </span>
                                         <span className="mt-0.5 text-xs text-fg-subtle">{o.label}</span>
                                     </label>
                                 );
@@ -336,21 +346,23 @@ function CheckoutBody({ quote, preview, cancelled }: { quote: QuoteView; preview
                         <div className="space-y-3">
                             <Notice tone="success" title={`Order ${order.orderNumber} created`}>
                                 Waiting for payment. Your price is locked at {money(order.totals.totalCents, order.totals.currency)}.
+                                {order.payment.purpose === 'deposit' && order.balanceDueCents != null && ` Due now: ${money(order.payment.amountCents ?? order.totals.totalCents, order.totals.currency)} deposit; ${money(order.balanceDueCents, order.totals.currency)} before shipping.`}
+                                {order.creditAppliedCents ? ` A ${money(order.creditAppliedCents, order.totals.currency)} delivery-promise credit was applied.` : ''}
                             </Notice>
-                            <DevPaymentPanel providerRef={order.payment.providerRef} amountLabel={money(order.totals.totalCents, order.totals.currency)} />
+                            <DevPaymentPanel providerRef={order.payment.providerRef} amountLabel={money(order.payment.amountCents ?? order.totals.totalCents, order.totals.currency)} />
                         </div>
                     ) : (
                         <div className="sticky bottom-0 z-20 -mx-4 border-t border-graphite-700 bg-graphite-950/95 p-3 backdrop-blur sm:static sm:mx-0 sm:border-0 sm:bg-transparent sm:p-0">
                             <Button type="submit" size="lg" className="w-full" loading={submitting} data-testid="pay-cta">
                                 <Lock className="h-4 w-4" aria-hidden />
-                                Pay {money(totalCents, quote.currency)} and start production
+                                {supplier ? `Pay ${money(depositCents, quote.currency)} deposit and place the order` : `Pay ${money(totalCents, quote.currency)} and start production`}
                             </Button>
                             <p className="mt-2 hidden text-center text-xs text-fg-subtle sm:block">The amount is set by the server from your binding quote and the shipping method you chose.</p>
                         </div>
                     )}
                 </form>
 
-                <OrderSummary quote={quote} preview={preview} shippingCents={selected ? shippingCents : null} shippingLabel={selected?.label ?? null} totalCents={totalCents} />
+                <OrderSummary quote={quote} preview={preview} shippingCents={selected ? shippingCents : null} shippingLabel={selected?.label ?? null} totalCents={totalCents} depositCents={supplier ? depositCents : null} arrival={selected ? arrivalText(quote, selected) : null} />
             </div>
             <p className="sr-only" aria-live="polite">
                 {s.quantity} parts, {s.materialName}, total {money(totalCents, quote.currency)}
@@ -365,12 +377,17 @@ function OrderSummary({
     shippingCents,
     shippingLabel,
     totalCents,
+    depositCents,
+    arrival,
 }: {
     quote: QuoteView;
     preview: import('@/contracts').PartPreview | null;
     shippingCents: number | null;
     shippingLabel: string | null;
     totalCents: number;
+    /** Supplier route: what is charged today (the rest is due before shipping). */
+    depositCents: number | null;
+    arrival: string | null;
 }) {
     const s = quote.summary;
     return (
@@ -431,12 +448,53 @@ function OrderSummary({
                             {money(totalCents, quote.currency)}
                         </dd>
                     </div>
+                    {depositCents != null && (
+                        <>
+                            <div className="flex items-center justify-between text-sm" data-testid="checkout-deposit">
+                                <dt className="flex items-center text-fg-muted">
+                                    Due today (deposit)
+                                    <InfoTip label="deposit" text="Supplier-made orders are paid in two parts: a deposit now, so we can place the purchase order, and the balance once your parts pass inspection and are ready to ship." />
+                                </dt>
+                                <dd className="font-mono tabular">{money(depositCents, quote.currency)}</dd>
+                            </div>
+                            <div className="flex items-center justify-between text-sm" data-testid="checkout-balance">
+                                <dt className="text-fg-muted">Due before shipping</dt>
+                                <dd className="font-mono tabular">{money(totalCents - depositCents, quote.currency)}</dd>
+                            </div>
+                        </>
+                    )}
                 </dl>
                 <p className="mt-3 flex items-center gap-1.5 text-xs text-fg-subtle">
-                    <Truck className="h-3.5 w-3.5" aria-hidden /> Ships by {shortDate(quote.shipDate)} · inspected before it leaves the shop
+                    <Truck className="h-3.5 w-3.5" aria-hidden /> {arrival && /^Arrives/.test(arrival) ? `${arrival} · inspected before it ships` : `Ships by ${shortDate(quote.shipDate)} · inspected before it leaves the shop`}
                 </p>
             </section>
-            <RouteCard route={quote.route} compact />
+            {quote.supplierRoute ? <SupplierRouteSummary route={quote.supplierRoute} /> : <RouteCard route={quote.route} compact />}
         </aside>
+    );
+}
+
+/**
+ * Delivery Promise (R3): "Arrives <date>" only when the engine's P90 fits inside the committed date;
+ * otherwise the ship-date language. Quotes from before R3 carry no promise and keep their estimate.
+ */
+export function arrivalText(quote: QuoteView, option: QuoteView['shippingOptions'][number]): string {
+    if (!quote.promise) return `Arrives ${shortDate(option.deliveryDate)}`;
+    const p = quote.promise.find((x) => x.method === option.method);
+    return p?.show ? `Arrives ${shortDate(p.date)}` : `Ships by ${shortDate(quote.shipDate)}`;
+}
+
+function SupplierRouteSummary({ route }: { route: NonNullable<QuoteView['supplierRoute']> }) {
+    return (
+        <div className="flex gap-3 rounded-2xl bg-graphite-900 p-4 ring-1 ring-graphite-700" data-testid="supplier-route-card">
+            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-graphite-750 text-fg" aria-hidden>
+                <Globe2 className="h-6 w-6" />
+            </span>
+            <div className="min-w-0 text-sm">
+                <p className="font-semibold text-fg">{route.label}</p>
+                <p className="text-fg-muted">
+                    {route.receivingPartner ? `Inspected by ${route.receivingPartner.name} in ${route.receivingPartner.city}, ${route.receivingPartner.region}` : 'Inspected before it ships'}
+                </p>
+            </div>
+        </div>
     );
 }

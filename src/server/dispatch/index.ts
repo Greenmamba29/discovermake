@@ -39,7 +39,7 @@ export const OPEN_JOB_STATUSES: readonly JobStatus[] = ['OFFERED', 'ACCEPTED', '
 
 type OrderRow = typeof orders.$inferSelect;
 
-async function loadDispatchContext(tx: DbOrTx, order: OrderRow) {
+export async function loadDispatchContext(tx: DbOrTx, order: OrderRow) {
     const [quote] = await tx.select().from(quotes).where(eq(quotes.id, order.quoteId));
     if (!quote) throw new Error(`Order ${order.id} references missing quote ${order.quoteId}`);
     const [[part], [build], [thickness]] = await Promise.all([

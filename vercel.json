@@ -8,6 +8,14 @@
         {
             "path": "/api/admin/outbox/publish",
             "schedule": "15 6 * * *"
+        },
+        {
+            "path": "/api/admin/live/drops/close",
+            "schedule": "30 6 * * *"
+        },
+        {
+            "path": "/api/admin/promise/retrain",
+            "schedule": "30 6 * * 1"
         }
     ]
 }

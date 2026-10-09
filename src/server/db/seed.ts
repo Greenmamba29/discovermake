@@ -16,12 +16,15 @@ import { and, eq, sql } from 'drizzle-orm';
 import type { Address } from '../../contracts/common';
 import { generateToken, sha256Hex } from '../auth/tokens';
 import { getDb, type Db } from './index';
+import { seedLiveDemo } from './seed-live';
 import {
     dfmRulesets,
     materials,
     processes,
+    receivingSites,
     services,
     shopAccessTokens,
+    shopStock,
     shopCapabilities,
     shopRateCards,
     shopServices,
@@ -468,6 +471,13 @@ export const DEV_SHOP_ADDRESS: Address = {
     phone: '+1 215 555 0142',
 };
 
+/** R3: stock the dev partner tracks (shop stock provider + fastest promise). Ids are stable. */
+export const DEV_SHOP_STOCK = [
+    { id: 'sst_ppw_al6061_090', kind: 'SHEET' as const, sku: 'AL6061-090-48X96', description: 'Aluminum 6061-T6 .090" sheet, 48 x 96 in', materialId: 'mat_al_6061', thicknessOptionId: 'thk_al6061_090', quantity: 40, unit: 'sheet' },
+    { id: 'sst_ppw_al5052_063', kind: 'SHEET' as const, sku: 'AL5052-063-48X96', description: 'Aluminum 5052-H32 .063" sheet, 48 x 96 in', materialId: 'mat_al_5052', thicknessOptionId: 'thk_al5052_063', quantity: 60, unit: 'sheet' },
+    { id: 'sst_ppw_pem_m4', kind: 'HARDWARE' as const, sku: 'PEM-S-M4-1', description: 'M4 self-clinching nut, steel, zinc plated', materialId: null, thicknessOptionId: null, quantity: 2500, unit: 'pcs' },
+];
+
 export type SeedOptions = {
     /** Use this exact Shop Console token (e2e / tests). Default: env SEED_SHOP_TOKEN, else generate once. */
     shopToken?: string;
@@ -479,6 +489,8 @@ export type SeedOptions = {
      * POST /api/admin/shops.
      */
     catalogOnly?: boolean;
+    /** R4: also seed the Live demo factory channel with one ENDED replay (src/server/db/seed-live.ts). Default false. */
+    liveDemo?: boolean;
 };
 
 export type SeedResult = {
@@ -498,7 +510,7 @@ const excluded = (cols: string[]) => Object.fromEntries(cols.map((c) => [c, sql.
 export async function seed(db: Db = getDb(), opts: SeedOptions = {}): Promise<SeedResult> {
     const log = (msg: string) => opts.log && console.log(`[db:seed] ${msg}`);
 
-    return db.transaction(async (tx) => {
+    const result = await db.transaction(async (tx) => {
         // Processes
         const processRows = [
             { id: PROCESS_IDS.fiber, slug: 'fiber-laser', name: 'Fiber laser cutting', kind: 'FIBER_LASER' as const, description: 'Metal sheet cutting, 4 kW fiber source, N2/O2 assist.' },
@@ -700,6 +712,18 @@ export async function seed(db: Db = getDb(), opts: SeedOptions = {}): Promise<Se
             .values(rateRow)
             .onConflictDoUpdate({ target: shopRateCards.id, set: excluded(Object.keys(rateRow).filter((k) => k !== 'id')) });
 
+        // R3 Prime: the dev partner receives supplier freight (QA at receipt) and tracks some stock.
+        await tx
+            .insert(receivingSites)
+            .values({ shopId: DEV_SHOP_ID, active: true, receivingFeeCents: 4500, perUnitCents: 15, notes: 'Dev receiving partner (fixture)' })
+            .onConflictDoNothing({ target: receivingSites.shopId });
+        for (const s of DEV_SHOP_STOCK) {
+            await tx
+                .insert(shopStock)
+                .values({ id: s.id, shopId: DEV_SHOP_ID, kind: s.kind, sku: s.sku, description: s.description, materialId: s.materialId, thicknessOptionId: s.thicknessOptionId, quantity: s.quantity, unit: s.unit })
+                .onConflictDoNothing({ target: shopStock.id });
+        }
+
         // Shop Console token (hash only)
         const requested = opts.shopToken ?? process.env.SEED_SHOP_TOKEN?.trim() ?? '';
         let shopToken: string | null = null;
@@ -732,4 +756,9 @@ export async function seed(db: Db = getDb(), opts: SeedOptions = {}): Promise<Se
             shopToken,
         };
     });
+    if (opts.liveDemo && result.shopId) {
+        const demo = await seedLiveDemo(db, { shopId: result.shopId });
+        log(demo ? `Live demo replay ${demo.showId} on channel @philly_precision` : 'Live demo skipped');
+    }
+    return result;
 }

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
+import { primeApi } from '@/lib/prime-api';
 import { RefreshCw, Search } from 'lucide-react';
 import type { BuildSourcingView, RouteOfferView, TrustLevel } from '@/contracts';
 import { Button } from '@/components/ui/button';
@@ -44,6 +45,10 @@ function useSelectOffer(buildId: string) {
 
 function OfferList({ buildId, view }: { buildId: string; view: BuildSourcingView }) {
     const { select, notice } = useSelectOffer(buildId);
+    const bindingQuote = async (offerId: string) => {
+        const quote = await primeApi.supplierQuote(buildId, offerId);
+        window.location.assign(`/checkout/${quote.id}`);
+    };
     const offers = sortOffers(view.offers);
     const committed = offers.find((o) => o.selection && (o.selection.status === 'PENDING' || o.selection.status === 'APPROVED'));
     const blocked = committed ? (committed.selection!.status === 'PENDING' ? 'Another route is waiting for confirmation.' : 'You already confirmed a route.') : null;
@@ -57,12 +62,12 @@ function OfferList({ buildId, view }: { buildId: string; view: BuildSourcingView
             <ul className="space-y-3" aria-label="Partner offers">
                 {offers.map((o) => (
                     <li key={o.id}>
-                        <RouteOfferCard offer={o} onSelect={select} selectBlockedReason={committed && committed.id !== o.id ? blocked : null} />
+                        <RouteOfferCard offer={o} onSelect={select} onBindingQuote={bindingQuote} selectBlockedReason={committed && committed.id !== o.id ? blocked : null} />
                     </li>
                 ))}
             </ul>
             <p className="text-xs text-fg-subtle">
-                Partner offers are not checkout prices. Choosing one asks DiscoverMake to confirm it; we&apos;ll confirm the route with you before anything is ordered.
+                Partner offers are not checkout prices. Choosing one asks DiscoverMake to confirm it; once confirmed you get one binding price and one delivery date to check out.
             </p>
         </div>
     );

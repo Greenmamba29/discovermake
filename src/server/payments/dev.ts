@@ -13,7 +13,10 @@ import { getDb } from '../db';
 import { payments } from '../db/schema';
 import { assertNotProduction, env } from '../env';
 import { randomBase32 } from '../ids';
-import type { CreatePaymentInput, CreatePaymentResult, PaymentProvider, PaymentWebhookEvent } from './types';
+import type { CancelAuthorizationInput, CaptureInput, CreatePaymentInput, CreatePaymentResult, PaymentProvider, PaymentWebhookEvent } from './types';
+
+/** payments.metadata key set by callers that created a manual-capture (authorize-only) payment. */
+export const CAPTURE_METHOD_METADATA_KEY = 'captureMethod';
 
 const FEATURE = 'dev payment provider';
 
@@ -55,6 +58,18 @@ export class DevPaymentProvider implements PaymentProvider {
             .limit(1);
         if (!payment) throw new DevPaymentNotFoundError(body.providerRef);
         const eventId = `dev:${body.providerRef}:${body.outcome}`;
+        const manual = (payment.metadata as Record<string, unknown> | null)?.[CAPTURE_METHOD_METADATA_KEY] === 'manual';
+        if (body.outcome === 'succeeded' && manual) {
+            // Authorize-only session (Build Slots): funds are "held"; capture happens at drop close.
+            return {
+                kind: 'payment.authorized',
+                eventId: `dev:${body.providerRef}:authorized`,
+                providerRef: body.providerRef,
+                providerPaymentId: `devpi_${body.providerRef.slice('devpay_'.length)}`,
+                amountCents: payment.amountCents,
+                currency: payment.currency,
+            };
+        }
         if (body.outcome === 'succeeded') {
             return {
                 kind: 'payment.succeeded',
@@ -72,6 +87,17 @@ export class DevPaymentProvider implements PaymentProvider {
         assertNotProduction(FEATURE);
         void input;
         return { refundRef: `devrefund_${randomBase32(20).toLowerCase()}` };
+    }
+
+    async capture(input: CaptureInput): Promise<{ providerPaymentId: string }> {
+        assertNotProduction(FEATURE);
+        return { providerPaymentId: input.providerPaymentId ?? `devpi_${input.providerRef.slice('devpay_'.length)}` };
+    }
+
+    async cancelAuthorization(input: CancelAuthorizationInput): Promise<{ released: boolean }> {
+        assertNotProduction(FEATURE);
+        void input;
+        return { released: true };
     }
 }
 

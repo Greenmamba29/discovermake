@@ -24,6 +24,8 @@ import {
     QuoteStatus,
     ShipmentStatus,
     TrustLevel,
+    PromiseLeg,
+    SupplierLegStatus,
 } from './enums';
 import { IsoDateTime } from './common';
 import { CreationIntentKind, MakeAiRiskClass } from './make-ai';
@@ -189,6 +191,37 @@ export const EVENT_PAYLOADS = {
     /** The build moved past the offer's design version; the offer can no longer be selected. */
     'sourcing.offer_stale': z.object({ offerId: id, jobId: id, offerVersion: z.number().int().positive(), currentVersion: z.number().int().positive() }),
 
+    // ---- R3 Prime: supplier-route ordering + Delivery Promise (docs/architecture/r3-prime.md) ----
+    /** A supplier confirmed an offer against the exact design version (trust SUPPLIER_CONFIRMED). */
+    'quote.supplier_confirmed': z.object({ offerId: id, jobId: id, buildId: id, designVersion: z.number().int().positive(), totalCents: cents }),
+    /** A BINDING quote was made from an approved supplier-confirmed offer (offer + margin + risk reserve). */
+    'quote.binding': z.object({
+        quoteId: id,
+        buildId: id,
+        offerId: id,
+        subtotalCents: cents,
+        riskReserveCents: cents,
+        riskScore: z.number().min(0).max(1),
+        depositPct: z.number().min(0).max(1),
+        validUntil: IsoDateTime,
+    }),
+    /** Supplier-route deposit received; the PO approvals are requested from it (job row locked first). */
+    'order.deposit_paid': z.object({ orderId: id, paymentId: id, depositCents: cents }),
+    /** Human approvals for the purchase order (and the supplier deposit) were requested. */
+    'po.approval_requested': z.object({ orderId: id, approvalId: id, depositApprovalId: id.nullable(), offerId: id }),
+    /** Ops approved the PO: the supplier fulfilment leg exists. */
+    'po.placed': z.object({ orderId: id, legId: id, poNumber: z.string(), approvalId: id, supplierId: id }),
+    /** Ops approved paying the supplier deposit (money out, ledger `supplier_deposit:<orderId>`). */
+    'po.deposit_approved': z.object({ orderId: id, legId: id.nullable(), approvalId: id, amountCents: cents }),
+    'supplier_leg.status_changed': z.object({ orderId: id, legId: id, from: SupplierLegStatus, to: SupplierLegStatus, note: z.string().nullable() }),
+    /** The balance of a supplier-route order is due (receiving QA passed); a payment session exists. */
+    'order.balance_due': z.object({ orderId: id, paymentId: id, amountCents: cents }),
+    'promise.set': z.object({ orderId: id, promisedDate: z.string(), p90Date: z.string(), shown: z.boolean(), bufferDays: z.number().int().nonnegative(), riskScore: z.number().min(0).max(1) }),
+    'promise.at_risk': z.object({ orderId: id, promisedDate: z.string(), p90Date: z.string(), currentLeg: PromiseLeg.nullable() }),
+    'promise.missed': z.object({ orderId: id, promisedDate: z.string(), deliveredOn: z.string(), responsibleLeg: PromiseLeg, creditId: id.nullable(), creditCents: cents }),
+    'promise.kept': z.object({ orderId: id, promisedDate: z.string(), deliveredOn: z.string() }),
+    'credit.issued': z.object({ creditId: id, orderId: id, amountCents: cents, responsibleLeg: PromiseLeg }),
+    'credit.redeemed': z.object({ creditId: id, orderId: id, amountCents: cents }),
     // ---- R2: accounts (ADR-0009) -----------------------------------------
     /** A sign-in created a new account. No email in the payload (the user row has it). */
     'user.created': z.object({ userId: id, method: z.enum(['email', 'passkey', 'google', 'apple']) }),
@@ -216,6 +249,19 @@ export const EVENT_PAYLOADS = {
     'build.attachment_removed': z.object({ buildId: id, attachmentId: id }),
     /** "Order a replacement" on a Product Passport created a fresh quote for the same part design. */
     'passport.replacement_quoted': z.object({ passportId: id, quoteId: id, partId: id, buildId: id, quantity: z.number().int().positive() }),
+
+    // ---- R4: Live (workflow 06, ADR-0003) ----------------------------------
+    /** Funds are held at the provider (manual capture); the order stays PENDING_PAYMENT until capture. */
+    'payment.authorized': z.object({ orderId: id, paymentId: id, provider: PaymentProviderName, providerRef: z.string(), amountCents: cents, currency: z.string() }),
+    /** An authorization (or an unpaid session) was released without capturing: nothing was charged. */
+    'payment.authorization_released': z.object({ orderId: id, paymentId: id, provider: PaymentProviderName, reason: z.string() }),
+    /** Mirrors of the Live Build Protocol events that matter outside the stream (the full log lives in `live_events`). */
+    'live.show_started': z.object({ showId: id, channelId: id, displayId: z.string() }),
+    'live.show_ended': z.object({ showId: id, channelId: id, displayId: z.string(), durationMs: z.number().int().nonnegative() }),
+    'live.product_featured': z.object({ showId: id, buildId: id, seq: z.number().int().positive() }),
+    'live.drop_started': z.object({ dropId: id, showId: id.nullable(), buildId: id, quoteId: id, priceCents: cents, totalSlots: z.number().int().positive(), thresholdSlots: z.number().int().positive(), closesAt: IsoDateTime }),
+    'live.slot_claimed': z.object({ dropId: id, claimId: id, orderId: id, quantity: z.number().int().positive(), claimedSlots: z.number().int().nonnegative() }),
+    'live.drop_closed': z.object({ dropId: id, status: z.enum(['CONFIRMED', 'FAILED']), claimedSlots: z.number().int().nonnegative(), thresholdSlots: z.number().int().positive(), captured: z.number().int().nonnegative(), released: z.number().int().nonnegative() }),
 } as const;
 
 export type EventType = keyof typeof EVENT_PAYLOADS;

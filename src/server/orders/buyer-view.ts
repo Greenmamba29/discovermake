@@ -26,6 +26,8 @@ import {
 import { env } from '../env';
 import { formatMoney } from '../notify/templates';
 import { ORDER_STATUS_DISPLAY, toUniversalStatus } from './state';
+import { orderPromiseView } from '../promise/engine';
+import { orderSupplierRouteView } from '../prime/views';
 
 export const MILESTONE_LABELS: Readonly<Record<MilestoneKind, string>> = {
     MATERIAL_STAGED: 'Material staged',
@@ -132,6 +134,10 @@ export function timelineLabel(row: Pick<EventRow, 'eventType' | 'payload'>, shop
             return 'Payment received';
         case 'payment.failed':
             return p.reason ? `Payment failed · ${String(p.reason)}` : 'Payment failed';
+        case 'payment.authorized':
+            return 'Payment authorized · charged only when the drop reaches its goal';
+        case 'payment.authorization_released':
+            return 'Payment hold released · nothing was charged';
         case 'production.authorized':
             return 'Production authorized';
         case 'job.offered':
@@ -172,6 +178,38 @@ export function timelineLabel(row: Pick<EventRow, 'eventType' | 'payload'>, shop
             return `Refunded${typeof p.amountCents === 'number' ? ` ${formatMoney(p.amountCents, 'usd')}` : ''}`;
         case 'order.cancelled':
             return 'Order cancelled';
+        // ---- R3 Prime ----
+        case 'promise.set':
+            return null; // the promised date is in the status line ("Arrives Thu, Oct 23"), not the feed
+        case 'promise.missed':
+            return typeof p.creditCents === 'number' && p.creditCents > 0
+                ? `We missed your delivery date · ${formatMoney(p.creditCents, 'usd')} credit added to your next order`
+                : 'Arrived after the estimated date';
+        case 'promise.kept':
+            return 'Arrived on the promised date';
+        case 'credit.redeemed':
+            return typeof p.amountCents === 'number' ? `Promise credit of ${formatMoney(p.amountCents, 'usd')} applied` : 'Promise credit applied';
+        case 'po.approval_requested':
+            return 'Deposit received · DiscoverMake is approving the purchase order';
+        case 'po.placed':
+            return 'Purchase order placed with a verified manufacturing partner';
+        case 'supplier_leg.status_changed':
+            switch (p.to) {
+                case 'IN_PRODUCTION_AT_SUPPLIER':
+                    return 'Production started at our manufacturing partner';
+                case 'SHIPPED_INBOUND':
+                    return 'Shipped from our manufacturing partner';
+                case 'RECEIVED_AT_PARTNER':
+                    return 'Received by our receiving partner · inspecting';
+                case 'QA_FAILED':
+                    return 'Did not pass receiving inspection · being fixed at no cost to you';
+                case 'CANCELLED':
+                    return 'Purchase order cancelled';
+                default:
+                    return null;
+            }
+        case 'order.balance_due':
+            return typeof p.amountCents === 'number' ? `Passed inspection · balance of ${formatMoney(p.amountCents, 'usd')} due before shipping` : 'Balance due before shipping';
         default:
             return null; // order.status_changed, job.cancelled, ledger.*, payout.*, quote/part events
     }
@@ -281,13 +319,23 @@ export async function buildOrderView(order: typeof orders.$inferSelect): Promise
 
     const latestMilestone = milestoneRows.length ? milestoneRows[milestoneRows.length - 1].kind : null;
     const display = ORDER_STATUS_DISPLAY[order.status];
+    // R3: the Delivery Promise and, for supplier-route orders, the leg (one sentence per step).
+    const [promise, supplierRoute] = await Promise.all([orderPromiseView(order.id, db), orderSupplierRouteView(order, db)]);
+    let statusLabel = statusSentence(order.status, { promisedShipDate: order.promisedShipDate, shopName: assignedShop?.name ?? null, latestMilestone, shipment });
+    if (supplierRoute && ['PAID', 'DISPATCHED', 'ACCEPTED', 'IN_PRODUCTION', 'QA_FAILED', 'QA_PASSED'].includes(order.status)) {
+        const step = supplierRoute.steps.find((st) => st.state === 'current' || st.state === 'failed');
+        if (step) statusLabel = step.sentence;
+        if (order.status === 'QA_PASSED' && !supplierRoute.payment.balancePaid) statusLabel = 'Passed inspection · pay the balance to ship';
+    }
+    const arrives = promise?.show && !order.deliveredAt && !['CANCELLED', 'REFUNDED', 'PAYMENT_FAILED'].includes(order.status) ? ` · Arrives ${shortDate(promise.date)}` : '';
+    if (arrives && !/\b(ships|arrives)\b/i.test(statusLabel) && order.status !== 'PENDING_PAYMENT') statusLabel += arrives;
 
     const view: OrderView = {
         id: order.id,
         orderNumber: order.orderNumber,
         status: order.status,
         universalStatus: toUniversalStatus(order.status),
-        statusLabel: statusSentence(order.status, { promisedShipDate: order.promisedShipDate, shopName: assignedShop?.name ?? null, latestMilestone, shipment }),
+        statusLabel,
         progressPct: display.progressPct,
         orderType: order.orderType,
         build: { id: build.id, displayId: build.displayId, name: build.name },
@@ -315,6 +363,8 @@ export async function buildOrderView(order: typeof orders.$inferSelect): Promise
         createdAt: iso(order.createdAt),
         paidAt: order.paidAt ? iso(order.paidAt) : null,
         deliveredAt: order.deliveredAt ? iso(order.deliveredAt) : null,
+        ...(promise ? { promise } : {}),
+        ...(supplierRoute ? { supplierRoute } : {}),
     };
     return OrderView.parse(view);
 }

@@ -17,6 +17,7 @@ import type {
     SubmitOfferInput,
     SubmitSupplierInput,
     SupplierOfferView,
+    SupplierLegOpsView,
 } from '@/contracts';
 import { apiFetch } from '@/lib/api';
 
@@ -64,6 +65,8 @@ export type SourcingJobDetail = {
     approvals: ApprovalView[];
     negotiations: SourcingNegotiationRow[];
     documents: SourcingDocumentRow[];
+    /** R3: supplier fulfilment legs (purchase orders) made from this job's offers. */
+    legs?: SupplierLegOpsView[];
 };
 
 /** Desk fallback bodies: the MCP tool inputs without the lease (ops are not leasing). */

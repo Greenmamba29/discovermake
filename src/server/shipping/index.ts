@@ -28,6 +28,7 @@ import { executePendingPayouts, recordPayouts } from '../ledger';
 import { notify } from '../notify';
 import { advanceOrder } from '../orders';
 import { activatePassport, passportUrl } from '../passport';
+import { onOrderDeliveredPrime } from '../prime/fulfilment';
 import { EasyPostCarrier } from './easypost';
 import { ManualCarrier } from './manual';
 import type { CarrierAdapter, TrackingUpdate } from './types';
@@ -148,6 +149,8 @@ export async function markShipmentDelivered(shipmentId: string, actor: Actor, de
                 orderId: order.id,
             });
             await advanceOrder(order.id, 'DELIVERED', actor, { reason: event.message, data: { shipmentId: s.id }, at }, t);
+            // R3: Delivery Promise outcome (observations, kept / missed + auto-credit) and the supplier leg.
+            await onOrderDeliveredPrime(t, { orderId: order.id, deliveredAt: at });
             await emitEvent(t, {
                 type: 'product.delivered',
                 payload: { orderId: order.id, shipmentId: s.id, deliveredAt: at.toISOString() },

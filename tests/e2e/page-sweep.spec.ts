@@ -18,6 +18,8 @@ import { randomUUID } from 'node:crypto';
 import { E2E_ADMIN_TOKEN, E2E_DATABASE_URL } from '../../playwright.config';
 import { createBuildWithCad } from './support/cad-build';
 import { adminLogin, fulfil, payOrder, quotePart, shopLogin } from './support/journeys';
+import { buildLiveSweepState, type LiveSweepState } from './support/live';
+import { primeSupplierState, type PrimeUrls } from './support/prime';
 
 const OUT = path.join(process.cwd(), 'test-results', 'page-sweep');
 /** Written by global-setup once per run (the e2e database is recreated per run). */
@@ -37,7 +39,9 @@ type Urls = {
     sourcingJobUrl: string;
     /** A workspace whose build has generated CAD (Object View, Files, Ask Make AI). */
     cadWorkspaceUrl: string;
-};
+    /** R4 Live: a LIVE show with a featured product and an open drop, an ENDED replay, its control room. */
+    live: LiveSweepState;
+} & PrimeUrls;
 
 type Screen = {
     name: string;
@@ -182,6 +186,12 @@ const SCREENS: Screen[] = [
         pattern: async (page) => {
             await expect(page.getByText('Recommended').first()).toBeVisible();
             await expect(page.getByTestId('route-trust-chip').or(page.getByTestId('trust-chip')).first()).toBeVisible();
+            // R3: routes compared side by side (cost, P90 date, quality, CO2) under Suppliers · Processes · Impact.
+            const compare = page.getByTestId('route-comparison');
+            await expect(compare.getByRole('tablist', { name: 'Route details' })).toBeVisible();
+            await expect(compare.getByRole('tab')).toHaveText(['Suppliers', 'Processes', 'Impact']);
+            await expect(compare.getByRole('tab', { name: 'Suppliers' })).toHaveAttribute('aria-selected', 'true');
+            await expect(compare.locator('[data-recommended]')).toHaveCount(1);
         },
     },
     {
@@ -194,6 +204,17 @@ const SCREENS: Screen[] = [
         },
     },
     {
+        name: 'supplier-checkout',
+        mobbin: 'DoorDash · Placing an order: one committed date, the deposit due today and the balance at shipment spelled out',
+        url: (u) => u.supplierCheckoutUrl,
+        pattern: async (page) => {
+            await expect(page.getByTestId('supplier-route-card')).toBeVisible();
+            await expect(page.getByTestId('checkout-deposit')).toBeVisible();
+            await expect(page.getByTestId('checkout-balance')).toBeVisible();
+            await expect(page.locator('[data-testid^="shipping-option-date-"]').first()).toHaveText(/^(Arrives|Ships by) /);
+        },
+    },
+    {
         name: 'order-tracking',
         bottomNav: true,
         mobbin: 'Uber · ride in progress: one plain status sentence, ETA first, the shop visible',
@@ -201,6 +222,22 @@ const SCREENS: Screen[] = [
         pattern: async (page) => {
             await expect(page.getByTestId('order-status')).toBeVisible();
             await expect(page.getByTestId('passport-card')).toBeVisible();
+        },
+    },
+    {
+        name: 'supplier-order-tracking',
+        bottomNav: true,
+        mobbin: 'Uber Eats · order progress: one sentence per step, the current step highlighted, the next payment as one action',
+        url: (u) => u.supplierOrderUrl,
+        pattern: async (page) => {
+            await expect(page.getByTestId('order-status')).toBeVisible();
+            const route = page.getByTestId('supplier-route');
+            await expect(route).toBeVisible();
+            await expect(route.getByRole('listitem')).toHaveCount(6);
+            await expect(page.getByTestId('supplier-step-SHIPPED_INBOUND')).toHaveAttribute('data-state', 'done');
+            await expect(page.getByTestId('supplier-step-RECEIVED_AT_PARTNER')).toHaveAttribute('data-state', 'current');
+            // The buyer never sees who the supplier is.
+            await expect(page.getByText('Sweep Anodizing Works')).toHaveCount(0);
         },
     },
     {
@@ -313,6 +350,31 @@ const SCREENS: Screen[] = [
         },
     },
     {
+        name: 'shop-receiving-job',
+        allowHttp: [NO_STRIPE],
+        mobbin: 'Kitchen display · inbound delivery: what is arriving, from where, the check on arrival as one action',
+        url: (u) => u.receivingJobUrl,
+        before: shopLogin,
+        pattern: async (page) => {
+            const panel = page.getByTestId('receiving-panel');
+            await expect(panel).toBeVisible();
+            await expect(panel).toContainText('MAEU0000001');
+            await expect(page.getByTestId('receive-freight')).toBeVisible();
+        },
+    },
+    {
+        name: 'shop-stock',
+        allowHttp: [NO_STRIPE],
+        mobbin: 'Shopify POS · inventory: one row per SKU with quantity on hand, inline adjust, add item',
+        url: () => '/shop/stock',
+        before: shopLogin,
+        pattern: async (page) => {
+            await expect(page.getByTestId('stock-list').getByRole('listitem').first()).toBeVisible();
+            await expect(page.getByTestId('stock-new-sku')).toBeVisible();
+            await expect(page.getByTestId('shop-nav-stock')).toHaveAttribute('aria-current', 'page');
+        },
+    },
+    {
         name: 'shop-payouts',
         allowHttp: [NO_STRIPE],
         mobbin: 'Payouts / Stripe Connect status',
@@ -359,6 +421,23 @@ const SCREENS: Screen[] = [
         },
     },
     {
+        name: 'sourcing-job-legs',
+        mobbin: 'Flexport · shipment detail: PO, supplier, incoterm, inbound tracking and the next milestone as buttons',
+        url: (u) => u.primeSourcingJobUrl,
+        before: async (page) => {
+            await page.goto('/admin/sourcing');
+            await page.getByTestId('sourcing-admin-token-input').fill(E2E_ADMIN_TOKEN);
+            await page.getByTestId('sourcing-admin-login-submit').click();
+        },
+        pattern: async (page) => {
+            await expect(page.getByTestId('job-status')).toBeVisible();
+            const leg = page.locator('[data-testid^="leg-leg_"]').first();
+            await expect(leg).toBeVisible();
+            await expect(leg.getByTestId('leg-status')).toHaveText('SHIPPED_INBOUND');
+            await expect(leg).toContainText('MAEU0000001');
+        },
+    },
+    {
         name: 'signin',
         bottomNav: true,
         mobbin: 'Behance · deferred signup: sign in only to save; passkey or email code, no password',
@@ -399,6 +478,74 @@ const SCREENS: Screen[] = [
         },
     },
     {
+        name: 'live-home',
+        bottomNav: true,
+        mobbin: 'Whatnot · home live feed: category chips, Live tiles with viewer badges, go-live entry',
+        url: () => '/live',
+        pattern: async (page) => {
+            for (const chip of ['chip-mega-builds', 'chip-factory-floor', 'chip-drops']) await expect(page.getByTestId(chip)).toBeVisible();
+            const tile = page.getByTestId('live-now').getByTestId('show-tile').first();
+            await expect(tile).toBeVisible();
+            await expect(tile.getByTestId('live-badge')).toContainText(/live/i);
+            await expect(page.getByTestId('replays').getByTestId('show-tile').first()).toBeVisible();
+            await expect(page.getByTestId('go-live-cta')).toBeVisible();
+        },
+    },
+    {
+        name: 'live-viewer',
+        mobbin: 'Whatnot · live show: seller header + viewer count, action rail, chat over video, product card (Make Mine · Remix · Buy), Build Slot counter',
+        url: (u) => u.live.liveShowUrl,
+        pattern: async (page) => {
+            await expect(page.getByTestId('live-badge')).toContainText(/live/i);
+            const card = page.getByTestId('now-showing');
+            await expect(card).toBeVisible();
+            for (const action of ['make-mine', 'remix', 'buy']) await expect(card.getByTestId(action)).toBeVisible();
+            await expect(card.getByTestId('buy')).toHaveAttribute('href', /\/checkout\/qte_/);
+            await expect(page.getByTestId('slots-left')).toHaveText(/^\d+ \/ 50 slots left$/);
+            await expect(page.getByRole('navigation', { name: 'Show actions' }).getByRole('button').first()).toBeVisible();
+            await expect(page.getByTestId('chat-list')).toBeVisible();
+        },
+    },
+    {
+        name: 'live-replay',
+        mobbin: 'Whatnot · live show, as a shoppable replay: the product card follows the recording',
+        url: (u) => u.live.replayShowUrl,
+        pattern: async (page) => {
+            await expect(page.getByTestId('live-badge')).toHaveText(/replay/i);
+            await expect(page.getByTestId('video-stage')).toHaveAttribute('data-source', 'mp4');
+            await expect(page.getByTestId('now-showing').or(page.getByTestId('now-showing-empty'))).toBeVisible();
+        },
+    },
+    {
+        name: 'studio',
+        bottomNav: true,
+        mobbin: 'Whatnot · home feed "Get started · Go live · Step N of M" checklist; show planner',
+        url: () => '/studio',
+        before: async (page) => page.context().addCookies(sweepCreatorCookies()),
+        pattern: async (page) => {
+            const checklist = page.getByTestId('go-live-checklist');
+            await expect(checklist).toBeVisible();
+            await expect(checklist).toContainText(/Step \d+ of \d+/);
+            await expect(page.getByTestId('show-planner')).toBeVisible();
+            await expect(page.getByTestId('studio-show').first()).toBeVisible();
+        },
+    },
+    {
+        name: 'control-room',
+        bottomNav: true,
+        mobbin: 'Live studio controls (TikTok Live Studio / OBS): feature product, drop, Q&A, moderation, stats',
+        url: (u) => u.live.controlRoomUrl,
+        before: async (page) => page.context().addCookies(sweepCreatorCookies()),
+        pattern: async (page) => {
+            await expect(page.getByTestId('control-room')).toHaveAttribute('data-status', 'LIVE');
+            await expect(page.getByTestId('featured-panel')).toContainText('Now showing');
+            await expect(page.getByTestId('control-drop')).toHaveAttribute('data-status', 'OPEN');
+            await expect(page.getByTestId('live-stats')).toBeVisible();
+            await expect(page.getByTestId('go-live-checklist')).toBeVisible();
+            await expect(page.getByTestId('end-show')).toBeVisible();
+        },
+    },
+    {
         name: 'not-found',
         bottomNav: true,
         mobbin: 'Empty / error state',
@@ -409,6 +556,10 @@ const SCREENS: Screen[] = [
         },
     },
 ];
+
+/** Cookies of the Live sweep creator (set in beforeAll); studio screens reuse the session. */
+let liveCreatorCookies: LiveSweepState['creatorCookies'] = [];
+const sweepCreatorCookies = () => liveCreatorCookies;
 
 /** Sign this browser context in with an email code (dev returns the code). Own IP per call so in-memory limits never trip. */
 async function signInByEmail(page: Page, email: string) {
@@ -452,7 +603,9 @@ async function buildState(browser: Browser): Promise<Urls> {
     }
     const made = await (await request.post('/api/make-ai/builds', { data: { intentId } })).json();
     const withCad = await createBuildWithCad(request);
+    const prime = await primeSupplierState(page, request);
     await context.close();
+    const live = await buildLiveSweepState(browser, quotePart);
 
     const [orderPath, query] = orderUrl.split('?');
     return {
@@ -466,6 +619,8 @@ async function buildState(browser: Browser): Promise<Urls> {
         workspaceUrl: `/build/${made.buildId}/workspace`,
         sourcingJobUrl: `/admin/sourcing/jobs/${job.id}`,
         cadWorkspaceUrl: withCad.workspaceUrl,
+        live,
+        ...prime,
     };
 }
 
@@ -473,7 +628,7 @@ test.describe('Mobbin page sweep', () => {
     let urls: Urls;
 
     test.beforeAll(async ({ browser }) => {
-        test.setTimeout(240_000);
+        test.setTimeout(360_000);
         mkdirSync(OUT, { recursive: true });
         // A failed test restarts the worker and re-runs beforeAll: reuse this run's state.
         const runId = existsSync(RUN_ID_FILE) ? readFileSync(RUN_ID_FILE, 'utf8') : 'none';
@@ -485,6 +640,7 @@ test.describe('Mobbin page sweep', () => {
             urls = await buildState(browser);
             writeFileSync(cache, JSON.stringify({ runId, urls }));
         }
+        liveCreatorCookies = urls.live.creatorCookies;
     });
 
     for (const screen of SCREENS) {

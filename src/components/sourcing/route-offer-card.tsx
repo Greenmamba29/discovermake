@@ -3,7 +3,10 @@
 import { AlertTriangle, BadgeCheck, CalendarClock, Clock, Globe2, ShieldCheck } from 'lucide-react';
 import type { RouteOfferView } from '@/contracts';
 import { TrustChip } from '@/components/trust/trust-chip';
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
 import { ConfirmAction } from '@/components/ui/confirm-action';
+import { errorMessage } from '@/lib/api';
 import { money, plural } from '@/lib/format';
 import { cn } from '@/lib/utils';
 import { regionName } from './regions';
@@ -15,6 +18,37 @@ const OFFER_STATUS_COPY: Partial<Record<RouteOfferView['status'], string>> = {
     SELECTED: 'Selected route',
 };
 
+function BindingQuoteButton({ offerId, onBindingQuote }: { offerId: string; onBindingQuote: (offerId: string) => Promise<void> }) {
+    const [busy, setBusy] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    return (
+        <div>
+            <Button
+                size="sm"
+                loading={busy}
+                onClick={async () => {
+                    setBusy(true);
+                    setError(null);
+                    try {
+                        await onBindingQuote(offerId);
+                    } catch (err) {
+                        setError(errorMessage(err));
+                        setBusy(false);
+                    }
+                }}
+                data-testid={`supplier-quote-${offerId}`}
+            >
+                Get your binding price
+            </Button>
+            {error && (
+                <p className="mt-2 text-xs text-ember" role="alert">
+                    {error}
+                </p>
+            )}
+        </div>
+    );
+}
+
 export const SELECT_PROMPT = "We'll confirm this route with you before anything is ordered. Nothing is charged now.";
 
 /**
@@ -24,10 +58,13 @@ export const SELECT_PROMPT = "We'll confirm this route with you before anything 
 export function RouteOfferCard({
     offer,
     onSelect,
+    onBindingQuote,
     selectBlockedReason,
 }: {
     offer: RouteOfferView;
     onSelect?: (offerId: string) => Promise<void>;
+    /** R3: turn a confirmed route into a BINDING quote and go to checkout. */
+    onBindingQuote?: (offerId: string) => Promise<void>;
     /** Why selecting is not possible right now (e.g. another route is awaiting confirmation). */
     selectBlockedReason?: string | null;
 }) {
@@ -104,12 +141,15 @@ export function RouteOfferCard({
                         </span>
                     </p>
                 ) : sel?.status === 'APPROVED' || offer.status === 'SELECTED' ? (
-                    <p className="flex items-start gap-1.5 text-sm text-signal" data-testid="offer-selection-approved">
-                        <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
-                        <span>
-                            Route confirmed. <span className="text-fg-muted">We&apos;ll contact you to arrange the order; nothing has been ordered or charged yet.</span>
-                        </span>
-                    </p>
+                    <div className="space-y-3">
+                        <p className="flex items-start gap-1.5 text-sm text-signal" data-testid="offer-selection-approved">
+                            <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
+                            <span>
+                                Route confirmed. <span className="text-fg-muted">Get your binding price to order it; nothing has been ordered or charged yet.</span>
+                            </span>
+                        </p>
+                        {onBindingQuote && <BindingQuoteButton offerId={offer.id} onBindingQuote={onBindingQuote} />}
+                    </div>
                 ) : (
                     <>
                         {sel?.status === 'REJECTED' && <p className="mb-2 text-xs text-fg-muted">We couldn&apos;t confirm this route last time. You can ask again or pick another.</p>}

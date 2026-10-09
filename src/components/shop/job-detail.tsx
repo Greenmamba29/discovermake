@@ -19,6 +19,7 @@ import { dateTime, humanize, money, shortDate } from '@/lib/format';
 import { JOB_STATUS_TEXT, JOB_UNIVERSAL, MILESTONE_LABELS } from '@/lib/status';
 import { cn } from '@/lib/utils';
 import { QaForm } from './qa-form';
+import { primeApi } from '@/lib/prime-api';
 import { ShipForm } from './ship-form';
 import { useCountdown } from './use-countdown';
 
@@ -85,7 +86,9 @@ export function JobDetail({ jobId }: { jobId: string }) {
     const p = job.packet;
     const recorded = new Map<MilestoneKind, string>();
     for (const m of job.milestones) if (!recorded.has(m.kind)) recorded.set(m.kind, m.occurredAt);
-    const canMilestone = job.status === 'ACCEPTED' || job.status === 'IN_PRODUCTION' || job.status === 'QA_PASSED';
+    const receiving = p.receiving ?? null;
+    const awaitingFreight = Boolean(receiving) && job.status === 'ACCEPTED' && !job.isRework;
+    const canMilestone = !awaitingFreight && (job.status === 'ACCEPTED' || job.status === 'IN_PRODUCTION' || job.status === 'QA_PASSED');
     const lastResult = [...job.inspectionResults].sort((a, b) => b.createdAt.localeCompare(a.createdAt))[0] ?? null;
     const reworkJobId = lastResult?.outcome === 'FAIL' ? lastResult.reworkJobId : null;
 
@@ -102,9 +105,14 @@ export function JobDetail({ jobId }: { jobId: string }) {
                     </p>
                     <h1 className="mt-1 font-display font-wide text-3xl font-extrabold">{job.orderNumber}</h1>
                     <p className="mt-1 text-fg-muted" data-testid="job-status-text">
-                        {JOB_STATUS_TEXT[job.status]}
+                        {awaitingFreight ? 'Receiving · waiting for inbound freight' : JOB_STATUS_TEXT[job.status]}
                         {job.isRework && ' · rework'}
                     </p>
+                    {job.batchId && (
+                        <p className="mt-1 inline-flex items-center gap-1 rounded-md bg-graphite-750 px-2 py-0.5 font-mono text-[11px] text-fg-muted" data-testid="job-batch">
+                            Batch {job.batchId} · shares a setup with other jobs on this material
+                        </p>
+                    )}
                 </div>
                 <div className="flex flex-col items-end gap-2">
                     <StatusPill status={JOB_UNIVERSAL[job.status]} />
@@ -212,6 +220,31 @@ export function JobDetail({ jobId }: { jobId: string }) {
 
                 {/* Actions */}
                 <div className="space-y-4">
+                    {receiving && (
+                        <section aria-labelledby="receiving-heading" className="rounded-2xl bg-graphite-900 p-4 ring-1 ring-signal/40 sm:p-5" data-testid="receiving-panel">
+                            <h2 id="receiving-heading" className="font-display text-lg font-bold">
+                                Receiving · QA at receipt
+                            </h2>
+                            <dl className="mt-3">
+                                <PacketRow label="PO">{receiving.poNumber}</PacketRow>
+                                <PacketRow label="From">{receiving.origin}</PacketRow>
+                                <PacketRow label="Inbound">{receiving.inboundCarrier ? `${receiving.inboundCarrier} · ${receiving.inboundTracking ?? ''}` : 'Tracking not shared yet'}</PacketRow>
+                            </dl>
+                            <p className="mt-2 text-sm text-fg-muted">{receiving.instructions}</p>
+                            {awaitingFreight && (
+                                <div className="mt-4">
+                                    <ConfirmAction
+                                        label="Mark freight received"
+                                        confirmLabel="Yes, it arrived"
+                                        prompt={`Received ${p.quantity} parts for ${receiving.poNumber}? Inspection opens next.`}
+                                        onConfirm={() => run('receive', async () => setJob(await primeApi.receiveFreight(job.id)))}
+                                        loading={busy === 'receive'}
+                                        testId="receive-freight"
+                                    />
+                                </div>
+                            )}
+                        </section>
+                    )}
                     {job.status === 'OFFERED' && (
                         <section aria-labelledby="offer-heading" className="rounded-2xl bg-graphite-900 p-4 ring-1 ring-signal/40 sm:p-5" data-testid="offer-panel">
                             <h2 id="offer-heading" className="font-display text-lg font-bold">
@@ -331,7 +364,7 @@ export function JobDetail({ jobId }: { jobId: string }) {
                             }}
                         />
                     )}
-                    {job.status === 'ACCEPTED' && <Notice tone="info">Record the first milestone to start production. Inspection opens once production has started.</Notice>}
+                    {job.status === 'ACCEPTED' && !awaitingFreight && <Notice tone="info">Record the first milestone to start production. Inspection opens once production has started.</Notice>}
 
                     {job.inspectionResults.length > 0 && (
                         <section aria-labelledby="results-heading" className="rounded-2xl bg-graphite-900 p-4 ring-1 ring-graphite-700 sm:p-5">

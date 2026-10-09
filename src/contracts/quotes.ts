@@ -13,7 +13,7 @@
  * - shippingOptions prices are binding for this quote (checkout reads them from the snapshot)
  */
 import { z } from 'zod';
-import { QuoteStatus, QuoteTier, ShippingMethod, TrustLevel } from './enums';
+import { QuoteRouteKind, QuoteStatus, QuoteTier, ShippingMethod, TrustLevel } from './enums';
 import {
     BuildId,
     Cents,
@@ -26,6 +26,7 @@ import {
     ThicknessOptionId,
 } from './common';
 import { DfmResult } from './parts';
+import { QuotePromiseView, QuoteSupplierRouteView } from './promise';
 
 export const MAX_QUOTE_QUANTITY = 5000;
 
@@ -66,6 +67,12 @@ export const QUOTE_LINE_CODES = [
     'SETUP',
     'PLATFORM_FEE',
     'MINIMUM_ORDER',
+    // R3 supplier-route quotes (buyer-safe: no supplier identity in labels)
+    'PARTNER_PRODUCTION',
+    'TOOLING',
+    'FREIGHT_DUTIES',
+    'RECEIVING_QA',
+    'DELIVERY_GUARANTEE',
 ] as const;
 export const QuoteLineCode = z.enum(QUOTE_LINE_CODES);
 export type QuoteLineCode = z.infer<typeof QuoteLineCode>;
@@ -157,6 +164,12 @@ export const QuoteView = z.object({
     pricingVersion: z.string(),
     dfm: DfmResult,
     createdAt: IsoDateTime,
+    /** R3: 'supplier' = BINDING quote built from a supplier-confirmed offer (deposit + balance). Absent = 'shop'. */
+    routeKind: QuoteRouteKind.optional(),
+    /** R3: buyer-safe supplier route summary (supplier quotes only). */
+    supplierRoute: QuoteSupplierRouteView.optional(),
+    /** R3: Delivery Promise per shipping method ("Arrives <date>" only when its P90 fits). */
+    promise: z.array(QuotePromiseView).optional(),
 });
 export type QuoteView = z.infer<typeof QuoteView>;
 

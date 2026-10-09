@@ -146,6 +146,16 @@ export async function submitOffer(input: SubmitOfferArgs, writer: JobWriter, opt
             buildId: job.buildId,
             timestamp: now,
         });
+        if (trustLevel === 'SUPPLIER_CONFIRMED') {
+            await emitEvent(tx, {
+                type: 'quote.supplier_confirmed',
+                payload: { offerId: inserted.id, jobId: job.id, buildId: job.buildId, designVersion: inserted.designVersion, totalCents: offerTotalCents(inserted) },
+                actor,
+                correlationId: job.buildId,
+                buildId: job.buildId,
+                timestamp: now,
+            });
+        }
         return { offer: inserted, duplicate: false };
     });
 }

@@ -50,6 +50,13 @@ export const CheckoutResponse = z.object({
     promisedShipDate: IsoDate,
     payment: z.object({
         provider: PaymentProviderName,
+        /**
+         * R3: what is charged now (order total minus any promise credit, or the deposit for a
+         * supplier-route order). Absent on R1 responses, where it equals totals.totalCents.
+         */
+        amountCents: Cents.optional(),
+        /** R3: 'deposit' for supplier-route orders (balance due at shipment), else 'full'. */
+        purpose: z.enum(['full', 'deposit']).optional(),
         /** Opaque provider session/intent reference (Stripe Checkout Session id, or dev session id). */
         providerRef: z.string(),
         /** Where the browser goes next: Stripe-hosted Checkout, or the dev pay page. */
@@ -60,6 +67,10 @@ export const CheckoutResponse = z.object({
      * The token is shown ONCE here and in the confirmation email; only its HMAC is stored.
      */
     orderUrl: z.string().url(),
+    /** R3: promise credit applied to this checkout (cents), when the buyer had one. */
+    creditAppliedCents: Cents.optional(),
+    /** R3: supplier-route balance charged at shipment. */
+    balanceDueCents: Cents.optional(),
 });
 export type CheckoutResponse = z.infer<typeof CheckoutResponse>;
 

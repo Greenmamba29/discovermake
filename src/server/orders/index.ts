@@ -63,6 +63,12 @@ export { getOrderForBuyer, buildOrderView, MILESTONE_LABELS } from './buyer-view
  */
 export { refundOrder } from './refund';
 
+/**
+ * Authorize now, capture later (R4 Build Slots): payment AUTHORIZED while the order stays
+ * PENDING_PAYMENT; capture runs the normal payment-succeeded path, release cancels the order.
+ */
+export { handlePaymentAuthorized, captureAuthorizedPayment, releaseOrderPayment, type PaymentAuthorizedInput } from './authorization';
+
 /** Webhook pipeline (webhook_events dedupe -> handlers). */
 export { processPaymentWebhook, type WebhookOutcome } from './webhooks';
 

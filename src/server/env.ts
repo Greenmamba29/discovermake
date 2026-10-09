@@ -92,6 +92,27 @@ const EnvSchema = z.object({
 
     /** Rate-limit store: "postgres" (shared table, default in production) or "memory" (per instance, default elsewhere). */
     RATE_LIMIT_STORE: optionalString.pipe(z.enum(['postgres', 'memory']).optional()),
+    /** R4 Live: HMAC key for server-signed Live Build Protocol events. Required in production. */
+    LIVE_EVENT_SIGNING_SECRET: optionalString,
+    /** R4 Live: LiveKit server URL (wss://<project>.livekit.cloud). All three LIVEKIT_* must be set to use LiveKit rooms. */
+    LIVEKIT_URL: optionalString,
+    LIVEKIT_API_KEY: optionalString,
+    LIVEKIT_API_SECRET: optionalString,
+    // ---- R3 Prime (docs/architecture/r3-prime.md). Unset = the documented default. ----
+    /** Share of a supplier-route order total charged at checkout, 0..1 (default 0.5). */
+    SUPPLIER_DEPOSIT_PCT: optionalString,
+    /** DiscoverMake margin on the supplier landed cost, 0..1 (default 0.18). */
+    SUPPLIER_MARGIN_PCT: optionalString,
+    /** Risk reserve % by risk tier LOW,MEDIUM,HIGH,VERY_HIGH (default "0.03,0.06,0.10,0.15"). */
+    SUPPLIER_RISK_RESERVE_PCTS: optionalString,
+    /** Supplier deposit paid with the PO, as a share of the landed cost, 0..1 (default 0.3). */
+    SUPPLIER_PO_DEPOSIT_PCT: optionalString,
+    /** Missed-promise credit as a share of the order subtotal, 0..1 (default 0.10). */
+    PROMISE_CREDIT_PCT: optionalString,
+    /** Missed-promise credit cap in cents (default 25000 = $250). */
+    PROMISE_CREDIT_CAP_CENTS: optionalString,
+    /** Mouser Search API key (catalog distributor provider). Unset = the distributor provider is disabled and never called. */
+    MOUSER_API_KEY: optionalString,
 });
 
 export type Env = z.infer<typeof EnvSchema>;
@@ -127,7 +148,7 @@ export function assertNotProduction(feature: string): void {
  * production a clearly-labelled dev fallback is returned so local dev works
  * without ceremony.
  */
-export function requireSecret(name: 'ORDER_LINK_SECRET' | 'PASSPORT_SIGNING_SECRET' | 'JOB_PACKET_SIGNING_SECRET' | 'STORAGE_SIGNING_SECRET' | 'AUTH_SECRET'): string {
+export function requireSecret(name: 'ORDER_LINK_SECRET' | 'PASSPORT_SIGNING_SECRET' | 'JOB_PACKET_SIGNING_SECRET' | 'STORAGE_SIGNING_SECRET' | 'AUTH_SECRET' | 'LIVE_EVENT_SIGNING_SECRET'): string {
     const value = env()[name];
     if (value) return value;
     if (isProduction()) throw new Error(`Missing required secret ${name}`);

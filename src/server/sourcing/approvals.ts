@@ -6,8 +6,9 @@
  *   customer-facing approvals on their own build. Agents and the system never decide.
  * - An approved SELECT_SUPPLIER_OFFER marks that offer SELECTED, the job's other offers
  *   REJECTED, cancels competing selection requests and emits `supplier.selected`.
- *   R2 stops there: a selected offer is NOT turned into a checkout (checkout stays
- *   BINDING-only); ordering supplier-sourced routes end to end is R3.
+ *   The buyer can then turn the selected offer into a BINDING quote (src/server/prime/quotes.ts).
+ * - An approved PLACE_PURCHASE_ORDER / PAY_DEPOSIT for a paid supplier-route order creates the
+ *   supplier fulfilment leg / posts the supplier deposit (src/server/prime/purchase-orders.ts).
  *
  * LOCK ORDER (all sourcing services): the sourcing_jobs row is always locked FIRST.
  * Approvals and offers each belong to exactly one job, so every transaction that touches
@@ -27,6 +28,7 @@ import { MAX_APPROVAL_DETAILS_CHARS } from './constants';
 import { conflict, invalid, notFound } from './errors';
 import { currentDesignVersion, getJobRow, lockJobForWrite, staleDesign, writerActor, type JobWriter } from './jobs';
 import { approverRoleFor } from './policy';
+import { applyPurchaseOrderDecision } from '../prime/purchase-orders';
 import { toApprovalView, type ApprovalRow, type JobRow } from './views';
 
 export type RequestApprovalArgs = Omit<RequestApprovalInput, 'lease_id'>;
@@ -260,6 +262,8 @@ export async function decideApproval(approvalId: string, decision: ApprovalDecis
             throw conflict(`This approval is already ${approval.status}`);
         }
         if (decision.decision === 'APPROVED' && approval.kind === 'SELECT_SUPPLIER_OFFER') await applySelection(tx, approval, actor, now);
+        // R3: a purchase order / supplier deposit for a paid supplier-route order (job row already locked).
+        await applyPurchaseOrderDecision(tx, approval, decision.decision, actor, now);
         const [updated] = await tx
             .update(approvals)
             .set({ status: decision.decision, decidedBy: actorId(actor), decisionNote: decision.note ?? null, decidedAt: now, updatedAt: now })
