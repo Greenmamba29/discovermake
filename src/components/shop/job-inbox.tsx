@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { ChevronRight, Clock, Inbox, RotateCcw } from 'lucide-react';
+import { ChevronRight, Clock, Inbox, Layers, PackageOpen, RotateCcw } from 'lucide-react';
 import type { JobStatus, ShopJobSummary } from '@/contracts';
 import { StatusPill } from '@/components/ui/status-pill';
 import { EmptyState, ErrorState } from '@/components/ui/state';
@@ -39,6 +39,16 @@ function JobRow({ job }: { job: ShopJobSummary }) {
                     <div className="flex flex-wrap items-center gap-2">
                         <span className="font-mono text-sm font-semibold text-fg">{job.orderNumber}</span>
                         <StatusPill status={JOB_UNIVERSAL[job.status]} />
+                        {job.kind === 'RECEIVING' && (
+                            <span className="inline-flex items-center gap-1 rounded-full bg-graphite-750 px-2 py-0.5 text-[11px] font-semibold text-fg" data-testid={`job-kind-${job.id}`}>
+                                <PackageOpen className="h-3 w-3" aria-hidden /> Receiving
+                            </span>
+                        )}
+                        {job.batchId && (
+                            <span className="inline-flex items-center gap-1 rounded-full bg-graphite-750 px-2 py-0.5 font-mono text-[11px] text-fg-muted" title="Shares a setup with other jobs on the same material" data-testid={`job-batch-${job.id}`}>
+                                <Layers className="h-3 w-3" aria-hidden /> {job.batchId.slice(0, 10)}
+                            </span>
+                        )}
                         {job.isRework && (
                             <span className="inline-flex items-center gap-1 rounded-full bg-amber/15 px-2 py-0.5 text-[11px] font-semibold text-amber">
                                 <RotateCcw className="h-3 w-3" aria-hidden /> Rework
@@ -52,7 +62,7 @@ function JobRow({ job }: { job: ShopJobSummary }) {
                         {job.materialName} · {job.thicknessLabel}
                         {job.finishName ? ` · ${job.finishName}` : ''} · ship by {shortDate(job.shipBy)}
                     </p>
-                    <p className="mt-1 text-xs font-medium text-signal">{NEXT_ACTION[job.nextAction] || JOB_STATUS_TEXT[job.status]}</p>
+                    <p className="mt-1 text-xs font-medium text-signal">{job.kind === 'RECEIVING' && job.status === 'ACCEPTED' ? 'Waiting for inbound freight · mark it received' : NEXT_ACTION[job.nextAction] || JOB_STATUS_TEXT[job.status]}</p>
                 </div>
                 <div className="shrink-0 text-right">
                     <p className="font-mono text-sm font-semibold tabular text-fg">{money(job.payoutCents)}</p>

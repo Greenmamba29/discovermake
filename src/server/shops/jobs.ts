@@ -181,6 +181,10 @@ export async function recordMilestone(shopId: string, jobId: string, input: Mile
         if (job.status !== 'ACCEPTED' && job.status !== 'IN_PRODUCTION' && job.status !== 'QA_PASSED') {
             throw new ApiError('CONFLICT', `Job is ${job.status}; milestones can only be recorded on accepted jobs in production`);
         }
+        // R3: a receiving job starts when the freight is marked received (that also moves the supplier leg).
+        if (job.packet.receiving && job.status === 'ACCEPTED' && !job.reworkOfJobId) {
+            throw new ApiError('CONFLICT', 'Mark the inbound freight received first; inspection opens after that');
+        }
         const now = new Date();
         const actor = shopActor(shopId);
         let started = false;

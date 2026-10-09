@@ -22,12 +22,20 @@ export function ConsoleHeader() {
             <div className="mx-auto flex h-14 w-full max-w-6xl items-center justify-between gap-3 px-4 sm:px-6">
                 <Link href={data ? '/shop/jobs' : '/shop'} className="flex items-center gap-2 rounded-md">
                     <LogoMark className="h-6 w-6 text-fg" />
-                    <span className="font-display font-wide text-sm font-bold">DiscoverMake</span>
+                    <span className="hidden font-display font-wide text-sm font-bold sm:inline">DiscoverMake</span>
                     <span className="rounded-md bg-graphite-750 px-1.5 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wider text-fg-muted">Shop Console</span>
                 </Link>
                 {data && (
                     <div className="flex items-center gap-2">
-                        <span className="hidden text-sm text-fg-muted sm:inline">{data.shop.name}</span>
+                        <nav aria-label="Shop Console" className="flex items-center gap-1">
+                            <Link href="/shop/jobs" className="inline-flex h-9 items-center rounded-lg px-2 text-sm font-medium text-fg-muted hover:bg-graphite-800 hover:text-fg">
+                                Jobs
+                            </Link>
+                            <Link href="/shop/stock" className="inline-flex h-9 items-center rounded-lg px-2 text-sm font-medium text-fg-muted hover:bg-graphite-800 hover:text-fg" data-testid="shop-nav-stock">
+                                Stock
+                            </Link>
+                        </nav>
+                        <span className="hidden text-sm text-fg-muted lg:inline">{data.shop.name}</span>
                         <button
                             type="button"
                             disabled={busy}
@@ -45,7 +53,7 @@ export function ConsoleHeader() {
                             className="inline-flex h-9 items-center gap-1.5 rounded-lg px-3 text-sm font-medium text-fg-muted hover:bg-graphite-800 hover:text-fg"
                             data-testid="shop-logout"
                         >
-                            <LogOut className="h-4 w-4" aria-hidden /> Sign out
+                            <LogOut className="h-4 w-4" aria-hidden /> <span className="sr-only sm:not-sr-only">Sign out</span>
                         </button>
                     </div>
                 )}

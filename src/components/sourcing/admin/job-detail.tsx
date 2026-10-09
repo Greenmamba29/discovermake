@@ -19,6 +19,7 @@ import { ApprovalCard } from './approval-card';
 import { DeskOfferForm, DeskSupplierForm } from './desk-forms';
 import { DeskHeader } from './desk-header';
 import { JOB_PILL, NEGOTIATION_LABEL } from './labels';
+import { SupplierLegsPanel } from './supplier-legs';
 
 /** Sourcing desk · one job: request, offers (full supplier identity), negotiations, documents, approvals, desk fallback. */
 export function SourcingJobDetailScreen({ jobId }: { jobId: string }) {
@@ -122,6 +123,10 @@ function JobDetail({ token, jobId, onSignOut }: { token: string; jobId: string; 
 
             <Section title="Offers" count={d.offers.length} id="offers-heading">
                 {d.offers.length === 0 ? <EmptyState title="No offers yet">Offers arrive through the agent&apos;s submit_offer or the desk form below.</EmptyState> : <OffersTable offers={d.offers} />}
+            </Section>
+
+            <Section title="Supplier fulfilment" count={(d.legs ?? []).length} id="legs-heading">
+                <SupplierLegsPanel token={token} legs={d.legs ?? []} onChanged={refresh} />
             </Section>
 
             <Section title="Approvals" count={approvals.length} id="approvals-heading">
