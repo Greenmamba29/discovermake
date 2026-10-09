@@ -175,6 +175,19 @@ export const EVENT_PAYLOADS = {
     'sourcing.lease_released': z.object({ jobId: id, reason: z.enum(['expired', 'client_revoked']) }),
     /** The build moved past the offer's design version; the offer can no longer be selected. */
     'sourcing.offer_stale': z.object({ offerId: id, jobId: id, offerVersion: z.number().int().positive(), currentVersion: z.number().int().positive() }),
+
+    // ---- R4: Live (workflow 06, ADR-0003) ----------------------------------
+    /** Funds are held at the provider (manual capture); the order stays PENDING_PAYMENT until capture. */
+    'payment.authorized': z.object({ orderId: id, paymentId: id, provider: PaymentProviderName, providerRef: z.string(), amountCents: cents, currency: z.string() }),
+    /** An authorization (or an unpaid session) was released without capturing: nothing was charged. */
+    'payment.authorization_released': z.object({ orderId: id, paymentId: id, provider: PaymentProviderName, reason: z.string() }),
+    /** Mirrors of the Live Build Protocol events that matter outside the stream (the full log lives in `live_events`). */
+    'live.show_started': z.object({ showId: id, channelId: id, displayId: z.string() }),
+    'live.show_ended': z.object({ showId: id, channelId: id, displayId: z.string(), durationMs: z.number().int().nonnegative() }),
+    'live.product_featured': z.object({ showId: id, buildId: id, seq: z.number().int().positive() }),
+    'live.drop_started': z.object({ dropId: id, showId: id.nullable(), buildId: id, quoteId: id, priceCents: cents, totalSlots: z.number().int().positive(), thresholdSlots: z.number().int().positive(), closesAt: IsoDateTime }),
+    'live.slot_claimed': z.object({ dropId: id, claimId: id, orderId: id, quantity: z.number().int().positive(), claimedSlots: z.number().int().nonnegative() }),
+    'live.drop_closed': z.object({ dropId: id, status: z.enum(['CONFIRMED', 'FAILED']), claimedSlots: z.number().int().nonnegative(), thresholdSlots: z.number().int().positive(), captured: z.number().int().nonnegative(), released: z.number().int().nonnegative() }),
 } as const;
 
 export type EventType = keyof typeof EVENT_PAYLOADS;

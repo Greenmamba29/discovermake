@@ -62,6 +62,7 @@ export const ID_PREFIX = {
     slotClaim: 'slc',
     liveEvent: 'lev',
     liveQuestion: 'lvq',
+    livePoll: 'lpl',
 } as const;
 export type IdKind = keyof typeof ID_PREFIX;
 
