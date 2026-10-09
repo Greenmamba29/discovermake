@@ -19,7 +19,7 @@ import type { ShippingMethod } from '../../contracts/enums';
 import { CartCheckoutResponse, type AppliedBenefit, type PaymentChoice } from '../../contracts/prime';
 import { buildOrderUrl, createOrderAccessToken, hashOrderAccessToken } from '../auth/order-link';
 import { getDb, withTx } from '../db';
-import { cartCheckouts, invoices, orders, parts, payments, quotes, shops } from '../db/schema';
+import { cartCheckouts, invoices, orders, parts, payments, quotes, shops, supplierQuotes } from '../db/schema';
 import { env } from '../env';
 import { emitEvent } from '../events/outbox';
 import { ApiError } from '../http';
@@ -30,7 +30,7 @@ import { SEALED_TOKEN_KEY, sealOrderToken } from '../orders/link-vault';
 import { getPaymentProvider } from '../payments';
 import type { BenefitResult, MembershipForBenefits } from '../prime/benefits';
 import { recordOrderBenefits } from '../prime/order-benefits';
-import { closeCart } from './cart';
+import { closeCart, SUPPLIER_ROUTE_MESSAGE } from './cart';
 import { groupConfirmationUrl, subRef } from './payment-group';
 import { promisedShipDateFor } from '../orders/checkout';
 
@@ -95,6 +95,9 @@ export async function checkoutQuotes(input: MultiCheckoutInput): Promise<CartChe
     const rows = await db.select().from(quotes).where(inArray(quotes.id, ids));
     if (rows.length !== ids.length) throw new ApiError('NOT_FOUND', 'A quote in your cart no longer exists.');
     const quoteRows = ids.map((id) => rows.find((r) => r.id === id)!);
+    if ((await db.select({ id: supplierQuotes.quoteId }).from(supplierQuotes).where(inArray(supplierQuotes.quoteId, ids)).limit(1)).length) {
+        throw new ApiError('CONFLICT', SUPPLIER_ROUTE_MESSAGE);
+    }
     const lines = await priceQuotes(quoteRows, input.shippingMethod, input.membership);
     const shopRows = await db.select({ id: shops.id, timezone: shops.timezone }).from(shops).where(inArray(shops.id, [...new Set(quoteRows.map((q) => q.shopId))]));
     const tz = new Map(shopRows.map((s) => [s.id, s.timezone]));

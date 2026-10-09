@@ -14,12 +14,15 @@
 import { and, asc, eq, inArray, isNull } from 'drizzle-orm';
 import type { CartItemView, CartView, UpsellKind } from '../../contracts/prime';
 import { getDb, withTx, type DbOrTx } from '../db';
-import { cartItems, carts, parts, quotes } from '../db/schema';
+import { cartItems, carts, parts, quotes, supplierQuotes } from '../db/schema';
 import { ApiError } from '../http';
 import { isQuoteOrderable } from '../quote';
 import type { CartOwner } from './owner';
 
 export type CartRow = typeof carts.$inferSelect;
+
+/** Supplier-route quotes (Prime core) are paid as deposit + balance, so they check out on their own. */
+export const SUPPLIER_ROUTE_MESSAGE = 'Parts made by a sourced supplier check out on their own (deposit now, balance before shipping). Order this one from its checkout page.';
 
 function ownerWhere(owner: CartOwner) {
     if (owner.userId) return and(eq(carts.userId, owner.userId), eq(carts.status, 'open'));
@@ -83,6 +86,8 @@ async function loadOrderableQuote(quoteId: string, db: DbOrTx = getDb()): Promis
         .limit(1);
     if (!r) throw new ApiError('NOT_FOUND', 'Quote not found');
     if (!isQuoteOrderable(r.quote, r.part)) throw new ApiError('CONFLICT', 'Only current binding quotes can go in the cart. Refresh the quote first.');
+    const [supplier] = await db.select({ id: supplierQuotes.quoteId }).from(supplierQuotes).where(eq(supplierQuotes.quoteId, quoteId)).limit(1);
+    if (supplier) throw new ApiError('CONFLICT', SUPPLIER_ROUTE_MESSAGE);
     return r.quote;
 }
 

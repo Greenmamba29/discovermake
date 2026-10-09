@@ -115,6 +115,18 @@ describe('Complete your build upsells', () => {
     });
 });
 
+describe('printed (R6) quotes', () => {
+    it('go in the cart as normal binding quotes and get no sheet-metal upsells', async () => {
+        const q = await bindingQuote(4);
+        await ctx.db.update(quotes).set({ config: { ...q.config, process: 'print' } }).where(eq(quotes.id, q.id));
+        const offers = UpsellsResponse.parse(await (await getUpsells(req('GET', `/api/me/cart/upsells?quoteId=${q.id}`, null), params({}))).json());
+        expect(offers.offers).toEqual([]);
+        const device = newDevice();
+        const view = CartView.parse(await (await addItem(req('POST', '/api/me/cart/items', device, { quoteId: q.id }), params({}))).json());
+        expect(view.items[0]).toMatchObject({ quoteId: q.id, orderable: true });
+    });
+});
+
 describe('cart checkout', () => {
     it('charges once for every part: totals == sum of server quotes + Prime benefits, one order per part', async () => {
         const user = await signedInUser();

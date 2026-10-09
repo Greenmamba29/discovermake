@@ -8,14 +8,14 @@
  *   hardware_kit    loose fasteners matched to the part's round clearance holes (features.holes)
  *
  * Offers are computed once per base quote and stored in `upsell_offers`; only offers whose
- * quote is orderable (READY + BINDING + fresh) are returned.
+ * quote is orderable (READY + BINDING + fresh) are returned. Printed (R6) quotes get none.
  */
 import { and, eq } from 'drizzle-orm';
 import type { HoleFeature } from '../../contracts/parts';
 import type { UpsellKind, UpsellOffer } from '../../contracts/prime';
 import { MAX_QUOTE_QUANTITY, type CreateQuoteRequest } from '../../contracts/quotes';
 import { getDb } from '../db';
-import { materials, parts, quotes, services, upsellOffers } from '../db/schema';
+import { materials, parts, quotes, services, supplierQuotes, upsellOffers } from '../db/schema';
 import { ApiError } from '../http';
 import { createQuote, isQuoteOrderable } from '../quote';
 import { serviceCompatible } from '../quote/catalog';
@@ -104,6 +104,12 @@ export async function getUpsellOffers(baseQuoteId: string): Promise<UpsellOffer[
     const base = await freshness(baseQuoteId);
     if (!base) throw new ApiError('NOT_FOUND', 'Quote not found');
     if (!isQuoteOrderable(base.quote, base.part)) return [];
+    // R6 printed parts (config.process 'print') are priced by the print engine: no sheet-metal
+    // add-ons (hardware kit, powder coat, spare via POST /api/quotes) apply. They still go in the
+    // cart as normal BINDING quotes.
+    if (base.quote.config.process === 'print') return [];
+    const [supplier] = await db.select({ id: supplierQuotes.quoteId }).from(supplierQuotes).where(eq(supplierQuotes.quoteId, baseQuoteId)).limit(1);
+    if (supplier) return [];
 
     const existing = await db.select().from(upsellOffers).where(eq(upsellOffers.baseQuoteId, baseQuoteId));
     const have = new Set(existing.map((e) => e.kind));
