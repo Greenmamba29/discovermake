@@ -49,6 +49,9 @@ function chromiumExecutable(): string | undefined {
 }
 const CHROMIUM_EXECUTABLE = chromiumExecutable();
 
+/** Buyer journeys that must also pass on emulated phones (touch, mobile UA, small viewport). */
+const MOBILE_JOURNEYS = /(smoke|order-journey|accounts-journey|reconstruct-journey|live-journey|mobile-touch)\.spec\.ts/;
+
 export default defineConfig({
     testDir: './tests/e2e',
     testMatch: /.*\.spec\.ts/,
@@ -73,6 +76,18 @@ export default defineConfig({
                 launchOptions: CHROMIUM_EXECUTABLE ? { executablePath: CHROMIUM_EXECUTABLE } : {},
             },
         },
+        // Real phone emulation for the buyer journeys: touch input, mobile viewport + DPR and a
+        // mobile user agent (the page sweep already covers every screen at 390 px). The iPhone
+        // profile runs on Chromium here because only Chromium is installed in the sandbox.
+        ...(['Pixel 7', 'iPhone 14'] as const).map((device) => ({
+            name: `mobile-${device.toLowerCase().replace(/\s+/g, '-')}`,
+            testMatch: MOBILE_JOURNEYS,
+            use: {
+                ...devices[device],
+                browserName: 'chromium' as const,
+                launchOptions: CHROMIUM_EXECUTABLE ? { executablePath: CHROMIUM_EXECUTABLE } : {},
+            },
+        })),
     ],
     webServer: {
         command: `bunx next dev -p ${E2E_PORT}`,

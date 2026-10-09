@@ -40,6 +40,8 @@ const securityHeaders = [
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     poweredByHeader: false,
+    // The dev route badge sits over the phone bottom nav; compile/runtime errors still surface.
+    devIndicators: false,
     // postgres-js and the AWS SDK are server-only runtime deps; keep them out of the bundle.
     serverExternalPackages: ['postgres', '@aws-sdk/client-s3', '@aws-sdk/s3-request-presigner'],
     turbopack: {
