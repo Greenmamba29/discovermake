@@ -6,6 +6,7 @@ import { EstimateBadge } from '@/components/make-ai/creation-intent-view';
 import { Button, ButtonLink } from '@/components/ui/button';
 import { Notice } from '@/components/ui/state';
 import { CadPanel } from './cad-panel';
+import { ObjectViewCard } from './object-view/object-view';
 import { PanelCard } from './panels';
 import { WorkspaceSourcingSlot } from './workspace-sourcing-slot';
 import { approvedVersion, buildBrief, latestVersion, materialsOf, nextAction, nodesOf, openUnknowns, partsOf, type WorkspaceSection } from './workspace-model';
@@ -78,6 +79,8 @@ export function OverviewPanel({ view, onGo, isCurrent }: { view: BuildGraphView;
             )}
 
             <CadPanel view={view} isCurrent={isCurrent} />
+
+            <ObjectViewCard view={view} onGo={onGo} />
 
             <dl className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                 {stats.map((s) => (
