@@ -20,7 +20,9 @@ import {
     integer,
     jsonb,
     pgEnum,
+    pgSequence,
     pgTable,
+    primaryKey,
     text,
     timestamp,
     uniqueIndex,
@@ -78,6 +80,8 @@ import type { Parcel, TrackingEvent } from '../../contracts/shipments';
 import type { PassportSnapshot } from '../../contracts/passport';
 import type { CreationIntent } from '../../contracts/make-ai';
 import type { ApprovalPolicy, SourcingRequest, SubmitOfferInput, SupplierEvidenceInput } from '../../contracts/sourcing';
+import { CHANNEL_KINDS, DROP_STATUSES, SHOW_FORMATS, SHOW_STATUSES, SLOT_CLAIM_STATUSES } from '../../contracts/live';
+import type { ChannelCategory, LiveActorKind, LiveEventType } from '../../contracts/live';
 import { newId } from '../ids';
 
 // ---------------------------------------------------------------------------
@@ -1288,4 +1292,311 @@ export const sourcingToolCalls = pgTable(
         createdAt: createdAt(),
     },
     (t) => [index('sourcing_tool_calls_client_idx').on(t.clientId, t.createdAt)],
+);
+
+// ---------------------------------------------------------------------------
+// R4 Live (workflow 06, ADR-0003)
+// ---------------------------------------------------------------------------
+//
+// User references are plain `text` user ids (no FK): the `users` table belongs to the
+// R2 accounts module. Channel owner display data is denormalized onto the channel row.
+
+export const channelKindEnum = pgEnum('channel_kind', CHANNEL_KINDS);
+export const showStatusEnum = pgEnum('show_status', SHOW_STATUSES);
+export const showFormatEnum = pgEnum('show_format', SHOW_FORMATS);
+export const dropStatusEnum = pgEnum('drop_status', DROP_STATUSES);
+export const slotClaimStatusEnum = pgEnum('slot_claim_status', SLOT_CLAIM_STATUSES);
+
+/** Human show numbers: shows.display_number -> `LIVE-<n>`. */
+export const liveShowNumberSeq = pgSequence('live_show_number_seq', { startWith: 100, increment: 1 });
+
+export const channels = pgTable(
+    'channels',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('channel')),
+        handle: text('handle').notNull(),
+        name: text('name').notNull(),
+        kind: channelKindEnum('kind').notNull().default('creator'),
+        categories: jsonb('categories').$type<ChannelCategory[]>().notNull().default([]),
+        bio: text('bio'),
+        /** Owning user (accounts module). Null for partner-shop / platform channels. */
+        ownerUserId: text('owner_user_id'),
+        ownerDisplayName: text('owner_display_name'),
+        ownerEmail: text('owner_email'),
+        /** Partner shop behind a factory channel, when there is one. */
+        shopId: text('shop_id').references(() => shops.id),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [
+        uniqueIndex('channels_handle_uq').on(t.handle),
+        uniqueIndex('channels_owner_uq')
+            .on(t.ownerUserId)
+            .where(sql`${t.ownerUserId} is not null`),
+    ],
+);
+
+export const channelFollows = pgTable(
+    'channel_follows',
+    {
+        channelId: text('channel_id')
+            .notNull()
+            .references(() => channels.id, { onDelete: 'cascade' }),
+        userId: text('user_id').notNull(),
+        createdAt: createdAt(),
+    },
+    (t) => [primaryKey({ columns: [t.channelId, t.userId] }), index('channel_follows_user_idx').on(t.userId)],
+);
+
+export const shows = pgTable(
+    'shows',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('show')),
+        displayNumber: integer('display_number')
+            .notNull()
+            .default(sql`nextval('live_show_number_seq')`),
+        channelId: text('channel_id')
+            .notNull()
+            .references(() => channels.id, { onDelete: 'cascade' }),
+        title: text('title').notNull(),
+        format: showFormatEnum('format').notNull(),
+        status: showStatusEnum('status').notNull().default('SCHEDULED'),
+        scheduledFor: tstz('scheduled_for').notNull(),
+        startedAt: tstz('started_at'),
+        endedAt: tstz('ended_at'),
+        /** External HLS source (Owncast / MediaMTX) chosen by the creator. */
+        hlsUrl: text('hls_url'),
+        /** Recorded replay (LiveKit egress or an uploaded MP4 / HLS), used once the show ENDED. */
+        replayUrl: text('replay_url'),
+        /** LiveKit room name when LiveKit is configured at start_show. */
+        livekitRoom: text('livekit_room'),
+        thumbnailUrl: text('thumbnail_url'),
+        viewerCount: integer('viewer_count').notNull().default(0),
+        peakViewers: integer('peak_viewers').notNull().default(0),
+        likeCount: integer('like_count').notNull().default(0),
+        /** Last assigned Live Build Protocol seq (advanced under this row's lock). */
+        lastSeq: integer('last_seq').notNull().default(0),
+        /** Build currently in focus (last `product.focus`). */
+        featuredBuildId: text('featured_build_id').references(() => builds.id),
+        slowModeSeconds: integer('slow_mode_seconds').notNull().default(0),
+        createdBy: text('created_by').notNull(),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [
+        uniqueIndex('shows_display_number_uq').on(t.displayNumber),
+        index('shows_channel_idx').on(t.channelId, t.scheduledFor),
+        index('shows_status_idx').on(t.status, t.scheduledFor),
+        check('shows_counts_ck', sql`${t.viewerCount} >= 0 and ${t.likeCount} >= 0 and ${t.lastSeq} >= 0`),
+    ],
+);
+
+export const showFeaturedBuilds = pgTable(
+    'show_featured_builds',
+    {
+        showId: text('show_id')
+            .notNull()
+            .references(() => shows.id, { onDelete: 'cascade' }),
+        buildId: text('build_id')
+            .notNull()
+            .references(() => builds.id),
+        position: integer('position').notNull().default(0),
+        createdAt: createdAt(),
+    },
+    (t) => [primaryKey({ columns: [t.showId, t.buildId] })],
+);
+
+/**
+ * The Live Build Protocol log. Append-only: one row per event, `seq` monotonic per show
+ * (assigned under the show row lock), `stream_ts_ms` = position in the broadcast.
+ * Commerce-affecting events carry an HMAC `sig` (LIVE_EVENT_SIGNING_SECRET).
+ */
+export const liveEvents = pgTable(
+    'live_events',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('liveEvent')),
+        showId: text('show_id')
+            .notNull()
+            .references(() => shows.id, { onDelete: 'cascade' }),
+        seq: integer('seq').notNull(),
+        streamTsMs: integer('stream_ts_ms').notNull(),
+        event: text('event').$type<LiveEventType>().notNull(),
+        actorKind: text('actor_kind').$type<LiveActorKind>().notNull(),
+        actorId: text('actor_id').notNull(),
+        actorName: text('actor_name'),
+        buildId: text('build_id'),
+        designVersion: integer('design_version'),
+        payload: jsonb('payload').$type<Record<string, unknown>>().notNull().default({}),
+        at: tstz('at').notNull(),
+        sig: text('sig'),
+    },
+    (t) => [uniqueIndex('live_events_show_seq_uq').on(t.showId, t.seq), index('live_events_show_event_idx').on(t.showId, t.event)],
+);
+
+export const liveQuestions = pgTable(
+    'live_questions',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('liveQuestion')),
+        showId: text('show_id')
+            .notNull()
+            .references(() => shows.id, { onDelete: 'cascade' }),
+        mode: text('mode').$type<'creator' | 'make_ai'>().notNull(),
+        text: text('text').notNull(),
+        askedByUserId: text('asked_by_user_id').notNull(),
+        askedByName: text('asked_by_name').notNull(),
+        answer: text('answer'),
+        answeredBy: text('answered_by').$type<'host' | 'make_ai'>(),
+        answeredAt: tstz('answered_at'),
+        /** Build the question was about (in focus when it was asked). */
+        buildId: text('build_id'),
+        createdAt: createdAt(),
+    },
+    (t) => [index('live_questions_show_idx').on(t.showId, t.createdAt)],
+);
+
+export const livePolls = pgTable(
+    'live_polls',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('livePoll')),
+        showId: text('show_id')
+            .notNull()
+            .references(() => shows.id, { onDelete: 'cascade' }),
+        question: text('question').notNull(),
+        options: jsonb('options').$type<string[]>().notNull(),
+        status: text('status').$type<'OPEN' | 'CLOSED'>().notNull().default('OPEN'),
+        createdBy: text('created_by').notNull(),
+        closedAt: tstz('closed_at'),
+        createdAt: createdAt(),
+    },
+    (t) => [index('live_polls_show_idx').on(t.showId, t.createdAt)],
+);
+
+export const livePollVotes = pgTable(
+    'live_poll_votes',
+    {
+        pollId: text('poll_id')
+            .notNull()
+            .references(() => livePolls.id, { onDelete: 'cascade' }),
+        userId: text('user_id').notNull(),
+        optionIndex: integer('option_index').notNull(),
+        createdAt: createdAt(),
+    },
+    (t) => [primaryKey({ columns: [t.pollId, t.userId] }), check('live_poll_votes_option_ck', sql`${t.optionIndex} >= 0 and ${t.optionIndex} < 4`)],
+);
+
+export const liveMutes = pgTable(
+    'live_mutes',
+    {
+        showId: text('show_id')
+            .notNull()
+            .references(() => shows.id, { onDelete: 'cascade' }),
+        userId: text('user_id').notNull(),
+        until: tstz('until').notNull(),
+        createdBy: text('created_by').notNull(),
+        createdAt: createdAt(),
+    },
+    (t) => [primaryKey({ columns: [t.showId, t.userId] })],
+);
+
+/** One like per signed-in viewer per show. */
+export const showLikes = pgTable(
+    'show_likes',
+    {
+        showId: text('show_id')
+            .notNull()
+            .references(() => shows.id, { onDelete: 'cascade' }),
+        userId: text('user_id').notNull(),
+        createdAt: createdAt(),
+    },
+    (t) => [primaryKey({ columns: [t.showId, t.userId] })],
+);
+
+/** Who is watching (SSE heartbeats); feeds viewer counts when LiveKit is not configured. */
+export const livePresence = pgTable(
+    'live_presence',
+    {
+        showId: text('show_id')
+            .notNull()
+            .references(() => shows.id, { onDelete: 'cascade' }),
+        viewerKey: text('viewer_key').notNull(),
+        lastSeenAt: tstz('last_seen_at').notNull().defaultNow(),
+    },
+    (t) => [primaryKey({ columns: [t.showId, t.viewerKey] }), index('live_presence_seen_idx').on(t.showId, t.lastSeenAt)],
+);
+
+/**
+ * A limited production run sold as Build Slots. `claimed_slots` is maintained under this
+ * row's lock (fair queue) and never exceeds `total_slots` (check). `quote_id` is the
+ * orderable BINDING quote at quantity = threshold_slots that proves the price covers cost.
+ */
+export const drops = pgTable(
+    'drops',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('drop')),
+        showId: text('show_id').references(() => shows.id),
+        channelId: text('channel_id')
+            .notNull()
+            .references(() => channels.id),
+        buildId: text('build_id')
+            .notNull()
+            .references(() => builds.id),
+        quoteId: text('quote_id')
+            .notNull()
+            .references(() => quotes.id),
+        title: text('title').notNull(),
+        priceCents: cents('price_cents').notNull(),
+        currency: text('currency').notNull().default('usd'),
+        totalSlots: integer('total_slots').notNull(),
+        thresholdSlots: integer('threshold_slots').notNull(),
+        perBuyerLimit: integer('per_buyer_limit').notNull(),
+        claimedSlots: integer('claimed_slots').notNull().default(0),
+        status: dropStatusEnum('status').notNull().default('OPEN'),
+        opensAt: tstz('opens_at').notNull(),
+        closesAt: tstz('closes_at').notNull(),
+        endingNotifiedAt: tstz('ending_notified_at'),
+        closedAt: tstz('closed_at'),
+        createdBy: text('created_by').notNull(),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [
+        index('drops_show_idx').on(t.showId),
+        index('drops_open_idx')
+            .on(t.closesAt)
+            .where(sql`${t.status} = 'OPEN'`),
+        check('drops_slots_ck', sql`${t.claimedSlots} >= 0 and ${t.claimedSlots} <= ${t.totalSlots} and ${t.thresholdSlots} <= ${t.totalSlots}`),
+    ],
+);
+
+export const slotClaims = pgTable(
+    'slot_claims',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('slotClaim')),
+        dropId: text('drop_id')
+            .notNull()
+            .references(() => drops.id),
+        userId: text('user_id').notNull(),
+        buyerEmail: text('buyer_email').notNull(),
+        quantity: integer('quantity').notNull(),
+        status: slotClaimStatusEnum('status').notNull().default('RESERVED'),
+        orderId: text('order_id')
+            .notNull()
+            .references(() => orders.id),
+        /** Where the buyer authorizes the hold (Stripe Checkout or the dev pay page). */
+        checkoutUrl: text('checkout_url'),
+        idempotencyKey: text('idempotency_key'),
+        /** Unauthorized claims expire at this time and their slots return to the drop. */
+        expiresAt: tstz('expires_at').notNull(),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [
+        index('slot_claims_drop_idx').on(t.dropId, t.status),
+        index('slot_claims_user_idx').on(t.userId),
+        uniqueIndex('slot_claims_order_uq').on(t.orderId),
+        uniqueIndex('slot_claims_idempotency_uq')
+            .on(t.dropId, t.userId, t.idempotencyKey)
+            .where(sql`${t.idempotencyKey} is not null`),
+        check('slot_claims_quantity_ck', sql`${t.quantity} > 0`),
+    ],
 );
