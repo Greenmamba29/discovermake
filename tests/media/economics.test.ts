@@ -4,15 +4,17 @@
  * platform fee), creator payouts (manual + the Connect transfer path), and the insights
  * aggregates that read the same rows.
  */
-import { and, eq, like } from 'drizzle-orm';
+import { and, eq, inArray, like } from 'drizzle-orm';
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import { POST as markPaidRoute } from '@/app/api/admin/creator-payouts/[payoutId]/paid/route';
-import { creatorAccounts, creatorEarnings, creatorPayouts, domainEvents, ledgerEntries, orders, shows } from '@/server/db/schema';
+import { cartCheckouts, creatorAccounts, creatorEarnings, creatorPayouts, domainEvents, ledgerEntries, orders, shows } from '@/server/db/schema';
+import { checkoutQuotes } from '@/server/cart/checkout';
+import { getMembershipForBenefits } from '@/server/prime/membership';
 import { createShow, upsertChannel } from '@/server/live';
 import { resetEnvCache } from '@/server/env';
 import { ledgerBalances } from '@/server/ledger';
 import { creatorBalance, creatorInsights, markCreatorPayoutPaid, requestCreatorPayout, splitCreatorEarnings } from '@/server/media';
-import { refundOrder } from '@/server/orders';
+import { confirmDevPayment, refundOrder } from '@/server/orders';
 import { useTestDb } from '../support/db';
 import { quietConsole } from '../orders/fixtures';
 import { makeUser, req } from '../live/fixtures';
@@ -91,6 +93,48 @@ describe('creator economics', () => {
         // Idempotent: a replayed refund does not reverse twice.
         await refundOrder(orderId, ACTOR, 'again');
         expect(await ctx.db.select().from(creatorEarnings).where(eq(creatorEarnings.orderId, orderId))).toHaveLength(2);
+    });
+
+    it('accrues per order when a cart checkout pays several remixes with one group payment', async () => {
+        const { creator, viewer, fixture } = await creatorBuild(ctx.db);
+        await publish(viewer, fixture.build.id, { royaltyPct: 10 });
+        const buyer = await makeUser('buyer');
+        const a = await derivedBuild(ctx.db, fixture.build.id, 'remix', buyer.id);
+        const b = await derivedBuild(ctx.db, fixture.build.id, 'clone', buyer.id, { quantity: 25 });
+        const out = await checkoutQuotes({
+            quoteIds: [a.quote.id, b.quote.id],
+            cartId: null,
+            userId: buyer.id,
+            deviceHash: null,
+            membership: await getMembershipForBenefits(buyer.id),
+            shippingMethod: 'STANDARD',
+            buyer: { email: buyer.email, name: 'Ada Buyer' },
+            shippingAddress: { name: 'Ada Maker', line1: '100 Market St', city: 'Philadelphia', region: 'PA', postalCode: '19106', country: 'US' },
+            payment: { mode: 'card' },
+        });
+        const [group] = await ctx.db.select().from(cartCheckouts).where(eq(cartCheckouts.id, out.checkoutId));
+        expect(group.orderIds).toHaveLength(2);
+        // One payment for the group fans out to one payment event per order.
+        await confirmDevPayment(JSON.stringify({ providerRef: group.providerRef, outcome: 'succeeded' }), new Headers());
+        const paid = await ctx.db.select().from(orders).where(inArray(orders.id, group.orderIds));
+        expect(paid.map((o) => o.status)).toEqual(['PAID', 'PAID']);
+        const earnings = await ctx.db.select().from(creatorEarnings).where(inArray(creatorEarnings.orderId, group.orderIds));
+        expect(earnings).toHaveLength(2);
+        for (const o of paid) {
+            const e = earnings.find((x) => x.orderId === o.id)!;
+            expect(e).toMatchObject({ creatorUserId: creator.id, amountCents: Math.min(o.platformFeeCents, Math.floor(o.subtotalCents * 0.1)), txnKey: `creator:${o.id}:${e.kind}` });
+            expect(ledgerBalances(await ledgerFor(o.id)).CREATOR_PAYABLE).toBe(-e.amountCents);
+        }
+        expect(earnings.map((e) => e.kind).sort()).toEqual(['MAKE_THIS_ROYALTY', 'REMIX_ROYALTY']);
+        // A replayed group webhook does not accrue twice.
+        await confirmDevPayment(JSON.stringify({ providerRef: group.providerRef, outcome: 'succeeded' }), new Headers());
+        expect(await ctx.db.select().from(creatorEarnings).where(inArray(creatorEarnings.orderId, group.orderIds))).toHaveLength(2);
+        expect((await creatorBalance(creator.id)).availableCents).toBe(earnings.reduce((s, e) => s + e.amountCents, 0));
+
+        // Refunding one order of the group reverses only that order's royalty.
+        await refundOrder(paid[0].id, ACTOR, 'One part not needed');
+        const left = earnings.find((e) => e.orderId === paid[1].id)!.amountCents;
+        expect((await creatorBalance(creator.id)).availableCents).toBe(left);
     });
 
     it('pays Make This royalties, and never to yourself', async () => {

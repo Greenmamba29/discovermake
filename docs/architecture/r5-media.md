@@ -49,7 +49,10 @@ Rules (V1):
 
 ### Who earns on a paid order
 `accrueCreatorEarnings(orderId, tx)` runs inside `handlePaymentSucceeded`, right after the R1 payment
-split, for every full-payment order (direct checkouts, captured Build Slots, captured winning bids):
+split, for every full-payment order (direct checkouts, captured Build Slots, captured winning bids, and
+each order of a cart checkout: the group payment fans out to one `handlePaymentSucceeded` per order, so
+royalties accrue and reverse per order). Prime member discounts come out of the platform fee before the
+order is written, so the cap below uses the discounted fee:
 
 1. **Live revenue.** A `BUILD_SLOT` order of a drop, or the winning `LIVE_DROP` bid of an auction, earns
    the channel owner the markup over the binding price: `order.platform_fee − quote.platform_fee × qty /
