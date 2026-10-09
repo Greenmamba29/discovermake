@@ -1289,3 +1289,83 @@ export const sourcingToolCalls = pgTable(
     },
     (t) => [index('sourcing_tool_calls_client_idx').on(t.clientId, t.createdAt)],
 );
+
+// ---------------------------------------------------------------------------
+// R2 build attachments (100-1)
+// ---------------------------------------------------------------------------
+
+/** Keep in sync with ATTACHMENT_KINDS in src/contracts/workspace.ts. */
+export const buildAttachmentKindEnum = pgEnum('build_attachment_kind', ['image', 'cad']);
+
+/**
+ * Reference images and CAD files attached to a build (the Build Workspace attachment tray).
+ * A row is created with the signed upload URL; `sha256` stays null until the bytes are
+ * verified (size cap + magic bytes), so a null sha256 means "upload not verified yet".
+ * Bytes live at `storage_key` = `builds/<buildId>/attachments/<attId>/<safe filename>`.
+ * Deletes are soft (`deleted_at`); the object is removed from storage at delete time.
+ */
+export const buildAttachments = pgTable(
+    'build_attachments',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('buildAttachment')),
+        buildId: text('build_id')
+            .notNull()
+            .references(() => builds.id, { onDelete: 'cascade' }),
+        /** The build's current design version when the file was attached. */
+        designVersion: integer('design_version').notNull(),
+        kind: buildAttachmentKindEnum('kind').notNull(),
+        filename: text('filename').notNull(),
+        contentType: text('content_type').notNull(),
+        sizeBytes: integer('size_bytes').notNull(),
+        sha256: text('sha256'),
+        storageKey: text('storage_key').notNull(),
+        /** Part created by "Use as a part" (DXF attachments). */
+        partId: text('part_id').references(() => parts.id),
+        /** Owner once R2 accounts exist; null for guests. */
+        createdByUserId: text('created_by_user_id'),
+        /** sha256 of the guest device cookie, when present. */
+        deviceHash: text('device_hash'),
+        createdAt: createdAt(),
+        deletedAt: tstz('deleted_at'),
+    },
+    (t) => [
+        index('build_attachments_build_idx')
+            .on(t.buildId, t.createdAt)
+            .where(sql`${t.deletedAt} is null`),
+        check('build_attachments_size_ck', sql`${t.sizeBytes} > 0 and ${t.sizeBytes} <= 52428800`),
+    ],
+);
+
+// ---------------------------------------------------------------------------
+// R2 passport replacements (1000-3)
+// ---------------------------------------------------------------------------
+
+/**
+ * Traceability for "Order a replacement" on a Product Passport: each replacement quote points
+ * back at the passport it came from (`quotes` has no metadata column, so this side table holds
+ * it). The replacement part lives on its own build (a copy of the passport's verified file), so
+ * the original build's private state is never reachable from a public passport.
+ */
+export const passportReplacements = pgTable(
+    'passport_replacements',
+    {
+        quoteId: text('quote_id')
+            .primaryKey()
+            .references(() => quotes.id),
+        replacementOfPassportId: text('replacement_of_passport_id')
+            .notNull()
+            .references(() => passports.id),
+        partId: text('part_id')
+            .notNull()
+            .references(() => parts.id),
+        buildId: text('build_id')
+            .notNull()
+            .references(() => builds.id),
+        /** The quote the passport was issued for (what was actually made). */
+        sourceQuoteId: text('source_quote_id').notNull(),
+        quantity: integer('quantity').notNull(),
+        deviceHash: text('device_hash'),
+        createdAt: createdAt(),
+    },
+    (t) => [index('passport_replacements_passport_idx').on(t.replacementOfPassportId, t.createdAt)],
+);
