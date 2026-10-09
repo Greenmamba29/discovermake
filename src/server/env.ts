@@ -124,6 +124,20 @@ const EnvSchema = z.object({
     PROMISE_CREDIT_CAP_CENTS: optionalString,
     /** Mouser Search API key (catalog distributor provider). Unset = the distributor provider is disabled and never called. */
     MOUSER_API_KEY: optionalString,
+    // ---- R3 Prime experience (docs/architecture/r3-prime-experience.md) ----
+    /** Prime prices in cents (owner input). */
+    PRIME_MONTHLY_PRICE_CENTS: z.coerce.number().int().positive().default(999),
+    PRIME_ANNUAL_PRICE_CENTS: z.coerce.number().int().positive().default(9900),
+    PRIME_TRIAL_DAYS: z.coerce.number().int().min(1).max(30).default(7),
+    /** Free standard shipping for members when the order (or cart) subtotal reaches this. */
+    PRIME_FREE_SHIPPING_THRESHOLD_CENTS: z.coerce.number().int().nonnegative().default(7500),
+    /** Pooled material pricing: % off MATERIAL line items for members (never below cost). */
+    PRIME_MATERIAL_DISCOUNT_PCT: z.coerce.number().min(0).max(50).default(10),
+    /** Stripe Billing recurring Price ids for the two plans (subscription mode Checkout). */
+    STRIPE_PRIME_MONTHLY_PRICE_ID: optionalString,
+    STRIPE_PRIME_ANNUAL_PRICE_ID: optionalString,
+    /** MapLibre style URL for order tracking; unset = offline SVG map (no network). */
+    NEXT_PUBLIC_MAP_STYLE_URL: optionalString,
 });
 
 export type Env = z.infer<typeof EnvSchema>;

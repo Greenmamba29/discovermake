@@ -295,6 +295,29 @@ export const EVENT_PAYLOADS = {
     }),
     /** CAD generated from the confirmed readings (family + spec from the Reconstruct planner). */
     'reconstruct.cad_generated': z.object({ buildId: id, version: z.number().int().positive(), family: z.string(), printed: z.boolean(), quoteId: id.nullable() }),
+    // ---- R3: Prime experience (docs/architecture/r3-prime-experience.md) ----
+    'membership.trial_started': z.object({ membershipId: id, userId: id, plan: z.enum(['monthly', 'annual']), trialEndsAt: IsoDateTime }),
+    'membership.status_changed': z.object({
+        membershipId: id,
+        userId: id,
+        from: z.enum(['incomplete', 'trialing', 'active', 'past_due', 'canceled']).nullable(),
+        to: z.enum(['incomplete', 'trialing', 'active', 'past_due', 'canceled']),
+        providerEventId: z.string().nullable(),
+    }),
+    'membership.cancel_scheduled': z.object({ membershipId: id, userId: id, effectiveAt: IsoDateTime.nullable() }),
+    'membership.resumed': z.object({ membershipId: id, userId: id }),
+    'membership.trial_reminder_sent': z.object({ membershipId: id, userId: id, trialEndsAt: IsoDateTime }),
+    /** One payment for several orders (build cart) or one B2B invoice. */
+    'cart.checked_out': z.object({ checkoutId: id, orderIds: z.array(id).min(1), totalCents: cents, currency: z.string(), mode: z.enum(['card', 'invoice']) }),
+    'rating.submitted': z.object({ ratingId: id, orderId: id, shopId: id.nullable(), stars: z.number().int().min(1).max(5), hasPhoto: z.boolean() }),
+    'rating.moderated': z.object({ ratingId: id, orderId: id, shopId: id.nullable(), status: z.enum(['approved', 'rejected']) }),
+    'order.message_posted': z.object({ orderId: id, messageId: id, authorKind: z.enum(['buyer', 'shop', 'ops', 'system']), quickReply: z.string().nullable(), hasAttachment: z.boolean() }),
+    /** Buyer asked to hold production; ops must acknowledge (a job is never stopped silently). */
+    'hold.requested': z.object({ holdId: id, orderId: id, messageId: id.nullable() }),
+    'hold.resolved': z.object({ holdId: id, orderId: id, status: z.enum(['acknowledged', 'declined']), note: z.string().nullable() }),
+    'invoice.created': z.object({ invoiceId: id, checkoutId: id, orderIds: z.array(id), amountCents: cents, netDays: z.number().int().positive(), dueDate: z.string() }),
+    'invoice.paid': z.object({ invoiceId: id, checkoutId: id, amountCents: cents, method: z.enum(['provider', 'manual_wire']), reference: z.string().nullable() }),
+    'invoice.overdue': z.object({ invoiceId: id, checkoutId: id, amountCents: cents, dueDate: z.string() }),
 } as const;
 
 export type EventType = keyof typeof EVENT_PAYLOADS;

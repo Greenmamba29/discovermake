@@ -35,7 +35,7 @@ export {
  * creates the order (PENDING_PAYMENT, HMAC'd access token) + a provider payment
  * session, and emits `order.created` in the same transaction.
  */
-export { createCheckout, priceQuoteForCheckout, guestBuyerActor, type CheckoutPricing } from './checkout';
+export { createCheckout, priceQuoteForCheckout, priceOrderForCheckout, guestBuyerActor, type CheckoutPricing, type CheckoutContext } from './checkout';
 
 /**
  * handlePaymentSucceeded: idempotent payment confirmation. Verifies amount/currency equal the order

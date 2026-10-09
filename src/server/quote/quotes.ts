@@ -18,7 +18,7 @@ import { buildDfmResult, dfmThresholds, fitsWithin, processFitPenalties, runMate
 import { computeLeadTime } from './leadtime';
 import { analyzePartImpl, buyerActor, setBuildStatus } from './parts';
 import { PRICING_VERSION, priceQuote, PricingError, QUOTE_LADDER_QUANTITIES, type PriceResult, type PricingInput, type PricingService } from './pricing';
-import { shippingOptions } from './shipping';
+import { quoteShippingOptions } from '../shipping/live-rates';
 
 /** Quotes are binding for 14 days. */
 export const QUOTE_VALIDITY_DAYS = 14;
@@ -289,14 +289,18 @@ export async function createQuoteImpl(input: CreateQuoteRequest, now: Date = new
         savingsPct: unitAtOne > 0 ? Math.max(0, Math.min(100, Math.round(((unitAtOne - p.unitPriceCents) / unitAtOne) * 100))) : 0,
     }));
 
-    const shipping = shippingOptions({
-        shipDate: chosen.shipDate,
-        unitMassG: chosen.price.unitMassG,
-        quantity: config.quantity,
-        bboxWidthMm: features.bboxWidthMm,
-        bboxHeightMm: features.bboxHeightMm,
-        thicknessMm: thickness.thicknessMm,
-    });
+    // R3: live EasyPost rates when configured (15 min cache), else the versioned rate table.
+    const shipping = await quoteShippingOptions(
+        {
+            shipDate: chosen.shipDate,
+            unitMassG: chosen.price.unitMassG,
+            quantity: config.quantity,
+            bboxWidthMm: features.bboxWidthMm,
+            bboxHeightMm: features.bboxHeightMm,
+            thicknessMm: thickness.thicknessMm,
+        },
+        { fromZip: chosen.shop.address?.postalCode },
+    );
 
     const summary = {
         materialName: material.name,
