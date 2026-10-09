@@ -72,6 +72,15 @@ describe('buyer supplier-route tracker', () => {
         const inProd = buildSupplierSteps({ leg: { ...base, status: 'IN_PRODUCTION_AT_SUPPLIER', productionStartedAt: t('2026-10-02T10:00:00Z') }, order: { status: 'ACCEPTED', shippedAt: null, deliveredAt: null }, origin: 'Vietnam', partnerCity: 'Philadelphia' });
         expect(inProd.map((s) => s.state)).toEqual(['done', 'done', 'current', 'upcoming', 'upcoming', 'upcoming']);
         expect(inProd[0].sentence).toBe('Purchase order placed with a verified partner in Vietnam');
+        expect(inProd[2].sentence).toBe('Being made in Vietnam');
+        const inbound = buildSupplierSteps({
+            leg: { ...base, status: 'SHIPPED_INBOUND', productionStartedAt: t('2026-10-02T10:00:00Z'), shippedInboundAt: t('2026-10-10T10:00:00Z') },
+            order: { status: 'ACCEPTED', shippedAt: null, deliveredAt: null },
+            origin: 'Vietnam',
+            partnerCity: 'Philadelphia',
+        });
+        expect(inbound.map((s) => s.state)).toEqual(['done', 'done', 'done', 'current', 'upcoming', 'upcoming']);
+        expect(inbound[3].sentence).toBe('On its way to our partner in Philadelphia');
         const received = buildSupplierSteps({
             leg: { ...base, status: 'RECEIVED_AT_PARTNER', productionStartedAt: t('2026-10-02T10:00:00Z'), shippedInboundAt: t('2026-10-10T10:00:00Z'), receivedAt: t('2026-10-20T10:00:00Z') },
             order: { status: 'IN_PRODUCTION', shippedAt: null, deliveredAt: null },

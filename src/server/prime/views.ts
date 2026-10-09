@@ -44,13 +44,14 @@ export function buildSupplierSteps(input: {
         SHIPPED_TO_YOU: 'Shipped to you',
         DELIVERED: 'Delivered',
     };
+    // The current step is the next thing to happen; its sentence says what is going on now.
     const current: Record<StepKey, string> = {
         PO_PLACED: legSentence(null, { origin, partnerCity, directShip: direct }),
-        IN_PRODUCTION_AT_SUPPLIER: `Being made in ${origin}`,
-        SHIPPED_INBOUND: direct ? `On its way to you from ${origin}` : `On its way to ${where}`,
-        RECEIVED_AT_PARTNER: `Received by ${where} · inspecting`,
+        IN_PRODUCTION_AT_SUPPLIER: `Purchase order placed · production starts soon in ${origin}`,
+        SHIPPED_INBOUND: `Being made in ${origin}`,
+        RECEIVED_AT_PARTNER: reached.RECEIVED_AT_PARTNER ? `Received by ${where} · inspecting` : `On its way to ${where}`,
         SHIPPED_TO_YOU: 'Passed inspection · ready to ship to you',
-        DELIVERED: 'Out for delivery',
+        DELIVERED: direct ? `On its way to you from ${origin}` : 'On its way to you',
     };
     const upcoming: Record<StepKey, string> = {
         PO_PLACED: 'Purchase order',
