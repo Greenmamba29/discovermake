@@ -68,13 +68,14 @@ describe('account sessions', () => {
         expect(await resolveSession(s.secret)).toBeNull();
     });
 
-    it('GET /api/me works signed out (sets dm_device) and signed in; signout revokes and clears the cookie', async () => {
+    it('GET /api/me works signed out (never mints dm_device) and signed in; signout revokes and clears the cookie', async () => {
         const anon = await getMe(req('GET', '/api/me', null), { params: Promise.resolve({}) });
         expect(anon.status).toBe(200);
         const anonBody = MeResponse.parse(await anon.json());
         expect(anonBody.viewer).toBeNull();
         expect(anonBody.providers).toEqual(['email', 'passkey']);
-        expect(setCookieValue(anon, 'dm_device')).toMatch(/^[A-Za-z0-9_-]{32}$/);
+        // Read-only: the proxy mints the device on page loads, so parallel API calls never race.
+        expect(setCookieValue(anon, 'dm_device')).toBeFalsy();
 
         const p = await signedInUser();
         const me = MeResponse.parse(await (await getMe(req('GET', '/api/me', p), { params: Promise.resolve({}) })).json());
