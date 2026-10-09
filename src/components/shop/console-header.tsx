@@ -2,7 +2,7 @@
 
 import { useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { LogOut } from 'lucide-react';
 import { LogoMark } from '@/components/site/logo';
@@ -13,6 +13,9 @@ export function ConsoleHeader() {
     const { data } = useShopSession();
     const qc = useQueryClient();
     const router = useRouter();
+    const pathname = usePathname() ?? '';
+    const jobsActive = pathname.startsWith('/shop/jobs');
+    const stockActive = pathname.startsWith('/shop/stock');
     const [busy, setBusy] = useState(false);
     return (
         <header className="sticky top-0 z-40 border-b border-graphite-700 bg-graphite-950/95 backdrop-blur">
@@ -28,10 +31,20 @@ export function ConsoleHeader() {
                 {data && (
                     <div className="flex items-center gap-2">
                         <nav aria-label="Shop Console" className="flex items-center gap-1">
-                            <Link href="/shop/jobs" className="inline-flex h-9 items-center rounded-lg px-2 text-sm font-medium text-fg-muted hover:bg-graphite-800 hover:text-fg">
+                            <Link
+                                href="/shop/jobs"
+                                aria-current={jobsActive ? 'page' : undefined}
+                                className="inline-flex h-9 items-center rounded-lg px-2 text-sm font-medium text-fg-muted hover:bg-graphite-800 hover:text-fg aria-[current=page]:bg-graphite-800 aria-[current=page]:text-fg"
+                                data-testid="shop-nav-jobs"
+                            >
                                 Jobs
                             </Link>
-                            <Link href="/shop/stock" className="inline-flex h-9 items-center rounded-lg px-2 text-sm font-medium text-fg-muted hover:bg-graphite-800 hover:text-fg" data-testid="shop-nav-stock">
+                            <Link
+                                href="/shop/stock"
+                                aria-current={stockActive ? 'page' : undefined}
+                                className="inline-flex h-9 items-center rounded-lg px-2 text-sm font-medium text-fg-muted hover:bg-graphite-800 hover:text-fg aria-[current=page]:bg-graphite-800 aria-[current=page]:text-fg"
+                                data-testid="shop-nav-stock"
+                            >
                                 Stock
                             </Link>
                         </nav>
