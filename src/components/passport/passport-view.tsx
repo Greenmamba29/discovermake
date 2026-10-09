@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { BadgeCheck, CheckCircle2, Factory, ShieldAlert, ShieldCheck, XCircle } from 'lucide-react';
@@ -252,6 +253,16 @@ export function PassportView({ passportId }: { passportId: string }) {
                             passportId={p.id}
                             summary={`Same file, ${s.material.name} ${s.material.thicknessLabel}${s.finish ? `, ${s.finish}` : ''}.`}
                         />
+                    )}
+                    {ok && (
+                        <Link
+                            href={`/reconstruct?passport=${encodeURIComponent(p.id)}`}
+                            className="block rounded-2xl bg-paper-raised p-5 text-sm ring-1 ring-paper-line hover:shadow-md"
+                            data-testid="passport-reconstruct"
+                        >
+                            <span className="font-semibold text-ink">Broken? Rebuild it from a photo</span>
+                            <span className="mt-1 block text-xs leading-relaxed text-ink-muted">Photograph the broken part, confirm its sizes with a caliper and get a binding price for a new one, linked to this passport.</span>
+                        </Link>
                     )}
                 </aside>
             </div>
