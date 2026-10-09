@@ -17,6 +17,9 @@ import { rememberOrder } from '@/lib/recent-orders';
 import { US_STATES } from '@/lib/us-states';
 import { cn } from '@/lib/utils';
 import { DevPaymentPanel } from './dev-payment-panel';
+import { primeApi } from '@/components/prime/api';
+import { AddressWarnings } from '@/components/prime/address-warnings';
+import { PrimeCheckoutCard } from '@/components/prime/prime-checkout-card';
 import { RouteCard } from './route-card';
 
 type FormState = {
@@ -127,8 +130,20 @@ function CheckoutBody({ quote, preview, cancelled }: { quote: QuoteView; preview
     const errorSummaryRef = useRef<HTMLDivElement>(null);
 
     const selected = quote.shippingOptions.find((o) => o.method === form.shippingMethod) ?? null;
-    const shippingCents = selected?.priceCents ?? 0;
-    const totalCents = quote.subtotalCents + shippingCents; // display only; the server prices from the quote snapshot
+    // R3: server preview with Prime benefits (display only; checkout re-prices from the snapshot).
+    const previewQuery = useQuery({
+        queryKey: ['checkout-preview', quote.id, form.shippingMethod],
+        queryFn: () => primeApi.checkoutPreview(quote.id, form.shippingMethod!),
+        enabled: Boolean(form.shippingMethod),
+        retry: false,
+    });
+    const serverPreview = previewQuery.data && previewQuery.data.totals ? previewQuery.data : null;
+    const shippingCents = serverPreview ? serverPreview.totals.shippingCents : (selected?.priceCents ?? 0);
+    const primeDiscountCents = serverPreview ? serverPreview.originalTotals.subtotalCents - serverPreview.totals.subtotalCents : 0;
+    const totalCents = serverPreview ? serverPreview.totals.totalCents : quote.subtotalCents + shippingCents; // display only; the server prices from the quote snapshot
+    const [payBy, setPayBy] = useState<'card' | 'invoice'>('card');
+    const [netDays, setNetDays] = useState<15 | 30>(30);
+    const freight = /^freight/i.test(quote.shippingOptions.find((o) => o.method === 'STANDARD')?.label ?? '');
     const supplier = quote.routeKind === 'supplier' ? (quote.supplierRoute ?? null) : null;
     const depositCents = supplier ? Math.min(totalCents, Math.ceil(totalCents * supplier.depositPct)) : totalCents;
 
@@ -157,8 +172,18 @@ function CheckoutBody({ quote, preview, cancelled }: { quote: QuoteView; preview
             requestAnimationFrame(() => errorSummaryRef.current?.focus());
             return;
         }
+        if (payBy === 'invoice' && !supplier && !form.company.trim()) {
+            setServerError('Pay by invoice is for business buyers: enter your company name.');
+            return;
+        }
         setSubmitting(true);
         try {
+            if (payBy === 'invoice' && !supplier) {
+                const inv = await primeApi.invoiceCheckout({ ...parsed.data, shippingAddress: { ...parsed.data.shippingAddress, company: form.company.trim() }, netDays });
+                for (const o of inv.orders) rememberOrder({ orderId: o.orderId, orderNumber: o.orderNumber, url: o.orderUrl, createdAt: new Date().toISOString() });
+                window.location.assign(inv.confirmationUrl);
+                return;
+            }
             const res = await api.checkout(parsed.data);
             rememberOrder({ orderId: res.orderId, orderNumber: res.orderNumber, url: res.orderUrl, createdAt: new Date().toISOString() });
             if (res.payment.provider === 'stripe') {
@@ -266,6 +291,11 @@ function CheckoutBody({ quote, preview, cancelled }: { quote: QuoteView; preview
                                 )}
                             </Field>
                         </div>
+                        <AddressWarnings
+                            address={{ name: form.name, company: form.company || undefined, line1: form.line1, line2: form.line2 || undefined, city: form.city, region: form.region, postalCode: form.postalCode }}
+                            freight={freight}
+                            onUseSuggestion={(a) => setForm((f) => ({ ...f, line1: a.line1, line2: a.line2 ?? '', city: a.city, region: a.region, postalCode: a.postalCode }))}
+                        />
                     </fieldset>
 
                     <fieldset disabled={Boolean(order)}>
@@ -336,6 +366,45 @@ function CheckoutBody({ quote, preview, cancelled }: { quote: QuoteView; preview
                         </div>
                     </fieldset>
 
+                    {!supplier && (<fieldset disabled={Boolean(order)}>
+                        <legend className="font-display text-xl font-bold">Payment</legend>
+                        <div className="mt-3 grid gap-3 sm:grid-cols-2" role="radiogroup" aria-label="Payment method">
+                            {(
+                                [
+                                    ['card', 'Card, bank or wallet', 'Pay now with Stripe. Production starts once payment is confirmed.'],
+                                    ['invoice', 'Pay by invoice (ACH / wire)', 'For businesses: net 15 or 30 by bank transfer. Production starts when the invoice is paid.'],
+                                ] as const
+                            ).map(([key, label, hint]) => (
+                                <label
+                                    key={key}
+                                    className={cn(
+                                        'flex cursor-pointer flex-col rounded-xl p-3.5 ring-1 ring-inset focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-signal',
+                                        payBy === key ? 'bg-graphite-800 ring-signal' : 'ring-graphite-700 hover:bg-graphite-850',
+                                    )}
+                                    data-testid={`pay-by-${key}`}
+                                >
+                                    <input type="radio" name="payBy" value={key} checked={payBy === key} onChange={() => setPayBy(key)} className="sr-only" />
+                                    <span className="font-semibold text-fg">{label}</span>
+                                    <span className="mt-0.5 text-xs text-fg-subtle">{hint}</span>
+                                </label>
+                            ))}
+                        </div>
+                        {payBy === 'invoice' && (
+                            <div className="mt-3 flex flex-wrap items-center gap-3 text-sm">
+                                <span className="text-fg-muted">Terms</span>
+                                {([15, 30] as const).map((d) => (
+                                    <label key={d} className="inline-flex items-center gap-1.5">
+                                        <input type="radio" name="netDays" checked={netDays === d} onChange={() => setNetDays(d)} className="accent-[#5fe08a]" />
+                                        Net {d}
+                                    </label>
+                                ))}
+                                {!form.company.trim() && <span className="text-xs text-amber">Enter your company name above.</span>}
+                            </div>
+                        )}
+                    </fieldset>)}
+
+                    <PrimeCheckoutCard preview={serverPreview} currency={quote.currency} />
+
                     {serverError && (
                         <Notice tone="error" title="We could not place the order" testId="checkout-error">
                             <span id="checkout-server-error">{serverError}</span>
@@ -355,14 +424,27 @@ function CheckoutBody({ quote, preview, cancelled }: { quote: QuoteView; preview
                         <div className="sticky bottom-0 z-20 -mx-4 border-t border-graphite-700 bg-graphite-950/95 p-3 backdrop-blur sm:static sm:mx-0 sm:border-0 sm:bg-transparent sm:p-0">
                             <Button type="submit" size="lg" className="w-full" loading={submitting} data-testid="pay-cta">
                                 <Lock className="h-4 w-4" aria-hidden />
-                                {supplier ? `Pay ${money(depositCents, quote.currency)} deposit and place the order` : `Pay ${money(totalCents, quote.currency)} and start production`}
+                                {supplier
+                                    ? `Pay ${money(depositCents, quote.currency)} deposit and place the order`
+                                    : payBy === 'invoice'
+                                      ? `Place order · invoice ${money(totalCents, quote.currency)}`
+                                      : `Pay ${money(totalCents, quote.currency)} and start production`}
                             </Button>
                             <p className="mt-2 hidden text-center text-xs text-fg-subtle sm:block">The amount is set by the server from your binding quote and the shipping method you chose.</p>
                         </div>
                     )}
                 </form>
 
-                <OrderSummary quote={quote} preview={preview} shippingCents={selected ? shippingCents : null} shippingLabel={selected?.label ?? null} totalCents={totalCents} depositCents={supplier ? depositCents : null} arrival={selected ? arrivalText(quote, selected) : null} />
+                <OrderSummary
+                    quote={quote}
+                    preview={preview}
+                    shippingCents={selected ? shippingCents : null}
+                    shippingLabel={selected?.label ?? null}
+                    totalCents={totalCents}
+                    primeDiscountCents={primeDiscountCents}
+                    depositCents={supplier ? depositCents : null}
+                    arrival={selected ? arrivalText(quote, selected) : null}
+                />
             </div>
             <p className="sr-only" aria-live="polite">
                 {s.quantity} parts, {s.materialName}, total {money(totalCents, quote.currency)}
@@ -377,6 +459,7 @@ function OrderSummary({
     shippingCents,
     shippingLabel,
     totalCents,
+    primeDiscountCents = 0,
     depositCents,
     arrival,
 }: {
@@ -385,6 +468,7 @@ function OrderSummary({
     shippingCents: number | null;
     shippingLabel: string | null;
     totalCents: number;
+    primeDiscountCents?: number;
     /** Supplier route: what is charged today (the rest is due before shipping). */
     depositCents: number | null;
     arrival: string | null;
@@ -428,12 +512,21 @@ function OrderSummary({
                                 <dd className="font-mono tabular text-fg-subtle">{money(li.totalCents, quote.currency)}</dd>
                             </div>
                         ))}
+                    {primeDiscountCents > 0 && (
+                        <div className="flex items-center justify-between" data-testid="checkout-prime-discount">
+                            <dt className="flex items-center text-fg-muted">
+                                Prime material pricing
+                                <InfoTip label="Prime material pricing" text="Members get a share of our pooled material pricing on the material line, never below what the shop is paid." />
+                            </dt>
+                            <dd className="font-mono tabular text-signal">−{money(primeDiscountCents, quote.currency)}</dd>
+                        </div>
+                    )}
                     <div className="flex items-center justify-between">
                         <dt className="flex items-center text-fg-muted">
                             Shipping
                             <InfoTip label="shipping" text={shippingLabel ? `${shippingLabel}. Shipping prices are locked with your quote.` : 'Choose a shipping method. Prices are locked with your quote.'} />
                         </dt>
-                        <dd className="font-mono tabular">{shippingCents == null ? '—' : money(shippingCents, quote.currency)}</dd>
+                        <dd className="font-mono tabular" data-testid="checkout-shipping">{shippingCents == null ? '—' : shippingCents === 0 ? 'Free' : money(shippingCents, quote.currency)}</dd>
                     </div>
                     <div className="flex items-center justify-between">
                         <dt className="flex items-center text-fg-muted">

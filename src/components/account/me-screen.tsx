@@ -112,6 +112,7 @@ function SignedIn({ me }: { me: MeResponse }) {
                 <ul className="divide-y divide-graphite-700">
                     <Shortcut href="/builds" label="My builds" hint="Reorder, remix or repair" />
                     <Shortcut href="/orders" label="Track an order" hint="Open a private order link" />
+                    <Shortcut href="/me/membership" label="Prime membership" hint="Free shipping, priority slots, trial and renewal" />
                     {viewer.roles.includes('shop') && <Shortcut href="/shop" label="Shop Console" hint="Jobs and payouts" />}
                     {(viewer.roles.includes('ops') || viewer.roles.includes('admin')) && <Shortcut href="/admin" label="Ops board" hint="Orders, dispatch, sourcing" />}
                 </ul>

@@ -12,6 +12,7 @@ import { EmptyState, ErrorState, Notice } from '@/components/ui/state';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ApiClientError, api, errorMessage } from '@/lib/api';
 import { sourcingApi } from '@/components/sourcing/api';
+import { PrimeQueueLink } from '@/components/prime/admin-prime';
 import { dateTime, money } from '@/lib/format';
 import { cn } from '@/lib/utils';
 
@@ -126,6 +127,7 @@ function Board({ token, onSignOut }: { token: string; onSignOut: () => void }) {
                 </div>
                 <div className="flex flex-wrap gap-2">
                     <SourcingDeskLink token={token} />
+                    <PrimeQueueLink token={token} />
                     <ConfirmAction label="Expire stale offers" confirmLabel="Expire now" prompt="Expire offers past their deadline and re-dispatch?" variant="secondary" size="sm" onConfirm={expire} />
                     <Button variant="ghost" size="sm" onClick={() => list.refetch()} aria-label="Refresh">
                         <RefreshCw className={cn('h-4 w-4', list.isFetching && 'animate-spin')} aria-hidden />

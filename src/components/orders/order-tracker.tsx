@@ -11,6 +11,10 @@ import { FlatPattern } from '@/components/part/part-preview';
 import { ApiClientError, errorMessage } from '@/lib/api';
 import { dateTime, money, shortDate } from '@/lib/format';
 import { ShipmentCard } from './shipment-card';
+import { OrderChat } from '@/components/prime/order-chat';
+import { primeApi } from '@/components/prime/api';
+import { RatingCard } from '@/components/prime/rating-card';
+import { TrackingMap } from '@/components/prime/tracking-map';
 import { SupplierRouteTracker } from '@/components/prime/supplier-route-tracker';
 import { Timeline } from './timeline';
 import { TrackingStepper } from './tracking-stepper';
@@ -128,6 +132,9 @@ export function OrderTracker({ orderId, token }: { orderId: string; token: strin
                         </Link>
                     )}
 
+                    {(order.status === 'DELIVERED' || order.status === 'COMPLETE') && <RatingCard orderId={order.id} token={token} delivered />}
+
+                    {order.shipment && <TrackingMap orderId={order.id} token={token} shipped />}
                     {order.supplierRoute && <SupplierRouteTracker orderId={order.id} token={token} route={order.supplierRoute} currency={order.currency} />}
 
                     {order.shipment && <ShipmentCard shipment={order.shipment} />}
@@ -145,6 +152,18 @@ export function OrderTracker({ orderId, token }: { orderId: string; token: strin
                         </div>
                         <Timeline entries={order.timeline} />
                     </section>
+
+                    {order.status !== 'PENDING_PAYMENT' && order.status !== 'PAYMENT_FAILED' && order.status !== 'CANCELLED' && (
+                        <OrderChat
+                            title="Message your shop"
+                            adapter={{
+                                key: ['order-chat', order.id, token],
+                                load: () => primeApi.chat(order.id, token),
+                                post: (body) => primeApi.postChat(order.id, token, body),
+                                upload: (file) => primeApi.chatUpload(order.id, token, file),
+                            }}
+                        />
+                    )}
                 </div>
 
                 <div className="space-y-6">

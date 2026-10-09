@@ -20,6 +20,7 @@ import { money, plural } from '@/lib/format';
 import { cn } from '@/lib/utils';
 import { OptionGroup, OptionRow } from './option-group';
 import { PricePanel } from './price-panel';
+import { CompleteYourBuild } from '@/components/prime/complete-your-build';
 import { UnitsPrompt } from './units-prompt';
 
 type ServiceSel = { featureCount?: number; option?: { key: string; value: string } };
@@ -577,6 +578,8 @@ function Configurator({ part, catalog, fromQuoteId, onPartChange }: { part: Part
                             This configuration is outside what we can price instantly. Try a different thickness or material for an instant binding quote.
                         </Notice>
                     )}
+
+                    {exactQuote?.orderable && !quoting && <CompleteYourBuild quote={exactQuote} />}
 
                     {/* Sticky CTA: fixed bar on mobile, inline on desktop */}
                     <div className="fixed inset-x-0 bottom-0 z-30 border-t border-graphite-700 bg-graphite-950/95 p-3 backdrop-blur lg:static lg:border-0 lg:bg-transparent lg:p-0">
