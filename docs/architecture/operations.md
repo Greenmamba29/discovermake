@@ -50,3 +50,13 @@ Baseline (2026-10-09, local production build, 20 virtual users, single node, loc
 
 ## Security headers
 `next.config.js` sets CSP, HSTS, `nosniff`, `X-Frame-Options: DENY`, Referrer-Policy, Permissions-Policy (camera and microphone same-origin only, for capture and going live) and COOP on every route. `tests/ga/health-and-headers.test.ts` pins them.
+
+## Upload security
+- Every upload is scanned by ClamAV before anything parses it (`src/server/security/upload-scan.ts`, clamd INSTREAM over TCP). That covers DXF parts (direct upload and signed-URL uploads at analyze time) and workspace attachments (images, CAD, Reconstruct photos).
+- Production settings: run `clamd` (for example the `clamav/clamav` container) next to the app, then set `CLAMAV_HOST`, `CLAMAV_PORT` and `UPLOAD_SCAN_REQUIRED=true`.
+  - With those set, scanning **fails closed**: if clamd is unreachable, uploads answer 503.
+  - An infected file answers 422 and is deleted from storage.
+- Parsers stay defensive regardless:
+  - The DXF parser has hard work budgets (entity visits, INSERT depth and array size, cut-edge and spline caps).
+  - Uploads are size-capped and format-sniffed.
+  - Attachments are checked by magic bytes.
