@@ -20,7 +20,7 @@ export default defineConfig({
     },
     test: {
         include: ['tests/**/*.test.ts', 'tests/**/*.test.tsx', 'src/**/*.test.ts', 'src/**/*.test.tsx'],
-        exclude: ['tests/e2e/**', 'node_modules/**', '.next/**'],
+        exclude: ['tests/e2e/**', '**/node_modules/**', '.next/**', '.claude/**'],
         environment: 'node',
         setupFiles: ['tests/support/setup.ts'],
         testTimeout: 30_000,
