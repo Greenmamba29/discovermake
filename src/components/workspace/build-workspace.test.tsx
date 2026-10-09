@@ -83,7 +83,7 @@ describe('BuildWorkspace', () => {
         renderWorkspace();
         expect(await screen.findByRole('heading', { level: 1, name: 'Outdoor electronics enclosure' })).toBeTruthy();
         const navList = screen.getByRole('navigation', { name: 'Build sections' });
-        expect(within(navList).getAllByRole('button').map((b) => b.textContent)).toEqual(['Overview', 'Requirements', 'Questions', 'Materials', 'Parts', 'Graph', 'Versions']);
+        expect(within(navList).getAllByRole('button').map((b) => b.textContent)).toEqual(['Overview', 'Object', 'Requirements', 'Questions', 'Materials', 'Parts', 'Files', 'Ask Make AI', 'Graph', 'Versions']);
         expect(within(navList).getByRole('button', { name: 'Overview' }).getAttribute('aria-current')).toBe('page');
 
         const strip = screen.getByTestId('workspace-status-strip');

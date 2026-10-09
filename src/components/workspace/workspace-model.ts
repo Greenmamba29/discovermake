@@ -5,15 +5,18 @@
  */
 import type { BgEdge, BgNode, BuildGraphView, DesignVersionStatus } from '@/contracts';
 
-export const WORKSPACE_SECTIONS = ['overview', 'requirements', 'questions', 'materials', 'parts', 'graph', 'versions'] as const;
+export const WORKSPACE_SECTIONS = ['overview', 'object', 'requirements', 'questions', 'materials', 'parts', 'attachments', 'assistant', 'graph', 'versions'] as const;
 export type WorkspaceSection = (typeof WORKSPACE_SECTIONS)[number];
 
 export const SECTION_LABEL: Record<WorkspaceSection, string> = {
     overview: 'Overview',
+    object: 'Object',
     requirements: 'Requirements',
     questions: 'Questions',
     materials: 'Materials',
     parts: 'Parts',
+    attachments: 'Files',
+    assistant: 'Ask Make AI',
     graph: 'Graph',
     versions: 'Versions',
 };
@@ -21,9 +24,16 @@ export const SECTION_LABEL: Record<WorkspaceSection, string> = {
 const str = (v: unknown): string | null => (typeof v === 'string' && v.trim() ? v.trim() : null);
 const strings = (v: unknown): string[] => (Array.isArray(v) ? v.filter((x): x is string => typeof x === 'string' && x.trim() !== '') : []);
 
+export function isWorkspaceSection(v: unknown): v is WorkspaceSection {
+    return typeof v === 'string' && (WORKSPACE_SECTIONS as readonly string[]).includes(v);
+}
+
 export const nodesOf = (view: BuildGraphView, ...types: BgNode['type'][]) => view.nodes.filter((n) => types.includes(n.type));
 
-/** Sections backed by real nodes in this version. Overview, Graph and Versions always exist for a graph build. */
+/**
+ * Sections backed by real nodes in this version. Overview, Object (the 3D model, or an honest
+ * "generate CAD" state), Files, Ask Make AI, Graph and Versions always exist for a graph build.
+ */
 export function availableSections(view: BuildGraphView): WorkspaceSection[] {
     const has = (...types: BgNode['type'][]) => view.nodes.some((n) => types.includes(n.type));
     return WORKSPACE_SECTIONS.filter((s) => {

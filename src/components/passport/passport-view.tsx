@@ -8,6 +8,7 @@ import { dateTime, longDate } from '@/lib/format';
 import { MILESTONE_LABELS } from '@/lib/status';
 import type { MilestoneKind, PassportVerifyResponse } from '@/contracts';
 import { cn } from '@/lib/utils';
+import { ReplacementAction } from './replacement-action';
 
 function QrCode({ value }: { value: string }) {
     const [svg, setSvg] = useState<string | null>(null);
@@ -246,6 +247,12 @@ export function PassportView({ passportId }: { passportId: string }) {
                             Activated {dateTime(p.activatedAt)} · rules {s.rulesetVersion} · order {s.orderNumber}
                         </p>
                     </div>
+                    {ok && (
+                        <ReplacementAction
+                            passportId={p.id}
+                            summary={`Same file, ${s.material.name} ${s.material.thicknessLabel}${s.finish ? `, ${s.finish}` : ''}.`}
+                        />
+                    )}
                 </aside>
             </div>
         </div>

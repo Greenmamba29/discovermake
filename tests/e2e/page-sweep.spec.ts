@@ -16,6 +16,7 @@ import { expect, test, type Browser, type Page } from '@playwright/test';
 import postgres from 'postgres';
 import { randomUUID } from 'node:crypto';
 import { E2E_ADMIN_TOKEN, E2E_DATABASE_URL } from '../../playwright.config';
+import { createBuildWithCad } from './support/cad-build';
 import { adminLogin, fulfil, payOrder, quotePart, shopLogin } from './support/journeys';
 
 const OUT = path.join(process.cwd(), 'test-results', 'page-sweep');
@@ -34,6 +35,8 @@ type Urls = {
     jobUrl: string;
     workspaceUrl: string;
     sourcingJobUrl: string;
+    /** A workspace whose build has generated CAD (Object View, Files, Ask Make AI). */
+    cadWorkspaceUrl: string;
 };
 
 type Screen = {
@@ -226,6 +229,8 @@ const SCREENS: Screen[] = [
         pattern: async (page) => {
             await expect(page.getByTestId('passport-verified')).toBeVisible();
             await expect(page.locator('svg, img').first()).toBeVisible();
+            // Workflow 09 commercial hook: one-tap replacement part.
+            await expect(page.getByTestId('passport-order-replacement')).toBeVisible();
         },
     },
     {
@@ -237,6 +242,41 @@ const SCREENS: Screen[] = [
             await expect(page.getByTestId('workspace-status-strip')).toBeVisible();
             await expect(page.getByTestId('build-trust-badge')).toBeVisible();
             await expect(page.getByTestId('workspace-cad')).toBeVisible();
+        },
+    },
+    {
+        name: 'object-view',
+        mobbin: 'Microsoft Copilot · 3D object with a Recreate / Download panel',
+        url: (u) => `${u.cadWorkspaceUrl}?section=object`,
+        pattern: async (page) => {
+            // A 3D viewer (WebGL canvas, or the 2D fallback without WebGL) beside a properties panel.
+            await expect(page.getByTestId('object-viewport')).toBeVisible();
+            await expect(page.locator('[data-testid="object-viewport"] canvas').or(page.getByTestId('object-fallback')).first()).toBeVisible({ timeout: 20_000 });
+            await expect(page.getByTestId('object-properties')).toBeVisible();
+            await expect(page.getByTestId('object-dimensions')).toContainText('80.0 mm');
+            await expect(page.getByTestId('object-download-panel').getByRole('link')).toHaveCount(3);
+            await expect(page.getByTestId('object-ask-make-ai')).toBeVisible();
+            await expect(page.getByRole('group', { name: 'Units' })).toBeVisible();
+        },
+    },
+    {
+        name: 'workspace-files',
+        mobbin: 'Attachment tray: file tiles with thumbnails, type icons and progress',
+        url: (u) => `${u.cadWorkspaceUrl}?section=attachments`,
+        pattern: async (page) => {
+            await expect(page.getByTestId('attachment-tray')).toBeVisible();
+            await expect(page.getByTestId('attachment-add')).toBeVisible();
+            await expect(page.getByTestId('attachment-input')).toBeAttached();
+        },
+    },
+    {
+        name: 'workspace-ask-make-ai',
+        mobbin: 'LinkedIn · quick replies above the composer (Make AI panel, honest unavailable state without a key)',
+        url: (u) => `${u.cadWorkspaceUrl}?section=assistant`,
+        pattern: async (page) => {
+            await expect(page.getByTestId('workspace-assistant')).toBeVisible();
+            await expect(page.getByTestId('assistant-unavailable').or(page.getByTestId('assistant-form')).first()).toBeVisible();
+            await expect(page.getByTestId('assistant-manual')).toBeVisible();
         },
     },
     {
@@ -405,6 +445,7 @@ async function buildState(browser: Browser): Promise<Urls> {
         await sql.end();
     }
     const made = await (await request.post('/api/make-ai/builds', { data: { intentId } })).json();
+    const withCad = await createBuildWithCad(request);
     await context.close();
 
     const [orderPath, query] = orderUrl.split('?');
@@ -418,6 +459,7 @@ async function buildState(browser: Browser): Promise<Urls> {
         jobUrl,
         workspaceUrl: `/build/${made.buildId}/workspace`,
         sourcingJobUrl: `/admin/sourcing/jobs/${job.id}`,
+        cadWorkspaceUrl: withCad.workspaceUrl,
     };
 }
 

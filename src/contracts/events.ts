@@ -188,6 +188,21 @@ export const EVENT_PAYLOADS = {
     }),
     /** A guest build (this device's, or a legacy build behind a claimed order) now belongs to a user. */
     'build.claimed': z.object({ buildId: id, userId: id }),
+
+    // ---- R2 Stage 1: Build Workspace attachments + passport replacements ----
+    /** A reference image or CAD file was uploaded to a build and verified (size, magic bytes, sha256). */
+    'build.attachment_added': z.object({
+        buildId: id,
+        attachmentId: id,
+        designVersion: z.number().int().positive(),
+        kind: z.enum(['image', 'cad']),
+        contentType: z.string().max(100),
+        sizeBytes: z.number().int().positive(),
+        sha256: z.string().regex(/^[0-9a-f]{64}$/),
+    }),
+    'build.attachment_removed': z.object({ buildId: id, attachmentId: id }),
+    /** "Order a replacement" on a Product Passport created a fresh quote for the same part design. */
+    'passport.replacement_quoted': z.object({ passportId: id, quoteId: id, partId: id, buildId: id, quantity: z.number().int().positive() }),
 } as const;
 
 export type EventType = keyof typeof EVENT_PAYLOADS;

@@ -7,7 +7,7 @@
  * one picked in Versions / Graph) and writes through the graph routes: answers (new version),
  * approve, remix and clone. Every change comes back as a server-validated BuildGraphView.
  */
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Eye } from 'lucide-react';
 import type { BuildGraphView } from '@/contracts';
@@ -15,20 +15,23 @@ import { Button, ButtonLink } from '@/components/ui/button';
 import { PageSkeleton } from '@/components/ui/skeleton';
 import { ErrorState, Notice } from '@/components/ui/state';
 import { ApiClientError, errorMessage } from '@/lib/api';
+import { AssistantPanel } from './assistant-panel';
+import { AttachmentTray } from './attachment-tray';
 import { BuildShell } from './build-shell';
 import { ForkActions } from './fork-actions';
 import { GraphPanel } from './graph-panel';
 import { OverviewPanel } from './overview-panel';
+import { ObjectView } from './object-view/object-view';
 import { MaterialsPanel, PartsPanel, RequirementsPanel } from './panels';
 import { QuestionCards } from './question-cards';
 import { StatusStrip } from './status-strip';
 import { VersionsPanel } from './versions-panel';
 import { graphQueryKey, workspaceApi, type WorkspaceAnswer } from './workspace-api';
-import { answeredUnknowns, approvedVersion, availableSections, latestVersion, openUnknowns, type WorkspaceSection } from './workspace-model';
+import { answeredUnknowns, approvedVersion, availableSections, isWorkspaceSection, latestVersion, openUnknowns, type WorkspaceSection } from './workspace-model';
 
-export function BuildWorkspace({ buildId }: { buildId: string }) {
+export function BuildWorkspace({ buildId, initialSection }: { buildId: string; initialSection?: string | null }) {
     const qc = useQueryClient();
-    const [section, setSection] = useState<WorkspaceSection>('overview');
+    const [section, setSection] = useState<WorkspaceSection>(isWorkspaceSection(initialSection) ? initialSection : 'overview');
     const [viewing, setViewing] = useState<number | null>(null);
 
     const current = useQuery({ queryKey: graphQueryKey(buildId, null), queryFn: ({ signal }) => workspaceApi.graph(buildId, null, signal) });
@@ -53,6 +56,16 @@ export function BuildWorkspace({ buildId }: { buildId: string }) {
             setViewing(null);
         },
     });
+    /** A confirmed Make AI change or a manual requirement: a new current version. */
+    const onNewVersion = useCallback(
+        (view: BuildGraphView) => {
+            qc.setQueryData(graphQueryKey(buildId, null), view);
+            refresh(view);
+            setViewing(null);
+        },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [buildId, qc],
+    );
     const approve = useMutation({
         mutationFn: (version: number) => workspaceApi.approve(buildId, version),
         onSuccess: (view) => refresh(view),
@@ -86,7 +99,16 @@ export function BuildWorkspace({ buildId }: { buildId: string }) {
     const isCurrent = view.version.version === latestVersion(base);
     const sections = availableSections(view);
     const active = sections.includes(section) ? section : 'overview';
-    const go = (s: WorkspaceSection) => setSection(s);
+    const go = (s: WorkspaceSection) => {
+        setSection(s);
+        // Keep the section in the URL (shareable, survives reload) without a Next navigation.
+        if (typeof window !== 'undefined') {
+            const url = new URL(window.location.href);
+            if (s === 'overview') url.searchParams.delete('section');
+            else url.searchParams.set('section', s);
+            window.history.replaceState(window.history.state, '', url);
+        }
+    };
 
     const banner = wantsOlder ? (
         older.isError ? (
@@ -120,6 +142,7 @@ export function BuildWorkspace({ buildId }: { buildId: string }) {
             banner={banner}
         >
             {active === 'overview' && <OverviewPanel view={view} onGo={go} isCurrent={isCurrent} />}
+            {active === 'object' && <ObjectView view={view} onGo={go} />}
             {active === 'requirements' && <RequirementsPanel view={view} />}
             {active === 'questions' && (
                 <QuestionCards
@@ -133,6 +156,8 @@ export function BuildWorkspace({ buildId }: { buildId: string }) {
             )}
             {active === 'materials' && <MaterialsPanel view={view} />}
             {active === 'parts' && <PartsPanel view={view} />}
+            {active === 'attachments' && <AttachmentTray buildId={buildId} />}
+            {active === 'assistant' && <AssistantPanel view={base} isCurrent={isCurrent} onChanged={onNewVersion} />}
             {active === 'graph' && <GraphPanel view={view} />}
             {active === 'versions' && (
                 <VersionsPanel
