@@ -1,10 +1,8 @@
-import { Boxes, Compass, Hammer, Truck, UserRound, type LucideIcon } from 'lucide-react';
+import { Boxes, Compass, Hammer, Radio, Truck, UserRound, type LucideIcon } from 'lucide-react';
 
 /**
  * App navigation (workflow 10 · Information architecture).
- * Mobile bottom nav: Discover · Make · (Live) · Builds · Me. Live ships in Stage 3:
- * add its entry between Make and Builds, e.g.
- *   { key: 'live', href: '/live', label: 'Live', icon: Radio, match: ['/live'] },
+ * Mobile bottom nav: Discover · Make · Live · Builds · Me.
  */
 export type NavItem = {
     key: string;
@@ -19,6 +17,7 @@ export const BOTTOM_NAV: readonly NavItem[] = [
     { key: 'discover', href: '/discover', label: 'Discover', icon: Compass, match: ['/discover'] },
     // Home is the "What do you want to make?" intake, so Make is current there too.
     { key: 'make', href: '/make', label: 'Make', icon: Hammer, match: ['/', '/make', '/build'] },
+    { key: 'live', href: '/live', label: 'Live', icon: Radio, match: ['/live', '/studio'] },
     { key: 'builds', href: '/builds', label: 'Builds', icon: Boxes, match: ['/builds', '/orders'] },
     { key: 'me', href: '/me', label: 'Me', icon: UserRound, match: ['/me', '/signin'] },
 ];
@@ -27,6 +26,7 @@ export const BOTTOM_NAV: readonly NavItem[] = [
 export const TOP_NAV: readonly NavItem[] = [
     { key: 'discover', href: '/discover', label: 'Discover', icon: Compass, match: ['/discover'] },
     { key: 'make', href: '/make', label: 'Make', icon: Hammer, match: ['/make', '/build', '/parts'] },
+    { key: 'live', href: '/live', label: 'Live', icon: Radio, match: ['/live', '/studio'] },
     { key: 'builds', href: '/builds', label: 'My Builds', icon: Boxes, match: ['/builds'] },
     { key: 'track', href: '/orders', label: 'Track order', icon: Truck, match: ['/orders'] },
 ];
@@ -51,6 +51,10 @@ export function activeKey(items: readonly NavItem[], pathname: string): string |
     return items.find((i) => isActive(i, pathname))?.key ?? null;
 }
 
+/** The full-screen live viewer (`/live/<showId>`) owns the bottom edge: chat composer and slot CTA. */
+const LIVE_VIEWER = /^\/live\/[^/]+\/?$/;
+
 export function bottomNavVisible(pathname: string): boolean {
+    if (LIVE_VIEWER.test(pathname)) return false;
     return !BOTTOM_NAV_HIDDEN.some((p) => under(pathname, p));
 }

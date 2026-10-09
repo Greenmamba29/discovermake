@@ -16,6 +16,7 @@ import { and, eq, sql } from 'drizzle-orm';
 import type { Address } from '../../contracts/common';
 import { generateToken, sha256Hex } from '../auth/tokens';
 import { getDb, type Db } from './index';
+import { seedLiveDemo } from './seed-live';
 import {
     dfmRulesets,
     materials,
@@ -479,6 +480,8 @@ export type SeedOptions = {
      * POST /api/admin/shops.
      */
     catalogOnly?: boolean;
+    /** R4: also seed the Live demo factory channel with one ENDED replay (src/server/db/seed-live.ts). Default false. */
+    liveDemo?: boolean;
 };
 
 export type SeedResult = {
@@ -498,7 +501,7 @@ const excluded = (cols: string[]) => Object.fromEntries(cols.map((c) => [c, sql.
 export async function seed(db: Db = getDb(), opts: SeedOptions = {}): Promise<SeedResult> {
     const log = (msg: string) => opts.log && console.log(`[db:seed] ${msg}`);
 
-    return db.transaction(async (tx) => {
+    const result = await db.transaction(async (tx) => {
         // Processes
         const processRows = [
             { id: PROCESS_IDS.fiber, slug: 'fiber-laser', name: 'Fiber laser cutting', kind: 'FIBER_LASER' as const, description: 'Metal sheet cutting, 4 kW fiber source, N2/O2 assist.' },
@@ -732,4 +735,9 @@ export async function seed(db: Db = getDb(), opts: SeedOptions = {}): Promise<Se
             shopToken,
         };
     });
+    if (opts.liveDemo && result.shopId) {
+        const demo = await seedLiveDemo(db, { shopId: result.shopId });
+        log(demo ? `Live demo replay ${demo.showId} on channel @philly_precision` : 'Live demo skipped');
+    }
+    return result;
 }

@@ -132,6 +132,10 @@ export function timelineLabel(row: Pick<EventRow, 'eventType' | 'payload'>, shop
             return 'Payment received';
         case 'payment.failed':
             return p.reason ? `Payment failed · ${String(p.reason)}` : 'Payment failed';
+        case 'payment.authorized':
+            return 'Payment authorized · charged only when the drop reaches its goal';
+        case 'payment.authorization_released':
+            return 'Payment hold released · nothing was charged';
         case 'production.authorized':
             return 'Production authorized';
         case 'job.offered':

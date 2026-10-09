@@ -92,6 +92,12 @@ const EnvSchema = z.object({
 
     /** Rate-limit store: "postgres" (shared table, default in production) or "memory" (per instance, default elsewhere). */
     RATE_LIMIT_STORE: optionalString.pipe(z.enum(['postgres', 'memory']).optional()),
+    /** R4 Live: HMAC key for server-signed Live Build Protocol events. Required in production. */
+    LIVE_EVENT_SIGNING_SECRET: optionalString,
+    /** R4 Live: LiveKit server URL (wss://<project>.livekit.cloud). All three LIVEKIT_* must be set to use LiveKit rooms. */
+    LIVEKIT_URL: optionalString,
+    LIVEKIT_API_KEY: optionalString,
+    LIVEKIT_API_SECRET: optionalString,
 });
 
 export type Env = z.infer<typeof EnvSchema>;
@@ -127,7 +133,7 @@ export function assertNotProduction(feature: string): void {
  * production a clearly-labelled dev fallback is returned so local dev works
  * without ceremony.
  */
-export function requireSecret(name: 'ORDER_LINK_SECRET' | 'PASSPORT_SIGNING_SECRET' | 'JOB_PACKET_SIGNING_SECRET' | 'STORAGE_SIGNING_SECRET' | 'AUTH_SECRET'): string {
+export function requireSecret(name: 'ORDER_LINK_SECRET' | 'PASSPORT_SIGNING_SECRET' | 'JOB_PACKET_SIGNING_SECRET' | 'STORAGE_SIGNING_SECRET' | 'AUTH_SECRET' | 'LIVE_EVENT_SIGNING_SECRET'): string {
     const value = env()[name];
     if (value) return value;
     if (isProduction()) throw new Error(`Missing required secret ${name}`);

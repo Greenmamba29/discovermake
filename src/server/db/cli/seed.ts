@@ -13,7 +13,7 @@ import { seed } from '../seed';
 const args = new Set(process.argv.slice(2));
 const catalogOnly = args.has('--catalog-only') || (process.env.NODE_ENV === 'production' && !args.has('--with-dev-shop'));
 
-seed(getDb(), { log: true, catalogOnly })
+seed(getDb(), { log: true, catalogOnly, liveDemo: !catalogOnly && process.env.NODE_ENV !== 'production' })
     .then(async (r) => {
         if (!r.shopId) {
             console.log(`[db:seed] catalog seeded (DFM ruleset ${r.rulesetVersion}); no dev shop. Onboard real shops with POST /api/admin/shops.`);

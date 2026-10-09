@@ -20,12 +20,12 @@ function renderAt(pathname: string) {
 }
 
 describe('BottomNav', () => {
-    it('renders the four tabs in order with 44px+ targets', () => {
+    it('renders the five tabs in order with 44px+ targets', () => {
         renderAt('/discover');
         const bar = screen.getByRole('navigation', { name: 'Primary' });
         const links = within(bar).getAllByRole('link');
-        expect(links.map((l) => l.textContent)).toEqual(['Discover', 'Make', 'Builds', 'Me']);
-        expect(links.map((l) => l.getAttribute('href'))).toEqual(['/discover', '/make', '/builds', '/me']);
+        expect(links.map((l) => l.textContent)).toEqual(['Discover', 'Make', 'Live', 'Builds', 'Me']);
+        expect(links.map((l) => l.getAttribute('href'))).toEqual(['/discover', '/make', '/live', '/builds', '/me']);
         for (const l of links) expect(l.className).toContain('min-h-[44px]');
         expect(bar.className).toContain('md:hidden');
         expect(bar.className).toContain('safe-area-inset-bottom');
@@ -66,7 +66,7 @@ describe('BottomNav', () => {
 
 describe('nav items', () => {
     it('adding Live is one entry: tab count follows the array', () => {
-        expect(BOTTOM_NAV).toHaveLength(4);
+        expect(BOTTOM_NAV).toHaveLength(5);
         expect(new Set(BOTTOM_NAV.map((i) => i.key)).size).toBe(BOTTOM_NAV.length);
     });
 
@@ -80,5 +80,9 @@ describe('nav items', () => {
     it('prefix matching does not leak across siblings', () => {
         expect(bottomNavVisible('/partsx')).toBe(true);
         expect(activeKey(BOTTOM_NAV, '/makers')).toBeNull();
+        expect(activeKey(BOTTOM_NAV, '/live')).toBe('live');
+        expect(activeKey(BOTTOM_NAV, '/studio/shows/shw_x')).toBe('live');
+        expect(bottomNavVisible('/live')).toBe(true);
+        expect(bottomNavVisible('/live/shw_abc')).toBe(false);
     });
 });

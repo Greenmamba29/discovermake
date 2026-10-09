@@ -105,7 +105,11 @@ export const PAYMENT_PROVIDERS = ['stripe', 'dev'] as const;
 export const PaymentProviderName = z.enum(PAYMENT_PROVIDERS);
 export type PaymentProviderName = z.infer<typeof PaymentProviderName>;
 
-export const PAYMENT_STATUSES = ['PENDING', 'SUCCEEDED', 'FAILED', 'REFUNDED', 'CANCELLED'] as const;
+/**
+ * AUTHORIZED (R4 Build Slots): funds held at the provider (Stripe PaymentIntent with
+ * `capture_method: manual`), not captured yet. Captured -> SUCCEEDED; released -> CANCELLED.
+ */
+export const PAYMENT_STATUSES = ['PENDING', 'SUCCEEDED', 'FAILED', 'REFUNDED', 'CANCELLED', 'AUTHORIZED'] as const;
 export const PaymentStatus = z.enum(PAYMENT_STATUSES);
 export type PaymentStatus = z.infer<typeof PaymentStatus>;
 
