@@ -386,6 +386,22 @@ export const SERVICE_SEEDS: ServiceSeed[] = [
         leadTimeDaysAdded: 0,
         sortOrder: 50,
     },
+    {
+        // R3 "Complete your build" upsell: loose fasteners matched to the part's holes (featureCount = holes).
+        id: 'svc_hardware_kit',
+        slug: 'hardware-kit',
+        name: 'Hardware kit',
+        kind: 'SECONDARY_OP',
+        pricingUnit: 'PER_FEATURE',
+        description: 'Stainless screws, nuts and washers matched to your clearance holes, one set per hole, bagged with your parts.',
+        unitPriceCents: 45,
+        requiresFeatureCount: true,
+        compatibleCategories: ['METAL', 'PLASTIC', 'WOOD'],
+        compatibleMaterialSlugs: [],
+        options: { sizes: ['M3', 'M4', 'M5', 'M6', 'M8', 'M10'] },
+        leadTimeDaysAdded: 0,
+        sortOrder: 60,
+    },
     ...(
         [
             ['svc_powder_black_matte', 'powder-coat-matte-black', 'Powder coat · matte black', 'Matte black (RAL 9005)', '#151515'],

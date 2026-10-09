@@ -2113,3 +2113,280 @@ export const shopStock = pgTable(
     },
     (t) => [uniqueIndex('shop_stock_shop_sku_uq').on(t.shopId, t.sku), index('shop_stock_thickness_idx').on(t.thicknessOptionId), check('shop_stock_quantity_ck', sql`${t.quantity} >= 0`)],
 );
+
+// ---------------------------------------------------------------------------
+// R3 Prime experience (docs/architecture/r3-prime-experience.md)
+// Membership, build cart + upsells, cart payment groups, B2B invoices, order chat,
+// hold requests, ratings + UGC. User references are plain text ids (no FK to users).
+// Statuses are text with CHECK constraints (values in src/contracts/prime.ts).
+// ---------------------------------------------------------------------------
+
+/** One Prime membership per user (Stripe Billing subscription or the dev double). */
+export const memberships = pgTable(
+    'memberships',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('membership')),
+        userId: text('user_id').notNull(),
+        email: text('email').notNull(),
+        plan: text('plan').$type<'monthly' | 'annual'>().notNull(),
+        status: text('status').$type<'incomplete' | 'trialing' | 'active' | 'past_due' | 'canceled'>().notNull().default('incomplete'),
+        provider: paymentProviderEnum('provider').notNull(),
+        providerCustomerId: text('provider_customer_id'),
+        providerSubscriptionId: text('provider_subscription_id'),
+        /** Set once the first trial starts: a user never gets a second trial. */
+        trialUsed: boolean('trial_used').notNull().default(false),
+        trialStartedAt: tstz('trial_started_at'),
+        trialEndsAt: tstz('trial_ends_at'),
+        currentPeriodEnd: tstz('current_period_end'),
+        cancelAtPeriodEnd: boolean('cancel_at_period_end').notNull().default(false),
+        canceledAt: tstz('canceled_at'),
+        trialReminderSentAt: tstz('trial_reminder_sent_at'),
+        /** Provider event time of the last applied lifecycle event (out-of-order events are ignored). */
+        lastEventAt: tstz('last_event_at'),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [
+        uniqueIndex('memberships_user_uq').on(t.userId),
+        uniqueIndex('memberships_provider_sub_uq').on(t.provider, t.providerSubscriptionId),
+        index('memberships_trial_end_idx').on(t.status, t.trialEndsAt),
+        check('memberships_status_ck', sql`${t.status} in ('incomplete','trialing','active','past_due','canceled')`),
+        check('memberships_plan_ck', sql`${t.plan} in ('monthly','annual')`),
+    ],
+);
+
+/** Append-only membership lifecycle audit (one row per applied transition). */
+export const membershipEvents = pgTable(
+    'membership_events',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('membershipEvent')),
+        membershipId: text('membership_id')
+            .notNull()
+            .references(() => memberships.id, { onDelete: 'cascade' }),
+        kind: text('kind').notNull(),
+        fromStatus: text('from_status'),
+        toStatus: text('to_status').notNull(),
+        providerEventId: text('provider_event_id'),
+        createdAt: createdAt(),
+    },
+    (t) => [index('membership_events_membership_idx').on(t.membershipId, t.createdAt)],
+);
+
+/** Membership benefits applied to an order at checkout (Shop Console priority, promise engine input). */
+export const orderBenefits = pgTable('order_benefits', {
+    orderId: text('order_id')
+        .primaryKey()
+        .references(() => orders.id, { onDelete: 'cascade' }),
+    userId: text('user_id'),
+    membershipId: text('membership_id'),
+    priority: boolean('priority').notNull().default(false),
+    guaranteedDates: boolean('guaranteed_dates').notNull().default(false),
+    shippingWaivedCents: cents('shipping_waived_cents').notNull().default(0),
+    materialDiscountCents: cents('material_discount_cents').notNull().default(0),
+    createdAt: createdAt(),
+});
+
+/** Build cart: guest (device hash) or user (user id). One open cart per owner. */
+export const carts = pgTable(
+    'carts',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('cart')),
+        userId: text('user_id'),
+        deviceHash: text('device_hash'),
+        status: text('status').$type<'open' | 'checked_out' | 'merged'>().notNull().default('open'),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [
+        uniqueIndex('carts_open_user_uq').on(t.userId).where(sql`${t.status} = 'open' and ${t.userId} is not null`),
+        uniqueIndex('carts_open_device_uq').on(t.deviceHash).where(sql`${t.status} = 'open' and ${t.userId} is null`),
+        check('carts_owner_ck', sql`${t.userId} is not null or ${t.deviceHash} is not null`),
+        check('carts_status_ck', sql`${t.status} in ('open','checked_out','merged')`),
+    ],
+);
+
+/** One BINDING quote per part per cart (adding a newer quote of the same part replaces it). */
+export const cartItems = pgTable(
+    'cart_items',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('cartItem')),
+        cartId: text('cart_id')
+            .notNull()
+            .references(() => carts.id, { onDelete: 'cascade' }),
+        quoteId: text('quote_id')
+            .notNull()
+            .references(() => quotes.id),
+        partId: text('part_id')
+            .notNull()
+            .references(() => parts.id),
+        /** Upsells applied to reach this quote (each one re-quoted by the engine). */
+        upsells: jsonb('upsells').$type<string[]>().notNull().default([]),
+        addedAt: tstz('added_at').notNull().defaultNow(),
+    },
+    (t) => [uniqueIndex('cart_items_cart_part_uq').on(t.cartId, t.partId), index('cart_items_quote_idx').on(t.quoteId)],
+);
+
+/** Upsell offers computed once per base quote (each offer is a persisted engine quote). */
+export const upsellOffers = pgTable(
+    'upsell_offers',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('upsellOffer')),
+        baseQuoteId: text('base_quote_id')
+            .notNull()
+            .references(() => quotes.id),
+        kind: text('kind').notNull(),
+        offerQuoteId: text('offer_quote_id')
+            .notNull()
+            .references(() => quotes.id),
+        title: text('title').notNull(),
+        description: text('description').notNull(),
+        createdAt: createdAt(),
+    },
+    (t) => [uniqueIndex('upsell_offers_base_kind_uq').on(t.baseQuoteId, t.kind)],
+);
+
+/**
+ * One payment for several orders (cart checkout, B2B invoice). Each order still has its
+ * own `payments` row (provider_ref = `<group ref>#<n>`); the provider session / invoice
+ * reference lives here and webhooks for it are fanned out per order.
+ */
+export const cartCheckouts = pgTable(
+    'cart_checkouts',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('cartCheckout')),
+        cartId: text('cart_id'),
+        userId: text('user_id'),
+        deviceHash: text('device_hash'),
+        provider: paymentProviderEnum('provider').notNull(),
+        providerRef: text('provider_ref').notNull(),
+        mode: text('mode').$type<'card' | 'invoice'>().notNull().default('card'),
+        orderIds: jsonb('order_ids').$type<string[]>().notNull(),
+        amountCents: cents('amount_cents').notNull(),
+        currency: text('currency').notNull().default('usd'),
+        status: text('status').$type<'PENDING' | 'SUCCEEDED' | 'FAILED'>().notNull().default('PENDING'),
+        failureReason: text('failure_reason'),
+        /** HMAC of the confirmation-page token + the token sealed for redirects (like orders). */
+        accessTokenHash: text('access_token_hash').notNull(),
+        sealedToken: text('sealed_token').notNull(),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [uniqueIndex('cart_checkouts_provider_ref_uq').on(t.provider, t.providerRef)],
+);
+
+/** B2B "Pay by invoice (ACH / wire)". Production starts only when the invoice is paid. */
+export const invoices = pgTable(
+    'invoices',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('invoice')),
+        checkoutId: text('checkout_id')
+            .notNull()
+            .references(() => cartCheckouts.id),
+        provider: paymentProviderEnum('provider').notNull(),
+        providerInvoiceId: text('provider_invoice_id').notNull(),
+        status: text('status').$type<'open' | 'paid' | 'overdue' | 'void'>().notNull().default('open'),
+        amountCents: cents('amount_cents').notNull(),
+        currency: text('currency').notNull().default('usd'),
+        netDays: integer('net_days').notNull(),
+        dueDate: date('due_date', { mode: 'string' }).notNull(),
+        hostedUrl: text('hosted_url'),
+        buyerEmail: text('buyer_email').notNull(),
+        company: text('company').notNull(),
+        poNumber: text('po_number'),
+        paidAt: tstz('paid_at'),
+        /** Manual wire: who marked it received and the bank reference (audited). */
+        markedPaidBy: text('marked_paid_by'),
+        paidReference: text('paid_reference'),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [
+        uniqueIndex('invoices_provider_invoice_uq').on(t.provider, t.providerInvoiceId),
+        index('invoices_status_idx').on(t.status),
+        check('invoices_status_ck', sql`${t.status} in ('open','paid','overdue','void')`),
+    ],
+);
+
+/** Buyer ↔ shop/ops thread per order. */
+export const orderMessages = pgTable(
+    'order_messages',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('orderMessage')),
+        orderId: text('order_id')
+            .notNull()
+            .references(() => orders.id, { onDelete: 'cascade' }),
+        authorKind: text('author_kind').$type<'buyer' | 'shop' | 'ops' | 'system'>().notNull(),
+        /** user id, shop id, 'ops' or 'system'. */
+        authorId: text('author_id').notNull(),
+        body: text('body').notNull(),
+        quickReply: text('quick_reply'),
+        attachmentKey: text('attachment_key'),
+        createdAt: createdAt(),
+    },
+    (t) => [
+        index('order_messages_order_idx').on(t.orderId, t.createdAt),
+        check('order_messages_author_ck', sql`${t.authorKind} in ('buyer','shop','ops','system')`),
+        check('order_messages_body_ck', sql`char_length(${t.body}) <= 2000`),
+    ],
+);
+
+/** Per-party chat state: read marker + notification throttle. party = 'buyer' | 'shop' | 'ops'. */
+export const orderChatState = pgTable(
+    'order_chat_state',
+    {
+        orderId: text('order_id')
+            .notNull()
+            .references(() => orders.id, { onDelete: 'cascade' }),
+        party: text('party').notNull(),
+        lastReadAt: tstz('last_read_at'),
+        lastNotifiedAt: tstz('last_notified_at'),
+    },
+    (t) => [uniqueIndex('order_chat_state_uq').on(t.orderId, t.party)],
+);
+
+/** "Hold production": a request ops must acknowledge. It never stops a job by itself. */
+export const holdRequests = pgTable(
+    'hold_requests',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('holdRequest')),
+        orderId: text('order_id')
+            .notNull()
+            .references(() => orders.id, { onDelete: 'cascade' }),
+        messageId: text('message_id'),
+        status: text('status').$type<'requested' | 'acknowledged' | 'declined'>().notNull().default('requested'),
+        note: text('note'),
+        resolvedBy: text('resolved_by'),
+        resolvedAt: tstz('resolved_at'),
+        createdAt: createdAt(),
+    },
+    (t) => [index('hold_requests_status_idx').on(t.status, t.createdAt), index('hold_requests_order_idx').on(t.orderId)],
+);
+
+/** One rating per delivered order; public only once ops approve it. */
+export const ratings = pgTable(
+    'ratings',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('rating')),
+        orderId: text('order_id')
+            .notNull()
+            .references(() => orders.id, { onDelete: 'cascade' }),
+        shopId: text('shop_id').references(() => shops.id),
+        userId: text('user_id'),
+        stars: integer('stars').notNull(),
+        tags: jsonb('tags').$type<string[]>().notNull().default([]),
+        caption: text('caption'),
+        photoKey: text('photo_key'),
+        status: text('status').$type<'pending' | 'approved' | 'rejected'>().notNull().default('pending'),
+        moderatedBy: text('moderated_by'),
+        moderatedAt: tstz('moderated_at'),
+        rejectReason: text('reject_reason'),
+        createdAt: createdAt(),
+    },
+    (t) => [
+        uniqueIndex('ratings_order_uq').on(t.orderId),
+        index('ratings_status_idx').on(t.status, t.createdAt),
+        index('ratings_shop_idx').on(t.shopId, t.status),
+        check('ratings_stars_ck', sql`${t.stars} between 1 and 5`),
+        check('ratings_status_ck', sql`${t.status} in ('pending','approved','rejected')`),
+    ],
+);
