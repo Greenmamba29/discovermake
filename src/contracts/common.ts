@@ -70,6 +70,8 @@ export const ID_PREFIX = {
     buyerCredit: 'crd',
     shopStock: 'sst',
     jobBatch: 'bat',
+    // R6 Reconstruct
+    reconstruct: 'rcn',
 } as const;
 export type IdKind = keyof typeof ID_PREFIX;
 

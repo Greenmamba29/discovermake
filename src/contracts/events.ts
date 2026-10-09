@@ -262,6 +262,21 @@ export const EVENT_PAYLOADS = {
     'live.drop_started': z.object({ dropId: id, showId: id.nullable(), buildId: id, quoteId: id, priceCents: cents, totalSlots: z.number().int().positive(), thresholdSlots: z.number().int().positive(), closesAt: IsoDateTime }),
     'live.slot_claimed': z.object({ dropId: id, claimId: id, orderId: id, quantity: z.number().int().positive(), claimedSlots: z.number().int().nonnegative() }),
     'live.drop_closed': z.object({ dropId: id, status: z.enum(['CONFIRMED', 'FAILED']), claimedSlots: z.number().int().nonnegative(), thresholdSlots: z.number().int().positive(), captured: z.number().int().nonnegative(), released: z.number().int().nonnegative() }),
+    // ---- R6 Reconstruct ----
+    /** A buyer started rebuilding a broken part from photos (optionally linked to its passport). */
+    'reconstruct.started': z.object({ buildId: id, partType: z.enum(['knob', 'spacer', 'bracket']), passportId: id.nullable() }),
+    /** A caliper / ruler reading was confirmed (the only dimensions CAD may use). */
+    'reconstruct.dimension_confirmed': z.object({
+        buildId: id,
+        version: z.number().int().positive(),
+        param: z.string(),
+        valueMm: z.number().positive(),
+        unit: z.enum(['mm', 'in']),
+        photoEstimateMm: z.number().nullable(),
+        deltaPct: z.number().nullable(),
+    }),
+    /** CAD generated from the confirmed readings (family + spec from the Reconstruct planner). */
+    'reconstruct.cad_generated': z.object({ buildId: id, version: z.number().int().positive(), family: z.string(), printed: z.boolean(), quoteId: id.nullable() }),
 } as const;
 
 export type EventType = keyof typeof EVENT_PAYLOADS;
