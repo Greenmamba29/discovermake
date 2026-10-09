@@ -55,6 +55,12 @@ afterEach(() => {
 });
 
 describe('MakeAiIntake', () => {
+    it('prefills the composer from ?prompt= (Home intake, tiles, Discover) without submitting', () => {
+        render(<MakeAiIntake initialText="A CNC-machined aluminum motor mount" />);
+        expect((screen.getByLabelText('What do you want to make?') as HTMLTextAreaElement).value).toBe('A CNC-machined aluminum motor mount');
+        expect(calls).toHaveLength(0);
+    });
+
     it('validates an empty description client-side without calling the API', async () => {
         render(<MakeAiIntake />);
         fireEvent.click(screen.getByRole('button', { name: /plan it with make ai/i }));

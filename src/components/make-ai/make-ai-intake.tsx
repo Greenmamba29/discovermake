@@ -19,8 +19,8 @@ const STARTERS = [
 const fmt = new Intl.NumberFormat('en-US');
 
 /** "What do you want to make?" box -> POST /api/make-ai/intake -> CreationIntent cards. */
-export function MakeAiIntake() {
-    const [text, setText] = useState('');
+export function MakeAiIntake({ initialText = '' }: { initialText?: string }) {
+    const [text, setText] = useState(initialText);
     const [fieldError, setFieldError] = useState<string | null>(null);
     const [serverError, setServerError] = useState<string | null>(null);
     const [pending, setPending] = useState(false);

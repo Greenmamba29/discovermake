@@ -1,76 +1,25 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { useCallback, useRef, useState, type DragEvent } from 'react';
+import { useRef, useState, type DragEvent } from 'react';
 import { ArrowRight, FileUp, Loader2, Sparkles, UploadCloud } from 'lucide-react';
-import { MAX_PART_UPLOAD_BYTES } from '@/contracts/parts';
-import { api, ApiClientError, errorMessage, putSigned } from '@/lib/api';
 import { sampleBracketFile } from '@/lib/sample-dxf';
 import { cn } from '@/lib/utils';
-
-type Stage = { kind: 'idle' } | { kind: 'uploading'; filename: string; progress: number } | { kind: 'analyzing'; filename: string } | { kind: 'opening'; filename: string } | { kind: 'error'; message: string };
-
-/** Direct-upload fallback cap (POST /api/parts/:id/upload); same 25 MB cap as the signed PUT. */
-const DIRECT_UPLOAD_MAX = MAX_PART_UPLOAD_BYTES;
-
-function validate(file: File): string | null {
-    if (!/\.dxf$/i.test(file.name)) {
-        if (/\.(step|stp|iges|igs|stl|3mf|obj)$/i.test(file.name)) return 'STEP, STL and other 3D formats are coming soon. Instant quotes take flat DXF files today.';
-        return 'Instant quotes take .dxf files (ASCII DXF, R12–R2018). Export your flat pattern as DXF and try again.';
-    }
-    if (file.size === 0) return 'That file is empty.';
-    if (file.size > MAX_PART_UPLOAD_BYTES) return `That file is larger than ${MAX_PART_UPLOAD_BYTES / 1024 / 1024} MB.`;
-    return null;
-}
+import { usePartUpload } from './use-part-upload';
 
 /**
  * The single "What do you want to make?" drop zone (Uber "Where to?" pattern).
- * Real pipeline: POST /api/parts -> PUT signed URL -> POST /api/parts/:id/analyze -> /parts/:id.
+ * Real pipeline (usePartUpload): POST /api/parts -> PUT signed URL -> POST /api/parts/:id/analyze -> /parts/:id.
  */
 export function PartUploader({ surface = 'graphite', size = 'lg', autoFocus = false }: { surface?: 'graphite' | 'paper'; size?: 'md' | 'lg'; autoFocus?: boolean }) {
-    const router = useRouter();
     const inputRef = useRef<HTMLInputElement>(null);
-    const [stage, setStage] = useState<Stage>({ kind: 'idle' });
+    const { stage, busy, progressPct, start } = usePartUpload();
     const [dragging, setDragging] = useState(false);
-    const busy = stage.kind === 'uploading' || stage.kind === 'analyzing' || stage.kind === 'opening';
     const paper = surface === 'paper';
 
-    const run = useCallback(
-        async (file: File) => {
-            const invalid = validate(file);
-            if (invalid) {
-                setStage({ kind: 'error', message: invalid });
-                return;
-            }
-            setStage({ kind: 'uploading', filename: file.name, progress: 0 });
-            try {
-                const created = await api.createPart({
-                    filename: file.name,
-                    contentType: file.type || 'application/dxf',
-                    sizeBytes: file.size,
-                });
-                try {
-                    await putSigned(created.upload, file, (p) => setStage({ kind: 'uploading', filename: file.name, progress: p }));
-                } catch (putErr) {
-                    // Signed PUT unavailable (e.g. object storage CORS): fall back to the direct upload route.
-                    if (file.size > DIRECT_UPLOAD_MAX || (putErr instanceof ApiClientError && putErr.status === 413)) throw putErr;
-                    const form = new FormData();
-                    form.append('file', file, file.name);
-                    const res = await fetch(`/api/parts/${encodeURIComponent(created.partId)}/upload`, { method: 'POST', body: form });
-                    if (!res.ok) throw putErr;
-                }
-                setStage({ kind: 'analyzing', filename: file.name });
-                await api.analyzePart(created.partId, {});
-                setStage({ kind: 'opening', filename: file.name });
-                router.push(`/parts/${created.partId}`);
-            } catch (err) {
-                setStage({ kind: 'error', message: errorMessage(err) });
-            } finally {
-                if (inputRef.current) inputRef.current.value = '';
-            }
-        },
-        [router],
-    );
+    const run = async (file: File) => {
+        await start(file);
+        if (inputRef.current) inputRef.current.value = '';
+    };
 
     const onDrop = (e: DragEvent) => {
         e.preventDefault();
@@ -79,8 +28,6 @@ export function PartUploader({ surface = 'graphite', size = 'lg', autoFocus = fa
         const file = e.dataTransfer.files?.[0];
         if (file) void run(file);
     };
-
-    const progressPct = stage.kind === 'uploading' ? Math.round(stage.progress * 100) : stage.kind === 'idle' || stage.kind === 'error' ? 0 : 100;
 
     return (
         <div className="w-full">
@@ -114,12 +61,14 @@ export function PartUploader({ surface = 'graphite', size = 'lg', autoFocus = fa
                         <span className={cn('block truncate font-display text-base font-semibold sm:text-lg', paper ? 'text-ink' : 'text-fg')}>
                             {stage.kind === 'uploading' && `Uploading ${stage.filename}`}
                             {stage.kind === 'analyzing' && `Analyzing ${stage.filename}`}
+                            {stage.kind === 'pricing' && `Pricing ${stage.filename}`}
                             {stage.kind === 'opening' && 'Opening your part'}
                             {(stage.kind === 'idle' || stage.kind === 'error') && (dragging ? 'Drop it here' : 'Drop a DXF, or browse your files')}
                         </span>
                         <span className={cn('block truncate text-sm', paper ? 'text-ink-muted' : 'text-fg-muted')}>
                             {stage.kind === 'uploading' && `${progressPct}% uploaded`}
                             {stage.kind === 'analyzing' && 'Reading geometry, holes and bend lines'}
+                            {stage.kind === 'pricing' && 'Getting your instant quote'}
                             {stage.kind === 'opening' && 'Loading the configurator'}
                             {(stage.kind === 'idle' || stage.kind === 'error') && 'Flat pattern, mm or inches · up to 50 MB'}
                         </span>
