@@ -12,6 +12,7 @@
  * completion re-checks the stored object's size and bytes before anything trusts it.
  */
 import 'server-only';
+import { scanUpload } from '@/server/security/upload-scan';
 import { createHash } from 'node:crypto';
 import { and, asc, count, eq, isNull } from 'drizzle-orm';
 import type { Actor } from '@/contracts';
@@ -153,6 +154,12 @@ export async function completeAttachment(buildId: string, attachmentId: string, 
     if (bytes.byteLength > max) return reject(row, tooLarge());
     const sniff = sniffAttachment(bytes, attachmentExtension(row.storageKey));
     if (!sniff.ok) return reject(row, new ApiError('UNSUPPORTED_MEDIA_TYPE', sniff.reason, 415, { reason: 'MAGIC_BYTES' }));
+    try {
+        await scanUpload(bytes, { filename: row.filename });
+    } catch (err) {
+        if (err instanceof ApiError && err.status === 422) return reject(row, err);
+        throw err;
+    }
 
     const sha256 = createHash('sha256').update(bytes).digest('hex');
     const actor = ctx.actor ?? guestActor(buildId);

@@ -98,6 +98,11 @@ const EnvSchema = z.object({
     RATE_LIMIT_STORE: optionalString.pipe(z.enum(['postgres', 'memory']).optional()),
     /** Which proxy header carries the client IP: vercel | real-ip | xff | none (default vercel on Vercel, else xff). */
     TRUSTED_PROXY: optionalString.pipe(z.enum(['vercel', 'real-ip', 'xff', 'none']).optional()),
+    /** ClamAV daemon for upload scanning (src/server/security/upload-scan.ts). Unset = uploads are not scanned. */
+    CLAMAV_HOST: optionalString,
+    CLAMAV_PORT: z.coerce.number().int().positive().default(3310),
+    /** "true" refuses uploads when scanning is unconfigured or unreachable (set in production with CLAMAV_HOST). */
+    UPLOAD_SCAN_REQUIRED: flag,
     /** R4 Live: HMAC key for server-signed Live Build Protocol events. Required in production. */
     LIVE_EVENT_SIGNING_SECRET: optionalString,
     /** R4 Live: LiveKit server URL (wss://<project>.livekit.cloud). All three LIVEKIT_* must be set to use LiveKit rooms. */

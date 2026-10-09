@@ -71,6 +71,10 @@ describe('caliper readings', () => {
     it('parses what buyers type', () => {
         expect(parseReading('38.1', 'mm')).toEqual({ value: 38.1, unit: 'mm', mm: 38.1 });
         expect(parseReading('38,1 mm', 'in')).toEqual({ value: 38.1, unit: 'mm', mm: 38.1 });
+        // Units without a space (review): "1.5in", "38.1mm", "1/2in".
+        expect(parseReading('1.5in', 'mm')).toEqual({ value: 1.5, unit: 'in', mm: 38.1 });
+        expect(parseReading('38.1mm', 'in')).toEqual({ value: 38.1, unit: 'mm', mm: 38.1 });
+        expect(parseReading('1/2in', 'mm')?.mm).toBeCloseTo(12.7, 5);
         expect(parseReading('1.5 in', 'mm')).toEqual({ value: 1.5, unit: 'in', mm: 38.1 });
         expect(parseReading('1-1/2"', 'mm')).toEqual({ value: 1.5, unit: 'in', mm: 38.1 });
         expect(parseReading('1/4', 'in')?.mm).toBe(6.35);

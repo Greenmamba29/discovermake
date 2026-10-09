@@ -67,8 +67,11 @@ export type PrintDispatchPlan = {
     buildPacket: (jobId: string, order: OrderRow, issuedAt: Date) => { packet: UnsignedPacket; checks: InspectionCheck[]; sampleSize: number };
 };
 
-/** The print dispatch plan for an order, or null when its quote is not a print quote. */
-export async function planPrintDispatch(tx: DbOrTx, order: OrderRow, excludeShopIds: string[]): Promise<PrintDispatchPlan | null> {
+/** A print order that cannot be dispatched as paid: ops refunds or re-quotes (never a 500). */
+export type PrintDispatchBlocked = { blocked: 'MISSING_PRINT_DATA' | 'VERSION_MISMATCH' | 'MATERIAL_MISSING'; message: string };
+
+/** The print dispatch plan for an order, a recoverable block, or null when its quote is not a print quote. */
+export async function planPrintDispatch(tx: DbOrTx, order: OrderRow, excludeShopIds: string[]): Promise<PrintDispatchPlan | PrintDispatchBlocked | null> {
     const [quote] = await tx.select().from(quotes).where(eq(quotes.id, order.quoteId));
     if (!quote || !isPrintQuoteConfig(quote.config)) return null;
     const [[details], [part], [build]] = await Promise.all([
@@ -76,12 +79,12 @@ export async function planPrintDispatch(tx: DbOrTx, order: OrderRow, excludeShop
         tx.select().from(parts).where(eq(parts.id, quote.partId)),
         tx.select().from(builds).where(eq(builds.id, order.buildId)),
     ]);
-    if (!details || !part || !build) throw new Error(`Print order ${order.orderNumber} is missing its print details, part or build`);
+    if (!details || !part || !build) return { blocked: 'MISSING_PRINT_DATA', message: `Print order ${order.orderNumber} is missing its print details, part or build.` };
     if (part.designVersion !== quote.designVersion) {
-        throw new Error(`Part ${part.id} is at design version ${part.designVersion} but order ${order.orderNumber} paid for version ${quote.designVersion}; refund or re-quote instead of dispatching`);
+        return { blocked: 'VERSION_MISMATCH', message: `Part ${part.id} is at design version ${part.designVersion} but order ${order.orderNumber} paid for version ${quote.designVersion}: refund or re-quote instead of dispatching.` };
     }
     const [materialRow] = await tx.select().from(printMaterials).where(eq(printMaterials.id, details.printMaterialId));
-    if (!materialRow) throw new Error(`Print material ${details.printMaterialId} not found`);
+    if (!materialRow) return { blocked: 'MATERIAL_MISSING', message: `Print material ${details.printMaterialId} no longer exists.` };
     const material = toPrintMaterial(materialRow);
     const geometry = details.geometry as unknown as PrintGeometry;
 
