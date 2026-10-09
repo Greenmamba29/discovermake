@@ -12,13 +12,13 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export const GET = route(async (request) => {
-    requireAdmin(request);
+    await requireAdmin(request);
     const q = parseQuery(request, ListSourcingJobsQuery);
     return json(await listJobs({ statuses: q.status, channel: q.channel, buildId: q.buildId }));
 });
 
 export const POST = route(async (request) => {
-    requireAdmin(request);
+    await requireAdmin(request);
     const { buildId, channel, ...body } = await parseJson(request, AdminCreateSourcingJobRequest);
     const { job } = await createSourcingJob({ ...body, buildId, channel, actor: ADMIN_ACTOR });
     return json(await getJobView(job.id), { status: 201 });

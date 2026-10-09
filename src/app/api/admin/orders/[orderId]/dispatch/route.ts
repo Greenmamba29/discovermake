@@ -8,7 +8,7 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export const POST = route<{ orderId: string }>(async (request, { params }) => {
-    requireAdmin(request);
+    await requireAdmin(request);
     const id = OrderId.safeParse((await params).orderId);
     if (!id.success) throw new ApiError('NOT_FOUND', 'Order not found');
     return json(await adminDispatchOrder(id.data));

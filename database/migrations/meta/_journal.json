@@ -33,8 +33,22 @@
     {
       "idx": 4,
       "version": "7",
-      "when": 1791571885585,
-      "tag": "0004_r4_live",
+      "when": 1791570904718,
+      "tag": "0004_r2_accounts",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1791574506879,
+      "tag": "0005_r2_attachments",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1791574865447,
+      "tag": "0006_r4_live",
       "breakpoints": true
     }
   ]

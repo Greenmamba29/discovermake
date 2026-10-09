@@ -16,6 +16,7 @@ import { expect, test, type Browser, type Page } from '@playwright/test';
 import postgres from 'postgres';
 import { randomUUID } from 'node:crypto';
 import { E2E_ADMIN_TOKEN, E2E_DATABASE_URL } from '../../playwright.config';
+import { createBuildWithCad } from './support/cad-build';
 import { adminLogin, fulfil, payOrder, quotePart, shopLogin } from './support/journeys';
 
 const OUT = path.join(process.cwd(), 'test-results', 'page-sweep');
@@ -34,6 +35,8 @@ type Urls = {
     jobUrl: string;
     workspaceUrl: string;
     sourcingJobUrl: string;
+    /** A workspace whose build has generated CAD (Object View, Files, Ask Make AI). */
+    cadWorkspaceUrl: string;
 };
 
 type Screen = {
@@ -46,23 +49,106 @@ type Screen = {
     pattern: (page: Page) => Promise<void>;
     /** Failed requests that are expected on this screen, matched against "<status> <path>". */
     allowHttp?: RegExp[];
+    /** App surface with the mobile bottom nav (Discover · Make · Builds · Me). Focused flows and consoles have none. */
+    bottomNav?: boolean;
 };
 
 /** No Stripe in e2e: payout status answers 503 by design and the card falls back to manual settlement. */
 const NO_STRIPE = /^503 \/api\/shop\/payouts\/status$/;
+/** Onboarding progress as sessionStorage holds it, so each step can be opened directly. */
+function onboardingAt(step: number) {
+    return async (page: Page) => {
+        await page.addInitScript((s) => {
+            window.sessionStorage.setItem('dm_onboarding_v1', JSON.stringify({ step: s, intent: s > 0 ? 'make' : null, interests: s > 1 ? ['brackets-mounts', 'enclosures', 'robotics', 'desk-setup', 'bikes'] : [], firstBuild: null }));
+        }, step);
+    };
+}
 
 const SCREENS: Screen[] = [
     {
         name: 'home',
-        mobbin: 'Uber · Booking a ride: one primary input, then shortcuts',
+        mobbin: 'Uber · Booking a ride: one "What do you want to make?" bar, then Make-anything tiles',
         url: () => '/',
+        bottomNav: true,
         pattern: async (page) => {
+            await expect(page.getByRole('heading', { level: 1, name: 'What do you want to make?' })).toBeVisible();
+            // One input bar: typed text for Make AI, attach/drop a DXF for an instant quote.
+            await expect(page.getByTestId('intake-bar').getByRole('textbox', { name: 'Describe what you want to make' })).toBeVisible();
             await expect(page.getByTestId('upload-input')).toBeAttached();
-            await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+            // Suggestions grid: Laser cut · Bend · CNC · 3D print · Wood · Reconstruct, every tile a real destination.
+            const tiles = page.getByTestId('make-tiles').getByRole('listitem');
+            await expect(tiles).toHaveCount(6);
+            await expect(page.getByTestId('make-tiles').getByRole('link')).toHaveCount(6);
+            for (const title of ['Laser cut', 'Bend', 'CNC', '3D print', 'Wood', 'Reconstruct']) await expect(page.getByTestId('make-tiles').getByText(title, { exact: true })).toBeVisible();
+            // New visitors get an invitation to onboarding, not a redirect.
+            await expect(page.getByTestId('tour-start')).toBeVisible();
+        },
+    },
+    {
+        name: 'onboarding-intent',
+        mobbin: 'Blinkist · Onboarding: "Step 1 of 4" progress bar and a goals question',
+        url: () => '/onboarding',
+        pattern: async (page) => {
+            await expect(page.getByRole('heading', { level: 1, name: 'What brings you here?' })).toBeVisible();
+            await expect(page.getByTestId('onboarding-progress')).toHaveText('Step 1 of 4');
+            await expect(page.getByRole('progressbar', { name: 'Onboarding progress' })).toBeVisible();
+            await expect(page.getByRole('radio')).toHaveCount(4);
+            await expect(page.getByTestId('onboarding-back')).toBeVisible();
+            await expect(page.getByTestId('onboarding-skip')).toBeVisible();
+        },
+    },
+    {
+        name: 'onboarding-pick5',
+        mobbin: 'Pinterest · Onboarding: "Pick 5 to customize your home feed" grid with checkmarks',
+        url: () => '/onboarding',
+        before: onboardingAt(1),
+        pattern: async (page) => {
+            await expect(page.getByRole('heading', { level: 1, name: 'Pick 5 things you love to make' })).toBeVisible();
+            await expect(page.getByRole('checkbox')).toHaveCount(16);
+            await expect(page.getByTestId('interest-count')).toHaveText('0 of 5 picked');
+            await expect(page.getByTestId('onboarding-continue')).toBeDisabled();
+        },
+    },
+    {
+        name: 'onboarding-first-build',
+        mobbin: 'Workflow 10 onboarding step 3: the sample part gets a real price and trust level in under 5 s',
+        url: () => '/onboarding',
+        before: onboardingAt(2),
+        pattern: async (page) => {
+            await expect(page.getByRole('heading', { level: 1, name: 'A real price in seconds' })).toBeVisible();
+            await expect(page.getByTestId('first-build-price')).toBeVisible({ timeout: 15_000 });
+            await expect(page.getByTestId('first-build').getByTestId('trust-chip')).toContainText('Binding quote');
+            await expect(page.getByText('Use my own file')).toBeVisible();
+        },
+    },
+    {
+        name: 'onboarding-save',
+        mobbin: 'Behance · Onboarding: deferred signup, account created only to save',
+        url: () => '/onboarding',
+        before: onboardingAt(3),
+        pattern: async (page) => {
+            await expect(page.getByRole('heading', { level: 1, name: 'Save your build' })).toBeVisible();
+            await expect(page.getByTestId('onboarding-passkey')).toHaveAttribute('href', '/signin?mode=create&next=/builds');
+            await expect(page.getByTestId('onboarding-not-now')).toHaveAttribute('href', '/');
+        },
+    },
+    {
+        name: 'discover',
+        mobbin: 'Pinterest home feed / Behance creative fields: interest chips over a masonry grid of starters',
+        url: () => '/discover',
+        bottomNav: true,
+        pattern: async (page) => {
+            await expect(page.getByRole('button', { name: 'All', exact: true })).toHaveAttribute('aria-pressed', 'true');
+            await expect(page.getByTestId('interest-filters').getByRole('button')).toHaveCount(17);
+            expect(await page.getByTestId('discover-grid').getByRole('article').count()).toBeGreaterThanOrEqual(12);
+            // Every card starts a real flow: an instant quote or a Make AI brief.
+            await expect(page.getByTestId('discover-start-wall-bracket')).toBeVisible();
+            await expect(page.getByTestId('discover-start-drone-frame')).toHaveAttribute('href', /^\/make\/ai\?prompt=/);
         },
     },
     {
         name: 'make-upload',
+        bottomNav: true,
         mobbin: 'Uber · "Where to?": single entry point for what you want to make',
         url: () => '/make',
         pattern: async (page) => {
@@ -71,6 +157,7 @@ const SCREENS: Screen[] = [
     },
     {
         name: 'make-ai',
+        bottomNav: true,
         mobbin: 'Make intake: AI prompt composer',
         url: () => '/make/ai',
         pattern: async (page) => {
@@ -89,6 +176,7 @@ const SCREENS: Screen[] = [
     },
     {
         name: 'manufacturing-route',
+        bottomNav: true,
         mobbin: 'Route: compare vendor cards with ratings and lead time',
         url: (u) => u.routeUrl,
         pattern: async (page) => {
@@ -107,6 +195,7 @@ const SCREENS: Screen[] = [
     },
     {
         name: 'order-tracking',
+        bottomNav: true,
         mobbin: 'Uber · ride in progress: one plain status sentence, ETA first, the shop visible',
         url: (u) => u.orderUrl,
         pattern: async (page) => {
@@ -116,6 +205,7 @@ const SCREENS: Screen[] = [
     },
     {
         name: 'production-run',
+        bottomNav: true,
         mobbin: 'DoorDash · order status sheet: icon progress stages',
         url: (u) => u.productionUrl,
         pattern: async (page) => {
@@ -124,6 +214,7 @@ const SCREENS: Screen[] = [
     },
     {
         name: 'orders',
+        bottomNav: true,
         mobbin: 'Uber · Activity: find past orders',
         url: () => '/orders',
         pattern: async (page) => {
@@ -132,21 +223,60 @@ const SCREENS: Screen[] = [
     },
     {
         name: 'passport',
+        bottomNav: true,
         mobbin: 'Digital certificate of authenticity with QR',
         url: (u) => u.passportUrl,
         pattern: async (page) => {
             await expect(page.getByTestId('passport-verified')).toBeVisible();
             await expect(page.locator('svg, img').first()).toBeVisible();
+            // Workflow 09 commercial hook: one-tap replacement part.
+            await expect(page.getByTestId('passport-order-replacement')).toBeVisible();
         },
     },
     {
         name: 'build-workspace',
+        bottomNav: true,
         mobbin: 'Build Workspace: properties panel, version history with compare',
         url: (u) => u.workspaceUrl,
         pattern: async (page) => {
             await expect(page.getByTestId('workspace-status-strip')).toBeVisible();
             await expect(page.getByTestId('build-trust-badge')).toBeVisible();
             await expect(page.getByTestId('workspace-cad')).toBeVisible();
+        },
+    },
+    {
+        name: 'object-view',
+        mobbin: 'Microsoft Copilot · 3D object with a Recreate / Download panel',
+        url: (u) => `${u.cadWorkspaceUrl}?section=object`,
+        pattern: async (page) => {
+            // A 3D viewer (WebGL canvas, or the 2D fallback without WebGL) beside a properties panel.
+            await expect(page.getByTestId('object-viewport')).toBeVisible();
+            await expect(page.locator('[data-testid="object-viewport"] canvas').or(page.getByTestId('object-fallback')).first()).toBeVisible({ timeout: 20_000 });
+            await expect(page.getByTestId('object-properties')).toBeVisible();
+            await expect(page.getByTestId('object-dimensions')).toContainText('80.0 mm');
+            await expect(page.getByTestId('object-download-panel').getByRole('link')).toHaveCount(3);
+            await expect(page.getByTestId('object-ask-make-ai')).toBeVisible();
+            await expect(page.getByRole('group', { name: 'Units' })).toBeVisible();
+        },
+    },
+    {
+        name: 'workspace-files',
+        mobbin: 'Attachment tray: file tiles with thumbnails, type icons and progress',
+        url: (u) => `${u.cadWorkspaceUrl}?section=attachments`,
+        pattern: async (page) => {
+            await expect(page.getByTestId('attachment-tray')).toBeVisible();
+            await expect(page.getByTestId('attachment-add')).toBeVisible();
+            await expect(page.getByTestId('attachment-input')).toBeAttached();
+        },
+    },
+    {
+        name: 'workspace-ask-make-ai',
+        mobbin: 'LinkedIn · quick replies above the composer (Make AI panel, honest unavailable state without a key)',
+        url: (u) => `${u.cadWorkspaceUrl}?section=assistant`,
+        pattern: async (page) => {
+            await expect(page.getByTestId('workspace-assistant')).toBeVisible();
+            await expect(page.getByTestId('assistant-unavailable').or(page.getByTestId('assistant-form')).first()).toBeVisible();
+            await expect(page.getByTestId('assistant-manual')).toBeVisible();
         },
     },
     {
@@ -226,7 +356,45 @@ const SCREENS: Screen[] = [
         },
     },
     {
+        name: 'signin',
+        mobbin: 'Behance · deferred signup: sign in only to save; passkey or email code, no password',
+        url: () => '/signin?next=/builds&mode=create',
+        pattern: async (page) => {
+            await expect(page.getByTestId('signin-email')).toBeVisible();
+            await expect(page.getByTestId('signin-passkey')).toBeVisible();
+            await expect(page.getByRole('heading', { level: 1 })).toHaveText('Save your build');
+        },
+    },
+    {
+        name: 'me',
+        mobbin: 'Account hub: profile, creator handle, passkeys, sign out',
+        url: () => '/me',
+        before: (page) => signInByEmail(page, 'sweep-me@example.com'),
+        pattern: async (page) => {
+            await expect(page.getByTestId('me-email')).toContainText('sweep-me@example.com');
+            await expect(page.getByTestId('me-add-passkey')).toBeVisible();
+            await expect(page.getByTestId('me-signout')).toBeVisible();
+        },
+    },
+    {
+        name: 'my-builds',
+        mobbin: 'Yami · status tabs with counts + Glovo / Subway order-again rows (Reorder · Remix · Repair)',
+        url: () => '/builds',
+        // The sweep buyer's delivered order is claimed by email at sign-in.
+        before: (page) => signInByEmail(page, 'sweep-buyer@example.com'),
+        pattern: async (page) => {
+            await expect(page.getByRole('tab')).toHaveCount(5);
+            await expect(page.getByRole('tab', { name: /Ordered/ })).toBeVisible();
+            const row = page.locator('[data-testid^="build-row-"]').first();
+            await expect(row).toBeVisible();
+            await expect(row.locator('[data-status]')).toBeVisible();
+            for (const action of ['build-reorder', 'build-remix', 'build-repair']) await expect(row.getByTestId(action)).toBeVisible();
+            await expect(row.getByTestId('build-reorder')).toBeEnabled();
+        },
+    },
+    {
         name: 'not-found',
+        bottomNav: true,
         mobbin: 'Empty / error state',
         allowHttp: [/^404 \/this-page-does-not-exist$/],
         url: () => '/this-page-does-not-exist',
@@ -235,6 +403,14 @@ const SCREENS: Screen[] = [
         },
     },
 ];
+
+/** Sign this browser context in with an email code (dev returns the code). Own IP per call so in-memory limits never trip. */
+async function signInByEmail(page: Page, email: string) {
+    const headers = { 'x-forwarded-for': `198.18.${Math.floor(Math.random() * 250)}.${Math.floor(Math.random() * 250) + 1}` };
+    const start = await (await page.request.post('/api/auth/email/start', { data: { email }, headers })).json();
+    const verified = await page.request.post('/api/auth/email/verify', { data: { challengeId: start.challengeId, code: start.devCode }, headers });
+    expect(verified.ok(), 'email sign-in').toBe(true);
+}
 
 /** Builds real state once: a delivered order with a passport, a sourcing job, a Make AI workspace. */
 async function buildState(browser: Browser): Promise<Urls> {
@@ -269,6 +445,7 @@ async function buildState(browser: Browser): Promise<Urls> {
         await sql.end();
     }
     const made = await (await request.post('/api/make-ai/builds', { data: { intentId } })).json();
+    const withCad = await createBuildWithCad(request);
     await context.close();
 
     const [orderPath, query] = orderUrl.split('?');
@@ -282,6 +459,7 @@ async function buildState(browser: Browser): Promise<Urls> {
         jobUrl,
         workspaceUrl: `/build/${made.buildId}/workspace`,
         sourcingJobUrl: `/admin/sourcing/jobs/${job.id}`,
+        cadWorkspaceUrl: withCad.workspaceUrl,
     };
 }
 
@@ -331,6 +509,18 @@ test.describe('Mobbin page sweep', () => {
 
                 // Mobbin pattern
                 await screen.pattern(page);
+
+                // App shell: the bottom nav on phone app screens only, never on desktop.
+                const bottomNav = page.getByTestId('bottom-nav');
+                if (viewport === 'phone' && screen.bottomNav) {
+                    await expect(bottomNav).toBeVisible();
+                    await expect(bottomNav.getByRole('link')).toHaveCount(4);
+                    expect(await bottomNav.locator('[aria-current="page"]').count()).toBeLessThanOrEqual(1);
+                } else if (viewport === 'phone') {
+                    await expect(bottomNav).toHaveCount(0);
+                } else {
+                    await expect(bottomNav).toBeHidden();
+                }
 
                 // No horizontal scroll, including with each ⓘ explainer open (tap on phones).
                 const overflowPx = () => page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);

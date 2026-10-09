@@ -12,6 +12,7 @@
  */
 import { sql } from 'drizzle-orm';
 import {
+    type AnyPgColumn,
     boolean,
     check,
     date,
@@ -80,6 +81,7 @@ import type { Parcel, TrackingEvent } from '../../contracts/shipments';
 import type { PassportSnapshot } from '../../contracts/passport';
 import type { CreationIntent } from '../../contracts/make-ai';
 import type { ApprovalPolicy, SourcingRequest, SubmitOfferInput, SupplierEvidenceInput } from '../../contracts/sourcing';
+import type { InterestSlug, OnboardingIntent, UserRole } from '../../contracts/account';
 import { CHANNEL_KINDS, DROP_STATUSES, SHOW_FORMATS, SHOW_STATUSES, SLOT_CLAIM_STATUSES } from '../../contracts/live';
 import type { ChannelCategory, LiveActorKind, LiveEventType } from '../../contracts/live';
 import { newId } from '../ids';
@@ -167,10 +169,19 @@ export const builds = pgTable(
         derivedFromBuildId: text('derived_from_build_id'),
         /** Make AI intent that started this build (origin = make_ai). */
         intentId: text('intent_id'),
+        /** R2 accounts (ADR-0009): the signed-in owner. Null for guest and legacy R1 builds. */
+        ownerUserId: text('owner_user_id').references((): AnyPgColumn => users.id),
+        /** R2 accounts: sha256 of the `dm_device` cookie that created the build (guest ownership). */
+        deviceHash: text('device_hash'),
         createdAt: createdAt(),
         updatedAt: updatedAt(),
     },
-    (t) => [uniqueIndex('builds_display_id_uq').on(t.displayId), index('builds_derived_from_idx').on(t.derivedFromBuildId)],
+    (t) => [
+        uniqueIndex('builds_display_id_uq').on(t.displayId),
+        index('builds_derived_from_idx').on(t.derivedFromBuildId),
+        index('builds_owner_user_idx').on(t.ownerUserId, t.updatedAt),
+        index('builds_device_hash_idx').on(t.deviceHash),
+    ],
 );
 
 export const parts = pgTable(
@@ -600,6 +611,8 @@ export const orders = pgTable(
         promisedShipDate: date('promised_ship_date', { mode: 'string' }).notNull(),
         /** Assigned shop once a job is accepted. */
         shopId: text('shop_id').references(() => shops.id),
+        /** R2 accounts: the signed-in buyer (set at checkout, or when a sign-in claims the order by verified email). */
+        buyerUserId: text('buyer_user_id').references((): AnyPgColumn => users.id),
         /** HMAC-SHA256(ORDER_LINK_SECRET, buyer token), hex. See src/server/auth/order-link.ts. */
         accessTokenHash: text('access_token_hash').notNull(),
         /** Journey id for domain events (ADR-0002 correlation_id). */
@@ -620,6 +633,7 @@ export const orders = pgTable(
         index('orders_status_idx').on(t.status),
         index('orders_buyer_email_idx').on(t.buyerEmail),
         index('orders_build_idx').on(t.buildId),
+        index('orders_buyer_user_idx').on(t.buyerUserId),
         check('orders_total_ck', sql`${t.totalCents} = ${t.subtotalCents} + ${t.shippingCents} + ${t.taxCents}`),
     ],
 );
@@ -1292,6 +1306,219 @@ export const sourcingToolCalls = pgTable(
         createdAt: createdAt(),
     },
     (t) => [index('sourcing_tool_calls_client_idx').on(t.clientId, t.createdAt)],
+);
+
+// ---------------------------------------------------------------------------
+// R2 accounts (ADR-0009): users, sessions, passkeys, sign-in challenges, OIDC links,
+// guest device preferences, follows. Builds and orders gain owner columns above
+// (`builds.owner_user_id`, `builds.device_hash`, `orders.buyer_user_id`).
+// ---------------------------------------------------------------------------
+
+export const AUTH_CHALLENGE_KINDS = ['email', 'passkey_register', 'passkey_login', 'oauth'] as const;
+export const authChallengeKindEnum = pgEnum('auth_challenge_kind', AUTH_CHALLENGE_KINDS);
+
+export const users = pgTable(
+    'users',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('user')),
+        /** Always stored lowercased (checked). */
+        email: text('email').notNull(),
+        emailVerifiedAt: tstz('email_verified_at'),
+        displayName: text('display_name'),
+        /** Public creator handle; unique when set. */
+        handle: text('handle'),
+        roles: text('roles').array().$type<UserRole[]>().notNull().default(sql`'{buyer}'::text[]`),
+        intent: text('intent').$type<OnboardingIntent>(),
+        interests: jsonb('interests').$type<InterestSlug[]>().notNull().default([]),
+        onboardedAt: tstz('onboarded_at'),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [
+        uniqueIndex('users_email_uq').on(t.email),
+        uniqueIndex('users_handle_uq')
+            .on(t.handle)
+            .where(sql`${t.handle} is not null`),
+        check('users_email_lower_ck', sql`${t.email} = lower(${t.email})`),
+    ],
+);
+
+/** `dm_session` cookie holds a random secret; only its sha256 is stored. */
+export const userSessions = pgTable(
+    'user_sessions',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('userSession')),
+        userId: text('user_id')
+            .notNull()
+            .references(() => users.id, { onDelete: 'cascade' }),
+        secretHash: text('secret_hash').notNull(),
+        /** sha256 of the `dm_device` cookie the session was created on (device ownership checks). */
+        deviceHash: text('device_hash'),
+        createdAt: createdAt(),
+        expiresAt: tstz('expires_at').notNull(),
+        lastSeenAt: tstz('last_seen_at'),
+        userAgent: text('user_agent'),
+        revokedAt: tstz('revoked_at'),
+    },
+    (t) => [uniqueIndex('user_sessions_secret_hash_uq').on(t.secretHash), index('user_sessions_user_idx').on(t.userId), index('user_sessions_device_idx').on(t.deviceHash)],
+);
+
+/** WebAuthn credentials (discoverable). `id` is the base64url credential id. */
+export const passkeys = pgTable(
+    'passkeys',
+    {
+        id: text('id').primaryKey(),
+        userId: text('user_id')
+            .notNull()
+            .references(() => users.id, { onDelete: 'cascade' }),
+        /** COSE public key, base64url. */
+        publicKey: text('public_key').notNull(),
+        counter: integer('counter').notNull().default(0),
+        transports: text('transports').array().$type<string[]>().notNull().default(sql`'{}'::text[]`),
+        deviceType: text('device_type').notNull(),
+        backedUp: boolean('backed_up').notNull().default(false),
+        name: text('name').notNull(),
+        createdAt: createdAt(),
+        lastUsedAt: tstz('last_used_at'),
+    },
+    (t) => [index('passkeys_user_idx').on(t.userId)],
+);
+
+/** One-shot sign-in challenges: email codes (HMAC-hashed), WebAuthn challenges. */
+export const authChallenges = pgTable(
+    'auth_challenges',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('authChallenge')),
+        kind: authChallengeKindEnum('kind').notNull(),
+        email: text('email'),
+        userId: text('user_id').references(() => users.id, { onDelete: 'cascade' }),
+        /** HMAC-SHA256(AUTH_SECRET, "<id>.<code>") for email codes. */
+        codeHash: text('code_hash'),
+        /** WebAuthn challenge (base64url). */
+        challenge: text('challenge'),
+        attempts: integer('attempts').notNull().default(0),
+        expiresAt: tstz('expires_at').notNull(),
+        consumedAt: tstz('consumed_at'),
+        createdAt: createdAt(),
+    },
+    (t) => [index('auth_challenges_email_idx').on(t.email, t.createdAt), index('auth_challenges_user_idx').on(t.userId, t.kind)],
+);
+
+export const oauthAccounts = pgTable(
+    'oauth_accounts',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('oauthAccount')),
+        provider: text('provider').notNull(),
+        providerUserId: text('provider_user_id').notNull(),
+        userId: text('user_id')
+            .notNull()
+            .references(() => users.id, { onDelete: 'cascade' }),
+        createdAt: createdAt(),
+    },
+    (t) => [uniqueIndex('oauth_accounts_provider_user_uq').on(t.provider, t.providerUserId), index('oauth_accounts_user_idx').on(t.userId)],
+);
+
+/** Guest onboarding answers, keyed by the device cookie hash. Merged into the user at sign-in. */
+export const devicePreferences = pgTable('device_preferences', {
+    deviceHash: text('device_hash').primaryKey(),
+    intent: text('intent').$type<OnboardingIntent>(),
+    interests: jsonb('interests').$type<InterestSlug[]>().notNull().default([]),
+    onboardedAt: tstz('onboarded_at'),
+    updatedAt: updatedAt(),
+});
+
+export const buildFollows = pgTable(
+    'build_follows',
+    {
+        userId: text('user_id')
+            .notNull()
+            .references(() => users.id, { onDelete: 'cascade' }),
+        buildId: text('build_id')
+            .notNull()
+            .references(() => builds.id, { onDelete: 'cascade' }),
+        createdAt: createdAt(),
+    },
+    (t) => [primaryKey({ columns: [t.userId, t.buildId] }), index('build_follows_build_idx').on(t.buildId)],
+);
+
+// ---------------------------------------------------------------------------
+// R2 build attachments (100-1)
+// ---------------------------------------------------------------------------
+
+/** Keep in sync with ATTACHMENT_KINDS in src/contracts/workspace.ts. */
+export const buildAttachmentKindEnum = pgEnum('build_attachment_kind', ['image', 'cad']);
+
+/**
+ * Reference images and CAD files attached to a build (the Build Workspace attachment tray).
+ * A row is created with the signed upload URL; `sha256` stays null until the bytes are
+ * verified (size cap + magic bytes), so a null sha256 means "upload not verified yet".
+ * Bytes live at `storage_key` = `builds/<buildId>/attachments/<attId>/<safe filename>`.
+ * Deletes are soft (`deleted_at`); the object is removed from storage at delete time.
+ */
+export const buildAttachments = pgTable(
+    'build_attachments',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('buildAttachment')),
+        buildId: text('build_id')
+            .notNull()
+            .references(() => builds.id, { onDelete: 'cascade' }),
+        /** The build's current design version when the file was attached. */
+        designVersion: integer('design_version').notNull(),
+        kind: buildAttachmentKindEnum('kind').notNull(),
+        filename: text('filename').notNull(),
+        contentType: text('content_type').notNull(),
+        sizeBytes: integer('size_bytes').notNull(),
+        sha256: text('sha256'),
+        storageKey: text('storage_key').notNull(),
+        /** Part created by "Use as a part" (DXF attachments). */
+        partId: text('part_id').references(() => parts.id),
+        /** Owner once R2 accounts exist; null for guests. */
+        createdByUserId: text('created_by_user_id'),
+        /** sha256 of the guest device cookie, when present. */
+        deviceHash: text('device_hash'),
+        createdAt: createdAt(),
+        deletedAt: tstz('deleted_at'),
+    },
+    (t) => [
+        index('build_attachments_build_idx')
+            .on(t.buildId, t.createdAt)
+            .where(sql`${t.deletedAt} is null`),
+        check('build_attachments_size_ck', sql`${t.sizeBytes} > 0 and ${t.sizeBytes} <= 52428800`),
+    ],
+);
+
+// ---------------------------------------------------------------------------
+// R2 passport replacements (1000-3)
+// ---------------------------------------------------------------------------
+
+/**
+ * Traceability for "Order a replacement" on a Product Passport: each replacement quote points
+ * back at the passport it came from (`quotes` has no metadata column, so this side table holds
+ * it). The replacement part lives on its own build (a copy of the passport's verified file), so
+ * the original build's private state is never reachable from a public passport.
+ */
+export const passportReplacements = pgTable(
+    'passport_replacements',
+    {
+        quoteId: text('quote_id')
+            .primaryKey()
+            .references(() => quotes.id),
+        replacementOfPassportId: text('replacement_of_passport_id')
+            .notNull()
+            .references(() => passports.id),
+        partId: text('part_id')
+            .notNull()
+            .references(() => parts.id),
+        buildId: text('build_id')
+            .notNull()
+            .references(() => builds.id),
+        /** The quote the passport was issued for (what was actually made). */
+        sourceQuoteId: text('source_quote_id').notNull(),
+        quantity: integer('quantity').notNull(),
+        deviceHash: text('device_hash'),
+        createdAt: createdAt(),
+    },
+    (t) => [index('passport_replacements_passport_idx').on(t.replacementOfPassportId, t.createdAt)],
 );
 
 // ---------------------------------------------------------------------------

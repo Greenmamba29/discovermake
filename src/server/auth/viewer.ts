@@ -1,92 +1,136 @@
-// Stub: replaced by the R2 accounts module at integration
 /**
- * Who is calling (R2 accounts, ADR-0009). This file is a STUB with the exact export
- * signatures of the accounts module, so Live (R4) compiles and runs before accounts land.
+ * Who is calling (ADR-0009). Route handlers use these helpers; nothing else reads the
+ * account cookies directly.
  *
- * Outside production only, a request may identify a signed-in user with the test-only
- * header `x-dm-test-user` (Playwright `extraHTTPHeaders`, vitest requests):
+ *   const viewer = await getViewer(request);          // ViewerContext | null (signed out)
+ *   const viewer = await requireViewer(request);      // 401 when signed out
+ *   await requireRole(request, 'ops');                // 401 / 403
+ *   await assertCanEditBuild(request, build);         // 403 unless the caller may change the build
+ *   const owner = buildOwnerFor(request, response);   // stamp new builds (sets dm_device when missing)
  *
- *   x-dm-test-user: id=usr_ada;email=ada@example.com;roles=buyer,creator;name=Ada;handle=ada
- *
- * In production `getViewer` always returns null here (the real module reads `dm_session`).
+ * Build edit rules:
+ *   - `owner_user_id` set -> the signed-in owner, or an ops/admin user;
+ *   - else `device_hash` set -> the same device, the signed-in user who has used that
+ *     device (a session was created on it), or ops/admin;
+ *   - neither (legacy R1 builds) -> anyone holding the unguessable id (ADR-0008).
  */
+import { and, eq } from 'drizzle-orm';
+import type { NextResponse } from 'next/server';
 import type { UserRole, Viewer } from '../../contracts/account';
-import { USER_ROLES } from '../../contracts/account';
+import { getDb } from '../db';
+import { userSessions } from '../db/schema';
 import { ApiError } from '../http';
-import { sha256Hex } from './tokens';
+import { assertSameOrigin } from './cookies';
+import { applyDevice, ensureDevice, getDeviceHash, resolveDevice } from './device';
+import { readSessionSecret, resolveSession, setSessionCookie, type ResolvedSession } from './sessions';
+import { toViewer } from './users';
+
+export { assertSameOrigin } from './cookies';
+export { applyDevice, ensureDevice, getDeviceHash, resolveDevice } from './device';
 
 export type ViewerContext = { user: Viewer; sessionId: string };
 
-export const TEST_USER_HEADER = 'x-dm-test-user';
+/** Per-request memo so several helpers in one handler resolve the session once. */
+const resolved = new WeakMap<Request, Promise<ResolvedSession | null>>();
 
-const USER_ID_RE = /^usr_[A-Za-z0-9_-]{2,60}$/;
-
-function parseTestUser(raw: string): ViewerContext | null {
-    const fields = new Map<string, string>();
-    for (const part of raw.split(';')) {
-        const i = part.indexOf('=');
-        if (i <= 0) continue;
-        fields.set(part.slice(0, i).trim().toLowerCase(), decodeURIComponent(part.slice(i + 1).trim()));
+function resolveForRequest(request: Request): Promise<ResolvedSession | null> {
+    let p = resolved.get(request);
+    if (!p) {
+        p = resolveSession(readSessionSecret(request));
+        resolved.set(request, p);
     }
-    const id = fields.get('id') ?? '';
-    if (!USER_ID_RE.test(id)) return null;
-    const roles = (fields.get('roles') ?? 'buyer')
-        .split(',')
-        .map((r) => r.trim())
-        .filter((r): r is UserRole => (USER_ROLES as readonly string[]).includes(r));
-    if (!roles.includes('buyer')) roles.unshift('buyer');
-    const handle = fields.get('handle');
-    return {
-        sessionId: `test_${id}`,
-        user: {
-            id,
-            email: fields.get('email') || `${id}@test.discovermake.local`,
-            emailVerified: true,
-            displayName: fields.get('name') || null,
-            handle: handle && /^[a-z0-9_]{3,24}$/.test(handle) ? handle : null,
-            roles,
-            onboardedAt: null,
-            createdAt: new Date(0).toISOString(),
-        },
-    };
+    return p;
 }
 
+/** The signed-in user, or null (no / unknown / expired / revoked session). */
 export async function getViewer(request: Request): Promise<ViewerContext | null> {
-    if (process.env.NODE_ENV === 'production') return null;
-    const raw = request.headers.get(TEST_USER_HEADER);
-    if (!raw) return null;
-    return parseTestUser(raw);
+    const r = await resolveForRequest(request);
+    return r ? { user: toViewer(r.user), sessionId: r.session.id } : null;
 }
 
-/** ApiError 401 when nobody is signed in. */
 export async function requireViewer(request: Request): Promise<ViewerContext> {
-    const v = await getViewer(request);
-    if (!v) throw new ApiError('UNAUTHORIZED', 'Sign in to continue', 401);
-    return v;
+    const viewer = await getViewer(request);
+    if (!viewer) throw new ApiError('UNAUTHORIZED', 'Sign in to continue.', 401);
+    return viewer;
 }
 
 export function hasRole(v: ViewerContext | null, role: UserRole): boolean {
     return !!v && v.user.roles.includes(role);
 }
 
-/** 401 when signed out, 403 without the role. */
+/** ops and admin may act on any build or order. */
+export function isStaff(v: ViewerContext | null): boolean {
+    return hasRole(v, 'ops') || hasRole(v, 'admin');
+}
+
 export async function requireRole(request: Request, role: UserRole): Promise<ViewerContext> {
-    const v = await requireViewer(request);
-    if (!hasRole(v, role)) throw new ApiError('FORBIDDEN', `This needs the ${role} role`, 403);
-    return v;
+    const viewer = await requireViewer(request);
+    if (!hasRole(viewer, role)) throw new ApiError('FORBIDDEN', 'Your account does not have access to this.', 403);
+    return viewer;
 }
 
-/** sha256 of the guest device cookie (`dm_device`), or null when the browser has none. */
-export function getDeviceHash(request: Request): string | null {
-    const cookie = request.headers.get('cookie') ?? '';
-    const m = /(?:^|;\s*)dm_device=([^;]+)/.exec(cookie);
-    return m ? sha256Hex(decodeURIComponent(m[1])) : null;
+/**
+ * When the session's expiry slid during this request, re-send the cookie with the new
+ * expiry so the browser keeps it as long as the server does.
+ */
+export async function applySessionRefresh(request: Request, response: NextResponse): Promise<void> {
+    const r = await resolveForRequest(request);
+    const secret = readSessionSecret(request);
+    if (r?.refreshed && secret) setSessionCookie(response, secret, r.session.expiresAt);
 }
 
-export async function assertCanEditBuild(request: Request, build: { id: string; ownerUserId: string | null; deviceHash: string | null }): Promise<void> {
-    if (!build.ownerUserId && !build.deviceHash) return;
-    const v = await getViewer(request);
-    if (build.ownerUserId && v?.user.id === build.ownerUserId) return;
-    if (build.deviceHash && getDeviceHash(request) === build.deviceHash) return;
-    throw new ApiError('FORBIDDEN', 'Only the owner can change this build', 403);
+export type BuildOwnership = { id: string; ownerUserId: string | null; deviceHash: string | null };
+
+/** Has this user signed in on the device with this hash? */
+async function userUsedDevice(userId: string, deviceHash: string): Promise<boolean> {
+    const [row] = await getDb()
+        .select({ id: userSessions.id })
+        .from(userSessions)
+        .where(and(eq(userSessions.userId, userId), eq(userSessions.deviceHash, deviceHash)))
+        .limit(1);
+    return !!row;
+}
+
+/** Pure-ish decision used by assertCanEditBuild and server pages (no throw). */
+export async function canEditBuild(principal: { viewer: ViewerContext | null; deviceHash: string | null }, build: BuildOwnership): Promise<boolean> {
+    const { viewer, deviceHash } = principal;
+    if (isStaff(viewer)) return true;
+    if (build.ownerUserId) return viewer?.user.id === build.ownerUserId;
+    if (build.deviceHash) {
+        if (deviceHash && deviceHash === build.deviceHash) return true;
+        return viewer ? userUsedDevice(viewer.user.id, build.deviceHash) : false;
+    }
+    return true; // legacy R1 build: the unguessable id is the capability (ADR-0008)
+}
+
+export const NOT_BUILD_OWNER_MESSAGE = 'Only the owner of this build can change it. Sign in with the account that made it, or remix it to make your own copy.';
+
+/** 403 unless the caller may change `build` (see the module comment). Also rejects cross-origin requests. */
+export async function assertCanEditBuild(request: Request, build: BuildOwnership): Promise<void> {
+    assertSameOrigin(request);
+    const viewer = await getViewer(request);
+    if (!(await canEditBuild({ viewer, deviceHash: getDeviceHash(request) }, build))) {
+        throw new ApiError('FORBIDDEN', NOT_BUILD_OWNER_MESSAGE, 403);
+    }
+}
+
+export type BuildOwner = { ownerUserId: string | null; deviceHash: string };
+
+/**
+ * Ownership stamp for a build created by this request: the signed-in user (if any) plus
+ * the device. Sets the `dm_device` cookie on `response` when the browser had none.
+ */
+export async function buildOwnerFor(request: Request, response: NextResponse): Promise<BuildOwner> {
+    const viewer = await getViewer(request);
+    return { ownerUserId: viewer?.user.id ?? null, deviceHash: ensureDevice(request, response) };
+}
+
+/**
+ * Two-phase variant for handlers that create the response after the build: resolve the
+ * owner first, then `apply(response)` to persist a newly minted device cookie.
+ */
+export async function resolveBuildOwner(request: Request): Promise<BuildOwner & { apply: (response: NextResponse) => void }> {
+    const viewer = await getViewer(request);
+    const device = resolveDevice(request);
+    return { ownerUserId: viewer?.user.id ?? null, deviceHash: device.hash, apply: (response) => applyDevice(response, device) };
 }

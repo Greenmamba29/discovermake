@@ -100,6 +100,13 @@ export function renderEmail<K extends NotifyKind>(kind: K, payload: NotifyPayloa
                 ...(p.orderId ? [{ kind: 'p' as const, text: `Order: ${p.orderId}` }] : []),
             ]);
         }
+        case 'auth.sign_in_code': {
+            const p = payload as NotifyPayloads['auth.sign_in_code'];
+            return layout('Your DiscoverMake sign-in code', [
+                { kind: 'p', text: `Enter ${p.code} to sign in to DiscoverMake. The code works once and expires in ${p.expiresMinutes} minutes.` },
+                { kind: 'p', text: 'If you did not ask for this code, you can ignore this email. Nobody can sign in without it.' },
+            ]);
+        }
         default: {
             const never: never = kind as never;
             throw new Error(`Unknown notification kind ${String(never)}`);
