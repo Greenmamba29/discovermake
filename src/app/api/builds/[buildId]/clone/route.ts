@@ -4,10 +4,12 @@
  * Make This: clone the build's latest APPROVED version into a new build.
  * 409 when the build has no approved version. Per-IP rate limited.
  * Emits `build.created`, `design.version_created` and `build.forked`.
- * TODO(R2 accounts): attribute the new build to the signed-in buyer.
+ * Forking only reads the source (anyone with its id may fork it); the NEW build belongs to
+ * the signed-in user and/or this device (sets `dm_device` when missing; ADR-0009).
  */
 import { BuildForkRequest, BuildId } from '@/contracts';
 import { forkBuild, limitWrite } from '@/server/build-graph';
+import { resolveBuildOwner } from '@/server/auth/viewer';
 import { json, route } from '@/server/http';
 import { pathId, readJsonBody, validate } from '@/server/quote/route-helpers';
 
@@ -19,5 +21,8 @@ export const POST = route<{ buildId: string }>(async (request, { params }) => {
     const limited = limitWrite(request);
     if (limited) return limited;
     const body = validate(await readJsonBody(request, { allowEmpty: true }), BuildForkRequest);
-    return json(await forkBuild(buildId, 'clone', body.name), { status: 201 });
+    const owner = await resolveBuildOwner(request);
+    const res = json(await forkBuild(buildId, 'clone', body.name, { owner }), { status: 201 });
+    owner.apply(res);
+    return res;
 });
