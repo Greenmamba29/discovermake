@@ -1,0 +1,111 @@
+{
+  "artifacts": [
+    {
+      "bytes": 17231,
+      "content_type": "application/dxf",
+      "filename": "body_flat.dxf",
+      "kind": "DXF",
+      "sha256": "fd6793f1a7963048a127f98af943a31867f528d2fe9247d2e3947879f54f395f"
+    },
+    {
+      "bytes": 16393,
+      "content_type": "application/dxf",
+      "filename": "end_cap_flat.dxf",
+      "kind": "DXF",
+      "sha256": "d7acfb5daf664003fba754d486d1f8f46b6f32aff172424ea2cb005c5a28ee44"
+    },
+    {
+      "bytes": 16504,
+      "content_type": "application/dxf",
+      "filename": "end_cap_gland_flat.dxf",
+      "kind": "DXF",
+      "sha256": "feed82b24c79709385ee3a6bf1066ff6ab7b65d93da327d37baf03e118237cfc"
+    },
+    {
+      "bytes": 16389,
+      "content_type": "application/dxf",
+      "filename": "lid_flat.dxf",
+      "kind": "DXF",
+      "sha256": "2ed111be45a2852c46a0b0c45e4d9df1ea71feef126021f7ebed3c02182a4bf6"
+    },
+    {
+      "bytes": 311938,
+      "content_type": "model/step",
+      "filename": "enclosure.step",
+      "kind": "STEP",
+      "sha256": "b73f6f2eef59228c530c50fe519cfc1f8de4f7b88cb0131b8fd5b2958c723dcd"
+    },
+    {
+      "bytes": 482960,
+      "content_type": "model/gltf-binary",
+      "filename": "enclosure.glb",
+      "kind": "GLB",
+      "sha256": "630f63e41aeb9cabd8e542bbc6e230b8182f364202562c27c6cfc1b0af7287dc"
+    },
+    {
+      "bytes": 2588,
+      "content_type": "application/json",
+      "filename": "bom.json",
+      "kind": "BOM",
+      "sha256": "93f39f4a9ddc42752a98f3f11d541c88a5fc840de56c8b5ad40a41f0804525c4"
+    },
+    {
+      "bytes": 1014,
+      "content_type": "text/csv",
+      "filename": "bom.csv",
+      "kind": "CSV",
+      "sha256": "bbbbec2575407770ac4913d16442455755af7edc7dc350ff86bda8e4926de0d1"
+    },
+    {
+      "bytes": 5394,
+      "content_type": "image/svg+xml",
+      "filename": "drawing.svg",
+      "kind": "SVG",
+      "sha256": "74e0cef2b9a6ed688d041d525d97812d65099ea6ca1cf42621c4c58531c61205"
+    }
+  ],
+  "family": "sheet_enclosure",
+  "panels": [
+    {
+      "filename": "body_flat.dxf",
+      "name": "body",
+      "quantity": 1
+    },
+    {
+      "filename": "end_cap_flat.dxf",
+      "name": "end_cap",
+      "quantity": 1
+    },
+    {
+      "filename": "end_cap_gland_flat.dxf",
+      "name": "end_cap_gland",
+      "quantity": 1
+    },
+    {
+      "filename": "lid_flat.dxf",
+      "name": "lid",
+      "quantity": 1
+    }
+  ],
+  "processes": [
+    "laser cutting",
+    "press brake bending",
+    "hardware insertion"
+  ],
+  "spec": {
+    "end_flange_mm": 15.0,
+    "family": "sheet_enclosure",
+    "floor_holes": [],
+    "gland_diameter_mm": 12.5,
+    "inner_x_mm": 180.0,
+    "inner_y_mm": 120.0,
+    "inner_z_mm": 70.0,
+    "inside_bend_radius_mm": 1.6,
+    "k_factor": 0.44,
+    "lid_lip_mm": 15.0,
+    "thickness_mm": 1.6
+  },
+  "units": "mm",
+  "version": "dm-cad-manifest/1",
+  "worker_version": "0.2.0"
+}

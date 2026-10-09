@@ -1,0 +1,10 @@
+item,name,kind,quantity,process,thickness_mm,size_mm,file,spec,notes
+1,Body (floor + side walls),fabricated,1,laser cutting + press brake bending,1.6,183.2 x 260.838,body_flat.dxf,,
+2,End cap,fabricated,1,laser cutting + press brake bending,1.6,68.4 x 144.438,end_cap_flat.dxf,,
+3,End cap with cable-gland hole,fabricated,1,laser cutting + press brake bending,1.6,68.4 x 144.438,end_cap_gland_flat.dxf,,
+4,Lid with drip lips,fabricated,1,laser cutting + press brake bending,1.6,183.2 x 151.838,lid_flat.dxf,,
+5,"Blind rivet, aluminium, 1/8 in (3.2 mm)",purchased,8,,,,,grip 3.2 mm,End caps to body side walls.
+6,"Machine screw M3 x 8, stainless, pan head",purchased,4,,,,,ISO 7045 A2,Lid lips to body side walls.
+7,"Nyloc nut M3, stainless",purchased,4,,,,,ISO 10511 A2,Inside the side walls.
+8,"EPDM foam gasket strip, 10 x 3 mm, adhesive-backed",purchased,1,,,,,0.993 m,Under the lid and around both end caps (weather seal).
+9,"Cable gland, IP68, nylon",purchased,1,,,,,for a 12.5 mm hole,In the second end cap.

@@ -150,9 +150,21 @@ export const EVENT_PAYLOADS = {
     'cad.generated': z.object({
         buildId: id,
         version: z.number().int().positive(),
-        family: z.enum(['sheet_panel', 'l_bracket', 'enclosure']),
+        family: z.enum(['sheet_panel', 'l_bracket', 'enclosure', 'u_channel', 'multi_bend_bracket', 'slotted_plate', 'sheet_enclosure']),
         partId: id.nullable(),
-        artifacts: z.array(z.object({ kind: z.enum(['STEP', 'DXF', 'GLB']), key: z.string(), sha256: z.string() })),
+        artifacts: z.array(z.object({ kind: z.enum(['STEP', 'DXF', 'GLB', 'BOM', 'CSV', 'SVG', 'MANIFEST']), key: z.string(), sha256: z.string() })),
+    }),
+    /** Workflow 01 "Makeability" + "Preliminary quote": the R1 engine priced every flat pattern of a CAD version. */
+    'makeability.completed': z.object({ buildId: id, version: z.number().int().positive(), makeabilityScore: z.number().int().min(0).max(100), partCount: z.number().int().nonnegative() }),
+    'quote.preliminary': z.object({
+        buildId: id,
+        version: z.number().int().positive(),
+        quantity: z.number().int().positive(),
+        lowCents: z.number().int().nonnegative(),
+        highCents: z.number().int().nonnegative(),
+        productionDaysMin: z.number().int().positive(),
+        productionDaysMax: z.number().int().positive(),
+        trustLevel: z.enum(['BINDING', 'ESTIMATE']),
     }),
 
     // ---- R2: sourcing bridge (ADR-0005, workflow 03) ----------------------

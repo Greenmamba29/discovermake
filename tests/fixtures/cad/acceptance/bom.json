@@ -1,0 +1,111 @@
+{
+  "family": "sheet_enclosure",
+  "items": [
+    {
+      "bend_count": 2,
+      "file": "body_flat.dxf",
+      "flat_size_mm": [
+        183.2,
+        260.838
+      ],
+      "hole_count": 12,
+      "item": 1,
+      "kind": "fabricated",
+      "name": "Body (floor + side walls)",
+      "notes": "",
+      "process": "laser cutting + press brake bending",
+      "quantity": 1,
+      "thickness_mm": 1.6
+    },
+    {
+      "bend_count": 2,
+      "file": "end_cap_flat.dxf",
+      "flat_size_mm": [
+        68.4,
+        144.438
+      ],
+      "hole_count": 4,
+      "item": 2,
+      "kind": "fabricated",
+      "name": "End cap",
+      "notes": "",
+      "process": "laser cutting + press brake bending",
+      "quantity": 1,
+      "thickness_mm": 1.6
+    },
+    {
+      "bend_count": 2,
+      "file": "end_cap_gland_flat.dxf",
+      "flat_size_mm": [
+        68.4,
+        144.438
+      ],
+      "hole_count": 5,
+      "item": 3,
+      "kind": "fabricated",
+      "name": "End cap with cable-gland hole",
+      "notes": "",
+      "process": "laser cutting + press brake bending",
+      "quantity": 1,
+      "thickness_mm": 1.6
+    },
+    {
+      "bend_count": 2,
+      "file": "lid_flat.dxf",
+      "flat_size_mm": [
+        183.2,
+        151.838
+      ],
+      "hole_count": 4,
+      "item": 4,
+      "kind": "fabricated",
+      "name": "Lid with drip lips",
+      "notes": "",
+      "process": "laser cutting + press brake bending",
+      "quantity": 1,
+      "thickness_mm": 1.6
+    },
+    {
+      "item": 5,
+      "kind": "purchased",
+      "name": "Blind rivet, aluminium, 1/8 in (3.2 mm)",
+      "notes": "End caps to body side walls.",
+      "quantity": 8,
+      "spec": "grip 3.2 mm"
+    },
+    {
+      "item": 6,
+      "kind": "purchased",
+      "name": "Machine screw M3 x 8, stainless, pan head",
+      "notes": "Lid lips to body side walls.",
+      "quantity": 4,
+      "spec": "ISO 7045 A2"
+    },
+    {
+      "item": 7,
+      "kind": "purchased",
+      "name": "Nyloc nut M3, stainless",
+      "notes": "Inside the side walls.",
+      "quantity": 4,
+      "spec": "ISO 10511 A2"
+    },
+    {
+      "item": 8,
+      "kind": "purchased",
+      "name": "EPDM foam gasket strip, 10 x 3 mm, adhesive-backed",
+      "notes": "Under the lid and around both end caps (weather seal).",
+      "quantity": 1,
+      "spec": "0.993 m"
+    },
+    {
+      "item": 9,
+      "kind": "purchased",
+      "name": "Cable gland, IP68, nylon",
+      "notes": "In the second end cap.",
+      "quantity": 1,
+      "spec": "for a 12.5 mm hole"
+    }
+  ],
+  "units": "mm",
+  "version": "dm-bom/1"
+}

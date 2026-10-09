@@ -56,7 +56,7 @@ def test_generate_bracket_end_to_end(client):
     assert body["ref"] == "bld_x@v2"
     assert body["family"] == "l_bracket"
     kinds = {a["kind"] for a in body["artifacts"]}
-    assert kinds == {"DXF", "STEP", "GLB"}
+    assert kinds == {"DXF", "STEP", "GLB", "BOM", "CSV", "SVG", "MANIFEST"}
     for a in body["artifacts"]:
         data = base64.b64decode(a["content_base64"])
         assert len(data) == a["bytes"]

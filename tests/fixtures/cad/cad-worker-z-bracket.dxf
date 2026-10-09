@@ -1549,7 +1549,7 @@ LAYER
 100
 AcDbSymbolTable
  70
-4
+5
   0
 LAYER
   5
@@ -1627,7 +1627,7 @@ Continuous
   0
 LAYER
   5
-30
+31
 330
 1
 100
@@ -1635,11 +1635,35 @@ AcDbSymbolTableRecord
 100
 AcDbLayerTableRecord
   2
-BEND_90
+BEND_90_UP
  70
 0
  62
 1
+  6
+Continuous
+370
+-3
+390
+13
+347
+21
+  0
+LAYER
+  5
+33
+330
+1
+100
+AcDbSymbolTableRecord
+100
+AcDbLayerTableRecord
+  2
+BEND_90_DOWN
+ 70
+0
+ 62
+5
   6
 Continuous
 370
@@ -2073,7 +2097,7 @@ ENTITIES
   0
 LWPOLYLINE
   5
-31
+30
 330
 17
 100
@@ -2097,11 +2121,11 @@ AcDbPolyline
  10
 40.0
  20
-127.35815900008866
+84.71631800017734
  10
 0.0
  20
-127.35815900008866
+84.71631800017734
   0
 LINE
   5
@@ -2111,43 +2135,23 @@ LINE
 100
 AcDbEntity
   8
-BEND_90
+BEND_90_UP
 100
 AcDbLine
  10
 0.0
  20
-48.67907950004434
+23.679079500044335
  30
 0.0
  11
 40.0
  21
-48.67907950004434
+23.679079500044335
  31
 0.0
   0
-CIRCLE
-  5
-33
-330
-17
-100
-AcDbEntity
-  8
-CUT
-100
-AcDbCircle
- 10
-20.0
- 20
-15.0
- 30
-0.0
- 40
-2.5
-  0
-CIRCLE
+LINE
   5
 34
 330
@@ -2155,17 +2159,21 @@ CIRCLE
 100
 AcDbEntity
   8
-CUT
+BEND_90_DOWN
 100
-AcDbCircle
+AcDbLine
  10
-20.0
+0.0
  20
-107.35815900008866
+61.03723850013301
  30
 0.0
- 40
-2.5
+ 11
+40.0
+ 21
+61.03723850013301
+ 31
+0.0
   0
 ENDSEC
   0
