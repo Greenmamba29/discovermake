@@ -3,11 +3,13 @@
  * Signature verified with STRIPE_WEBHOOK_SECRET over the RAW body, deduped in
  * webhook_events, then routed to the order handlers. Processing errors answer 500
  * so Stripe retries; bad signatures answer 400.
+ * R3: verified subscription (Prime) and invoice (B2B) events go to their own handlers first.
  */
 import { env } from '@/server/env';
 import { ApiError, json, MAX_WEBHOOK_BODY_BYTES, readBodyText, route } from '@/server/http';
 import { processPaymentWebhook } from '@/server/orders';
 import { StripePaymentProvider } from '@/server/payments';
+import { routeStripeExtensionEvent } from '@/server/prime/stripe-events';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -22,6 +24,8 @@ export const POST = route(async (request) => {
         console.warn('[webhooks/stripe] rejected', err instanceof Error ? err.message : err);
         throw new ApiError('BAD_REQUEST', 'Invalid Stripe webhook signature');
     }
-    await processPaymentWebhook('stripe', event, JSON.parse(rawBody));
+    const raw = JSON.parse(rawBody);
+    if (await routeStripeExtensionEvent(raw)) return json({ received: true as const });
+    await processPaymentWebhook('stripe', event, raw);
     return json({ received: true as const });
 });

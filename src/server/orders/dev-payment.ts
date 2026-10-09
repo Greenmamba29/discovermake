@@ -42,7 +42,16 @@ export async function confirmDevPayment(rawBody: string, headers: Headers): Prom
         .select()
         .from(payments)
         .where(and(eq(payments.provider, 'dev'), eq(payments.providerRef, parsed.data.providerRef)));
-    if (!payment) throw new ApiError('NOT_FOUND', 'Payment session not found');
+    if (!payment) {
+        // R3 cart checkout / invoice group: land on the signed confirmation page listing every order.
+        const { findGroupByRef, groupUrlFromRow } = await import('../cart/payment-group');
+        const group = await findGroupByRef('dev', parsed.data.providerRef);
+        if (!group) throw new ApiError('NOT_FOUND', 'Payment session not found');
+        const [first] = await db.select({ id: orders.id, status: orders.status }).from(orders).where(eq(orders.id, group.orderIds[0]));
+        const url = groupUrlFromRow(group);
+        if (!first || !url) throw new ApiError('INTERNAL', 'Order link could not be recovered');
+        return DevPaymentConfirmResponse.parse({ orderId: first.id, status: first.status, redirectUrl: url });
+    }
     const [order] = await db.select({ id: orders.id, status: orders.status }).from(orders).where(eq(orders.id, payment.orderId));
     if (!order) throw new ApiError('NOT_FOUND', 'Order not found');
     const redirectUrl = orderUrlFromPaymentMetadata(order.id, payment.metadata);

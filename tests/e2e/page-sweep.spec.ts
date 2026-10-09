@@ -42,6 +42,8 @@ type Urls = {
     cadWorkspaceUrl: string;
     /** R4 Live: a LIVE show with a featured product and an open drop, an ENDED replay, its control room. */
     live: LiveSweepState;
+    /** R3 experience: two binding quotes (different parts) for the build cart screen. */
+    cartQuoteIds: string[];
     /** R6 Reconstruct: a knob build with a measured photo, and one with confirmed readings, CAD and a BINDING print quote. */
     reconstructMeasuredBuildId: string;
     reconstructReviewBuildId: string;
@@ -52,7 +54,7 @@ type Screen = {
     mobbin: string;
     url: (u: Urls) => string;
     /** Log in or otherwise prepare the page before navigating. */
-    before?: (page: Page) => Promise<void>;
+    before?: (page: Page, urls: Urls) => Promise<void>;
     /** The Mobbin pattern this screen was designed from. */
     pattern: (page: Page) => Promise<void>;
     /** Failed requests that are expected on this screen, matched against "<status> <path>". */
@@ -481,6 +483,99 @@ const SCREENS: Screen[] = [
             await expect(row.getByTestId('build-reorder')).toBeEnabled();
         },
     },
+    // ---- R3 Prime experience ----
+    {
+        name: 'prime-paywall',
+        bottomNav: true,
+        mobbin: 'Copilot · Claim your free trial + Givingli · Today → reminder → trial ends timeline',
+        url: () => '/prime',
+        pattern: async (page) => {
+            await expect(page.getByRole('heading', { level: 1, name: 'Claim your free trial' })).toBeVisible();
+            // Timeline with real dates: Today → reminder (2 days before) → trial ends.
+            const steps = page.getByTestId('trial-timeline').getByRole('listitem');
+            await expect(steps).toHaveCount(3);
+            await expect(steps.locator('time')).toHaveCount(3);
+            await expect(page.getByTestId('trial-step-reminder')).toContainText('Reminder');
+            // Plan toggle + honest cancellation copy + one primary CTA.
+            await expect(page.getByRole('radiogroup', { name: 'Plan' }).getByRole('radio')).toHaveCount(2);
+            await expect(page.getByTestId('prime-cancel-copy')).toContainText('pay nothing');
+            await expect(page.getByTestId('prime-signin')).toBeVisible();
+            await expect(page.getByTestId('prime-benefits').getByRole('listitem')).toHaveCount(5);
+        },
+    },
+    {
+        name: 'me-membership',
+        bottomNav: true,
+        mobbin: 'Membership management: status, renewal date, one-tap cancel',
+        url: () => '/me/membership',
+        before: async (page) => {
+            await signInByEmail(page, 'sweep-prime@example.com');
+            await page.request.post('/api/me/membership', { data: { plan: 'monthly' } });
+        },
+        pattern: async (page) => {
+            await expect(page.getByTestId('membership-status')).toHaveText('Free trial');
+            await expect(page.getByTestId('membership-sentence')).toContainText('Free until');
+            await expect(page.getByTestId('membership-cancel')).toBeVisible();
+        },
+    },
+    {
+        name: 'build-cart',
+        bottomNav: true,
+        mobbin: 'DoorDash · cart sheet with "Complete your order" upsells + running total',
+        url: () => '/cart',
+        before: async (page, u) => {
+            for (const quoteId of u.cartQuoteIds) expect((await page.request.post('/api/me/cart/items', { data: { quoteId } })).ok()).toBe(true);
+        },
+        pattern: async (page) => {
+            await expect(page.getByTestId('cart-item')).toHaveCount(2);
+            // "Complete your build": engine-priced add-ons after the main choice.
+            await expect(page.getByTestId('upsell-hardware_kit').first()).toBeVisible({ timeout: 15_000 });
+            await expect(page.getByTestId('upsell-spare_part').first()).toContainText('+$');
+            await expect(page.getByTestId('cart-total')).toBeVisible({ timeout: 15_000 });
+            await expect(page.getByTestId('cart-checkout-cta')).toContainText('2 parts');
+            await expect(page.getByTestId('prime-offer-card')).toBeVisible();
+        },
+    },
+    {
+        name: 'order-map-chat',
+        bottomNav: true,
+        mobbin: 'Shop · "Arrives" carrier card over a map + Waymo one status line; Glovo / LinkedIn quick-reply chips',
+        url: (u) => u.orderUrl,
+        pattern: async (page) => {
+            await expect(page.getByTestId('tracking-map')).toBeVisible({ timeout: 15_000 });
+            await expect(page.getByTestId('map-offline')).toBeVisible();
+            await expect(page.getByTestId('map-status')).toContainText('Delivered');
+            await expect(page.getByTestId('carrier-card')).toContainText('1Z999AA10123456785');
+            await expect(page.getByTestId('quick-replies').getByRole('button', { name: 'Where is my order?' })).toBeVisible();
+            await expect(page.getByTestId('chat-input')).toBeVisible();
+        },
+    },
+    {
+        name: 'order-rating',
+        bottomNav: true,
+        mobbin: 'DoorDash · rate your order at the end (stars, tags, photo)',
+        url: (u) => u.orderUrl,
+        pattern: async (page) => {
+            const card = page.getByTestId('rating-card');
+            await expect(card).toBeVisible({ timeout: 15_000 });
+            await expect(card.getByRole('radiogroup', { name: 'Star rating' }).getByRole('radio')).toHaveCount(5);
+            await expect(card.getByRole('group', { name: 'What stood out' }).getByRole('button')).toHaveCount(5);
+            await expect(card.getByTestId('rating-caption')).toBeVisible();
+            await expect(card.getByTestId('rating-submit')).toBeVisible();
+            await card.scrollIntoViewIfNeeded();
+        },
+    },
+    {
+        name: 'admin-moderation',
+        mobbin: 'Ops queue: rating moderation, hold requests, order chats, invoices',
+        bottomNav: false,
+        url: () => '/admin/prime',
+        before: adminLogin,
+        pattern: async (page) => {
+            await expect(page.getByTestId('moderation-queue')).toBeVisible();
+            for (const heading of [/Ratings to review/, /Hold requests/, /Order chats/, /B2B invoices/]) await expect(page.getByRole('heading', { level: 2, name: heading })).toBeVisible();
+        },
+    },
     {
         name: 'live-home',
         bottomNav: true,
@@ -665,6 +760,8 @@ async function buildState(browser: Browser): Promise<Urls> {
     const reconstructMeasured = await createReconstructState(request, { cad: false });
     const reconstructReviewed = await createReconstructState(request, { cad: true });
     const prime = await primeSupplierState(page, request);
+    // R3 experience: a second binding quote (another part) so the build cart holds two parts.
+    const second = await quotePart(page, 'sweep-cart.dxf');
     await context.close();
     const live = await buildLiveSweepState(browser, quotePart);
 
@@ -684,6 +781,7 @@ async function buildState(browser: Browser): Promise<Urls> {
         reconstructReviewBuildId: reconstructReviewed.buildId,
         live,
         ...prime,
+        cartQuoteIds: [fresh.quoteId, second.quoteId],
     };
 }
 
@@ -691,7 +789,7 @@ test.describe('Mobbin page sweep', () => {
     let urls: Urls;
 
     test.beforeAll(async ({ browser }) => {
-        test.setTimeout(360_000);
+        test.setTimeout(480_000);
         mkdirSync(OUT, { recursive: true });
         // A failed test restarts the worker and re-runs beforeAll: reuse this run's state.
         const runId = existsSync(RUN_ID_FILE) ? readFileSync(RUN_ID_FILE, 'utf8') : 'none';
@@ -712,7 +810,7 @@ test.describe('Mobbin page sweep', () => {
                 const context = await browser.newContext({ viewport: VIEWPORTS[viewport] });
                 const page = await context.newPage();
                 const problems: string[] = [];
-                if (screen.before) await screen.before(page);
+                if (screen.before) await screen.before(page, urls);
                 page.on('console', (msg) => {
                     // Failed requests are reported below with their URL instead.
                     if (msg.type() === 'error' && !/Failed to load resource/i.test(msg.text())) problems.push(`console: ${msg.text()}`);

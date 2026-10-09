@@ -19,6 +19,8 @@ import { dateTime, humanize, money, shortDate } from '@/lib/format';
 import { JOB_STATUS_TEXT, JOB_UNIVERSAL, MILESTONE_LABELS } from '@/lib/status';
 import { cn } from '@/lib/utils';
 import { QaForm } from './qa-form';
+import { OrderChat } from '@/components/prime/order-chat';
+import { primeApi as experienceApi } from '@/components/prime/api';
 import { primeApi } from '@/lib/prime-api';
 import { ShipForm } from './ship-form';
 import { useCountdown } from './use-countdown';
@@ -426,6 +428,18 @@ export function JobDetail({ jobId }: { jobId: string }) {
                         <Notice tone="success" title="Delivered">
                             The buyer received the parts. Your payout of {money(job.payoutCents)} is recorded.
                         </Notice>
+                    )}
+                    {['ACCEPTED', 'IN_PRODUCTION', 'QA_PASSED', 'QA_FAILED', 'SHIPPED', 'DELIVERED'].includes(job.status) && (
+                        <OrderChat
+                            title="Buyer messages"
+                            intro="The buyer sees your replies on their order page. Ops can see this thread too."
+                            adapter={{
+                                key: ['shop-chat', job.id],
+                                load: () => experienceApi.shopChat(job.id),
+                                post: (body) => experienceApi.shopPostChat(job.id, body),
+                                upload: (file) => experienceApi.shopChatUpload(job.id, file),
+                            }}
+                        />
                     )}
                 </div>
             </div>

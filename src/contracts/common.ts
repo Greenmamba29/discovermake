@@ -72,6 +72,17 @@ export const ID_PREFIX = {
     jobBatch: 'bat',
     // R6 Reconstruct
     reconstruct: 'rcn',
+    // R3 Prime experience
+    membership: 'mem',
+    membershipEvent: 'mev',
+    cart: 'crt',
+    cartItem: 'cti',
+    cartCheckout: 'cco',
+    upsellOffer: 'ups',
+    rating: 'rtg',
+    orderMessage: 'msg',
+    holdRequest: 'hld',
+    invoice: 'inv',
 } as const;
 export type IdKind = keyof typeof ID_PREFIX;
 

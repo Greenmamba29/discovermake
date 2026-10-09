@@ -56,10 +56,13 @@ export class DevPaymentProvider implements PaymentProvider {
             .from(payments)
             .where(and(eq(payments.provider, 'dev'), eq(payments.providerRef, body.providerRef)))
             .limit(1);
-        if (!payment) throw new DevPaymentNotFoundError(body.providerRef);
+        // R3: a cart checkout / invoice pays several orders under one group reference.
+        const group = payment ? null : await (await import('../cart/payment-group')).findGroupByRef('dev', body.providerRef);
+        if (!payment && !group) throw new DevPaymentNotFoundError(body.providerRef);
+        const amount = payment ? { amountCents: payment.amountCents, currency: payment.currency } : { amountCents: group!.amountCents, currency: group!.currency };
         const eventId = `dev:${body.providerRef}:${body.outcome}`;
-        const manual = (payment.metadata as Record<string, unknown> | null)?.[CAPTURE_METHOD_METADATA_KEY] === 'manual';
-        if (body.outcome === 'succeeded' && manual) {
+        const manual = (payment?.metadata as Record<string, unknown> | null | undefined)?.[CAPTURE_METHOD_METADATA_KEY] === 'manual';
+        if (body.outcome === 'succeeded' && manual && payment) {
             // Authorize-only session (Build Slots): funds are "held"; capture happens at drop close.
             return {
                 kind: 'payment.authorized',
@@ -75,9 +78,8 @@ export class DevPaymentProvider implements PaymentProvider {
                 kind: 'payment.succeeded',
                 eventId,
                 providerRef: body.providerRef,
-                providerPaymentId: `devpi_${body.providerRef.slice('devpay_'.length)}`,
-                amountCents: payment.amountCents,
-                currency: payment.currency,
+                providerPaymentId: `devpi_${body.providerRef.replace(/^dev[a-z]+_/, '')}`,
+                ...amount,
             };
         }
         return { kind: 'payment.failed', eventId, providerRef: body.providerRef, reason: 'Declined in dev payment page' };
