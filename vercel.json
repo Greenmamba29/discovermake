@@ -16,6 +16,10 @@
         {
             "path": "/api/admin/promise/retrain",
             "schedule": "30 6 * * 1"
+        },
+        {
+            "path": "/api/admin/prime/trial-reminders",
+            "schedule": "45 6 * * *"
         }
     ]
 }

@@ -19,6 +19,8 @@ import { newId, newOrderNumber } from '../ids';
 import { getPaymentProvider } from '../payments';
 import { isQuoteOrderable } from '../quote';
 import { addBusinessDays, orderStartDate } from '../quote/leadtime';
+import { applyMembershipBenefits, type BenefitResult, type MembershipForBenefits } from '../prime/benefits';
+import { recordOrderBenefits } from '../prime/order-benefits';
 import { SEALED_TOKEN_KEY, sealOrderToken } from './link-vault';
 import { createPaymentPlan, PAYMENT_PURPOSE_KEY } from '../prime/payments';
 import { setOrderPromise } from '../promise/engine';
@@ -92,6 +94,38 @@ export async function priceQuoteForCheckout(quote: QuoteRow, shippingMethod: Che
 }
 
 /**
+ * R3 Prime: the ONE place membership benefits are applied to checkout totals. Validates
+ * and prices the quote snapshot (priceQuoteForCheckout), then runs the pure
+ * `applyMembershipBenefits` (free standard shipping, member material pricing, flags).
+ * `qualifyingSubtotalCents` lets a cart compare its whole subtotal with the free-shipping
+ * threshold. Non-members get the snapshot price unchanged.
+ */
+export async function priceOrderForCheckout(
+    quote: QuoteRow,
+    shippingMethod: CheckoutRequest['shippingMethod'],
+    membership: MembershipForBenefits,
+    opts: { qualifyingSubtotalCents?: number; now?: Date } = {},
+): Promise<BenefitResult<CheckoutPricing>> {
+    const base = await priceQuoteForCheckout(quote, shippingMethod, opts.now);
+    const standard = quote.shippingOptions.find((o) => o.method === 'STANDARD');
+    const freight = Boolean(standard && /^freight/i.test(standard.label));
+    const r = applyMembershipBenefits({ ...base, lineItems: quote.lineItems, shippingMethod, freight, qualifyingSubtotalCents: opts.qualifyingSubtotalCents }, membership);
+    const t = r.totals;
+    const totals: CheckoutPricing = {
+        quantity: t.quantity,
+        unitPriceCents: t.unitPriceCents,
+        subtotalCents: t.subtotalCents,
+        shippingCents: t.shippingCents,
+        taxCents: t.taxCents,
+        totalCents: t.totalCents,
+        shopCostCents: t.shopCostCents,
+        platformFeeCents: t.platformFeeCents,
+        currency: t.currency,
+    };
+    return { ...r, totals };
+}
+
+/**
  * Ship date promised at checkout. Quotes stay binding for QUOTE_VALIDITY_DAYS, but
  * their ship date was computed when the quote was made; the quoted lead time is
  * re-applied from the moment of ordering (shop timezone, same-day cutoff, business
@@ -114,11 +148,15 @@ function isUniqueViolation(err: unknown, constraint: string): boolean {
     return e?.cause ? isUniqueViolation(e.cause, constraint) : false;
 }
 
-export async function createCheckout(input: CheckoutRequest, opts: { buyerUserId?: string | null } = {}): Promise<CheckoutResponse> {
+/** Who is checking out: the signed-in buyer (ADR-0009) and, for R3 Prime benefits, their membership. */
+export type CheckoutContext = { buyerUserId?: string | null; membership?: MembershipForBenefits };
+
+export async function createCheckout(input: CheckoutRequest, opts: CheckoutContext = {}): Promise<CheckoutResponse> {
     const db = getDb();
     const [quote] = await db.select().from(quotes).where(eq(quotes.id, input.quoteId));
     if (!quote) throw new ApiError('NOT_FOUND', 'Quote not found');
-    const pricing = await priceQuoteForCheckout(quote, input.shippingMethod);
+    const priced = await priceOrderForCheckout(quote, input.shippingMethod, opts.membership ?? null);
+    const pricing = priced.totals;
     const [build] = await db.select().from(builds).where(eq(builds.id, quote.buildId));
     if (!build) throw new ApiError('NOT_FOUND', 'Build not found');
     const [shop] = await db.select({ timezone: shops.timezone }).from(shops).where(eq(shops.id, quote.shopId));
@@ -184,6 +222,7 @@ export async function createCheckout(input: CheckoutRequest, opts: { buyerUserId
                     orderId,
                     timestamp: now,
                 });
+                await recordOrderBenefits(tx, orderId, priced, opts.buyerUserId ?? null);
 
                 // R3: the first charge (full, or the supplier-route deposit) minus any promise credit,
                 // and the Delivery Promise with its per-leg P90s.
