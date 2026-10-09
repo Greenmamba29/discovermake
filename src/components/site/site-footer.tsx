@@ -20,6 +20,7 @@ export function SiteFooter({ surface = 'graphite' }: { surface?: 'graphite' | 'p
                 <nav aria-label="Make">
                     <p className={cn('eyebrow mb-3')}>Make</p>
                     <ul className="space-y-2 text-sm">
+                        <li><Link className={link} href="/discover">Discover starter designs</Link></li>
                         <li><Link className={link} href="/make">Upload a DXF</Link></li>
                         <li><Link className={link} href="/#materials">Materials</Link></li>
                         <li><Link className={link} href="/#how-it-works">How it works</Link></li>
@@ -28,6 +29,7 @@ export function SiteFooter({ surface = 'graphite' }: { surface?: 'graphite' | 'p
                 <nav aria-label="Account">
                     <p className={cn('eyebrow mb-3')}>Orders</p>
                     <ul className="space-y-2 text-sm">
+                        <li><Link className={link} href="/builds">My Builds</Link></li>
                         <li><Link className={link} href="/orders">Track an order</Link></li>
                         <li><Link className={link} href="/shop">Partner shop login</Link></li>
                     </ul>
