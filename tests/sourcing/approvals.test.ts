@@ -223,7 +223,7 @@ describe('sourcing approvals + buyer view', () => {
         const f = await createJobFixture(ctx.db, { quantity: 40 });
         await ctx.db.update(sourcingJobs).set({ status: 'CANCELLED' }).where(eq(sourcingJobs.id, f.job.id));
         const body = { partId: f.part.id, quantity: 40, targetRegions: ['vn', 'CN'] };
-        const headers = { 'x-real-ip': '203.0.113.7' };
+        const headers = { 'x-forwarded-for': '203.0.113.7' };
         const r1 = await buyerPost(req(`/api/builds/${f.build.id}/sourcing`, { method: 'POST', body, headers }), params({ buildId: f.build.id }));
         expect(r1.status).toBe(201);
         const j1 = await r1.json();

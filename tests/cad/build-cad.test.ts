@@ -12,8 +12,10 @@ import { eq } from 'drizzle-orm';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import type { CreationIntent } from '@/contracts/make-ai';
 import { approveVersion, getGraph } from '@/server/build-graph';
-import { generateBuildCad, getBuildCad } from '@/server/cad/build-cad';
-import { builds } from '@/server/db/schema';
+import { generateBuildCad, getBuildCad, readBom } from '@/server/cad/build-cad';
+import { attachCadResult } from '@/server/cad/pipeline';
+import { generateCad } from '@/server/cad/client';
+import { builds, parts as partsTable, quotes as quotesTable } from '@/server/db/schema';
 import { resetEnvCache } from '@/server/env';
 import { createBuildFromIntent } from '@/server/make-ai/builds';
 import { createQuote } from '@/server/quote';
@@ -163,5 +165,53 @@ describe('POST /api/builds/:buildId/cad', () => {
             process.env.CAD_WORKER_URL = 'http://cad.test';
             resetEnvCache();
         }
+    });
+});
+
+describe('retries are idempotent (review: side effects before the version write)', () => {
+    it('reuses the part from an earlier attempt at the same version and bytes', async () => {
+        const buildId = await approvedBuild();
+        const result = await generateCad(SPEC, { ref: `${buildId}@v2`, fetchImpl: fakeWorker() });
+        const actor = { kind: 'system', id: 'test' } as const;
+        const first = await attachCadResult({ buildId, version: 2, result, actor });
+        const second = await attachCadResult({ buildId, version: 2, result, actor });
+        expect(second.parts.map((p) => p.part.id)).toEqual(first.parts.map((p) => p.part.id));
+        const rows = await ctx.db.select({ id: partsTable.id }).from(partsTable).where(eq(partsTable.buildId, buildId));
+        expect(rows).toHaveLength(1);
+    });
+
+    it('a retried generation reuses the estimate quotes instead of persisting a new set', async () => {
+        const buildId = await approvedBuild();
+        const res = await generateBuildCad(buildId, { spec: SPEC, fetchImpl: fakeWorker() });
+        if (res.status !== 'generated' || !res.estimate) throw new Error('expected an estimate');
+        const before = await ctx.db.select({ id: quotesTable.id }).from(quotesTable).where(eq(quotesTable.partId, res.partId!));
+        // Same bytes at the same version again (as after a 409 on the version write).
+        const result = await generateCad(SPEC, { ref: `${buildId}@v2`, fetchImpl: fakeWorker() });
+        const again = await attachCadResult({ buildId, version: 2, result, actor: { kind: 'system', id: 'test' } });
+        expect(again.parts[0]!.part.id).toBe(res.partId);
+        const { estimateCadParts } = await import('@/server/cad/estimate');
+        const graph = await getGraph(buildId, 1);
+        const est = await estimateCadParts({ spec: SPEC as never, parts: again.parts, nodes: graph!.nodes });
+        expect(est?.options.flatMap((o) => o.quoteIds).sort()).toEqual(res.estimate.options.flatMap((o) => o.quoteIds).sort());
+        const after = await ctx.db.select({ id: quotesTable.id }).from(quotesTable).where(eq(quotesTable.partId, res.partId!));
+        expect(after).toHaveLength(before.length);
+    });
+});
+
+describe('readBom (review: unvalidated BOM JSON)', () => {
+    const bomArtifact = (items: unknown) => ({ artifacts: [{ kind: 'BOM' as const, filename: 'bom.json', content_type: 'application/json', bytes: 1, sha256: 'x', data: Buffer.from(JSON.stringify({ items })) }] });
+
+    it('keeps valid lines and skips malformed ones instead of throwing later', () => {
+        const items = [
+            { item: 1, name: 'Body', kind: 'fabricated', quantity: 1 },
+            { item: 2, name: 42, kind: 'fabricated', quantity: 1 },
+            { item: 3, name: 'Rivet', kind: 'purchased', quantity: -4 },
+            'junk',
+        ];
+        expect(readBom(bomArtifact(items) as never).map((i) => i.name)).toEqual(['Body']);
+    });
+
+    it('returns nothing for invalid JSON', () => {
+        expect(readBom({ artifacts: [{ kind: 'BOM', filename: 'bom.json', content_type: 'application/json', bytes: 1, sha256: 'x', data: Buffer.from('{not json') }] } as never)).toEqual([]);
     });
 });

@@ -676,7 +676,7 @@ test.describe('Mobbin page sweep', () => {
                 const bottomNav = page.getByTestId('bottom-nav');
                 if (viewport === 'phone' && screen.bottomNav) {
                     await expect(bottomNav).toBeVisible();
-                    await expect(bottomNav.getByRole('link')).toHaveCount(4);
+                    await expect(bottomNav.getByRole('link')).toHaveCount(5);
                     expect(await bottomNav.locator('[aria-current="page"]').count()).toBeLessThanOrEqual(1);
                 } else if (viewport === 'phone') {
                     await expect(bottomNav).toHaveCount(0);

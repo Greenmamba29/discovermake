@@ -96,17 +96,19 @@ describe('MCP allowlist', () => {
         expect(audit).toMatchObject([{ ok: false, errorCode: 'TOOL_NOT_ALLOWED' }]);
     });
 
-    it('accepts the token only from allowed IP ranges (rightmost x-forwarded-for hop, platform headers first)', async () => {
+    it('accepts the token only from allowed IP ranges (rightmost x-forwarded-for hop; platform header only when trusted)', async () => {
         const { body } = await create({ name: 'Office-only workspace', allowedCidrs: ['203.0.113.0/24', '2001:db8::/32'] });
         expect(await toolNames(body.token, { 'x-forwarded-for': '10.9.9.9, 203.0.113.50' })).toHaveLength(9);
-        expect((await rpc(body.token, 'tools/list', undefined, { 'x-vercel-forwarded-for': '2001:db8::7' })).status).toBe(200);
+        expect((await rpc(body.token, 'tools/list', undefined, { 'x-forwarded-for': '2001:db8::7' })).status).toBe(200);
+        // Off Vercel, a client-sent platform header is not trusted (review: spoofable x-real-ip).
+        expect((await rpc(body.token, 'tools/list', undefined, { 'x-vercel-forwarded-for': '203.0.113.9', 'x-real-ip': '203.0.113.9' })).status).toBe(403);
         // A client cannot spoof its way in by prepending an allowed address.
         const spoofed = await rpc(body.token, 'tools/list', undefined, { 'x-forwarded-for': '203.0.113.50, 192.0.2.1' });
         expect(spoofed.status).toBe(403);
         expect(spoofed.body.error).toMatchObject({ code: -32003, message: expect.stringContaining('IP_NOT_ALLOWED') });
         expect((await rpc(body.token, 'tools/list')).status).toBe(403); // no IP at all
         const audit = await ctx.db.select().from(sourcingToolCalls).where(and(eq(sourcingToolCalls.clientId, body.clientId), eq(sourcingToolCalls.errorCode, 'IP_NOT_ALLOWED')));
-        expect(audit.length).toBe(2);
+        expect(audit.length).toBe(3); // spoofed XFF, spoofed platform header, no header
     });
 
     it('admin PUT replaces the allowlist, null clears it, and bad input or revoked clients are refused', async () => {

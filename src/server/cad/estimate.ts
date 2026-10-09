@@ -13,14 +13,15 @@
  * the estimate is for a single build and says so (`quantitySource: "default"`).
  */
 import 'server-only';
-import { and, asc, eq, inArray } from 'drizzle-orm';
+import { and, asc, desc, eq, gt, inArray } from 'drizzle-orm';
 import type { BgNode } from '@/contracts/build-graph';
 import type { BuildCadEstimate, BuildCadEstimateOption, CadSpec } from '@/contracts/cad';
-import type { QuoteView } from '@/contracts/quotes';
+import { MAX_QUOTE_QUANTITY, QuoteConfig, type CreateQuoteRequest, type QuoteView } from '@/contracts/quotes';
+import { canonicalJson } from '@/server/auth/tokens';
 import { getDb } from '@/server/db';
-import { materials, services, thicknessOptions } from '@/server/db/schema';
+import { materials, quotes as quotesTable, services, thicknessOptions } from '@/server/db/schema';
 import { ApiError } from '@/server/http';
-import { createQuote } from '@/server/quote';
+import { createQuote, getQuote } from '@/server/quote';
 import type { CadPanelPart } from './pipeline';
 
 /** Catalog thickness options match the spec within this tolerance (gauge tables round to 0.01 mm). */
@@ -101,9 +102,13 @@ export async function estimateCadParts(input: { spec: CadSpec; parts: CadPanelPa
     const countersinks = spec.family === 'slotted_plate' ? spec.countersinks.length : 0;
 
     const stated = buyerQuantity(nodes);
-    const quantity = stated ?? 1;
     const notes: string[] = [];
+    // Each panel is quoted at builds × pieces per build; the instant-quote engine stops at
+    // MAX_QUOTE_QUANTITY pieces, so larger runs are priced at the largest whole number of builds.
+    const maxBuilds = Math.max(1, Math.floor(MAX_QUOTE_QUANTITY / Math.max(...parts.map((p) => p.quantity))));
+    const quantity = Math.min(stated ?? 1, maxBuilds);
     if (stated === null) notes.push('Priced for one build: tell us the quantity for a volume price.');
+    if (stated !== null && stated > quantity) notes.push(`Priced for ${quantity} builds, the instant-quote limit. Larger runs get a production quote.`);
     notes.push('Purchased hardware in the BOM (rivets, screws, gaskets, glands) is not included.');
 
     const results: BuildCadEstimateOption[] = [];
@@ -120,7 +125,7 @@ export async function estimateCadParts(input: { spec: CadSpec; parts: CadPanelPa
                     if (!countersinking || !countersinking.compatible.includes(c.slug)) throw new ApiError('VALIDATION_FAILED', `${c.name} cannot be countersunk`);
                     selected.push({ serviceId: countersinking.id, featureCount: countersinks });
                 }
-                quotes.push(await createQuote({ partId: p.part.id, materialId: c.materialId, thicknessOptionId: c.thicknessOptionId, services: selected, quantity: Math.min(5000, quantity * p.quantity) }));
+                quotes.push(await reuseOrCreateQuote({ partId: p.part.id, materialId: c.materialId, thicknessOptionId: c.thicknessOptionId, services: selected, quantity: quantity * p.quantity }));
             }
             const total = quotes.reduce((s, q) => s + q.subtotalCents, 0);
             results.push({
@@ -173,4 +178,24 @@ export async function catalogThicknessHints(): Promise<string[]> {
         byMaterial.set(r.name, list);
     }
     return [...byMaterial].map(([name, list]) => `${name}: ${list.join(', ')} mm`);
+}
+
+/**
+ * A READY, unexpired quote with exactly this configuration is reused, so a retried CAD
+ * generation (e.g. after a 409 on the version write) does not persist a second set.
+ */
+async function reuseOrCreateQuote(input: CreateQuoteRequest): Promise<QuoteView> {
+    const want = canonicalJson(QuoteConfig.parse(input));
+    const rows = await getDb()
+        .select({ id: quotesTable.id, config: quotesTable.config })
+        .from(quotesTable)
+        .where(and(eq(quotesTable.partId, input.partId), eq(quotesTable.status, 'READY'), gt(quotesTable.validUntil, new Date())))
+        .orderBy(desc(quotesTable.createdAt))
+        .limit(20);
+    const match = rows.find((r) => canonicalJson(QuoteConfig.parse(r.config)) === want);
+    if (match) {
+        const view = await getQuote(match.id);
+        if (view) return view;
+    }
+    return createQuote(input);
 }

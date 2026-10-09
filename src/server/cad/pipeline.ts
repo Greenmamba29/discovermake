@@ -9,7 +9,7 @@
  * Printed enclosures (3D print / CNC) have no flat pattern; they go to sourcing instead.
  */
 import 'server-only';
-import { eq } from 'drizzle-orm';
+import { and, eq, inArray } from 'drizzle-orm';
 import type { PartView } from '@/contracts';
 import type { CadPanelMetric } from '@/contracts/cad';
 import { getDb } from '@/server/db';
@@ -17,7 +17,7 @@ import { builds, parts } from '@/server/db/schema';
 import { emitEvent } from '@/server/events/outbox';
 import { ApiError } from '@/server/http';
 import { newId } from '@/server/ids';
-import { analyzePart, uploadPartBytes } from '@/server/quote';
+import { analyzePart, getPart, uploadPartBytes } from '@/server/quote';
 import { getStorage, storageKeys } from '@/server/storage';
 import type { Actor } from '@/contracts';
 import type { CadArtifactKind } from '@/contracts/cad';
@@ -60,23 +60,41 @@ export async function attachCadResult(input: {
     const panels = (result.metrics.panels as CadPanelMetric[] | undefined) ?? [];
     const dxfs = result.artifacts.filter((a) => a.kind === 'DXF');
     const panelParts: CadPanelPart[] = [];
-    for (const dxf of dxfs) {
-        const panel = panels.find((p) => p.filename === dxf.filename);
-        const partId = newId('part');
-        const suffix = dxfs.length > 1 ? `-${dxf.filename.replace(/_flat\.dxf$|\.dxf$/, '').replace(/_/g, '-')}` : '';
-        await db.insert(parts).values({
-            id: partId,
-            buildId,
-            designVersion: version,
-            fileKey: storageKeys.partSource(partId),
-            filename: `${slug(build.name)}-v${version}${suffix}.dxf`,
-            format: 'dxf',
-            sizeBytes: dxf.bytes,
-            status: 'AWAITING_UPLOAD',
-        });
-        await uploadPartBytes(partId, dxf.data);
-        const part = await analyzePart(partId);
-        panelParts.push({ part, filename: dxf.filename, label: panel?.label ?? FAMILY_PART_LABEL[result.family] ?? 'Flat pattern', quantity: panel?.quantity ?? 1 });
+    // Parts created by THIS call: removed again if a later panel fails, so a failure never
+    // leaves half a decomposition behind. Parts reused from an earlier attempt are kept.
+    const created: string[] = [];
+    try {
+        for (const dxf of dxfs) {
+            const panel = panels.find((p) => p.filename === dxf.filename);
+            const suffix = dxfs.length > 1 ? `-${dxf.filename.replace(/_flat\.dxf$|\.dxf$/, '').replace(/_/g, '-')}` : '';
+            const filename = `${slug(build.name)}-v${version}${suffix}.dxf`;
+            const label = panel?.label ?? FAMILY_PART_LABEL[result.family] ?? 'Flat pattern';
+            const quantity = panel?.quantity ?? 1;
+            // Retry after a failed version write: the same bytes at the same version reuse the part.
+            const reused = await reusablePart(buildId, version, filename, dxf.sha256);
+            if (reused) {
+                panelParts.push({ part: reused, filename: dxf.filename, label, quantity });
+                continue;
+            }
+            const partId = newId('part');
+            await db.insert(parts).values({
+                id: partId,
+                buildId,
+                designVersion: version,
+                fileKey: storageKeys.partSource(partId),
+                filename,
+                format: 'dxf',
+                sizeBytes: dxf.bytes,
+                status: 'AWAITING_UPLOAD',
+            });
+            created.push(partId);
+            await uploadPartBytes(partId, dxf.data);
+            const part = await analyzePart(partId);
+            panelParts.push({ part, filename: dxf.filename, label, quantity });
+        }
+    } catch (err) {
+        await discardParts(created);
+        throw err;
     }
     const part = panelParts[0]?.part ?? null;
 
@@ -90,6 +108,28 @@ export async function attachCadResult(input: {
         });
     });
     return { artifacts, part, parts: panelParts };
+}
+
+async function reusablePart(buildId: string, version: number, filename: string, sha256: string): Promise<PartView | null> {
+    const [row] = await getDb()
+        .select({ id: parts.id })
+        .from(parts)
+        .where(and(eq(parts.buildId, buildId), eq(parts.designVersion, version), eq(parts.filename, filename), eq(parts.fileSha256, sha256), eq(parts.status, 'READY')))
+        .limit(1);
+    return row ? getPart(row.id) : null;
+}
+
+/** Best effort: parts from a failed attempt have no quotes or orders yet. */
+async function discardParts(partIds: string[]): Promise<void> {
+    if (!partIds.length) return;
+    const storage = getStorage();
+    try {
+        await getDb().delete(parts).where(inArray(parts.id, partIds));
+    } catch (err) {
+        console.warn('[cad] could not discard parts from a failed generation', err instanceof Error ? err.message : err);
+        return;
+    }
+    for (const id of partIds) await storage.deleteObject(storageKeys.partSource(id)).catch(() => undefined);
 }
 
 function slug(name: string): string {
