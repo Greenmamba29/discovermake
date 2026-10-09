@@ -9,7 +9,7 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export const DELETE = route<{ clientId: string }>(async (request, { params }) => {
-    requireAdmin(request);
+    await requireAdmin(request);
     const clientId = pathId((await params).clientId, idOf('sourcingClient'), 'Sourcing client');
     await revokeSourcingClient(clientId);
     return json<OkResponse>({ ok: true });

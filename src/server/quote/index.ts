@@ -42,9 +42,11 @@ export { assertDxfFilename, UnsupportedFileError } from './dxf/sniff';
  * `application/dxf` — send exactly `upload.headers`).
  * Emits `build.created`. Part status starts at AWAITING_UPLOAD.
  * @throws ApiError UNSUPPORTED_MEDIA_TYPE (non-DXF; STEP gets a "coming in R1.5" message), PAYLOAD_TOO_LARGE.
+ *
+ * `owner` stamps the new build (R2 accounts, ADR-0009): the signed-in user and/or the guest device hash.
  */
-export async function createPartUpload(input: CreatePartRequest): Promise<CreatePartResponse> {
-    return createPartUploadImpl(input);
+export async function createPartUpload(input: CreatePartRequest, owner: { ownerUserId?: string | null; deviceHash?: string | null } = {}): Promise<CreatePartResponse> {
+    return createPartUploadImpl(input, owner);
 }
 
 /**

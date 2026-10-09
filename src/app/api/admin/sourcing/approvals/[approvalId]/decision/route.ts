@@ -15,7 +15,7 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export const POST = route<{ approvalId: string }>(async (request, { params }) => {
-    requireAdmin(request);
+    await requireAdmin(request);
     const approvalId = pathId((await params).approvalId, ApprovalId, 'Approval');
     const body = await parseJson(request, ApprovalDecisionRequest);
     return json(await decideApproval(approvalId, body, ADMIN_ACTOR));

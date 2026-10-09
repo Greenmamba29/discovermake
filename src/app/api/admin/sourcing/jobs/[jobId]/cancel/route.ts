@@ -10,7 +10,7 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export const POST = route<{ jobId: string }>(async (request, { params }) => {
-    requireAdmin(request);
+    await requireAdmin(request);
     const jobId = pathId((await params).jobId, SourcingJobId, 'Sourcing job');
     const body = validate(await readJsonBody(request, { allowEmpty: true }), CancelSourcingJobRequest);
     await cancelJob(jobId, ADMIN_ACTOR, { reason: body.reason });

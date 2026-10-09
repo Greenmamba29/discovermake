@@ -14,7 +14,7 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export const POST = route<{ jobId: string }>(async (request, { params }) => {
-    requireAdmin(request);
+    await requireAdmin(request);
     const jobId = pathId((await params).jobId, SourcingJobId, 'Sourcing job');
     const body = await parseJson(request, DeskSubmitSupplierRequest);
     const { supplier, created } = await submitSupplier({ ...body, sourcing_request_id: jobId }, { kind: 'desk', actor: ADMIN_ACTOR });

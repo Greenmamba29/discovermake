@@ -165,7 +165,7 @@ export async function getBuildView(buildId: string): Promise<BuildView | null> {
 // Upload
 // ---------------------------------------------------------------------------
 
-export async function createPartUploadImpl(input: CreatePartRequest): Promise<CreatePartResponse> {
+export async function createPartUploadImpl(input: CreatePartRequest, owner: { ownerUserId?: string | null; deviceHash?: string | null } = {}): Promise<CreatePartResponse> {
     try {
         assertDxfFilename(input.filename);
     } catch (err) {
@@ -185,7 +185,7 @@ export async function createPartUploadImpl(input: CreatePartRequest): Promise<Cr
         displayId = newBuildDisplayId();
         try {
             await db.transaction(async (tx) => {
-                await tx.insert(builds).values({ id: buildId, displayId, name, status: 'DRAFT' });
+                await tx.insert(builds).values({ id: buildId, displayId, name, status: 'DRAFT', ownerUserId: owner.ownerUserId ?? null, deviceHash: owner.deviceHash ?? null });
                 await tx.insert(parts).values({ id: partId, buildId, fileKey: key, filename: input.filename.trim(), format: 'dxf', sizeBytes: input.sizeBytes, status: 'AWAITING_UPLOAD' });
                 await emitEvent(tx, { type: 'build.created', payload: { buildId, displayId, name }, actor: buyerActor(buildId), correlationId: buildId, buildId });
             });
