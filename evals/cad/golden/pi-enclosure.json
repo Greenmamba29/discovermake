@@ -68,11 +68,11 @@
    "sha256": "74e0cef2b9a6ed688d041d525d97812d65099ea6ca1cf42621c4c58531c61205"
   },
   {
-   "bytes": 2862,
+   "bytes": 3010,
    "content_type": "application/json",
    "filename": "manifest.json",
    "kind": "MANIFEST",
-   "sha256": "1ab372ec8d960a4f1e6626d796f0adeb85787ae848136494d7cc8db509d58cd7"
+   "sha256": "5a25db02e7c5c900794d988b668403e3022c6c9c40de043a43597f9db28450aa"
   }
  ],
  "family": "sheet_enclosure",
@@ -140,6 +140,7 @@
    }
   ],
   "part_count": 4,
+  "surface_area_mm2": 194686.1,
   "thickness_mm": 1.6,
   "volume_mm3": 152289.7
  },
@@ -152,5 +153,5 @@
  "warnings": [
   "Weatherproofing relies on the gasket and the lid drip lips; specify an IP rating test if one is required."
  ],
- "worker_version": "0.2.0"
+ "worker_version": "0.3.0"
 }

@@ -19,6 +19,7 @@ import { quietConsole } from '../orders/fixtures';
 import { BASE, makeUser, req, viewerOf } from '../live/fixtures';
 import { creatorBuild, publish } from './fixtures';
 
+const NO_PARAMS = { params: Promise.resolve({}) };
 const BASE_FEATURES = { ageMs: 0, followers: 0, paidOrders: 0, engagement: { clicks: 0, plays: 0, makeThis: 0, orders: 0 }, makeability: 90, orderable: true, makeable: true, liveNow: false, followedChannel: false };
 
 describe('ranking (pure)', () => {
@@ -77,7 +78,7 @@ describe('Discover feed and search', () => {
         // Guest device with onboarding picks.
         const device = 'guest-device-secret-0000000000000000';
         await ctx.db.insert(devicePreferences).values({ deviceHash: hashDeviceSecret(device), interests: ['lighting'] });
-        const res = await feedRoute(new Request(`${BASE}/api/media/feed?tab=for_you`, { headers: { cookie: `${DEVICE_COOKIE}=${device}` } }));
+        const res = await feedRoute(new Request(`${BASE}/api/media/feed?tab=for_you`, { headers: { cookie: `${DEVICE_COOKIE}=${device}` } }), NO_PARAMS);
         const guest = await res.json();
         expect(guest.seededBy.source).toBe('device');
         expect(guest.items[0].id).toBe(ids.lamp);
@@ -99,7 +100,7 @@ describe('Discover feed and search', () => {
         const viewerA = await makeUser('fan');
         const before = await feedPage({ tab: 'trending', viewer: { userId: null, deviceHash: null } });
         const target = before.items[before.items.length - 1].id;
-        const res = await feedEventsRoute(req('/api/media/feed/events', { user: viewerA, body: { events: [{ kind: 'click', itemKind: 'build', itemId: target, tab: 'trending', position: 2 }, { kind: 'make_this', itemKind: 'build', itemId: target, tab: 'trending' }] } }));
+        const res = await feedEventsRoute(req('/api/media/feed/events', { user: viewerA, body: { events: [{ kind: 'click', itemKind: 'build', itemId: target, tab: 'trending', position: 2 }, { kind: 'make_this', itemKind: 'build', itemId: target, tab: 'trending' }] } }), NO_PARAMS);
         expect(res.status).toBe(201);
         expect(await res.json()).toEqual({ recorded: 2 });
         const rows = await ctx.db.select().from(feedEvents).where(eq(feedEvents.itemId, target));
@@ -107,7 +108,7 @@ describe('Discover feed and search', () => {
         expect(rows[0].viewerKey).toBe(viewerA.id);
         const after = await feedPage({ tab: 'trending', viewer: { userId: null, deviceHash: null } });
         expect(after.items[0].id).toBe(target);
-        const bad = await feedEventsRoute(req('/api/media/feed/events', { user: viewerA, body: { events: [{ kind: 'click', itemKind: 'build', itemId: 'not an id' }] } }));
+        const bad = await feedEventsRoute(req('/api/media/feed/events', { user: viewerA, body: { events: [{ kind: 'click', itemKind: 'build', itemId: 'not an id' }] } }), NO_PARAMS);
         expect(bad.status).toBe(400);
         expect(await recordFeedEvents({ userId: null, deviceHash: 'abc' }, [{ kind: 'impression', itemKind: 'build', itemId: target, tab: 'for_you' }])).toBe(1);
     });
@@ -120,7 +121,7 @@ describe('Discover feed and search', () => {
         expect((await searchMedia('zzzz-nothing')).builds).toHaveLength(0);
         const host = await makeUser('host', ['buyer', 'creator'], 'Amanda');
         await upsertChannel(await viewerOf(host), { name: 'Amanda Makes Lamps', handle: `amanda_${Date.now().toString(36)}`.slice(0, 24), kind: 'creator', categories: ['workshop'], bio: 'Lighting builds every Thursday.' });
-        const viaRoute = await (await searchRoute(req('/api/media/search?q=thursday'))).json();
+        const viaRoute = await (await searchRoute(req('/api/media/search?q=thursday'), NO_PARAMS)).json();
         expect(viaRoute.channels.map((c: { name: string }) => c.name)).toContain('Amanda Makes Lamps');
         expect(['fts', 'fts+trgm']).toContain(viaRoute.mode);
         expect(viaRoute.mode).toBe((await hasTrigram()) ? 'fts+trgm' : 'fts');

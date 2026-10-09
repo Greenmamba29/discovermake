@@ -65,6 +65,15 @@
     }
   ],
   "family": "sheet_enclosure",
+  "metrics": {
+    "bbox_mm": [
+      127.402,
+      183.203,
+      75.202
+    ],
+    "surface_area_mm2": 194686.1,
+    "volume_mm3": 152289.7
+  },
   "panels": [
     {
       "filename": "body_flat.dxf",
@@ -107,5 +116,5 @@
   },
   "units": "mm",
   "version": "dm-cad-manifest/1",
-  "worker_version": "0.2.0"
+  "worker_version": "0.3.0"
 }

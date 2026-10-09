@@ -92,7 +92,17 @@ export async function authenticateSourcingClient(token: string | null, now: Date
     return { id: row.id, name: row.name, allowedTools: row.allowedTools ? SOURCING_TOOLS.filter((t) => row.allowedTools!.includes(t)) : null, allowedCidrs: row.allowedCidrs ?? null };
 }
 
-type ClientRow = typeof sourcingClients.$inferSelect;
+/** Admin view columns: never the token hash (it never leaves the auth path). */
+const VIEW_COLUMNS = {
+    id: sourcingClients.id,
+    name: sourcingClients.name,
+    createdAt: sourcingClients.createdAt,
+    lastUsedAt: sourcingClients.lastUsedAt,
+    revokedAt: sourcingClients.revokedAt,
+    allowedTools: sourcingClients.allowedTools,
+    allowedCidrs: sourcingClients.allowedCidrs,
+} as const;
+type ClientRow = Pick<typeof sourcingClients.$inferSelect, keyof typeof VIEW_COLUMNS>;
 
 function toView(r: ClientRow): SourcingClientView {
     return {
@@ -108,6 +118,6 @@ function toView(r: ClientRow): SourcingClientView {
 
 /** Admin listing. Never includes the token or its hash. */
 export async function listSourcingClients(): Promise<SourcingClientView[]> {
-    const rows = await getDb().select().from(sourcingClients).orderBy(desc(sourcingClients.createdAt));
+    const rows = await getDb().select(VIEW_COLUMNS).from(sourcingClients).orderBy(desc(sourcingClients.createdAt));
     return rows.map(toView);
 }

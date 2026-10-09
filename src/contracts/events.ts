@@ -29,6 +29,7 @@ import {
 } from './enums';
 import { IsoDateTime } from './common';
 import { CreationIntentKind, MakeAiRiskClass } from './make-ai';
+import { CAD_FAMILIES, CadArtifactKind } from './cad';
 
 const id = z.string().min(1);
 const cents = z.number().int().nonnegative();
@@ -152,9 +153,9 @@ export const EVENT_PAYLOADS = {
     'cad.generated': z.object({
         buildId: id,
         version: z.number().int().positive(),
-        family: z.enum(['sheet_panel', 'l_bracket', 'enclosure', 'u_channel', 'multi_bend_bracket', 'slotted_plate', 'sheet_enclosure']),
+        family: z.enum(CAD_FAMILIES),
         partId: id.nullable(),
-        artifacts: z.array(z.object({ kind: z.enum(['STEP', 'DXF', 'GLB', 'BOM', 'CSV', 'SVG', 'MANIFEST']), key: z.string(), sha256: z.string() })),
+        artifacts: z.array(z.object({ kind: CadArtifactKind, key: z.string(), sha256: z.string() })),
     }),
     /** Workflow 01 "Makeability" + "Preliminary quote": the R1 engine priced every flat pattern of a CAD version. */
     'makeability.completed': z.object({ buildId: id, version: z.number().int().positive(), makeabilityScore: z.number().int().min(0).max(100), partCount: z.number().int().nonnegative() }),
@@ -278,6 +279,21 @@ export const EVENT_PAYLOADS = {
     'creator.payout_paid': z.object({ payoutId: id, creatorUserId: id, amountCents: cents, providerRef: z.string().nullable() }),
     'creator.payout_failed': z.object({ payoutId: id, creatorUserId: id, reason: z.string().max(300) }),
     'creator.connect_account_created': z.object({ userId: id, accountId: id }),
+    // ---- R6 Reconstruct ----
+    /** A buyer started rebuilding a broken part from photos (optionally linked to its passport). */
+    'reconstruct.started': z.object({ buildId: id, partType: z.enum(['knob', 'spacer', 'bracket']), passportId: id.nullable() }),
+    /** A caliper / ruler reading was confirmed (the only dimensions CAD may use). */
+    'reconstruct.dimension_confirmed': z.object({
+        buildId: id,
+        version: z.number().int().positive(),
+        param: z.string(),
+        valueMm: z.number().positive(),
+        unit: z.enum(['mm', 'in']),
+        photoEstimateMm: z.number().nullable(),
+        deltaPct: z.number().nullable(),
+    }),
+    /** CAD generated from the confirmed readings (family + spec from the Reconstruct planner). */
+    'reconstruct.cad_generated': z.object({ buildId: id, version: z.number().int().positive(), family: z.string(), printed: z.boolean(), quoteId: id.nullable() }),
 } as const;
 
 export type EventType = keyof typeof EVENT_PAYLOADS;

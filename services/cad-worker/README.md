@@ -11,8 +11,12 @@ The R2 CAD worker (EPIC-100-4). It takes a structured, bounded **CadSpec** and u
 | `multi_bend_bracket` | Laser + press brake | Z / hat / open profiles (1-4 bends of +90 / -90): DXF with `BEND_90_UP` / `BEND_90_DOWN` lines, folded STEP, GLB |
 | `slotted_plate` | Laser (+ countersinking) | DXF with round holes, obround slots and countersink through-holes; STEP/GLB with the countersink cones |
 | `sheet_enclosure` | Laser + press brake + hardware | One DXF per panel (body, end cap(s), lid), STEP assembly, GLB; rivet / screw holes aligned across panels |
+| `round_knob` (R6) | 3D print | Knob body (Ø x height), D-shaft or round blind bore with fit clearance, optional grip flutes, pointer notch, top chamfer: STEP, binary STL (mm), GLB |
+| `spacer_bushing` (R6) | 3D print | Plain or flanged spacer / bushing (OD / ID / length, flange Ø x thickness): STEP, binary STL (mm), GLB |
 
-Every result also carries four documents: `bom.json` and `bom.csv` (fabricated panels or parts plus purchased hardware), `drawing.svg` (each flat pattern with overall dimensions and dashed bend lines, or the printed part's top and side views, plus the hardware list), and `manifest.json` (the spec, worker version and the sha256 + size of every other artifact).
+The R6 printed families are modelled in their print orientation (bore / flange down on the bed) and report `min_wall_mm` and `bridge_span_mm`. The worker refuses walls under 0.8 mm (unbuildable); the print quote engine's DFM (`src/server/quote/printing`) blocks under 1.2 mm. Every product-defining number comes from a buyer caliper reading or a shaft standard the buyer picked (the web app's Reconstruct planner, see `docs/architecture/r6-reconstruct.md`).
+
+Every result also carries four documents: `bom.json` and `bom.csv` (fabricated panels or parts plus purchased hardware), `drawing.svg` (each flat pattern with overall dimensions and dashed bend lines, or the printed part's top and side views, plus the hardware list), and `manifest.json` (the spec, worker version, the sha256 + size of every other artifact, and `metrics`: `bbox_mm`, `volume_mm3`, `surface_area_mm2`, plus `min_wall_mm` / `bridge_span_mm` for printed parts).
 
 ### Sheet-metal conventions (all bent families)
 
@@ -50,7 +54,7 @@ GET  /healthz
 POST /v1/generate     Authorization: Bearer $CAD_WORKER_TOKEN
      { "spec": CadSpec, "ref": "bld_x@v3" }
   -> { family, artifacts: [{kind, filename, content_type, bytes, sha256, content_base64}],
-       metrics: {bbox_mm, volume_mm3, flat_size_mm?, bend_count?, flat_pattern?, part_count?, panels?, bom_item_count},
+       metrics: {bbox_mm, volume_mm3, surface_area_mm2, min_wall_mm?, flat_size_mm?, bend_count?, flat_pattern?, part_count?, panels?, bom_item_count},
        processes, warnings, ref, duration_ms, worker_version }
 ```
 
@@ -85,7 +89,7 @@ CAD_WORKER_ALLOW_NO_AUTH=1 python -m cad_worker.app
 
 The web app's tests replay the recorded goldens, so they need no Python. When `CAD_WORKER_URL` points at a running worker, `tests/cad/workflow-01-acceptance.test.ts`, `tests/evals/cad-evals.test.ts` and `bun run eval:cad` use the live worker instead.
 
-Artifact kinds: `STEP`, `DXF`, `GLB`, `BOM` (`bom.json`), `CSV` (`bom.csv`), `SVG` (`drawing.svg`) and `MANIFEST` (`manifest.json`, always last).
+Artifact kinds: `STEP`, `DXF`, `GLB`, `STL` (printed families), `BOM` (`bom.json`), `CSV` (`bom.csv`), `SVG` (`drawing.svg`) and `MANIFEST` (`manifest.json`, always last).
 
 Deploy with the `Dockerfile` to a container host (Fly.io, Render, Cloud Run). It does not fit Vercel functions: OpenCascade needs native libraries and more memory than a function gets.
 

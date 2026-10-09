@@ -23,6 +23,7 @@ import { advanceOrder } from '../orders';
 import { buildInspectionChecks, sampleSizeFor, SERVICE_IDS } from './inspection-plan';
 import { findCandidates, type JobRequirements } from './match';
 import { packingInstructions, signPacket, type UnsignedPacket } from './packet';
+import { planPrintDispatch } from './print';
 
 export { buildInspectionChecks, sampleSizeFor, withinTolerance, MEASURED_CHECK_KINDS, SERVICE_IDS } from './inspection-plan';
 export { estimateShopCostCents, scoreCandidate, findCandidates, fitsBed, type Candidate, type JobRequirements } from './match';
@@ -176,8 +177,10 @@ export async function dispatchOrder(orderId: string, opts?: { excludeShopIds?: s
         }
 
         const excluded = [...new Set([...(opts?.excludeShopIds ?? []), ...jobs.filter((j) => j.status === 'DECLINED' || j.status === 'EXPIRED').map((j) => j.shopId)])];
-        const ctx = await loadDispatchContext(t, order);
-        const candidates = await findCandidates(t, requirementsFor(order, ctx), excluded);
+        // R6: a printed part (print quote) is matched to printers; everything after this is shared.
+        const printPlan = await planPrintDispatch(t, order, excluded);
+        const ctx = printPlan ?? (await loadDispatchContext(t, order));
+        const candidates = printPlan ? printPlan.candidates : await findCandidates(t, requirementsFor(order, ctx as DispatchContext), excluded);
         const best = candidates[0];
         if (!best) {
             await emitEvent(t, {
@@ -194,7 +197,7 @@ export async function dispatchOrder(orderId: string, opts?: { excludeShopIds?: s
         const now = new Date();
         const offerExpiresAt = new Date(now.getTime() + best.shop.acceptWindowMinutes * 60_000);
         const jobId = newId('job');
-        const { packet, checks, sampleSize } = buildPacket(jobId, order, ctx, now);
+        const { packet, checks, sampleSize } = printPlan ? printPlan.buildPacket(jobId, order, now) : buildPacket(jobId, order, ctx as DispatchContext, now);
         const signed = signPacket(packet);
 
         await t.insert(manufacturingJobs).values({

@@ -89,9 +89,15 @@ const EnvSchema = z.object({
     CAD_WORKER_URL: optionalString,
     /** Bearer token the CAD worker expects (its CAD_WORKER_TOKEN). */
     CAD_WORKER_TOKEN: optionalString,
+    /** R6 optional GPU reconstruction worker (SAM 2 -> OpenCV -> COLMAP / Open3D). Unset = no "Auto-detect". */
+    RECONSTRUCT_WORKER_URL: optionalString,
+    /** Bearer token the reconstruction worker expects. */
+    RECONSTRUCT_WORKER_TOKEN: optionalString,
 
     /** Rate-limit store: "postgres" (shared table, default in production) or "memory" (per instance, default elsewhere). */
     RATE_LIMIT_STORE: optionalString.pipe(z.enum(['postgres', 'memory']).optional()),
+    /** Which proxy header carries the client IP: vercel | real-ip | xff | none (default vercel on Vercel, else xff). */
+    TRUSTED_PROXY: optionalString.pipe(z.enum(['vercel', 'real-ip', 'xff', 'none']).optional()),
     /** R4 Live: HMAC key for server-signed Live Build Protocol events. Required in production. */
     LIVE_EVENT_SIGNING_SECRET: optionalString,
     /** R4 Live: LiveKit server URL (wss://<project>.livekit.cloud). All three LIVEKIT_* must be set to use LiveKit rooms. */

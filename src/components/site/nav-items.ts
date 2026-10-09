@@ -16,7 +16,7 @@ export type NavItem = {
 export const BOTTOM_NAV: readonly NavItem[] = [
     { key: 'discover', href: '/discover', label: 'Discover', icon: Compass, match: ['/discover', '/b', '/c', '/clips'] },
     // Home is the "What do you want to make?" intake, so Make is current there too.
-    { key: 'make', href: '/make', label: 'Make', icon: Hammer, match: ['/', '/make', '/build'] },
+    { key: 'make', href: '/make', label: 'Make', icon: Hammer, match: ['/', '/make', '/build', '/reconstruct'] },
     { key: 'live', href: '/live', label: 'Live', icon: Radio, match: ['/live', '/studio'] },
     { key: 'builds', href: '/builds', label: 'Builds', icon: Boxes, match: ['/builds', '/orders'] },
     { key: 'me', href: '/me', label: 'Me', icon: UserRound, match: ['/me', '/signin'] },
@@ -25,7 +25,7 @@ export const BOTTOM_NAV: readonly NavItem[] = [
 /** Desktop top nav (workflow 10): Discover · Make · My Builds · Track order (+ Me / Sign in and the CTA). */
 export const TOP_NAV: readonly NavItem[] = [
     { key: 'discover', href: '/discover', label: 'Discover', icon: Compass, match: ['/discover', '/b', '/c', '/clips'] },
-    { key: 'make', href: '/make', label: 'Make', icon: Hammer, match: ['/make', '/build', '/parts'] },
+    { key: 'make', href: '/make', label: 'Make', icon: Hammer, match: ['/make', '/build', '/parts', '/reconstruct'] },
     { key: 'live', href: '/live', label: 'Live', icon: Radio, match: ['/live', '/studio'] },
     { key: 'builds', href: '/builds', label: 'My Builds', icon: Boxes, match: ['/builds'] },
     { key: 'track', href: '/orders', label: 'Track order', icon: Truck, match: ['/orders'] },

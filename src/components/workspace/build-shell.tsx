@@ -5,7 +5,7 @@ import type { BuildOrigin, BuildSummary } from '@/contracts';
 import { cn } from '@/lib/utils';
 import { SECTION_LABEL, type WorkspaceSection } from './workspace-model';
 
-const ORIGIN_COPY: Record<BuildOrigin, string> = { upload: 'From a DXF upload', make_ai: 'Planned with Make AI', remix: 'Remix', clone: 'Made from another build' };
+const ORIGIN_COPY: Record<BuildOrigin, string> = { upload: 'From a DXF upload', make_ai: 'Planned with Make AI', remix: 'Remix', clone: 'Made from another build', reconstruct: 'Rebuilt from a photo' };
 
 /**
  * BuildShell (EPIC-300): header, status strip, section nav and the active section.

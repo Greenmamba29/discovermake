@@ -17,6 +17,7 @@ import postgres from 'postgres';
 import { randomUUID } from 'node:crypto';
 import { E2E_ADMIN_TOKEN, E2E_DATABASE_URL } from '../../playwright.config';
 import { createBuildWithCad } from './support/cad-build';
+import { createReconstructState } from './support/reconstruct';
 import { adminLogin, fulfil, payOrder, quotePart, shopLogin } from './support/journeys';
 import { buildLiveSweepState, type LiveSweepState } from './support/live';
 import { buildMediaSweepState, type MediaSweepState } from './support/media';
@@ -44,6 +45,9 @@ type Urls = {
     live: LiveSweepState;
     /** R5 Media: published build, channel, clip, a Make This order (Watch My Build), a live auction. */
     media: MediaSweepState;
+    /** R6 Reconstruct: a knob build with a measured photo, and one with confirmed readings, CAD and a BINDING print quote. */
+    reconstructMeasuredBuildId: string;
+    reconstructReviewBuildId: string;
 } & PrimeUrls;
 
 type Screen = {
@@ -672,6 +676,61 @@ const SCREENS: Screen[] = [
         },
     },
     {
+        name: 'reconstruct-capture',
+        bottomNav: true,
+        mobbin: 'Camera capture with guided steps (Step 1 of 4): rear camera, photo tiles, tips',
+        url: () => '/reconstruct',
+        pattern: async (page) => {
+            await expect(page.getByRole('heading', { level: 1, name: 'Rebuild a broken part from a photo' })).toBeVisible();
+            await expect(page.getByTestId('reconstruct-step-label')).toHaveText('Step 1 of 4');
+            await expect(page.getByRole('progressbar', { name: 'Reconstruct progress' })).toBeVisible();
+            await expect(page.getByTestId('capture-camera-input')).toHaveAttribute('capture', 'environment');
+            await expect(page.getByTestId('capture-camera')).toBeVisible();
+            await expect(page.getByRole('radio')).toHaveCount(3);
+            await expect(page.getByTestId('capture-continue')).toBeDisabled();
+        },
+    },
+    {
+        name: 'reconstruct-measure',
+        bottomNav: true,
+        mobbin: 'Photo measuring: reference object sets the scale, lines with estimates over the photo',
+        url: (u) => `/reconstruct/${u.reconstructMeasuredBuildId}?step=measure`,
+        pattern: async (page) => {
+            await expect(page.getByRole('heading', { level: 1, name: 'Measure on the photo' })).toBeVisible();
+            await expect(page.getByTestId('reconstruct-step-label')).toHaveText('Step 2 of 4');
+            await expect(page.getByTestId('measure-canvas')).toBeVisible({ timeout: 20_000 });
+            await expect(page.getByTestId('measure-reference')).toBeAttached();
+            await expect(page.getByTestId('perspective-caveat')).toContainText('caliper');
+        },
+    },
+    {
+        name: 'reconstruct-confirm',
+        bottomNav: true,
+        mobbin: 'Verification checklist: each critical size confirmed by hand, estimate vs reading, locked CTA',
+        url: (u) => `/reconstruct/${u.reconstructMeasuredBuildId}?step=confirm`,
+        pattern: async (page) => {
+            await expect(page.getByRole('heading', { level: 1, name: 'Confirm with a caliper' })).toBeVisible();
+            await expect(page.getByTestId('reconstruct-step-label')).toHaveText('Step 3 of 4');
+            await expect(page.getByTestId('confirm-table').locator('[data-testid^="dim-row-"]')).toHaveCount(2);
+            await expect(page.getByTestId('dim-estimate-diameter_mm')).toContainText('mm');
+            await expect(page.getByTestId('generate-cad')).toBeDisabled();
+        },
+    },
+    {
+        name: 'reconstruct-review',
+        bottomNav: true,
+        mobbin: 'Microsoft Copilot · 3D object beside a properties panel, plus a binding quote card',
+        url: (u) => `/reconstruct/${u.reconstructReviewBuildId}?step=review`,
+        pattern: async (page) => {
+            await expect(page.getByRole('heading', { level: 1, name: 'Review and order' })).toBeVisible();
+            await expect(page.getByTestId('reconstruct-step-label')).toHaveText('Step 4 of 4');
+            await expect(page.getByTestId('object-viewport')).toBeVisible();
+            await expect(page.getByTestId('review-dimensions')).toContainText('38.10 mm');
+            await expect(page.getByTestId('print-quote').getByTestId('trust-chip')).toContainText('Binding quote', { timeout: 15_000 });
+            await expect(page.getByTestId('print-ladder').locator('tbody tr')).toHaveCount(5);
+        },
+    },
+    {
         name: 'not-found',
         bottomNav: true,
         mobbin: 'Empty / error state',
@@ -732,6 +791,8 @@ async function buildState(browser: Browser): Promise<Urls> {
     }
     const made = await (await request.post('/api/make-ai/builds', { data: { intentId } })).json();
     const withCad = await createBuildWithCad(request);
+    const reconstructMeasured = await createReconstructState(request, { cad: false });
+    const reconstructReviewed = await createReconstructState(request, { cad: true });
     const prime = await primeSupplierState(page, request);
     await context.close();
     const live = await buildLiveSweepState(browser, quotePart);
@@ -749,6 +810,8 @@ async function buildState(browser: Browser): Promise<Urls> {
         workspaceUrl: `/build/${made.buildId}/workspace`,
         sourcingJobUrl: `/admin/sourcing/jobs/${job.id}`,
         cadWorkspaceUrl: withCad.workspaceUrl,
+        reconstructMeasuredBuildId: reconstructMeasured.buildId,
+        reconstructReviewBuildId: reconstructReviewed.buildId,
         live,
         media,
         ...prime,

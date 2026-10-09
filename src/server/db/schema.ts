@@ -2117,6 +2117,185 @@ export const shopStock = pgTable(
 );
 
 // ---------------------------------------------------------------------------
+// R6 Reconstruct: fix anything from a photo (docs/architecture/r6-reconstruct.md)
+// ---------------------------------------------------------------------------
+
+/**
+ * 3D-print materials (FDM filaments, SLS powder). A catalog of its own, beside the sheet
+ * catalog, so the laser configurator, the Materials Engineer and the R1 DFM never see them.
+ * Ids are `mat_print_*` so a print quote's `config.materialId` is still a valid MaterialId.
+ * Money in cents (USD); coefficients are uncalibrated R6 defaults (`calibrated = false`).
+ */
+export const printMaterials = pgTable('print_materials', {
+    id: text('id').primaryKey(),
+    slug: text('slug').notNull().unique(),
+    name: text('name').notNull(),
+    description: text('description').notNull().default(''),
+    swatchHex: text('swatch_hex').notNull().default('#9aa0a6'),
+    /** 'FDM' (filament) or 'SLS' (powder bed). */
+    process: text('process').notNull(),
+    densityKgM3: doublePrecision('density_kg_m3').notNull(),
+    priceCentsPerKg: cents('price_cents_per_kg').notNull(),
+    /** Print DFM: thinnest wall that prints reliably (mm). */
+    minWallMm: doublePrecision('min_wall_mm').notNull().default(1.2),
+    /** Longest unsupported bridge before supports are needed (mm). */
+    maxBridgeMm: doublePrecision('max_bridge_mm').notNull().default(10),
+    /** Heat deflection temperature at 0.45 MPa (°C), shown to the buyer. */
+    heatDeflectionC: integer('heat_deflection_c'),
+    calibrated: boolean('calibrated').notNull().default(false),
+    active: boolean('active').notNull().default(true),
+    sortOrder: integer('sort_order').notNull().default(0),
+    createdAt: createdAt(),
+    updatedAt: updatedAt(),
+});
+
+/**
+ * What a partner can print (the `shop_capabilities` model for printers): one row per shop x
+ * print material, with the printer's build volume. A printed part quotes BINDING only when an
+ * ACTIVE shop with an active row (and an active print rate card) fits its bounding box.
+ */
+export const shopPrintCapabilities = pgTable(
+    'shop_print_capabilities',
+    {
+        id: text('id').primaryKey(),
+        shopId: text('shop_id')
+            .notNull()
+            .references(() => shops.id, { onDelete: 'cascade' }),
+        printMaterialId: text('print_material_id')
+            .notNull()
+            .references(() => printMaterials.id),
+        /** Always '3D_PRINT'; `print_materials.process` says FDM or SLS. */
+        capability: text('capability').notNull().default('3D_PRINT'),
+        buildXMm: doublePrecision('build_x_mm').notNull(),
+        buildYMm: doublePrecision('build_y_mm').notNull(),
+        buildZMm: doublePrecision('build_z_mm').notNull(),
+        printerCount: integer('printer_count').notNull().default(1),
+        machineLabel: text('machine_label'),
+        active: boolean('active').notNull().default(true),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [uniqueIndex('shop_print_capabilities_uq').on(t.shopId, t.printMaterialId), index('shop_print_capabilities_material_idx').on(t.printMaterialId)],
+);
+
+/**
+ * Per-shop print pricing coefficients (the `shop_rate_cards` model for printers). Exactly one
+ * active card per shop; the shop's `shop_rate_cards` row stays its commercial card of record
+ * (quotes reference it), the print quote snapshot names this card in `print_quote_details`.
+ */
+export const shopPrintRateCards = pgTable(
+    'shop_print_rate_cards',
+    {
+        id: text('id').primaryKey(),
+        shopId: text('shop_id')
+            .notNull()
+            .references(() => shops.id, { onDelete: 'cascade' }),
+        version: integer('version').notNull().default(1),
+        active: boolean('active').notNull().default(true),
+        currency: text('currency').notNull().default('usd'),
+        fdmCentsPerHour: cents('fdm_cents_per_hour').notNull(),
+        /** Average deposition incl. travel (mm³ per hour) for a 0.4 mm nozzle. */
+        fdmMm3PerHour: doublePrecision('fdm_mm3_per_hour').notNull(),
+        fdmLayerHeightMm: doublePrecision('fdm_layer_height_mm').notNull().default(0.2),
+        /** Per-layer overhead (layer change, travel, wipe), seconds. */
+        fdmLayerSeconds: doublePrecision('fdm_layer_seconds').notNull(),
+        slsCentsPerHour: cents('sls_cents_per_hour').notNull(),
+        slsMm3PerHour: doublePrecision('sls_mm3_per_hour').notNull(),
+        slsLayerHeightMm: doublePrecision('sls_layer_height_mm').notNull().default(0.1),
+        slsLayerSeconds: doublePrecision('sls_layer_seconds').notNull().default(0),
+        /** Solid perimeter + top/bottom skin thickness (mm) and sparse infill fraction inside it. */
+        shellMm: doublePrecision('shell_mm').notNull().default(1.2),
+        infillPct: doublePrecision('infill_pct').notNull().default(0.4),
+        orderSetupCents: cents('order_setup_cents').notNull(),
+        postProcessCentsPerPart: cents('post_process_cents_per_part').notNull(),
+        qaCentsPerPart: cents('qa_cents_per_part').notNull(),
+        partHandlingCents: cents('part_handling_cents').notNull(),
+        packagingBaseCents: cents('packaging_base_cents').notNull(),
+        materialMarkup: doublePrecision('material_markup').notNull().default(1.1),
+        materialWastePct: doublePrecision('material_waste_pct').notNull().default(0.1),
+        platformMarginPct: doublePrecision('platform_margin_pct').notNull(),
+        /** Volume discounts come out of the margin and never take it below this. */
+        minMarginPct: doublePrecision('min_margin_pct').notNull(),
+        volumeDiscountMax: doublePrecision('volume_discount_max').notNull(),
+        minimumOrderCents: cents('minimum_order_cents').notNull(),
+        /** Unattended printer hours per business day (lead time). */
+        printerHoursPerDay: doublePrecision('printer_hours_per_day').notNull().default(20),
+        calibrated: boolean('calibrated').notNull().default(false),
+        notes: text('notes'),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [
+        uniqueIndex('shop_print_rate_cards_version_uq').on(t.shopId, t.version),
+        uniqueIndex('shop_print_rate_cards_one_active_uq')
+            .on(t.shopId)
+            .where(sql`${t.active} = true`),
+    ],
+);
+
+/** What a print quote was priced from (immutable, one per print quote). Dispatch and the passport read it. */
+export const printQuoteDetails = pgTable(
+    'print_quote_details',
+    {
+        quoteId: text('quote_id')
+            .primaryKey()
+            .references(() => quotes.id),
+        partId: text('part_id')
+            .notNull()
+            .references(() => parts.id),
+        buildId: text('build_id')
+            .notNull()
+            .references(() => builds.id),
+        printMaterialId: text('print_material_id')
+            .notNull()
+            .references(() => printMaterials.id),
+        printRateCardId: text('print_rate_card_id')
+            .notNull()
+            .references(() => shopPrintRateCards.id),
+        capabilityId: text('capability_id').references(() => shopPrintCapabilities.id),
+        process: text('process').notNull(),
+        family: text('family').notNull(),
+        /** Geometry the price came from: bbox, volume, area, min wall, bridge (worker manifest). */
+        geometry: jsonb('geometry').$type<Record<string, unknown>>().notNull(),
+        /** Buyer-confirmed caliper dimensions: they become the shop's QA checks. */
+        criticalDims: jsonb('critical_dims').$type<{ param: string; label: string; nominalMm: number }[]>().notNull().default([]),
+        stlSha256: text('stl_sha256').notNull(),
+        layerHeightMm: doublePrecision('layer_height_mm').notNull(),
+        printHoursPerPart: doublePrecision('print_hours_per_part').notNull(),
+        unitMassG: doublePrecision('unit_mass_g').notNull(),
+        notes: jsonb('notes').$type<string[]>().notNull().default([]),
+        createdAt: createdAt(),
+    },
+    (t) => [index('print_quote_details_part_idx').on(t.partId)],
+);
+
+/**
+ * One Reconstruct session per build (`builds.origin = 'reconstruct'`): what the buyer is
+ * replacing, their choices, and the photo measurements (estimates only). Confirmed caliper
+ * dimensions live in the Build Graph (REQUIREMENT `dim:*` nodes), never here.
+ */
+export const reconstructSessions = pgTable(
+    'reconstruct_sessions',
+    {
+        id: text('id').primaryKey(),
+        buildId: text('build_id')
+            .notNull()
+            .references(() => builds.id, { onDelete: 'cascade' }),
+        passportId: text('passport_id').references(() => passports.id),
+        partType: text('part_type').notNull(),
+        description: text('description').notNull().default(''),
+        options: jsonb('options').$type<Record<string, unknown>>().notNull().default({}),
+        /** Per photo: reference object, scale and measurement lines (pixel coordinates). */
+        measurements: jsonb('measurements').$type<Record<string, unknown>[]>().notNull().default([]),
+        printMaterialSlug: text('print_material_slug'),
+        quantity: integer('quantity').notNull().default(1),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [uniqueIndex('reconstruct_sessions_build_uq').on(t.buildId)],
+);
+
+// ---------------------------------------------------------------------------
 // R5 Media (workflows 07 / 08 / 09, docs/architecture/r5-media.md)
 // ---------------------------------------------------------------------------
 //

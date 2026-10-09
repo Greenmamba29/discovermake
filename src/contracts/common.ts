@@ -78,6 +78,8 @@ export const ID_PREFIX = {
     creatorPayout: 'cpo',
     feedEvent: 'fev',
     dropQueueEntry: 'dqe',
+    // R6 Reconstruct
+    reconstruct: 'rcn',
 } as const;
 export type IdKind = keyof typeof ID_PREFIX;
 

@@ -18,6 +18,7 @@
  *   getBuildCad(buildId) reads the latest CAD record back with fresh signed URLs.
  */
 import 'server-only';
+import { z } from 'zod';
 import { eq, inArray } from 'drizzle-orm';
 import type { BgEdgeInput, BgNode, BgNodeInput } from '@/contracts/build-graph';
 import { CadSpec, SHEET_FAMILIES, type BuildCadArtifactView, type BuildCadEstimate, type BuildCadGenerated, type BuildCadPart, type BuildCadResponse, type CadSpecInput } from '@/contracts/cad';
@@ -54,21 +55,22 @@ import type { LanguageModel } from 'ai';
 export const CAD_URL_TTL_SECONDS = 15 * 60;
 export const PRELIMINARY_QUOTE_KEY = 'quote:preliminary';
 
-/** One line of the worker's bom.json. */
-export type CadBomItem = {
-    item: number;
-    name: string;
-    kind: 'fabricated' | 'purchased';
-    quantity: number;
-    process?: string;
-    thickness_mm?: number;
-    flat_size_mm?: [number, number];
-    size_mm?: number[];
-    bend_count?: number;
-    file?: string | null;
-    spec?: string;
-    notes?: string;
-};
+/** One line of the worker's bom.json. Validated: a malformed line is skipped, never trusted. */
+const CadBomItemSchema = z.object({
+    item: z.number().int().nonnegative(),
+    name: z.string().min(1).max(200),
+    kind: z.enum(['fabricated', 'purchased']),
+    quantity: z.number().int().positive().max(100_000),
+    process: z.string().max(80).optional(),
+    thickness_mm: z.number().positive().max(100).optional(),
+    flat_size_mm: z.tuple([z.number().nonnegative(), z.number().nonnegative()]).optional(),
+    size_mm: z.array(z.number().nonnegative()).max(3).optional(),
+    bend_count: z.number().int().nonnegative().max(100).optional(),
+    file: z.string().max(200).nullable().optional(),
+    spec: z.string().max(200).optional(),
+    notes: z.string().max(500).optional(),
+});
+export type CadBomItem = z.infer<typeof CadBomItemSchema>;
 
 /** What the PART node stores under `data.cad`. */
 export type CadRecord = {
@@ -210,15 +212,24 @@ function isQuotable(family: CadRecord['family'], partViews: BuildCadPart[]): boo
     return partViews.length > 0 && partViews.every((p) => p.status === 'READY') && SHEET_FAMILIES.includes(family);
 }
 
-function readBom(result: CadResult): CadBomItem[] {
+export function readBom(result: Pick<CadResult, 'artifacts'>): CadBomItem[] {
     const art = result.artifacts.find((a) => a.kind === 'BOM');
     if (!art) return [];
+    let raw: unknown;
     try {
-        const parsed = JSON.parse(Buffer.from(art.data).toString('utf8')) as { items?: CadBomItem[] };
-        return Array.isArray(parsed.items) ? parsed.items.slice(0, 100) : [];
+        raw = JSON.parse(Buffer.from(art.data).toString('utf8'));
     } catch {
+        console.warn('[cad] bom.json is not JSON; decomposition skipped');
         return [];
     }
+    const items = raw && typeof raw === 'object' && Array.isArray((raw as { items?: unknown }).items) ? ((raw as { items: unknown[] }).items as unknown[]) : [];
+    const out: CadBomItem[] = [];
+    for (const line of items.slice(0, 100)) {
+        const parsed = CadBomItemSchema.safeParse(line);
+        if (parsed.success) out.push(parsed.data);
+        else console.warn('[cad] skipped a malformed BOM line', parsed.error.issues[0]?.message);
+    }
+    return out;
 }
 
 /** One PART node per BOM line under part:main (workflow 01 "part decomposition"). */

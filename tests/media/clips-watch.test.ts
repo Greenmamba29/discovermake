@@ -14,7 +14,7 @@ import { replayChapters, suggestClips } from '@/server/media';
 import { acceptJob, recordMilestone } from '@/server/shops';
 import { useTestDb } from '../support/db';
 import { quietConsole } from '../orders/fixtures';
-import { makeUser, req, setupShow } from '../live/fixtures';
+import { makeUser, req, setupShow, type TestUser } from '../live/fixtures';
 import { createQuoteFixture as shopQuoteFixture } from '../shop/fixtures';
 import { paidOrder } from './fixtures';
 
@@ -81,7 +81,7 @@ describe('Watch My Build', () => {
     const ctx = useTestDb({ seed: true });
     beforeAll(() => quietConsole());
 
-    const watch = (orderId: string, opts: { token?: string; user?: Parameters<typeof req>[1]['user'] } = {}) =>
+    const watch = (orderId: string, opts: { token?: string; user?: TestUser } = {}) =>
         watchRoute(req(`/api/orders/${orderId}/watch${opts.token ? `?t=${encodeURIComponent(opts.token)}` : ''}`, { user: opts.user }), { params: Promise.resolve({ orderId }) });
 
     it('answers only the order link token or the signed-in buyer (wrong token = 404) and streams every milestone', async () => {

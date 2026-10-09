@@ -17,7 +17,7 @@
 import { z } from 'zod';
 import { InterestSlug } from './account';
 import { BuildDisplayId, BuildId, Cents, IsoDateTime, OrderId, PartId, QuoteId, UserId } from './common';
-import { OrderStatus, UniversalStatus } from './enums';
+import { BuildOrigin, OrderStatus, UniversalStatus } from './enums';
 import { ChannelKind, ChannelView, ShowFormat, ShowId, ShowStatus, ShowView, VideoSource } from './live';
 
 export const ClipId = z.string().regex(/^clp_[A-Za-z0-9_-]+$/);
@@ -139,7 +139,7 @@ export type RemixNode = {
     buildId: string;
     displayId: string;
     title: string;
-    origin: 'upload' | 'make_ai' | 'remix' | 'clone';
+    origin: BuildOrigin;
     public: boolean;
     creatorName: string | null;
     orders: number;
@@ -150,7 +150,7 @@ export const RemixNode: z.ZodType<RemixNode> = z.lazy(() =>
         buildId: BuildId,
         displayId: z.string(),
         title: z.string(),
-        origin: z.enum(['upload', 'make_ai', 'remix', 'clone']),
+        origin: BuildOrigin,
         public: z.boolean(),
         creatorName: z.string().nullable(),
         orders: z.number().int().nonnegative(),
@@ -212,7 +212,7 @@ export const StudioPublicationRow = z.object({
     displayId: BuildDisplayId,
     name: z.string(),
     status: UniversalStatus,
-    origin: z.enum(['upload', 'make_ai', 'remix', 'clone']),
+    origin: BuildOrigin,
     derivedFromBuildId: BuildId.nullable(),
     publication: PublicationView.nullable(),
     /** False for remixes of a personal / all-rights-reserved design (they can be ordered, not published). */
