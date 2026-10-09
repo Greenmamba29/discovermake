@@ -24,7 +24,7 @@ This increment only exposes `membership.guaranteedDates` for the promise engine 
 | Ratings | `src/server/ratings/index.ts` | `/api/orders/:id/rating[/upload]`, `/api/admin/prime/ratings/:id` | order page, `/admin/prime` |
 | Map | `src/server/geo/{us-geo,great-circle,tracking-map}.ts` | `/api/orders/:id/tracking-map` | order page (`TrackingMap`) |
 
-Schema: the `// R3 Prime experience` section at the end of `src/server/db/schema.ts`. The local migration is `database/migrations/0006_r3_prime_experience.sql`; the integrator regenerates it. The section has 12 new tables and no changes to existing tables. User references are plain text ids.
+Schema: the `// R3 Prime experience` section at the end of `src/server/db/schema.ts`. The local migration is `database/migrations/0010_r3_prime_experience.sql`; the integrator regenerates it. The section has 12 new tables and no changes to existing tables. User references are plain text ids.
 
 ## Membership money flow
 
@@ -92,7 +92,9 @@ The R1 order model is **one quote per order**: `orders.quote_id`, plus jobs, pay
   1. verifies the provider amount equals the group amount and the sum of the order payments (a mismatch raises an ops alert and advances nothing);
   2. calls `handlePaymentSucceeded` / `handlePaymentFailed` once per order, so the same idempotency and ledger rules apply.
 - **Known limitation.** A Stripe refund of one cart order is a partial refund of the shared PaymentIntent. The `charge.refunded` echo may then match a sibling payment row. That row is left untouched and ops get a reconciliation alert (existing behaviour for partial refunds).
-- Cart orders do not go through the Prime-core deposit flow. They are standard binding quotes paid in full.
+- Cart orders are standard binding quotes paid in full; promise credits are not redeemed on cart checkouts (Prime core owns credits).
+- Supplier-route quotes (Prime core, deposit + balance) are refused by the cart and the invoice checkout with a clear message; they check out on their own. Pay by invoice is hidden on the supplier-route checkout.
+- R6 printed quotes (`config.process: 'print'`) are normal cart items: same orderability predicate and the print rate-card re-check in `priceQuoteForCheckout`. They get no sheet-metal upsells.
 
 **Upsells.**
 - Every offer is a persisted engine quote (`createQuote`) for a modified configuration:
