@@ -86,6 +86,13 @@ export function renderEmail<K extends NotifyKind>(kind: K, payload: NotifyPayloa
             }
             return layout(`${p.orderNumber} delivered`, blocks);
         }
+        case 'build_slot.released': {
+            const p = payload as NotifyPayloads['build_slot.released'];
+            return layout(`Your Build Slot for ${p.dropTitle} was released`, [
+                { kind: 'p', text: `${p.reason} Order ${p.orderNumber} is cancelled and the payment hold on your card was released: nothing was charged.` },
+                { kind: 'p', text: 'Follow the channel to hear about the next drop.' },
+            ]);
+        }
         case 'ops.alert': {
             const p = payload as NotifyPayloads['ops.alert'];
             return layout(`[ops] ${p.subject}`, [

@@ -16,7 +16,16 @@ export type CreatePaymentInput = {
     metadata: Record<string, string>;
     /** Optional: when the hosted session should stop accepting payment (clamped to provider limits). */
     expiresAt?: Date;
+    /**
+     * R4 Build Slots: `manual` authorizes only (Stripe `capture_method: 'manual'`, card only);
+     * the money moves later with `capture()` or is released with `cancelAuthorization()`.
+     * Default `automatic`.
+     */
+    captureMethod?: 'automatic' | 'manual';
 };
+
+export type CaptureInput = { providerRef: string; providerPaymentId: string | null; amountCents: number };
+export type CancelAuthorizationInput = { providerRef: string; providerPaymentId: string | null; reason?: string };
 
 export type CreatePaymentResult = {
     /** Unique per provider; stored as payments.provider_ref (Stripe: Checkout Session id). */
@@ -62,6 +71,24 @@ export type PaymentWebhookEvent =
           fullyRefunded: boolean;
           refundRef: string | null;
       }
+    | {
+          /** Manual-capture session completed: funds are held, not captured (R4 Build Slots). */
+          kind: 'payment.authorized';
+          eventId: string;
+          providerRef: string;
+          providerPaymentId: string | null;
+          amountCents: number;
+          currency: string;
+      }
+    | {
+          /** Stripe backup path for a manual-capture PaymentIntent (`amount_capturable_updated`), by order id. */
+          kind: 'payment_intent.authorized';
+          eventId: string;
+          orderId: string;
+          providerPaymentId: string;
+          amountCents: number;
+          currency: string;
+      }
     | { kind: 'ignored'; eventId: string; type: string };
 
 export interface PaymentProvider {
@@ -75,4 +102,8 @@ export interface PaymentProvider {
     parseWebhook(rawBody: string, headers: Headers): Promise<PaymentWebhookEvent>;
     /** Refund all or part of a succeeded payment. */
     refund(input: { providerRef: string; providerPaymentId: string | null; amountCents: number; reason?: string }): Promise<{ refundRef: string }>;
+    /** Capture an authorized (manual-capture) payment. Idempotent per payment at the provider. */
+    capture(input: CaptureInput): Promise<{ providerPaymentId: string }>;
+    /** Release an authorization, or expire an unpaid session, so nothing is charged. Idempotent. */
+    cancelAuthorization(input: CancelAuthorizationInput): Promise<{ released: boolean }>;
 }
