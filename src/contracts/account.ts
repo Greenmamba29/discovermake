@@ -14,7 +14,7 @@
  * `shop` comes from a shop membership; `ops` / `admin` come from `ADMIN_EMAILS`.
  */
 import { z } from 'zod';
-import { BuildId, IsoDateTime, OrderId, PartId, QuoteId, UserId } from './common';
+import { BuildDisplayId, BuildId, IsoDateTime, OrderId, PartId, QuoteId, UserId } from './common';
 import { BuildOrigin, BuildStatus, BuildTrustState, OrderStatus } from './enums';
 
 export const SESSION_COOKIE = 'dm_session';
@@ -172,7 +172,7 @@ export type MyBuildsTab = z.infer<typeof MyBuildsTab>;
 
 export const MyBuildRow = z.object({
     buildId: BuildId,
-    displayId: z.string(),
+    displayId: BuildDisplayId,
     name: z.string(),
     origin: BuildOrigin,
     status: BuildStatus,
@@ -213,7 +213,8 @@ export type MyBuildsResponse = z.infer<typeof MyBuildsResponse>;
  * order's selections (same part, material, thickness, finish, quantity); 409 if the
  * part no longer quotes.
  */
-export const ReorderResponse = z.object({ quoteId: QuoteId, checkoutUrl: z.string() });
+/** `checkoutUrl` is absolute (`${APP_URL}/checkout/<quoteId>`), like every other URL field. */
+export const ReorderResponse = z.object({ quoteId: QuoteId, checkoutUrl: z.string().url() });
 export type ReorderResponse = z.infer<typeof ReorderResponse>;
 
 /** POST /api/builds/:buildId/follow and DELETE (signed in). */
