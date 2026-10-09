@@ -3,7 +3,7 @@
  * DELETE                                 -> unfollow
  */
 import type { FollowChannelResponse } from '@/contracts/live';
-import { requireViewer } from '@/server/auth/viewer';
+import { assertSameOrigin, requireViewer } from '@/server/auth/viewer';
 import { ApiError, json, route } from '@/server/http';
 import { channelByHandle, setFollow } from '@/server/live';
 
@@ -12,6 +12,7 @@ export const dynamic = 'force-dynamic';
 
 function handler(follow: boolean) {
     return route<{ handle: string }>(async (request, { params }) => {
+        assertSameOrigin(request);
         const viewer = await requireViewer(request);
         const { handle } = await params;
         const channel = /^[a-z0-9_]{3,24}$/.test(handle) ? await channelByHandle(handle) : null;

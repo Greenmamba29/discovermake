@@ -6,7 +6,7 @@
  * authorizes the hold. Send `Idempotency-Key` to make retries safe.
  */
 import { ClaimSlotsRequest, DropId, type ClaimSlotsResponse } from '@/contracts/live';
-import { requireViewer } from '@/server/auth/viewer';
+import { assertSameOrigin, requireViewer } from '@/server/auth/viewer';
 import { json, parseJson, route } from '@/server/http';
 import { claimSlots, limitLive } from '@/server/live';
 import { pathId } from '@/server/quote/route-helpers';
@@ -15,6 +15,7 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export const POST = route<{ dropId: string }>(async (request, { params }) => {
+    assertSameOrigin(request);
     const dropId = pathId((await params).dropId, DropId, 'Drop');
     const viewer = await requireViewer(request);
     const limited = limitLive('claim', viewer.user.id);

@@ -3,6 +3,7 @@
  * PATCH /api/live/shows/:showId UpdateShowRequest -> ShowView (channel owner)
  */
 import { ShowId, UpdateShowRequest, type ShowSnapshot } from '@/contracts/live';
+import { assertSameOrigin } from '@/server/auth/viewer';
 import { ApiError, json, parseJson, route } from '@/server/http';
 import { buildSnapshot, loadShowAccess, updateShow } from '@/server/live';
 import { pathId } from '@/server/quote/route-helpers';
@@ -17,6 +18,7 @@ export const GET = route<{ showId: string }>(async (request, { params }) => {
 });
 
 export const PATCH = route<{ showId: string }>(async (request, { params }) => {
+    assertSameOrigin(request);
     const showId = pathId((await params).showId, ShowId, 'Show');
     const access = await loadShowAccess(request, showId);
     if (!access.viewer) throw new ApiError('UNAUTHORIZED', 'Sign in to edit this show', 401);
