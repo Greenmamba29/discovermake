@@ -117,7 +117,7 @@ export async function toShowViews(rows: ShowRow[], viewerId: string | null, db: 
     });
 }
 
-export function toDropView(row: DropRow, viewerClaimedSlots: number): DropView {
+export function toDropView(row: DropRow, viewerClaimedSlots: number, fairQueue?: boolean): DropView {
     return {
         id: row.id,
         showId: row.showId,
@@ -132,6 +132,7 @@ export function toDropView(row: DropRow, viewerClaimedSlots: number): DropView {
         opensAt: row.opensAt.toISOString(),
         closesAt: row.closesAt.toISOString(),
         viewerClaimedSlots,
+        ...(fairQueue ? { fairQueue: true } : {}),
     };
 }
 

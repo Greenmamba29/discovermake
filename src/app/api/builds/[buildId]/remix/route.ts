@@ -9,7 +9,8 @@
  */
 import { BuildForkRequest, BuildId } from '@/contracts';
 import { forkBuild, limitWrite } from '@/server/build-graph';
-import { resolveBuildOwner } from '@/server/auth/viewer';
+import { getViewer, resolveBuildOwner } from '@/server/auth/viewer';
+import { assertCanFork } from '@/server/media';
 import { json, route } from '@/server/http';
 import { pathId, readJsonBody, validate } from '@/server/quote/route-helpers';
 
@@ -21,6 +22,8 @@ export const POST = route<{ buildId: string }>(async (request, { params }) => {
     const limited = await limitWrite(request);
     if (limited) return limited;
     const body = validate(await readJsonBody(request, { allowEmpty: true }), BuildForkRequest);
+    // R5 licence gate: published builds follow their remix licence (404 when unpublished again).
+    await assertCanFork(buildId, 'remix', await getViewer(request));
     const owner = await resolveBuildOwner(request);
     const res = json(await forkBuild(buildId, 'remix', body.name, { owner }), { status: 201 });
     owner.apply(res);

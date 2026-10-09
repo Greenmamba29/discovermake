@@ -261,6 +261,23 @@ export const EVENT_PAYLOADS = {
     'live.drop_started': z.object({ dropId: id, showId: id.nullable(), buildId: id, quoteId: id, priceCents: cents, totalSlots: z.number().int().positive(), thresholdSlots: z.number().int().positive(), closesAt: IsoDateTime }),
     'live.slot_claimed': z.object({ dropId: id, claimId: id, orderId: id, quantity: z.number().int().positive(), claimedSlots: z.number().int().nonnegative() }),
     'live.drop_closed': z.object({ dropId: id, status: z.enum(['CONFIRMED', 'FAILED']), claimedSlots: z.number().int().nonnegative(), thresholdSlots: z.number().int().positive(), captured: z.number().int().nonnegative(), released: z.number().int().nonnegative() }),
+
+    // ---- R5: Media (docs/architecture/r5-media.md) ----------------------------
+    /** A build owner changed a build's publication (visibility, remix licence, royalty %). */
+    'build.published': z.object({ buildId: id, visibility: z.enum(['private', 'public']), license: z.enum(['none', 'personal', 'commercial']), royaltyPct: z.number().int().min(0).max(30) }),
+    /** A creator earned on a paid order (royalty up the lineage, or their own drop / auction revenue). Ledger txn `creator:<orderId>:<kind>`. */
+    'royalty.accrued': z.object({ orderId: id, creatorUserId: id, kind: z.enum(['REMIX_ROYALTY', 'MAKE_THIS_ROYALTY', 'DROP_REVENUE', 'AUCTION_REVENUE']), amountCents: cents, sourceBuildId: id.nullable(), txnKey: z.string() }),
+    /** The order was refunded: the earning is reversed (clawed back from the balance). */
+    'royalty.reversed': z.object({ orderId: id, creatorUserId: id, amountCents: cents, txnKey: z.string() }),
+    'clip.created': z.object({ clipId: id, showId: id, buildId: id.nullable(), startMs: z.number().int().nonnegative(), endMs: z.number().int().positive(), origin: z.enum(['host', 'system']) }),
+    'auction.started': z.object({ auctionId: id, showId: id.nullable(), buildId: id, quoteId: id, startingBidCents: cents, minIncrementCents: cents, endsAt: IsoDateTime }),
+    'auction.bid_placed': z.object({ auctionId: id, bidId: id, orderId: id, amountCents: cents, endsAt: IsoDateTime, extended: z.boolean() }),
+    'auction.closed': z.object({ auctionId: id, status: z.enum(['SOLD', 'UNSOLD', 'CANCELLED']), winningBidId: id.nullable(), amountCents: cents.nullable(), bidCount: z.number().int().nonnegative() }),
+    'drop.queue_processed': z.object({ dropId: id, admitted: z.number().int().nonnegative(), rejected: z.number().int().nonnegative() }),
+    'creator.payout_created': z.object({ payoutId: id, creatorUserId: id, amountCents: cents, method: z.enum(['stripe_connect', 'manual']) }),
+    'creator.payout_paid': z.object({ payoutId: id, creatorUserId: id, amountCents: cents, providerRef: z.string().nullable() }),
+    'creator.payout_failed': z.object({ payoutId: id, creatorUserId: id, reason: z.string().max(300) }),
+    'creator.connect_account_created': z.object({ userId: id, accountId: id }),
 } as const;
 
 export type EventType = keyof typeof EVENT_PAYLOADS;

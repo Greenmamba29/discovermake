@@ -70,6 +70,14 @@ export const ID_PREFIX = {
     buyerCredit: 'crd',
     shopStock: 'sst',
     jobBatch: 'bat',
+    // R5 Media
+    clip: 'clp',
+    auction: 'auc',
+    auctionBid: 'bid',
+    creatorEarning: 'cre',
+    creatorPayout: 'cpo',
+    feedEvent: 'fev',
+    dropQueueEntry: 'dqe',
 } as const;
 export type IdKind = keyof typeof ID_PREFIX;
 

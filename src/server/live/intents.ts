@@ -5,20 +5,21 @@
  * here and turned into server-signed Live Build Protocol events.
  */
 import { and, eq } from 'drizzle-orm';
-import type { DropView, HostIntent, LiveEvent } from '../../contracts/live';
+import type { AuctionView, DropView, HostIntent, LiveEvent } from '../../contracts/live';
 import { showDisplayId } from '../../contracts/live';
 import { getDb, withTx } from '../db';
 import { emitEvent } from '../events/outbox';
-import { builds, drops, liveEvents, liveMutes, showFeaturedBuilds, shows } from '../db/schema';
+import { auctions, builds, drops, liveEvents, liveMutes, showFeaturedBuilds, shows } from '../db/schema';
 import { ApiError } from '../http';
 import { actorFor, requireHost, type ShowAccess } from './access';
+import { closeAuction, startAuction } from './auctions';
 import { closeDrop, startDrop } from './drops';
 import { appendLiveEvent, type LiveActor } from './events';
 import { computeFeaturedProduct } from './featured';
 import { closeRoom, ensureRoom, liveKitConfig, roomNameForShow } from './livekit';
 import { answerQuestion, createPoll } from './questions';
 
-export type IntentResult = { event: LiveEvent | null; drop?: DropView };
+export type IntentResult = { event: LiveEvent | null; drop?: DropView; auction?: AuctionView };
 
 const LIVE_SYSTEM = { kind: 'system', id: 'live' } as const;
 
@@ -79,6 +80,13 @@ export async function handleIntent(access: ShowAccess, intent: HostIntent): Prom
             });
             const cfg = liveKitConfig();
             if (cfg && show.livekitRoom) await closeRoom(cfg, show.livekitRoom);
+            // R5 clip engine: the system clips each product moment of the replay (best effort, idempotent).
+            try {
+                const { autoCreateClips } = await import('../media/clips');
+                await autoCreateClips(show.id);
+            } catch (err) {
+                console.error('[live] auto clips failed', err);
+            }
             return { event };
         }
         case 'feature_product': {
@@ -150,6 +158,21 @@ export async function handleIntent(access: ShowAccess, intent: HostIntent): Prom
             const text = intent.seconds > 0 ? `Slow mode is on: one message every ${intent.seconds} s.` : 'Slow mode is off.';
             const event = await appendLiveEvent(show.id, { event: 'chat.message', actor: { kind: 'system', id: 'moderation', name: 'Moderation' }, payload: { text, system: true, slowModeSeconds: intent.seconds } });
             return { event };
+        }
+        case 'start_auction': {
+            assertNotEnded(access);
+            const auction = await startAuction(access, intent, actor);
+            return { event: null, auction };
+        }
+        case 'close_auction': {
+            const [open] = await getDb()
+                .select({ id: auctions.id })
+                .from(auctions)
+                .where(and(eq(auctions.showId, show.id), eq(auctions.status, 'OPEN')))
+                .limit(1);
+            if (!open) throw new ApiError('CONFLICT', 'There is no running auction on this show.');
+            const auction = await closeAuction(open.id, actor, 'host');
+            return { event: null, auction };
         }
         case 'machine_milestone': {
             if (show.status !== 'LIVE') throw new ApiError('CONFLICT', 'Production milestones are posted during a live show.');

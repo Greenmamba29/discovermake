@@ -107,6 +107,19 @@ export function renderEmail<K extends NotifyKind>(kind: K, payload: NotifyPayloa
                 { kind: 'p', text: 'If you did not ask for this code, you can ignore this email. Nobody can sign in without it.' },
             ]);
         }
+        case 'auction.outbid': {
+            const p = payload as NotifyPayloads['auction.outbid'];
+            return layout(`You were outbid on ${p.auctionTitle}`, [
+                { kind: 'p', text: `Someone bid ${formatMoney(p.amountCents, p.currency)}. Bid ${formatMoney(p.nextMinimumCents, p.currency)} or more to take the lead. Your earlier hold is released when the auction closes unless you win.` },
+                { kind: 'link', label: 'Back to the auction', href: p.showUrl },
+            ]);
+        }
+        case 'auction.won': {
+            const p = payload as NotifyPayloads['auction.won'];
+            return layout(`You won ${p.auctionTitle}`, [
+                { kind: 'p', text: `Your winning bid of ${formatMoney(p.amountCents, p.currency)} was charged and order ${p.orderNumber} is going to production. Every other hold you had on this auction was released.` },
+            ]);
+        }
         default: {
             const never: never = kind as never;
             throw new Error(`Unknown notification kind ${String(never)}`);

@@ -190,6 +190,8 @@ export const LEDGER_ACCOUNTS = [
     'RISK_RESERVE', // risk reserve collected on supplier-route quotes
     'BUYER_CREDITS', // promise credits owed to buyers (redeemable on a later checkout)
     'PROMISE_CREDIT_EXPENSE', // cost of missed delivery promises, memo names the responsible leg
+    // R5 Media (creator economics, docs/architecture/r5-media.md)
+    'CREATOR_PAYABLE', // owed to creators: remix / Make This royalties and drop / auction revenue (subledger: creator_earnings)
 ] as const;
 export const LedgerAccount = z.enum(LEDGER_ACCOUNTS);
 export type LedgerAccount = z.infer<typeof LedgerAccount>;

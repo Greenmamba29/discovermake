@@ -12,6 +12,8 @@
  *   livekit.ts     token grants, rooms, webhook verification
  *   control.ts     likes, join tokens, LiveKit webhook effects, control room
  *   channels.ts / shows.ts   channels, follows, shows, Live home, Studio, go-live checklist
+ *   queue.ts       R5 fair queue for high-demand drops (random tie-break within a second)
+ *   auctions.ts    R5 one-of-one auctions: bid ladder, anti-snipe, authorize / capture / release
  */
 export { loadShowAccess, requireHost, requireSignedIn, roleFor, publicName, actorFor, type ShowAccess, type LiveViewerRole } from './access';
 export { appendLiveEvent, listLiveEvents, rowToLiveEvent, SYSTEM_LIVE_ACTOR, MAKE_AI_LIVE_ACTOR, type LiveActor, type AppendLiveEventInput } from './events';
@@ -30,3 +32,7 @@ export { createShow, liveHome, studioOverview, updateShow, featuredProductsFor, 
 export { computeFeaturedProduct, loadBuildFacts } from './featured';
 export { liveKitConfig, isLiveKitConfigured, grantsForRole, receiveLiveKitWebhook } from './livekit';
 export { limitLive, resetLiveRateLimits } from './rate-limit';
+// R5: fair queue for high-demand drops, live auctions
+export { claimSlotsLocked, isFairQueueDrop, type ClaimBuyer } from './drops';
+export { dropQueueStatus, joinDropQueue, processDropQueue, sweepDropQueues } from './queue';
+export { antiSnipe, auctionViewForShow, closeAuction, getAuctionView, maybeCloseAuction, nextMinimumBid, placeBid, settleAuction, startAuction, sweepAuctions } from './auctions';
