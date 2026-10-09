@@ -51,6 +51,11 @@ export const ID_PREFIX = {
     approval: 'apr',
     sourcingClient: 'scl',
     sourcingAudit: 'sau',
+    user: 'usr',
+    userSession: 'uss',
+    authChallenge: 'ach',
+    oauthAccount: 'oac',
+    buildAttachment: 'att',
 } as const;
 export type IdKind = keyof typeof ID_PREFIX;
 
@@ -78,6 +83,8 @@ export const ShipmentId = idOf('shipment');
 export const PassportId = idOf('passport');
 export const DesignVersionId = idOf('designVersion');
 export const BgNodeId = idOf('bgNode');
+export const UserId = idOf('user');
+export const BuildAttachmentId = idOf('buildAttachment');
 export const BgEdgeId = idOf('bgEdge');
 export const SourcingJobId = idOf('sourcingJob');
 export const SupplierId = idOf('supplier');
