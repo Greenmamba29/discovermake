@@ -1,20 +1,15 @@
 import Link from 'next/link'
 import { ArrowRight, BadgeCheck, FileCheck2, PackageCheck, ScanLine, ShieldCheck, Truck, UploadCloud, Wrench } from 'lucide-react'
-import { PartUploader } from '@/components/upload/part-uploader'
+import { HomeIntake } from '@/components/home/home-intake'
+import { MakeTiles } from '@/components/home/make-tiles'
+import { RecentBuilds } from '@/components/home/recent-builds'
 import { MaterialsStrip } from '@/components/marketing/materials-strip'
 import { HeroPart } from '@/components/marketing/hero-part'
-
-const TILES = [
-    { title: 'Laser cut', body: 'Aluminum, steel, stainless and brass, 22 ga to 1/4" thick.', available: true },
-    { title: 'Bend', body: 'Press-brake bending from the BEND layer in your DXF.', available: true },
-    { title: 'Wood', body: 'Baltic birch plywood and walnut, CO₂ laser cut.', available: true },
-    { title: 'Acrylic', body: 'Black cast acrylic, 3 to 6 mm, laser-polished edges.', available: true },
-    { title: 'STEP · CNC', body: 'Machined parts from STEP files.', available: false },
-    { title: '3D print', body: 'Printed parts from STL and 3MF.', available: false },
-] as const
+import { TourEntry } from '@/components/onboarding/tour-entry'
+import { env } from '@/server/env'
 
 const STEPS = [
-    { icon: UploadCloud, title: 'Upload your DXF', body: 'We read the geometry in seconds: size, cut length, holes and bend lines.' },
+    { icon: UploadCloud, title: 'Upload or describe it', body: 'Attach a DXF and we read the geometry in seconds. Or describe the part and Make AI plans it.' },
     { icon: Wrench, title: 'Configure and get a binding quote', body: 'Pick material, thickness and finish. Manufacturability checks run as you choose, and the price you see is the price you pay.' },
     { icon: ScanLine, title: 'A partner shop makes it', body: 'Your order goes to a vetted shop. Every part is inspected against your drawing before it ships.' },
     { icon: PackageCheck, title: 'Delivered with a passport', body: 'Track every milestone live. On delivery your parts get a signed Product Passport anyone can verify.' },
@@ -27,24 +22,30 @@ const TRUST = [
     { icon: Truck, title: 'Tracked to your door', body: 'Live production updates and carrier tracking.' },
 ] as const
 
+/**
+ * Home (workflow 10, Uber "Booking a ride"): one "What do you want to make?" bar (text → Make AI,
+ * DXF → instant quote), the Make-anything tiles, recent builds, then how it works and trust.
+ */
 export default function HomePage() {
+    const makeAiEnabled = env().NEXT_PUBLIC_MAKE_AI_ENABLED
     return (
         <>
             <section className="relative overflow-hidden border-b border-paper-line">
-                <div className="mx-auto grid w-full max-w-6xl items-center gap-10 px-4 pb-14 pt-10 sm:px-6 md:grid-cols-[1.15fr_1fr] md:pb-20 md:pt-16">
-                    <div>
+                <div className="mx-auto grid w-full max-w-6xl items-center gap-10 px-4 pb-12 pt-8 sm:px-6 md:grid-cols-[1.15fr_1fr] md:pb-16 md:pt-14">
+                    <div className="min-w-0">
+                        <TourEntry />
                         <p className="eyebrow">Discover. Make. Build.</p>
-                        <h1 className="mt-4 font-display font-wide text-[2.6rem] font-extrabold leading-[1.02] tracking-tight text-ink sm:text-6xl">
+                        <h1 className="mt-3 font-display font-wide text-[2.5rem] font-extrabold leading-[1.02] tracking-tight text-ink sm:text-6xl">
                             What do you want to make?
                         </h1>
-                        <p className="mt-5 max-w-lg text-lg leading-relaxed text-ink-muted">
-                            Upload a flat-pattern DXF. Get an instant, binding quote. A vetted partner shop cuts, bends, finishes and inspects your parts, then ships them to your door.
+                        <p className="mt-4 max-w-lg text-lg leading-relaxed text-ink-muted">
+                            Describe it or attach a flat-pattern DXF. Vetted partner shops cut, bend, finish and inspect your parts, then ship them to your door.
                         </p>
-                        <div className="mt-8 max-w-xl">
-                            <PartUploader surface="paper" />
+                        <div className="mt-7 max-w-xl">
+                            <HomeIntake makeAiEnabled={makeAiEnabled} />
                         </div>
                     </div>
-                    <div className="rounded-3xl bg-paper-raised p-4 ring-1 ring-paper-line sm:p-6">
+                    <div className="hidden rounded-3xl bg-paper-raised p-4 ring-1 ring-paper-line sm:p-6 md:block">
                         <HeroPart />
                         <dl className="mt-4 grid grid-cols-3 gap-2 border-t border-paper-line pt-4 font-mono text-xs text-ink-muted">
                             <div>
@@ -64,48 +65,21 @@ export default function HomePage() {
                 </div>
             </section>
 
-            <section aria-labelledby="make-anything" className="mx-auto w-full max-w-6xl px-4 py-14 sm:px-6">
-                <div className="flex items-end justify-between gap-4">
+            <section aria-labelledby="make-anything" className="mx-auto w-full max-w-6xl px-4 pt-12 sm:px-6">
+                <div className="flex flex-wrap items-end justify-between gap-x-4 gap-y-1">
                     <h2 id="make-anything" className="font-display font-wide text-2xl font-bold text-ink sm:text-3xl">
                         Make anything
                     </h2>
-                    <Link href="/make" className="hidden items-center gap-1 rounded text-sm font-semibold text-ink hover:underline sm:inline-flex">
-                        Start a part <ArrowRight className="h-4 w-4" aria-hidden />
+                    <Link href="/discover" className="inline-flex min-h-[44px] items-center gap-1 rounded text-sm font-semibold text-ink hover:underline">
+                        Browse starter designs <ArrowRight className="h-4 w-4" aria-hidden />
                     </Link>
                 </div>
-                <ul className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
-                    {TILES.map((t) => {
-                        const inner = (
-                            <>
-                                <span className="flex items-center justify-between gap-2">
-                                    <span className="font-display text-lg font-bold text-ink">{t.title}</span>
-                                    {t.available ? (
-                                        <ArrowRight className="h-4 w-4 text-ink-subtle transition-transform group-hover:translate-x-0.5" aria-hidden />
-                                    ) : (
-                                        <span className="rounded-full bg-paper-line px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wider text-ink-muted">Soon</span>
-                                    )}
-                                </span>
-                                <span className="mt-2 block text-sm leading-snug text-ink-muted">{t.body}</span>
-                            </>
-                        )
-                        return (
-                            <li key={t.title}>
-                                {t.available ? (
-                                    <Link href="/make" className="group block h-full rounded-2xl bg-paper-raised p-4 ring-1 ring-paper-line transition-shadow hover:shadow-lg sm:p-5">
-                                        {inner}
-                                    </Link>
-                                ) : (
-                                    <div className="block h-full rounded-2xl bg-paper/60 p-4 opacity-80 border border-dashed border-paper-line sm:p-5" aria-disabled="true">
-                                        {inner}
-                                    </div>
-                                )}
-                            </li>
-                        )
-                    })}
-                </ul>
+                <MakeTiles makeAiEnabled={makeAiEnabled} />
             </section>
 
-            <section id="how-it-works" aria-labelledby="how-heading" className="scroll-mt-20 border-y border-paper-line bg-paper-raised">
+            <RecentBuilds />
+
+            <section id="how-it-works" aria-labelledby="how-heading" className="mt-14 scroll-mt-20 border-y border-paper-line bg-paper-raised">
                 <div className="mx-auto w-full max-w-6xl px-4 py-14 sm:px-6">
                     <h2 id="how-heading" className="font-display font-wide text-2xl font-bold text-ink sm:text-3xl">
                         How it works
