@@ -14,6 +14,7 @@ import hashlib
 import io
 import math
 import os
+import re
 import tempfile
 from dataclasses import dataclass, field
 
@@ -21,6 +22,7 @@ import cadquery as cq
 import ezdxf
 
 INSUNITS_MM = 4
+_STEP_STAMP = re.compile(rb"(FILE_NAME\('[^']*',)'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}'")
 
 # Deterministic DXF output: fixed creation/update timestamps and GUIDs, so the same
 # spec always yields the same bytes (and sha256). Golden files and caching rely on it.
@@ -102,7 +104,11 @@ def step_artifact(shape: cq.Workplane | cq.Assembly, name: str) -> Artifact:
         else:
             cq.exporters.export(shape, path, cq.exporters.ExportTypes.STEP)
         with open(path, "rb") as f:
-            return Artifact("STEP", f"{name}.step", "model/step", f.read())
+            data = f.read()
+    # The only run-dependent bytes in OCCT's STEP output are the FILE_NAME timestamp: pin it so
+    # the same spec gives the same STEP (and sha256), like the DXF.
+    data = _STEP_STAMP.sub(rb"\g<1>'1970-01-01T00:00:00'", data, count=1)
+    return Artifact("STEP", f"{name}.step", "model/step", data)
 
 
 def glb_artifact(parts: list[tuple[str, cq.Workplane, tuple[float, float, float]]], name: str) -> Artifact:
@@ -124,7 +130,22 @@ def dxf_doc() -> "ezdxf.document.Drawing":
     return doc
 
 
+def _pin_class_order(doc: "ezdxf.document.Drawing") -> None:
+    """ezdxf adds the CLASS entries for the entity types in use from a ``set`` at write time,
+    so their order (and the file's sha256) changed between processes. Register them first,
+    in a fixed order; the writer then skips the ones already present."""
+    try:
+        from ezdxf.sections.classes import REQ_R2004, REQUIRED_CLASSES
+    except ImportError:  # pragma: no cover - private names moved in a future ezdxf
+        return
+    for cls_name in REQUIRED_CLASSES.get(doc.dxfversion, REQ_R2004):
+        doc.classes.add_class(cls_name)
+    for dxftype in sorted(doc.entitydb.dxf_types_in_use()):
+        doc.classes.add_class(dxftype)
+
+
 def dxf_artifact(doc: "ezdxf.document.Drawing", name: str) -> Artifact:
+    _pin_class_order(doc)
     buf = io.StringIO()
     doc.write(buf)
     return Artifact("DXF", f"{name}.dxf", "application/dxf", buf.getvalue().encode("utf-8"))

@@ -4,6 +4,9 @@ import csv
 import io
 import json
 import math
+import os
+import subprocess
+import sys
 
 import ezdxf
 import pytest
@@ -208,3 +211,18 @@ def test_documents_are_deterministic():
     b = generate(spec(HAT), worker_version="x")
     for kind in ("DXF", "BOM", "CSV", "SVG"):
         assert artifact(a, kind).data == artifact(b, kind).data
+
+
+def test_dxf_bytes_do_not_depend_on_the_process_hash_seed():
+    """ezdxf writes CLASS entries from a set; common._pin_class_order keeps golden files stable."""
+    code = (
+        "from cad_worker.generate import generate;from cad_worker.golden import GOLDEN;"
+        "from cad_worker.specs import GenerateRequest;"
+        "print(next(a for a in generate(GenerateRequest(spec=GOLDEN['cad-worker-u-channel.dxf']).spec).artifacts if a.kind == 'DXF').sha256)"
+    )
+    root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    shas = {
+        subprocess.run([sys.executable, "-c", code], env={**os.environ, "PYTHONHASHSEED": seed}, capture_output=True, text=True, check=True, cwd=root).stdout.strip()
+        for seed in ("1", "4", "7")
+    }
+    assert len(shas) == 1

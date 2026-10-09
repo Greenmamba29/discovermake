@@ -5,35 +5,35 @@
       "content_type": "application/dxf",
       "filename": "body_flat.dxf",
       "kind": "DXF",
-      "sha256": "fd6793f1a7963048a127f98af943a31867f528d2fe9247d2e3947879f54f395f"
+      "sha256": "40d670afcee52c7bf71e0a0a2308a19990673b33dc0449dfe284680d4e9d7eb4"
     },
     {
       "bytes": 16393,
       "content_type": "application/dxf",
       "filename": "end_cap_flat.dxf",
       "kind": "DXF",
-      "sha256": "d7acfb5daf664003fba754d486d1f8f46b6f32aff172424ea2cb005c5a28ee44"
+      "sha256": "3544b427e03708ec0b943f5fb3778acb629e8a4bde18b1a8b4d89e481cb85f65"
     },
     {
       "bytes": 16504,
       "content_type": "application/dxf",
       "filename": "end_cap_gland_flat.dxf",
       "kind": "DXF",
-      "sha256": "feed82b24c79709385ee3a6bf1066ff6ab7b65d93da327d37baf03e118237cfc"
+      "sha256": "ee65017d57521381818428785e5ee06485b631fd8269b49d4997e3c8c331e1d8"
     },
     {
       "bytes": 16389,
       "content_type": "application/dxf",
       "filename": "lid_flat.dxf",
       "kind": "DXF",
-      "sha256": "2ed111be45a2852c46a0b0c45e4d9df1ea71feef126021f7ebed3c02182a4bf6"
+      "sha256": "a3fb3c2bcd60ca2bb5b5f6759d6226b8f498151134c908d1c5234bd51651d07c"
     },
     {
       "bytes": 311938,
       "content_type": "model/step",
       "filename": "enclosure.step",
       "kind": "STEP",
-      "sha256": "b73f6f2eef59228c530c50fe519cfc1f8de4f7b88cb0131b8fd5b2958c723dcd"
+      "sha256": "098758c9b5cbaf219dcf8a67211497b3f5066e8f73f036ead0e788ab251a071b"
     },
     {
       "bytes": 482960,
@@ -68,7 +68,7 @@
       "content_type": "application/json",
       "filename": "manifest.json",
       "kind": "MANIFEST",
-      "sha256": "86056df694a2df9b644b145ae6da9230ca5376c946065393b4d99d30772210f3"
+      "sha256": "da7f5c9d42a1757e18ed4b8400f77368e253827ca9759146ff9b8c14d081c1ea"
     }
   ],
   "family": "sheet_enclosure",
