@@ -24,6 +24,8 @@ import {
     QuoteStatus,
     ShipmentStatus,
     TrustLevel,
+    PromiseLeg,
+    SupplierLegStatus,
 } from './enums';
 import { IsoDateTime } from './common';
 import { CreationIntentKind, MakeAiRiskClass } from './make-ai';
@@ -175,6 +177,38 @@ export const EVENT_PAYLOADS = {
     'sourcing.lease_released': z.object({ jobId: id, reason: z.enum(['expired', 'client_revoked']) }),
     /** The build moved past the offer's design version; the offer can no longer be selected. */
     'sourcing.offer_stale': z.object({ offerId: id, jobId: id, offerVersion: z.number().int().positive(), currentVersion: z.number().int().positive() }),
+
+    // ---- R3 Prime: supplier-route ordering + Delivery Promise (docs/architecture/r3-prime.md) ----
+    /** A supplier confirmed an offer against the exact design version (trust SUPPLIER_CONFIRMED). */
+    'quote.supplier_confirmed': z.object({ offerId: id, jobId: id, buildId: id, designVersion: z.number().int().positive(), totalCents: cents }),
+    /** A BINDING quote was made from an approved supplier-confirmed offer (offer + margin + risk reserve). */
+    'quote.binding': z.object({
+        quoteId: id,
+        buildId: id,
+        offerId: id,
+        subtotalCents: cents,
+        riskReserveCents: cents,
+        riskScore: z.number().min(0).max(1),
+        depositPct: z.number().min(0).max(1),
+        validUntil: IsoDateTime,
+    }),
+    /** Supplier-route deposit received; the PO approvals are requested from it (job row locked first). */
+    'order.deposit_paid': z.object({ orderId: id, paymentId: id, depositCents: cents }),
+    /** Human approvals for the purchase order (and the supplier deposit) were requested. */
+    'po.approval_requested': z.object({ orderId: id, approvalId: id, depositApprovalId: id.nullable(), offerId: id }),
+    /** Ops approved the PO: the supplier fulfilment leg exists. */
+    'po.placed': z.object({ orderId: id, legId: id, poNumber: z.string(), approvalId: id, supplierId: id }),
+    /** Ops approved paying the supplier deposit (money out, ledger `supplier_deposit:<orderId>`). */
+    'po.deposit_approved': z.object({ orderId: id, legId: id.nullable(), approvalId: id, amountCents: cents }),
+    'supplier_leg.status_changed': z.object({ orderId: id, legId: id, from: SupplierLegStatus, to: SupplierLegStatus, note: z.string().nullable() }),
+    /** The balance of a supplier-route order is due (receiving QA passed); a payment session exists. */
+    'order.balance_due': z.object({ orderId: id, paymentId: id, amountCents: cents }),
+    'promise.set': z.object({ orderId: id, promisedDate: z.string(), p90Date: z.string(), shown: z.boolean(), bufferDays: z.number().int().nonnegative(), riskScore: z.number().min(0).max(1) }),
+    'promise.at_risk': z.object({ orderId: id, promisedDate: z.string(), p90Date: z.string(), currentLeg: PromiseLeg.nullable() }),
+    'promise.missed': z.object({ orderId: id, promisedDate: z.string(), deliveredOn: z.string(), responsibleLeg: PromiseLeg, creditId: id.nullable(), creditCents: cents }),
+    'promise.kept': z.object({ orderId: id, promisedDate: z.string(), deliveredOn: z.string() }),
+    'credit.issued': z.object({ creditId: id, orderId: id, amountCents: cents, responsibleLeg: PromiseLeg }),
+    'credit.redeemed': z.object({ creditId: id, orderId: id, amountCents: cents }),
 } as const;
 
 export type EventType = keyof typeof EVENT_PAYLOADS;

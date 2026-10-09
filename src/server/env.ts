@@ -75,6 +75,22 @@ const EnvSchema = z.object({
     CAD_WORKER_URL: optionalString,
     /** Bearer token the CAD worker expects (its CAD_WORKER_TOKEN). */
     CAD_WORKER_TOKEN: optionalString,
+
+    // ---- R3 Prime (docs/architecture/r3-prime.md). Unset = the documented default. ----
+    /** Share of a supplier-route order total charged at checkout, 0..1 (default 0.5). */
+    SUPPLIER_DEPOSIT_PCT: optionalString,
+    /** DiscoverMake margin on the supplier landed cost, 0..1 (default 0.18). */
+    SUPPLIER_MARGIN_PCT: optionalString,
+    /** Risk reserve % by risk tier LOW,MEDIUM,HIGH,VERY_HIGH (default "0.03,0.06,0.10,0.15"). */
+    SUPPLIER_RISK_RESERVE_PCTS: optionalString,
+    /** Supplier deposit paid with the PO, as a share of the landed cost, 0..1 (default 0.3). */
+    SUPPLIER_PO_DEPOSIT_PCT: optionalString,
+    /** Missed-promise credit as a share of the order subtotal, 0..1 (default 0.10). */
+    PROMISE_CREDIT_PCT: optionalString,
+    /** Missed-promise credit cap in cents (default 25000 = $250). */
+    PROMISE_CREDIT_CAP_CENTS: optionalString,
+    /** Mouser Search API key (catalog distributor provider). Unset = the distributor provider is disabled and never called. */
+    MOUSER_API_KEY: optionalString,
 });
 
 export type Env = z.infer<typeof EnvSchema>;

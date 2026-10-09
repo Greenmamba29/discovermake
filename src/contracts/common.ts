@@ -62,6 +62,13 @@ export const ID_PREFIX = {
     slotClaim: 'slc',
     liveEvent: 'lev',
     liveQuestion: 'lvq',
+    // R3 Prime
+    supplierLeg: 'leg',
+    promiseObservation: 'pob',
+    promiseModel: 'pmd',
+    buyerCredit: 'crd',
+    shopStock: 'sst',
+    jobBatch: 'bat',
 } as const;
 export type IdKind = keyof typeof ID_PREFIX;
 
