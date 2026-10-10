@@ -14,6 +14,14 @@ dependencies = [
 [project.optional-dependencies]
 dev = ["pytest>=8", "httpx>=0.27"]
 
+[tool.setuptools.packages.find]
+include = ["cad_worker*"]
+
+[tool.setuptools.package-data]
+# Kid templates and the measure script are run by the cadgen interpreter, not imported here.
+"cad_worker.text_to_cad" = ["*.py"]
+"cad_worker.text_to_cad.templates" = ["*.py", "*.ttf", "*.txt"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 filterwarnings = ["ignore::DeprecationWarning", "ignore::FutureWarning"]
