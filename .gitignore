@@ -48,3 +48,6 @@ next-env.d.ts
 
 # Recorded onboarding and test videos (bun run videos:*)
 /videos/
+
+# Netlify CLI state
+.netlify

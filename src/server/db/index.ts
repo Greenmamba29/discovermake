@@ -1,8 +1,8 @@
 /**
  * Database client (Drizzle + postgres-js).
  *
- * - `getDb()` returns a process-wide singleton built from DATABASE_URL (cached on
- *   globalThis so Next dev hot reloads don't leak connections).
+ * - `getDb()` returns a process-wide singleton built from DATABASE_URL, else Netlify Database's
+ *   NETLIFY_DB_URL (cached on globalThis so Next dev hot reloads don't leak connections).
  * - Server code must call `getDb()` at CALL time, never at module load, so tests
  *   can swap the database with `setDb()` (see `createTestDb()` in ./test-db.ts).
  * - Functions that participate in a caller's transaction take an optional
@@ -35,6 +35,8 @@ export function createDb(url: string, opts: { max?: number } = {}): DbHandle {
         max: opts.max ?? 10,
         idle_timeout: 20,
         connect_timeout: 10,
+        // A transaction-mode pooler (Neon's "-pooler" host) cannot keep prepared statements.
+        prepare: !/-pooler\./.test(url),
         // Quiet "NOTICE: ... already exists" noise from migrations.
         onnotice: () => {},
     });
@@ -46,7 +48,7 @@ export function createDb(url: string, opts: { max?: number } = {}): DbHandle {
 export function getDb(): Db {
     if (globalForDb.__dmDbOverride) return globalForDb.__dmDbOverride;
     if (!globalForDb.__dmDb) {
-        globalForDb.__dmDb = createDb(process.env.DATABASE_URL || DEFAULT_DATABASE_URL);
+        globalForDb.__dmDb = createDb(process.env.DATABASE_URL || process.env.NETLIFY_DB_URL || DEFAULT_DATABASE_URL);
     }
     return globalForDb.__dmDb.db;
 }

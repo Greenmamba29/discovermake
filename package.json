@@ -21,13 +21,16 @@
         "videos:tests": "RECORD_VIDEO=1 playwright test --grep-invert \"Mobbin page sweep\" --output videos/raw/tests",
         "videos:tours": "playwright test -c playwright.tours.config.ts",
         "videos:collect": "bun scripts/videos/collect.ts",
-        "vercel-build": "bash scripts/ops/vercel-build.sh"
+        "vercel-build": "bash scripts/ops/vercel-build.sh",
+        "db:netlify": "bun scripts/ops/netlify-migrations.ts"
     },
     "dependencies": {
         "@ai-sdk/google": "^4.0.88",
         "@aws-sdk/client-s3": "^3.1146.0",
         "@aws-sdk/s3-request-presigner": "^3.1146.0",
         "@modelcontextprotocol/sdk": "^1.32.1",
+        "@netlify/database": "^2.0.1",
+        "@netlify/functions": "^6.0.2",
         "@react-three/drei": "^10.7.9",
         "@react-three/fiber": "^9.8.1",
         "@simplewebauthn/browser": "13",
