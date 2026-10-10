@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { MembershipScreen } from '@/components/prime/membership-screen'
+import { PrimeFamilyCard } from '@/components/prime/prime-family-card'
 
 export const metadata: Metadata = { title: 'Membership', robots: { index: false } }
 
@@ -8,5 +9,10 @@ type Props = { searchParams: Promise<Record<string, string | string[] | undefine
 /** Manage Prime: status, renewal date, cancel / resume. */
 export default async function MembershipPage({ searchParams }: Props) {
     const sp = await searchParams
-    return <MembershipScreen welcome={Boolean(sp.welcome)} />
+    return (
+        <>
+            <MembershipScreen welcome={Boolean(sp.welcome)} />
+            <PrimeFamilyCard />
+        </>
+    )
 }
