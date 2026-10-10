@@ -25,8 +25,14 @@ export const TEXT_TO_CAD_OUTPUTS = ['step', 'glb', 'stl'] as const;
 export const TextToCadOutput = z.enum(TEXT_TO_CAD_OUTPUTS);
 export type TextToCadOutput = z.infer<typeof TextToCadOutput>;
 
-/** Largest model script the worker accepts (bytes of UTF-8). */
-export const TEXT_TO_CAD_MAX_SCRIPT_BYTES = 64 * 1024;
+/**
+ * Largest model script the worker accepts (bytes of UTF-8). Kept well under the worker's request-body
+ * cap for these routes (TEXT_TO_CAD_MAX_BODY_BYTES), so JSON framing and escaping never push a valid
+ * script over it.
+ */
+export const TEXT_TO_CAD_MAX_SCRIPT_BYTES = 48 * 1024;
+/** Request-body cap the worker applies to the text-to-CAD and kid-template routes. */
+export const TEXT_TO_CAD_MAX_BODY_BYTES = 256 * 1024;
 
 export const TextToCadBuildRequest = z.object({
     /** A cadgen model: one parameterless function decorated with @step/@glb/@stl returning a build123d shape. */
@@ -113,7 +119,17 @@ export const KidTemplateParams = {
 } as const satisfies Record<KidTemplateId, z.ZodTypeAny>;
 export type KidTemplateParams<T extends KidTemplateId> = z.infer<(typeof KidTemplateParams)[T]>;
 
-export const KidTemplateBuildRequest = z.object({ params: z.record(z.unknown()) });
+/**
+ * Body of POST /v1/kid-templates/{template}/build: the template id (which must equal the path
+ * segment) and that template's own params, validated by its schema on both sides.
+ */
+export const KidTemplateBuildRequest = z.discriminatedUnion('template', [
+    z.object({ template: z.literal('name_keychain'), params: KidTemplateParams.name_keychain }),
+    z.object({ template: z.literal('phone_stand'), params: KidTemplateParams.phone_stand }),
+    z.object({ template: z.literal('bookmark'), params: KidTemplateParams.bookmark }),
+    z.object({ template: z.literal('desk_tidy'), params: KidTemplateParams.desk_tidy }),
+    z.object({ template: z.literal('bike_hook'), params: KidTemplateParams.bike_hook }),
+]);
 export type KidTemplateBuildRequest = z.infer<typeof KidTemplateBuildRequest>;
 
 /** Copy for kids: short words, one idea per line (target reading age about 8). */
