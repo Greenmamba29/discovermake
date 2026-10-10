@@ -62,6 +62,8 @@ export function proxy(request: NextRequest) {
 
 export const config = {
     // Pages: not API routes, Next internals, or static files (anything with an extension).
-    // API routes: the Kids mode gate (no device minting there).
-    matcher: ['/((?!api/|_next/|.*\\.[A-Za-z0-9]+$).*)', '/api/:path*'],
+    // API routes: only while a Kids mode cookie is present (the gate). Running the proxy on every API
+    // request would make Next buffer each request body (uploads, streamed size caps) for nothing.
+    // Literal values only (matchers are statically analysed): 'dm_kid' is KID_COOKIE.
+    matcher: ['/((?!api/|_next/|.*\\.[A-Za-z0-9]+$).*)', { source: '/api/:path*', has: [{ type: 'cookie', key: 'dm_kid' }] }],
 }

@@ -1,6 +1,7 @@
 /** Kids mode route policy (allowlist) and the proxy gate for pages and API routes. */
 import { NextRequest } from 'next/server';
 import { describe, expect, it } from 'vitest';
+import { KID_COOKIE } from '@/contracts/kids';
 import { kidModeAllows } from '@/lib/kids/policy';
 import { config, proxy } from '@/proxy';
 
@@ -125,7 +126,7 @@ describe('proxy gate', () => {
         expect(proxy(new NextRequest('http://localhost:3000/api/me')).headers.get('set-cookie') ?? '').not.toMatch(/dm_device=/);
     });
 
-    it('covers API routes in the matcher', () => {
-        expect(config.matcher).toContain('/api/:path*');
+    it('runs on API routes only while a Kids mode cookie is present', () => {
+        expect(config.matcher[1]).toEqual({ source: '/api/:path*', has: [{ type: 'cookie', key: KID_COOKIE }] });
     });
 });
