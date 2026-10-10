@@ -13,11 +13,13 @@ import { limitWrite } from '@/server/build-graph';
 import { json, parseJson, route } from '@/server/http';
 import { reconstructWriteLimiter } from '@/server/reconstruct/request';
 import { createReconstruct } from '@/server/reconstruct/sessions';
+import { assertNotKidMode } from '@/server/kids/session';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export const POST = route(async (request) => {
+    await assertNotKidMode(request);
     assertSameOrigin(request);
     const limited = await limitWrite(request, reconstructWriteLimiter, 'Too many requests in a short time. Wait a minute and try again.');
     if (limited) return limited;

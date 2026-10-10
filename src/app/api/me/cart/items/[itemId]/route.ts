@@ -4,11 +4,13 @@ import { assertSameOrigin } from '@/server/auth/viewer';
 import { getCartView, removeCartItem } from '@/server/cart/cart';
 import { resolveCartOwner } from '@/server/cart/owner';
 import { json, route } from '@/server/http';
+import { assertNotKidMode } from '@/server/kids/session';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export const DELETE = route<{ itemId: string }>(async (request, { params }) => {
+    await assertNotKidMode(request);
     assertSameOrigin(request);
     const { owner } = await resolveCartOwner(request);
     await removeCartItem(owner, (await params).itemId);

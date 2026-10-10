@@ -15,6 +15,7 @@ import { limitWrite } from '@/server/build-graph';
 import { resolveBuildOwner } from '@/server/auth/viewer';
 import { ApiError, json, MAX_JSON_BODY_BYTES, parseJson, route } from '@/server/http';
 import { createBuildFromIntent, isMakeAiEnabled, makeAiRateLimiter } from '@/server/make-ai';
+import { assertNotKidMode } from '@/server/kids/session';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -24,6 +25,7 @@ export const maxDuration = 60;
 const MakeAiBuildRequest = z.object({ intentId: z.string().trim().min(1).max(64) });
 
 export const POST = route(async (request) => {
+    await assertNotKidMode(request);
     if (!isMakeAiEnabled()) throw new ApiError('NOT_FOUND', 'Not found', 404);
     const limited = await limitWrite(request, makeAiRateLimiter, 'Too many Make AI requests. Wait a minute and try again.');
     if (limited) return limited;

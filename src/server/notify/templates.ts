@@ -114,6 +114,14 @@ export function renderEmail<K extends NotifyKind>(kind: K, payload: NotifyPayloa
                 { kind: 'link', label: 'Back to the auction', href: p.showUrl },
             ]);
         }
+        case 'family.kid_request': {
+            const p = payload as NotifyPayloads['family.kid_request'];
+            return layout(`${p.kidNickname} asked for a ${p.templateTitle}`, [
+                { kind: 'p', text: `${p.kidNickname} designed a ${p.templateTitle} in Kids mode and asked you to say yes. The price is ${formatMoney(p.priceCents, p.currency)} (a binding 3D-print quote, plus shipping).` },
+                { kind: 'p', text: 'Open Family to see the design, then approve and pay through your usual checkout, or say not this time with a kind note.' },
+                { kind: 'link', label: 'Open your Family requests', href: p.familyUrl },
+            ]);
+        }
         case 'auction.won': {
             const p = payload as NotifyPayloads['auction.won'];
             return layout(`You won ${p.auctionTitle}`, [

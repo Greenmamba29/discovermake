@@ -9,11 +9,13 @@ import { json, parseJson, route } from '@/server/http';
 import { getViewer } from '@/server/auth/viewer';
 import { createCheckout } from '@/server/orders';
 import { getMembershipForBenefits } from '@/server/prime/membership';
+import { assertNotKidMode } from '@/server/kids/session';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export const POST = route(async (request) => {
+    await assertNotKidMode(request);
     const body = await parseJson(request, CheckoutRequest);
     const viewer = await getViewer(request);
     const userId = viewer?.user.id ?? null;

@@ -8,11 +8,13 @@ import { assertSameOrigin, requireViewer } from '@/server/auth/viewer';
 import { ApiError, json, parseJson, route } from '@/server/http';
 import { isDevPaymentEnabled } from '@/server/payments';
 import { getMembershipResponse, simulateDevMembership } from '@/server/prime/membership';
+import { assertNotKidMode } from '@/server/kids/session';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export const POST = route(async (request) => {
+    await assertNotKidMode(request);
     if (!isDevPaymentEnabled()) throw new ApiError('NOT_FOUND', 'Not found');
     assertSameOrigin(request);
     const viewer = await requireViewer(request);

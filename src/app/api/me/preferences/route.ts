@@ -7,11 +7,13 @@ import { UpdatePreferencesRequest } from '@/contracts/account';
 import { updatePreferences } from '@/server/accounts/me';
 import { applyDevice, assertSameOrigin, getViewer, resolveDevice } from '@/server/auth/viewer';
 import { json, parseJson, route } from '@/server/http';
+import { assertNotKidMode } from '@/server/kids/session';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export const PUT = route(async (request) => {
+    await assertNotKidMode(request);
     assertSameOrigin(request);
     const body = await parseJson(request, UpdatePreferencesRequest);
     const viewer = await getViewer(request);

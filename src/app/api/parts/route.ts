@@ -11,12 +11,15 @@ import { resolveBuildOwner } from '@/server/auth/viewer';
 import { ApiError, json, route } from '@/server/http';
 import { assertDxfFilename, createPartUpload, QUOTE_MAX_UPLOAD_BYTES, UnsupportedFileError } from '@/server/quote';
 import { readJsonBody, validate } from '@/server/quote/route-helpers';
+import { assertNotKidMode } from '@/server/kids/session';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export const POST = route(async (request) => {
+    // Body first (capped), so the guard's await never lets an unbounded stream buffer ahead.
     const raw = await readJsonBody(request);
+    await assertNotKidMode(request);
     // Format + size checks first so STEP/DWG/oversize uploads get a specific message, not a schema error.
     if (raw && typeof raw === 'object') {
         const { filename, sizeBytes } = raw as { filename?: unknown; sizeBytes?: unknown };

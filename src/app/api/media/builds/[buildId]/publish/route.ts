@@ -11,11 +11,13 @@ import { json, parseJson, route } from '@/server/http';
 import { publishBuild, publishLimiter } from '@/server/media';
 import { limited } from '@/server/media/http';
 import { pathId } from '@/server/quote/route-helpers';
+import { assertNotKidMode } from '@/server/kids/session';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export const POST = route<{ buildId: string }>(async (request, { params }) => {
+    await assertNotKidMode(request);
     assertSameOrigin(request);
     const buildId = pathId((await params).buildId, BuildId, 'Build');
     const viewer = await requireViewer(request);

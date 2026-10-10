@@ -11,11 +11,13 @@ import { assertCanEditBuildId } from '@/server/auth/build-access';
 import { json, route } from '@/server/http';
 import { pathId } from '@/server/quote/route-helpers';
 import { selectRouteOffer } from '@/server/sourcing/buyer';
+import { assertNotKidMode } from '@/server/kids/session';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export const POST = route<{ buildId: string; offerId: string }>(async (request, { params }) => {
+    await assertNotKidMode(request);
     const p = await params;
     const buildId = pathId(p.buildId, BuildId, 'Build');
     const offerId = pathId(p.offerId, SupplierOfferId, 'Offer');
