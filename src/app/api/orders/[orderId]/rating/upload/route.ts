@@ -8,11 +8,13 @@ import { ApiError, json, parseJson, route } from '@/server/http';
 import { createImageUpload } from '@/server/r3/images';
 import { requireBuyerOrder } from '@/server/r3/order-access';
 import { RATEABLE_STATUSES, ugcPrefix } from '@/server/ratings';
+import { assertNotKidMode } from '@/server/kids/session';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export const POST = route<{ orderId: string }>(async (request, { params }) => {
+    await assertNotKidMode(request);
     assertSameOrigin(request);
     const { order } = await requireBuyerOrder(request, (await params).orderId);
     if (!RATEABLE_STATUSES.has(order.status)) throw new ApiError('CONFLICT', 'You can add a photo once the order is delivered.');

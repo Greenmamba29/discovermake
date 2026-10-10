@@ -67,6 +67,24 @@ Errors:
 | 422 | `VALIDATION_FAILED` (invalid spec) or `GEOMETRY_FAILED` (kernel error) |
 | 504 | `TIMEOUT` |
 
+## Text-to-CAD (cadgen)
+
+Two more routes build models with [cadgen](https://github.com/earthtojake/text-to-cad) 0.7.20 (MIT, build123d on OpenCascade), contract `src/contracts/text-to-cad.ts`:
+
+```
+POST /v1/text-to-cad/build              { script, outputs? }  -> TextToCadBuildResponse
+POST /v1/kid-templates/{template}/build { params }            -> TextToCadBuildResponse
+```
+
+- A Make AI **script** is untrusted code. `cad_worker/text_to_cad/gate.py` parses it (never runs it) and rejects any import other than `math`, `typing` and `from cadgen import step, glb, stl, build123d`, dangerous builtins, underscore names, file/export functions, and anything but one decorated model with bare-filename outputs and the `__main__` guard. Violations come back with line numbers (`GATE_REJECTED`).
+- Whatever passes runs in `runner.py`: cadgen's **own venv** (`CADGEN_PYTHON`; it cannot share this venv because it installs `cadquery-ocp-novtk` over CadQuery's `cadquery-ocp`), a fresh temp job folder, an empty environment with `CADGEN_DAEMON=0`, `CADGEN_TELEMETRY=0`, `DO_NOT_TRACK=1`, `CADGEN_UPDATE_CHECK=0`, rlimits (CPU, 3 GB address space, 64 MB files, open files), a timeout that kills the process group, and `unshare --net` when available. Our own `measure.py` then reads the STEP and reports bbox / volume / area / solids / soundness.
+- **Kid templates** (`templates/`: name keychain, phone stand, bookmark, desk tidy, bike hook) are our own parametric models. Options are validated with pydantic and passed as `params.json` data, never pasted into code; labels use a bundled letters-and-digits subset of DejaVu Sans Bold (`templates/DejaVu-LICENSE.txt`).
+- Outcomes are HTTP 200 with `ok: true` or a contract error code (`GATE_REJECTED`, `BUILD_FAILED`, `TIMEOUT`, `TOO_LARGE`); `UNAVAILABLE` (no `CADGEN_PYTHON`) is 503.
+- `python -m cad_worker.text_to_cad.golden` rewrites the e2e golden in `tests/fixtures/text-to-cad/`.
+- Tests that build for real skip unless `CADGEN_PYTHON` (and `CADGEN_NODE`) are set.
+
+See `docs/architecture/text-to-cad.md` for the sandbox layers production must add around this.
+
 ## Configuration
 
 | Variable | Default | |
@@ -75,6 +93,10 @@ Errors:
 | `CAD_WORKER_TIMEOUT_S` | 30 | Per-request generation timeout |
 | `CAD_WORKER_CONCURRENCY` | 2 | Parallel generations (each needs ~300 MB) |
 | `PORT` | 8080 | |
+| `CADGEN_PYTHON` | — | cadgen venv python (`/opt/cadgen/bin/python` in Docker); unset means text-to-CAD answers `UNAVAILABLE` |
+| `CADGEN_NODE` | `node` on PATH | Node >= 20 for cadgen's GLB / STL export (`/opt/node22/bin/node` in Docker) |
+| `CADGEN_TIMEOUT_S` | 120 | Per text-to-CAD build |
+| `TEXT_TO_CAD_CONCURRENCY` | 1 | Parallel text-to-CAD builds (each may use up to ~3 GB) |
 
 The web app reads `CAD_WORKER_URL` and `CAD_WORKER_TOKEN` (see `src/server/cad/client.ts`).
 

@@ -8,11 +8,13 @@ import { assertSameOrigin } from '@/server/auth/viewer';
 import { json, parseJson, route } from '@/server/http';
 import { askQuestion, limitLive, loadShowAccess, requireSignedIn } from '@/server/live';
 import { pathId } from '@/server/quote/route-helpers';
+import { assertNotKidMode } from '@/server/kids/session';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export const POST = route<{ showId: string }>(async (request, { params }) => {
+    await assertNotKidMode(request);
     assertSameOrigin(request);
     const showId = pathId((await params).showId, ShowId, 'Show');
     const access = await loadShowAccess(request, showId);

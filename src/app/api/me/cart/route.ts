@@ -6,11 +6,13 @@ import type { CartView } from '@/contracts/prime';
 import { getCartView } from '@/server/cart/cart';
 import { resolveCartOwner } from '@/server/cart/owner';
 import { json, route } from '@/server/http';
+import { assertNotKidMode } from '@/server/kids/session';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export const GET = route(async (request) => {
+    await assertNotKidMode(request);
     const { owner } = await resolveCartOwner(request);
     return json<CartView>(await getCartView(owner));
 });

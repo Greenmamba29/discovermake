@@ -16,11 +16,13 @@ import { pathId } from '@/server/quote/route-helpers';
 import { relayOutboxLazily } from '@/server/sourcing/auto-request';
 import { getBuildSourcingView, requestBuyerSourcing } from '@/server/sourcing/buyer';
 import { buyerSourcingLimiter as limiter } from '@/server/sourcing/rate-limit';
+import { assertNotKidMode } from '@/server/kids/session';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-export const GET = route<{ buildId: string }>(async (_request, { params }) => {
+export const GET = route<{ buildId: string }>(async (request, { params }) => {
+    await assertNotKidMode(request);
     const buildId = pathId((await params).buildId, BuildId, 'Build');
     // Materialize auto-requests for fresh REVIEW quotes without waiting for the cron.
     await relayOutboxLazily();
@@ -28,6 +30,7 @@ export const GET = route<{ buildId: string }>(async (_request, { params }) => {
 });
 
 export const POST = route<{ buildId: string }>(async (request, { params }) => {
+    await assertNotKidMode(request);
     const buildId = pathId((await params).buildId, BuildId, 'Build');
     const decision = await limiter.hit(clientIp(request));
     if (!decision.allowed) {

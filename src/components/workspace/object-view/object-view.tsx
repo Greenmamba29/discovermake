@@ -5,7 +5,8 @@
  * the Microsoft Copilot 3D-object screen (Mobbin): a large viewport beside a properties panel
  * with Download and Recreate actions.
  *
- * - The GLB comes from the latest CAD record (`GET /api/builds/:id/cad`, signed URLs).
+ * - The GLB comes from the latest CAD record (`GET /api/builds/:id/cad`, signed URLs), or from a
+ *   Make AI "Make it in 3D" model (`GET /api/builds/:id/text-to-cad`), whichever is current.
  * - three.js loads lazily (next/dynamic, ssr: false) and only when WebGL is available.
  * - Without WebGL, or without a GLB, it shows the 2D DXF flat pattern or a dimensioned
  *   isometric box; without CAD at all, an honest empty state.
@@ -17,6 +18,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Box, Boxes, Download, Grid3x3, Maximize2, RotateCcw, Ruler, Sparkles } from 'lucide-react';
 import type { BuildGraphView } from '@/contracts';
 import type { BuildCadArtifactView, BuildCadGenerated, CadFamily } from '@/contracts/cad';
+import type { MakeIt3dRecordView } from '@/contracts/make-it-3d';
 import { FlatPattern } from '@/components/part/part-preview';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -24,6 +26,7 @@ import { EmptyState, Notice } from '@/components/ui/state';
 import { api, errorMessage } from '@/lib/api';
 import { cn } from '@/lib/utils';
 import { PanelCard } from '../panels';
+import { MakeIt3dPanel, useMakeIt3dStatus } from '../make-it-3d-panel';
 import { cadQueryKey, workspaceApi } from '../workspace-api';
 import type { WorkspaceSection } from '../workspace-model';
 import { dimensionRows, dimensionSummary, distance3, formatBbox, formatLength, type LengthUnit, type Vec3 } from './geometry';
@@ -69,10 +72,57 @@ class ViewerBoundary extends Component<{ fallback: ReactNode; children: ReactNod
     }
 }
 
-const bboxOf = (record: BuildCadGenerated): Vec3 => record.metrics.bbox_mm as unknown as Vec3;
+/** What the Object View shows: a CAD worker record or a Make AI "Make it in 3D" model. */
+type ObjectModel = {
+    label: string;
+    version: number;
+    bbox: Vec3;
+    volumeMm3: number;
+    thicknessMm: number | null;
+    bendCount: number | null;
+    partId: string | null;
+    artifacts: Pick<BuildCadArtifactView, 'kind' | 'filename' | 'bytes' | 'url'>[];
+};
 
-function useCad(buildId: string) {
-    return useQuery({ queryKey: cadQueryKey(buildId), queryFn: ({ signal }) => workspaceApi.cad(buildId, signal) });
+const bboxOf = (model: ObjectModel): Vec3 => model.bbox;
+
+function fromCad(record: BuildCadGenerated): ObjectModel {
+    return {
+        label: FAMILY_LABEL[record.family],
+        version: record.version,
+        bbox: record.metrics.bbox_mm as unknown as Vec3,
+        volumeMm3: record.metrics.volume_mm3,
+        thicknessMm: record.metrics.thickness_mm ?? null,
+        bendCount: record.metrics.bend_count ?? null,
+        partId: record.partId,
+        artifacts: record.artifacts,
+    };
+}
+
+function fromTextToCad(record: MakeIt3dRecordView): ObjectModel {
+    return {
+        label: 'Made with Make AI',
+        version: record.version,
+        bbox: record.geometry.bbox_mm as unknown as Vec3,
+        volumeMm3: record.geometry.volume_mm3,
+        thicknessMm: null,
+        bendCount: null,
+        partId: null,
+        artifacts: record.artifacts,
+    };
+}
+
+/**
+ * The current model: a CAD record wins unless the Make AI model is from a later version (a Make it
+ * in 3D version drops the CAD record; a later CAD generation keeps the Make AI record beside it).
+ */
+function useObjectModel(buildId: string): { pending: boolean; error: unknown; refetch: () => void; model: ObjectModel | null } {
+    const cad = useQuery({ queryKey: cadQueryKey(buildId), queryFn: ({ signal }) => workspaceApi.cad(buildId, signal) });
+    const ttc = useMakeIt3dStatus(buildId);
+    const ttcRecord = ttc.data?.record ?? null;
+    const cadRecord = cad.data ?? null;
+    const model = cadRecord && !(ttcRecord && ttcRecord.version > cadRecord.version) ? fromCad(cadRecord) : ttcRecord ? fromTextToCad(ttcRecord) : null;
+    return { pending: cad.isPending || ttc.isPending, error: cad.isError ? cad.error : null, refetch: () => void cad.refetch(), model };
 }
 
 function ToggleButton({ pressed, onClick, children, testId, disabled }: { pressed: boolean; onClick: () => void; children: ReactNode; testId: string; disabled?: boolean }) {
@@ -105,10 +155,10 @@ export function UnitToggle({ unit, onChange }: { unit: LengthUnit; onChange: (u:
     );
 }
 
-function Dimensions({ record, unit }: { record: BuildCadGenerated; unit: LengthUnit }) {
+function Dimensions({ record, unit }: { record: ObjectModel; unit: LengthUnit }) {
     const bbox = bboxOf(record);
     const rows = dimensionRows(bbox, unit);
-    const volumeCm3 = record.metrics.volume_mm3 / 1000;
+    const volumeCm3 = record.volumeMm3 / 1000;
     return (
         <>
             <dl className="divide-y divide-graphite-700 rounded-xl bg-graphite-850 px-3 ring-1 ring-inset ring-graphite-700" data-testid="object-dimensions" aria-label="Overall dimensions">
@@ -127,19 +177,19 @@ function Dimensions({ record, unit }: { record: BuildCadGenerated; unit: LengthU
                 <span>
                     Volume <span className="font-mono text-fg">{unit === 'in' ? `${(volumeCm3 / 16.387064).toFixed(2)} in³` : `${volumeCm3.toFixed(1)} cm³`}</span>
                 </span>
-                {record.metrics.thickness_mm ? (
+                {record.thicknessMm ? (
                     <span>
-                        Thickness <span className="font-mono text-fg">{formatLength(record.metrics.thickness_mm, unit)}</span>
+                        Thickness <span className="font-mono text-fg">{formatLength(record.thicknessMm, unit)}</span>
                     </span>
                 ) : null}
-                {record.metrics.bend_count ? <span>{record.metrics.bend_count} bend{record.metrics.bend_count === 1 ? '' : 's'}</span> : null}
+                {record.bendCount ? <span>{record.bendCount} bend{record.bendCount === 1 ? '' : 's'}</span> : null}
             </p>
         </>
     );
 }
 
-function DownloadPanel({ artifacts }: { artifacts: BuildCadArtifactView[] }) {
-    const order: BuildCadArtifactView['kind'][] = ['STEP', 'DXF', 'GLB'];
+function DownloadPanel({ artifacts }: { artifacts: ObjectModel['artifacts'] }) {
+    const order: BuildCadArtifactView['kind'][] = ['STEP', 'DXF', 'GLB', 'STL'];
     const sorted = [...artifacts].sort((a, b) => order.indexOf(a.kind) - order.indexOf(b.kind));
     return (
         <ul className="space-y-2" data-testid="object-downloads">
@@ -167,7 +217,7 @@ function DownloadPanel({ artifacts }: { artifacts: BuildCadArtifactView[] }) {
 }
 
 /** 2D fallback: the DXF flat pattern when there is one, else the dimensioned box. */
-function Fallback({ record, unit, reason }: { record: BuildCadGenerated; unit: LengthUnit; reason: string }) {
+function Fallback({ record, unit, reason }: { record: ObjectModel; unit: LengthUnit; reason: string }) {
     const part = useQuery({ queryKey: ['part', record.partId], queryFn: () => api.getPart(record.partId!), enabled: Boolean(record.partId), retry: false });
     const bbox = bboxOf(record);
     const preview = part.data?.preview ?? null;
@@ -188,9 +238,9 @@ function Fallback({ record, unit, reason }: { record: BuildCadGenerated; unit: L
     );
 }
 
-export function ObjectView({ view, onGo }: { view: BuildGraphView; onGo: (s: WorkspaceSection) => void }) {
+export function ObjectView({ view, onGo, isCurrent = true }: { view: BuildGraphView; onGo: (s: WorkspaceSection) => void; isCurrent?: boolean }) {
     const buildId = view.build.id;
-    const cad = useCad(buildId);
+    const cad = useObjectModel(buildId);
     const [webgl, setWebgl] = useState<boolean | null>(null);
     const [unit, setUnit] = useState<LengthUnit>('mm');
     const [showBox, setShowBox] = useState(true);
@@ -201,14 +251,14 @@ export function ObjectView({ view, onGo }: { view: BuildGraphView; onGo: (s: Wor
     const [loaded, setLoaded] = useState<Vec3 | null>(null);
     useEffect(() => setWebgl(webglAvailable()), []);
 
-    const record = cad.data ?? null;
+    const record = cad.model;
     const glb = record?.artifacts.find((a) => a.kind === 'GLB') ?? null;
     const expected = useMemo(() => (record ? bboxOf(record) : null), [record]);
     const onPick = useCallback((p: Vec3) => setPoints((prev) => (prev.length >= 2 ? [p] : [...prev, p])), []);
     const onLoaded = useCallback((size: Vec3) => setLoaded(size), []);
 
-    if (cad.isPending) return <Skeleton className="h-[420px] w-full rounded-2xl" />;
-    if (cad.isError) {
+    if (cad.pending) return <Skeleton className="h-[420px] w-full rounded-2xl" />;
+    if (cad.error) {
         return (
             <Notice tone="error" title="Could not load the 3D model" action={<Button size="sm" variant="secondary" onClick={() => cad.refetch()}>Try again</Button>}>
                 {errorMessage(cad.error)}
@@ -217,6 +267,7 @@ export function ObjectView({ view, onGo }: { view: BuildGraphView; onGo: (s: Wor
     }
     if (!record) {
         return (
+            <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
             <EmptyState
                 title="Generate CAD to see the 3D model"
                 icon={<Box className="h-8 w-8" aria-hidden />}
@@ -226,8 +277,10 @@ export function ObjectView({ view, onGo }: { view: BuildGraphView; onGo: (s: Wor
                     </Button>
                 }
             >
-                <span data-testid="object-empty">The Object View shows the model once CAD is generated from an approved version, with its dimensions and downloads.</span>
+                <span data-testid="object-empty">The Object View shows the model once CAD is generated from an approved version, with its dimensions and downloads. Or describe it and let Make AI make it in 3D.</span>
             </EmptyState>
+            <MakeIt3dPanel view={view} isCurrent={isCurrent} />
+            </div>
         );
     }
 
@@ -299,7 +352,7 @@ export function ObjectView({ view, onGo }: { view: BuildGraphView; onGo: (s: Wor
             <aside className="min-w-0 space-y-4" aria-label="Properties and downloads">
                 <PanelCard title="Properties" icon={<Maximize2 className="h-5 w-5" />} testId="object-properties">
                     <p className="mb-3 text-sm">
-                        <span className="font-semibold">{FAMILY_LABEL[record.family]}</span>
+                        <span className="font-semibold" data-testid="object-model-label">{record.label}</span>
                         <span className="text-fg-muted"> · version {record.version}</span>
                     </p>
                     <Dimensions record={record} unit={unit} />
@@ -313,6 +366,7 @@ export function ObjectView({ view, onGo }: { view: BuildGraphView; onGo: (s: Wor
                 <PanelCard title="Download" icon={<Download className="h-5 w-5" />} testId="object-download-panel">
                     <DownloadPanel artifacts={record.artifacts} />
                 </PanelCard>
+                <MakeIt3dPanel view={view} isCurrent={isCurrent} />
                 <PanelCard title="Recreate" icon={<Sparkles className="h-5 w-5" />}>
                     <p className="text-sm text-fg-muted">Ask Make AI for a change, then approve the new version and generate CAD again. Sizes only change when you state them.</p>
                     <div className="mt-3 flex flex-wrap gap-2">
@@ -331,11 +385,11 @@ export function ObjectView({ view, onGo }: { view: BuildGraphView; onGo: (s: Wor
 
 /** Overview card: a light, static preview (no three.js) with the dimensions and a link into the Object View. */
 export function ObjectViewCard({ view, onGo }: { view: BuildGraphView; onGo: (s: WorkspaceSection) => void }) {
-    const cad = useCad(view.build.id);
-    const record = cad.data ?? null;
+    const cad = useObjectModel(view.build.id);
+    const record = cad.model;
     return (
         <PanelCard title="Object" icon={<Box className="h-5 w-5" />} testId="workspace-object-card">
-            {cad.isPending ? (
+            {cad.pending ? (
                 <Skeleton className="h-32 w-full" />
             ) : !record ? (
                 <p className="text-sm text-fg-muted" data-testid="object-card-empty">
@@ -347,7 +401,7 @@ export function ObjectViewCard({ view, onGo }: { view: BuildGraphView; onGo: (s:
                         <IsoBoxPreview bbox={bboxOf(record)} unit="mm" label={`Bounding box drawing. ${dimensionSummary(bboxOf(record), 'mm')}`} className="h-full w-full" />
                     </div>
                     <div className="min-w-0 flex-1">
-                        <p className="text-sm font-semibold">{FAMILY_LABEL[record.family]}</p>
+                        <p className="text-sm font-semibold">{record.label}</p>
                         <p className="mt-1 font-mono text-sm text-fg-muted" data-testid="object-card-dims">
                             {formatBbox(bboxOf(record), 'mm')}
                         </p>

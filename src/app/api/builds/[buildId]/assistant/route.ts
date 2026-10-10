@@ -19,12 +19,14 @@ import { pathId } from '@/server/quote/route-helpers';
 import { requireBuild } from '@/server/workspace/attachments';
 import { addRequirement, askAssistant, assistantAvailability, confirmProposal } from '@/server/workspace/assistant';
 import { assistantAskLimiter } from '@/server/workspace/request';
+import { assertNotKidMode } from '@/server/kids/session';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 export const maxDuration = 30;
 
-export const GET = route<{ buildId: string }>(async (_request, { params }) => {
+export const GET = route<{ buildId: string }>(async (request, { params }) => {
+    await assertNotKidMode(request);
     const buildId = pathId((await params).buildId, BuildId, 'Build');
     const view = await getGraph(buildId);
     if (!view) throw new ApiError('NOT_FOUND', 'This build has no Build Graph yet');
@@ -33,6 +35,7 @@ export const GET = route<{ buildId: string }>(async (_request, { params }) => {
 });
 
 export const POST = route<{ buildId: string }>(async (request, { params }) => {
+    await assertNotKidMode(request);
     const buildId = pathId((await params).buildId, BuildId, 'Build');
     const body = await parseJson(request, AssistantRequest, ASSISTANT_MAX_BODY_BYTES);
     if (body.action === 'ask') {

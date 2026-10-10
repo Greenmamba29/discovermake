@@ -86,6 +86,8 @@ export async function publishBuild(viewer: ViewerContext, buildId: string, input
     if (!build) throw new ApiError('NOT_FOUND', 'Build not found');
     if (!build.ownerUserId) throw new ApiError('FORBIDDEN', 'Save this build to your account (sign in on the device that made it) before publishing it.', 403);
     if (!ownsBuild(viewer, build)) throw new ApiError('FORBIDDEN', 'Only the owner of this build can publish it.', 403);
+    // Kids & Family: a kid's design (and the words on it) is never shown publicly.
+    if (build.origin === 'kids') throw new ApiError('FORBIDDEN', 'Kids projects stay private to your family and cannot be published.', 403, { reason: 'KIDS' });
     const ownerUserId = build.ownerUserId;
     if (input.visibility === 'public') {
         const blocked = await publishBlockedReason(build, ownerUserId, db);

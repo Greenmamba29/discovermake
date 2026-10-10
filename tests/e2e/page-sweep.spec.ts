@@ -22,6 +22,7 @@ import { adminLogin, fulfil, payOrder, quotePart, shopLogin } from './support/jo
 import { buildLiveSweepState, type LiveSweepState } from './support/live';
 import { buildMediaSweepState, type MediaSweepState } from './support/media';
 import { primeSupplierState, type PrimeUrls } from './support/prime';
+import { enterKidsMode, ensureKidsFamily } from './support/kids';
 
 const OUT = path.join(process.cwd(), 'test-results', 'page-sweep');
 /** Written by global-setup once per run (the e2e database is recreated per run). */
@@ -62,8 +63,11 @@ type Screen = {
     pattern: (page: Page) => Promise<void>;
     /** Failed requests that are expected on this screen, matched against "<status> <path>". */
     allowHttp?: RegExp[];
-    /** App surface with the mobile bottom nav (Discover · Make · Live · Builds · Me). Focused flows and consoles have none. */
-    bottomNav?: boolean;
+    /**
+     * App surface with the mobile bottom nav (Discover · Make · Live · Builds · Me). Focused flows and consoles have none.
+     * 'kids': Kids mode, with the kid nav (Make · My things · Exit) at every width and never the adult nav.
+     */
+    bottomNav?: boolean | 'kids';
 };
 
 /** No Stripe in e2e: payout status answers 503 by design and the card falls back to manual settlement. */
@@ -540,6 +544,77 @@ const SCREENS: Screen[] = [
             await expect(row.getByTestId('build-reorder')).toBeEnabled();
         },
     },
+    // ---- Kids & Family ----
+    {
+        name: 'family',
+        bottomNav: true,
+        mobbin: 'Amazon Household · add a teen/child profile, per-profile controls, approve purchase requests',
+        url: () => '/family',
+        before: async (page) => {
+            await ensureKidsFamily(page.request, kidsSweepEmail('family', page));
+        },
+        pattern: async (page) => {
+            await expect(page.getByRole('heading', { level: 1, name: 'Family' })).toBeVisible();
+            await expect(page.getByTestId('family-pin-status')).toHaveText('Set');
+            await expect(page.getByTestId('kid-card-mia')).toContainText('Age 10-12');
+            await expect(page.getByTestId('kid-card-mia').getByRole('button', { name: 'Hand to Mia' })).toBeEnabled();
+            const req = page.getByTestId('family-request').first();
+            await expect(req).toContainText('Mia asked');
+            await expect(req.getByTestId('kid-preview')).toBeVisible();
+            await expect(req.getByTestId('family-request-price')).toContainText('binding 3D-print quote');
+            await expect(page.getByTestId('family-prime')).toBeVisible();
+        },
+    },
+    {
+        name: 'kids-home',
+        bottomNav: 'kids',
+        mobbin: 'Khan Academy Kids / Duolingo ABC home: big picture tiles, one tap per activity',
+        url: () => '/kids',
+        before: async (page) => enterKidsMode(page, kidsSweepEmail('kids-home', page)),
+        pattern: async (page) => {
+            await expect(page.getByRole('heading', { level: 1, name: 'What do you want to make?' })).toBeVisible();
+            await expect(page.getByTestId('kid-hello')).toHaveText(/Hi, Mia/);
+            await expect(page.getByTestId('kid-tiles').getByRole('link')).toHaveCount(5);
+            for (const link of await page.getByTestId('kid-tiles').getByRole('link').all()) expect((await link.boundingBox())!.height).toBeGreaterThanOrEqual(48);
+        },
+    },
+    {
+        name: 'kids-design',
+        bottomNav: 'kids',
+        mobbin: 'Toca Boca / PBS Kids builders: one choice per screen, progress dots, live preview',
+        url: () => '/kids/make/name_keychain',
+        before: async (page) => enterKidsMode(page, kidsSweepEmail('kids-design', page)),
+        pattern: async (page) => {
+            await expect(page.getByRole('heading', { level: 1, name: 'What should it say?' })).toBeVisible();
+            await expect(page.getByTestId('kid-step')).toHaveText('Step 1 of 4');
+            await expect(page.getByTestId('kid-label-count')).toHaveText('0 of 12');
+            await expect(page.getByTestId('kid-preview')).toBeVisible();
+            expect((await page.getByTestId('kid-next').boundingBox())!.height).toBeGreaterThanOrEqual(48);
+        },
+    },
+    {
+        name: 'kids-things',
+        bottomNav: 'kids',
+        mobbin: 'Amazon Kids+ / Domino’s tracker: a simple four-step progress track per thing',
+        url: () => '/kids/things',
+        before: async (page) => enterKidsMode(page, kidsSweepEmail('kids-things', page)),
+        pattern: async (page) => {
+            await expect(page.getByRole('heading', { level: 1, name: 'My things' })).toBeVisible();
+            await expect(page.getByTestId('kid-thing').first()).toBeVisible();
+            await expect(page.getByTestId('kid-thing-stage').first()).toHaveText(/Waiting for a grown-up|Not this time|being made|On its way|Here!/);
+        },
+    },
+    {
+        name: 'kids-exit',
+        bottomNav: 'kids',
+        mobbin: 'iOS Screen Time passcode: a big keypad for the grown-up',
+        url: () => '/kids/exit',
+        before: async (page) => enterKidsMode(page, kidsSweepEmail('kids-exit', page)),
+        pattern: async (page) => {
+            await expect(page.getByRole('heading', { level: 1, name: 'Grown-ups only' })).toBeVisible();
+            await expect(page.getByRole('group', { name: 'PIN keypad' }).getByRole('button')).toHaveCount(11);
+        },
+    },
     // ---- R3 Prime experience ----
     {
         name: 'prime-paywall',
@@ -558,6 +633,7 @@ const SCREENS: Screen[] = [
             await expect(page.getByTestId('prime-cancel-copy')).toContainText('pay nothing');
             await expect(page.getByTestId('prime-signin')).toBeVisible();
             await expect(page.getByTestId('prime-benefits').getByRole('listitem')).toHaveCount(5);
+            await expect(page.getByTestId('prime-family')).toContainText('Prime Family: share free shipping with your kids’ approved orders');
         },
     },
     {
@@ -837,6 +913,13 @@ const SCREENS: Screen[] = [
     },
 ];
 
+/**
+ * The grown-up of a Kids & Family screen: a family with kid "Mia" and a request. One per screen and
+ * width, so no email gets more than one sign-in code (5 per hour) and no session is shared while
+ * it is handed to a kid.
+ */
+const kidsSweepEmail = (screen: string, page: Page) => `sweep-family-${screen}-${page.viewportSize()?.width ?? 0}@example.com`;
+
 /** Cookies of the Live sweep creator (set in beforeAll); studio screens reuse the session. */
 let liveCreatorCookies: LiveSweepState['creatorCookies'] = [];
 const sweepCreatorCookies = () => liveCreatorCookies;
@@ -967,7 +1050,12 @@ test.describe('Mobbin page sweep', () => {
 
                 // App shell: the bottom nav on phone app screens only, never on desktop.
                 const bottomNav = page.getByTestId('bottom-nav');
-                if (viewport === 'phone' && screen.bottomNav) {
+                if (screen.bottomNav === 'kids') {
+                    // Kids mode: Make · My things · Exit at every width, never the adult nav.
+                    await expect(page.getByTestId('kid-bottom-nav')).toBeVisible();
+                    await expect(page.getByTestId('kid-bottom-nav').getByRole('link')).toHaveCount(3);
+                    await expect(bottomNav).toHaveCount(0);
+                } else if (viewport === 'phone' && screen.bottomNav) {
                     await expect(bottomNav).toBeVisible();
                     // Discover · Make · Live · Builds · Me (src/components/site/nav-items.ts BOTTOM_NAV).
                     await expect(bottomNav.getByRole('link')).toHaveCount(5);

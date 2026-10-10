@@ -8,11 +8,13 @@ import { assertSameOrigin } from '@/server/auth/viewer';
 import { addCartItem, getCartView } from '@/server/cart/cart';
 import { resolveCartOwner } from '@/server/cart/owner';
 import { json, parseJson, route } from '@/server/http';
+import { assertNotKidMode } from '@/server/kids/session';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export const POST = route(async (request) => {
+    await assertNotKidMode(request);
     assertSameOrigin(request);
     const body = await parseJson(request, AddCartItemRequest);
     const { owner, apply } = await resolveCartOwner(request, { mint: true });

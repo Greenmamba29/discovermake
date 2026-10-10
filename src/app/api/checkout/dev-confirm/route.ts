@@ -4,11 +4,13 @@
  */
 import { json, MAX_JSON_BODY_BYTES, readBodyText, route } from '@/server/http';
 import { confirmDevPayment } from '@/server/orders';
+import { assertNotKidMode } from '@/server/kids/session';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export const POST = route(async (request) => {
+    await assertNotKidMode(request);
     const result = await confirmDevPayment(await readBodyText(request, MAX_JSON_BODY_BYTES), request.headers);
     return json(result);
 });

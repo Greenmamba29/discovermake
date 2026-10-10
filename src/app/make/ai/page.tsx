@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { MakeAiIntake } from '@/components/make-ai/make-ai-intake'
+import { MakeIt3dEntry } from '@/components/make-it-3d/make-it-3d-entry'
 import { BottomNav } from '@/components/site/bottom-nav'
 import { SiteFooter } from '@/components/site/site-footer'
 import { SiteHeader } from '@/components/site/site-header'
@@ -33,6 +34,9 @@ export default async function MakeAiPage({ searchParams }: Props) {
                     </p>
                     <div className="mt-8">
                         <MakeAiIntake initialText={prompt} />
+                    </div>
+                    <div className="mt-10">
+                        <MakeIt3dEntry />
                     </div>
                 </div>
             </main>

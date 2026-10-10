@@ -7,11 +7,13 @@ import { QuoteId } from '@/contracts/common';
 import type { UpsellsResponse } from '@/contracts/prime';
 import { getUpsellOffers } from '@/server/cart/upsells';
 import { json, parseQuery, route } from '@/server/http';
+import { assertNotKidMode } from '@/server/kids/session';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export const GET = route(async (request) => {
+    await assertNotKidMode(request);
     const { quoteId } = parseQuery(request, z.object({ quoteId: QuoteId }));
     return json<UpsellsResponse>({ baseQuoteId: quoteId, offers: await getUpsellOffers(quoteId) });
 });

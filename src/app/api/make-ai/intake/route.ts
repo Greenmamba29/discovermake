@@ -13,12 +13,14 @@
 import { MakeAiIntakeRequest } from '@/contracts/make-ai';
 import { errorResponse, json, MAX_JSON_BODY_BYTES, parseJson, route } from '@/server/http';
 import { assertMakeAiAvailable, clientIp, makeAiRateLimiter, runIntake } from '@/server/make-ai';
+import { assertNotKidMode } from '@/server/kids/session';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 export const maxDuration = 60;
 
 export const POST = route(async (request) => {
+    await assertNotKidMode(request);
     assertMakeAiAvailable();
 
     const decision = await makeAiRateLimiter.hit(clientIp(request));

@@ -7,11 +7,13 @@ import { assertSameOrigin } from '@/server/auth/viewer';
 import { applyUpsellToItem, getCartView } from '@/server/cart/cart';
 import { resolveCartOwner } from '@/server/cart/owner';
 import { json, parseJson, route } from '@/server/http';
+import { assertNotKidMode } from '@/server/kids/session';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export const POST = route<{ itemId: string }>(async (request, { params }) => {
+    await assertNotKidMode(request);
     assertSameOrigin(request);
     const body = await parseJson(request, ApplyUpsellRequest);
     const { owner } = await resolveCartOwner(request);

@@ -10,6 +10,7 @@ import { json, route } from '@/server/http';
 import { creatorPayoutsView, requestCreatorPayout } from '@/server/media';
 import { limited } from '@/server/media/http';
 import { RateLimiter } from '@/server/rate-limit';
+import { assertNotKidMode } from '@/server/kids/session';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -17,11 +18,13 @@ export const dynamic = 'force-dynamic';
 const payoutLimiter = new RateLimiter('media_creator_payout', { kind: 'fixed_window', limit: 5, windowMs: 60_000 });
 
 export const GET = route(async (request) => {
+    await assertNotKidMode(request);
     const viewer = await requireViewer(request);
     return json<CreatorPayoutsResponse>(await creatorPayoutsView(viewer.user.id));
 });
 
 export const POST = route(async (request) => {
+    await assertNotKidMode(request);
     assertSameOrigin(request);
     const viewer = await requireViewer(request);
     const tooFast = await limited(payoutLimiter, viewer.user.id);

@@ -1,5 +1,9 @@
-import { cronJob } from '../lib/cron.mjs';
+import type { Config } from '@netlify/functions';
+import { triggerCronRoute } from '../lib/cron.mjs';
 
-const job = cronJob('/api/admin/promise/retrain', '30 6 * * 1'); // UTC, as in vercel.json
-export default job.handler;
-export const config = job.config;
+export default async function run(): Promise<Response> {
+    return triggerCronRoute('/api/admin/promise/retrain');
+}
+
+// Literal on purpose: Netlify reads `config` statically at deploy time. UTC, as in vercel.json.
+export const config: Config = { schedule: '30 6 * * 1' };

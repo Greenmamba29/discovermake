@@ -6,7 +6,7 @@ Each repo below becomes a **service or worker behind the Build Graph**. None is 
 
 | Repo | Role in DiscoverMake | License (verify) | Enters | Integration shape |
 |---|---|---|---|---|
-| earthtojake/text-to-cad | Natural language / image → CAD workflows | Verify before adoption | R2 | Study deeply. CAD agent worker |
+| earthtojake/text-to-cad (cadgen 0.7.20) | Natural language → CAD: Make AI writes a build123d model, cadgen builds STEP/GLB/STL | MIT (verified, commit b48ff49) | **R6 (in use)** | `services/cad-worker` runs cadgen in its own venv as a sandboxed subprocess after a static gate; skill docs vendored as Make AI's guide (`src/server/text-to-cad/guide`). See `text-to-cad.md` |
 | CadQuery/cadquery | Parametric, scriptable geometry | Apache-2.0 | **R2 (in use)** | `services/cad-worker` (Python): sheet panel, L-bracket, enclosure |
 | FreeCAD/FreeCAD | Validation, STEP, assemblies, sheet-metal unfold | LGPL-2.1+ | R1.5–R2 | Isolated worker, unmodified |
 | mrdoob/three.js | Browser 3D viewer | MIT | **R1** | Part preview, configure |

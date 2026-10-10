@@ -3,11 +3,13 @@ import type { OkResponse } from '@/contracts/common';
 import { deletePasskey } from '@/server/auth/passkeys';
 import { assertSameOrigin, requireViewer } from '@/server/auth/viewer';
 import { ApiError, json, route } from '@/server/http';
+import { assertNotKidMode } from '@/server/kids/session';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export const DELETE = route<{ id: string }>(async (request, { params }) => {
+    await assertNotKidMode(request);
     assertSameOrigin(request);
     const viewer = await requireViewer(request);
     const { id } = await params;

@@ -9,11 +9,13 @@ import type { OkResponse } from '@/contracts/common';
 import { env } from '@/server/env';
 import { ApiError, json, parseJson, route } from '@/server/http';
 import { assertSameOrigin, createShopSession, readShopSessionSecret, requireShopSession, revokeShopSession, sessionCookieOptions } from '@/server/shops';
+import { assertNotKidMode } from '@/server/kids/session';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export const POST = route(async (request) => {
+    await assertNotKidMode(request);
     assertSameOrigin(request);
     const { token } = await parseJson(request, ShopLoginRequest);
     const session = await createShopSession(token);
@@ -25,12 +27,14 @@ export const POST = route(async (request) => {
 });
 
 export const GET = route(async (request) => {
+    await assertNotKidMode(request);
     const { shop, expiresAt } = await requireShopSession(request);
     const body: ShopSessionResponse = { shop, expiresAt: expiresAt.toISOString(), shippingMode: env().CARRIER };
     return json(body);
 });
 
 export const DELETE = route(async (request) => {
+    await assertNotKidMode(request);
     assertSameOrigin(request);
     const secret = readShopSessionSecret(request);
     if (secret) await revokeShopSession(secret);

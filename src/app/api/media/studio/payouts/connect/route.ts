@@ -5,11 +5,13 @@
 import { assertSameOrigin, requireViewer } from '@/server/auth/viewer';
 import { json, route } from '@/server/http';
 import { createCreatorOnboardingLink } from '@/server/media';
+import { assertNotKidMode } from '@/server/kids/session';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export const POST = route(async (request) => {
+    await assertNotKidMode(request);
     assertSameOrigin(request);
     const viewer = await requireViewer(request);
     return json(await createCreatorOnboardingLink(viewer));

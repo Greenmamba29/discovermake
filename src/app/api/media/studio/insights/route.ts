@@ -5,11 +5,13 @@ import { InsightRange, type InsightsView } from '@/contracts/media';
 import { requireViewer } from '@/server/auth/viewer';
 import { ApiError, json, route } from '@/server/http';
 import { creatorInsights } from '@/server/media';
+import { assertNotKidMode } from '@/server/kids/session';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export const GET = route(async (request) => {
+    await assertNotKidMode(request);
     const viewer = await requireViewer(request);
     const range = InsightRange.safeParse(new URL(request.url).searchParams.get('range') ?? '30d');
     if (!range.success) throw new ApiError('VALIDATION_FAILED', 'Unknown range');

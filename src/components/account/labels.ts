@@ -12,4 +12,4 @@ export function interestLabel(slug: InterestSlug): string {
 
 export const TAB_LABELS: Record<MyBuildsTab, string> = { all: 'All', created: 'Created', remixed: 'Remixed', ordered: 'Ordered', following: 'Following' };
 
-export const ORIGIN_LABELS: Record<BuildOrigin, string> = { upload: 'Uploaded', make_ai: 'Made with Make AI', remix: 'Remix', clone: 'Made from a build', reconstruct: 'Rebuilt from a photo' };
+export const ORIGIN_LABELS: Record<BuildOrigin, string> = { upload: 'Uploaded', make_ai: 'Made with Make AI', remix: 'Remix', clone: 'Made from a build', reconstruct: 'Rebuilt from a photo', kids: 'Kids project' };

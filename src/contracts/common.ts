@@ -91,6 +91,11 @@ export const ID_PREFIX = {
     orderMessage: 'msg',
     holdRequest: 'hld',
     invoice: 'inv',
+    // Kids & Family
+    kidProfile: 'kid',
+    kidDesign: 'kdz',
+    kidRequest: 'kreq',
+    familyActivity: 'fac',
 } as const;
 export type IdKind = keyof typeof ID_PREFIX;
 

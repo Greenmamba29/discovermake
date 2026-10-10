@@ -142,7 +142,7 @@ export function BuildWorkspace({ buildId, initialSection }: { buildId: string; i
             banner={banner}
         >
             {active === 'overview' && <OverviewPanel view={view} onGo={go} isCurrent={isCurrent} />}
-            {active === 'object' && <ObjectView view={view} onGo={go} />}
+            {active === 'object' && <ObjectView view={view} onGo={go} isCurrent={isCurrent} />}
             {active === 'requirements' && <RequirementsPanel view={view} />}
             {active === 'questions' && (
                 <QuestionCards

@@ -146,6 +146,7 @@ export function MyBuildsScreen({ initialTab }: { initialTab: MyBuildsTab }) {
 function openHref(row: MyBuildRow): string {
     if (row.origin === 'upload' && row.partId) return `/parts/${encodeURIComponent(row.partId)}`;
     if (row.origin === 'reconstruct') return `/reconstruct/${encodeURIComponent(row.buildId)}`;
+    if (row.origin === 'kids') return '/family#requests';
     return `/build/${encodeURIComponent(row.buildId)}/workspace`;
 }
 

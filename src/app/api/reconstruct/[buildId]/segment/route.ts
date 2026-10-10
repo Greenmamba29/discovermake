@@ -11,12 +11,14 @@ import { json, parseJson, route } from '@/server/http';
 import { reconstructBuildId, reconstructSegmentLimiter, requireOwnedReconstruct } from '@/server/reconstruct/request';
 import { segmentAndMeasure } from '@/server/reconstruct/segmentation';
 import { photoBytes } from '@/server/reconstruct/sessions';
+import { assertNotKidMode } from '@/server/kids/session';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 export const maxDuration = 60;
 
 export const POST = route<{ buildId: string }>(async (request, { params }) => {
+    await assertNotKidMode(request);
     const buildId = reconstructBuildId((await params).buildId);
     const limited = await limitWrite(request, reconstructSegmentLimiter, 'Too many auto-detect runs. Wait a minute and try again.');
     if (limited) return limited;

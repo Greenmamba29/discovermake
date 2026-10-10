@@ -7,16 +7,19 @@ import { StartMembershipRequest, UpdateMembershipRequest, type MembershipRespons
 import { assertSameOrigin, getViewer, requireViewer } from '@/server/auth/viewer';
 import { json, parseJson, route } from '@/server/http';
 import { getMembershipResponse, startMembership, updateMembership } from '@/server/prime/membership';
+import { assertNotKidMode } from '@/server/kids/session';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export const GET = route(async (request) => {
+    await assertNotKidMode(request);
     const viewer = await getViewer(request);
     return json<MembershipResponse>(await getMembershipResponse(viewer ? { id: viewer.user.id, email: viewer.user.email } : null));
 });
 
 export const POST = route(async (request) => {
+    await assertNotKidMode(request);
     assertSameOrigin(request);
     const viewer = await requireViewer(request);
     const body = await parseJson(request, StartMembershipRequest);
@@ -25,6 +28,7 @@ export const POST = route(async (request) => {
 });
 
 export const PATCH = route(async (request) => {
+    await assertNotKidMode(request);
     assertSameOrigin(request);
     const viewer = await requireViewer(request);
     const body = await parseJson(request, UpdateMembershipRequest);
