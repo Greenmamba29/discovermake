@@ -25,3 +25,4 @@ export * from './account';
 export * from './live';
 export * from './promise';
 export * from './media';
+export * from './text-to-cad';
