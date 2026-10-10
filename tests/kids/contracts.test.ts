@@ -4,9 +4,10 @@ import { CreateKidProfileRequest, defaultControlsFor, defaultTemplatesFor, Grown
 import { KidLabel } from '@/contracts/text-to-cad';
 
 describe('kid profile validation', () => {
-    it('accepts a nickname of letters, numbers and spaces up to 12 characters', () => {
+    it('accepts a one-word nickname of letters and numbers up to 12 characters, never a full name', () => {
         expect(KidNickname.parse('  Mia  ')).toBe('Mia');
-        expect(KidNickname.parse('Kid 2')).toBe('Kid 2');
+        expect(KidNickname.parse('Kid2')).toBe('Kid2');
+        expect(KidNickname.safeParse('Mia Smith').success).toBe(false);
         expect(KidNickname.safeParse('ABCDEFGHIJKLM').success).toBe(false);
         expect(KidNickname.safeParse('').success).toBe(false);
         for (const bad of ['mia@x.com', 'Mia-Rose', "O'Neil", 'call 555-1234', 'http://x']) expect(KidNickname.safeParse(bad).success, bad).toBe(false);

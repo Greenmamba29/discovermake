@@ -40,13 +40,13 @@ export type KidAvatar = z.infer<typeof KidAvatar>;
 
 export const KID_AVATAR_EMOJI: Record<KidAvatar, string> = { fox: '🦊', owl: '🦉', robot: '🤖', rocket: '🚀', cat: '🐱', dino: '🦕', star: '⭐', whale: '🐳' };
 
-/** A nickname, never a real full name: letters, numbers and spaces, 12 at most. */
+/** A nickname, never a full name: one word of letters and numbers, 12 at most, so it cannot hold a first and last name. */
 export const KidNickname = z
     .string()
     .trim()
     .min(1, 'Type a nickname.')
     .max(12, 'Use 12 characters or fewer.')
-    .regex(/^[A-Za-z0-9 ]+$/, 'Use letters, numbers and spaces only.');
+    .regex(/^[A-Za-z0-9]+$/, 'Use one word: letters and numbers only.');
 
 export const GrownUpPin = z.string().regex(/^\d{4}$/, 'Use exactly 4 digits.');
 

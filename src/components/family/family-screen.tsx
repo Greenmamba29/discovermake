@@ -213,7 +213,7 @@ function AddKid({ onAdded }: { onAdded: () => Promise<void> }) {
             <h3 id="add-kid-heading" className="text-lg font-semibold text-fg">
                 Add a kid
             </h3>
-            <Field label="Nickname" hint="A nickname, not a full name. Letters, numbers and spaces, 12 at most." error={error}>
+            <Field label="Nickname" hint="One word, not a full name. Letters and numbers, 12 at most." error={error}>
                 {({ id, describedBy, invalid }) => <TextInput id={id} value={nickname} maxLength={12} autoComplete="off" onChange={(e) => setNickname(e.target.value)} aria-describedby={describedBy} aria-invalid={invalid} className="h-11" data-testid="kid-nickname" />}
             </Field>
             <fieldset>

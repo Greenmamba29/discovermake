@@ -24,7 +24,7 @@ Controls per kid (defaults from the age band, `defaultControlsFor` in `src/contr
 | Table | Holds |
 |---|---|
 | `families` | One row per grown-up who set up Family: `pin_hash` (`scrypt1$salt$hash`, scrypt N=2^15 over HMAC(AUTH_SECRET-derived key, pin)) |
-| `kid_profiles` | nickname (1–12 letters/digits/spaces), age band, avatar id, spending limit, allowed templates, live/discover flags. Nothing else about a child exists anywhere |
+| `kid_profiles` | nickname (one word, 1–12 letters/digits), age band, avatar id, spending limit, allowed templates, live/discover flags. Nothing else about a child exists anywhere |
 | `kid_designs` | template, bounded params (incl. the ≤12-char label), the workshop result (`cad`: engine, geometry, artifact keys + sha256), the `kids` build/part, the print quote id and BINDING price |
 | `kid_requests` | "Ask a grown-up": design, quote, price, status (pending / approved / declined), optional kind note |
 | `family_activity` | Approvals, declines, Kids mode start/end, profile changes. Rows of a deleted kid go with it |
