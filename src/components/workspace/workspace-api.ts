@@ -4,6 +4,8 @@
  */
 import { BuildForkResponse, BuildGraphDiff, BuildGraphView } from '@/contracts';
 import { BuildCadGenerated, BuildCadResponse, type CadSpecInput } from '@/contracts/cad';
+import { MakeIt3dResponse, MakeIt3dStatus } from '@/contracts/make-it-3d';
+import { QuoteView } from '@/contracts/quotes';
 import type { RequirementCategory } from '@/contracts/make-ai';
 import {
     AssistantAskResponse,
@@ -32,6 +34,13 @@ export const workspaceApi = {
     generateCad: async (buildId: string, spec?: CadSpecInput) => BuildCadResponse.parse(await apiFetch<unknown>(`/api/builds/${enc(buildId)}/cad`, { body: spec ? { spec } : {} })),
     fork: async (buildId: string, kind: 'remix' | 'clone') => BuildForkResponse.parse(await apiFetch<unknown>(`/api/builds/${enc(buildId)}/${kind}`, { method: 'POST' })),
 
+    // ---- Make AI "Make it in 3D" (text to CAD) ----
+    textToCad: async (buildId: string, signal?: AbortSignal) => MakeIt3dStatus.parse(await apiFetch<unknown>(`/api/builds/${enc(buildId)}/text-to-cad`, { signal })),
+    makeIn3D: async (buildId: string, prompt: string) => MakeIt3dResponse.parse(await apiFetch<unknown>(`/api/builds/${enc(buildId)}/text-to-cad`, { body: { prompt } })),
+    quoteTextToCad: async (buildId: string, printMaterialSlug: string, quantity: number) =>
+        QuoteView.parse(await apiFetch<unknown>(`/api/builds/${enc(buildId)}/text-to-cad/quote`, { body: { printMaterialSlug, quantity } })),
+    getQuote: async (quoteId: string, signal?: AbortSignal) => QuoteView.parse(await apiFetch<unknown>(`/api/quotes/${enc(quoteId)}`, { signal })),
+
     // ---- Ask Make AI (300-3) ----
     assistantStatus: async (buildId: string, signal?: AbortSignal) => AssistantStatus.parse(await apiFetch<unknown>(`/api/builds/${enc(buildId)}/assistant`, { signal })),
     ask: async (buildId: string, message: string) => AssistantAskResponse.parse(await apiFetch<unknown>(`/api/builds/${enc(buildId)}/assistant`, { body: { action: 'ask', message } })),
@@ -54,5 +63,6 @@ export const assistantQueryKey = (buildId: string) => ['build-assistant', buildI
 export const attachmentsQueryKey = (buildId: string) => ['build-attachments', buildId] as const;
 
 export const cadQueryKey = (buildId: string) => ['build-cad', buildId] as const;
+export const textToCadQueryKey = (buildId: string) => ['build-text-to-cad', buildId] as const;
 
 export const graphQueryKey = (buildId: string, version: number | null) => ['build-graph', buildId, version ?? 'current'] as const;
