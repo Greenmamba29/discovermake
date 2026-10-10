@@ -16,17 +16,20 @@ import { json, MAX_JSON_BODY_BYTES, parseJson, route } from '@/server/http';
 import { pathId } from '@/server/quote/route-helpers';
 import { createAttachmentUpload, listAttachments, requireBuild } from '@/server/workspace/attachments';
 import { attachmentWriteLimiter, deviceHashFrom } from '@/server/workspace/request';
+import { assertNotKidMode } from '@/server/kids/session';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-export const GET = route<{ buildId: string }>(async (_request, { params }) => {
+export const GET = route<{ buildId: string }>(async (request, { params }) => {
+    await assertNotKidMode(request);
     const buildId = pathId((await params).buildId, BuildId, 'Build');
     await requireBuild(buildId);
     return json(await listAttachments(buildId));
 });
 
 export const POST = route<{ buildId: string }>(async (request, { params }) => {
+    await assertNotKidMode(request);
     const buildId = pathId((await params).buildId, BuildId, 'Build');
     const limited = await limitWrite(request, attachmentWriteLimiter, 'Too many uploads in a short time. Wait a minute and try again.');
     if (limited) return limited;

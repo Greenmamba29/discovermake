@@ -12,6 +12,7 @@ import { assertSameOrigin, resolveBuildOwner } from '@/server/auth/viewer';
 import { limitWrite } from '@/server/build-graph';
 import { ApiError, json, parseJson, route } from '@/server/http';
 import { createMakeIt3dBuild, makeIt3dAvailability } from '@/server/text-to-cad/service';
+import { assertNotKidMode } from '@/server/kids/session';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -19,6 +20,7 @@ export const dynamic = 'force-dynamic';
 export const GET = route(async () => json<MakeIt3dAvailability>(makeIt3dAvailability()));
 
 export const POST = route(async (request) => {
+    await assertNotKidMode(request);
     assertSameOrigin(request);
     const limited = await limitWrite(request);
     if (limited) return limited;

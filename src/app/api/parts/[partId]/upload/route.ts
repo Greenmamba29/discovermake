@@ -11,6 +11,7 @@ import { assertCanEditPart } from '@/server/auth/build-access';
 import { ApiError, json, readBodyBytes, route } from '@/server/http';
 import { QUOTE_MAX_UPLOAD_BYTES, uploadPartBytes } from '@/server/quote';
 import { pathId } from '@/server/quote/route-helpers';
+import { assertNotKidMode } from '@/server/kids/session';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -45,6 +46,7 @@ async function readUpload(request: Request): Promise<Uint8Array> {
 }
 
 const handler = route<{ partId: string }>(async (request, { params }) => {
+    await assertNotKidMode(request);
     const partId = pathId((await params).partId, PartId, 'Part');
     await assertCanEditPart(request, partId);
     const bytes = await readUpload(request);

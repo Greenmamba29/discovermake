@@ -8,11 +8,13 @@ import { assertSameOrigin, getDeviceHash, getViewer } from '@/server/auth/viewer
 import { checkoutQuotes } from '@/server/cart/checkout';
 import { json, parseJson, route } from '@/server/http';
 import { getMembershipForBenefits } from '@/server/prime/membership';
+import { assertNotKidMode } from '@/server/kids/session';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export const POST = route(async (request) => {
+    await assertNotKidMode(request);
     assertSameOrigin(request);
     const body = await parseJson(request, InvoiceCheckoutRequest);
     const viewer = await getViewer(request);

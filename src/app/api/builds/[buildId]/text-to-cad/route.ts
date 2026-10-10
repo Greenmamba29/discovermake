@@ -20,6 +20,7 @@ import { pathId } from '@/server/quote/route-helpers';
 import { MAKE_IT_3D_RATE_LIMIT_MESSAGE, makeIt3dLimiter } from '@/server/text-to-cad/request';
 import { getMakeIt3dStatus, makeIn3D } from '@/server/text-to-cad/service';
 import { requireBuild } from '@/server/workspace/attachments';
+import { assertNotKidMode } from '@/server/kids/session';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -32,6 +33,7 @@ export const GET = route<{ buildId: string }>(async (_request, { params }) => {
 });
 
 export const POST = route<{ buildId: string }>(async (request, { params }) => {
+    await assertNotKidMode(request);
     const buildId = pathId((await params).buildId, BuildId, 'Build');
     const body = await parseJson(request, MakeIt3dRequest, 8 * 1024);
     const build = await requireBuild(buildId);

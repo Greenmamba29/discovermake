@@ -8,6 +8,7 @@ import { MyBuildsTab, type MyBuildsResponse } from '@/contracts/account';
 import { listMyBuilds } from '@/server/accounts/my-builds';
 import { applySessionRefresh, getDeviceHash, getViewer } from '@/server/auth/viewer';
 import { json, parseQuery, route } from '@/server/http';
+import { assertNotKidMode } from '@/server/kids/session';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -18,6 +19,7 @@ const Query = z.object({
 });
 
 export const GET = route(async (request) => {
+    await assertNotKidMode(request);
     const q = parseQuery(request, Query);
     const viewer = await getViewer(request);
     // Read-only: never mints a device (see GET /api/me).

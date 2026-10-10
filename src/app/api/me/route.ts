@@ -6,11 +6,13 @@ import { UpdateProfileRequest, type MeResponse } from '@/contracts/account';
 import { getMe, updateProfile } from '@/server/accounts/me';
 import { applySessionRefresh, assertSameOrigin, getDeviceHash, getViewer, requireViewer } from '@/server/auth/viewer';
 import { json, parseJson, route } from '@/server/http';
+import { assertNotKidMode } from '@/server/kids/session';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export const GET = route(async (request) => {
+    await assertNotKidMode(request);
     const viewer = await getViewer(request);
     // Read-only: never mint a device here. Parallel first-load requests each minting one would
     // race, and the last Set-Cookie would orphan builds stamped with another (src/proxy.ts mints).
@@ -20,6 +22,7 @@ export const GET = route(async (request) => {
 });
 
 export const PATCH = route(async (request) => {
+    await assertNotKidMode(request);
     assertSameOrigin(request);
     const viewer = await requireViewer(request);
     const body = await parseJson(request, UpdateProfileRequest);

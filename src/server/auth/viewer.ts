@@ -24,28 +24,43 @@ import { assertSameOrigin } from './cookies';
 import { applyDevice, ensureDevice, getDeviceHash, resolveDevice } from './device';
 import { readSessionSecret, resolveSession, setSessionCookie, type ResolvedSession } from './sessions';
 import { toViewer } from './users';
+import { findSessionLock } from '../kids/lock';
 
 export { assertSameOrigin } from './cookies';
 export { applyDevice, ensureDevice, getDeviceHash, resolveDevice } from './device';
 
 export type ViewerContext = { user: Viewer; sessionId: string };
 
-/** Per-request memo so several helpers in one handler resolve the session once. */
-const resolved = new WeakMap<Request, Promise<ResolvedSession | null>>();
+/** A resolved session plus whether it is handed to a kid (Kids & Family: `kid_mode_locks`). */
+export type SessionWithKidLock = ResolvedSession & { kidLocked: boolean };
 
-function resolveForRequest(request: Request): Promise<ResolvedSession | null> {
+/** Per-request memo so several helpers in one handler resolve the session once. */
+const resolved = new WeakMap<Request, Promise<SessionWithKidLock | null>>();
+
+function resolveForRequest(request: Request): Promise<SessionWithKidLock | null> {
     let p = resolved.get(request);
     if (!p) {
-        p = resolveSession(readSessionSecret(request));
+        p = resolveSession(readSessionSecret(request)).then(async (r) => (r ? { ...r, kidLocked: Boolean(await findSessionLock(r.session.id)) } : null));
         resolved.set(request, p);
     }
     return p;
 }
 
-/** The signed-in user, or null (no / unknown / expired / revoked session). */
+/**
+ * The raw session even when it is locked to Kids mode. Only Kids mode code (src/server/kids)
+ * uses this; everything else asks `getViewer`.
+ */
+export function resolveSessionWithKidLock(request: Request): Promise<SessionWithKidLock | null> {
+    return resolveForRequest(request);
+}
+
+/**
+ * The signed-in user, or null (no / unknown / expired / revoked session). A session handed to a
+ * kid (Kids mode) is not a grown-up session: null until the grown-up exits with their PIN.
+ */
 export async function getViewer(request: Request): Promise<ViewerContext | null> {
     const r = await resolveForRequest(request);
-    return r ? { user: toViewer(r.user), sessionId: r.session.id } : null;
+    return r && !r.kidLocked ? { user: toViewer(r.user), sessionId: r.session.id } : null;
 }
 
 export async function requireViewer(request: Request): Promise<ViewerContext> {

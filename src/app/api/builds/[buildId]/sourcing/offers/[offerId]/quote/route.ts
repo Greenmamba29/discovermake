@@ -8,11 +8,13 @@ import { BuildId, SupplierOfferId } from '@/contracts/common';
 import { json, route } from '@/server/http';
 import { createSupplierBindingQuote } from '@/server/prime/quotes';
 import { pathId } from '@/server/quote/route-helpers';
+import { assertNotKidMode } from '@/server/kids/session';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-export const POST = route<{ buildId: string; offerId: string }>(async (_request, { params }) => {
+export const POST = route<{ buildId: string; offerId: string }>(async (request, { params }) => {
+    await assertNotKidMode(request);
     const p = await params;
     const buildId = pathId(p.buildId, BuildId, 'Build');
     const offerId = pathId(p.offerId, SupplierOfferId, 'Offer');

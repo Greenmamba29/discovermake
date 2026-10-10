@@ -19,7 +19,7 @@ describe('device proxy', () => {
     });
 
     it('runs on pages only, never on API routes or static files', () => {
-        const re = new RegExp(`^${config.matcher[0].replace('/((?!', '/(?!').replace(').*)', ').*')}$`);
+        const re = new RegExp(`^${(config.matcher[0] as string).replace('/((?!', '/(?!').replace(').*)', ').*')}$`);
         expect(re.test('/builds')).toBe(true);
         expect(re.test('/')).toBe(true);
         expect(re.test('/api/me')).toBe(false);

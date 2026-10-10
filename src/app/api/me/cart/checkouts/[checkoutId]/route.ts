@@ -11,6 +11,7 @@ import { invoices } from '@/server/db/schema';
 import { ApiError, json, route } from '@/server/http';
 import { toInvoiceView } from '@/server/invoices';
 import { eq } from 'drizzle-orm';
+import { assertNotKidMode } from '@/server/kids/session';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -26,6 +27,7 @@ const GroupResponse = z.object({
 });
 
 export const GET = route<{ checkoutId: string }>(async (request, { params }) => {
+    await assertNotKidMode(request);
     const group = await findGroupById((await params).checkoutId);
     if (!group || !verifyGroupToken(group, readOrderToken(request))) throw new ApiError('NOT_FOUND', 'Checkout not found');
     const [inv] = await getDb().select().from(invoices).where(eq(invoices.checkoutId, group.id)).limit(1);

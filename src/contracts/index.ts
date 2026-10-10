@@ -26,3 +26,4 @@ export * from './live';
 export * from './promise';
 export * from './media';
 export * from './text-to-cad';
+export * from './kids';

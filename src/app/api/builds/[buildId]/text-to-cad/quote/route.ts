@@ -14,11 +14,13 @@ import { json, parseJson, route } from '@/server/http';
 import { pathId } from '@/server/quote/route-helpers';
 import { quoteMakeIt3d } from '@/server/text-to-cad/service';
 import { requireBuild } from '@/server/workspace/attachments';
+import { assertNotKidMode } from '@/server/kids/session';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export const POST = route<{ buildId: string }>(async (request, { params }) => {
+    await assertNotKidMode(request);
     const buildId = pathId((await params).buildId, BuildId, 'Build');
     const limited = await limitWrite(request, undefined, 'Too many quotes in a short time. Wait a minute and try again.');
     if (limited) return limited;

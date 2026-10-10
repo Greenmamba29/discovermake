@@ -8,11 +8,13 @@ import { chatPrefix } from '@/server/chat';
 import { json, parseJson, route } from '@/server/http';
 import { createImageUpload } from '@/server/r3/images';
 import { requireBuyerOrder } from '@/server/r3/order-access';
+import { assertNotKidMode } from '@/server/kids/session';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export const POST = route<{ orderId: string }>(async (request, { params }) => {
+    await assertNotKidMode(request);
     assertSameOrigin(request);
     const { order } = await requireBuyerOrder(request, (await params).orderId);
     const body = await parseJson(request, ImageUploadRequest);

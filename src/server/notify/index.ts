@@ -28,6 +28,8 @@ export type NotifyPayloads = {
     'auction.outbid': { to: string; auctionTitle: string; amountCents: number; currency: string; nextMinimumCents: number; showUrl: string };
     /** R5 auctions: the bidder won; their authorized hold was captured. */
     'auction.won': { to: string; auctionTitle: string; amountCents: number; currency: string; orderNumber: string };
+    /** Kids & Family: a kid asked for a project. Sent to the grown-up's account email only (kids have no email). */
+    'family.kid_request': { to: string; requestId: string; kidNickname: string; templateTitle: string; priceCents: number; currency: string; familyUrl: string };
 };
 
 export type NotifyKind = keyof NotifyPayloads;
@@ -96,6 +98,7 @@ function idempotencyKeyFor<K extends NotifyKind>(kind: K, payload: NotifyPayload
     const p = payload as Record<string, unknown>;
     if (kind === 'shop.job_offered') return String(p.jobId);
     if (kind === 'auth.sign_in_code') return String(p.challengeId);
+    if (kind === 'family.kid_request') return String(p.requestId);
     if (kind === 'ops.alert') return `${String(p.orderId ?? 'none')}:${String(p.subject)}:${Math.floor(Date.now() / 60_000)}`;
     return String(p.orderId ?? randomUUID());
 }

@@ -10,11 +10,13 @@ import { assertSameOrigin, getDeviceHash, getViewer } from '@/server/auth/viewer
 import { limitWrite } from '@/server/build-graph';
 import { json, route } from '@/server/http';
 import { pathId } from '@/server/quote/route-helpers';
+import { assertNotKidMode } from '@/server/kids/session';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export const POST = route<{ buildId: string }>(async (request, { params }) => {
+    await assertNotKidMode(request);
     const buildId = pathId((await params).buildId, BuildId, 'Build');
     assertSameOrigin(request);
     const limited = await limitWrite(request);

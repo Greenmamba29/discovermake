@@ -2853,3 +2853,151 @@ export const feedEvents = pgTable(
     },
     (t) => [index('feed_events_item_idx').on(t.itemId, t.kind, t.createdAt), index('feed_events_viewer_idx').on(t.viewerKey, t.createdAt)],
 );
+
+// ---------------------------------------------------------------------------
+// Kids & Family (docs/architecture/kids-family.md)
+// The grown-up (a signed-in user) is the account holder. A kid profile holds a nickname, an age
+// band and a preset avatar: nothing else about a child is collected. Deleting a profile deletes
+// its designs, requests and activity rows (cascade). Statuses are text with CHECK constraints
+// (values in src/contracts/kids.ts). User references are plain text ids (no FK to users).
+// ---------------------------------------------------------------------------
+
+/** What the workshop (text-to-CAD worker) built for a kid design; artifacts live in storage. */
+export type KidCadRecord = {
+    engine: { name: 'cadgen'; version: string };
+    geometry: { bbox_mm: [number, number, number]; volume_mm3: number; area_mm2: number; solids: number; sound: boolean };
+    artifacts: { kind: 'step' | 'glb' | 'stl'; filename: string; key: string; sha256: string; bytes: number }[];
+    warnings: string[];
+    buildMs: number;
+};
+
+/** One row per grown-up who set up Family: the hashed grown-up PIN (scrypt, peppered with AUTH_SECRET). */
+export const families = pgTable('families', {
+    userId: text('user_id').primaryKey(),
+    pinHash: text('pin_hash'),
+    pinSetAt: tstz('pin_set_at'),
+    createdAt: createdAt(),
+    updatedAt: updatedAt(),
+});
+
+export const kidProfiles = pgTable(
+    'kid_profiles',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('kidProfile')),
+        ownerUserId: text('owner_user_id').notNull(),
+        nickname: text('nickname').notNull(),
+        ageBand: text('age_band').notNull(),
+        avatar: text('avatar').notNull(),
+        spendingLimitCents: cents('spending_limit_cents').notNull().default(2500),
+        allowedTemplates: jsonb('allowed_templates').$type<string[]>().notNull().default([]),
+        liveViewing: boolean('live_viewing').notNull().default(false),
+        discoverBrowsing: boolean('discover_browsing').notNull().default(false),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [
+        index('kid_profiles_owner_idx').on(t.ownerUserId, t.createdAt),
+        check('kid_profiles_age_band_ck', sql`${t.ageBand} in ('6-9','10-12','13-17')`),
+        check('kid_profiles_nickname_ck', sql`char_length(${t.nickname}) between 1 and 12`),
+        check('kid_profiles_limit_ck', sql`${t.spendingLimitCents} between 500 and 20000`),
+    ],
+);
+
+/** A kid's template design: bounded params, the workshop result, and the BINDING print quote. */
+export const kidDesigns = pgTable(
+    'kid_designs',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('kidDesign')),
+        kidId: text('kid_id')
+            .notNull()
+            .references(() => kidProfiles.id, { onDelete: 'cascade' }),
+        ownerUserId: text('owner_user_id').notNull(),
+        template: text('template').notNull(),
+        params: jsonb('params').$type<Record<string, unknown>>().notNull(),
+        status: text('status').notNull().default('new'),
+        cad: jsonb('cad').$type<KidCadRecord>(),
+        buildId: text('build_id').references(() => builds.id, { onDelete: 'set null' }),
+        partId: text('part_id'),
+        quoteId: text('quote_id'),
+        priceCents: cents('price_cents'),
+        currency: text('currency').notNull().default('usd'),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [
+        index('kid_designs_kid_idx').on(t.kidId, t.createdAt),
+        check('kid_designs_status_ck', sql`${t.status} in ('new','offline','failed','priced','unpriceable')`),
+    ],
+);
+
+/** "Ask a grown-up": the kid's request; the grown-up approves (and pays through checkout) or declines. */
+export const kidRequests = pgTable(
+    'kid_requests',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('kidRequest')),
+        kidId: text('kid_id')
+            .notNull()
+            .references(() => kidProfiles.id, { onDelete: 'cascade' }),
+        designId: text('design_id')
+            .notNull()
+            .references(() => kidDesigns.id, { onDelete: 'cascade' }),
+        ownerUserId: text('owner_user_id').notNull(),
+        quoteId: text('quote_id').notNull(),
+        priceCents: cents('price_cents').notNull(),
+        currency: text('currency').notNull().default('usd'),
+        status: text('status').notNull().default('pending'),
+        /** Optional kind note from the grown-up when declining. */
+        note: text('note'),
+        decidedAt: tstz('decided_at'),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [
+        index('kid_requests_owner_idx').on(t.ownerUserId, t.createdAt),
+        index('kid_requests_kid_idx').on(t.kidId, t.createdAt),
+        index('kid_requests_quote_idx').on(t.quoteId),
+        uniqueIndex('kid_requests_design_uq').on(t.designId),
+        check('kid_requests_status_ck', sql`${t.status} in ('pending','approved','declined')`),
+    ],
+);
+
+/** Family activity log (approvals, declines, Kids mode, profile changes). Rows of a deleted kid go with it. */
+export const familyActivity = pgTable(
+    'family_activity',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('familyActivity')),
+        ownerUserId: text('owner_user_id').notNull(),
+        kidId: text('kid_id').references(() => kidProfiles.id, { onDelete: 'cascade' }),
+        kind: text('kind').notNull(),
+        summary: text('summary').notNull(),
+        createdAt: createdAt(),
+    },
+    (t) => [index('family_activity_owner_idx').on(t.ownerUserId, t.createdAt)],
+);
+
+/**
+ * Kids mode lock on a grown-up's session (user_sessions.id): while a row exists that session is
+ * not a grown-up session (getViewer answers null) and only Kids mode routes work. Removed by
+ * "Exit" with the grown-up PIN.
+ */
+export const kidModeLocks = pgTable(
+    'kid_mode_locks',
+    {
+        sessionId: text('session_id').primaryKey(),
+        ownerUserId: text('owner_user_id').notNull(),
+        kidId: text('kid_id')
+            .notNull()
+            .references(() => kidProfiles.id, { onDelete: 'cascade' }),
+        createdAt: createdAt(),
+    },
+    (t) => [index('kid_mode_locks_owner_idx').on(t.ownerUserId)],
+);
+
+/** Builds that ops reviewed as safe for kids to see in Kids mode Discover (read-only gallery). */
+export const kidSafeBuilds = pgTable('kid_safe_builds', {
+    buildId: text('build_id')
+        .primaryKey()
+        .references(() => builds.id, { onDelete: 'cascade' }),
+    markedBy: text('marked_by').notNull(),
+    createdAt: createdAt(),
+});
