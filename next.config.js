@@ -47,6 +47,10 @@ const nextConfig = {
     turbopack: {
         root: path.resolve('.'),
     },
+    // "Make it in 3D" reads the vendored text-to-cad guide (src/server/text-to-cad/guide) at runtime.
+    outputFileTracingIncludes: {
+        '/api/builds/*/text-to-cad': ['./src/server/text-to-cad/guide/**/*'],
+    },
     async headers() {
         return [{ source: '/:path*', headers: securityHeaders }];
     },
