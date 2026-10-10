@@ -49,6 +49,9 @@ function chromiumExecutable(): string | undefined {
 }
 const CHROMIUM_EXECUTABLE = chromiumExecutable();
 
+/** `RECORD_VIDEO=1` records every test at its own viewport size (see tests/e2e/support/video.ts). */
+const video = (size: { width: number; height: number }) => (process.env.RECORD_VIDEO ? { video: { mode: 'on' as const, size } } : {});
+
 /** Buyer journeys that must also pass on emulated phones (touch, mobile UA, small viewport). */
 const MOBILE_JOURNEYS = /(smoke|order-journey|accounts-journey|reconstruct-journey|live-journey|media-journey|prime-experience|mobile-touch)\.spec\.ts/;
 
@@ -72,6 +75,7 @@ export default defineConfig({
             name: 'chromium',
             use: {
                 ...devices['Desktop Chrome'],
+                ...video(devices['Desktop Chrome'].viewport),
                 // Sandboxes without the pinned browser build fall back to a preinstalled Chromium.
                 launchOptions: CHROMIUM_EXECUTABLE ? { executablePath: CHROMIUM_EXECUTABLE } : {},
             },
@@ -84,6 +88,7 @@ export default defineConfig({
             testMatch: MOBILE_JOURNEYS,
             use: {
                 ...devices[device],
+                ...video(devices[device].viewport),
                 browserName: 'chromium' as const,
                 launchOptions: CHROMIUM_EXECUTABLE ? { executablePath: CHROMIUM_EXECUTABLE } : {},
             },
@@ -93,7 +98,8 @@ export default defineConfig({
         command: `bunx next dev -p ${E2E_PORT}`,
         url: E2E_BASE_URL,
         reuseExistingServer: !process.env.CI,
-        timeout: 180_000,
+        // A cold container compiles the first route in up to ~2 minutes.
+        timeout: 300_000,
         env: E2E_ENV,
     },
 });

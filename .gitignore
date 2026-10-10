@@ -45,3 +45,6 @@ next-env.d.ts
 
 # agent worktrees
 /.claude/worktrees/
+
+# Recorded onboarding and test videos (bun run videos:*)
+/videos/

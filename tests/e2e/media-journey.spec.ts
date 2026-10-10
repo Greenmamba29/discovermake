@@ -14,6 +14,7 @@
 import { expect, test, type BrowserContextOptions } from '@playwright/test';
 import { confirm, quotePart, shopLogin } from './support/journeys';
 import { RUN, signedInContext } from './support/live';
+import { videoOptions } from './support/video';
 import { adminHeaders, configureToCheckout, payAs, publishViaStudio, showWithReplay } from './support/media';
 
 /**
@@ -107,7 +108,7 @@ test('a replay clip sells a remix, the royalty reaches the creator and is paid o
     await expect(creator.getByTestId('balance-available')).toHaveAttribute('data-cents', '0');
 
     // 6. The shop works the job; the buyer watches every milestone on Watch My Build.
-    const shopPage = await viewerCtx.browser()!.newContext().then((c) => c.newPage());
+    const shopPage = await viewerCtx.browser()!.newContext(videoOptions()).then((c) => c.newPage());
     await shopLogin(shopPage);
     await shopPage.getByTestId('jobs-tab-offered').click();
     await shopPage.getByRole('link', { name: new RegExp(orderNumber) }).click();

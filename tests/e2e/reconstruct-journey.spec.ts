@@ -9,6 +9,7 @@
 import { expect, test, type Page } from '@playwright/test';
 import { payOrder, shopLogin } from './support/journeys';
 import { KNOB_PHOTO, KNOB_PHOTO_PX, plantGoldenKnobCad } from './support/reconstruct';
+import { videoOptions } from './support/video';
 
 const VIEWPORTS = [
     { name: 'phone', width: 390, height: 844 },
@@ -27,7 +28,7 @@ async function tapPhoto(page: Page, p: { x: number; y: number }) {
 for (const vp of VIEWPORTS) {
     test(`broken knob photo to a printed replacement order · ${vp.name}`, async ({ browser }) => {
         test.setTimeout(240_000);
-        const context = await browser.newContext({ viewport: { width: vp.width, height: vp.height } });
+        const context = await browser.newContext({ viewport: { width: vp.width, height: vp.height }, ...videoOptions(vp) });
         const page = await context.newPage();
 
         // ---- 1. Capture ----

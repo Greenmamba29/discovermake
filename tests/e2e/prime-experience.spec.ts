@@ -8,6 +8,7 @@
  */
 import { expect, test, type Page } from '@playwright/test';
 import { adminLogin, fulfil, shopLogin } from './support/journeys';
+import { videoOptions } from './support/video';
 import { sampleBracketDxf } from '../../src/lib/sample-dxf';
 
 const PNG = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', 'base64');
@@ -37,7 +38,7 @@ async function configure(page: Page, name: string, quantity: number) {
 for (const [label, viewport] of Object.entries(VIEWPORTS)) {
     test(`Prime experience · ${label}`, async ({ browser }) => {
         test.setTimeout(600_000);
-        const context = await browser.newContext({ viewport });
+        const context = await browser.newContext({ viewport, ...videoOptions(viewport) });
         const page = await context.newPage();
         const email = `prime-${label}-${Date.now()}@example.com`;
         await signInByEmail(page, email);

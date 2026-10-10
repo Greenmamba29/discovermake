@@ -6,6 +6,7 @@ import { randomUUID } from 'node:crypto';
 import { expect, type Browser, type BrowserContext, type BrowserContextOptions, type Cookie, type Page } from '@playwright/test';
 import postgres from 'postgres';
 import { E2E_DATABASE_URL } from '../../../playwright.config';
+import { videoOptions } from './video';
 
 export const RUN = Date.now().toString(36);
 export const LIVE_CREATOR = { email: `amanda-${RUN}@example.com`, name: 'Amanda Maker' };
@@ -32,7 +33,7 @@ export async function signedInContext(
     viewport?: { width: number; height: number },
     options: BrowserContextOptions = {},
 ): Promise<BrowserContext> {
-    const context = await browser.newContext({ ...options, ...(viewport ? { viewport } : {}) });
+    const context = await browser.newContext({ ...videoOptions(viewport ?? options.viewport), ...options, ...(viewport ? { viewport } : {}) });
     await signIn(context, who);
     return context;
 }
