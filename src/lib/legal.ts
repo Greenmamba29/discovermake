@@ -143,12 +143,26 @@ const privacy: LegalDoc = {
         {
             heading: 'Cookies',
             paragraphs: [
-                'We use only strictly necessary cookies: the device cookie, the sign-in session cookie, the partner shop session cookie, and short-lived cookies that protect sign-in with Google or Apple. We do not use advertising or third-party analytics cookies.',
+                'We use only strictly necessary cookies: the device cookie, the sign-in session cookie, the Kids mode cookie (while a grown-up has handed their device to a kid), the partner shop session cookie, and short-lived cookies that protect sign-in with Google or Apple. We do not use advertising or third-party analytics cookies.',
             ],
         },
         {
             heading: 'Children',
-            paragraphs: ['DiscoverMake is not directed to children under 13, and we do not knowingly collect their data.'],
+            paragraphs: [
+                'Children cannot create DiscoverMake accounts. Outside Kids & Family (below), DiscoverMake is not directed to children under 13, and we do not knowingly collect their data.',
+            ],
+        },
+        {
+            heading: 'Kids & Family (draft: needs counsel review)',
+            paragraphs: [
+                'A parent or guardian with a DiscoverMake account (the “grown-up”) can add up to four kid profiles and hand their own signed-in device to a kid in Kids mode. The grown-up is the account holder: they set up each profile, give consent, choose the controls, approve and pay for every order, and receive every email. Kids never sign in, never have an email address and never pay.',
+                'For each kid profile we store only: a nickname chosen by the grown-up (letters, numbers and spaces, at most 12 characters; we ask for a nickname, not a real name), an age band (6–9, 10–12 or 13–17, never a birthday), an avatar picked from our preset pictures (never a photo), the controls the grown-up sets (spending limit, allowed projects, Live viewing, kid-safe Discover), and the kid’s designs and requests (the project, its options such as colour and size, and up to 12 letters or numbers of words to print on it). We do not collect a kid’s email, phone number, photo, voice, address, school, birthday or location.',
+                'Why: to let the kid design a project, show the grown-up what was asked for, make and ship the approved order (the partner shop receives the 3D-print file, which includes the printed words, and ships to the grown-up’s address), and keep an activity log of approvals for the grown-up. Nothing a kid types is sent to an AI model or shown publicly; kid designs can never be published. Kids mode loads no third-party analytics or advertising, and kids cannot chat, ask questions in Live, upload files, or reach checkout or account settings.',
+                'Retention and deletion: kid profile data is kept while the profile exists. The grown-up can review everything about each kid on the Family page and delete a profile in one step, which deletes its designs, requests and activity entries and any designs that were never ordered. Orders the grown-up paid for are the grown-up’s purchase records and are kept for tax, accounting and warranty purposes as described above. A grown-up can also ask us to delete their whole account, including all kid profiles, at ' +
+                    PRIVACY_CONTACT +
+                    '.',
+                'Parental rights (including under the U.S. Children’s Online Privacy Protection Act): the grown-up can review, change or delete their kids’ information at any time on the Family page or by emailing us, and can stop further use by deleting the profile. This section is a draft and will be reviewed by counsel before Kids & Family launches.',
+            ],
         },
         {
             heading: 'International transfers and security',
