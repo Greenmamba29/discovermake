@@ -59,9 +59,10 @@ export async function getOrderRating(order: OrderRow): Promise<OrderRatingRespon
     };
 }
 
-function isUniqueViolation(err: unknown): boolean {
-    const e = err as { code?: string; cause?: unknown };
-    return e?.code === '23505' || (e?.cause ? isUniqueViolation(e.cause) : false);
+/** The one-rating-per-order index fired (any other unique violation is a real error). */
+function isDuplicateRating(err: unknown): boolean {
+    const e = err as { code?: string; constraint_name?: string; cause?: unknown };
+    return (e?.code === '23505' && e.constraint_name === 'ratings_order_uq') || (e?.cause ? isDuplicateRating(e.cause) : false);
 }
 
 export async function submitRating(order: OrderRow, raw: SubmitRatingRequest, userId: string | null, actor: Actor): Promise<OrderRatingResponse> {
@@ -83,7 +84,7 @@ export async function submitRating(order: OrderRow, raw: SubmitRatingRequest, us
             });
         });
     } catch (err) {
-        if (isUniqueViolation(err)) throw new ApiError('CONFLICT', 'You already rated this order.');
+        if (isDuplicateRating(err)) throw new ApiError('CONFLICT', 'You already rated this order.');
         throw err;
     }
     return getOrderRating(order);

@@ -5,6 +5,7 @@ import { domainEvents, invoices, orders, payments } from '@/server/db/schema';
 import { POST as invoiceCheckout } from '@/app/api/checkout/invoice/route';
 import { POST as devInvoice } from '@/app/api/admin/prime/invoices/[invoiceId]/dev/route';
 import { POST as wireRoute } from '@/app/api/admin/prime/invoices/[invoiceId]/wire/route';
+import { settleInvoice } from '@/server/invoices';
 import { useTestDb as withTestDb } from '../support/db';
 import { createQuoteFixture, quietConsole } from '../orders/fixtures';
 import { params, req } from '../accounts/helpers';
@@ -82,5 +83,17 @@ describe('B2B invoices (dev provider)', () => {
         const pays = await ctx.db.select().from(payments).where(inArray(payments.orderId, out.orders.map((o) => o.orderId)));
         expect(pays.every((p) => p.status === 'SUCCEEDED')).toBe(true);
         expect((await wireRoute(req('POST', `/api/admin/prime/invoices/${id}/wire`, null, { reference: 'again' }, ADMIN), params({ invoiceId: id }))).status).toBe(409);
+    });
+
+    it('a payment that does not match the invoice leaves it open and the orders unpaid', async () => {
+        const { quote } = await createQuoteFixture(ctx.db);
+        const out = CartCheckoutResponse.parse(await (await invoiceCheckout(req('POST', '/api/checkout/invoice', null, body(quote.id)), params({}))).json());
+        const [row] = await ctx.db.select().from(invoices).where(eq(invoices.id, out.invoice!.id));
+        const settled = await settleInvoice(row, { eventId: `short:${row.id}`, method: 'provider', amountCents: row.amountCents - 100, currency: row.currency, actor: { kind: 'payment_provider', id: 'dev' } });
+        expect(settled.status).toBe('open');
+        expect((await ctx.db.select().from(invoices).where(eq(invoices.id, row.id)))[0].status).toBe('open');
+        const [order] = await ctx.db.select().from(orders).where(eq(orders.id, out.orders[0].orderId));
+        expect(order.status).toBe('PENDING_PAYMENT');
+        expect(await productionEvents(order.id)).toHaveLength(0);
     });
 });

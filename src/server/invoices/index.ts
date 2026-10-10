@@ -166,6 +166,9 @@ export async function settleInvoice(
         { kind: 'payment.succeeded', eventId: input.eventId, providerRef: row.providerInvoiceId, providerPaymentId: input.providerPaymentId ?? null, amountCents: input.amountCents, currency: input.currency },
         { invoiceId: row.id, method: input.method },
     );
+    // A payment that does not match the invoice never marks it paid. The payment pipeline has
+    // already alerted ops and left every order unpaid; the invoice stays open with them.
+    if (input.amountCents !== row.amountCents || input.currency.toLowerCase() !== row.currency.toLowerCase()) return row;
     return withTx(async (tx) => {
         const [locked] = await tx.select().from(invoices).where(eq(invoices.id, row.id)).for('update');
         if (locked.status === 'paid') return locked;
