@@ -18,20 +18,20 @@
 
 The script exits 1 when a scenario misses its SLO. Only use `--spoof-ip` against your own staging or local servers; without it, per-IP rate limits throttle the run, and those 429s are reported separately from errors.
 
-Baseline (2026-10-09, local production build, 20 virtual users, single node, local Postgres):
+Baseline (2026-10-10, local production build of the full app, 20 virtual users, single node, local Postgres; the script keeps one cookie jar per virtual user, as a browser does, because parts belong to the `dm_device` cookie):
 
 | Scenario | Requests/s | p50 | p95 | p99 | Errors |
 |---|---|---|---|---|---|
-| health | 768 | 24 ms | 44 ms | 56 ms | 0 |
-| catalog | 236 | 81 ms | 112 ms | 135 ms | 0 |
-| quote (full flow) | 26.6 | 741 ms | 906 ms | 935 ms | 0 |
+| health | 923 | 21 ms | 32 ms | 42 ms | 0 |
+| catalog | 226 | 84 ms | 118 ms | 144 ms | 0 |
+| quote (full flow) | 21.0 | 932 ms | 1109 ms | 1187 ms | 0 |
 
 ## Backups and restore drills
 - Production Postgres: use the provider's point-in-time recovery (Neon/Supabase), with retention ≥ 7 days.
 - Run the drill **monthly** and after every schema migration:
   `SOURCE_URL=<read-only replica or snapshot URL> scripts/ops/restore-drill.sh`
   It dumps the database, restores it into a scratch `*_drill` database, and compares exact row counts for every table. Record the duration and the result in the ops log.
-  - Last run (local, 41 tables): PASS.
+  - Last run (2026-10-10, local, 100 tables, restored in 2 s): PASS.
 - Object storage (designs, CAD artifacts, labels): enable bucket versioning and a lifecycle rule. Losing a design file breaks its Product Passport links.
 
 ## On-call

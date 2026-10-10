@@ -1,6 +1,6 @@
 # Launch readiness: the whole app, end to end
 
-**As of 2026-10-09.** Every stage in `workflows/14-completion-plan.md` is built and integrated on one branch.
+**As of 2026-10-10.** Every stage in `workflows/14-completion-plan.md` is built and integrated on one branch.
 
 ## What a customer can do
 
@@ -20,12 +20,13 @@
 | `tsc --noEmit`, `eslint --max-warnings=0` | clean |
 | vitest (unit and integration against real Postgres) | **879 tests, 120 files, all passing** |
 | CAD worker pytest (CadQuery, golden DXF/STEP/STL, workflow 01 acceptance) | **87 passing** |
+| `next build` | compiles cleanly; the production server sends every security header |
 | Playwright, desktop project | every journey (R1 order, accounts with a passkey, onboarding, workspace, sourcing over MCP, Prime supplier and Prime experience, Live, Media with an auction, Reconstruct) plus the page sweep |
 | **Mobbin page sweep** | every screen at **390 px phone** and **1280 px desktop**. Each screen is checked for:<br>• one h1 and a main landmark<br>• no console errors or unexpected HTTP failures<br>• no horizontal overflow<br>• axe WCAG 2.1 A/AA with no serious or critical issues<br>• its Mobbin pattern<br>• bottom-nav presence |
-| Phone emulation (Pixel 7 and iPhone 14 profiles, touch and mobile UA) | the buyer journeys rerun on both profiles. The mobile-touch spec checks 44 px tap targets and a tap-only path from quote to checkout with the sticky CTA in view. |
+| Phone emulation (Pixel 7 and iPhone 14 profiles, touch and mobile UA) | the buyer journeys rerun on both profiles: order, accounts, Live, Media (clip to remix order, auction), Prime experience and Reconstruct. The mobile-touch spec checks 44 px tap targets and a tap-only path from quote to checkout with the sticky CTA in view. |
 | Keyboard | skip link, tab order to the main intake, visible focus ring |
-| Load (`bun run load:test`, local production build, 20 users) | health p95 44 ms; catalog p95 112 ms; full quote flow p95 906 ms at 26.6 flows/s; 0 errors |
-| Backup and restore drill (`bun run ops:restore-drill`) | PASS, with identical row counts in every table |
+| Load (`bun run load:test`, local production build, 20 users) | health p95 32 ms; catalog p95 118 ms; full quote flow p95 1109 ms at 21 flows/s; 0 errors |
+| Backup and restore drill (`bun run ops:restore-drill`) | PASS: 100 tables with identical row counts, restored in 2 s |
 | Security | CSP, HSTS, nosniff, frame denial; ClamAV upload scan that fails closed in production; trusted-proxy client IPs; shared Postgres rate limits; approved Build Graph rows immutable in the database; MCP tool and CIDR allowlists; HMAC-signed Live commerce events |
 | Code review (Kilo on PR #2) | every finding fixed or answered with a reason, and every thread resolved |
 

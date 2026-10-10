@@ -38,10 +38,24 @@ class HttpError extends Error {
     }
 }
 
+/**
+ * One cookie jar per virtual user, like a browser: parts belong to the `dm_device` cookie that
+ * `POST /api/parts` sets, and the upload/analyze/quote calls must send it back (else 403).
+ */
+const jars = new Map<number, Map<string, string>>();
+
 async function call(path: string, init: RequestInit, vu: number): Promise<Response> {
     const headers = new Headers(init.headers);
     if (SPOOF) headers.set('x-forwarded-for', `10.${(vu >> 8) & 255}.${vu & 255}.${1 + (vu % 250)}`);
+    const jar = jars.get(vu) ?? new Map<string, string>();
+    jars.set(vu, jar);
+    if (jar.size > 0) headers.set('cookie', [...jar].map(([k, v]) => `${k}=${v}`).join('; '));
     const res = await fetch(`${BASE}${path}`, { ...init, headers });
+    for (const c of res.headers.getSetCookie()) {
+        const [pair] = c.split(';');
+        const eq = pair.indexOf('=');
+        if (eq > 0) jar.set(pair.slice(0, eq).trim(), pair.slice(eq + 1).trim());
+    }
     if (!res.ok) throw new HttpError(res.status, `${init.method ?? 'GET'} ${path} -> ${res.status}`);
     return res;
 }
