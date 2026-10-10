@@ -1,7 +1,7 @@
 /**
  * Collect recordings into watchable MP4s (H.264, web-ready) under videos/:
  *   - onboarding tours: videos/raw/onboarding/<name>.webm  -> videos/onboarding/<name>.mp4
- *   - test runs (RECORD_VIDEO=1): test-results/<test>/**.webm -> videos/tests/<test>[-n].mp4
+ *   - test runs (`bun run videos:tests`): videos/raw/tests/<test>/**.webm -> videos/tests/<test>[-n].mp4
  * and write videos/manifest.json (file, title, kind, seconds, bytes). Needs ffmpeg + ffprobe.
  *
  *   bun run videos:collect
@@ -44,7 +44,7 @@ for (const src of fs.existsSync(rawTours) ? fs.readdirSync(rawTours).filter((f) 
 }
 
 // Test runs: one folder per test (and project); several videos when a test drives several windows.
-const results = path.join(ROOT, 'test-results');
+const results = path.join(OUT, 'raw', 'tests');
 for (const dir of fs.existsSync(results) ? fs.readdirSync(results, { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => d.name).sort() : []) {
     const videos = walk(path.join(results, dir))
         .map((f) => ({ f, t: fs.statSync(f).birthtimeMs || fs.statSync(f).mtimeMs, size: fs.statSync(f).size }))

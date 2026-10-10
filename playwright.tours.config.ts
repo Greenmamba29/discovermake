@@ -15,6 +15,8 @@ export default defineConfig({
     ...base,
     testDir: './tests/tours',
     testMatch: /.*\.tour\.ts/,
+    // Own output folder: never wipes a recorded test run's results.
+    outputDir: 'test-results/tours',
     timeout: 900_000,
     expect: { timeout: 20_000 },
     retries: 0,

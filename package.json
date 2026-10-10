@@ -18,7 +18,7 @@
         "load:test": "bun scripts/load/run.ts",
         "ops:restore-drill": "bash scripts/ops/restore-drill.sh",
         "eval:cad": "bun --conditions=react-server evals/cad/run.ts",
-        "videos:tests": "RECORD_VIDEO=1 playwright test --grep-invert \"Mobbin page sweep\"",
+        "videos:tests": "RECORD_VIDEO=1 playwright test --grep-invert \"Mobbin page sweep\" --output videos/raw/tests",
         "videos:tours": "playwright test -c playwright.tours.config.ts",
         "videos:collect": "bun scripts/videos/collect.ts"
     },
