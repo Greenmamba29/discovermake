@@ -26,6 +26,7 @@ function overlayScript() {
                 background: rgba(12, 14, 18, 0.92); color: #fff; box-shadow: 0 12px 40px rgba(0,0,0,.45); border: 1px solid rgba(255,255,255,.12);
                 font: 500 15px/1.45 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; opacity: 0; transition: opacity .25s ease; }
             #__tour-caption.on { opacity: 1; }
+            #__tour-caption.top { bottom: auto; top: 76px; }
             #__tour-caption b { display: block; font-size: 17px; font-weight: 700; margin-bottom: 2px; color: #ffd166; }
             #__tour-caption small { display: block; margin-top: 6px; font-size: 12px; color: rgba(255,255,255,.6); letter-spacing: .02em; }
             #__tour-card { position: fixed; inset: 0; z-index: 2147483647; display: grid; place-items: center; text-align: center; padding: 24px;
@@ -46,6 +47,8 @@ function overlayScript() {
         const move = (e: MouseEvent) => {
             cursor.style.left = `${e.clientX}px`;
             cursor.style.top = `${e.clientY}px`;
+            // Keep the caption out of the way: dock it at the top while the cursor works low on the screen.
+            document.getElementById('__tour-caption')?.classList.toggle('top', e.clientY > window.innerHeight * 0.5);
         };
         window.addEventListener('mousemove', move, true);
         window.addEventListener('mousedown', (e) => (move(e), cursor.classList.add('down')), true);
