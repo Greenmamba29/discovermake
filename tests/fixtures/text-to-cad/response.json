@@ -1,0 +1,41 @@
+{
+  "ok": true,
+  "engine": {
+    "name": "cadgen",
+    "version": "0.7.20"
+  },
+  "artifacts": [
+    {
+      "kind": "step",
+      "filename": "model.step",
+      "sha256": "fc3302ca5e623d5cd103e873aafefadce23a24bbc0bc439665e92fee5b17f020",
+      "bytes": 146420
+    },
+    {
+      "kind": "glb",
+      "filename": "model.glb",
+      "sha256": "522a93973322f2c6b01060a9e296baef1d0cc8e135070aa13ff4c66c6a56052d",
+      "bytes": 76428
+    },
+    {
+      "kind": "stl",
+      "filename": "model.stl",
+      "sha256": "61e84edb3a128634ebff08bdd793d27a5c5715d7a3e5855dce3c494620feb204",
+      "bytes": 193284
+    }
+  ],
+  "geometry": {
+    "bbox_mm": [
+      60.0,
+      24.0,
+      18.0
+    ],
+    "volume_mm3": 19707.904,
+    "area_mm2": 6939.407,
+    "solids": 1,
+    "sound": true
+  },
+  "warnings": [],
+  "build_ms": 25149,
+  "prompt": "A desk cable holder: a rounded block with three slots for charging cables."
+}
