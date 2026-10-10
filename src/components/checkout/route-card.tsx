@@ -1,8 +1,12 @@
 import { BadgeCheck, Factory, MapPin, Star } from 'lucide-react';
-import type { QuoteRoute } from '@/contracts';
+import type { QuoteRoute, TrustLevel } from '@/contracts';
+import { TrustChip } from '@/components/trust/trust-chip';
 
-/** Recommended manufacturing route (Screen 03): the shop the quote was priced on. Buyer-safe, no shop costs. */
-export function RouteCard({ route, compact = false }: { route: QuoteRoute; compact?: boolean }) {
+/**
+ * Recommended manufacturing route (Screen 03): the shop the quote was priced on. Buyer-safe, no shop costs.
+ * Pass `trustLevel` to label the route's price with its quote trust level.
+ */
+export function RouteCard({ route, compact = false, trustLevel }: { route: QuoteRoute; compact?: boolean; trustLevel?: TrustLevel }) {
     return (
         <div className="flex gap-3 rounded-2xl bg-graphite-900 p-4 ring-1 ring-graphite-700" data-testid="route-card">
             <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-graphite-750 text-fg" aria-hidden>
@@ -12,6 +16,7 @@ export function RouteCard({ route, compact = false }: { route: QuoteRoute; compa
                 <div className="flex flex-wrap items-center gap-2">
                     <p className="font-semibold text-fg">{route.shopName}</p>
                     <span className="rounded-full bg-signal/15 px-2 py-0.5 text-[11px] font-semibold text-signal">Recommended</span>
+                    {trustLevel && <TrustChip level={trustLevel} testId="route-trust-chip" />}
                 </div>
                 <p className="mt-0.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-fg-muted">
                     <span className="inline-flex items-center gap-1">

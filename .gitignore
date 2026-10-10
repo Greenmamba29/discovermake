@@ -42,3 +42,12 @@ next-env.d.ts
 /test-results/
 /playwright-report/
 /playwright/.cache/
+
+# agent worktrees
+/.claude/worktrees/
+
+# Recorded onboarding and test videos (bun run videos:*)
+/videos/
+
+# Netlify CLI state
+.netlify

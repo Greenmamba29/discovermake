@@ -82,6 +82,10 @@ export const ShopJobSummary = z.object({
     payoutCents: Cents,
     nextAction: ShopNextAction,
     createdAt: IsoDateTime,
+    /** R3: 'RECEIVING' = inbound supplier freight to receive and inspect (QA at receipt). Absent = 'MANUFACTURE'. */
+    kind: z.enum(['MANUFACTURE', 'RECEIVING']).optional(),
+    /** R3: dispatch batch this open job shares setup with (same material/thickness/process, overlapping ship windows). */
+    batchId: z.string().nullable().optional(),
 });
 export type ShopJobSummary = z.infer<typeof ShopJobSummary>;
 
@@ -165,7 +169,7 @@ export const JobPacket = z.object({
     shipTo: Address.nullable(),
     files: z.array(
         z.object({
-            kind: z.enum(['SOURCE_DXF']),
+            kind: z.enum(['SOURCE_DXF', 'SOURCE_STL']),
             filename: z.string(),
             /** Signed, expiring download URL (generated per request, never stored). */
             url: z.string().url(),
@@ -173,6 +177,35 @@ export const JobPacket = z.object({
         }),
     ),
     issuedAt: IsoDateTime,
+    /**
+     * R3: receiving job (inbound supplier freight). Covered by the signature like the rest of
+     * the packet. Absent on manufacturing jobs. Never names the supplier.
+     */
+    receiving: z
+        .object({
+            poNumber: z.string(),
+            origin: z.string(),
+            inboundCarrier: z.string().nullable(),
+            inboundTracking: z.string().nullable(),
+            /** Pass -> ship to the buyer through the existing label flow. */
+            instructions: z.string(),
+        })
+        .optional(),
+    /** R6: printed parts (print quotes). The source file is the STL; `part` cut/bend fields are 0. */
+    print: z
+        .object({
+            process: z.enum(['FDM', 'SLS']),
+            family: z.string(),
+            layerHeightMm: z.number(),
+            bboxMm: z.tuple([z.number(), z.number(), z.number()]),
+            volumeMm3: z.number(),
+            minWallMm: z.number(),
+            printHoursPerPart: z.number(),
+            unitMassG: z.number(),
+            orientation: z.string(),
+            stlSha256: z.string(),
+        })
+        .optional(),
     signature: z.string(),
 });
 export type JobPacket = z.infer<typeof JobPacket>;

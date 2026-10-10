@@ -4,6 +4,12 @@
 
 DiscoverMake is an on-demand manufacturing platform, in the style of SendCutSend. A customer uploads a flat part, gets an instant binding price, pays, and a vetted partner shop makes it. The order is inspected, shipped and tracked to the door. Every delivered part comes with a signed, publicly verifiable Product Passport.
 
+## What the app does now
+
+Every product stage is built: **R1 Cut**, **Make it yours** (accounts, onboarding, My Builds, Build Workspace, CAD), **Prime** (supplier routes, Delivery Promise, membership), **Live** (shoppable streams and drops), **Media** (creator feed, remixes and royalties, clips, auctions, Watch My Build) and **Reconstruct** (photo plus caliper measurement to a printed replacement part).
+
+It is tested end to end on desktop and on phone profiles. `docs/architecture/launch-readiness.md` lists each capability, the test evidence, and the accounts and settings the owner must supply to go live. Operations are covered in `docs/architecture/operations.md`.
+
 ## What R1 ("Cut") does
 
 R1 runs a real order end to end:

@@ -12,7 +12,7 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export const POST = route(async (request) => {
-    requireAdmin(request);
+    await requireAdmin(request);
     const body = await parseJson(request, CreateShopRequest);
     return json(await createShop(body), { status: 201 });
 });

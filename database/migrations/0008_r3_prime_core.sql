@@ -1,0 +1,191 @@
+CREATE TYPE "public"."credit_status" AS ENUM('AVAILABLE', 'RESERVED', 'REDEEMED', 'VOID');--> statement-breakpoint
+CREATE TYPE "public"."payment_plan_kind" AS ENUM('FULL', 'DEPOSIT_BALANCE');--> statement-breakpoint
+CREATE TYPE "public"."promise_leg" AS ENUM('MATERIAL_ARRIVAL', 'SHOP_QUEUE', 'PROCESS', 'QA', 'PACK', 'CARRIER_TRANSIT');--> statement-breakpoint
+CREATE TYPE "public"."promise_status" AS ENUM('ON_TRACK', 'AT_RISK', 'MET', 'MISSED');--> statement-breakpoint
+CREATE TYPE "public"."shop_stock_kind" AS ENUM('SHEET', 'HARDWARE');--> statement-breakpoint
+CREATE TYPE "public"."supplier_leg_status" AS ENUM('PO_PLACED', 'IN_PRODUCTION_AT_SUPPLIER', 'SHIPPED_INBOUND', 'RECEIVED_AT_PARTNER', 'QA_FAILED', 'DELIVERED', 'CANCELLED');--> statement-breakpoint
+ALTER TYPE "public"."ledger_account" ADD VALUE 'CUSTOMER_DEPOSITS';--> statement-breakpoint
+ALTER TYPE "public"."ledger_account" ADD VALUE 'SUPPLIER_PAYABLE';--> statement-breakpoint
+ALTER TYPE "public"."ledger_account" ADD VALUE 'RISK_RESERVE';--> statement-breakpoint
+ALTER TYPE "public"."ledger_account" ADD VALUE 'BUYER_CREDITS';--> statement-breakpoint
+ALTER TYPE "public"."ledger_account" ADD VALUE 'PROMISE_CREDIT_EXPENSE';--> statement-breakpoint
+CREATE TABLE "buyer_credits" (
+	"id" text PRIMARY KEY NOT NULL,
+	"buyer_email" text NOT NULL,
+	"source_order_id" text NOT NULL,
+	"amount_cents" integer NOT NULL,
+	"reason" text NOT NULL,
+	"responsible_leg" "promise_leg" NOT NULL,
+	"status" "credit_status" DEFAULT 'AVAILABLE' NOT NULL,
+	"redeemed_order_id" text,
+	"reserved_at" timestamp with time zone,
+	"redeemed_at" timestamp with time zone,
+	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
+	"updated_at" timestamp with time zone DEFAULT now() NOT NULL,
+	CONSTRAINT "buyer_credits_amount_ck" CHECK ("buyer_credits"."amount_cents" > 0)
+);
+--> statement-breakpoint
+CREATE TABLE "order_payment_plans" (
+	"order_id" text PRIMARY KEY NOT NULL,
+	"kind" "payment_plan_kind" NOT NULL,
+	"deposit_cents" integer NOT NULL,
+	"balance_cents" integer DEFAULT 0 NOT NULL,
+	"credit_cents" integer DEFAULT 0 NOT NULL,
+	"credit_id" text,
+	"deposit_payment_id" text,
+	"balance_payment_id" text,
+	"deposit_paid_at" timestamp with time zone,
+	"balance_requested_at" timestamp with time zone,
+	"balance_paid_at" timestamp with time zone,
+	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
+	"updated_at" timestamp with time zone DEFAULT now() NOT NULL,
+	CONSTRAINT "order_payment_plans_amounts_ck" CHECK ("order_payment_plans"."deposit_cents" >= 0 and "order_payment_plans"."balance_cents" >= 0 and "order_payment_plans"."credit_cents" >= 0 and "order_payment_plans"."credit_cents" <= "order_payment_plans"."deposit_cents")
+);
+--> statement-breakpoint
+CREATE TABLE "order_promises" (
+	"order_id" text PRIMARY KEY NOT NULL,
+	"promised_date" date NOT NULL,
+	"p90_date" date NOT NULL,
+	"shown" boolean NOT NULL,
+	"start_date" date NOT NULL,
+	"legs" jsonb NOT NULL,
+	"buffer_days" integer DEFAULT 0 NOT NULL,
+	"risk_score" double precision DEFAULT 0 NOT NULL,
+	"zone" text,
+	"carrier_service" text NOT NULL,
+	"status" "promise_status" DEFAULT 'ON_TRACK' NOT NULL,
+	"last_p90_date" date,
+	"at_risk_at" timestamp with time zone,
+	"resolved_at" timestamp with time zone,
+	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
+	"updated_at" timestamp with time zone DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE "promise_models" (
+	"id" text PRIMARY KEY NOT NULL,
+	"leg" "promise_leg" NOT NULL,
+	"scope" text NOT NULL,
+	"slip_p90_days" double precision NOT NULL,
+	"sample_count" integer NOT NULL,
+	"trained_at" timestamp with time zone NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE "promise_observations" (
+	"id" text PRIMARY KEY NOT NULL,
+	"order_id" text,
+	"leg" "promise_leg" NOT NULL,
+	"shop_id" text,
+	"process" text,
+	"carrier_service" text,
+	"zone" text,
+	"supplier_id" text,
+	"incoterm" text,
+	"predicted_days" double precision NOT NULL,
+	"actual_days" double precision NOT NULL,
+	"source" text DEFAULT 'order' NOT NULL,
+	"observed_at" timestamp with time zone DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE "receiving_sites" (
+	"shop_id" text PRIMARY KEY NOT NULL,
+	"active" boolean DEFAULT true NOT NULL,
+	"receiving_fee_cents" integer DEFAULT 4500 NOT NULL,
+	"per_unit_cents" integer DEFAULT 15 NOT NULL,
+	"notes" text,
+	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
+	"updated_at" timestamp with time zone DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE "shop_stock" (
+	"id" text PRIMARY KEY NOT NULL,
+	"shop_id" text NOT NULL,
+	"kind" "shop_stock_kind" NOT NULL,
+	"sku" text NOT NULL,
+	"description" text NOT NULL,
+	"material_id" text,
+	"thickness_option_id" text,
+	"quantity" integer DEFAULT 0 NOT NULL,
+	"unit" text DEFAULT 'sheet' NOT NULL,
+	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
+	"updated_at" timestamp with time zone DEFAULT now() NOT NULL,
+	CONSTRAINT "shop_stock_quantity_ck" CHECK ("shop_stock"."quantity" >= 0)
+);
+--> statement-breakpoint
+CREATE TABLE "supplier_legs" (
+	"id" text PRIMARY KEY NOT NULL,
+	"order_id" text NOT NULL,
+	"quote_id" text NOT NULL,
+	"offer_id" text NOT NULL,
+	"job_id" text NOT NULL,
+	"supplier_id" text NOT NULL,
+	"po_approval_id" text NOT NULL,
+	"deposit_approval_id" text,
+	"supplier_deposit_cents" integer DEFAULT 0 NOT NULL,
+	"po_number" text NOT NULL,
+	"incoterm" "incoterm" NOT NULL,
+	"direct_ship" boolean DEFAULT false NOT NULL,
+	"receiving_shop_id" text,
+	"receiving_job_id" text,
+	"status" "supplier_leg_status" DEFAULT 'PO_PLACED' NOT NULL,
+	"inbound_carrier" text,
+	"inbound_tracking" text,
+	"pre_shipment_inspection" text,
+	"history" jsonb DEFAULT '[]'::jsonb NOT NULL,
+	"production_started_at" timestamp with time zone,
+	"shipped_inbound_at" timestamp with time zone,
+	"received_at" timestamp with time zone,
+	"delivered_at" timestamp with time zone,
+	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
+	"updated_at" timestamp with time zone DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE "supplier_quotes" (
+	"quote_id" text PRIMARY KEY NOT NULL,
+	"offer_id" text NOT NULL,
+	"job_id" text NOT NULL,
+	"supplier_id" text NOT NULL,
+	"selection_approval_id" text NOT NULL,
+	"receiving_shop_id" text,
+	"composition" jsonb NOT NULL,
+	"risk_score" double precision NOT NULL,
+	"deposit_pct" double precision NOT NULL,
+	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
+	CONSTRAINT "supplier_quotes_deposit_ck" CHECK ("supplier_quotes"."deposit_pct" >= 0 and "supplier_quotes"."deposit_pct" <= 1)
+);
+--> statement-breakpoint
+ALTER TABLE "buyer_credits" ADD CONSTRAINT "buyer_credits_source_order_id_orders_id_fk" FOREIGN KEY ("source_order_id") REFERENCES "public"."orders"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "buyer_credits" ADD CONSTRAINT "buyer_credits_redeemed_order_id_orders_id_fk" FOREIGN KEY ("redeemed_order_id") REFERENCES "public"."orders"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "order_payment_plans" ADD CONSTRAINT "order_payment_plans_order_id_orders_id_fk" FOREIGN KEY ("order_id") REFERENCES "public"."orders"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "order_promises" ADD CONSTRAINT "order_promises_order_id_orders_id_fk" FOREIGN KEY ("order_id") REFERENCES "public"."orders"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "promise_observations" ADD CONSTRAINT "promise_observations_order_id_orders_id_fk" FOREIGN KEY ("order_id") REFERENCES "public"."orders"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "receiving_sites" ADD CONSTRAINT "receiving_sites_shop_id_shops_id_fk" FOREIGN KEY ("shop_id") REFERENCES "public"."shops"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "shop_stock" ADD CONSTRAINT "shop_stock_shop_id_shops_id_fk" FOREIGN KEY ("shop_id") REFERENCES "public"."shops"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "shop_stock" ADD CONSTRAINT "shop_stock_material_id_materials_id_fk" FOREIGN KEY ("material_id") REFERENCES "public"."materials"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "shop_stock" ADD CONSTRAINT "shop_stock_thickness_option_id_thickness_options_id_fk" FOREIGN KEY ("thickness_option_id") REFERENCES "public"."thickness_options"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "supplier_legs" ADD CONSTRAINT "supplier_legs_order_id_orders_id_fk" FOREIGN KEY ("order_id") REFERENCES "public"."orders"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "supplier_legs" ADD CONSTRAINT "supplier_legs_quote_id_quotes_id_fk" FOREIGN KEY ("quote_id") REFERENCES "public"."quotes"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "supplier_legs" ADD CONSTRAINT "supplier_legs_offer_id_supplier_offers_id_fk" FOREIGN KEY ("offer_id") REFERENCES "public"."supplier_offers"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "supplier_legs" ADD CONSTRAINT "supplier_legs_job_id_sourcing_jobs_id_fk" FOREIGN KEY ("job_id") REFERENCES "public"."sourcing_jobs"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "supplier_legs" ADD CONSTRAINT "supplier_legs_supplier_id_suppliers_id_fk" FOREIGN KEY ("supplier_id") REFERENCES "public"."suppliers"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "supplier_legs" ADD CONSTRAINT "supplier_legs_po_approval_id_approvals_id_fk" FOREIGN KEY ("po_approval_id") REFERENCES "public"."approvals"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "supplier_legs" ADD CONSTRAINT "supplier_legs_deposit_approval_id_approvals_id_fk" FOREIGN KEY ("deposit_approval_id") REFERENCES "public"."approvals"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "supplier_legs" ADD CONSTRAINT "supplier_legs_receiving_shop_id_shops_id_fk" FOREIGN KEY ("receiving_shop_id") REFERENCES "public"."shops"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "supplier_legs" ADD CONSTRAINT "supplier_legs_receiving_job_id_manufacturing_jobs_id_fk" FOREIGN KEY ("receiving_job_id") REFERENCES "public"."manufacturing_jobs"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "supplier_quotes" ADD CONSTRAINT "supplier_quotes_quote_id_quotes_id_fk" FOREIGN KEY ("quote_id") REFERENCES "public"."quotes"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "supplier_quotes" ADD CONSTRAINT "supplier_quotes_offer_id_supplier_offers_id_fk" FOREIGN KEY ("offer_id") REFERENCES "public"."supplier_offers"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "supplier_quotes" ADD CONSTRAINT "supplier_quotes_job_id_sourcing_jobs_id_fk" FOREIGN KEY ("job_id") REFERENCES "public"."sourcing_jobs"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "supplier_quotes" ADD CONSTRAINT "supplier_quotes_supplier_id_suppliers_id_fk" FOREIGN KEY ("supplier_id") REFERENCES "public"."suppliers"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "supplier_quotes" ADD CONSTRAINT "supplier_quotes_selection_approval_id_approvals_id_fk" FOREIGN KEY ("selection_approval_id") REFERENCES "public"."approvals"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "supplier_quotes" ADD CONSTRAINT "supplier_quotes_receiving_shop_id_shops_id_fk" FOREIGN KEY ("receiving_shop_id") REFERENCES "public"."shops"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+CREATE UNIQUE INDEX "buyer_credits_source_order_uq" ON "buyer_credits" USING btree ("source_order_id");--> statement-breakpoint
+CREATE INDEX "buyer_credits_email_idx" ON "buyer_credits" USING btree ("buyer_email","status");--> statement-breakpoint
+CREATE INDEX "order_promises_status_idx" ON "order_promises" USING btree ("status");--> statement-breakpoint
+CREATE UNIQUE INDEX "promise_models_leg_scope_uq" ON "promise_models" USING btree ("leg","scope");--> statement-breakpoint
+CREATE UNIQUE INDEX "promise_observations_order_leg_uq" ON "promise_observations" USING btree ("order_id","leg") WHERE "promise_observations"."order_id" is not null;--> statement-breakpoint
+CREATE INDEX "promise_observations_leg_idx" ON "promise_observations" USING btree ("leg","observed_at");--> statement-breakpoint
+CREATE UNIQUE INDEX "shop_stock_shop_sku_uq" ON "shop_stock" USING btree ("shop_id","sku");--> statement-breakpoint
+CREATE INDEX "shop_stock_thickness_idx" ON "shop_stock" USING btree ("thickness_option_id");--> statement-breakpoint
+CREATE UNIQUE INDEX "supplier_legs_order_uq" ON "supplier_legs" USING btree ("order_id");--> statement-breakpoint
+CREATE UNIQUE INDEX "supplier_legs_po_number_uq" ON "supplier_legs" USING btree ("po_number");--> statement-breakpoint
+CREATE INDEX "supplier_legs_job_idx" ON "supplier_legs" USING btree ("job_id");--> statement-breakpoint
+CREATE INDEX "supplier_quotes_offer_idx" ON "supplier_quotes" USING btree ("offer_id");

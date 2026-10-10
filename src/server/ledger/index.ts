@@ -21,7 +21,7 @@ import { and, asc, desc, eq, inArray, sql } from 'drizzle-orm';
 import { SYSTEM_ACTOR } from '../../contracts/common';
 import type { LedgerAccount, LedgerDirection } from '../../contracts/enums';
 import { getDb, withTx, type DbOrTx } from '../db';
-import { ledgerEntries, manufacturingJobs, orders, payments, payouts, shops } from '../db/schema';
+import { ledgerEntries, manufacturingJobs, orderPaymentPlans, orders, payments, payouts, shops } from '../db/schema';
 import { emitEvent } from '../events/outbox';
 import { env } from '../env';
 
@@ -116,11 +116,16 @@ export async function recordPaymentSplit(orderId: string, tx?: DbOrTx): Promise<
             throw new Error(`Order ${orderId} split does not add up to the subtotal`);
         }
         const txnKey = txnKeys.payment(orderId);
+        // R3: a promise credit applied at checkout pays part of the order (BUYER_CREDITS is debited).
+        const [plan] = await t.select({ creditCents: orderPaymentPlans.creditCents, kind: orderPaymentPlans.kind }).from(orderPaymentPlans).where(eq(orderPaymentPlans.orderId, orderId));
+        if (plan?.kind === 'DEPOSIT_BALANCE') throw new Error(`Order ${orderId} is paid by deposit + balance; its ledger is posted by src/server/prime/ledger.ts`);
+        const creditCents = plan?.creditCents ?? 0;
         const inserted = await postTransaction(
             t,
             txnKey,
             [
-                { account: 'CASH', direction: 'DEBIT', amountCents: order.totalCents, memo: `Payment ${order.orderNumber}` },
+                { account: 'CASH', direction: 'DEBIT', amountCents: order.totalCents - creditCents, memo: `Payment ${order.orderNumber}` },
+                { account: 'BUYER_CREDITS', direction: 'DEBIT', amountCents: creditCents, memo: 'Promise credit applied' },
                 { account: 'SHOP_PAYABLE', direction: 'CREDIT', amountCents: order.shopCostCents, memo: 'Owed to manufacturing shop' },
                 { account: 'PLATFORM_REVENUE', direction: 'CREDIT', amountCents: order.platformFeeCents, memo: 'Platform fee' },
                 { account: 'SHIPPING_PAYABLE', direction: 'CREDIT', amountCents: order.shippingCents, memo: 'Shipping collected' },
@@ -315,10 +320,16 @@ export async function recordRefund(orderId: string, amountCents: number, tx?: Db
         if (!paymentPosted || paymentPosted.n === 0) {
             throw new Error(`Order ${orderId} has no payment posting to reverse`);
         }
+        // R3: a full refund of an order paid partly with a promise credit returns the cash paid
+        // and restores the credit (CREDIT BUYER_CREDITS); the credit row itself is restored by the caller.
+        const [plan] = await t.select({ creditCents: orderPaymentPlans.creditCents }).from(orderPaymentPlans).where(eq(orderPaymentPlans.orderId, orderId));
+        const creditCents = plan?.creditCents ?? 0;
+        const full = amountCents === order.totalCents - creditCents;
         const lines: LedgerLine[] =
-            amountCents === order.totalCents
+            full
                 ? [
-                      { account: 'CASH', direction: 'CREDIT', amountCents: order.totalCents, memo: `Refund ${order.orderNumber}` },
+                      { account: 'CASH', direction: 'CREDIT', amountCents: order.totalCents - creditCents, memo: `Refund ${order.orderNumber}` },
+                      { account: 'BUYER_CREDITS', direction: 'CREDIT', amountCents: creditCents, memo: 'Promise credit restored' },
                       { account: 'SHOP_PAYABLE', direction: 'DEBIT', amountCents: order.shopCostCents, memo: 'Shop cost reversed' },
                       { account: 'REFUNDS', direction: 'DEBIT', amountCents: order.platformFeeCents, memo: 'Platform fee refunded' },
                       { account: 'SHIPPING_PAYABLE', direction: 'DEBIT', amountCents: order.shippingCents, memo: 'Shipping refunded' },

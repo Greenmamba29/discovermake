@@ -11,12 +11,15 @@
  *
  * Node + edge names follow spec §6.1 / §6.2. `RECORDED_IN` is the one display-only
  * edge (§6.2 has no Shipment -> Passport relationship); it is not persisted.
+ *
+ * R2: `buildGraphFromView` maps a persisted Build Graph version (`BuildGraphView`) onto the
+ * same display model so the workspace Graph View reuses the order page's canvas.
  */
-import type { OrderView, TrackingStepKey, UniversalStatus } from '@/contracts';
+import type { BgNode, BgNodeType, BuildGraphView, BuildTrustState, OrderView, TrackingStepKey, UniversalStatus } from '@/contracts';
 import { shortDate } from './format';
 
 /** Spec §6.1 node types shown on the order page. */
-export const BUILD_GRAPH_NODE_TYPES = [
+export const ORDER_GRAPH_NODE_TYPES = [
     'Build',
     'Part',
     'MaterialSpec',
@@ -26,9 +29,13 @@ export const BUILD_GRAPH_NODE_TYPES = [
     'Shipment',
     'ProductPassport',
 ] as const;
+type OrderGraphNodeType = (typeof ORDER_GRAPH_NODE_TYPES)[number];
+
+/** Every display node type: the order page's plus the R2 Build Graph ones (workspace Graph View). */
+export const BUILD_GRAPH_NODE_TYPES = [...ORDER_GRAPH_NODE_TYPES, 'Requirement', 'Unknown', 'Assembly', 'Finish', 'Supplier', 'Quote', 'Order'] as const;
 export type BuildGraphNodeType = (typeof BUILD_GRAPH_NODE_TYPES)[number];
 
-/** Spec §6.2 relationships (+ display-only RECORDED_IN). */
+/** Spec §6.2 relationships (+ display-only RECORDED_IN). The first seven are the order page's. */
 export const BUILD_GRAPH_EDGE_TYPES = [
     'CONTAINS',
     'MADE_OF',
@@ -37,6 +44,14 @@ export const BUILD_GRAPH_EDGE_TYPES = [
     'INSPECTED_BY',
     'DELIVERED_BY',
     'RECORDED_IN',
+    'FINISHED_WITH',
+    'CONSTRAINED_BY',
+    'BLOCKED_BY',
+    'SOURCED_FROM',
+    'QUOTED_AS',
+    'ORDERED_AS',
+    'SHIPPED_AS',
+    'DERIVED_FROM',
 ] as const;
 export type BuildGraphEdgeType = (typeof BUILD_GRAPH_EDGE_TYPES)[number];
 
@@ -78,7 +93,7 @@ export interface BuildGraph {
 }
 
 /** Edge type is decided by the target's node type (the chain is linear by column). */
-const INBOUND_EDGE: Record<Exclude<BuildGraphNodeType, 'Build'>, BuildGraphEdgeType> = {
+const INBOUND_EDGE: Record<Exclude<OrderGraphNodeType, 'Build'>, BuildGraphEdgeType> = {
     Part: 'CONTAINS',
     MaterialSpec: 'MADE_OF',
     ProcessPlan: 'REQUIRES_PROCESS',
@@ -97,6 +112,14 @@ export const EDGE_PHRASE: Record<BuildGraphEdgeType, string> = {
     INSPECTED_BY: 'inspected by',
     DELIVERED_BY: 'delivered by',
     RECORDED_IN: 'recorded in',
+    FINISHED_WITH: 'finished with',
+    CONSTRAINED_BY: 'constrained by',
+    BLOCKED_BY: 'blocked by',
+    SOURCED_FROM: 'sourced from',
+    QUOTED_AS: 'quoted as',
+    ORDERED_AS: 'ordered as',
+    SHIPPED_AS: 'shipped as',
+    DERIVED_FROM: 'derived from',
 };
 
 /** Order universal statuses that describe work in flight; used for the active node's pill. */
@@ -231,7 +254,7 @@ export function buildGraphFromOrder(order: OrderView): BuildGraph {
     for (let c = 1; c < columns.length; c++) {
         for (const target of byColumn(c)) {
             if (target.type === 'Build') continue;
-            const type = INBOUND_EDGE[target.type];
+            const type = INBOUND_EDGE[target.type as Exclude<OrderGraphNodeType, 'Build'>];
             for (const source of byColumn(c - 1)) {
                 edges.push({ id: `${source.id}->${target.id}`, type, source: source.id, target: target.id, state: edgeState(source, target) });
             }
@@ -276,4 +299,102 @@ export function describeNode(node: BuildGraphNode, graph: BuildGraph, statusLabe
     parts.push(`Status: ${statusLabel}`);
     if (from.length) parts.push(`Linked from ${from.join('; ')}`);
     return parts.join('. ') + '.';
+}
+
+// ---------------------------------------------------------------------------
+// R2: persisted Build Graph (BuildGraphView) -> display graph (workspace Graph View)
+// ---------------------------------------------------------------------------
+
+/** Persisted node type -> display node type + kind label. */
+export const BG_NODE_DISPLAY: Record<BgNodeType, { type: BuildGraphNodeType; typeLabel: string }> = {
+    BUILD: { type: 'Build', typeLabel: 'Build' },
+    REQUIREMENT: { type: 'Requirement', typeLabel: 'Requirement' },
+    UNKNOWN: { type: 'Unknown', typeLabel: 'Question' },
+    ASSEMBLY: { type: 'Assembly', typeLabel: 'Assembly' },
+    PART: { type: 'Part', typeLabel: 'Part' },
+    MATERIAL: { type: 'MaterialSpec', typeLabel: 'Material' },
+    PROCESS: { type: 'ProcessPlan', typeLabel: 'Process' },
+    FINISH: { type: 'Finish', typeLabel: 'Finish' },
+    SUPPLIER: { type: 'Supplier', typeLabel: 'Supplier' },
+    SHOP: { type: 'Facility', typeLabel: 'Shop' },
+    QUOTE: { type: 'Quote', typeLabel: 'Quote' },
+    ORDER: { type: 'Order', typeLabel: 'Order' },
+    QA: { type: 'InspectionResult', typeLabel: 'QA' },
+    SHIPMENT: { type: 'Shipment', typeLabel: 'Shipment' },
+    PASSPORT: { type: 'ProductPassport', typeLabel: 'Passport' },
+};
+
+/** Left-to-right column per persisted node type (empty columns are dropped). */
+const BG_COLUMN: Record<BgNodeType, number> = {
+    BUILD: 0,
+    REQUIREMENT: 1,
+    UNKNOWN: 1,
+    ASSEMBLY: 2,
+    PART: 3,
+    MATERIAL: 4,
+    PROCESS: 4,
+    FINISH: 4,
+    SUPPLIER: 5,
+    SHOP: 5,
+    QUOTE: 5,
+    ORDER: 6,
+    QA: 6,
+    SHIPMENT: 6,
+    PASSPORT: 6,
+};
+
+/** Build node pill per trust state: never READY before the build has real manufacturing evidence. */
+const TRUST_PILL: Record<BuildTrustState, UniversalStatus> = {
+    CONCEPT: 'DRAFT',
+    ENGINEERING_REVIEW: 'REVIEW',
+    MANUFACTURING_READY: 'READY',
+    SUPPLIER_CONFIRMED: 'READY',
+    ORDERABLE: 'READY',
+};
+
+const str = (v: unknown): string | null => (typeof v === 'string' && v.trim() ? v.trim() : null);
+
+/** State + pill + secondary line for one persisted node. AI output always reads as a draft. */
+function viewNodeState(n: BgNode, view: BuildGraphView): Pick<BuildGraphNode, 'state' | 'status' | 'value'> {
+    const d = n.data ?? {};
+    if (n.type === 'BUILD') {
+        if (d.role === 'source') return { state: 'done', status: 'COMPLETE', value: `${str(d.displayId) ?? 'Source build'} · v${typeof d.version === 'number' ? d.version : '?'}` };
+        return { state: 'active', status: TRUST_PILL[view.build.trustState], value: `${view.build.displayId} · v${view.version.version}` };
+    }
+    if (n.type === 'UNKNOWN') {
+        if (d.status === 'open') return { state: 'active', status: 'NEEDS_INPUT', value: 'Needs your answer' };
+        return { state: 'done', status: 'COMPLETE', value: str(d.answer) ? `Answer: ${str(d.answer)}` : 'Answered' };
+    }
+    if (d.needsSourcing === true) return { state: 'pending', status: 'REVIEW', value: 'Needs sourcing' };
+    if (n.source === 'user') return { state: 'done', status: 'READY', value: 'You said' };
+    if (n.source === 'quote_engine' || n.source === 'ops') return { state: 'done', status: 'READY', value: null };
+    let value: string | null = null;
+    if (n.type === 'REQUIREMENT') value = [str(d.category), n.confidence !== null ? `${Math.round(n.confidence * 100)}% sure` : null].filter(Boolean).join(' · ') || null;
+    else if (n.type === 'MATERIAL') value = [str(d.role), n.confidence !== null ? `${Math.round(n.confidence * 100)}% sure` : null].filter(Boolean).join(' · ') || null;
+    else if (n.type === 'PART') value = d.dimensionsStatus === 'stated' ? 'Dimensions stated' : 'Dimensions needed';
+    else if (n.type === 'PROCESS' || n.type === 'FINISH') value = d.inCatalog === true ? 'In catalog' : null;
+    return { state: 'pending', status: 'DRAFT', value };
+}
+
+/** BuildGraphView -> display graph for `GraphView` (node ids are the stable node keys). */
+export function buildGraphFromView(view: BuildGraphView): BuildGraph {
+    const used = [...new Set(view.nodes.map((n) => BG_COLUMN[n.type]))].sort((a, b) => a - b);
+    const columnOf = new Map(used.map((c, i) => [c, i]));
+    const rowsIn = new Map<number, number>();
+    const nodes: BuildGraphNode[] = view.nodes.map((n) => {
+        const column = columnOf.get(BG_COLUMN[n.type]) ?? 0;
+        const row = rowsIn.get(column) ?? 0;
+        rowsIn.set(column, row + 1);
+        const display = BG_NODE_DISPLAY[n.type];
+        return { id: n.key, type: display.type, typeLabel: display.typeLabel, label: n.label, ...viewNodeState(n, view), column, row };
+    });
+    const byId = new Map(nodes.map((n) => [n.id, n]));
+    const edges: BuildGraphEdge[] = [];
+    for (const e of view.edges) {
+        const source = byId.get(e.fromKey);
+        const target = byId.get(e.toKey);
+        if (!source || !target) continue;
+        edges.push({ id: `${e.type}:${e.fromKey}->${e.toKey}`, type: e.type, source: source.id, target: target.id, state: edgeState(source, target) });
+    }
+    return { nodes, edges, columns: Math.max(1, used.length), rows: Math.max(1, ...rowsIn.values()) };
 }

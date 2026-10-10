@@ -2,7 +2,7 @@
 
 import { useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { LogOut } from 'lucide-react';
 import { LogoMark } from '@/components/site/logo';
@@ -13,6 +13,9 @@ export function ConsoleHeader() {
     const { data } = useShopSession();
     const qc = useQueryClient();
     const router = useRouter();
+    const pathname = usePathname() ?? '';
+    const jobsActive = pathname.startsWith('/shop/jobs');
+    const stockActive = pathname.startsWith('/shop/stock');
     const [busy, setBusy] = useState(false);
     return (
         <header className="sticky top-0 z-40 border-b border-graphite-700 bg-graphite-950/95 backdrop-blur">
@@ -22,12 +25,30 @@ export function ConsoleHeader() {
             <div className="mx-auto flex h-14 w-full max-w-6xl items-center justify-between gap-3 px-4 sm:px-6">
                 <Link href={data ? '/shop/jobs' : '/shop'} className="flex items-center gap-2 rounded-md">
                     <LogoMark className="h-6 w-6 text-fg" />
-                    <span className="font-display font-wide text-sm font-bold">DiscoverMake</span>
+                    <span className="hidden font-display font-wide text-sm font-bold sm:inline">DiscoverMake</span>
                     <span className="rounded-md bg-graphite-750 px-1.5 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wider text-fg-muted">Shop Console</span>
                 </Link>
                 {data && (
                     <div className="flex items-center gap-2">
-                        <span className="hidden text-sm text-fg-muted sm:inline">{data.shop.name}</span>
+                        <nav aria-label="Shop Console" className="flex items-center gap-1">
+                            <Link
+                                href="/shop/jobs"
+                                aria-current={jobsActive ? 'page' : undefined}
+                                className="inline-flex h-9 items-center rounded-lg px-2 text-sm font-medium text-fg-muted hover:bg-graphite-800 hover:text-fg aria-[current=page]:bg-graphite-800 aria-[current=page]:text-fg"
+                                data-testid="shop-nav-jobs"
+                            >
+                                Jobs
+                            </Link>
+                            <Link
+                                href="/shop/stock"
+                                aria-current={stockActive ? 'page' : undefined}
+                                className="inline-flex h-9 items-center rounded-lg px-2 text-sm font-medium text-fg-muted hover:bg-graphite-800 hover:text-fg aria-[current=page]:bg-graphite-800 aria-[current=page]:text-fg"
+                                data-testid="shop-nav-stock"
+                            >
+                                Stock
+                            </Link>
+                        </nav>
+                        <span className="hidden text-sm text-fg-muted lg:inline">{data.shop.name}</span>
                         <button
                             type="button"
                             disabled={busy}
@@ -45,7 +66,7 @@ export function ConsoleHeader() {
                             className="inline-flex h-9 items-center gap-1.5 rounded-lg px-3 text-sm font-medium text-fg-muted hover:bg-graphite-800 hover:text-fg"
                             data-testid="shop-logout"
                         >
-                            <LogOut className="h-4 w-4" aria-hidden /> Sign out
+                            <LogOut className="h-4 w-4" aria-hidden /> <span className="sr-only sm:not-sr-only">Sign out</span>
                         </button>
                     </div>
                 )}

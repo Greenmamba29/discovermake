@@ -8,7 +8,7 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export const POST = route<{ shopId: string }>(async (request, { params }) => {
-    requireAdmin(request);
+    await requireAdmin(request);
     const id = ShopId.safeParse((await params).shopId);
     if (!id.success) throw new ApiError('NOT_FOUND', 'Shop not found');
     const body = await parseJson(request, IssueShopTokenRequest);

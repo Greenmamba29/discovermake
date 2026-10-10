@@ -1,5 +1,5 @@
 /**
- * POST|PUT /api/parts/:partId/upload -> PartView (public; ids are unguessable).
+ * POST|PUT /api/parts/:partId/upload -> PartView (build owner / its device; 403 otherwise, ADR-0009).
  *
  * Direct upload alternative to the signed PUT URL (handy with STORAGE_DRIVER=local
  * and for clients that cannot PUT to object storage). Accepts multipart/form-data
@@ -7,6 +7,7 @@
  * sniffed immediately (ASCII DXF R12–R2018 only).
  */
 import { PartId } from '@/contracts';
+import { assertCanEditPart } from '@/server/auth/build-access';
 import { ApiError, json, readBodyBytes, route } from '@/server/http';
 import { QUOTE_MAX_UPLOAD_BYTES, uploadPartBytes } from '@/server/quote';
 import { pathId } from '@/server/quote/route-helpers';
@@ -45,6 +46,7 @@ async function readUpload(request: Request): Promise<Uint8Array> {
 
 const handler = route<{ partId: string }>(async (request, { params }) => {
     const partId = pathId((await params).partId, PartId, 'Part');
+    await assertCanEditPart(request, partId);
     const bytes = await readUpload(request);
     if (bytes.byteLength === 0) throw new ApiError('VALIDATION_FAILED', 'The upload is empty');
     return json(await uploadPartBytes(partId, bytes));

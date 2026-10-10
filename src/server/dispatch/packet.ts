@@ -57,7 +57,7 @@ export async function packetForConsole(stored: StoredPacket, status: JobStatus, 
     });
     return {
         ...stored,
-        files: [{ kind: 'SOURCE_DXF', filename: part.filename, url: signed.url, expiresAt: signed.expiresAt.toISOString() }],
+        files: [{ kind: /\.stl$/i.test(part.filename) ? 'SOURCE_STL' : 'SOURCE_DXF', filename: part.filename, url: signed.url, expiresAt: signed.expiresAt.toISOString() }],
     };
 }
 

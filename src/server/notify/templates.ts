@@ -86,11 +86,38 @@ export function renderEmail<K extends NotifyKind>(kind: K, payload: NotifyPayloa
             }
             return layout(`${p.orderNumber} delivered`, blocks);
         }
+        case 'build_slot.released': {
+            const p = payload as NotifyPayloads['build_slot.released'];
+            return layout(`Your Build Slot for ${p.dropTitle} was released`, [
+                { kind: 'p', text: `${p.reason} Order ${p.orderNumber} is cancelled and the payment hold on your card was released: nothing was charged.` },
+                { kind: 'p', text: 'Follow the channel to hear about the next drop.' },
+            ]);
+        }
         case 'ops.alert': {
             const p = payload as NotifyPayloads['ops.alert'];
             return layout(`[ops] ${p.subject}`, [
                 { kind: 'p', text: p.message },
                 ...(p.orderId ? [{ kind: 'p' as const, text: `Order: ${p.orderId}` }] : []),
+            ]);
+        }
+        case 'auth.sign_in_code': {
+            const p = payload as NotifyPayloads['auth.sign_in_code'];
+            return layout('Your DiscoverMake sign-in code', [
+                { kind: 'p', text: `Enter ${p.code} to sign in to DiscoverMake. The code works once and expires in ${p.expiresMinutes} minutes.` },
+                { kind: 'p', text: 'If you did not ask for this code, you can ignore this email. Nobody can sign in without it.' },
+            ]);
+        }
+        case 'auction.outbid': {
+            const p = payload as NotifyPayloads['auction.outbid'];
+            return layout(`You were outbid on ${p.auctionTitle}`, [
+                { kind: 'p', text: `Someone bid ${formatMoney(p.amountCents, p.currency)}. Bid ${formatMoney(p.nextMinimumCents, p.currency)} or more to take the lead. Your earlier hold is released when the auction closes unless you win.` },
+                { kind: 'link', label: 'Back to the auction', href: p.showUrl },
+            ]);
+        }
+        case 'auction.won': {
+            const p = payload as NotifyPayloads['auction.won'];
+            return layout(`You won ${p.auctionTitle}`, [
+                { kind: 'p', text: `Your winning bid of ${formatMoney(p.amountCents, p.currency)} was charged and order ${p.orderNumber} is going to production. Every other hold you had on this auction was released.` },
             ]);
         }
         default: {

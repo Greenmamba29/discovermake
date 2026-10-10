@@ -8,6 +8,7 @@
  *                                          shop always receives exactly what was quoted.
  */
 import { createHash } from 'node:crypto';
+import { scanUpload } from '../security/upload-scan';
 import { and, desc, eq, inArray, ne } from 'drizzle-orm';
 import type { Actor } from '../../contracts/common';
 import { SYSTEM_ACTOR } from '../../contracts/common';
@@ -165,7 +166,7 @@ export async function getBuildView(buildId: string): Promise<BuildView | null> {
 // Upload
 // ---------------------------------------------------------------------------
 
-export async function createPartUploadImpl(input: CreatePartRequest): Promise<CreatePartResponse> {
+export async function createPartUploadImpl(input: CreatePartRequest, owner: { ownerUserId?: string | null; deviceHash?: string | null } = {}): Promise<CreatePartResponse> {
     try {
         assertDxfFilename(input.filename);
     } catch (err) {
@@ -185,7 +186,7 @@ export async function createPartUploadImpl(input: CreatePartRequest): Promise<Cr
         displayId = newBuildDisplayId();
         try {
             await db.transaction(async (tx) => {
-                await tx.insert(builds).values({ id: buildId, displayId, name, status: 'DRAFT' });
+                await tx.insert(builds).values({ id: buildId, displayId, name, status: 'DRAFT', ownerUserId: owner.ownerUserId ?? null, deviceHash: owner.deviceHash ?? null });
                 await tx.insert(parts).values({ id: partId, buildId, fileKey: key, filename: input.filename.trim(), format: 'dxf', sizeBytes: input.sizeBytes, status: 'AWAITING_UPLOAD' });
                 await emitEvent(tx, { type: 'build.created', payload: { buildId, displayId, name }, actor: buyerActor(buildId), correlationId: buildId, buildId });
             });
@@ -221,6 +222,7 @@ export async function uploadPartBytesImpl(partId: string, bytes: Uint8Array): Pr
     } catch (err) {
         throw toUploadError(err) ?? err;
     }
+    await scanUpload(bytes, { filename: row.part.filename });
     await getStorage().putObject(storageKeys.partSource(partId), bytes, { contentType: DXF_CONTENT_TYPE });
     const [updated] = await db
         .update(parts)
@@ -263,6 +265,12 @@ export async function analyzePartImpl(partId: string, input: AnalyzePartRequest 
         const current = await storage.getObject(key);
         if (current && part.fileSha256 && sha256(new Uint8Array(current)) !== part.fileSha256) throw new ApiError('CONFLICT', FROZEN_MESSAGE);
         return toPartView(part, loaded.build);
+    }
+
+    // Bytes that arrived through the signed PUT URL are scanned before anything parses them.
+    if (head.sizeBytes <= QUOTE_MAX_UPLOAD_BYTES) {
+        const uploaded = await storage.getObject(key);
+        if (uploaded) await scanOrDiscard(new Uint8Array(uploaded), key, part.filename);
     }
 
     await db.update(parts).set({ status: 'ANALYZING', updatedAt: new Date() }).where(eq(parts.id, partId));
@@ -418,4 +426,14 @@ export async function analyzePartImpl(partId: string, input: AnalyzePartRequest 
 
     if (!updated) throw new ApiError('CONFLICT', FROZEN_MESSAGE);
     return toPartView(updated, loaded.build);
+}
+
+/** Scan stored upload bytes; an infected file is deleted from storage before the 422 propagates. */
+async function scanOrDiscard(bytes: Uint8Array, key: string, filename: string): Promise<void> {
+    try {
+        await scanUpload(bytes, { filename });
+    } catch (err) {
+        if (err instanceof ApiError && err.status === 422) await getStorage().deleteObject(key).catch(() => undefined);
+        throw err;
+    }
 }

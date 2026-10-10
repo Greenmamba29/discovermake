@@ -23,8 +23,11 @@ import { assertTransition } from './state';
 
 export async function refundOrder(orderId: string, actor: Actor, reason: string): Promise<void> {
     const db = getDb();
-    const [peek] = await db.select({ id: orders.id }).from(orders).where(eq(orders.id, orderId));
+    const [peek] = await db.select({ id: orders.id, quoteId: orders.quoteId }).from(orders).where(eq(orders.id, orderId));
     if (!peek) throw new OrderNotFoundError(orderId);
+    // R3 supplier route: deposit (+ balance) payments, leg and PO approvals are unwound together.
+    const prime = await import('../prime/payments');
+    if (await prime.isSupplierRouteOrder(db, peek)) return prime.refundSupplierOrder(orderId, actor, reason);
     const [candidate] = await db
         .select({ id: payments.id })
         .from(payments)

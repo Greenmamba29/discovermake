@@ -6,7 +6,7 @@
  */
 import { and, desc, eq, inArray, sql } from 'drizzle-orm';
 import type { Actor } from '../../contracts/common';
-import type { JobStatus } from '../../contracts/enums';
+import type { InspectionOutcome, JobStatus } from '../../contracts/enums';
 import type {
     DeclineJobRequest,
     InspectionMeasurement,
@@ -23,6 +23,7 @@ import type { CreateShipmentRequest, ShipmentView, TrackingEvent } from '../../c
 import { getDb, withTx, type Tx } from '../db';
 import { inspectionPlans, inspectionResults, manufacturingJobs, orders, productionMilestones, shipments, shops } from '../db/schema';
 import { dispatchOrder, sweepStaleOffersLazily } from '../dispatch';
+import { openJobBatchIds } from '../dispatch/batching';
 import { MEASURED_CHECK_KINDS, withinTolerance } from '../dispatch/inspection-plan';
 import { signPacket, type StoredPacket } from '../dispatch/packet';
 import { emitEvent } from '../events/outbox';
@@ -35,6 +36,9 @@ import { archiveShipmentLabel, labelUrlFor } from '../shipping/labels';
 import { toShipmentView } from '../shipping/views';
 import { getStorage, storageKeys } from '../storage';
 import { buildJobDetail, toInspectionResultView, toJobSummary, toMilestoneView, type JobRow } from './views';
+import { afterReceivingInspection, onReceivingInspection } from '../prime/fulfilment';
+import { assertShippable } from '../prime/payments';
+import { recheckOrderPromiseSafely } from '../promise/engine';
 
 export const DEFAULT_JOB_LIST_STATUSES: readonly JobStatus[] = ['OFFERED', 'ACCEPTED', 'IN_PRODUCTION', 'QA_PASSED', 'SHIPPED'];
 export const QA_UPLOAD_URL_TTL_SECONDS = 900;
@@ -90,14 +94,18 @@ export async function listJobs(shopId: string, filter?: { status?: JobStatus[] }
         .where(and(eq(manufacturingJobs.shopId, shopId), inArray(manufacturingJobs.status, statuses)))
         .orderBy(desc(manufacturingJobs.createdAt))
         .limit(200);
-    return rows.map(toJobSummary);
+    // R3 (700-11): open jobs that can share a setup carry their batch id.
+    const batches = await openJobBatchIds(getDb(), shopId);
+    return rows.map((r) => ({ ...toJobSummary(r), batchId: batches.get(r.id) ?? null }));
 }
 
 /** Job detail scoped to the shop (null if not this shop's job). Packet redacted until ACCEPTED. */
 export async function getJob(shopId: string, jobId: string): Promise<ShopJobDetail | null> {
     try {
         const job = await findShopJob(shopId, jobId);
-        return buildJobDetail(getDb(), job);
+        const detail = await buildJobDetail(getDb(), job);
+        const batches = await openJobBatchIds(getDb(), shopId);
+        return { ...detail, batchId: batches.get(job.id) ?? null };
     } catch (err) {
         if (err instanceof ApiError && err.code === 'NOT_FOUND') return null;
         throw err;
@@ -173,6 +181,10 @@ export async function recordMilestone(shopId: string, jobId: string, input: Mile
         if (job.status !== 'ACCEPTED' && job.status !== 'IN_PRODUCTION' && job.status !== 'QA_PASSED') {
             throw new ApiError('CONFLICT', `Job is ${job.status}; milestones can only be recorded on accepted jobs in production`);
         }
+        // R3: a receiving job starts when the freight is marked received (that also moves the supplier leg).
+        if (job.packet.receiving && job.status === 'ACCEPTED' && !job.reworkOfJobId) {
+            throw new ApiError('CONFLICT', 'Mark the inbound freight received first; inspection opens after that');
+        }
         const now = new Date();
         const actor = shopActor(shopId);
         let started = false;
@@ -197,6 +209,7 @@ export async function recordMilestone(shopId: string, jobId: string, input: Mile
         });
         return { milestone: m, notifyStart: started && !job.reworkOfJobId ? order : null };
     });
+    await recheckOrderPromiseSafely(result.milestone.orderId);
     if (result.notifyStart) {
         const [shop] = await getDb().select({ name: shops.name }).from(shops).where(eq(shops.id, shopId));
         await notify('order.in_production', {
@@ -289,7 +302,7 @@ export async function submitInspection(shopId: string, jobId: string, input: Ins
         if (!plan) throw new Error(`Job ${jobId} has no inspection plan`);
 
         const evaluated = evaluateInspection(plan.checks, input.measurements);
-        const outcome = evaluated.criticalFailed.length === 0 ? 'PASS' : 'FAIL';
+        const outcome: InspectionOutcome = evaluated.criticalFailed.length === 0 ? 'PASS' : 'FAIL';
         const now = new Date();
         const actor = shopActor(shopId);
         const resultId = newId('inspectionResult');
@@ -355,12 +368,16 @@ export async function submitInspection(shopId: string, jobId: string, input: Ins
                 ...eventCtx(order),
             });
         }
+        // R3: QA at receipt on a supplier-route order moves its supplier leg.
+        const supplierRoute = await onReceivingInspection(t, { orderId: order.id, outcome, actor, now });
         const [{ fails }] = await t
             .select({ fails: sql<number>`count(*)::int` })
             .from(inspectionResults)
             .where(and(eq(inspectionResults.orderId, order.id), eq(inspectionResults.outcome, 'FAIL')));
-        return { result, order, repeatedFailure: outcome === 'FAIL' && fails >= 2 };
+        return { result, order, repeatedFailure: outcome === 'FAIL' && fails >= 2, supplierRoute, outcome };
     });
+    if (out.supplierRoute) await afterReceivingInspection(out.order.id, out.outcome);
+    else await recheckOrderPromiseSafely(out.order.id);
 
     if (out.repeatedFailure) {
         await notify('ops.alert', {
@@ -394,6 +411,7 @@ export async function createShipment(shopId: string, jobId: string, input: Creat
     if (job.status !== 'QA_PASSED' || order.status !== 'QA_PASSED') {
         throw new ApiError('CONFLICT', 'Inspection must pass before a shipping label can be created');
     }
+    await assertShippable(db, order.id);
     const [shop] = await db.select().from(shops).where(eq(shops.id, shopId));
     if (!shop) throw notFound();
 
@@ -409,6 +427,8 @@ export async function createShipment(shopId: string, jobId: string, input: Creat
             if (locked.job.status !== 'QA_PASSED' || locked.order.status !== 'QA_PASSED') {
                 throw new ApiError('CONFLICT', 'Inspection must pass before a shipping label can be created');
             }
+            // R3: a supplier-route order ships only once the buyer's balance is paid.
+            await assertShippable(t, locked.order.id);
             const bought = await carrier.buyLabel({
                 from: shop.address,
                 to: locked.order.shippingAddress,
@@ -481,6 +501,7 @@ export async function createShipment(shopId: string, jobId: string, input: Creat
         }
     }
 
+    await recheckOrderPromiseSafely(order.id);
     await notify('order.shipped', {
         to: order.buyerEmail,
         orderId: order.id,

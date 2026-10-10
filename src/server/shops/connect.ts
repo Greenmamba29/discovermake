@@ -23,7 +23,7 @@ import { z } from 'zod';
 import type { Actor } from '../../contracts/common';
 import type { AdminShopConnectLinkResponse, ShopPayoutStatusResponse } from '../../contracts/connect';
 import { getDb, withTx } from '../db';
-import { shops, webhookEvents } from '../db/schema';
+import { creatorAccounts, shops, webhookEvents } from '../db/schema';
 import { env } from '../env';
 import { emitEvent } from '../events/outbox';
 import { ApiError } from '../http';
@@ -50,7 +50,7 @@ export function assertStripeConfigured(): void {
 }
 
 /** Turn a Stripe API failure into a 502 with a plain message (never leaks keys or raw responses). */
-function stripeFailure(err: unknown, what: string): never {
+export function stripeFailure(err: unknown, what: string): never {
     if (err instanceof Stripe.errors.StripeError) {
         console.error(`[connect] Stripe ${what} failed`, err.type, err.code ?? '', err.requestId ?? '');
         throw new ApiError('PAYMENT_ERROR', `Stripe could not ${what}. Try again in a moment.`, 502);
@@ -58,12 +58,12 @@ function stripeFailure(err: unknown, what: string): never {
     throw err;
 }
 
-function appUrl(path: string): string {
+export function appUrl(path: string): string {
     return new URL(path, env().APP_URL).toString();
 }
 
 /** Stripe rejects non-public business URLs (localhost, plain http), so only send a real https origin. */
-function publicBusinessUrl(): string | undefined {
+export function publicBusinessUrl(): string | undefined {
     try {
         const u = new URL(env().APP_URL);
         if (u.protocol !== 'https:' || u.hostname === 'localhost' || u.hostname.endsWith('.local') || /^[\d.]+$/.test(u.hostname)) return undefined;
@@ -73,7 +73,7 @@ function publicBusinessUrl(): string | undefined {
     }
 }
 
-function isStripeHostedUrl(raw: string): boolean {
+export function isStripeHostedUrl(raw: string): boolean {
     try {
         const u = new URL(raw);
         return u.protocol === 'https:' && (u.hostname === 'stripe.com' || u.hostname.endsWith('.stripe.com'));
@@ -211,7 +211,7 @@ const ConnectAccountObject = z.object({
 
 export type ConnectWebhookOutcome =
     | { duplicate: true; type: string }
-    | { duplicate: false; type: string; shopId: string | null };
+    | { duplicate: false; type: string; shopId: string | null; creatorUserId?: string | null };
 
 /** Verify, dedupe and apply a Connect webhook. Throws ConnectWebhookSignatureError on a bad signature. */
 export async function processConnectWebhook(rawBody: string, headers: Headers): Promise<ConnectWebhookOutcome> {
@@ -241,6 +241,7 @@ export async function processConnectWebhook(rawBody: string, headers: Headers): 
             if (row?.processedAt) return { duplicate: true as const, type: event.type };
 
             let shopId: string | null = null;
+            let creatorUserId: string | null = null;
             if (event.type === 'account.updated') {
                 const account = ConnectAccountObject.parse(event.data.object);
                 const appHost = new URL(env().APP_URL).host;
@@ -264,10 +265,18 @@ export async function processConnectWebhook(rawBody: string, headers: Headers): 
                         actor: { kind: 'payment_provider', id: 'stripe' },
                         correlationId: shop.id,
                     });
+                } else if (!foreign) {
+                    // R5: creators onboard with the same Express flow (src/server/media/connect.ts).
+                    const [creator] = await tx
+                        .update(creatorAccounts)
+                        .set({ stripePayoutsEnabled: account.payouts_enabled === true, updatedAt: new Date() })
+                        .where(eq(creatorAccounts.stripeAccountId, account.id))
+                        .returning({ userId: creatorAccounts.userId });
+                    creatorUserId = creator?.userId ?? null;
                 }
             }
             await tx.update(webhookEvents).set({ processedAt: new Date(), error: null }).where(where);
-            return { duplicate: false as const, type: event.type, shopId };
+            return { duplicate: false as const, type: event.type, shopId, creatorUserId };
         });
     } catch (err) {
         await db

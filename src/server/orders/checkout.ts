@@ -19,7 +19,11 @@ import { newId, newOrderNumber } from '../ids';
 import { getPaymentProvider } from '../payments';
 import { isQuoteOrderable } from '../quote';
 import { addBusinessDays, orderStartDate } from '../quote/leadtime';
+import { applyMembershipBenefits, type BenefitResult, type MembershipForBenefits } from '../prime/benefits';
+import { recordOrderBenefits } from '../prime/order-benefits';
 import { SEALED_TOKEN_KEY, sealOrderToken } from './link-vault';
+import { createPaymentPlan, PAYMENT_PURPOSE_KEY } from '../prime/payments';
+import { setOrderPromise } from '../promise/engine';
 
 type QuoteRow = typeof quotes.$inferSelect;
 
@@ -65,6 +69,11 @@ export async function priceQuoteForCheckout(quote: QuoteRow, shippingMethod: Che
     if (!rateCard || !rateCard.active) {
         throw new ApiError('CONFLICT', 'Pricing changed after this quote was made. Get a new quote.');
     }
+    if (quote.config.process === 'print') {
+        // R6: a printed part was priced on the shop's print rate card; it must still be the active one.
+        const { printRateCardIsActive } = await import('../quote/printing');
+        if (!(await printRateCardIsActive(quote.id))) throw new ApiError('CONFLICT', 'Pricing changed after this quote was made. Get a new quote.');
+    }
 
     // Snapshot integrity: never trust a snapshot that does not add up.
     const lineSum = quote.lineItems.reduce((s, li) => s + li.totalCents, 0);
@@ -90,6 +99,38 @@ export async function priceQuoteForCheckout(quote: QuoteRow, shippingMethod: Che
 }
 
 /**
+ * R3 Prime: the ONE place membership benefits are applied to checkout totals. Validates
+ * and prices the quote snapshot (priceQuoteForCheckout), then runs the pure
+ * `applyMembershipBenefits` (free standard shipping, member material pricing, flags).
+ * `qualifyingSubtotalCents` lets a cart compare its whole subtotal with the free-shipping
+ * threshold. Non-members get the snapshot price unchanged.
+ */
+export async function priceOrderForCheckout(
+    quote: QuoteRow,
+    shippingMethod: CheckoutRequest['shippingMethod'],
+    membership: MembershipForBenefits,
+    opts: { qualifyingSubtotalCents?: number; now?: Date } = {},
+): Promise<BenefitResult<CheckoutPricing>> {
+    const base = await priceQuoteForCheckout(quote, shippingMethod, opts.now);
+    const standard = quote.shippingOptions.find((o) => o.method === 'STANDARD');
+    const freight = Boolean(standard && /^freight/i.test(standard.label));
+    const r = applyMembershipBenefits({ ...base, lineItems: quote.lineItems, shippingMethod, freight, qualifyingSubtotalCents: opts.qualifyingSubtotalCents }, membership);
+    const t = r.totals;
+    const totals: CheckoutPricing = {
+        quantity: t.quantity,
+        unitPriceCents: t.unitPriceCents,
+        subtotalCents: t.subtotalCents,
+        shippingCents: t.shippingCents,
+        taxCents: t.taxCents,
+        totalCents: t.totalCents,
+        shopCostCents: t.shopCostCents,
+        platformFeeCents: t.platformFeeCents,
+        currency: t.currency,
+    };
+    return { ...r, totals };
+}
+
+/**
  * Ship date promised at checkout. Quotes stay binding for QUOTE_VALIDITY_DAYS, but
  * their ship date was computed when the quote was made; the quoted lead time is
  * re-applied from the moment of ordering (shop timezone, same-day cutoff, business
@@ -112,18 +153,22 @@ function isUniqueViolation(err: unknown, constraint: string): boolean {
     return e?.cause ? isUniqueViolation(e.cause, constraint) : false;
 }
 
-export async function createCheckout(input: CheckoutRequest): Promise<CheckoutResponse> {
+/** Who is checking out: the signed-in buyer (ADR-0009) and, for R3 Prime benefits, their membership. */
+export type CheckoutContext = { buyerUserId?: string | null; membership?: MembershipForBenefits };
+
+export async function createCheckout(input: CheckoutRequest, opts: CheckoutContext = {}): Promise<CheckoutResponse> {
     const db = getDb();
     const [quote] = await db.select().from(quotes).where(eq(quotes.id, input.quoteId));
     if (!quote) throw new ApiError('NOT_FOUND', 'Quote not found');
-    const pricing = await priceQuoteForCheckout(quote, input.shippingMethod);
+    const priced = await priceOrderForCheckout(quote, input.shippingMethod, opts.membership ?? null);
+    const pricing = priced.totals;
     const [build] = await db.select().from(builds).where(eq(builds.id, quote.buildId));
     if (!build) throw new ApiError('NOT_FOUND', 'Build not found');
     const [shop] = await db.select({ timezone: shops.timezone }).from(shops).where(eq(shops.id, quote.shopId));
     if (!shop) throw new ApiError('CONFLICT', 'The quoted shop is no longer available. Get a new quote.');
 
     const orderType = orderTypeForQuantity(pricing.quantity);
-    const actor = guestBuyerActor(input.buyer.email);
+    const actor: Actor = opts.buyerUserId ? { kind: 'buyer', id: opts.buyerUserId } : guestBuyerActor(input.buyer.email);
     const provider = getPaymentProvider();
     const appUrl = env().APP_URL;
 
@@ -151,6 +196,7 @@ export async function createCheckout(input: CheckoutRequest): Promise<CheckoutRe
                     orderType,
                     status: 'PENDING_PAYMENT',
                     buyerEmail: input.buyer.email,
+                    buyerUserId: opts.buyerUserId ?? null,
                     buyerName: input.buyer.name,
                     buyerPhone: input.buyer.phone ?? null,
                     shippingAddress: input.shippingAddress,
@@ -181,6 +227,12 @@ export async function createCheckout(input: CheckoutRequest): Promise<CheckoutRe
                     orderId,
                     timestamp: now,
                 });
+                await recordOrderBenefits(tx, orderId, priced, opts.buyerUserId ?? null);
+
+                // R3: the first charge (full, or the supplier-route deposit) minus any promise credit,
+                // and the Delivery Promise with its per-leg P90s.
+                const charge = await createPaymentPlan(tx, { orderId, totalCents: pricing.totalCents, buyerEmail: input.buyer.email, quoteId: quote.id, now });
+                await setOrderPromise(tx, { order: { id: orderId, correlationId: quote.buildId, buildId: quote.buildId, promisedShipDate }, quote, method: input.shippingMethod, shipToRegion: input.shippingAddress.region, now });
 
                 // Provider session inside the transaction: if it fails, no order is left behind.
                 // (A provider session orphaned by a failed commit simply expires unpaid.)
@@ -189,10 +241,10 @@ export async function createCheckout(input: CheckoutRequest): Promise<CheckoutRe
                     session = await provider.createPayment({
                         orderId,
                         orderNumber,
-                        amountCents: pricing.totalCents,
+                        amountCents: charge.chargeCents,
                         currency: pricing.currency,
                         buyerEmail: input.buyer.email,
-                        description: `${orderNumber} · ${pricing.quantity} x ${quote.summary.partFilename} (${quote.summary.materialName} ${quote.summary.thicknessLabel})`,
+                        description: `${orderNumber} · ${pricing.quantity} x ${quote.summary.partFilename} (${quote.summary.materialName} ${quote.summary.thicknessLabel})${charge.purpose === 'deposit' ? ' · deposit' : ''}`,
                         successUrl: orderUrl,
                         cancelUrl: new URL(`/build/${encodeURIComponent(quote.buildId)}/approve?quote=${encodeURIComponent(quote.id)}&cancelled=1`, appUrl).toString(),
                         metadata: { dm_quote_id: quote.id, dm_build_id: quote.buildId, dm_app: new URL(appUrl).host },
@@ -207,10 +259,10 @@ export async function createCheckout(input: CheckoutRequest): Promise<CheckoutRe
                     orderId,
                     provider: provider.name,
                     providerRef: session.providerRef,
-                    amountCents: pricing.totalCents,
+                    amountCents: charge.chargeCents,
                     currency: pricing.currency,
                     status: 'PENDING',
-                    metadata: { [SEALED_TOKEN_KEY]: sealOrderToken(orderId, token) },
+                    metadata: { [SEALED_TOKEN_KEY]: sealOrderToken(orderId, token), [PAYMENT_PURPOSE_KEY]: charge.purpose },
                     createdAt: now,
                     updatedAt: now,
                 });
@@ -228,8 +280,10 @@ export async function createCheckout(input: CheckoutRequest): Promise<CheckoutRe
                         currency: pricing.currency,
                     },
                     promisedShipDate,
-                    payment: { provider: provider.name, providerRef: session.providerRef, redirectUrl: session.redirectUrl },
+                    payment: { provider: provider.name, providerRef: session.providerRef, redirectUrl: session.redirectUrl, amountCents: charge.chargeCents, purpose: charge.purpose },
                     orderUrl,
+                    ...(charge.creditCents > 0 ? { creditAppliedCents: charge.creditCents } : {}),
+                    ...(charge.purpose === 'deposit' ? { balanceDueCents: charge.balanceCents } : {}),
                 } satisfies CheckoutResponse);
             });
         } catch (err) {

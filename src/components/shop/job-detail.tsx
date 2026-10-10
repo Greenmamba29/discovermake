@@ -19,6 +19,9 @@ import { dateTime, humanize, money, shortDate } from '@/lib/format';
 import { JOB_STATUS_TEXT, JOB_UNIVERSAL, MILESTONE_LABELS } from '@/lib/status';
 import { cn } from '@/lib/utils';
 import { QaForm } from './qa-form';
+import { OrderChat } from '@/components/prime/order-chat';
+import { primeApi as experienceApi } from '@/components/prime/api';
+import { primeApi } from '@/lib/prime-api';
 import { ShipForm } from './ship-form';
 import { useCountdown } from './use-countdown';
 
@@ -85,7 +88,9 @@ export function JobDetail({ jobId }: { jobId: string }) {
     const p = job.packet;
     const recorded = new Map<MilestoneKind, string>();
     for (const m of job.milestones) if (!recorded.has(m.kind)) recorded.set(m.kind, m.occurredAt);
-    const canMilestone = job.status === 'ACCEPTED' || job.status === 'IN_PRODUCTION' || job.status === 'QA_PASSED';
+    const receiving = p.receiving ?? null;
+    const awaitingFreight = Boolean(receiving) && job.status === 'ACCEPTED' && !job.isRework;
+    const canMilestone = !awaitingFreight && (job.status === 'ACCEPTED' || job.status === 'IN_PRODUCTION' || job.status === 'QA_PASSED');
     const lastResult = [...job.inspectionResults].sort((a, b) => b.createdAt.localeCompare(a.createdAt))[0] ?? null;
     const reworkJobId = lastResult?.outcome === 'FAIL' ? lastResult.reworkJobId : null;
 
@@ -102,9 +107,14 @@ export function JobDetail({ jobId }: { jobId: string }) {
                     </p>
                     <h1 className="mt-1 font-display font-wide text-3xl font-extrabold">{job.orderNumber}</h1>
                     <p className="mt-1 text-fg-muted" data-testid="job-status-text">
-                        {JOB_STATUS_TEXT[job.status]}
+                        {awaitingFreight ? 'Receiving · waiting for inbound freight' : JOB_STATUS_TEXT[job.status]}
                         {job.isRework && ' · rework'}
                     </p>
+                    {job.batchId && (
+                        <p className="mt-1 inline-flex items-center gap-1 rounded-md bg-graphite-750 px-2 py-0.5 font-mono text-[11px] text-fg-muted" data-testid="job-batch">
+                            Batch {job.batchId} · shares a setup with other jobs on this material
+                        </p>
+                    )}
                 </div>
                 <div className="flex flex-col items-end gap-2">
                     <StatusPill status={JOB_UNIVERSAL[job.status]} />
@@ -134,11 +144,20 @@ export function JobDetail({ jobId }: { jobId: string }) {
                                     {p.part.bboxWidthMm.toFixed(1)} × {p.part.bboxHeightMm.toFixed(1)} mm
                                 </span>
                             </PacketRow>
-                            <PacketRow label="Geometry">
-                                <span className="font-mono text-xs">
-                                    cut {(p.part.cutLengthMm / 1000).toFixed(2)} m · {p.part.pierceCount} pierces · {p.part.holeCount} holes · {p.part.bendCount} bends
-                                </span>
-                            </PacketRow>
+                            {p.print ? (
+                                <PacketRow label="3D print">
+                                    <span className="font-mono text-xs" data-testid="packet-print">
+                                        {p.print.process} · {p.print.layerHeightMm} mm layers · {p.print.bboxMm.map((v) => v.toFixed(1)).join(' × ')} mm · {(p.print.volumeMm3 / 1000).toFixed(1)} cm³ · min wall {p.print.minWallMm} mm · {p.print.printHoursPerPart.toFixed(2)} h/part
+                                    </span>
+                                    <span className="mt-1 block text-xs text-fg-subtle">{p.print.orientation} STL sha256 {p.print.stlSha256.slice(0, 12)}…</span>
+                                </PacketRow>
+                            ) : (
+                                <PacketRow label="Geometry">
+                                    <span className="font-mono text-xs">
+                                        cut {(p.part.cutLengthMm / 1000).toFixed(2)} m · {p.part.pierceCount} pierces · {p.part.holeCount} holes · {p.part.bendCount} bends
+                                    </span>
+                                </PacketRow>
+                            )}
                             <PacketRow label="Material">
                                 {p.material.name} · {p.material.thicknessLabel} <span className="font-mono text-xs text-fg-subtle">({p.material.thicknessMm.toFixed(2)} mm)</span>
                             </PacketRow>
@@ -212,6 +231,31 @@ export function JobDetail({ jobId }: { jobId: string }) {
 
                 {/* Actions */}
                 <div className="space-y-4">
+                    {receiving && (
+                        <section aria-labelledby="receiving-heading" className="rounded-2xl bg-graphite-900 p-4 ring-1 ring-signal/40 sm:p-5" data-testid="receiving-panel">
+                            <h2 id="receiving-heading" className="font-display text-lg font-bold">
+                                Receiving · QA at receipt
+                            </h2>
+                            <dl className="mt-3">
+                                <PacketRow label="PO">{receiving.poNumber}</PacketRow>
+                                <PacketRow label="From">{receiving.origin}</PacketRow>
+                                <PacketRow label="Inbound">{receiving.inboundCarrier ? `${receiving.inboundCarrier} · ${receiving.inboundTracking ?? ''}` : 'Tracking not shared yet'}</PacketRow>
+                            </dl>
+                            <p className="mt-2 text-sm text-fg-muted">{receiving.instructions}</p>
+                            {awaitingFreight && (
+                                <div className="mt-4">
+                                    <ConfirmAction
+                                        label="Mark freight received"
+                                        confirmLabel="Yes, it arrived"
+                                        prompt={`Received ${p.quantity} parts for ${receiving.poNumber}? Inspection opens next.`}
+                                        onConfirm={() => run('receive', async () => setJob(await primeApi.receiveFreight(job.id)))}
+                                        loading={busy === 'receive'}
+                                        testId="receive-freight"
+                                    />
+                                </div>
+                            )}
+                        </section>
+                    )}
                     {job.status === 'OFFERED' && (
                         <section aria-labelledby="offer-heading" className="rounded-2xl bg-graphite-900 p-4 ring-1 ring-signal/40 sm:p-5" data-testid="offer-panel">
                             <h2 id="offer-heading" className="font-display text-lg font-bold">
@@ -331,7 +375,7 @@ export function JobDetail({ jobId }: { jobId: string }) {
                             }}
                         />
                     )}
-                    {job.status === 'ACCEPTED' && <Notice tone="info">Record the first milestone to start production. Inspection opens once production has started.</Notice>}
+                    {job.status === 'ACCEPTED' && !awaitingFreight && <Notice tone="info">Record the first milestone to start production. Inspection opens once production has started.</Notice>}
 
                     {job.inspectionResults.length > 0 && (
                         <section aria-labelledby="results-heading" className="rounded-2xl bg-graphite-900 p-4 ring-1 ring-graphite-700 sm:p-5">
@@ -384,6 +428,18 @@ export function JobDetail({ jobId }: { jobId: string }) {
                         <Notice tone="success" title="Delivered">
                             The buyer received the parts. Your payout of {money(job.payoutCents)} is recorded.
                         </Notice>
+                    )}
+                    {['ACCEPTED', 'IN_PRODUCTION', 'QA_PASSED', 'QA_FAILED', 'SHIPPED', 'DELIVERED'].includes(job.status) && (
+                        <OrderChat
+                            title="Buyer messages"
+                            intro="The buyer sees your replies on their order page. Ops can see this thread too."
+                            adapter={{
+                                key: ['shop-chat', job.id],
+                                load: () => experienceApi.shopChat(job.id),
+                                post: (body) => experienceApi.shopPostChat(job.id, body),
+                                upload: (file) => experienceApi.shopChatUpload(job.id, file),
+                            }}
+                        />
                     )}
                 </div>
             </div>

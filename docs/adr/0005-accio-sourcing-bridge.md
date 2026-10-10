@@ -35,3 +35,9 @@ Its documentation states there is **no inbound Agent API or webhook**.
 - Accio effectively works as a 24/7 procurement department, and customers never see Alibaba.
 - We depend on Accio Work's MCP client behavior and scheduling. Contract tests run against a recorded agent session, and the sourcing desk is the fallback.
 - Confidential CAD is exposed only through signed, expiring, access-logged URLs, scoped by the approval policy.
+
+## Implementation notes (R2, 2026-10-07)
+- **Location.** The MCP server runs inside the web app at `POST /api/mcp/sourcing`, not as a separate `services/accio-bridge`. It uses stateless Streamable HTTP with JSON responses from `@modelcontextprotocol/sdk`. One deployable is enough until the call volume says otherwise. The code is in `src/server/sourcing/`.
+- **Approval boundary.** The boundary is a TypeScript policy table (`src/server/sourcing/policy.ts`) with the same rules as above, and its unit tests prove every human-only action returns `APPROVAL_REQUIRED`. No tool exists for purchasing, paying, tooling, production, compliance, tolerance or material changes, or selecting the winning offer. The OPA sidecar arrives in R3, using the same rules table.
+- **Trust.** An offer is `SUPPLIER_CONFIRMED` only when the supplier confirmed it against the job's exact `design_version` and it has no exceptions. Offers outside the negotiation bounds, or for a different quantity or MOQ, are stored but flagged and stay `SUPPLIER_ESTIMATE`. A buyer can only choose a supplier-confirmed offer, and ops confirms the choice.
+- **Not in R2.** Turning a selected offer into a paid order with a supplier fulfilment leg is R3, together with the Delivery Promise and OR-Tools. Checkout still accepts BINDING quotes only.

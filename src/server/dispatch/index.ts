@@ -23,6 +23,7 @@ import { advanceOrder } from '../orders';
 import { buildInspectionChecks, sampleSizeFor, SERVICE_IDS } from './inspection-plan';
 import { findCandidates, type JobRequirements } from './match';
 import { packingInstructions, signPacket, type UnsignedPacket } from './packet';
+import { planPrintDispatch } from './print';
 
 export { buildInspectionChecks, sampleSizeFor, withinTolerance, MEASURED_CHECK_KINDS, SERVICE_IDS } from './inspection-plan';
 export { estimateShopCostCents, scoreCandidate, findCandidates, fitsBed, type Candidate, type JobRequirements } from './match';
@@ -39,7 +40,7 @@ export const OPEN_JOB_STATUSES: readonly JobStatus[] = ['OFFERED', 'ACCEPTED', '
 
 type OrderRow = typeof orders.$inferSelect;
 
-async function loadDispatchContext(tx: DbOrTx, order: OrderRow) {
+export async function loadDispatchContext(tx: DbOrTx, order: OrderRow) {
     const [quote] = await tx.select().from(quotes).where(eq(quotes.id, order.quoteId));
     if (!quote) throw new Error(`Order ${order.id} references missing quote ${order.quoteId}`);
     const [[part], [build], [thickness]] = await Promise.all([
@@ -176,8 +177,23 @@ export async function dispatchOrder(orderId: string, opts?: { excludeShopIds?: s
         }
 
         const excluded = [...new Set([...(opts?.excludeShopIds ?? []), ...jobs.filter((j) => j.status === 'DECLINED' || j.status === 'EXPIRED').map((j) => j.shopId)])];
-        const ctx = await loadDispatchContext(t, order);
-        const candidates = await findCandidates(t, requirementsFor(order, ctx), excluded);
+        // R6: a printed part (print quote) is matched to printers; everything after this is shared.
+        const planned = await planPrintDispatch(t, order, excluded);
+        if (planned && 'blocked' in planned) {
+            // Not dispatchable as paid (e.g. the part changed after payment): park it for ops.
+            await emitEvent(t, {
+                type: 'dispatch.unmatched',
+                payload: { orderId, excludedShopIds: excluded, reason: planned.blocked, detail: planned.message },
+                actor: SYSTEM_ACTOR,
+                correlationId: order.correlationId,
+                buildId: order.buildId,
+                orderId,
+            });
+            return { kind: 'none', orderNumber: order.orderNumber, excluded };
+        }
+        const printPlan = planned;
+        const ctx = printPlan ?? (await loadDispatchContext(t, order));
+        const candidates = printPlan ? printPlan.candidates : await findCandidates(t, requirementsFor(order, ctx as DispatchContext), excluded);
         const best = candidates[0];
         if (!best) {
             await emitEvent(t, {
@@ -194,7 +210,7 @@ export async function dispatchOrder(orderId: string, opts?: { excludeShopIds?: s
         const now = new Date();
         const offerExpiresAt = new Date(now.getTime() + best.shop.acceptWindowMinutes * 60_000);
         const jobId = newId('job');
-        const { packet, checks, sampleSize } = buildPacket(jobId, order, ctx, now);
+        const { packet, checks, sampleSize } = printPlan ? printPlan.buildPacket(jobId, order, now) : buildPacket(jobId, order, ctx as DispatchContext, now);
         const signed = signPacket(packet);
 
         await t.insert(manufacturingJobs).values({

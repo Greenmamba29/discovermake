@@ -19,8 +19,8 @@ const STARTERS = [
 const fmt = new Intl.NumberFormat('en-US');
 
 /** "What do you want to make?" box -> POST /api/make-ai/intake -> CreationIntent cards. */
-export function MakeAiIntake() {
-    const [text, setText] = useState('');
+export function MakeAiIntake({ initialText = '' }: { initialText?: string }) {
+    const [text, setText] = useState(initialText);
     const [fieldError, setFieldError] = useState<string | null>(null);
     const [serverError, setServerError] = useState<string | null>(null);
     const [pending, setPending] = useState(false);
@@ -130,7 +130,7 @@ export function MakeAiIntake() {
                     <h2 id="make-ai-result" ref={resultHeading} tabIndex={-1} className="mb-4 font-display text-xl font-bold focus:outline-none">
                         Make AI plan
                     </h2>
-                    <CreationIntentView key={result.intentId} intent={result.intent} model={result.model} />
+                    <CreationIntentView key={result.intentId} intent={result.intent} model={result.model} intentId={result.intentId} />
                 </section>
             )}
         </div>

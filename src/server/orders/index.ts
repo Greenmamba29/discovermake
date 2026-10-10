@@ -35,7 +35,7 @@ export {
  * creates the order (PENDING_PAYMENT, HMAC'd access token) + a provider payment
  * session, and emits `order.created` in the same transaction.
  */
-export { createCheckout, priceQuoteForCheckout, guestBuyerActor, type CheckoutPricing } from './checkout';
+export { createCheckout, priceQuoteForCheckout, priceOrderForCheckout, guestBuyerActor, type CheckoutPricing, type CheckoutContext } from './checkout';
 
 /**
  * handlePaymentSucceeded: idempotent payment confirmation. Verifies amount/currency equal the order
@@ -62,6 +62,12 @@ export { getOrderForBuyer, buildOrderView, MILESTONE_LABELS } from './buyer-view
  * provider refund + advanceOrder REFUNDED + `order.refunded` + ledger reversal.
  */
 export { refundOrder } from './refund';
+
+/**
+ * Authorize now, capture later (R4 Build Slots): payment AUTHORIZED while the order stays
+ * PENDING_PAYMENT; capture runs the normal payment-succeeded path, release cancels the order.
+ */
+export { handlePaymentAuthorized, captureAuthorizedPayment, releaseOrderPayment, type PaymentAuthorizedInput } from './authorization';
 
 /** Webhook pipeline (webhook_events dedupe -> handlers). */
 export { processPaymentWebhook, type WebhookOutcome } from './webhooks';

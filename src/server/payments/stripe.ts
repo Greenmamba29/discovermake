@@ -10,10 +10,12 @@
  */
 import Stripe from 'stripe';
 import { env } from '../env';
-import type { CreatePaymentInput, CreatePaymentResult, PaymentProvider, PaymentWebhookEvent } from './types';
+import type { CancelAuthorizationInput, CaptureInput, CreatePaymentInput, CreatePaymentResult, PaymentProvider, PaymentWebhookEvent } from './types';
 
 /** Metadata key identifying DiscoverMake objects in a shared Stripe account. */
 export const STRIPE_ORDER_METADATA_KEY = 'dm_order_id';
+/** Metadata marking an authorize-only (manual capture) session, e.g. a Build Slot claim. */
+export const STRIPE_CAPTURE_METADATA_KEY = 'dm_capture';
 
 const MIN_SESSION_SECONDS = 30 * 60 + 60; // Stripe minimum is 30 min
 const MAX_SESSION_SECONDS = 24 * 60 * 60 - 60; // Stripe maximum is 24 h
@@ -59,10 +61,18 @@ export class StripePaymentProvider implements PaymentProvider {
 
     async createPayment(input: CreatePaymentInput): Promise<CreatePaymentResult> {
         const stripe = getStripeClient();
-        const metadata = { ...input.metadata, [STRIPE_ORDER_METADATA_KEY]: input.orderId, dm_order_number: input.orderNumber };
+        const manual = input.captureMethod === 'manual';
+        const metadata = {
+            ...input.metadata,
+            [STRIPE_ORDER_METADATA_KEY]: input.orderId,
+            dm_order_number: input.orderNumber,
+            ...(manual ? { [STRIPE_CAPTURE_METADATA_KEY]: 'manual' } : {}),
+        };
         const session = await stripe.checkout.sessions.create(
             {
                 mode: 'payment',
+                // Authorize-only holds need a card (delayed methods like ACH cannot be captured later).
+                ...(manual ? { payment_method_types: ['card'] as Stripe.Checkout.SessionCreateParams.PaymentMethodType[] } : {}),
                 client_reference_id: input.orderId,
                 customer_email: input.buyerEmail,
                 line_items: [
@@ -76,12 +86,12 @@ export class StripePaymentProvider implements PaymentProvider {
                     },
                 ],
                 metadata,
-                payment_intent_data: { metadata, description: input.description.slice(0, 1000) },
+                payment_intent_data: { metadata, description: input.description.slice(0, 1000), ...(manual ? { capture_method: 'manual' as const } : {}) },
                 success_url: input.successUrl,
                 cancel_url: input.cancelUrl,
                 expires_at: sessionExpiry(input.expiresAt),
             },
-            { idempotencyKey: `checkout:${input.orderId}` },
+            { idempotencyKey: input.idempotencyKey ?? `checkout:${input.orderId}` },
         );
         if (!session.url) throw new Error('Stripe did not return a Checkout URL');
         return { providerRef: session.id, redirectUrl: session.url };
@@ -116,6 +126,38 @@ export class StripePaymentProvider implements PaymentProvider {
         );
         return { refundRef: refund.id };
     }
+
+    /** Capture a manual-capture PaymentIntent (idempotency key `capture:<pi>`). */
+    async capture(input: CaptureInput): Promise<{ providerPaymentId: string }> {
+        const stripe = getStripeClient();
+        const pi = input.providerPaymentId ?? (await this.paymentIntentOf(input.providerRef));
+        if (!pi) throw new Error(`No PaymentIntent to capture for Checkout Session ${input.providerRef}`);
+        const intent = await stripe.paymentIntents.retrieve(pi);
+        if (intent.status === 'succeeded') return { providerPaymentId: pi };
+        await stripe.paymentIntents.capture(pi, { amount_to_capture: input.amountCents }, { idempotencyKey: `capture:${pi}` });
+        return { providerPaymentId: pi };
+    }
+
+    /** Release a hold (cancel the PaymentIntent) or expire a still-open Checkout Session. */
+    async cancelAuthorization(input: CancelAuthorizationInput): Promise<{ released: boolean }> {
+        const stripe = getStripeClient();
+        const pi = input.providerPaymentId ?? (await this.paymentIntentOf(input.providerRef));
+        if (pi) {
+            const intent = await stripe.paymentIntents.retrieve(pi);
+            if (intent.status === 'canceled') return { released: true };
+            if (intent.status === 'succeeded') return { released: false };
+            await stripe.paymentIntents.cancel(pi, { cancellation_reason: 'abandoned' }, { idempotencyKey: `cancel:${pi}` });
+            return { released: true };
+        }
+        const session = await stripe.checkout.sessions.retrieve(input.providerRef);
+        if (session.status === 'open') await stripe.checkout.sessions.expire(input.providerRef);
+        return { released: true };
+    }
+
+    private async paymentIntentOf(sessionId: string): Promise<string | null> {
+        const session = await getStripeClient().checkout.sessions.retrieve(sessionId);
+        return idOf(session.payment_intent);
+    }
 }
 
 /**
@@ -133,6 +175,17 @@ export function normalizeStripeEvent(event: Stripe.Event, appHost?: string): Pay
         case 'checkout.session.async_payment_succeeded': {
             const s = event.data.object;
             if (!s.metadata?.[STRIPE_ORDER_METADATA_KEY]) return { kind: 'ignored', eventId: event.id, type: event.type };
+            // Authorize-only session: a completed session with `unpaid` status means the card is held.
+            if (s.metadata?.[STRIPE_CAPTURE_METADATA_KEY] === 'manual' && event.type === 'checkout.session.completed' && s.status === 'complete' && s.payment_status === 'unpaid') {
+                return {
+                    kind: 'payment.authorized',
+                    eventId: event.id,
+                    providerRef: s.id,
+                    providerPaymentId: idOf(s.payment_intent),
+                    amountCents: s.amount_total ?? 0,
+                    currency: (s.currency ?? 'usd').toLowerCase(),
+                };
+            }
             // `unpaid` = delayed method (ACH) still processing: wait for async_payment_succeeded/failed.
             if (s.payment_status !== 'paid' && s.payment_status !== 'no_payment_required') {
                 return { kind: 'ignored', eventId: event.id, type: `${event.type}:${s.payment_status}` };
@@ -171,6 +224,15 @@ export function normalizeStripeEvent(event: Stripe.Event, appHost?: string): Pay
                 amountCents: pi.amount_received || pi.amount,
                 currency: pi.currency.toLowerCase(),
             };
+        }
+        case 'payment_intent.amount_capturable_updated': {
+            // Backup path for authorize-only holds (Checkout also sends checkout.session.completed).
+            const pi = event.data.object;
+            const orderId = pi.metadata?.[STRIPE_ORDER_METADATA_KEY];
+            if (!orderId || pi.metadata?.[STRIPE_CAPTURE_METADATA_KEY] !== 'manual' || pi.status !== 'requires_capture') {
+                return { kind: 'ignored', eventId: event.id, type: event.type };
+            }
+            return { kind: 'payment_intent.authorized', eventId: event.id, orderId, providerPaymentId: pi.id, amountCents: pi.amount_capturable, currency: pi.currency.toLowerCase() };
         }
         case 'payment_intent.payment_failed': {
             // Inside Checkout a declined card is retried on the same page, so a single

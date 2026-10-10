@@ -4,7 +4,8 @@ import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { ChevronRight, Clock, Inbox, RotateCcw } from 'lucide-react';
+import { ChevronRight, Clock, Inbox, Layers, MessageCircle, PackageOpen, RotateCcw, Zap } from 'lucide-react';
+import { primeApi } from '@/components/prime/api';
 import type { JobStatus, ShopJobSummary } from '@/contracts';
 import { StatusPill } from '@/components/ui/status-pill';
 import { EmptyState, ErrorState } from '@/components/ui/state';
@@ -30,7 +31,7 @@ const NEXT_ACTION: Record<ShopJobSummary['nextAction'], string> = {
     NONE: '',
 };
 
-function JobRow({ job }: { job: ShopJobSummary }) {
+function JobRow({ job, priority = false, unread = 0 }: { job: ShopJobSummary; priority?: boolean; unread?: number }) {
     const countdown = useCountdown(job.status === 'OFFERED' ? job.offerExpiresAt : null);
     return (
         <li>
@@ -39,6 +40,26 @@ function JobRow({ job }: { job: ShopJobSummary }) {
                     <div className="flex flex-wrap items-center gap-2">
                         <span className="font-mono text-sm font-semibold text-fg">{job.orderNumber}</span>
                         <StatusPill status={JOB_UNIVERSAL[job.status]} />
+                        {priority && (
+                            <span className="inline-flex items-center gap-1 rounded-full bg-signal/15 px-2 py-0.5 text-[11px] font-semibold text-signal" data-testid={`job-priority-${job.id}`}>
+                                <Zap className="h-3 w-3" aria-hidden /> Prime priority
+                            </span>
+                        )}
+                        {unread > 0 && (
+                            <span className="inline-flex items-center gap-1 rounded-full bg-graphite-700 px-2 py-0.5 text-[11px] font-semibold text-fg" data-testid={`job-unread-${job.id}`}>
+                                <MessageCircle className="h-3 w-3" aria-hidden /> {unread} new
+                            </span>
+                        )}
+                        {job.kind === 'RECEIVING' && (
+                            <span className="inline-flex items-center gap-1 rounded-full bg-graphite-750 px-2 py-0.5 text-[11px] font-semibold text-fg" data-testid={`job-kind-${job.id}`}>
+                                <PackageOpen className="h-3 w-3" aria-hidden /> Receiving
+                            </span>
+                        )}
+                        {job.batchId && (
+                            <span className="inline-flex items-center gap-1 rounded-full bg-graphite-750 px-2 py-0.5 font-mono text-[11px] text-fg-muted" title="Shares a setup with other jobs on the same material" data-testid={`job-batch-${job.id}`}>
+                                <Layers className="h-3 w-3" aria-hidden /> {job.batchId.slice(0, 10)}
+                            </span>
+                        )}
                         {job.isRework && (
                             <span className="inline-flex items-center gap-1 rounded-full bg-amber/15 px-2 py-0.5 text-[11px] font-semibold text-amber">
                                 <RotateCcw className="h-3 w-3" aria-hidden /> Rework
@@ -52,7 +73,7 @@ function JobRow({ job }: { job: ShopJobSummary }) {
                         {job.materialName} · {job.thicknessLabel}
                         {job.finishName ? ` · ${job.finishName}` : ''} · ship by {shortDate(job.shipBy)}
                     </p>
-                    <p className="mt-1 text-xs font-medium text-signal">{NEXT_ACTION[job.nextAction] || JOB_STATUS_TEXT[job.status]}</p>
+                    <p className="mt-1 text-xs font-medium text-signal">{job.kind === 'RECEIVING' && job.status === 'ACCEPTED' ? 'Waiting for inbound freight · mark it received' : NEXT_ACTION[job.nextAction] || JOB_STATUS_TEXT[job.status]}</p>
                 </div>
                 <div className="shrink-0 text-right">
                     <p className="font-mono text-sm font-semibold tabular text-fg">{money(job.payoutCents)}</p>
@@ -73,6 +94,9 @@ export function JobInbox() {
     const router = useRouter();
     const [tab, setTab] = useState<(typeof TABS)[number]['key']>('offered');
     const { data, error, isLoading, refetch, isFetching } = useQuery({ queryKey: ['shop-jobs'], queryFn: () => api.shopJobs(), refetchInterval: 10_000 });
+    // R3: Prime priority + unread buyer messages per order (best effort; the list works without it).
+    const flags = useQuery({ queryKey: ['shop-flags'], queryFn: () => primeApi.shopFlags(), refetchInterval: 10_000, retry: false });
+    const flagOf = (orderId: string) => flags.data?.orders[orderId] ?? { priority: false, unread: 0 };
     const unauthorized = error instanceof ApiClientError && error.status === 401;
     useEffect(() => {
         if (unauthorized) router.replace('/shop');
@@ -90,7 +114,9 @@ export function JobInbox() {
     if (error || !data) return <ErrorState title="Could not load jobs" message={errorMessage(error)} action={<Button onClick={() => refetch()}>Try again</Button>} />;
 
     const current = TABS.find((t) => t.key === tab)!;
-    const jobs = data.jobs.filter((j) => current.statuses.includes(j.status)).sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+    const jobs = data.jobs
+        .filter((j) => current.statuses.includes(j.status))
+        .sort((a, b) => Number(flagOf(b.orderId).priority) - Number(flagOf(a.orderId).priority) || b.createdAt.localeCompare(a.createdAt));
 
     return (
         <div className="mx-auto w-full max-w-4xl px-4 py-8 sm:px-6">
@@ -132,7 +158,7 @@ export function JobInbox() {
                 ) : (
                     <ul className="divide-y divide-graphite-700 overflow-hidden rounded-2xl bg-graphite-900 ring-1 ring-graphite-700">
                         {jobs.map((j) => (
-                            <JobRow key={j.id} job={j} />
+                            <JobRow key={j.id} job={j} priority={flagOf(j.orderId).priority} unread={flagOf(j.orderId).unread} />
                         ))}
                     </ul>
                 )}

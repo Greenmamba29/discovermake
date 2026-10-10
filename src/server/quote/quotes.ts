@@ -18,7 +18,7 @@ import { buildDfmResult, dfmThresholds, fitsWithin, processFitPenalties, runMate
 import { computeLeadTime } from './leadtime';
 import { analyzePartImpl, buyerActor, setBuildStatus } from './parts';
 import { PRICING_VERSION, priceQuote, PricingError, QUOTE_LADDER_QUANTITIES, type PriceResult, type PricingInput, type PricingService } from './pricing';
-import { shippingOptions } from './shipping';
+import { quoteShippingOptions } from '../shipping/live-rates';
 
 /** Quotes are binding for 14 days. */
 export const QUOTE_VALIDITY_DAYS = 14;
@@ -81,6 +81,7 @@ export async function createQuoteImpl(input: CreateQuoteRequest, now: Date = new
     const parsed = QuoteConfig.safeParse(input);
     if (!parsed.success) throw validation('Quote configuration is invalid', parsed.error.flatten());
     const config = parsed.data;
+    if (config.process === 'print') throw validation('Printed parts are quoted by the print engine (Reconstruct), not POST /api/quotes.');
     const db = getDb();
 
     let [part] = await db.select().from(parts).where(eq(parts.id, config.partId)).limit(1);
@@ -288,14 +289,18 @@ export async function createQuoteImpl(input: CreateQuoteRequest, now: Date = new
         savingsPct: unitAtOne > 0 ? Math.max(0, Math.min(100, Math.round(((unitAtOne - p.unitPriceCents) / unitAtOne) * 100))) : 0,
     }));
 
-    const shipping = shippingOptions({
-        shipDate: chosen.shipDate,
-        unitMassG: chosen.price.unitMassG,
-        quantity: config.quantity,
-        bboxWidthMm: features.bboxWidthMm,
-        bboxHeightMm: features.bboxHeightMm,
-        thicknessMm: thickness.thicknessMm,
-    });
+    // R3: live EasyPost rates when configured (15 min cache), else the versioned rate table.
+    const shipping = await quoteShippingOptions(
+        {
+            shipDate: chosen.shipDate,
+            unitMassG: chosen.price.unitMassG,
+            quantity: config.quantity,
+            bboxWidthMm: features.bboxWidthMm,
+            bboxHeightMm: features.bboxHeightMm,
+            thicknessMm: thickness.thicknessMm,
+        },
+        { fromZip: chosen.shop.address?.postalCode },
+    );
 
     const summary = {
         materialName: material.name,
@@ -378,11 +383,13 @@ export async function createQuoteImpl(input: CreateQuoteRequest, now: Date = new
         return inserted;
     });
 
-    return toQuoteView(row, {
+    const view = toQuoteView(row, {
         part: { designVersion: partRow.designVersion, rulesetVersion: partRow.rulesetVersion },
         route: routeOf(finalChoice.shop, process.name, routed ? finalChoice.laserCap?.machineLabel ?? null : null),
         now,
     });
+    const { quoteViewExtras } = await import('../prime/quote-view');
+    return { ...view, ...(await quoteViewExtras(row, now)) };
 }
 
 function routeOf(shop: ShopRow, processName: string, machineLabel: string | null): QuoteRoute {
@@ -469,7 +476,15 @@ export async function getQuoteImpl(id: string, now: Date = new Date()): Promise<
             .limit(1);
         machineLabel = cap?.machineLabel ?? null;
     }
-    return toQuoteView(r.quote, { part: r.part, route: routeOf(r.shop, thk?.processName ?? r.quote.summary.processName, machineLabel), now });
+    if (r.quote.config.process === 'print' && r.quote.status !== 'REVIEW') {
+        // R6: printed parts route to a printer, not a thickness-option machine.
+        const { printMachineLabel } = await import('./printing/quotes');
+        machineLabel = await printMachineLabel(r.quote.id);
+    }
+    const view = toQuoteView(r.quote, { part: r.part, route: routeOf(r.shop, thk?.processName ?? r.quote.summary.processName, machineLabel), now });
+    // R3: route kind, supplier route summary and the Delivery Promise (dynamic import: no cycle with prime).
+    const { quoteViewExtras } = await import('../prime/quote-view');
+    return { ...view, ...(await quoteViewExtras(r.quote, now)) };
 }
 
 /** READY -> ORDERED inside the caller's (payment) transaction. Idempotent. */

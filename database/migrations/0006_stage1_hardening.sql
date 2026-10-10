@@ -1,0 +1,14 @@
+CREATE TABLE "rate_limit_buckets" (
+	"bucket" text NOT NULL,
+	"key_hash" text NOT NULL,
+	"count" integer DEFAULT 0 NOT NULL,
+	"tokens" double precision DEFAULT 0 NOT NULL,
+	"allowed" boolean DEFAULT true NOT NULL,
+	"updated_at" timestamp with time zone DEFAULT now() NOT NULL,
+	"expires_at" timestamp with time zone NOT NULL
+);
+--> statement-breakpoint
+ALTER TABLE "sourcing_clients" ADD COLUMN "allowed_tools" text[];--> statement-breakpoint
+ALTER TABLE "sourcing_clients" ADD COLUMN "allowed_cidrs" text[];--> statement-breakpoint
+CREATE UNIQUE INDEX "rate_limit_buckets_key_uq" ON "rate_limit_buckets" USING btree ("bucket","key_hash");--> statement-breakpoint
+CREATE INDEX "rate_limit_buckets_expires_idx" ON "rate_limit_buckets" USING btree ("expires_at");

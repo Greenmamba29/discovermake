@@ -18,8 +18,16 @@ export type NotifyPayloads = {
     'order.in_production': { to: string; orderId: string; orderNumber: string; shopName: string };
     'order.shipped': { to: string; orderId: string; orderNumber: string; carrier: string; trackingNumber: string; trackingUrl: string | null };
     'order.delivered': { to: string; orderId: string; orderNumber: string; passportUrl: string | null };
+    /** Buyer (R4 Build Slots): the drop did not reach its goal or the hold expired; the authorization was released. */
+    'build_slot.released': { to: string; orderId: string; orderNumber: string; dropTitle: string; reason: string };
     /** Ops: something needs a human (amount mismatch, no shop accepted, QA failed twice, carrier exception). */
     'ops.alert': { subject: string; message: string; orderId?: string };
+    /** R2 accounts: 6-digit sign-in code (a credential: never logged in full). */
+    'auth.sign_in_code': { to: string; code: string; challengeId: string; expiresMinutes: number };
+    /** R5 auctions: someone placed a higher bid; `showUrl` brings the bidder back to the auction. */
+    'auction.outbid': { to: string; auctionTitle: string; amountCents: number; currency: string; nextMinimumCents: number; showUrl: string };
+    /** R5 auctions: the bidder won; their authorized hold was captured. */
+    'auction.won': { to: string; auctionTitle: string; amountCents: number; currency: string; orderNumber: string };
 };
 
 export type NotifyKind = keyof NotifyPayloads;
@@ -29,7 +37,7 @@ export type NotifyResult = { delivered: boolean; adapter: 'console' | 'resend'; 
 export const RESEND_API_URL = 'https://api.resend.com/emails';
 
 /** Kinds whose body contains a bearer credential (the order link). Never logged in full. */
-const SENSITIVE_KINDS: ReadonlySet<NotifyKind> = new Set(['order.confirmed']);
+const SENSITIVE_KINDS: ReadonlySet<NotifyKind> = new Set(['order.confirmed', 'auth.sign_in_code']);
 
 function recipientFor<K extends NotifyKind>(kind: K, payload: NotifyPayloads[K]): string | null {
     if (kind === 'ops.alert') return env().OPS_EMAIL ?? null;
@@ -38,7 +46,7 @@ function recipientFor<K extends NotifyKind>(kind: K, payload: NotifyPayloads[K])
 
 function redact(text: string): string {
     // Order-link tokens look like `t=dmo_<base64url>`; never print them to logs.
-    return text.replace(/([?&]t=)[^&\s"]+/g, '$1[redacted]');
+    return text.replace(/([?&]t=)[^&\s"]+/g, '$1[redacted]').replace(/\b\d{6}\b/g, '[code]');
 }
 
 /** Send a notification of `kind`. Resolves (never rejects). */
@@ -87,6 +95,7 @@ export async function notify<K extends NotifyKind>(kind: K, payload: NotifyPaylo
 function idempotencyKeyFor<K extends NotifyKind>(kind: K, payload: NotifyPayloads[K]): string {
     const p = payload as Record<string, unknown>;
     if (kind === 'shop.job_offered') return String(p.jobId);
+    if (kind === 'auth.sign_in_code') return String(p.challengeId);
     if (kind === 'ops.alert') return `${String(p.orderId ?? 'none')}:${String(p.subject)}:${Math.floor(Date.now() / 60_000)}`;
     return String(p.orderId ?? randomUUID());
 }

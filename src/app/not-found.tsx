@@ -2,6 +2,7 @@ import { ButtonLink } from '@/components/ui/button'
 import { ErrorState } from '@/components/ui/state'
 import { SiteHeader } from '@/components/site/site-header'
 import { SiteFooter } from '@/components/site/site-footer'
+import { BottomNav } from '@/components/site/bottom-nav'
 
 export default function NotFound() {
     return (
@@ -22,6 +23,7 @@ export default function NotFound() {
                 />
             </main>
             <SiteFooter />
+            <BottomNav />
         </>
     )
 }

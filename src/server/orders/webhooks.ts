@@ -11,6 +11,7 @@ import type { PaymentProviderName } from '../../contracts/enums';
 import { getDb } from '../db';
 import { payments, webhookEvents } from '../db/schema';
 import type { PaymentWebhookEvent } from '../payments/types';
+import { handlePaymentAuthorized } from './authorization';
 import { handlePaymentFailed, handlePaymentSucceeded, handleProviderRefund, PaymentNotFoundError } from './payment-events';
 
 export type WebhookOutcome = {
@@ -56,6 +57,10 @@ export async function processPaymentWebhook(provider: PaymentProviderName, event
 }
 
 async function dispatchEvent(provider: PaymentProviderName, event: PaymentWebhookEvent): Promise<string | null> {
+    // R3: one payment for several orders (cart checkout / B2B invoice) fans out per order.
+    const { dispatchGroupPaymentEvent } = await import('../cart/payment-group');
+    const grouped = await dispatchGroupPaymentEvent(provider, event);
+    if (grouped !== undefined) return grouped;
     switch (event.kind) {
         case 'payment.succeeded': {
             const r = await handlePaymentSucceeded({
@@ -97,6 +102,35 @@ async function dispatchEvent(provider: PaymentProviderName, event: PaymentWebhoo
                 amountRefundedCents: event.amountRefundedCents,
                 fullyRefunded: event.fullyRefunded,
                 refundRef: event.refundRef,
+            });
+            return r.orderId;
+        }
+        case 'payment.authorized': {
+            const r = await handlePaymentAuthorized({
+                provider,
+                providerRef: event.providerRef,
+                providerPaymentId: event.providerPaymentId,
+                amountCents: event.amountCents,
+                currency: event.currency,
+                eventId: event.eventId,
+            });
+            return r.orderId;
+        }
+        case 'payment_intent.authorized': {
+            const [payment] = await getDb()
+                .select({ providerRef: payments.providerRef })
+                .from(payments)
+                .where(and(eq(payments.provider, provider), eq(payments.orderId, event.orderId)))
+                .orderBy(desc(payments.createdAt))
+                .limit(1);
+            if (!payment) throw new PaymentNotFoundError(provider, `order:${event.orderId}`);
+            const r = await handlePaymentAuthorized({
+                provider,
+                providerRef: payment.providerRef,
+                providerPaymentId: event.providerPaymentId,
+                amountCents: event.amountCents,
+                currency: event.currency,
+                eventId: event.eventId,
             });
             return r.orderId;
         }

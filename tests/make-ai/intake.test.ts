@@ -7,11 +7,12 @@ import { eq } from 'drizzle-orm';
 import { MockLanguageModelV4 } from 'ai/test';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { CreationIntent, MAKE_AI_MAX_INPUT_CHARS, MakeAiIntakeResponse } from '@/contracts/make-ai';
-import { domainEvents } from '@/server/db/schema';
+import { domainEvents, makeIntents } from '@/server/db/schema';
 import { resetEnvCache } from '@/server/env';
 import { MAX_JSON_BODY_BYTES } from '@/server/http';
 import { clientIp, createIntent, FixedWindowRateLimiter, MakeAiRateLimiter, makeAiRateLimiter, MAKE_AI_SYSTEM_PROMPT, normalizeIntent } from '@/server/make-ai';
 import { POST as intake } from '@/app/api/make-ai/intake/route';
+import { RateLimiter } from '@/server/rate-limit';
 import { useTestDb } from '../support/db';
 
 type GenerateResult = Awaited<ReturnType<MockLanguageModelV4['doGenerate']>>;
@@ -162,6 +163,24 @@ describe('Make AI intake', () => {
         expect(stored).not.toContain('jane@example.com');
         expect(stored).not.toContain('Raspberry Pi with a solar battery');
         expect(stored).not.toContain('203.0.113.');
+
+        // The intent is persisted under the same id (for "Continue to Build"), again without the raw prompt.
+        const [row] = await ctx.db.select().from(makeIntents).where(eq(makeIntents.id, body.intentId));
+        expect(row).toMatchObject({ model: 'gemini-test-flash', promptChars: text.length, buildId: null });
+        expect(row!.promptSha256).toBe((event!.payload as { promptSha256: string }).promptSha256);
+        expect(row!.intent).toEqual(body.intent);
+        const persisted = JSON.stringify(row);
+        expect(persisted).not.toContain('jane@example.com');
+        expect(persisted).not.toContain('203.0.113.');
+    });
+
+    it('persists refused (regulated) intents too, with their refusal note', async () => {
+        mock.text = JSON.stringify({ ...RPI_INTENT, risk_class: 'regulated', refusal_note: 'DiscoverMake does not make weapon parts.' });
+        const res = await intake(post({ text: 'A suppressor baffle' }), noParams);
+        expect(res.status).toBe(200);
+        const body = MakeAiIntakeResponse.parse(await res.json());
+        const [row] = await ctx.db.select().from(makeIntents).where(eq(makeIntents.id, body.intentId));
+        expect(row!.intent).toMatchObject({ risk_class: 'regulated', refusal_note: 'DiscoverMake does not make weapon parts.', requirements: [] });
     });
 
     it('rejects model output that does not match the CreationIntent schema (502)', async () => {
@@ -180,6 +199,7 @@ describe('Make AI intake', () => {
         }
         const after = (await ctx.db.select().from(domainEvents).where(eq(domainEvents.eventType, 'make_ai.intent_created'))).length;
         expect(after).toBe(before); // no event for a rejected answer
+        expect((await ctx.db.select().from(makeIntents)).length).toBe(before); // and no persisted intent
     });
 
     it('maps provider failures to 502 without leaking the provider error', async () => {
@@ -219,19 +239,38 @@ describe('Make AI intake', () => {
 });
 
 describe('MakeAiRateLimiter', () => {
-    it('caps the whole instance even when every request comes from a new IP', () => {
-        const rl = new MakeAiRateLimiter(new FixedWindowRateLimiter(10, 60_000), new FixedWindowRateLimiter(3, 60_000));
-        expect([1, 2, 3].map((i) => rl.hit(`203.0.113.${i}`, 0).allowed)).toEqual([true, true, true]);
-        expect(rl.hit('203.0.113.4', 0)).toEqual({ allowed: false, retryAfterSeconds: 60 });
-        expect(rl.hit('203.0.113.4', 60_000).allowed).toBe(true);
+    it('caps the whole fleet even when every request comes from a new IP', async () => {
+        const rl = new MakeAiRateLimiter(new RateLimiter('t_ip', { kind: 'fixed_window', limit: 10, windowMs: 60_000 }, 'memory'), new RateLimiter('t_all', { kind: 'fixed_window', limit: 3, windowMs: 60_000 }, 'memory'));
+        for (const i of [1, 2, 3]) expect((await rl.hit(`203.0.113.${i}`, 0)).allowed).toBe(true);
+        expect(await rl.hit('203.0.113.4', 0)).toEqual({ allowed: false, retryAfterSeconds: 60 });
+        expect((await rl.hit('203.0.113.4', 60_000)).allowed).toBe(true);
     });
 
-    it('reads the client IP from platform headers, else the rightmost x-forwarded-for entry', () => {
+    it('reads the client IP only from the header TRUSTED_PROXY names, else the rightmost x-forwarded-for hop', () => {
         const r = (h: Record<string, string>) => new Request('http://localhost/x', { headers: h });
-        expect(clientIp(r({ 'x-forwarded-for': '1.1.1.1, 198.51.100.9' }))).toBe('198.51.100.9');
-        expect(clientIp(r({ 'x-real-ip': '198.51.100.10', 'x-forwarded-for': '1.1.1.1' }))).toBe('198.51.100.10');
-        expect(clientIp(r({ 'x-vercel-forwarded-for': '198.51.100.11', 'x-real-ip': '1.1.1.1' }))).toBe('198.51.100.11');
-        expect(clientIp(r({}))).toBe('unknown');
+        const withMode = (mode: string | undefined, fn: () => void) => {
+            const prev = process.env.TRUSTED_PROXY;
+            if (mode === undefined) delete process.env.TRUSTED_PROXY;
+            else process.env.TRUSTED_PROXY = mode;
+            resetEnvCache();
+            try {
+                fn();
+            } finally {
+                if (prev === undefined) delete process.env.TRUSTED_PROXY;
+                else process.env.TRUSTED_PROXY = prev;
+                resetEnvCache();
+            }
+        };
+        // Default off Vercel: xff. Platform headers a client can send are ignored.
+        withMode(undefined, () => {
+            expect(clientIp(r({ 'x-forwarded-for': '1.1.1.1, 198.51.100.9' }))).toBe('198.51.100.9');
+            expect(clientIp(r({ 'x-real-ip': '198.51.100.10', 'x-forwarded-for': '1.1.1.1' }))).toBe('1.1.1.1');
+            expect(clientIp(r({ 'x-vercel-forwarded-for': '198.51.100.11' }))).toBe('unknown');
+            expect(clientIp(r({}))).toBe('unknown');
+        });
+        withMode('vercel', () => expect(clientIp(r({ 'x-vercel-forwarded-for': '198.51.100.11', 'x-real-ip': '1.1.1.1' }))).toBe('198.51.100.11'));
+        withMode('real-ip', () => expect(clientIp(r({ 'x-real-ip': '198.51.100.10', 'x-vercel-forwarded-for': '1.1.1.1' }))).toBe('198.51.100.10'));
+        withMode('none', () => expect(clientIp(r({ 'x-forwarded-for': '198.51.100.9' }))).toBe('unknown'));
     });
 });
 

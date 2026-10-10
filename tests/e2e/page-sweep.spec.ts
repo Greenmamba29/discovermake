@@ -1,0 +1,1011 @@
+/**
+ * Mobbin page sweep: every screen in the app, with real data on it, at phone (390×844)
+ * and desktop (1280×800). For each screen:
+ *   - renders without a Next error, console errors or page errors;
+ *   - one h1 and a main landmark;
+ *   - no horizontal scroll at phone width (workflow 10: 16px gutters, mobile-first);
+ *   - axe (WCAG 2.1 A/AA): no serious or critical violations;
+ *   - the Mobbin pattern it was designed from (workflows/10-frontend-mobbin-design.md)
+ *     is actually present.
+ * Screenshots and aria snapshots go to test-results/page-sweep/ for design review.
+ */
+import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import path from 'node:path';
+import AxeBuilder from '@axe-core/playwright';
+import { expect, test, type Browser, type Page } from '@playwright/test';
+import postgres from 'postgres';
+import { randomUUID } from 'node:crypto';
+import { E2E_ADMIN_TOKEN, E2E_DATABASE_URL } from '../../playwright.config';
+import { createBuildWithCad } from './support/cad-build';
+import { createReconstructState } from './support/reconstruct';
+import { adminLogin, fulfil, payOrder, quotePart, shopLogin } from './support/journeys';
+import { buildLiveSweepState, type LiveSweepState } from './support/live';
+import { buildMediaSweepState, type MediaSweepState } from './support/media';
+import { primeSupplierState, type PrimeUrls } from './support/prime';
+
+const OUT = path.join(process.cwd(), 'test-results', 'page-sweep');
+/** Written by global-setup once per run (the e2e database is recreated per run). */
+const RUN_ID_FILE = path.join(process.cwd(), 'test-results', '.e2e-run-id');
+const VIEWPORTS = { phone: { width: 390, height: 844 }, desktop: { width: 1280, height: 800 } } as const;
+type Viewport = keyof typeof VIEWPORTS;
+
+type Urls = {
+    partUrl: string;
+    checkoutUrl: string;
+    routeUrl: string;
+    orderUrl: string;
+    productionUrl: string;
+    passportUrl: string;
+    jobUrl: string;
+    workspaceUrl: string;
+    sourcingJobUrl: string;
+    /** A workspace whose build has generated CAD (Object View, Files, Ask Make AI). */
+    cadWorkspaceUrl: string;
+    /** R4 Live: a LIVE show with a featured product and an open drop, an ENDED replay, its control room. */
+    live: LiveSweepState;
+    /** R5 Media: published build, channel, clip, a Make This order (Watch My Build), a live auction. */
+    media: MediaSweepState;
+    /** R3 experience: two binding quotes (different parts) for the build cart screen. */
+    cartQuoteIds: string[];
+    /** R6 Reconstruct: a knob build with a measured photo, and one with confirmed readings, CAD and a BINDING print quote. */
+    reconstructMeasuredBuildId: string;
+    reconstructReviewBuildId: string;
+} & PrimeUrls;
+
+type Screen = {
+    name: string;
+    mobbin: string;
+    url: (u: Urls) => string;
+    /** Log in or otherwise prepare the page before navigating. */
+    before?: (page: Page, urls: Urls) => Promise<void>;
+    /** The Mobbin pattern this screen was designed from. */
+    pattern: (page: Page) => Promise<void>;
+    /** Failed requests that are expected on this screen, matched against "<status> <path>". */
+    allowHttp?: RegExp[];
+    /** App surface with the mobile bottom nav (Discover · Make · Live · Builds · Me). Focused flows and consoles have none. */
+    bottomNav?: boolean;
+};
+
+/** No Stripe in e2e: payout status answers 503 by design and the card falls back to manual settlement. */
+const NO_STRIPE = /^503 \/api\/shop\/payouts\/status$/;
+/** Onboarding progress as sessionStorage holds it, so each step can be opened directly. */
+function onboardingAt(step: number) {
+    return async (page: Page) => {
+        await page.addInitScript((s) => {
+            window.sessionStorage.setItem('dm_onboarding_v1', JSON.stringify({ step: s, intent: s > 0 ? 'make' : null, interests: s > 1 ? ['brackets-mounts', 'enclosures', 'robotics', 'desk-setup', 'bikes'] : [], firstBuild: null }));
+        }, step);
+    };
+}
+
+const SCREENS: Screen[] = [
+    {
+        name: 'home',
+        mobbin: 'Uber · Booking a ride: one "What do you want to make?" bar, then Make-anything tiles',
+        url: () => '/',
+        bottomNav: true,
+        pattern: async (page) => {
+            await expect(page.getByRole('heading', { level: 1, name: 'What do you want to make?' })).toBeVisible();
+            // One input bar: typed text for Make AI, attach/drop a DXF for an instant quote.
+            await expect(page.getByTestId('intake-bar').getByRole('textbox', { name: 'Describe what you want to make' })).toBeVisible();
+            await expect(page.getByTestId('upload-input')).toBeAttached();
+            // Suggestions grid: Laser cut · Bend · CNC · 3D print · Wood · Reconstruct, every tile a real destination.
+            const tiles = page.getByTestId('make-tiles').getByRole('listitem');
+            await expect(tiles).toHaveCount(6);
+            await expect(page.getByTestId('make-tiles').getByRole('link')).toHaveCount(6);
+            for (const title of ['Laser cut', 'Bend', 'CNC', '3D print', 'Wood', 'Reconstruct']) await expect(page.getByTestId('make-tiles').getByText(title, { exact: true })).toBeVisible();
+            // New visitors get an invitation to onboarding, not a redirect.
+            await expect(page.getByTestId('tour-start')).toBeVisible();
+        },
+    },
+    {
+        name: 'onboarding-intent',
+        mobbin: 'Blinkist · Onboarding: "Step 1 of 4" progress bar and a goals question',
+        url: () => '/onboarding',
+        pattern: async (page) => {
+            await expect(page.getByRole('heading', { level: 1, name: 'What brings you here?' })).toBeVisible();
+            await expect(page.getByTestId('onboarding-progress')).toHaveText('Step 1 of 4');
+            await expect(page.getByRole('progressbar', { name: 'Onboarding progress' })).toBeVisible();
+            await expect(page.getByRole('radio')).toHaveCount(4);
+            await expect(page.getByTestId('onboarding-back')).toBeVisible();
+            await expect(page.getByTestId('onboarding-skip')).toBeVisible();
+        },
+    },
+    {
+        name: 'onboarding-pick5',
+        mobbin: 'Pinterest · Onboarding: "Pick 5 to customize your home feed" grid with checkmarks',
+        url: () => '/onboarding',
+        before: onboardingAt(1),
+        pattern: async (page) => {
+            await expect(page.getByRole('heading', { level: 1, name: 'Pick 5 things you love to make' })).toBeVisible();
+            await expect(page.getByRole('checkbox')).toHaveCount(16);
+            await expect(page.getByTestId('interest-count')).toHaveText('0 of 5 picked');
+            await expect(page.getByTestId('onboarding-continue')).toBeDisabled();
+        },
+    },
+    {
+        name: 'onboarding-first-build',
+        mobbin: 'Workflow 10 onboarding step 3: the sample part gets a real price and trust level in under 5 s',
+        url: () => '/onboarding',
+        before: onboardingAt(2),
+        pattern: async (page) => {
+            await expect(page.getByRole('heading', { level: 1, name: 'A real price in seconds' })).toBeVisible();
+            await expect(page.getByTestId('first-build-price')).toBeVisible({ timeout: 15_000 });
+            await expect(page.getByTestId('first-build').getByTestId('trust-chip')).toContainText('Binding quote');
+            await expect(page.getByText('Use my own file')).toBeVisible();
+        },
+    },
+    {
+        name: 'onboarding-save',
+        mobbin: 'Behance · Onboarding: deferred signup, account created only to save',
+        url: () => '/onboarding',
+        before: onboardingAt(3),
+        pattern: async (page) => {
+            await expect(page.getByRole('heading', { level: 1, name: 'Save your build' })).toBeVisible();
+            await expect(page.getByTestId('onboarding-passkey')).toHaveAttribute('href', '/signin?mode=create&next=/builds');
+            await expect(page.getByTestId('onboarding-not-now')).toHaveAttribute('href', '/');
+        },
+    },
+    {
+        name: 'discover',
+        mobbin: 'Pinterest home feed / Behance: For you · Live · New · Trending tabs and search over a masonry feed; starters below as "Start from a template"',
+        url: () => '/discover',
+        bottomNav: true,
+        pattern: async (page) => {
+            // Feed tabs (For you selected) over a masonry grid of published builds and clips, with search.
+            const tabs = page.getByRole('tablist', { name: 'Discover feeds' });
+            await expect(tabs.getByRole('tab')).toHaveText(['For you', 'Live', 'New', 'Trending']);
+            await expect(tabs.getByRole('tab', { name: 'For you' })).toHaveAttribute('aria-selected', 'true');
+            await expect(page.getByRole('search').getByRole('searchbox', { name: 'Search builds, channels and clips' })).toBeVisible();
+            await expect(page.getByTestId('feed-grid').locator('[data-testid="feed-build"], [data-testid="feed-clip"]').first()).toBeVisible({ timeout: 15_000 });
+            // Start from a template: the starter catalog with interest chips.
+            const templates = page.getByTestId('discover-templates');
+            await expect(templates.getByRole('heading', { level: 2, name: 'Start from a template' })).toBeVisible();
+            await expect(page.getByRole('button', { name: 'All', exact: true })).toHaveAttribute('aria-pressed', 'true');
+            await expect(page.getByTestId('interest-filters').getByRole('button')).toHaveCount(17);
+            expect(await page.getByTestId('discover-grid').getByRole('article').count()).toBeGreaterThanOrEqual(12);
+            await expect(page.getByTestId('discover-start-wall-bracket')).toBeVisible();
+            await expect(page.getByTestId('discover-start-drone-frame')).toHaveAttribute('href', /^\/make\/ai\?prompt=/);
+        },
+    },
+    {
+        name: 'build-page',
+        bottomNav: true,
+        mobbin: 'Behance project / Etsy listing: cover, creator, licence, binding price, Make This · Remix · Buy, remix tree',
+        url: (u) => u.media.buildUrl,
+        pattern: async (page) => {
+            await expect(page.getByRole('heading', { level: 1, name: 'Sweep walnut lamp plate' })).toBeVisible();
+            await expect(page.getByTestId('creator-link')).toHaveAttribute('href', /^\/c\//);
+            await expect(page.getByTestId('license-chip')).toContainText('Commercial remix · 10% royalty');
+            await expect(page.getByTestId('public-build-price')).toContainText('binding quote');
+            await expect(page.getByTestId('make-this')).toBeEnabled();
+            await expect(page.getByTestId('remix')).toBeEnabled();
+            await expect(page.getByTestId('buy')).toHaveAttribute('href', /\/checkout\/qte_/);
+            await expect(page.getByTestId('remix-tree').getByTestId('remix-node').first()).toBeVisible();
+            await expect(page.locator('meta[property="og:title"]')).toHaveAttribute('content', 'Sweep walnut lamp plate');
+        },
+    },
+    {
+        name: 'channel',
+        bottomNav: true,
+        mobbin: 'Whatnot seller profile: avatar header, Follow, followers, live and upcoming shows, builds grid, clips, replays',
+        url: (u) => u.media.channelUrl,
+        pattern: async (page) => {
+            const header = page.getByTestId('channel-header');
+            await expect(header.getByRole('heading', { level: 1 })).toBeVisible();
+            await expect(header.getByTestId('channel-follow')).toHaveText('Follow');
+            await expect(header.getByTestId('channel-followers')).toContainText('follower');
+            await expect(page.getByTestId('channel-show').filter({ hasText: 'Sweep one-of-one auction' })).toHaveAttribute('data-status', 'LIVE');
+            await expect(page.getByTestId('channel-builds').getByTestId('feed-build').first()).toBeVisible();
+            await expect(page.getByTestId('channel-clips').getByTestId('feed-clip').first()).toBeVisible();
+            await expect(page.getByTestId('channel-replays').getByTestId('channel-show').first()).toHaveAttribute('data-status', 'ENDED');
+        },
+    },
+    {
+        name: 'clip-player',
+        bottomNav: true,
+        mobbin: 'TikTok Shop video: vertical player playing the clip range, product pinned with Make Mine / Buy chips, link to the full replay',
+        url: (u) => u.media.clipUrl,
+        pattern: async (page) => {
+            await expect(page.getByRole('heading', { level: 1, name: 'Sweep lamp reveal' })).toBeVisible();
+            await expect(page.getByTestId('clip-video')).toBeAttached();
+            await expect(page.getByTestId('clip-make-mine')).toBeAttached();
+            await expect(page.getByTestId('clip-buy')).toHaveAttribute('href', /\/checkout\/qte_/);
+            await expect(page.getByTestId('clip-replay-link')).toHaveAttribute('href', /\/live\/shw_[^?]+\?t=\d+/);
+        },
+    },
+    {
+        name: 'make-upload',
+        bottomNav: true,
+        mobbin: 'Uber · "Where to?": single entry point for what you want to make',
+        url: () => '/make',
+        pattern: async (page) => {
+            await expect(page.getByTestId('upload-input')).toBeAttached();
+        },
+    },
+    {
+        name: 'make-ai',
+        bottomNav: true,
+        mobbin: 'Make intake: AI prompt composer',
+        url: () => '/make/ai',
+        pattern: async (page) => {
+            await expect(page.getByRole('textbox').first()).toBeVisible();
+        },
+    },
+    {
+        name: 'configure-quote',
+        mobbin: 'DoorDash · Adding to cart: required option groups, prices on rows, CTA counts missing choices',
+        url: (u) => u.partUrl,
+        pattern: async (page) => {
+            await expect(page.getByText('Required', { exact: true }).first()).toBeVisible();
+            // DoorDash: the sticky CTA counts the missing required choices.
+            await expect(page.getByTestId('checkout-cta')).toContainText(/required selection/i);
+        },
+    },
+    {
+        name: 'manufacturing-route',
+        bottomNav: true,
+        mobbin: 'Route: compare vendor cards with ratings and lead time',
+        url: (u) => u.routeUrl,
+        pattern: async (page) => {
+            await expect(page.getByText('Recommended').first()).toBeVisible();
+            await expect(page.getByTestId('route-trust-chip').or(page.getByTestId('trust-chip')).first()).toBeVisible();
+            // R3: routes compared side by side (cost, P90 date, quality, CO2) under Suppliers · Processes · Impact.
+            const compare = page.getByTestId('route-comparison');
+            await expect(compare.getByRole('tablist', { name: 'Route details' })).toBeVisible();
+            await expect(compare.getByRole('tab')).toHaveText(['Suppliers', 'Processes', 'Impact']);
+            await expect(compare.getByRole('tab', { name: 'Suppliers' })).toHaveAttribute('aria-selected', 'true');
+            await expect(compare.locator('[data-recommended]')).toHaveCount(1);
+        },
+    },
+    {
+        name: 'checkout',
+        mobbin: 'DoorDash · Placing an order: fees explained with ⓘ, shipping-method cards with dates',
+        url: (u) => u.checkoutUrl,
+        pattern: async (page) => {
+            await expect(page.getByTestId('shipping-option-STANDARD')).toBeVisible();
+            await expect(page.getByRole('button', { name: /^About / }).first()).toBeAttached();
+        },
+    },
+    {
+        name: 'supplier-checkout',
+        mobbin: 'DoorDash · Placing an order: one committed date, the deposit due today and the balance at shipment spelled out',
+        url: (u) => u.supplierCheckoutUrl,
+        pattern: async (page) => {
+            await expect(page.getByTestId('supplier-route-card')).toBeVisible();
+            await expect(page.getByTestId('checkout-deposit')).toBeVisible();
+            await expect(page.getByTestId('checkout-balance')).toBeVisible();
+            await expect(page.locator('[data-testid^="shipping-option-date-"]').first()).toHaveText(/^(Arrives|Ships by) /);
+        },
+    },
+    {
+        name: 'order-tracking',
+        bottomNav: true,
+        mobbin: 'Uber · ride in progress: one plain status sentence, ETA first, the shop visible',
+        url: (u) => u.orderUrl,
+        pattern: async (page) => {
+            await expect(page.getByTestId('order-status')).toBeVisible();
+            await expect(page.getByTestId('passport-card')).toBeVisible();
+        },
+    },
+    {
+        name: 'supplier-order-tracking',
+        bottomNav: true,
+        mobbin: 'Uber Eats · order progress: one sentence per step, the current step highlighted, the next payment as one action',
+        url: (u) => u.supplierOrderUrl,
+        pattern: async (page) => {
+            await expect(page.getByTestId('order-status')).toBeVisible();
+            const route = page.getByTestId('supplier-route');
+            await expect(route).toBeVisible();
+            await expect(route.getByRole('listitem')).toHaveCount(6);
+            await expect(page.getByTestId('supplier-step-SHIPPED_INBOUND')).toHaveAttribute('data-state', 'done');
+            await expect(page.getByTestId('supplier-step-RECEIVED_AT_PARTNER')).toHaveAttribute('data-state', 'current');
+            // The buyer never sees who the supplier is.
+            await expect(page.getByText('Sweep Anodizing Works')).toHaveCount(0);
+        },
+    },
+    {
+        name: 'production-run',
+        bottomNav: true,
+        mobbin: 'DoorDash · order status sheet: icon progress stages',
+        url: (u) => u.productionUrl,
+        pattern: async (page) => {
+            await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+        },
+    },
+    {
+        name: 'orders',
+        bottomNav: true,
+        mobbin: 'Uber · Activity: find past orders',
+        url: () => '/orders',
+        pattern: async (page) => {
+            await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+        },
+    },
+    {
+        name: 'passport',
+        bottomNav: true,
+        mobbin: 'Digital certificate of authenticity with QR',
+        url: (u) => u.passportUrl,
+        pattern: async (page) => {
+            await expect(page.getByTestId('passport-verified')).toBeVisible();
+            await expect(page.locator('svg, img').first()).toBeVisible();
+            // Workflow 09 commercial hook: one-tap replacement part.
+            await expect(page.getByTestId('passport-order-replacement')).toBeVisible();
+        },
+    },
+    {
+        name: 'build-workspace',
+        bottomNav: true,
+        mobbin: 'Build Workspace: properties panel, version history with compare',
+        url: (u) => u.workspaceUrl,
+        pattern: async (page) => {
+            await expect(page.getByTestId('workspace-status-strip')).toBeVisible();
+            await expect(page.getByTestId('build-trust-badge')).toBeVisible();
+            await expect(page.getByTestId('workspace-cad')).toBeVisible();
+        },
+    },
+    {
+        name: 'object-view',
+        bottomNav: true,
+        mobbin: 'Microsoft Copilot · 3D object with a Recreate / Download panel',
+        url: (u) => `${u.cadWorkspaceUrl}?section=object`,
+        pattern: async (page) => {
+            // A 3D viewer (WebGL canvas, or the 2D fallback without WebGL) beside a properties panel.
+            await expect(page.getByTestId('object-viewport')).toBeVisible();
+            await expect(page.locator('[data-testid="object-viewport"] canvas').or(page.getByTestId('object-fallback')).first()).toBeVisible({ timeout: 20_000 });
+            await expect(page.getByTestId('object-properties')).toBeVisible();
+            await expect(page.getByTestId('object-dimensions')).toContainText('80.0 mm');
+            await expect(page.getByTestId('object-download-panel').getByRole('link')).toHaveCount(3);
+            await expect(page.getByTestId('object-ask-make-ai')).toBeVisible();
+            await expect(page.getByRole('group', { name: 'Units' })).toBeVisible();
+        },
+    },
+    {
+        name: 'workspace-files',
+        bottomNav: true,
+        mobbin: 'Attachment tray: file tiles with thumbnails, type icons and progress',
+        url: (u) => `${u.cadWorkspaceUrl}?section=attachments`,
+        pattern: async (page) => {
+            await expect(page.getByTestId('attachment-tray')).toBeVisible();
+            await expect(page.getByTestId('attachment-add')).toBeVisible();
+            await expect(page.getByTestId('attachment-input')).toBeAttached();
+        },
+    },
+    {
+        name: 'workspace-ask-make-ai',
+        bottomNav: true,
+        mobbin: 'LinkedIn · quick replies above the composer (Make AI panel, honest unavailable state without a key)',
+        url: (u) => `${u.cadWorkspaceUrl}?section=assistant`,
+        pattern: async (page) => {
+            await expect(page.getByTestId('workspace-assistant')).toBeVisible();
+            await expect(page.getByTestId('assistant-unavailable').or(page.getByTestId('assistant-form')).first()).toBeVisible();
+            await expect(page.getByTestId('assistant-manual')).toBeVisible();
+        },
+    },
+    {
+        name: 'shop-login',
+        mobbin: 'Shop Console sign-in',
+        url: () => '/shop',
+        // The console probes for an existing session before showing the sign-in form.
+        allowHttp: [/^401 \/api\/shop\/session$/, NO_STRIPE],
+        pattern: async (page) => {
+            await expect(page.getByTestId('shop-token-input')).toBeVisible();
+        },
+    },
+    {
+        name: 'shop-jobs',
+        allowHttp: [NO_STRIPE],
+        mobbin: 'Driver app · job offer accept/decline; kitchen display queue',
+        url: () => '/shop/jobs',
+        before: shopLogin,
+        pattern: async (page) => {
+            await expect(page.getByTestId('jobs-tab-offered')).toBeVisible();
+        },
+    },
+    {
+        name: 'shop-job',
+        allowHttp: [NO_STRIPE],
+        mobbin: 'Kitchen display · one order: milestones, QA, ship',
+        url: (u) => u.jobUrl,
+        before: shopLogin,
+        pattern: async (page) => {
+            await expect(page.getByTestId('job-status-text')).toBeVisible();
+        },
+    },
+    {
+        name: 'shop-receiving-job',
+        allowHttp: [NO_STRIPE],
+        mobbin: 'Kitchen display · inbound delivery: what is arriving, from where, the check on arrival as one action',
+        url: (u) => u.receivingJobUrl,
+        before: shopLogin,
+        pattern: async (page) => {
+            const panel = page.getByTestId('receiving-panel');
+            await expect(panel).toBeVisible();
+            await expect(panel).toContainText('MAEU0000001');
+            await expect(page.getByTestId('receive-freight')).toBeVisible();
+        },
+    },
+    {
+        name: 'shop-stock',
+        allowHttp: [NO_STRIPE],
+        mobbin: 'Shopify POS · inventory: one row per SKU with quantity on hand, inline adjust, add item',
+        url: () => '/shop/stock',
+        before: shopLogin,
+        pattern: async (page) => {
+            await expect(page.getByTestId('stock-list').getByRole('listitem').first()).toBeVisible();
+            await expect(page.getByTestId('stock-new-sku')).toBeVisible();
+            await expect(page.getByTestId('shop-nav-stock')).toHaveAttribute('aria-current', 'page');
+        },
+    },
+    {
+        name: 'shop-payouts',
+        allowHttp: [NO_STRIPE],
+        mobbin: 'Payouts / Stripe Connect status',
+        url: () => '/shop/payouts',
+        before: shopLogin,
+        pattern: async (page) => {
+            await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+        },
+    },
+    {
+        name: 'ops-board',
+        mobbin: 'Ops board',
+        url: () => '/admin',
+        before: adminLogin,
+        pattern: async (page) => {
+            await expect(page.getByTestId('ops-sourcing-link')).toBeVisible();
+        },
+    },
+    {
+        name: 'sourcing-desk',
+        mobbin: 'Sourcing desk: queue, approvals inbox',
+        url: () => '/admin/sourcing',
+        before: async (page) => {
+            await page.goto('/admin/sourcing');
+            await page.getByTestId('sourcing-admin-token-input').fill(E2E_ADMIN_TOKEN);
+            await page.getByTestId('sourcing-admin-login-submit').click();
+            await expect(page.getByTestId('sourcing-job-list')).toBeVisible();
+        },
+        pattern: async (page) => {
+            await expect(page.getByTestId('sourcing-job-list')).toBeVisible();
+        },
+    },
+    {
+        name: 'sourcing-job',
+        mobbin: 'Sourcing desk: job detail with offers and approvals',
+        url: (u) => u.sourcingJobUrl,
+        before: async (page) => {
+            await page.goto('/admin/sourcing');
+            await page.getByTestId('sourcing-admin-token-input').fill(E2E_ADMIN_TOKEN);
+            await page.getByTestId('sourcing-admin-login-submit').click();
+        },
+        pattern: async (page) => {
+            await expect(page.getByTestId('job-status')).toBeVisible();
+        },
+    },
+    {
+        name: 'sourcing-job-legs',
+        mobbin: 'Flexport · shipment detail: PO, supplier, incoterm, inbound tracking and the next milestone as buttons',
+        url: (u) => u.primeSourcingJobUrl,
+        before: async (page) => {
+            await page.goto('/admin/sourcing');
+            await page.getByTestId('sourcing-admin-token-input').fill(E2E_ADMIN_TOKEN);
+            await page.getByTestId('sourcing-admin-login-submit').click();
+        },
+        pattern: async (page) => {
+            await expect(page.getByTestId('job-status')).toBeVisible();
+            const leg = page.locator('[data-testid^="leg-leg_"]').first();
+            await expect(leg).toBeVisible();
+            await expect(leg.getByTestId('leg-status')).toHaveText('SHIPPED_INBOUND');
+            await expect(leg).toContainText('MAEU0000001');
+        },
+    },
+    {
+        name: 'signin',
+        bottomNav: true,
+        mobbin: 'Behance · deferred signup: sign in only to save; passkey or email code, no password',
+        url: () => '/signin?next=/builds&mode=create',
+        pattern: async (page) => {
+            await expect(page.getByTestId('signin-email')).toBeVisible();
+            await expect(page.getByTestId('signin-passkey')).toBeVisible();
+            await expect(page.getByRole('heading', { level: 1 })).toHaveText('Save your build');
+        },
+    },
+    {
+        name: 'me',
+        bottomNav: true,
+        mobbin: 'Account hub: profile, creator handle, passkeys, sign out',
+        url: () => '/me',
+        before: (page) => signInByEmail(page, 'sweep-me@example.com'),
+        pattern: async (page) => {
+            await expect(page.getByTestId('me-email')).toContainText('sweep-me@example.com');
+            await expect(page.getByTestId('me-add-passkey')).toBeVisible();
+            await expect(page.getByTestId('me-signout')).toBeVisible();
+        },
+    },
+    {
+        name: 'my-builds',
+        bottomNav: true,
+        mobbin: 'Yami · status tabs with counts + Glovo / Subway order-again rows (Reorder · Remix · Repair)',
+        url: () => '/builds',
+        // The sweep buyer's delivered order is claimed by email at sign-in.
+        before: (page) => signInByEmail(page, 'sweep-buyer@example.com'),
+        pattern: async (page) => {
+            await expect(page.getByRole('tab')).toHaveCount(5);
+            await expect(page.getByRole('tab', { name: /Ordered/ })).toBeVisible();
+            const row = page.locator('[data-testid^="build-row-"]').first();
+            await expect(row).toBeVisible();
+            await expect(row.locator('[data-status]')).toBeVisible();
+            for (const action of ['build-reorder', 'build-remix', 'build-repair']) await expect(row.getByTestId(action)).toBeVisible();
+            await expect(row.getByTestId('build-reorder')).toBeEnabled();
+        },
+    },
+    // ---- R3 Prime experience ----
+    {
+        name: 'prime-paywall',
+        bottomNav: true,
+        mobbin: 'Copilot · Claim your free trial + Givingli · Today → reminder → trial ends timeline',
+        url: () => '/prime',
+        pattern: async (page) => {
+            await expect(page.getByRole('heading', { level: 1, name: 'Claim your free trial' })).toBeVisible();
+            // Timeline with real dates: Today → reminder (2 days before) → trial ends.
+            const steps = page.getByTestId('trial-timeline').getByRole('listitem');
+            await expect(steps).toHaveCount(3);
+            await expect(steps.locator('time')).toHaveCount(3);
+            await expect(page.getByTestId('trial-step-reminder')).toContainText('Reminder');
+            // Plan toggle + honest cancellation copy + one primary CTA.
+            await expect(page.getByRole('radiogroup', { name: 'Plan' }).getByRole('radio')).toHaveCount(2);
+            await expect(page.getByTestId('prime-cancel-copy')).toContainText('pay nothing');
+            await expect(page.getByTestId('prime-signin')).toBeVisible();
+            await expect(page.getByTestId('prime-benefits').getByRole('listitem')).toHaveCount(5);
+        },
+    },
+    {
+        name: 'me-membership',
+        bottomNav: true,
+        mobbin: 'Membership management: status, renewal date, one-tap cancel',
+        url: () => '/me/membership',
+        before: async (page) => {
+            await signInByEmail(page, 'sweep-prime@example.com');
+            await page.request.post('/api/me/membership', { data: { plan: 'monthly' } });
+        },
+        pattern: async (page) => {
+            await expect(page.getByTestId('membership-status')).toHaveText('Free trial');
+            await expect(page.getByTestId('membership-sentence')).toContainText('Free until');
+            await expect(page.getByTestId('membership-cancel')).toBeVisible();
+        },
+    },
+    {
+        name: 'build-cart',
+        bottomNav: true,
+        mobbin: 'DoorDash · cart sheet with "Complete your order" upsells + running total',
+        url: () => '/cart',
+        before: async (page, u) => {
+            for (const quoteId of u.cartQuoteIds) expect((await page.request.post('/api/me/cart/items', { data: { quoteId } })).ok()).toBe(true);
+        },
+        pattern: async (page) => {
+            await expect(page.getByTestId('cart-item')).toHaveCount(2);
+            // "Complete your build": engine-priced add-ons after the main choice.
+            await expect(page.getByTestId('upsell-hardware_kit').first()).toBeVisible({ timeout: 15_000 });
+            await expect(page.getByTestId('upsell-spare_part').first()).toContainText('+$');
+            await expect(page.getByTestId('cart-total')).toBeVisible({ timeout: 15_000 });
+            await expect(page.getByTestId('cart-checkout-cta')).toContainText('2 parts');
+            await expect(page.getByTestId('prime-offer-card')).toBeVisible();
+        },
+    },
+    {
+        name: 'order-map-chat',
+        bottomNav: true,
+        mobbin: 'Shop · "Arrives" carrier card over a map + Waymo one status line; Glovo / LinkedIn quick-reply chips',
+        url: (u) => u.orderUrl,
+        pattern: async (page) => {
+            await expect(page.getByTestId('tracking-map')).toBeVisible({ timeout: 15_000 });
+            await expect(page.getByTestId('map-offline')).toBeVisible();
+            await expect(page.getByTestId('map-status')).toContainText('Delivered');
+            await expect(page.getByTestId('carrier-card')).toContainText('1Z999AA10123456785');
+            await expect(page.getByTestId('quick-replies').getByRole('button', { name: 'Where is my order?' })).toBeVisible();
+            await expect(page.getByTestId('chat-input')).toBeVisible();
+        },
+    },
+    {
+        name: 'order-rating',
+        bottomNav: true,
+        mobbin: 'DoorDash · rate your order at the end (stars, tags, photo)',
+        url: (u) => u.orderUrl,
+        pattern: async (page) => {
+            const card = page.getByTestId('rating-card');
+            await expect(card).toBeVisible({ timeout: 15_000 });
+            await expect(card.getByRole('radiogroup', { name: 'Star rating' }).getByRole('radio')).toHaveCount(5);
+            await expect(card.getByRole('group', { name: 'What stood out' }).getByRole('button')).toHaveCount(5);
+            await expect(card.getByTestId('rating-caption')).toBeVisible();
+            await expect(card.getByTestId('rating-submit')).toBeVisible();
+            await card.scrollIntoViewIfNeeded();
+        },
+    },
+    {
+        name: 'admin-moderation',
+        mobbin: 'Ops queue: rating moderation, hold requests, order chats, invoices',
+        bottomNav: false,
+        url: () => '/admin/prime',
+        before: adminLogin,
+        pattern: async (page) => {
+            await expect(page.getByTestId('moderation-queue')).toBeVisible();
+            for (const heading of [/Ratings to review/, /Hold requests/, /Order chats/, /B2B invoices/]) await expect(page.getByRole('heading', { level: 2, name: heading })).toBeVisible();
+        },
+    },
+    {
+        name: 'live-home',
+        bottomNav: true,
+        mobbin: 'Whatnot · home live feed: category chips, Live tiles with viewer badges, go-live entry',
+        url: () => '/live',
+        pattern: async (page) => {
+            for (const chip of ['chip-mega-builds', 'chip-factory-floor', 'chip-drops']) await expect(page.getByTestId(chip)).toBeVisible();
+            const tile = page.getByTestId('live-now').getByTestId('show-tile').first();
+            await expect(tile).toBeVisible();
+            await expect(tile.getByTestId('live-badge')).toContainText(/live/i);
+            await expect(page.getByTestId('replays').getByTestId('show-tile').first()).toBeVisible();
+            await expect(page.getByTestId('go-live-cta')).toBeVisible();
+        },
+    },
+    {
+        name: 'live-viewer',
+        mobbin: 'Whatnot · live show: seller header + viewer count, action rail, chat over video, product card (Make Mine · Remix · Buy), Build Slot counter',
+        url: (u) => u.live.liveShowUrl,
+        pattern: async (page) => {
+            await expect(page.getByTestId('live-badge')).toContainText(/live/i);
+            const card = page.getByTestId('now-showing');
+            await expect(card).toBeVisible();
+            for (const action of ['make-mine', 'remix', 'buy']) await expect(card.getByTestId(action)).toBeVisible();
+            await expect(card.getByTestId('buy')).toHaveAttribute('href', /\/checkout\/qte_/);
+            await expect(page.getByTestId('slots-left')).toHaveText(/^\d+ \/ 50 slots left$/);
+            await expect(page.getByRole('navigation', { name: 'Show actions' }).getByRole('button').first()).toBeVisible();
+            await expect(page.getByTestId('chat-list')).toBeVisible();
+        },
+    },
+    {
+        name: 'live-replay',
+        mobbin: 'Whatnot · live show, as a shoppable replay: the product card follows the recording',
+        url: (u) => u.live.replayShowUrl,
+        pattern: async (page) => {
+            await expect(page.getByTestId('live-badge')).toHaveText(/replay/i);
+            await expect(page.getByTestId('video-stage')).toHaveAttribute('data-source', 'mp4');
+            await expect(page.getByTestId('now-showing').or(page.getByTestId('now-showing-empty'))).toBeVisible();
+        },
+    },
+    {
+        name: 'studio',
+        bottomNav: true,
+        mobbin: 'Whatnot · home feed "Get started · Go live · Step N of M" checklist; show planner',
+        url: () => '/studio',
+        before: async (page) => page.context().addCookies(sweepCreatorCookies()),
+        pattern: async (page) => {
+            const checklist = page.getByTestId('go-live-checklist');
+            await expect(checklist).toBeVisible();
+            await expect(checklist).toContainText(/Step \d+ of \d+/);
+            await expect(page.getByTestId('show-planner')).toBeVisible();
+            await expect(page.getByTestId('studio-show').first()).toBeVisible();
+        },
+    },
+    {
+        name: 'control-room',
+        bottomNav: true,
+        mobbin: 'Live studio controls (TikTok Live Studio / OBS): feature product, drop, Q&A, moderation, stats',
+        url: (u) => u.live.controlRoomUrl,
+        before: async (page) => page.context().addCookies(sweepCreatorCookies()),
+        pattern: async (page) => {
+            await expect(page.getByTestId('control-room')).toHaveAttribute('data-status', 'LIVE');
+            await expect(page.getByTestId('featured-panel')).toContainText('Now showing');
+            await expect(page.getByTestId('control-drop')).toHaveAttribute('data-status', 'OPEN');
+            await expect(page.getByTestId('live-stats')).toBeVisible();
+            await expect(page.getByTestId('go-live-checklist')).toBeVisible();
+            await expect(page.getByTestId('end-show')).toBeVisible();
+        },
+    },
+    {
+        name: 'studio-insights',
+        bottomNav: true,
+        mobbin: 'SoundCloud Insights / DoorDash Merchant product mix / Square best sellers: range selector, stat tiles, chart with a table view, best sellers',
+        url: () => '/studio/insights',
+        before: async (page) => page.context().addCookies(mediaCreatorCookies()),
+        pattern: async (page) => {
+            await expect(page.getByRole('group', { name: 'Date range' }).getByRole('button')).toHaveCount(4);
+            await expect(page.getByTestId('range-30d')).toHaveAttribute('aria-pressed', 'true');
+            await expect(page.getByTestId('tile-royalties')).not.toContainText('$0.00');
+            await expect(page.getByTestId('earnings-chart').getByRole('img')).toBeVisible();
+            await expect(page.getByTestId('earnings-chart').getByText('Show as a table')).toBeVisible();
+            await expect(page.getByTestId('product-mix')).toBeVisible();
+            await expect(page.getByTestId('best-seller-row').first()).toBeVisible();
+            await expect(page.getByTestId('studio-nav-insights')).toHaveAttribute('aria-current', 'page');
+        },
+    },
+    {
+        name: 'studio-payouts',
+        bottomNav: true,
+        mobbin: 'Stripe Express / Whatnot seller payouts: available balance, pay out CTA, payout history, earnings ledger',
+        url: () => '/studio/payouts',
+        before: async (page) => page.context().addCookies(mediaCreatorCookies()),
+        pattern: async (page) => {
+            await expect(page.getByTestId('balance-available')).not.toHaveAttribute('data-cents', '0');
+            await expect(page.getByTestId('request-payout')).toBeEnabled();
+            await expect(page.getByTestId('earning-row').first()).toHaveAttribute('data-kind', 'MAKE_THIS_ROYALTY');
+            await expect(page.getByTestId('payout-method')).toContainText('Minimum payout');
+        },
+    },
+    {
+        name: 'studio-publish',
+        bottomNav: true,
+        mobbin: 'Behance / Etsy publish flow: your builds with visibility, licence and royalty, one form per build',
+        url: () => '/studio/publish',
+        before: async (page) => page.context().addCookies(mediaCreatorCookies()),
+        pattern: async (page) => {
+            const row = page.getByTestId('publish-row').filter({ hasText: 'Sweep walnut lamp plate' });
+            await expect(row.getByTestId('publish-status')).toHaveText('Public');
+            await row.getByTestId('publish-toggle').click();
+            await expect(row.getByTestId('publish-license-commercial')).toBeChecked();
+            await expect(row.getByTestId('publish-royalty')).toHaveValue('10');
+        },
+    },
+    {
+        name: 'watch-my-build',
+        bottomNav: true,
+        mobbin: "Domino's Tracker / Uber Eats order progress: the buyer's own production stream with timestamps and shop photos",
+        url: (u) => u.media.watchUrl,
+        pattern: async (page) => {
+            await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+            await expect(page.getByTestId('watch-posts').getByTestId('watch-post').first()).toBeVisible();
+            await expect(page.getByTestId('watch-post').last()).toHaveAttribute('data-kind', 'paid');
+            await expect(page.getByTestId('watch-post').last().locator('time')).toHaveAttribute('datetime', /\d{4}-\d{2}-\d{2}T/);
+        },
+    },
+    {
+        name: 'auction-view',
+        mobbin: 'Whatnot live auction: current bid and leader, countdown, "Bid $X" and Custom over the stream',
+        url: (u) => u.media.auctionShowUrl,
+        pattern: async (page) => {
+            const card = page.getByTestId('auction-card');
+            await expect(card).toHaveAttribute('data-status', 'OPEN');
+            await expect(card.getByTestId('auction-countdown')).toBeVisible();
+            await expect(card.getByTestId('auction-current')).toContainText('$400.00');
+            await expect(card.getByTestId('auction-bid')).toContainText('Bid $400.00');
+            await expect(card.getByTestId('auction-custom')).toBeVisible();
+        },
+    },
+    {
+        name: 'reconstruct-capture',
+        bottomNav: true,
+        mobbin: 'Camera capture with guided steps (Step 1 of 4): rear camera, photo tiles, tips',
+        url: () => '/reconstruct',
+        pattern: async (page) => {
+            await expect(page.getByRole('heading', { level: 1, name: 'Rebuild a broken part from a photo' })).toBeVisible();
+            await expect(page.getByTestId('reconstruct-step-label')).toHaveText('Step 1 of 4');
+            await expect(page.getByRole('progressbar', { name: 'Reconstruct progress' })).toBeVisible();
+            await expect(page.getByTestId('capture-camera-input')).toHaveAttribute('capture', 'environment');
+            await expect(page.getByTestId('capture-camera')).toBeVisible();
+            await expect(page.getByRole('radio')).toHaveCount(3);
+            await expect(page.getByTestId('capture-continue')).toBeDisabled();
+        },
+    },
+    {
+        name: 'reconstruct-measure',
+        bottomNav: true,
+        mobbin: 'Photo measuring: reference object sets the scale, lines with estimates over the photo',
+        url: (u) => `/reconstruct/${u.reconstructMeasuredBuildId}?step=measure`,
+        pattern: async (page) => {
+            await expect(page.getByRole('heading', { level: 1, name: 'Measure on the photo' })).toBeVisible();
+            await expect(page.getByTestId('reconstruct-step-label')).toHaveText('Step 2 of 4');
+            await expect(page.getByTestId('measure-canvas')).toBeVisible({ timeout: 20_000 });
+            await expect(page.getByTestId('measure-reference')).toBeAttached();
+            await expect(page.getByTestId('perspective-caveat')).toContainText('caliper');
+        },
+    },
+    {
+        name: 'reconstruct-confirm',
+        bottomNav: true,
+        mobbin: 'Verification checklist: each critical size confirmed by hand, estimate vs reading, locked CTA',
+        url: (u) => `/reconstruct/${u.reconstructMeasuredBuildId}?step=confirm`,
+        pattern: async (page) => {
+            await expect(page.getByRole('heading', { level: 1, name: 'Confirm with a caliper' })).toBeVisible();
+            await expect(page.getByTestId('reconstruct-step-label')).toHaveText('Step 3 of 4');
+            await expect(page.getByTestId('confirm-table').locator('[data-testid^="dim-row-"]')).toHaveCount(2);
+            await expect(page.getByTestId('dim-estimate-diameter_mm')).toContainText('mm');
+            await expect(page.getByTestId('generate-cad')).toBeDisabled();
+        },
+    },
+    {
+        name: 'reconstruct-review',
+        bottomNav: true,
+        mobbin: 'Microsoft Copilot · 3D object beside a properties panel, plus a binding quote card',
+        url: (u) => `/reconstruct/${u.reconstructReviewBuildId}?step=review`,
+        pattern: async (page) => {
+            await expect(page.getByRole('heading', { level: 1, name: 'Review and order' })).toBeVisible();
+            await expect(page.getByTestId('reconstruct-step-label')).toHaveText('Step 4 of 4');
+            await expect(page.getByTestId('object-viewport')).toBeVisible();
+            await expect(page.getByTestId('review-dimensions')).toContainText('38.10 mm');
+            await expect(page.getByTestId('print-quote').getByTestId('trust-chip')).toContainText('Binding quote', { timeout: 15_000 });
+            await expect(page.getByTestId('print-ladder').locator('tbody tr')).toHaveCount(5);
+        },
+    },
+    {
+        name: 'not-found',
+        bottomNav: true,
+        mobbin: 'Empty / error state',
+        allowHttp: [/^404 \/this-page-does-not-exist$/],
+        url: () => '/this-page-does-not-exist',
+        pattern: async (page) => {
+            await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+        },
+    },
+];
+
+/** Cookies of the Live sweep creator (set in beforeAll); studio screens reuse the session. */
+let liveCreatorCookies: LiveSweepState['creatorCookies'] = [];
+const sweepCreatorCookies = () => liveCreatorCookies;
+/** Cookies of the Media sweep creator (published build, royalty earned). */
+let mediaCreatorCookiesValue: MediaSweepState['creatorCookies'] = [];
+const mediaCreatorCookies = () => mediaCreatorCookiesValue;
+
+/** Sign this browser context in with an email code (dev returns the code). Own IP per call so in-memory limits never trip. */
+async function signInByEmail(page: Page, email: string) {
+    const headers = { 'x-forwarded-for': `198.18.${Math.floor(Math.random() * 250)}.${Math.floor(Math.random() * 250) + 1}` };
+    const start = await (await page.request.post('/api/auth/email/start', { data: { email }, headers })).json();
+    const verified = await page.request.post('/api/auth/email/verify', { data: { challengeId: start.challengeId, code: start.devCode }, headers });
+    expect(verified.ok(), 'email sign-in').toBe(true);
+}
+
+/** Builds real state once: a delivered order with a passport, a sourcing job, a Make AI workspace. */
+async function buildState(browser: Browser): Promise<Urls> {
+    const context = await browser.newContext();
+    const page = await context.newPage();
+    const quoted = await quotePart(page);
+    const { orderUrl, orderNumber } = await payOrder(page);
+    const { jobUrl, passportUrl } = await fulfil(context, orderNumber, orderUrl);
+    // A second, unpaid quote so the checkout screen is shown as a buyer first sees it.
+    const fresh = await quotePart(page, 'sweep-checkout.dxf');
+    const request = context.request;
+    const part = await (await request.get(`/api/parts/${quoted.partId}`)).json();
+    const buildId: string = part.buildId;
+    const job = await (await request.post(`/api/builds/${buildId}/sourcing`, { data: { partId: quoted.partId, quantity: 100 } })).json();
+
+    const sql = postgres(E2E_DATABASE_URL, { max: 1, onnotice: () => {} });
+    const intentId = randomUUID();
+    try {
+        await sql`insert into make_intents (id, intent, model, prompt_sha256, prompt_chars) values (${intentId}, ${sql.json({
+            intent: 'create',
+            product_type: 'desk organizer',
+            summary: 'A bent aluminum desk organizer with two pen slots.',
+            requirements: [{ id: 'R1', text: 'Holds pens and a phone', category: 'function', source: 'user', confidence: 0.9 }],
+            constraints: [],
+            unknowns: [{ question: 'How wide should it be?', why_it_matters: 'Sets the flat pattern size.' }],
+            materials_suggested: [{ material: 'Aluminum 5052', why: 'Bends cleanly.' }],
+            processes_suggested: ['Laser cutting', 'Bending'],
+            risk_class: 'standard',
+            required_specialists: [],
+        })}, ${'e2e'}, ${'0'.repeat(64)}, ${10})`;
+    } finally {
+        await sql.end();
+    }
+    const made = await (await request.post('/api/make-ai/builds', { data: { intentId } })).json();
+    const withCad = await createBuildWithCad(request);
+    const reconstructMeasured = await createReconstructState(request, { cad: false });
+    const reconstructReviewed = await createReconstructState(request, { cad: true });
+    const prime = await primeSupplierState(page, request);
+    // R3 experience: a second binding quote (another part) so the build cart holds two parts.
+    const second = await quotePart(page, 'sweep-cart.dxf');
+    await context.close();
+    const live = await buildLiveSweepState(browser, quotePart);
+    const media = await buildMediaSweepState(browser, quotePart);
+
+    const [orderPath, query] = orderUrl.split('?');
+    return {
+        partUrl: quoted.partUrl,
+        checkoutUrl: fresh.checkoutUrl,
+        routeUrl: `/build/${buildId}/route?quote=${quoted.quoteId}`,
+        orderUrl,
+        productionUrl: `${orderPath}/production?${query}`,
+        passportUrl,
+        jobUrl,
+        workspaceUrl: `/build/${made.buildId}/workspace`,
+        sourcingJobUrl: `/admin/sourcing/jobs/${job.id}`,
+        cadWorkspaceUrl: withCad.workspaceUrl,
+        reconstructMeasuredBuildId: reconstructMeasured.buildId,
+        reconstructReviewBuildId: reconstructReviewed.buildId,
+        live,
+        media,
+        ...prime,
+        cartQuoteIds: [fresh.quoteId, second.quoteId],
+    };
+}
+
+test.describe('Mobbin page sweep', () => {
+    let urls: Urls;
+
+    test.beforeAll(async ({ browser }) => {
+        test.setTimeout(600_000);
+        mkdirSync(OUT, { recursive: true });
+        // A failed test restarts the worker and re-runs beforeAll: reuse this run's state.
+        const runId = existsSync(RUN_ID_FILE) ? readFileSync(RUN_ID_FILE, 'utf8') : 'none';
+        const cache = path.join(OUT, 'state.json');
+        const cached = existsSync(cache) ? (JSON.parse(readFileSync(cache, 'utf8')) as { runId: string; urls: Urls }) : null;
+        if (cached && cached.runId === runId) {
+            urls = cached.urls;
+        } else {
+            urls = await buildState(browser);
+            writeFileSync(cache, JSON.stringify({ runId, urls }));
+        }
+        liveCreatorCookies = urls.live.creatorCookies;
+        mediaCreatorCookiesValue = urls.media.creatorCookies;
+    });
+
+    for (const screen of SCREENS) {
+        for (const viewport of Object.keys(VIEWPORTS) as Viewport[]) {
+            test(`${screen.name} · ${viewport}`, async ({ browser }) => {
+                const context = await browser.newContext({ viewport: VIEWPORTS[viewport] });
+                const page = await context.newPage();
+                const problems: string[] = [];
+                if (screen.before) await screen.before(page, urls);
+                page.on('console', (msg) => {
+                    // Failed requests are reported below with their URL instead.
+                    if (msg.type() === 'error' && !/Failed to load resource/i.test(msg.text())) problems.push(`console: ${msg.text()}`);
+                });
+                page.on('response', (r) => {
+                    const hit = `${r.status()} ${new URL(r.url()).pathname}`;
+                    if (r.status() >= 400 && !(screen.allowHttp ?? []).some((re) => re.test(hit))) problems.push(`http ${hit}`);
+                });
+                page.on('pageerror', (err) => problems.push(`pageerror: ${err.message}`));
+                const target = screen.url(urls);
+                const res = await page.goto(target);
+                expect(res, `navigated to ${target}`).not.toBeNull();
+                await expect(page.locator('main').first()).toBeVisible();
+                await page.waitForTimeout(500); // let client data settle
+
+                // Structure
+                await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
+                await expect(page.locator('nextjs-portal [data-nextjs-dialog]')).toHaveCount(0);
+
+                // Mobbin pattern
+                await screen.pattern(page);
+
+                // App shell: the bottom nav on phone app screens only, never on desktop.
+                const bottomNav = page.getByTestId('bottom-nav');
+                if (viewport === 'phone' && screen.bottomNav) {
+                    await expect(bottomNav).toBeVisible();
+                    // Discover · Make · Live · Builds · Me (src/components/site/nav-items.ts BOTTOM_NAV).
+                    await expect(bottomNav.getByRole('link')).toHaveCount(5);
+                    expect(await bottomNav.locator('[aria-current="page"]').count()).toBeLessThanOrEqual(1);
+                } else if (viewport === 'phone') {
+                    await expect(bottomNav).toHaveCount(0);
+                } else {
+                    await expect(bottomNav).toBeHidden();
+                }
+
+                // No horizontal scroll, including with each ⓘ explainer open (tap on phones).
+                const overflowPx = () => page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+                expect(await overflowPx(), 'horizontal overflow (px)').toBeLessThanOrEqual(1);
+                if (viewport === 'phone') {
+                    const tips = page.getByRole('button', { name: /^About / });
+                    for (let i = 0; i < Math.min(await tips.count(), 12); i++) {
+                        const tip = tips.nth(i);
+                        if (!(await tip.isVisible())) continue;
+                        await tip.click();
+                        expect(await overflowPx(), `horizontal overflow with explainer ${i} open (px)`).toBeLessThanOrEqual(1);
+                        await page.keyboard.press('Escape');
+                    }
+                }
+
+                // Accessibility
+                const axe = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
+                const serious = axe.violations.filter((v) => v.impact === 'serious' || v.impact === 'critical');
+                const summary = serious.map((v) => `${v.id} (${v.nodes.length}): ${v.nodes[0]?.target.join(' ')}`);
+                appendFileSync(path.join(OUT, 'report.jsonl'), `${JSON.stringify({ screen: screen.name, viewport, mobbin: screen.mobbin, axe: summary, problems })}\n`);
+
+                const base = path.join(OUT, `${screen.name}-${viewport}`);
+                await page.screenshot({ path: `${base}.png`, fullPage: true });
+                writeFileSync(`${base}.aria.yml`, await page.locator('body').ariaSnapshot());
+
+                expect(summary, 'serious/critical axe violations').toEqual([]);
+                expect(problems, 'console/page errors').toEqual([]);
+                await context.close();
+            });
+        }
+    }
+});

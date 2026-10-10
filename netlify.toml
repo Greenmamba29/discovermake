@@ -1,0 +1,17 @@
+# Netlify: Next.js via the OpenNext adapter (auto-installed, never pinned) + Netlify Database.
+# - The database is provisioned because @netlify/database is a dependency; the app reads
+#   NETLIFY_DB_URL (src/server/db/index.ts). Netlify applies netlify/database/migrations on every
+#   deploy (previews on their own branch, production right before publish). That folder mirrors
+#   database/migrations: run `bun run db:netlify` after db:generate. Never migrate it by hand.
+# - Scheduled jobs: netlify/functions/cron-*.mts (the vercel.json crons, same routes and times).
+# - Secrets are set in the Netlify UI/CLI (scopes Builds + Functions), never in this file.
+[build]
+  command = "bun run db:netlify --check && bunx next build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "22"
+  NEXT_TELEMETRY_DISABLED = "1"
+
+[functions]
+  node_bundler = "esbuild"

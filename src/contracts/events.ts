@@ -8,7 +8,14 @@
  */
 import { z } from 'zod';
 import {
+    ApprovalKind,
+    ApprovalStatus,
+    ApproverRole,
     DeclineReason,
+    NegotiationStatus,
+    PackageTier,
+    SourcingChannel,
+    SourcingDocumentKind,
     InspectionOutcome,
     MilestoneKind,
     OrderStatus,
@@ -17,9 +24,12 @@ import {
     QuoteStatus,
     ShipmentStatus,
     TrustLevel,
+    PromiseLeg,
+    SupplierLegStatus,
 } from './enums';
 import { IsoDateTime } from './common';
 import { CreationIntentKind, MakeAiRiskClass } from './make-ai';
+import { CAD_FAMILIES, CadArtifactKind } from './cad';
 
 const id = z.string().min(1);
 const cents = z.number().int().nonnegative();
@@ -92,7 +102,8 @@ export const EVENT_PAYLOADS = {
     'job.declined': z.object({ jobId: id, orderId: id, shopId: id, reason: DeclineReason, note: z.string().nullable() }),
     'job.expired': z.object({ jobId: id, orderId: id, shopId: id }),
     /** Dispatch found no capable shop; the order stays PAID until ops dispatch or refund it. */
-    'dispatch.unmatched': z.object({ orderId: id, excludedShopIds: z.array(z.string()) }),
+    /** No shop could take the order, or (with `reason`) it is not dispatchable as paid and waits for ops. */
+    'dispatch.unmatched': z.object({ orderId: id, excludedShopIds: z.array(z.string()), reason: z.string().max(40).optional(), detail: z.string().max(500).optional() }),
     /** Open jobs withdrawn from shops because the order was refunded or cancelled. */
     'job.cancelled': z.object({ jobId: id, orderId: id, shopId: id, reason: z.string() }),
     'production.started': z.object({ jobId: id, orderId: id, shopId: id }),
@@ -125,6 +136,188 @@ export const EVENT_PAYLOADS = {
         promptChars: z.number().int().nonnegative(),
         promptSha256: z.string().regex(/^[0-9a-f]{64}$/),
     }),
+
+    // ---- R2: Build Graph (ADR-0001) --------------------------------------
+    'build.forked': z.object({ buildId: id, derivedFromBuildId: id, fromVersion: z.number().int().positive(), kind: z.enum(['remix', 'clone']) }),
+    'design.version_created': z.object({
+        buildId: id,
+        version: z.number().int().positive(),
+        parentVersion: z.number().int().positive().nullable(),
+        summary: z.string().max(300),
+        nodeCount: z.number().int().nonnegative(),
+        edgeCount: z.number().int().nonnegative(),
+    }),
+    'design.version_approved': z.object({ buildId: id, version: z.number().int().positive(), approvedBy: z.string() }),
+    'requirements.generated': z.object({ buildId: id, version: z.number().int().positive(), requirementCount: z.number().int().nonnegative(), unknownCount: z.number().int().nonnegative() }),
+    'material.recommended': z.object({ buildId: id, version: z.number().int().positive(), material: z.string().max(120), confidence: z.number().min(0).max(1) }),
+    /** The CAD worker produced geometry for a design version; `partId` is set when a flat pattern was attached for instant quoting. */
+    'cad.generated': z.object({
+        buildId: id,
+        version: z.number().int().positive(),
+        family: z.enum(CAD_FAMILIES),
+        partId: id.nullable(),
+        artifacts: z.array(z.object({ kind: CadArtifactKind, key: z.string(), sha256: z.string() })),
+    }),
+    /** Workflow 01 "Makeability" + "Preliminary quote": the R1 engine priced every flat pattern of a CAD version. */
+    'makeability.completed': z.object({ buildId: id, version: z.number().int().positive(), makeabilityScore: z.number().int().min(0).max(100), partCount: z.number().int().nonnegative() }),
+    'quote.preliminary': z.object({
+        buildId: id,
+        version: z.number().int().positive(),
+        quantity: z.number().int().positive(),
+        lowCents: z.number().int().nonnegative(),
+        highCents: z.number().int().nonnegative(),
+        productionDaysMin: z.number().int().positive(),
+        productionDaysMax: z.number().int().positive(),
+        trustLevel: z.enum(['BINDING', 'ESTIMATE']),
+    }),
+
+    // ---- R2: sourcing bridge (ADR-0005, workflow 03) ----------------------
+    'sourcing.requested': z.object({ jobId: id, buildId: id, designVersion: z.number().int().positive(), channel: SourcingChannel, quantity: z.number().int().positive() }),
+    'sourcing.job_leased': z.object({ jobId: id, clientId: id, leaseExpiresAt: IsoDateTime }),
+    'sourcing.supplier_found': z.object({ jobId: id, supplierId: id, country: z.string(), verified: z.boolean() }),
+    'sourcing.offer_received': z.object({ jobId: id, offerId: id, supplierId: id, trustLevel: TrustLevel, unitPriceCents: cents, quantity: z.number().int().positive() }),
+    'sourcing.negotiation_updated': z.object({ jobId: id, supplierId: id, status: NegotiationStatus }),
+    'sourcing.document_attached': z.object({ jobId: id, documentId: id, kind: SourcingDocumentKind }),
+    /** Signed package URLs were handed to a sourcing agent (access log mirror). */
+    'sourcing.package_accessed': z.object({ jobId: id, clientId: id, tier: PackageTier, supplierId: id.nullable() }),
+    'sourcing.approval_requested': z.object({ approvalId: id, jobId: id.nullable(), buildId: id, kind: ApprovalKind, approverRole: ApproverRole }),
+    'sourcing.approval_decided': z.object({ approvalId: id, kind: ApprovalKind, status: ApprovalStatus, decidedBy: z.string() }),
+    /** A sourcing agent tried to cross the approval boundary; the bridge refused with APPROVAL_REQUIRED. */
+    'sourcing.boundary_blocked': z.object({ jobId: id.nullable(), clientId: id, tool: z.string().max(80), approvalKind: ApprovalKind }),
+    'sourcing.completed': z.object({ jobId: id, outcome: z.enum(['offers_submitted', 'no_viable_suppliers', 'needs_desk']), offerCount: z.number().int().nonnegative() }),
+    'supplier.selected': z.object({ buildId: id, jobId: id, offerId: id, approvalId: id }),
+    'sourcing.cancelled': z.object({ jobId: id, reason: z.string().max(1000).nullable() }),
+    /** A lease ended without completion: it ran out (visibility timeout) or its client was revoked. The job is QUEUED again. */
+    'sourcing.lease_released': z.object({ jobId: id, reason: z.enum(['expired', 'client_revoked']) }),
+    /** The build moved past the offer's design version; the offer can no longer be selected. */
+    'sourcing.offer_stale': z.object({ offerId: id, jobId: id, offerVersion: z.number().int().positive(), currentVersion: z.number().int().positive() }),
+
+    // ---- R3 Prime: supplier-route ordering + Delivery Promise (docs/architecture/r3-prime.md) ----
+    /** A supplier confirmed an offer against the exact design version (trust SUPPLIER_CONFIRMED). */
+    'quote.supplier_confirmed': z.object({ offerId: id, jobId: id, buildId: id, designVersion: z.number().int().positive(), totalCents: cents }),
+    /** A BINDING quote was made from an approved supplier-confirmed offer (offer + margin + risk reserve). */
+    'quote.binding': z.object({
+        quoteId: id,
+        buildId: id,
+        offerId: id,
+        subtotalCents: cents,
+        riskReserveCents: cents,
+        riskScore: z.number().min(0).max(1),
+        depositPct: z.number().min(0).max(1),
+        validUntil: IsoDateTime,
+    }),
+    /** Supplier-route deposit received; the PO approvals are requested from it (job row locked first). */
+    'order.deposit_paid': z.object({ orderId: id, paymentId: id, depositCents: cents }),
+    /** Human approvals for the purchase order (and the supplier deposit) were requested. */
+    'po.approval_requested': z.object({ orderId: id, approvalId: id, depositApprovalId: id.nullable(), offerId: id }),
+    /** Ops approved the PO: the supplier fulfilment leg exists. */
+    'po.placed': z.object({ orderId: id, legId: id, poNumber: z.string(), approvalId: id, supplierId: id }),
+    /** Ops approved paying the supplier deposit (money out, ledger `supplier_deposit:<orderId>`). */
+    'po.deposit_approved': z.object({ orderId: id, legId: id.nullable(), approvalId: id, amountCents: cents }),
+    'supplier_leg.status_changed': z.object({ orderId: id, legId: id, from: SupplierLegStatus, to: SupplierLegStatus, note: z.string().nullable() }),
+    /** The balance of a supplier-route order is due (receiving QA passed); a payment session exists. */
+    'order.balance_due': z.object({ orderId: id, paymentId: id, amountCents: cents }),
+    'promise.set': z.object({ orderId: id, promisedDate: z.string(), p90Date: z.string(), shown: z.boolean(), bufferDays: z.number().int().nonnegative(), riskScore: z.number().min(0).max(1) }),
+    'promise.at_risk': z.object({ orderId: id, promisedDate: z.string(), p90Date: z.string(), currentLeg: PromiseLeg.nullable() }),
+    'promise.missed': z.object({ orderId: id, promisedDate: z.string(), deliveredOn: z.string(), responsibleLeg: PromiseLeg, creditId: id.nullable(), creditCents: cents }),
+    'promise.kept': z.object({ orderId: id, promisedDate: z.string(), deliveredOn: z.string() }),
+    'credit.issued': z.object({ creditId: id, orderId: id, amountCents: cents, responsibleLeg: PromiseLeg }),
+    'credit.redeemed': z.object({ creditId: id, orderId: id, amountCents: cents }),
+    // ---- R2: accounts (ADR-0009) -----------------------------------------
+    /** A sign-in created a new account. No email in the payload (the user row has it). */
+    'user.created': z.object({ userId: id, method: z.enum(['email', 'passkey', 'google', 'apple']) }),
+    'user.signed_in': z.object({
+        userId: id,
+        method: z.enum(['email', 'passkey', 'google', 'apple']),
+        created: z.boolean(),
+        claimedBuilds: z.number().int().nonnegative(),
+        claimedOrders: z.number().int().nonnegative(),
+    }),
+    /** A guest build (this device's, or a legacy build behind a claimed order) now belongs to a user. */
+    'build.claimed': z.object({ buildId: id, userId: id }),
+
+    // ---- R2 Stage 1: Build Workspace attachments + passport replacements ----
+    /** A reference image or CAD file was uploaded to a build and verified (size, magic bytes, sha256). */
+    'build.attachment_added': z.object({
+        buildId: id,
+        attachmentId: id,
+        designVersion: z.number().int().positive(),
+        kind: z.enum(['image', 'cad']),
+        contentType: z.string().max(100),
+        sizeBytes: z.number().int().positive(),
+        sha256: z.string().regex(/^[0-9a-f]{64}$/),
+    }),
+    'build.attachment_removed': z.object({ buildId: id, attachmentId: id }),
+    /** "Order a replacement" on a Product Passport created a fresh quote for the same part design. */
+    'passport.replacement_quoted': z.object({ passportId: id, quoteId: id, partId: id, buildId: id, quantity: z.number().int().positive() }),
+
+    // ---- R4: Live (workflow 06, ADR-0003) ----------------------------------
+    /** Funds are held at the provider (manual capture); the order stays PENDING_PAYMENT until capture. */
+    'payment.authorized': z.object({ orderId: id, paymentId: id, provider: PaymentProviderName, providerRef: z.string(), amountCents: cents, currency: z.string() }),
+    /** An authorization (or an unpaid session) was released without capturing: nothing was charged. */
+    'payment.authorization_released': z.object({ orderId: id, paymentId: id, provider: PaymentProviderName, reason: z.string() }),
+    /** Mirrors of the Live Build Protocol events that matter outside the stream (the full log lives in `live_events`). */
+    'live.show_started': z.object({ showId: id, channelId: id, displayId: z.string() }),
+    'live.show_ended': z.object({ showId: id, channelId: id, displayId: z.string(), durationMs: z.number().int().nonnegative() }),
+    'live.product_featured': z.object({ showId: id, buildId: id, seq: z.number().int().positive() }),
+    'live.drop_started': z.object({ dropId: id, showId: id.nullable(), buildId: id, quoteId: id, priceCents: cents, totalSlots: z.number().int().positive(), thresholdSlots: z.number().int().positive(), closesAt: IsoDateTime }),
+    'live.slot_claimed': z.object({ dropId: id, claimId: id, orderId: id, quantity: z.number().int().positive(), claimedSlots: z.number().int().nonnegative() }),
+    'live.drop_closed': z.object({ dropId: id, status: z.enum(['CONFIRMED', 'FAILED']), claimedSlots: z.number().int().nonnegative(), thresholdSlots: z.number().int().positive(), captured: z.number().int().nonnegative(), released: z.number().int().nonnegative() }),
+
+    // ---- R5: Media (docs/architecture/r5-media.md) ----------------------------
+    /** A build owner changed a build's publication (visibility, remix licence, royalty %). */
+    'build.published': z.object({ buildId: id, visibility: z.enum(['private', 'public']), license: z.enum(['none', 'personal', 'commercial']), royaltyPct: z.number().int().min(0).max(30) }),
+    /** A creator earned on a paid order (royalty up the lineage, or their own drop / auction revenue). Ledger txn `creator:<orderId>:<kind>`. */
+    'royalty.accrued': z.object({ orderId: id, creatorUserId: id, kind: z.enum(['REMIX_ROYALTY', 'MAKE_THIS_ROYALTY', 'DROP_REVENUE', 'AUCTION_REVENUE']), amountCents: cents, sourceBuildId: id.nullable(), txnKey: z.string() }),
+    /** The order was refunded: the earning is reversed (clawed back from the balance). */
+    'royalty.reversed': z.object({ orderId: id, creatorUserId: id, amountCents: cents, txnKey: z.string() }),
+    'clip.created': z.object({ clipId: id, showId: id, buildId: id.nullable(), startMs: z.number().int().nonnegative(), endMs: z.number().int().positive(), origin: z.enum(['host', 'system']) }),
+    'auction.started': z.object({ auctionId: id, showId: id.nullable(), buildId: id, quoteId: id, startingBidCents: cents, minIncrementCents: cents, endsAt: IsoDateTime }),
+    'auction.bid_placed': z.object({ auctionId: id, bidId: id, orderId: id, amountCents: cents, endsAt: IsoDateTime, extended: z.boolean() }),
+    'auction.closed': z.object({ auctionId: id, status: z.enum(['SOLD', 'UNSOLD', 'CANCELLED']), winningBidId: id.nullable(), amountCents: cents.nullable(), bidCount: z.number().int().nonnegative() }),
+    'drop.queue_processed': z.object({ dropId: id, admitted: z.number().int().nonnegative(), rejected: z.number().int().nonnegative() }),
+    'creator.payout_created': z.object({ payoutId: id, creatorUserId: id, amountCents: cents, method: z.enum(['stripe_connect', 'manual']) }),
+    'creator.payout_paid': z.object({ payoutId: id, creatorUserId: id, amountCents: cents, providerRef: z.string().nullable() }),
+    'creator.payout_failed': z.object({ payoutId: id, creatorUserId: id, reason: z.string().max(300) }),
+    'creator.connect_account_created': z.object({ userId: id, accountId: id }),
+    // ---- R6 Reconstruct ----
+    /** A buyer started rebuilding a broken part from photos (optionally linked to its passport). */
+    'reconstruct.started': z.object({ buildId: id, partType: z.enum(['knob', 'spacer', 'bracket']), passportId: id.nullable() }),
+    /** A caliper / ruler reading was confirmed (the only dimensions CAD may use). */
+    'reconstruct.dimension_confirmed': z.object({
+        buildId: id,
+        version: z.number().int().positive(),
+        param: z.string(),
+        valueMm: z.number().positive(),
+        unit: z.enum(['mm', 'in']),
+        photoEstimateMm: z.number().nullable(),
+        deltaPct: z.number().nullable(),
+    }),
+    /** CAD generated from the confirmed readings (family + spec from the Reconstruct planner). */
+    'reconstruct.cad_generated': z.object({ buildId: id, version: z.number().int().positive(), family: z.string(), printed: z.boolean(), quoteId: id.nullable() }),
+    // ---- R3: Prime experience (docs/architecture/r3-prime-experience.md) ----
+    'membership.trial_started': z.object({ membershipId: id, userId: id, plan: z.enum(['monthly', 'annual']), trialEndsAt: IsoDateTime }),
+    'membership.status_changed': z.object({
+        membershipId: id,
+        userId: id,
+        from: z.enum(['incomplete', 'trialing', 'active', 'past_due', 'canceled']).nullable(),
+        to: z.enum(['incomplete', 'trialing', 'active', 'past_due', 'canceled']),
+        providerEventId: z.string().nullable(),
+    }),
+    'membership.cancel_scheduled': z.object({ membershipId: id, userId: id, effectiveAt: IsoDateTime.nullable() }),
+    'membership.resumed': z.object({ membershipId: id, userId: id }),
+    'membership.trial_reminder_sent': z.object({ membershipId: id, userId: id, trialEndsAt: IsoDateTime }),
+    /** One payment for several orders (build cart) or one B2B invoice. */
+    'cart.checked_out': z.object({ checkoutId: id, orderIds: z.array(id).min(1), totalCents: cents, currency: z.string(), mode: z.enum(['card', 'invoice']) }),
+    'rating.submitted': z.object({ ratingId: id, orderId: id, shopId: id.nullable(), stars: z.number().int().min(1).max(5), hasPhoto: z.boolean() }),
+    'rating.moderated': z.object({ ratingId: id, orderId: id, shopId: id.nullable(), status: z.enum(['approved', 'rejected']) }),
+    'order.message_posted': z.object({ orderId: id, messageId: id, authorKind: z.enum(['buyer', 'shop', 'ops', 'system']), quickReply: z.string().nullable(), hasAttachment: z.boolean() }),
+    /** Buyer asked to hold production; ops must acknowledge (a job is never stopped silently). */
+    'hold.requested': z.object({ holdId: id, orderId: id, messageId: id.nullable() }),
+    'hold.resolved': z.object({ holdId: id, orderId: id, status: z.enum(['acknowledged', 'declined']), note: z.string().nullable() }),
+    'invoice.created': z.object({ invoiceId: id, checkoutId: id, orderIds: z.array(id), amountCents: cents, netDays: z.number().int().positive(), dueDate: z.string() }),
+    'invoice.paid': z.object({ invoiceId: id, checkoutId: id, amountCents: cents, method: z.enum(['provider', 'manual_wire']), reference: z.string().nullable() }),
+    'invoice.overdue': z.object({ invoiceId: id, checkoutId: id, amountCents: cents, dueDate: z.string() }),
 } as const;
 
 export type EventType = keyof typeof EVENT_PAYLOADS;

@@ -7,7 +7,7 @@ import { chromium, defineConfig, devices } from '@playwright/test';
  * the explicit test doubles enabled: PAYMENT_PROVIDER=dev, CARRIER=manual,
  * STORAGE_DRIVER=local. These doubles refuse to run when NODE_ENV=production.
  */
-export const E2E_PORT = 3100;
+export const E2E_PORT = Number(process.env.E2E_PORT || 3100);
 export const E2E_BASE_URL = `http://localhost:${E2E_PORT}`;
 export const E2E_DATABASE_URL = process.env.E2E_DATABASE_URL || 'postgresql://dm:dm@localhost:5432/discovermake_e2e';
 export const E2E_SHOP_TOKEN = process.env.E2E_SHOP_TOKEN || 'dmshop_e2e_console_token_do_not_use_in_prod_000';
@@ -27,6 +27,10 @@ export const E2E_ENV: Record<string, string> = {
     JOB_PACKET_SIGNING_SECRET: 'e2e-job-packet-secret',
     ADMIN_TOKEN: E2E_ADMIN_TOKEN,
     SEED_SHOP_TOKEN: E2E_SHOP_TOKEN,
+    // Make AI routes on, with no model key: builds are created from stored intents and the
+    // Materials Engineer is skipped (it never blocks build creation).
+    MAKE_AI_ENABLED: 'true',
+    NEXT_PUBLIC_MAKE_AI_ENABLED: 'true',
 };
 
 /**
@@ -44,6 +48,12 @@ function chromiumExecutable(): string | undefined {
     return existsSync('/opt/pw-browsers/chromium') ? '/opt/pw-browsers/chromium' : undefined;
 }
 const CHROMIUM_EXECUTABLE = chromiumExecutable();
+
+/** `RECORD_VIDEO=1` records every test at its own viewport size (see tests/e2e/support/video.ts). */
+const video = (size: { width: number; height: number }) => (process.env.RECORD_VIDEO ? { video: { mode: 'on' as const, size } } : {});
+
+/** Buyer journeys that must also pass on emulated phones (touch, mobile UA, small viewport). */
+const MOBILE_JOURNEYS = /(smoke|order-journey|accounts-journey|reconstruct-journey|live-journey|media-journey|prime-experience|mobile-touch)\.spec\.ts/;
 
 export default defineConfig({
     testDir: './tests/e2e',
@@ -65,16 +75,31 @@ export default defineConfig({
             name: 'chromium',
             use: {
                 ...devices['Desktop Chrome'],
+                ...video(devices['Desktop Chrome'].viewport),
                 // Sandboxes without the pinned browser build fall back to a preinstalled Chromium.
                 launchOptions: CHROMIUM_EXECUTABLE ? { executablePath: CHROMIUM_EXECUTABLE } : {},
             },
         },
+        // Real phone emulation for the buyer journeys: touch input, mobile viewport + DPR and a
+        // mobile user agent (the page sweep already covers every screen at 390 px). The iPhone
+        // profile runs on Chromium here because only Chromium is installed in the sandbox.
+        ...(['Pixel 7', 'iPhone 14'] as const).map((device) => ({
+            name: `mobile-${device.toLowerCase().replace(/\s+/g, '-')}`,
+            testMatch: MOBILE_JOURNEYS,
+            use: {
+                ...devices[device],
+                ...video(devices[device].viewport),
+                browserName: 'chromium' as const,
+                launchOptions: CHROMIUM_EXECUTABLE ? { executablePath: CHROMIUM_EXECUTABLE } : {},
+            },
+        })),
     ],
     webServer: {
         command: `bunx next dev -p ${E2E_PORT}`,
         url: E2E_BASE_URL,
         reuseExistingServer: !process.env.CI,
-        timeout: 180_000,
+        // A cold container compiles the first route in up to ~2 minutes.
+        timeout: 300_000,
         env: E2E_ENV,
     },
 });

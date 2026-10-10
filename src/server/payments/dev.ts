@@ -13,7 +13,10 @@ import { getDb } from '../db';
 import { payments } from '../db/schema';
 import { assertNotProduction, env } from '../env';
 import { randomBase32 } from '../ids';
-import type { CreatePaymentInput, CreatePaymentResult, PaymentProvider, PaymentWebhookEvent } from './types';
+import type { CancelAuthorizationInput, CaptureInput, CreatePaymentInput, CreatePaymentResult, PaymentProvider, PaymentWebhookEvent } from './types';
+
+/** payments.metadata key set by callers that created a manual-capture (authorize-only) payment. */
+export const CAPTURE_METHOD_METADATA_KEY = 'captureMethod';
 
 const FEATURE = 'dev payment provider';
 
@@ -53,16 +56,30 @@ export class DevPaymentProvider implements PaymentProvider {
             .from(payments)
             .where(and(eq(payments.provider, 'dev'), eq(payments.providerRef, body.providerRef)))
             .limit(1);
-        if (!payment) throw new DevPaymentNotFoundError(body.providerRef);
+        // R3: a cart checkout / invoice pays several orders under one group reference.
+        const group = payment ? null : await (await import('../cart/payment-group')).findGroupByRef('dev', body.providerRef);
+        if (!payment && !group) throw new DevPaymentNotFoundError(body.providerRef);
+        const amount = payment ? { amountCents: payment.amountCents, currency: payment.currency } : { amountCents: group!.amountCents, currency: group!.currency };
         const eventId = `dev:${body.providerRef}:${body.outcome}`;
+        const manual = (payment?.metadata as Record<string, unknown> | null | undefined)?.[CAPTURE_METHOD_METADATA_KEY] === 'manual';
+        if (body.outcome === 'succeeded' && manual && payment) {
+            // Authorize-only session (Build Slots): funds are "held"; capture happens at drop close.
+            return {
+                kind: 'payment.authorized',
+                eventId: `dev:${body.providerRef}:authorized`,
+                providerRef: body.providerRef,
+                providerPaymentId: `devpi_${body.providerRef.slice('devpay_'.length)}`,
+                amountCents: payment.amountCents,
+                currency: payment.currency,
+            };
+        }
         if (body.outcome === 'succeeded') {
             return {
                 kind: 'payment.succeeded',
                 eventId,
                 providerRef: body.providerRef,
-                providerPaymentId: `devpi_${body.providerRef.slice('devpay_'.length)}`,
-                amountCents: payment.amountCents,
-                currency: payment.currency,
+                providerPaymentId: `devpi_${body.providerRef.replace(/^dev[a-z]+_/, '')}`,
+                ...amount,
             };
         }
         return { kind: 'payment.failed', eventId, providerRef: body.providerRef, reason: 'Declined in dev payment page' };
@@ -72,6 +89,17 @@ export class DevPaymentProvider implements PaymentProvider {
         assertNotProduction(FEATURE);
         void input;
         return { refundRef: `devrefund_${randomBase32(20).toLowerCase()}` };
+    }
+
+    async capture(input: CaptureInput): Promise<{ providerPaymentId: string }> {
+        assertNotProduction(FEATURE);
+        return { providerPaymentId: input.providerPaymentId ?? `devpi_${input.providerRef.slice('devpay_'.length)}` };
+    }
+
+    async cancelAuthorization(input: CancelAuthorizationInput): Promise<{ released: boolean }> {
+        assertNotProduction(FEATURE);
+        void input;
+        return { released: true };
     }
 }
 

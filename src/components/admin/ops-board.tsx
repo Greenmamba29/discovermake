@@ -2,15 +2,17 @@
 
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState, type FormEvent } from 'react';
-import { ChevronDown, LogOut, RefreshCw } from 'lucide-react';
+import { ChevronDown, LogOut, RefreshCw, Search } from 'lucide-react';
 import type { AdminOrderRow, OrderStatus } from '@/contracts';
-import { Button } from '@/components/ui/button';
+import { Button, ButtonLink } from '@/components/ui/button';
 import { ConfirmAction } from '@/components/ui/confirm-action';
 import { Field, TextInput } from '@/components/ui/field';
 import { StatusPill } from '@/components/ui/status-pill';
 import { EmptyState, ErrorState, Notice } from '@/components/ui/state';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ApiClientError, api, errorMessage } from '@/lib/api';
+import { sourcingApi } from '@/components/sourcing/api';
+import { PrimeQueueLink } from '@/components/prime/admin-prime';
 import { dateTime, money } from '@/lib/format';
 import { cn } from '@/lib/utils';
 
@@ -123,7 +125,9 @@ function Board({ token, onSignOut }: { token: string; onSignOut: () => void }) {
                     <p className="eyebrow">Operations</p>
                     <h1 className="mt-1 font-display font-wide text-3xl font-extrabold">Orders</h1>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex flex-wrap gap-2">
+                    <SourcingDeskLink token={token} />
+                    <PrimeQueueLink token={token} />
                     <ConfirmAction label="Expire stale offers" confirmLabel="Expire now" prompt="Expire offers past their deadline and re-dispatch?" variant="secondary" size="sm" onConfirm={expire} />
                     <Button variant="ghost" size="sm" onClick={() => list.refetch()} aria-label="Refresh">
                         <RefreshCw className={cn('h-4 w-4', list.isFetching && 'animate-spin')} aria-hidden />
@@ -164,6 +168,22 @@ function Board({ token, onSignOut }: { token: string; onSignOut: () => void }) {
                 )}
             </div>
         </div>
+    );
+}
+
+/** Link to the R2 sourcing desk with the pending-approval count (hidden if the count cannot be loaded). */
+function SourcingDeskLink({ token }: { token: string }) {
+    const pending = useQuery({ queryKey: ['sourcing-approvals', token, 'PENDING'], queryFn: () => sourcingApi.adminApprovals(token, 'PENDING'), refetchInterval: 30_000, retry: false });
+    const count = pending.data?.length ?? 0;
+    return (
+        <ButtonLink href="/admin/sourcing" variant="secondary" size="sm" data-testid="ops-sourcing-link">
+            <Search className="h-4 w-4" aria-hidden /> Sourcing desk
+            {count > 0 && (
+                <span className="rounded-full bg-amber/20 px-1.5 text-[11px] font-bold text-amber" aria-label={`${count} approvals pending`}>
+                    {count}
+                </span>
+            )}
+        </ButtonLink>
     );
 }
 

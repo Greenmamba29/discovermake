@@ -18,7 +18,7 @@ const Query = z.object({
 });
 
 export const GET = route(async (request) => {
-    requireAdmin(request);
+    await requireAdmin(request);
     const { status } = parseQuery(request, Query);
     const body: AdminOrderListResponse = { orders: await listAdminOrders(status) };
     return json(body);

@@ -1,100 +1,47 @@
 /**
- * Per-IP fixed-window rate limit for Make AI intake.
+ * Per-IP fixed-window rate limit for Make AI intake, plus a fleet-wide budget.
  *
- * PLACEHOLDER: in-memory, so each server instance counts separately and counts reset on
- * deploy. Good enough to stop a single client hammering a paid model from one instance;
- * replace with a shared store (Postgres / Redis / Vercel WAF rule) before Make AI is public.
- * IPs live only in this map (never logged or persisted) and expire with their window.
+ * Backed by the shared limiter (src/server/rate-limit): Postgres in production, so every
+ * instance counts against the same windows; per-instance memory in development and tests.
+ * Keys are stored hashed and expire with their window (an IP is never logged or persisted raw).
  */
+import { env } from '../env';
+import { CompositeRateLimiter, FixedWindowRateLimiter, RateLimiter, type RateLimitDecision } from '../rate-limit';
+
+export { FixedWindowRateLimiter, type RateLimitDecision };
+
 export const MAKE_AI_RATE_LIMIT = { limit: 10, windowMs: 60_000 } as const;
 
-/** Stop the map growing without bound under a spray of spoofed IPs. */
-const MAX_TRACKED_KEYS = 10_000;
-
-type Window = { count: number; resetAt: number };
-
-export type RateLimitDecision = { allowed: true; remaining: number } | { allowed: false; retryAfterSeconds: number };
-
-export class FixedWindowRateLimiter {
-    private readonly windows = new Map<string, Window>();
-
-    constructor(
-        private readonly limit: number,
-        private readonly windowMs: number,
-    ) {}
-
-    hit(key: string, now: number = Date.now()): RateLimitDecision {
-        let w = this.windows.get(key);
-        if (!w || w.resetAt <= now) {
-            if (!w && this.windows.size >= MAX_TRACKED_KEYS) this.sweep(now);
-            w = { count: 0, resetAt: now + this.windowMs };
-            this.windows.set(key, w);
-        }
-        if (w.count >= this.limit) {
-            return { allowed: false, retryAfterSeconds: Math.max(1, Math.ceil((w.resetAt - now) / 1000)) };
-        }
-        w.count++;
-        return { allowed: true, remaining: this.limit - w.count };
-    }
-
-    reset(): void {
-        this.windows.clear();
-    }
-
-    private sweep(now: number): void {
-        for (const [k, w] of this.windows) if (w.resetAt <= now) this.windows.delete(k);
-        // Still full (all windows live): drop the oldest entries rather than grow.
-        const excess = this.windows.size - MAX_TRACKED_KEYS + 1;
-        if (excess > 0) {
-            let dropped = 0;
-            for (const k of this.windows.keys()) {
-                if (dropped++ >= excess) break;
-                this.windows.delete(k);
-            }
-        }
-    }
-}
-
 /**
- * Instance-wide cap across all IPs: bounds model spend even when a client rotates
+ * Fleet-wide cap across all IPs: bounds model spend even when a client rotates
  * (spoofed) IPs to dodge the per-IP limit.
  */
 export const MAKE_AI_GLOBAL_RATE_LIMIT = { limit: 120, windowMs: 60_000 } as const;
-const GLOBAL_KEY = '*';
 
-/** Per-IP limiter plus an instance-wide budget; both must allow the request. */
-export class MakeAiRateLimiter {
-    constructor(
-        private readonly perIp: FixedWindowRateLimiter,
-        private readonly global: FixedWindowRateLimiter,
-    ) {}
-
-    hit(ip: string, now: number = Date.now()): RateLimitDecision {
-        const own = this.perIp.hit(ip, now);
-        if (!own.allowed) return own;
-        return this.global.hit(GLOBAL_KEY, now);
-    }
-
-    reset(): void {
-        this.perIp.reset();
-        this.global.reset();
-    }
-}
+/** Per-IP limiter plus a global budget; both must allow the request (the shared `CompositeRateLimiter`). */
+export class MakeAiRateLimiter extends CompositeRateLimiter {}
 
 export const makeAiRateLimiter = new MakeAiRateLimiter(
-    new FixedWindowRateLimiter(MAKE_AI_RATE_LIMIT.limit, MAKE_AI_RATE_LIMIT.windowMs),
-    new FixedWindowRateLimiter(MAKE_AI_GLOBAL_RATE_LIMIT.limit, MAKE_AI_GLOBAL_RATE_LIMIT.windowMs),
+    new RateLimiter('make_ai_ip', { kind: 'fixed_window', ...MAKE_AI_RATE_LIMIT }),
+    new RateLimiter('make_ai_global', { kind: 'fixed_window', ...MAKE_AI_GLOBAL_RATE_LIMIT }),
 );
 
 /**
- * Best-effort client IP. Prefers headers set by the platform (Vercel overwrites
- * x-real-ip / x-vercel-forwarded-for). For x-forwarded-for it takes the RIGHTMOST
- * entry, the one appended by the proxy nearest to us: a client can prepend any value
- * it likes, but cannot change what our own proxy appends.
+ * Client IP for rate limits and the MCP CIDR allowlist. Only headers that the deployment's
+ * proxy overwrites are trusted, chosen by TRUSTED_PROXY (default: `vercel` on Vercel, else `xff`):
+ *   vercel  - `x-vercel-forwarded-for` (Vercel overwrites it), else the rightmost XFF hop;
+ *   real-ip - `x-real-ip` set by our own nginx/ingress, else the rightmost XFF hop;
+ *   xff     - the rightmost `x-forwarded-for` hop, the one our nearest proxy appended;
+ *   none    - no proxy in front: no header is trusted and the IP is 'unknown'.
+ * A client can prepend any XFF value it likes but cannot change what our proxy appends,
+ * and it can never choose which header we read.
  */
 export function clientIp(request: Request): string {
-    for (const name of ['x-vercel-forwarded-for', 'x-real-ip']) {
-        const v = request.headers.get(name)?.split(',')[0]?.trim();
+    const mode = trustedProxyMode();
+    if (mode === 'none') return 'unknown';
+    const header = mode === 'vercel' ? 'x-vercel-forwarded-for' : mode === 'real-ip' ? 'x-real-ip' : null;
+    if (header) {
+        const v = request.headers.get(header)?.split(',')[0]?.trim();
         if (v) return v.slice(0, 64);
     }
     const parts = (request.headers.get('x-forwarded-for') ?? '')
@@ -103,4 +50,12 @@ export function clientIp(request: Request): string {
         .filter(Boolean);
     const last = parts[parts.length - 1];
     return last ? last.slice(0, 64) : 'unknown';
+}
+
+export type TrustedProxyMode = 'vercel' | 'real-ip' | 'xff' | 'none';
+
+export function trustedProxyMode(): TrustedProxyMode {
+    const configured = env().TRUSTED_PROXY;
+    if (configured) return configured;
+    return process.env.VERCEL ? 'vercel' : 'xff';
 }

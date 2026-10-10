@@ -70,6 +70,74 @@ const EnvSchema = z.object({
     MAKE_AI_MODEL: optionalString.transform((v) => v ?? 'gemini-3.5-flash'),
     /** Google AI Studio key for Make AI. Make AI answers 503 when unset. */
     GOOGLE_GENERATIVE_AI_API_KEY: optionalString,
+
+    // ---- R2 accounts (ADR-0009) ----
+    /** HMAC key for email sign-in codes. Dev fallback outside production; required in production. */
+    AUTH_SECRET: optionalString,
+    /** Comma-separated emails that get the `ops` + `admin` roles at sign-in. */
+    ADMIN_EMAILS: optionalString,
+    /** Google sign-in (OIDC). Enabled only when both are set. */
+    GOOGLE_CLIENT_ID: optionalString,
+    GOOGLE_CLIENT_SECRET: optionalString,
+    /** Sign in with Apple. Enabled only when all four are set. APPLE_PRIVATE_KEY is the .p8 PEM (\n escapes allowed). */
+    APPLE_CLIENT_ID: optionalString,
+    APPLE_TEAM_ID: optionalString,
+    APPLE_KEY_ID: optionalString,
+    APPLE_PRIVATE_KEY: optionalString,
+
+    /** CAD worker (services/cad-worker) base URL, e.g. https://cad.internal.example. CAD generation answers 503 when unset. */
+    CAD_WORKER_URL: optionalString,
+    /** Bearer token the CAD worker expects (its CAD_WORKER_TOKEN). */
+    CAD_WORKER_TOKEN: optionalString,
+    /** R6 optional GPU reconstruction worker (SAM 2 -> OpenCV -> COLMAP / Open3D). Unset = no "Auto-detect". */
+    RECONSTRUCT_WORKER_URL: optionalString,
+    /** Bearer token the reconstruction worker expects. */
+    RECONSTRUCT_WORKER_TOKEN: optionalString,
+
+    /** Rate-limit store: "postgres" (shared table, default in production) or "memory" (per instance, default elsewhere). */
+    RATE_LIMIT_STORE: optionalString.pipe(z.enum(['postgres', 'memory']).optional()),
+    /** Which proxy header carries the client IP: vercel | real-ip | xff | none (default vercel on Vercel, else xff). */
+    TRUSTED_PROXY: optionalString.pipe(z.enum(['vercel', 'real-ip', 'xff', 'none']).optional()),
+    /** ClamAV daemon for upload scanning (src/server/security/upload-scan.ts). Unset = uploads are not scanned. */
+    CLAMAV_HOST: optionalString,
+    CLAMAV_PORT: z.coerce.number().int().positive().default(3310),
+    /** "true" refuses uploads when scanning is unconfigured or unreachable (set in production with CLAMAV_HOST). */
+    UPLOAD_SCAN_REQUIRED: flag,
+    /** R4 Live: HMAC key for server-signed Live Build Protocol events. Required in production. */
+    LIVE_EVENT_SIGNING_SECRET: optionalString,
+    /** R4 Live: LiveKit server URL (wss://<project>.livekit.cloud). All three LIVEKIT_* must be set to use LiveKit rooms. */
+    LIVEKIT_URL: optionalString,
+    LIVEKIT_API_KEY: optionalString,
+    LIVEKIT_API_SECRET: optionalString,
+    // ---- R3 Prime (docs/architecture/r3-prime.md). Unset = the documented default. ----
+    /** Share of a supplier-route order total charged at checkout, 0..1 (default 0.5). */
+    SUPPLIER_DEPOSIT_PCT: optionalString,
+    /** DiscoverMake margin on the supplier landed cost, 0..1 (default 0.18). */
+    SUPPLIER_MARGIN_PCT: optionalString,
+    /** Risk reserve % by risk tier LOW,MEDIUM,HIGH,VERY_HIGH (default "0.03,0.06,0.10,0.15"). */
+    SUPPLIER_RISK_RESERVE_PCTS: optionalString,
+    /** Supplier deposit paid with the PO, as a share of the landed cost, 0..1 (default 0.3). */
+    SUPPLIER_PO_DEPOSIT_PCT: optionalString,
+    /** Missed-promise credit as a share of the order subtotal, 0..1 (default 0.10). */
+    PROMISE_CREDIT_PCT: optionalString,
+    /** Missed-promise credit cap in cents (default 25000 = $250). */
+    PROMISE_CREDIT_CAP_CENTS: optionalString,
+    /** Mouser Search API key (catalog distributor provider). Unset = the distributor provider is disabled and never called. */
+    MOUSER_API_KEY: optionalString,
+    // ---- R3 Prime experience (docs/architecture/r3-prime-experience.md) ----
+    /** Prime prices in cents (owner input). */
+    PRIME_MONTHLY_PRICE_CENTS: z.coerce.number().int().positive().default(999),
+    PRIME_ANNUAL_PRICE_CENTS: z.coerce.number().int().positive().default(9900),
+    PRIME_TRIAL_DAYS: z.coerce.number().int().min(1).max(30).default(7),
+    /** Free standard shipping for members when the order (or cart) subtotal reaches this. */
+    PRIME_FREE_SHIPPING_THRESHOLD_CENTS: z.coerce.number().int().nonnegative().default(7500),
+    /** Pooled material pricing: % off MATERIAL line items for members (never below cost). */
+    PRIME_MATERIAL_DISCOUNT_PCT: z.coerce.number().min(0).max(50).default(10),
+    /** Stripe Billing recurring Price ids for the two plans (subscription mode Checkout). */
+    STRIPE_PRIME_MONTHLY_PRICE_ID: optionalString,
+    STRIPE_PRIME_ANNUAL_PRICE_ID: optionalString,
+    /** MapLibre style URL for order tracking; unset = offline SVG map (no network). */
+    NEXT_PUBLIC_MAP_STYLE_URL: optionalString,
 });
 
 export type Env = z.infer<typeof EnvSchema>;
@@ -105,7 +173,7 @@ export function assertNotProduction(feature: string): void {
  * production a clearly-labelled dev fallback is returned so local dev works
  * without ceremony.
  */
-export function requireSecret(name: 'ORDER_LINK_SECRET' | 'PASSPORT_SIGNING_SECRET' | 'JOB_PACKET_SIGNING_SECRET' | 'STORAGE_SIGNING_SECRET'): string {
+export function requireSecret(name: 'ORDER_LINK_SECRET' | 'PASSPORT_SIGNING_SECRET' | 'JOB_PACKET_SIGNING_SECRET' | 'STORAGE_SIGNING_SECRET' | 'AUTH_SECRET' | 'LIVE_EVENT_SIGNING_SECRET'): string {
     const value = env()[name];
     if (value) return value;
     if (isProduction()) throw new Error(`Missing required secret ${name}`);

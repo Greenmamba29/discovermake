@@ -12,6 +12,7 @@
  */
 import { sql } from 'drizzle-orm';
 import {
+    type AnyPgColumn,
     boolean,
     check,
     date,
@@ -20,14 +21,31 @@ import {
     integer,
     jsonb,
     pgEnum,
+    pgSequence,
     pgTable,
+    primaryKey,
     text,
     timestamp,
     uniqueIndex,
     uuid,
 } from 'drizzle-orm/pg-core';
 import {
+    APPROVAL_KINDS,
+    APPROVAL_STATUSES,
+    APPROVER_ROLES,
+    BG_EDGE_TYPES,
+    BG_NODE_TYPES,
+    BG_SOURCES,
+    BUILD_ORIGINS,
     BUILD_STATUSES,
+    DESIGN_VERSION_STATUSES,
+    INCOTERMS,
+    NEGOTIATION_STATUSES,
+    PACKAGE_TIERS,
+    SOURCING_CHANNELS,
+    SOURCING_DOCUMENT_KINDS,
+    SOURCING_JOB_STATUSES,
+    SUPPLIER_OFFER_STATUSES,
     CARRIER_PROVIDERS,
     DECLINE_REASONS,
     INSPECTION_OUTCOMES,
@@ -54,6 +72,12 @@ import {
     SHIPPING_METHODS,
     SHOP_STATUSES,
     TRUST_LEVELS,
+    CREDIT_STATUSES,
+    PAYMENT_PLAN_KINDS,
+    PROMISE_LEGS,
+    PROMISE_STATUSES,
+    SHOP_STOCK_KINDS,
+    SUPPLIER_LEG_STATUSES,
 } from '../../contracts/enums';
 import type { Address } from '../../contracts/common';
 import type { DfmResult, PartFeatures, PartPreview } from '../../contracts/parts';
@@ -61,6 +85,14 @@ import type { QuoteConfig, QuoteConfigSummary, QuoteLadderRung, QuoteLineItem, S
 import type { InspectionCheck, InspectionMeasurement, JobPacket } from '../../contracts/shop';
 import type { Parcel, TrackingEvent } from '../../contracts/shipments';
 import type { PassportSnapshot } from '../../contracts/passport';
+import type { CreationIntent } from '../../contracts/make-ai';
+import type { ApprovalPolicy, SourcingRequest, SubmitOfferInput, SupplierEvidenceInput } from '../../contracts/sourcing';
+import type { InterestSlug, OnboardingIntent, UserRole } from '../../contracts/account';
+import type { PromiseLegPrediction, SupplierQuoteComposition } from '../../contracts/promise';
+import { CHANNEL_KINDS, DROP_STATUSES, SHOW_FORMATS, SHOW_STATUSES, SLOT_CLAIM_STATUSES } from '../../contracts/live';
+import type { ChannelCategory, LiveActorKind, LiveEventType } from '../../contracts/live';
+import { AUCTION_BID_STATUSES, AUCTION_STATUSES, DROP_QUEUE_STATUSES } from '../../contracts/live';
+import { BUILD_VISIBILITIES, CLIP_ORIGINS, CREATOR_EARNING_KINDS, REMIX_LICENSES } from '../../contracts/media';
 import { newId } from '../ids';
 
 // ---------------------------------------------------------------------------
@@ -94,6 +126,21 @@ export const passportStatusEnum = pgEnum('passport_status', PASSPORT_STATUSES);
 export const ledgerAccountEnum = pgEnum('ledger_account', LEDGER_ACCOUNTS);
 export const ledgerDirectionEnum = pgEnum('ledger_direction', LEDGER_DIRECTIONS);
 export const payoutStatusEnum = pgEnum('payout_status', PAYOUT_STATUSES);
+export const buildOriginEnum = pgEnum('build_origin', BUILD_ORIGINS);
+export const designVersionStatusEnum = pgEnum('design_version_status', DESIGN_VERSION_STATUSES);
+export const bgNodeTypeEnum = pgEnum('bg_node_type', BG_NODE_TYPES);
+export const bgEdgeTypeEnum = pgEnum('bg_edge_type', BG_EDGE_TYPES);
+export const bgSourceEnum = pgEnum('bg_source', BG_SOURCES);
+export const sourcingJobStatusEnum = pgEnum('sourcing_job_status', SOURCING_JOB_STATUSES);
+export const sourcingChannelEnum = pgEnum('sourcing_channel', SOURCING_CHANNELS);
+export const negotiationStatusEnum = pgEnum('negotiation_status', NEGOTIATION_STATUSES);
+export const supplierOfferStatusEnum = pgEnum('supplier_offer_status', SUPPLIER_OFFER_STATUSES);
+export const approvalKindEnum = pgEnum('approval_kind', APPROVAL_KINDS);
+export const approvalStatusEnum = pgEnum('approval_status', APPROVAL_STATUSES);
+export const approverRoleEnum = pgEnum('approver_role', APPROVER_ROLES);
+export const sourcingDocumentKindEnum = pgEnum('sourcing_document_kind', SOURCING_DOCUMENT_KINDS);
+export const packageTierEnum = pgEnum('package_tier', PACKAGE_TIERS);
+export const incotermEnum = pgEnum('incoterm', INCOTERMS);
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -112,7 +159,11 @@ const cents = (name: string) => integer(name);
 // Builds + parts
 // ---------------------------------------------------------------------------
 
-/** One Build per uploaded part in R1 (ADR-0001 Build Graph tables arrive in R2). */
+/**
+ * One persistent Build per creation (ADR-0001). R1 upload builds have one part and
+ * no graph rows; R2 Make AI / remix / clone builds carry a Build Graph per design
+ * version (`design_versions`, `bg_nodes`, `bg_edges`).
+ */
 export const builds = pgTable(
     'builds',
     {
@@ -121,10 +172,25 @@ export const builds = pgTable(
         name: text('name').notNull(),
         status: buildStatusEnum('status').notNull().default('DRAFT'),
         ownerEmail: text('owner_email'),
+        origin: buildOriginEnum('origin').notNull().default('upload'),
+        /** Latest design version number (graph builds). Upload builds track `parts.design_version`. */
+        currentVersion: integer('current_version').notNull().default(1),
+        derivedFromBuildId: text('derived_from_build_id'),
+        /** Make AI intent that started this build (origin = make_ai). */
+        intentId: text('intent_id'),
+        /** R2 accounts (ADR-0009): the signed-in owner. Null for guest and legacy R1 builds. */
+        ownerUserId: text('owner_user_id').references((): AnyPgColumn => users.id),
+        /** R2 accounts: sha256 of the `dm_device` cookie that created the build (guest ownership). */
+        deviceHash: text('device_hash'),
         createdAt: createdAt(),
         updatedAt: updatedAt(),
     },
-    (t) => [uniqueIndex('builds_display_id_uq').on(t.displayId)],
+    (t) => [
+        uniqueIndex('builds_display_id_uq').on(t.displayId),
+        index('builds_derived_from_idx').on(t.derivedFromBuildId),
+        index('builds_owner_user_idx').on(t.ownerUserId, t.updatedAt),
+        index('builds_device_hash_idx').on(t.deviceHash),
+    ],
 );
 
 export const parts = pgTable(
@@ -554,6 +620,8 @@ export const orders = pgTable(
         promisedShipDate: date('promised_ship_date', { mode: 'string' }).notNull(),
         /** Assigned shop once a job is accepted. */
         shopId: text('shop_id').references(() => shops.id),
+        /** R2 accounts: the signed-in buyer (set at checkout, or when a sign-in claims the order by verified email). */
+        buyerUserId: text('buyer_user_id').references((): AnyPgColumn => users.id),
         /** HMAC-SHA256(ORDER_LINK_SECRET, buyer token), hex. See src/server/auth/order-link.ts. */
         accessTokenHash: text('access_token_hash').notNull(),
         /** Journey id for domain events (ADR-0002 correlation_id). */
@@ -574,6 +642,7 @@ export const orders = pgTable(
         index('orders_status_idx').on(t.status),
         index('orders_buyer_email_idx').on(t.buyerEmail),
         index('orders_build_idx').on(t.buildId),
+        index('orders_buyer_user_idx').on(t.buyerUserId),
         check('orders_total_ck', sql`${t.totalCents} = ${t.subtotalCents} + ${t.shippingCents} + ${t.taxCents}`),
     ],
 );
@@ -918,4 +987,1869 @@ export const webhookEvents = pgTable(
         error: text('error'),
     },
     (t) => [uniqueIndex('webhook_events_provider_event_uq').on(t.provider, t.eventId)],
+);
+
+// ---------------------------------------------------------------------------
+// R2: Make AI intents + Build Graph (ADR-0001)
+// ---------------------------------------------------------------------------
+
+/** A persisted Make AI CreationIntent ("Continue to Build" turns it into a Build). No raw prompt is stored. */
+export const makeIntents = pgTable(
+    'make_intents',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('makeIntent')),
+        intent: jsonb('intent').$type<CreationIntent>().notNull(),
+        model: text('model').notNull(),
+        promptSha256: text('prompt_sha256').notNull(),
+        promptChars: integer('prompt_chars').notNull(),
+        buildId: text('build_id').references(() => builds.id),
+        createdAt: createdAt(),
+    },
+    (t) => [index('make_intents_build_idx').on(t.buildId)],
+);
+
+/** Immutable once APPROVED. Every accepted change writes a new version (copy-on-write graph). */
+export const designVersions = pgTable(
+    'design_versions',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('designVersion')),
+        buildId: text('build_id')
+            .notNull()
+            .references(() => builds.id, { onDelete: 'cascade' }),
+        version: integer('version').notNull(),
+        status: designVersionStatusEnum('status').notNull().default('DRAFT'),
+        summary: text('summary').notNull(),
+        parentVersion: integer('parent_version'),
+        createdBy: text('created_by').notNull(),
+        approvedBy: text('approved_by'),
+        approvedAt: tstz('approved_at'),
+        createdAt: createdAt(),
+    },
+    (t) => [uniqueIndex('design_versions_build_version_uq').on(t.buildId, t.version)],
+);
+
+export const bgNodes = pgTable(
+    'bg_nodes',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('bgNode')),
+        buildId: text('build_id')
+            .notNull()
+            .references(() => builds.id, { onDelete: 'cascade' }),
+        designVersion: integer('design_version').notNull(),
+        /** Stable logical key across versions, e.g. `part:body`. */
+        key: text('key').notNull(),
+        type: bgNodeTypeEnum('type').notNull(),
+        label: text('label').notNull(),
+        data: jsonb('data').$type<Record<string, unknown>>().notNull().default({}),
+        confidence: doublePrecision('confidence'),
+        source: bgSourceEnum('source').notNull(),
+        provenance: text('provenance'),
+        createdAt: createdAt(),
+    },
+    (t) => [
+        uniqueIndex('bg_nodes_version_key_uq').on(t.buildId, t.designVersion, t.key),
+        index('bg_nodes_build_type_idx').on(t.buildId, t.type),
+        index('bg_nodes_data_gin').using('gin', t.data),
+        check('bg_nodes_confidence_ck', sql`${t.confidence} is null or (${t.confidence} >= 0 and ${t.confidence} <= 1)`),
+    ],
+);
+
+export const bgEdges = pgTable(
+    'bg_edges',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('bgEdge')),
+        buildId: text('build_id')
+            .notNull()
+            .references(() => builds.id, { onDelete: 'cascade' }),
+        designVersion: integer('design_version').notNull(),
+        type: bgEdgeTypeEnum('type').notNull(),
+        fromKey: text('from_key').notNull(),
+        toKey: text('to_key').notNull(),
+        data: jsonb('data').$type<Record<string, unknown>>().notNull().default({}),
+        createdAt: createdAt(),
+    },
+    (t) => [
+        uniqueIndex('bg_edges_version_uq').on(t.buildId, t.designVersion, t.type, t.fromKey, t.toKey),
+        index('bg_edges_from_idx').on(t.buildId, t.designVersion, t.fromKey),
+    ],
+);
+
+// ---------------------------------------------------------------------------
+// R2: Sourcing bridge (ADR-0005, workflow 03)
+// ---------------------------------------------------------------------------
+
+/** An MCP client allowed to call the Sourcing MCP server (one per Accio Work workspace). Token stored as sha256 only. */
+export const sourcingClients = pgTable(
+    'sourcing_clients',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('sourcingClient')),
+        name: text('name').notNull(),
+        tokenHash: text('token_hash').notNull(),
+        lastUsedAt: tstz('last_used_at'),
+        revokedAt: tstz('revoked_at'),
+        /** Stage 1 allowlist: MCP tool short names this workspace may list and call (null = all nine). */
+        allowedTools: text('allowed_tools').array(),
+        /** Stage 1 allowlist: client IP ranges (CIDR) the token is accepted from (null = any). */
+        allowedCidrs: text('allowed_cidrs').array(),
+        createdAt: createdAt(),
+    },
+    (t) => [uniqueIndex('sourcing_clients_token_hash_uq').on(t.tokenHash)],
+);
+
+export const sourcingJobs = pgTable(
+    'sourcing_jobs',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('sourcingJob')),
+        displayId: text('display_id').notNull(),
+        buildId: text('build_id')
+            .notNull()
+            .references(() => builds.id),
+        partId: text('part_id').references(() => parts.id),
+        designVersion: integer('design_version').notNull(),
+        /** The SourcingRequest handed to the agent, frozen at creation. */
+        request: jsonb('request').$type<SourcingRequest>().notNull(),
+        approvalPolicy: jsonb('approval_policy').$type<ApprovalPolicy>().notNull(),
+        status: sourcingJobStatusEnum('status').notNull().default('QUEUED'),
+        channel: sourcingChannelEnum('channel').notNull().default('accio'),
+        priority: integer('priority').notNull().default(0),
+        leaseId: uuid('lease_id'),
+        leasedByClientId: text('leased_by_client_id').references(() => sourcingClients.id),
+        leaseExpiresAt: tstz('lease_expires_at'),
+        leaseCount: integer('lease_count').notNull().default(0),
+        summary: text('summary'),
+        outcome: text('outcome'),
+        createdBy: text('created_by').notNull(),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+        completedAt: tstz('completed_at'),
+    },
+    (t) => [
+        uniqueIndex('sourcing_jobs_display_id_uq').on(t.displayId),
+        index('sourcing_jobs_queue_idx').on(t.status, t.priority, t.createdAt),
+        index('sourcing_jobs_build_idx').on(t.buildId),
+    ],
+);
+
+export const suppliers = pgTable(
+    'suppliers',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('supplier')),
+        name: text('name').notNull(),
+        platform: text('platform').notNull(),
+        platformRef: text('platform_ref'),
+        country: text('country').notNull(),
+        verified: boolean('verified').notNull().default(false),
+        profileUrl: text('profile_url'),
+        capabilities: jsonb('capabilities').$type<string[]>().notNull().default([]),
+        createdBy: text('created_by').notNull(),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [
+        uniqueIndex('suppliers_platform_ref_uq')
+            .on(t.platform, t.platformRef)
+            .where(sql`${t.platformRef} is not null`),
+    ],
+);
+
+export const supplierEvidence = pgTable(
+    'supplier_evidence',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('supplierEvidence')),
+        supplierId: text('supplier_id')
+            .notNull()
+            .references(() => suppliers.id, { onDelete: 'cascade' }),
+        jobId: text('job_id').references(() => sourcingJobs.id),
+        evidence: jsonb('evidence').$type<SupplierEvidenceInput>().notNull(),
+        createdAt: createdAt(),
+    },
+    (t) => [index('supplier_evidence_supplier_idx').on(t.supplierId)],
+);
+
+export const supplierOffers = pgTable(
+    'supplier_offers',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('supplierOffer')),
+        jobId: text('job_id')
+            .notNull()
+            .references(() => sourcingJobs.id),
+        supplierId: text('supplier_id')
+            .notNull()
+            .references(() => suppliers.id),
+        buildId: text('build_id')
+            .notNull()
+            .references(() => builds.id),
+        designVersion: integer('design_version').notNull(),
+        idempotencyKey: text('idempotency_key').notNull(),
+        quantity: integer('quantity').notNull(),
+        currency: text('currency').notNull().default('usd'),
+        unitPriceCents: cents('unit_price_cents').notNull(),
+        toolingCents: cents('tooling_cents').notNull().default(0),
+        sampleCostCents: cents('sample_cost_cents'),
+        shippingCents: cents('shipping_cents'),
+        moq: integer('moq').notNull(),
+        productionLeadDays: integer('production_lead_days').notNull(),
+        shippingLeadDays: integer('shipping_lead_days').notNull(),
+        incoterm: incotermEnum('incoterm').notNull(),
+        material: text('material').notNull(),
+        processes: jsonb('processes').$type<string[]>().notNull(),
+        certificationsClaimed: jsonb('certifications_claimed').$type<string[]>().notNull().default([]),
+        exceptions: jsonb('exceptions').$type<string[]>().notNull().default([]),
+        confidence: doublePrecision('confidence').notNull(),
+        negotiationStatus: negotiationStatusEnum('negotiation_status').notNull(),
+        trustLevel: trustLevelEnum('trust_level').notNull(),
+        status: supplierOfferStatusEnum('status').notNull().default('ACTIVE'),
+        validUntil: tstz('valid_until'),
+        /** The validated tool input, kept verbatim for audit. */
+        raw: jsonb('raw').$type<SubmitOfferInput>().notNull(),
+        submittedBy: text('submitted_by').notNull(),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [
+        uniqueIndex('supplier_offers_idempotency_uq').on(t.jobId, t.idempotencyKey),
+        index('supplier_offers_build_idx').on(t.buildId, t.status),
+        check('supplier_offers_confidence_ck', sql`${t.confidence} >= 0 and ${t.confidence} <= 1`),
+        check('supplier_offers_trust_ck', sql`${t.trustLevel} in ('SUPPLIER_ESTIMATE', 'SUPPLIER_CONFIRMED')`),
+    ],
+);
+
+export const sourcingNegotiations = pgTable(
+    'sourcing_negotiations',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('negotiation')),
+        jobId: text('job_id')
+            .notNull()
+            .references(() => sourcingJobs.id),
+        supplierId: text('supplier_id')
+            .notNull()
+            .references(() => suppliers.id),
+        status: negotiationStatusEnum('status').notNull(),
+        /** Append-only notes: [{ at, status, note }]. */
+        notes: jsonb('notes').$type<{ at: string; status: string; note: string }[]>().notNull().default([]),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [uniqueIndex('sourcing_negotiations_job_supplier_uq').on(t.jobId, t.supplierId)],
+);
+
+export const sourcingDocuments = pgTable(
+    'sourcing_documents',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('sourcingDocument')),
+        jobId: text('job_id')
+            .notNull()
+            .references(() => sourcingJobs.id),
+        supplierId: text('supplier_id').references(() => suppliers.id),
+        kind: sourcingDocumentKindEnum('kind').notNull(),
+        fileKey: text('file_key').notNull(),
+        filename: text('filename').notNull(),
+        contentType: text('content_type').notNull(),
+        sizeBytes: integer('size_bytes').notNull(),
+        sha256: text('sha256').notNull(),
+        uploadedBy: text('uploaded_by').notNull(),
+        createdAt: createdAt(),
+    },
+    (t) => [index('sourcing_documents_job_idx').on(t.jobId)],
+);
+
+/** Human decisions at the approval boundary (ADR-0005). Agents can only create PENDING rows. */
+export const approvals = pgTable(
+    'approvals',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('approval')),
+        jobId: text('job_id').references(() => sourcingJobs.id),
+        buildId: text('build_id')
+            .notNull()
+            .references(() => builds.id),
+        kind: approvalKindEnum('kind').notNull(),
+        status: approvalStatusEnum('status').notNull().default('PENDING'),
+        approverRole: approverRoleEnum('approver_role').notNull(),
+        requestedBy: text('requested_by').notNull(),
+        supplierId: text('supplier_id').references(() => suppliers.id),
+        supplierOfferId: text('supplier_offer_id').references(() => supplierOffers.id),
+        reason: text('reason').notNull(),
+        details: jsonb('details').$type<Record<string, unknown>>().notNull().default({}),
+        decidedBy: text('decided_by'),
+        decisionNote: text('decision_note'),
+        decidedAt: tstz('decided_at'),
+        expiresAt: tstz('expires_at'),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [
+        index('approvals_pending_idx')
+            .on(t.approverRole, t.createdAt)
+            .where(sql`${t.status} = 'PENDING'`),
+        index('approvals_job_idx').on(t.jobId),
+        index('approvals_build_idx').on(t.buildId),
+    ],
+);
+
+/** Every signed package URL handed to a sourcing agent. */
+export const sourcingAccessLog = pgTable(
+    'sourcing_access_log',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('sourcingAudit')),
+        jobId: text('job_id')
+            .notNull()
+            .references(() => sourcingJobs.id),
+        clientId: text('client_id').references(() => sourcingClients.id),
+        supplierId: text('supplier_id').references(() => suppliers.id),
+        tier: packageTierEnum('tier').notNull(),
+        fileKey: text('file_key').notNull(),
+        expiresAt: tstz('expires_at').notNull(),
+        createdAt: createdAt(),
+    },
+    (t) => [index('sourcing_access_log_job_idx').on(t.jobId)],
+);
+
+/** Audit log of every MCP tool call (args hashed, never stored raw). */
+export const sourcingToolCalls = pgTable(
+    'sourcing_tool_calls',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('sourcingAudit')),
+        clientId: text('client_id').references(() => sourcingClients.id),
+        tool: text('tool').notNull(),
+        jobId: text('job_id'),
+        ok: boolean('ok').notNull(),
+        errorCode: text('error_code'),
+        argsSha256: text('args_sha256').notNull(),
+        durationMs: integer('duration_ms').notNull(),
+        createdAt: createdAt(),
+    },
+    (t) => [index('sourcing_tool_calls_client_idx').on(t.clientId, t.createdAt)],
+);
+
+// ---------------------------------------------------------------------------
+// R2 accounts (ADR-0009): users, sessions, passkeys, sign-in challenges, OIDC links,
+// guest device preferences, follows. Builds and orders gain owner columns above
+// (`builds.owner_user_id`, `builds.device_hash`, `orders.buyer_user_id`).
+// ---------------------------------------------------------------------------
+
+export const AUTH_CHALLENGE_KINDS = ['email', 'passkey_register', 'passkey_login', 'oauth'] as const;
+export const authChallengeKindEnum = pgEnum('auth_challenge_kind', AUTH_CHALLENGE_KINDS);
+
+export const users = pgTable(
+    'users',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('user')),
+        /** Always stored lowercased (checked). */
+        email: text('email').notNull(),
+        emailVerifiedAt: tstz('email_verified_at'),
+        displayName: text('display_name'),
+        /** Public creator handle; unique when set. */
+        handle: text('handle'),
+        roles: text('roles').array().$type<UserRole[]>().notNull().default(sql`'{buyer}'::text[]`),
+        intent: text('intent').$type<OnboardingIntent>(),
+        interests: jsonb('interests').$type<InterestSlug[]>().notNull().default([]),
+        onboardedAt: tstz('onboarded_at'),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [
+        uniqueIndex('users_email_uq').on(t.email),
+        uniqueIndex('users_handle_uq')
+            .on(t.handle)
+            .where(sql`${t.handle} is not null`),
+        check('users_email_lower_ck', sql`${t.email} = lower(${t.email})`),
+    ],
+);
+
+/** `dm_session` cookie holds a random secret; only its sha256 is stored. */
+export const userSessions = pgTable(
+    'user_sessions',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('userSession')),
+        userId: text('user_id')
+            .notNull()
+            .references(() => users.id, { onDelete: 'cascade' }),
+        secretHash: text('secret_hash').notNull(),
+        /** sha256 of the `dm_device` cookie the session was created on (device ownership checks). */
+        deviceHash: text('device_hash'),
+        createdAt: createdAt(),
+        expiresAt: tstz('expires_at').notNull(),
+        lastSeenAt: tstz('last_seen_at'),
+        userAgent: text('user_agent'),
+        revokedAt: tstz('revoked_at'),
+    },
+    (t) => [uniqueIndex('user_sessions_secret_hash_uq').on(t.secretHash), index('user_sessions_user_idx').on(t.userId), index('user_sessions_device_idx').on(t.deviceHash)],
+);
+
+/** WebAuthn credentials (discoverable). `id` is the base64url credential id. */
+export const passkeys = pgTable(
+    'passkeys',
+    {
+        id: text('id').primaryKey(),
+        userId: text('user_id')
+            .notNull()
+            .references(() => users.id, { onDelete: 'cascade' }),
+        /** COSE public key, base64url. */
+        publicKey: text('public_key').notNull(),
+        counter: integer('counter').notNull().default(0),
+        transports: text('transports').array().$type<string[]>().notNull().default(sql`'{}'::text[]`),
+        deviceType: text('device_type').notNull(),
+        backedUp: boolean('backed_up').notNull().default(false),
+        name: text('name').notNull(),
+        createdAt: createdAt(),
+        lastUsedAt: tstz('last_used_at'),
+    },
+    (t) => [index('passkeys_user_idx').on(t.userId)],
+);
+
+/** One-shot sign-in challenges: email codes (HMAC-hashed), WebAuthn challenges. */
+export const authChallenges = pgTable(
+    'auth_challenges',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('authChallenge')),
+        kind: authChallengeKindEnum('kind').notNull(),
+        email: text('email'),
+        userId: text('user_id').references(() => users.id, { onDelete: 'cascade' }),
+        /** HMAC-SHA256(AUTH_SECRET, "<id>.<code>") for email codes. */
+        codeHash: text('code_hash'),
+        /** WebAuthn challenge (base64url). */
+        challenge: text('challenge'),
+        attempts: integer('attempts').notNull().default(0),
+        expiresAt: tstz('expires_at').notNull(),
+        consumedAt: tstz('consumed_at'),
+        createdAt: createdAt(),
+    },
+    (t) => [index('auth_challenges_email_idx').on(t.email, t.createdAt), index('auth_challenges_user_idx').on(t.userId, t.kind)],
+);
+
+export const oauthAccounts = pgTable(
+    'oauth_accounts',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('oauthAccount')),
+        provider: text('provider').notNull(),
+        providerUserId: text('provider_user_id').notNull(),
+        userId: text('user_id')
+            .notNull()
+            .references(() => users.id, { onDelete: 'cascade' }),
+        createdAt: createdAt(),
+    },
+    (t) => [uniqueIndex('oauth_accounts_provider_user_uq').on(t.provider, t.providerUserId), index('oauth_accounts_user_idx').on(t.userId)],
+);
+
+/** Guest onboarding answers, keyed by the device cookie hash. Merged into the user at sign-in. */
+export const devicePreferences = pgTable('device_preferences', {
+    deviceHash: text('device_hash').primaryKey(),
+    intent: text('intent').$type<OnboardingIntent>(),
+    interests: jsonb('interests').$type<InterestSlug[]>().notNull().default([]),
+    onboardedAt: tstz('onboarded_at'),
+    updatedAt: updatedAt(),
+});
+
+export const buildFollows = pgTable(
+    'build_follows',
+    {
+        userId: text('user_id')
+            .notNull()
+            .references(() => users.id, { onDelete: 'cascade' }),
+        buildId: text('build_id')
+            .notNull()
+            .references(() => builds.id, { onDelete: 'cascade' }),
+        createdAt: createdAt(),
+    },
+    (t) => [primaryKey({ columns: [t.userId, t.buildId] }), index('build_follows_build_idx').on(t.buildId)],
+);
+
+// ---------------------------------------------------------------------------
+// R2 build attachments (100-1)
+// ---------------------------------------------------------------------------
+
+/** Keep in sync with ATTACHMENT_KINDS in src/contracts/workspace.ts. */
+export const buildAttachmentKindEnum = pgEnum('build_attachment_kind', ['image', 'cad']);
+
+/**
+ * Reference images and CAD files attached to a build (the Build Workspace attachment tray).
+ * A row is created with the signed upload URL; `sha256` stays null until the bytes are
+ * verified (size cap + magic bytes), so a null sha256 means "upload not verified yet".
+ * Bytes live at `storage_key` = `builds/<buildId>/attachments/<attId>/<safe filename>`.
+ * Deletes are soft (`deleted_at`); the object is removed from storage at delete time.
+ */
+export const buildAttachments = pgTable(
+    'build_attachments',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('buildAttachment')),
+        buildId: text('build_id')
+            .notNull()
+            .references(() => builds.id, { onDelete: 'cascade' }),
+        /** The build's current design version when the file was attached. */
+        designVersion: integer('design_version').notNull(),
+        kind: buildAttachmentKindEnum('kind').notNull(),
+        filename: text('filename').notNull(),
+        contentType: text('content_type').notNull(),
+        sizeBytes: integer('size_bytes').notNull(),
+        sha256: text('sha256'),
+        storageKey: text('storage_key').notNull(),
+        /** Part created by "Use as a part" (DXF attachments). */
+        partId: text('part_id').references(() => parts.id),
+        /** Owner once R2 accounts exist; null for guests. */
+        createdByUserId: text('created_by_user_id'),
+        /** sha256 of the guest device cookie, when present. */
+        deviceHash: text('device_hash'),
+        createdAt: createdAt(),
+        deletedAt: tstz('deleted_at'),
+    },
+    (t) => [
+        index('build_attachments_build_idx')
+            .on(t.buildId, t.createdAt)
+            .where(sql`${t.deletedAt} is null`),
+        check('build_attachments_size_ck', sql`${t.sizeBytes} > 0 and ${t.sizeBytes} <= 52428800`),
+    ],
+);
+
+// ---------------------------------------------------------------------------
+// R2 passport replacements (1000-3)
+// ---------------------------------------------------------------------------
+
+/**
+ * Traceability for "Order a replacement" on a Product Passport: each replacement quote points
+ * back at the passport it came from (`quotes` has no metadata column, so this side table holds
+ * it). The replacement part lives on its own build (a copy of the passport's verified file), so
+ * the original build's private state is never reachable from a public passport.
+ */
+export const passportReplacements = pgTable(
+    'passport_replacements',
+    {
+        quoteId: text('quote_id')
+            .primaryKey()
+            .references(() => quotes.id),
+        replacementOfPassportId: text('replacement_of_passport_id')
+            .notNull()
+            .references(() => passports.id),
+        partId: text('part_id')
+            .notNull()
+            .references(() => parts.id),
+        buildId: text('build_id')
+            .notNull()
+            .references(() => builds.id),
+        /** The quote the passport was issued for (what was actually made). */
+        sourceQuoteId: text('source_quote_id').notNull(),
+        quantity: integer('quantity').notNull(),
+        deviceHash: text('device_hash'),
+        createdAt: createdAt(),
+    },
+    (t) => [index('passport_replacements_passport_idx').on(t.replacementOfPassportId, t.createdAt)],
+);
+
+// ---------------------------------------------------------------------------
+// Rate limiting (Stage 1 hardening): shared buckets for every instance
+// ---------------------------------------------------------------------------
+
+/**
+ * One row per (limiter, key): a fixed window (`count` until `expires_at`) or a token bucket
+ * (`tokens` at `updated_at`). Written by one atomic upsert per hit (src/server/rate-limit);
+ * `key_hash` is the sha256 of the limited key (an IP or client id), never the key itself.
+ * Rows past `expires_at` are equivalent to a fresh bucket and are swept periodically.
+ */
+export const rateLimitBuckets = pgTable(
+    'rate_limit_buckets',
+    {
+        bucket: text('bucket').notNull(),
+        keyHash: text('key_hash').notNull(),
+        count: integer('count').notNull().default(0),
+        tokens: doublePrecision('tokens').notNull().default(0),
+        allowed: boolean('allowed').notNull().default(true),
+        updatedAt: tstz('updated_at').notNull().defaultNow(),
+        expiresAt: tstz('expires_at').notNull(),
+    },
+    (t) => [uniqueIndex('rate_limit_buckets_key_uq').on(t.bucket, t.keyHash), index('rate_limit_buckets_expires_idx').on(t.expiresAt)],
+);
+
+// ---------------------------------------------------------------------------
+// R4 Live (workflow 06, ADR-0003)
+// ---------------------------------------------------------------------------
+//
+// User references are plain `text` user ids (no FK): the `users` table belongs to the
+// R2 accounts module. Channel owner display data is denormalized onto the channel row.
+
+export const channelKindEnum = pgEnum('channel_kind', CHANNEL_KINDS);
+export const showStatusEnum = pgEnum('show_status', SHOW_STATUSES);
+export const showFormatEnum = pgEnum('show_format', SHOW_FORMATS);
+export const dropStatusEnum = pgEnum('drop_status', DROP_STATUSES);
+export const slotClaimStatusEnum = pgEnum('slot_claim_status', SLOT_CLAIM_STATUSES);
+
+/** Human show numbers: shows.display_number -> `LIVE-<n>`. */
+export const liveShowNumberSeq = pgSequence('live_show_number_seq', { startWith: 100, increment: 1 });
+
+export const channels = pgTable(
+    'channels',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('channel')),
+        handle: text('handle').notNull(),
+        name: text('name').notNull(),
+        kind: channelKindEnum('kind').notNull().default('creator'),
+        categories: jsonb('categories').$type<ChannelCategory[]>().notNull().default([]),
+        bio: text('bio'),
+        /** Owning user (accounts module). Null for partner-shop / platform channels. */
+        ownerUserId: text('owner_user_id'),
+        ownerDisplayName: text('owner_display_name'),
+        ownerEmail: text('owner_email'),
+        /** Partner shop behind a factory channel, when there is one. */
+        shopId: text('shop_id').references(() => shops.id),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [
+        uniqueIndex('channels_handle_uq').on(t.handle),
+        uniqueIndex('channels_owner_uq')
+            .on(t.ownerUserId)
+            .where(sql`${t.ownerUserId} is not null`),
+    ],
+);
+
+export const channelFollows = pgTable(
+    'channel_follows',
+    {
+        channelId: text('channel_id')
+            .notNull()
+            .references(() => channels.id, { onDelete: 'cascade' }),
+        userId: text('user_id').notNull(),
+        createdAt: createdAt(),
+    },
+    (t) => [primaryKey({ columns: [t.channelId, t.userId] }), index('channel_follows_user_idx').on(t.userId)],
+);
+
+export const shows = pgTable(
+    'shows',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('show')),
+        displayNumber: integer('display_number')
+            .notNull()
+            .default(sql`nextval('live_show_number_seq')`),
+        channelId: text('channel_id')
+            .notNull()
+            .references(() => channels.id, { onDelete: 'cascade' }),
+        title: text('title').notNull(),
+        format: showFormatEnum('format').notNull(),
+        status: showStatusEnum('status').notNull().default('SCHEDULED'),
+        scheduledFor: tstz('scheduled_for').notNull(),
+        startedAt: tstz('started_at'),
+        endedAt: tstz('ended_at'),
+        /** External HLS source (Owncast / MediaMTX) chosen by the creator. */
+        hlsUrl: text('hls_url'),
+        /** Recorded replay (LiveKit egress or an uploaded MP4 / HLS), used once the show ENDED. */
+        replayUrl: text('replay_url'),
+        /** LiveKit room name when LiveKit is configured at start_show. */
+        livekitRoom: text('livekit_room'),
+        thumbnailUrl: text('thumbnail_url'),
+        viewerCount: integer('viewer_count').notNull().default(0),
+        peakViewers: integer('peak_viewers').notNull().default(0),
+        likeCount: integer('like_count').notNull().default(0),
+        /** Last assigned Live Build Protocol seq (advanced under this row's lock). */
+        lastSeq: integer('last_seq').notNull().default(0),
+        /** Build currently in focus (last `product.focus`). */
+        featuredBuildId: text('featured_build_id').references(() => builds.id),
+        slowModeSeconds: integer('slow_mode_seconds').notNull().default(0),
+        createdBy: text('created_by').notNull(),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [
+        uniqueIndex('shows_display_number_uq').on(t.displayNumber),
+        index('shows_channel_idx').on(t.channelId, t.scheduledFor),
+        index('shows_status_idx').on(t.status, t.scheduledFor),
+        check('shows_counts_ck', sql`${t.viewerCount} >= 0 and ${t.likeCount} >= 0 and ${t.lastSeq} >= 0`),
+    ],
+);
+
+export const showFeaturedBuilds = pgTable(
+    'show_featured_builds',
+    {
+        showId: text('show_id')
+            .notNull()
+            .references(() => shows.id, { onDelete: 'cascade' }),
+        buildId: text('build_id')
+            .notNull()
+            .references(() => builds.id),
+        position: integer('position').notNull().default(0),
+        createdAt: createdAt(),
+    },
+    (t) => [primaryKey({ columns: [t.showId, t.buildId] })],
+);
+
+/**
+ * The Live Build Protocol log. Append-only: one row per event, `seq` monotonic per show
+ * (assigned under the show row lock), `stream_ts_ms` = position in the broadcast.
+ * Commerce-affecting events carry an HMAC `sig` (LIVE_EVENT_SIGNING_SECRET).
+ */
+export const liveEvents = pgTable(
+    'live_events',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('liveEvent')),
+        showId: text('show_id')
+            .notNull()
+            .references(() => shows.id, { onDelete: 'cascade' }),
+        seq: integer('seq').notNull(),
+        streamTsMs: integer('stream_ts_ms').notNull(),
+        event: text('event').$type<LiveEventType>().notNull(),
+        actorKind: text('actor_kind').$type<LiveActorKind>().notNull(),
+        actorId: text('actor_id').notNull(),
+        actorName: text('actor_name'),
+        buildId: text('build_id'),
+        designVersion: integer('design_version'),
+        payload: jsonb('payload').$type<Record<string, unknown>>().notNull().default({}),
+        at: tstz('at').notNull(),
+        sig: text('sig'),
+    },
+    (t) => [uniqueIndex('live_events_show_seq_uq').on(t.showId, t.seq), index('live_events_show_event_idx').on(t.showId, t.event)],
+);
+
+export const liveQuestions = pgTable(
+    'live_questions',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('liveQuestion')),
+        showId: text('show_id')
+            .notNull()
+            .references(() => shows.id, { onDelete: 'cascade' }),
+        mode: text('mode').$type<'creator' | 'make_ai'>().notNull(),
+        text: text('text').notNull(),
+        askedByUserId: text('asked_by_user_id').notNull(),
+        askedByName: text('asked_by_name').notNull(),
+        answer: text('answer'),
+        answeredBy: text('answered_by').$type<'host' | 'make_ai'>(),
+        answeredAt: tstz('answered_at'),
+        /** Build the question was about (in focus when it was asked). */
+        buildId: text('build_id'),
+        createdAt: createdAt(),
+    },
+    (t) => [index('live_questions_show_idx').on(t.showId, t.createdAt)],
+);
+
+export const livePolls = pgTable(
+    'live_polls',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('livePoll')),
+        showId: text('show_id')
+            .notNull()
+            .references(() => shows.id, { onDelete: 'cascade' }),
+        question: text('question').notNull(),
+        options: jsonb('options').$type<string[]>().notNull(),
+        status: text('status').$type<'OPEN' | 'CLOSED'>().notNull().default('OPEN'),
+        createdBy: text('created_by').notNull(),
+        closedAt: tstz('closed_at'),
+        createdAt: createdAt(),
+    },
+    (t) => [index('live_polls_show_idx').on(t.showId, t.createdAt)],
+);
+
+export const livePollVotes = pgTable(
+    'live_poll_votes',
+    {
+        pollId: text('poll_id')
+            .notNull()
+            .references(() => livePolls.id, { onDelete: 'cascade' }),
+        userId: text('user_id').notNull(),
+        optionIndex: integer('option_index').notNull(),
+        createdAt: createdAt(),
+    },
+    (t) => [primaryKey({ columns: [t.pollId, t.userId] }), check('live_poll_votes_option_ck', sql`${t.optionIndex} >= 0 and ${t.optionIndex} < 4`)],
+);
+
+export const liveMutes = pgTable(
+    'live_mutes',
+    {
+        showId: text('show_id')
+            .notNull()
+            .references(() => shows.id, { onDelete: 'cascade' }),
+        userId: text('user_id').notNull(),
+        until: tstz('until').notNull(),
+        createdBy: text('created_by').notNull(),
+        createdAt: createdAt(),
+    },
+    (t) => [primaryKey({ columns: [t.showId, t.userId] })],
+);
+
+/** One like per signed-in viewer per show. */
+export const showLikes = pgTable(
+    'show_likes',
+    {
+        showId: text('show_id')
+            .notNull()
+            .references(() => shows.id, { onDelete: 'cascade' }),
+        userId: text('user_id').notNull(),
+        createdAt: createdAt(),
+    },
+    (t) => [primaryKey({ columns: [t.showId, t.userId] })],
+);
+
+/** Who is watching (SSE heartbeats); feeds viewer counts when LiveKit is not configured. */
+export const livePresence = pgTable(
+    'live_presence',
+    {
+        showId: text('show_id')
+            .notNull()
+            .references(() => shows.id, { onDelete: 'cascade' }),
+        viewerKey: text('viewer_key').notNull(),
+        lastSeenAt: tstz('last_seen_at').notNull().defaultNow(),
+    },
+    (t) => [primaryKey({ columns: [t.showId, t.viewerKey] }), index('live_presence_seen_idx').on(t.showId, t.lastSeenAt)],
+);
+
+/**
+ * A limited production run sold as Build Slots. `claimed_slots` is maintained under this
+ * row's lock (fair queue) and never exceeds `total_slots` (check). `quote_id` is the
+ * orderable BINDING quote at quantity = threshold_slots that proves the price covers cost.
+ */
+export const drops = pgTable(
+    'drops',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('drop')),
+        showId: text('show_id').references(() => shows.id),
+        channelId: text('channel_id')
+            .notNull()
+            .references(() => channels.id),
+        buildId: text('build_id')
+            .notNull()
+            .references(() => builds.id),
+        quoteId: text('quote_id')
+            .notNull()
+            .references(() => quotes.id),
+        title: text('title').notNull(),
+        priceCents: cents('price_cents').notNull(),
+        currency: text('currency').notNull().default('usd'),
+        totalSlots: integer('total_slots').notNull(),
+        thresholdSlots: integer('threshold_slots').notNull(),
+        perBuyerLimit: integer('per_buyer_limit').notNull(),
+        claimedSlots: integer('claimed_slots').notNull().default(0),
+        status: dropStatusEnum('status').notNull().default('OPEN'),
+        opensAt: tstz('opens_at').notNull(),
+        closesAt: tstz('closes_at').notNull(),
+        endingNotifiedAt: tstz('ending_notified_at'),
+        closedAt: tstz('closed_at'),
+        createdBy: text('created_by').notNull(),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [
+        index('drops_show_idx').on(t.showId),
+        index('drops_open_idx')
+            .on(t.closesAt)
+            .where(sql`${t.status} = 'OPEN'`),
+        check('drops_slots_ck', sql`${t.claimedSlots} >= 0 and ${t.claimedSlots} <= ${t.totalSlots} and ${t.thresholdSlots} <= ${t.totalSlots}`),
+    ],
+);
+
+export const slotClaims = pgTable(
+    'slot_claims',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('slotClaim')),
+        dropId: text('drop_id')
+            .notNull()
+            .references(() => drops.id),
+        userId: text('user_id').notNull(),
+        buyerEmail: text('buyer_email').notNull(),
+        quantity: integer('quantity').notNull(),
+        status: slotClaimStatusEnum('status').notNull().default('RESERVED'),
+        orderId: text('order_id')
+            .notNull()
+            .references(() => orders.id),
+        /** Where the buyer authorizes the hold (Stripe Checkout or the dev pay page). */
+        checkoutUrl: text('checkout_url'),
+        idempotencyKey: text('idempotency_key'),
+        /** Unauthorized claims expire at this time and their slots return to the drop. */
+        expiresAt: tstz('expires_at').notNull(),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [
+        index('slot_claims_drop_idx').on(t.dropId, t.status),
+        index('slot_claims_user_idx').on(t.userId),
+        uniqueIndex('slot_claims_order_uq').on(t.orderId),
+        uniqueIndex('slot_claims_idempotency_uq')
+            .on(t.dropId, t.userId, t.idempotencyKey)
+            .where(sql`${t.idempotencyKey} is not null`),
+        check('slot_claims_quantity_ck', sql`${t.quantity} > 0`),
+    ],
+);
+
+// ---------------------------------------------------------------------------
+// R3 Prime ordering + promise (docs/architecture/r3-prime.md)
+// ---------------------------------------------------------------------------
+
+export const supplierLegStatusEnum = pgEnum('supplier_leg_status', SUPPLIER_LEG_STATUSES);
+export const promiseLegEnum = pgEnum('promise_leg', PROMISE_LEGS);
+export const promiseStatusEnum = pgEnum('promise_status', PROMISE_STATUSES);
+export const creditStatusEnum = pgEnum('credit_status', CREDIT_STATUSES);
+export const paymentPlanKindEnum = pgEnum('payment_plan_kind', PAYMENT_PLAN_KINDS);
+export const shopStockKindEnum = pgEnum('shop_stock_kind', SHOP_STOCK_KINDS);
+
+/**
+ * Partner shops that receive supplier freight (QA at receipt, then ship to the buyer).
+ * Owner input: which partners receive. A supplier-route quote is only made when one is active.
+ */
+export const receivingSites = pgTable('receiving_sites', {
+    shopId: text('shop_id')
+        .primaryKey()
+        .references(() => shops.id, { onDelete: 'cascade' }),
+    active: boolean('active').notNull().default(true),
+    /** Fee per inbound receipt + inspection (cents), paid to the partner like a shop payout. */
+    receivingFeeCents: cents('receiving_fee_cents').notNull().default(4500),
+    /** Per-unit handling for count/visual inspection and repacking (cents). */
+    perUnitCents: cents('per_unit_cents').notNull().default(15),
+    notes: text('notes'),
+    createdAt: createdAt(),
+    updatedAt: updatedAt(),
+});
+
+/**
+ * A BINDING supplier-route quote: 1:1 with its `quotes` row (route = supplier), with the
+ * full composition (source, timestamp, validity, confidence, supplier status, assumptions,
+ * excluded costs, design version). Ops-only: buyers see the quotes row through QuoteView.
+ */
+export const supplierQuotes = pgTable(
+    'supplier_quotes',
+    {
+        quoteId: text('quote_id')
+            .primaryKey()
+            .references(() => quotes.id, { onDelete: 'cascade' }),
+        offerId: text('offer_id')
+            .notNull()
+            .references(() => supplierOffers.id),
+        jobId: text('job_id')
+            .notNull()
+            .references(() => sourcingJobs.id),
+        supplierId: text('supplier_id')
+            .notNull()
+            .references(() => suppliers.id),
+        selectionApprovalId: text('selection_approval_id')
+            .notNull()
+            .references(() => approvals.id),
+        receivingShopId: text('receiving_shop_id').references(() => shops.id),
+        composition: jsonb('composition').$type<SupplierQuoteComposition>().notNull(),
+        riskScore: doublePrecision('risk_score').notNull(),
+        depositPct: doublePrecision('deposit_pct').notNull(),
+        createdAt: createdAt(),
+    },
+    (t) => [index('supplier_quotes_offer_idx').on(t.offerId), check('supplier_quotes_deposit_ck', sql`${t.depositPct} >= 0 and ${t.depositPct} <= 1`)],
+);
+
+/**
+ * How an order is paid. Absent row = FULL with no credit (every R1 order).
+ * DEPOSIT_BALANCE: deposit at checkout, balance when the order is ready to ship.
+ * Invariant: deposit + balance = order total; credit is applied to the first charge.
+ */
+export const orderPaymentPlans = pgTable(
+    'order_payment_plans',
+    {
+        orderId: text('order_id')
+            .primaryKey()
+            .references(() => orders.id, { onDelete: 'cascade' }),
+        kind: paymentPlanKindEnum('kind').notNull(),
+        depositCents: cents('deposit_cents').notNull(),
+        balanceCents: cents('balance_cents').notNull().default(0),
+        creditCents: cents('credit_cents').notNull().default(0),
+        creditId: text('credit_id'),
+        depositPaymentId: text('deposit_payment_id'),
+        balancePaymentId: text('balance_payment_id'),
+        depositPaidAt: tstz('deposit_paid_at'),
+        balanceRequestedAt: tstz('balance_requested_at'),
+        balancePaidAt: tstz('balance_paid_at'),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [check('order_payment_plans_amounts_ck', sql`${t.depositCents} >= 0 and ${t.balanceCents} >= 0 and ${t.creditCents} >= 0 and ${t.creditCents} <= ${t.depositCents}`)],
+);
+
+/** Supplier fulfilment leg: created only by an APPROVED PLACE_PURCHASE_ORDER approval. */
+export const supplierLegs = pgTable(
+    'supplier_legs',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('supplierLeg')),
+        orderId: text('order_id')
+            .notNull()
+            .references(() => orders.id),
+        quoteId: text('quote_id')
+            .notNull()
+            .references(() => quotes.id),
+        offerId: text('offer_id')
+            .notNull()
+            .references(() => supplierOffers.id),
+        jobId: text('job_id')
+            .notNull()
+            .references(() => sourcingJobs.id),
+        supplierId: text('supplier_id')
+            .notNull()
+            .references(() => suppliers.id),
+        poApprovalId: text('po_approval_id')
+            .notNull()
+            .references(() => approvals.id),
+        depositApprovalId: text('deposit_approval_id').references(() => approvals.id),
+        supplierDepositCents: cents('supplier_deposit_cents').notNull().default(0),
+        poNumber: text('po_number').notNull(),
+        incoterm: incotermEnum('incoterm').notNull(),
+        directShip: boolean('direct_ship').notNull().default(false),
+        receivingShopId: text('receiving_shop_id').references(() => shops.id),
+        receivingJobId: text('receiving_job_id').references(() => manufacturingJobs.id),
+        status: supplierLegStatusEnum('status').notNull().default('PO_PLACED'),
+        inboundCarrier: text('inbound_carrier'),
+        inboundTracking: text('inbound_tracking'),
+        preShipmentInspection: text('pre_shipment_inspection'),
+        history: jsonb('history').$type<{ status: string; at: string; note: string | null; actorId: string }[]>().notNull().default([]),
+        productionStartedAt: tstz('production_started_at'),
+        shippedInboundAt: tstz('shipped_inbound_at'),
+        receivedAt: tstz('received_at'),
+        deliveredAt: tstz('delivered_at'),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [uniqueIndex('supplier_legs_order_uq').on(t.orderId), uniqueIndex('supplier_legs_po_number_uq').on(t.poNumber), index('supplier_legs_job_idx').on(t.jobId)],
+);
+
+/** The Delivery Promise set at checkout, with its per-leg P90 predictions. */
+export const orderPromises = pgTable(
+    'order_promises',
+    {
+        orderId: text('order_id')
+            .primaryKey()
+            .references(() => orders.id, { onDelete: 'cascade' }),
+        /** The committed arrival date. */
+        promisedDate: date('promised_date', { mode: 'string' }).notNull(),
+        /** P90 arrival (incl. buffer) at checkout. */
+        p90Date: date('p90_date', { mode: 'string' }).notNull(),
+        /** Whether the buyer was shown "Arrives <promisedDate>" (P90 <= promised). */
+        shown: boolean('shown').notNull(),
+        startDate: date('start_date', { mode: 'string' }).notNull(),
+        legs: jsonb('legs').$type<PromiseLegPrediction[]>().notNull(),
+        bufferDays: integer('buffer_days').notNull().default(0),
+        riskScore: doublePrecision('risk_score').notNull().default(0),
+        zone: text('zone'),
+        carrierService: text('carrier_service').notNull(),
+        status: promiseStatusEnum('status').notNull().default('ON_TRACK'),
+        lastP90Date: date('last_p90_date', { mode: 'string' }),
+        atRiskAt: tstz('at_risk_at'),
+        resolvedAt: tstz('resolved_at'),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [index('order_promises_status_idx').on(t.status)],
+);
+
+/** Predicted vs actual per leg (one row per order x leg), the training data of the P90 models. */
+export const promiseObservations = pgTable(
+    'promise_observations',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('promiseObservation')),
+        orderId: text('order_id').references(() => orders.id, { onDelete: 'cascade' }),
+        leg: promiseLegEnum('leg').notNull(),
+        shopId: text('shop_id'),
+        process: text('process'),
+        carrierService: text('carrier_service'),
+        zone: text('zone'),
+        supplierId: text('supplier_id'),
+        incoterm: text('incoterm'),
+        predictedDays: doublePrecision('predicted_days').notNull(),
+        actualDays: doublePrecision('actual_days').notNull(),
+        /** 'order' (recorded on delivery) or 'synthetic' (seeded evaluation data). */
+        source: text('source').notNull().default('order'),
+        observedAt: tstz('observed_at').notNull().defaultNow(),
+    },
+    (t) => [
+        uniqueIndex('promise_observations_order_leg_uq')
+            .on(t.orderId, t.leg)
+            .where(sql`${t.orderId} is not null`),
+        index('promise_observations_leg_idx').on(t.leg, t.observedAt),
+    ],
+);
+
+/** P90 slip per leg and scope, recomputed by the weekly retraining job. */
+export const promiseModels = pgTable(
+    'promise_models',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('promiseModel')),
+        leg: promiseLegEnum('leg').notNull(),
+        /** `*`, `shop:<id>`, `process:<name>`, `carrier:<service>`, `carrier:<service>:<zone>`, `supplier:<id>`, `incoterm:<x>`. */
+        scope: text('scope').notNull(),
+        slipP90Days: doublePrecision('slip_p90_days').notNull(),
+        sampleCount: integer('sample_count').notNull(),
+        trainedAt: tstz('trained_at').notNull(),
+    },
+    (t) => [uniqueIndex('promise_models_leg_scope_uq').on(t.leg, t.scope)],
+);
+
+/** Credits owed to buyers (missed promises), redeemable on their next checkout. */
+export const buyerCredits = pgTable(
+    'buyer_credits',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('buyerCredit')),
+        buyerEmail: text('buyer_email').notNull(),
+        sourceOrderId: text('source_order_id')
+            .notNull()
+            .references(() => orders.id),
+        amountCents: cents('amount_cents').notNull(),
+        reason: text('reason').notNull(),
+        responsibleLeg: promiseLegEnum('responsible_leg').notNull(),
+        status: creditStatusEnum('status').notNull().default('AVAILABLE'),
+        redeemedOrderId: text('redeemed_order_id').references(() => orders.id),
+        reservedAt: tstz('reserved_at'),
+        redeemedAt: tstz('redeemed_at'),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [
+        uniqueIndex('buyer_credits_source_order_uq').on(t.sourceOrderId),
+        index('buyer_credits_email_idx').on(t.buyerEmail, t.status),
+        check('buyer_credits_amount_ck', sql`${t.amountCents} > 0`),
+    ],
+);
+
+/** Partner shop inventory: stock sheet and hardware (shop stock sourcing provider). */
+export const shopStock = pgTable(
+    'shop_stock',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('shopStock')),
+        shopId: text('shop_id')
+            .notNull()
+            .references(() => shops.id, { onDelete: 'cascade' }),
+        kind: shopStockKindEnum('kind').notNull(),
+        sku: text('sku').notNull(),
+        description: text('description').notNull(),
+        materialId: text('material_id').references(() => materials.id),
+        thicknessOptionId: text('thickness_option_id').references(() => thicknessOptions.id),
+        quantity: integer('quantity').notNull().default(0),
+        unit: text('unit').notNull().default('sheet'),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [uniqueIndex('shop_stock_shop_sku_uq').on(t.shopId, t.sku), index('shop_stock_thickness_idx').on(t.thicknessOptionId), check('shop_stock_quantity_ck', sql`${t.quantity} >= 0`)],
+);
+
+// ---------------------------------------------------------------------------
+// R6 Reconstruct: fix anything from a photo (docs/architecture/r6-reconstruct.md)
+// ---------------------------------------------------------------------------
+
+/**
+ * 3D-print materials (FDM filaments, SLS powder). A catalog of its own, beside the sheet
+ * catalog, so the laser configurator, the Materials Engineer and the R1 DFM never see them.
+ * Ids are `mat_print_*` so a print quote's `config.materialId` is still a valid MaterialId.
+ * Money in cents (USD); coefficients are uncalibrated R6 defaults (`calibrated = false`).
+ */
+export const printMaterials = pgTable('print_materials', {
+    id: text('id').primaryKey(),
+    slug: text('slug').notNull().unique(),
+    name: text('name').notNull(),
+    description: text('description').notNull().default(''),
+    swatchHex: text('swatch_hex').notNull().default('#9aa0a6'),
+    /** 'FDM' (filament) or 'SLS' (powder bed). */
+    process: text('process').notNull(),
+    densityKgM3: doublePrecision('density_kg_m3').notNull(),
+    priceCentsPerKg: cents('price_cents_per_kg').notNull(),
+    /** Print DFM: thinnest wall that prints reliably (mm). */
+    minWallMm: doublePrecision('min_wall_mm').notNull().default(1.2),
+    /** Longest unsupported bridge before supports are needed (mm). */
+    maxBridgeMm: doublePrecision('max_bridge_mm').notNull().default(10),
+    /** Heat deflection temperature at 0.45 MPa (°C), shown to the buyer. */
+    heatDeflectionC: integer('heat_deflection_c'),
+    calibrated: boolean('calibrated').notNull().default(false),
+    active: boolean('active').notNull().default(true),
+    sortOrder: integer('sort_order').notNull().default(0),
+    createdAt: createdAt(),
+    updatedAt: updatedAt(),
+});
+
+/**
+ * What a partner can print (the `shop_capabilities` model for printers): one row per shop x
+ * print material, with the printer's build volume. A printed part quotes BINDING only when an
+ * ACTIVE shop with an active row (and an active print rate card) fits its bounding box.
+ */
+export const shopPrintCapabilities = pgTable(
+    'shop_print_capabilities',
+    {
+        id: text('id').primaryKey(),
+        shopId: text('shop_id')
+            .notNull()
+            .references(() => shops.id, { onDelete: 'cascade' }),
+        printMaterialId: text('print_material_id')
+            .notNull()
+            .references(() => printMaterials.id),
+        /** Always '3D_PRINT'; `print_materials.process` says FDM or SLS. */
+        capability: text('capability').notNull().default('3D_PRINT'),
+        buildXMm: doublePrecision('build_x_mm').notNull(),
+        buildYMm: doublePrecision('build_y_mm').notNull(),
+        buildZMm: doublePrecision('build_z_mm').notNull(),
+        printerCount: integer('printer_count').notNull().default(1),
+        machineLabel: text('machine_label'),
+        active: boolean('active').notNull().default(true),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [uniqueIndex('shop_print_capabilities_uq').on(t.shopId, t.printMaterialId), index('shop_print_capabilities_material_idx').on(t.printMaterialId)],
+);
+
+/**
+ * Per-shop print pricing coefficients (the `shop_rate_cards` model for printers). Exactly one
+ * active card per shop; the shop's `shop_rate_cards` row stays its commercial card of record
+ * (quotes reference it), the print quote snapshot names this card in `print_quote_details`.
+ */
+export const shopPrintRateCards = pgTable(
+    'shop_print_rate_cards',
+    {
+        id: text('id').primaryKey(),
+        shopId: text('shop_id')
+            .notNull()
+            .references(() => shops.id, { onDelete: 'cascade' }),
+        version: integer('version').notNull().default(1),
+        active: boolean('active').notNull().default(true),
+        currency: text('currency').notNull().default('usd'),
+        fdmCentsPerHour: cents('fdm_cents_per_hour').notNull(),
+        /** Average deposition incl. travel (mm³ per hour) for a 0.4 mm nozzle. */
+        fdmMm3PerHour: doublePrecision('fdm_mm3_per_hour').notNull(),
+        fdmLayerHeightMm: doublePrecision('fdm_layer_height_mm').notNull().default(0.2),
+        /** Per-layer overhead (layer change, travel, wipe), seconds. */
+        fdmLayerSeconds: doublePrecision('fdm_layer_seconds').notNull(),
+        slsCentsPerHour: cents('sls_cents_per_hour').notNull(),
+        slsMm3PerHour: doublePrecision('sls_mm3_per_hour').notNull(),
+        slsLayerHeightMm: doublePrecision('sls_layer_height_mm').notNull().default(0.1),
+        slsLayerSeconds: doublePrecision('sls_layer_seconds').notNull().default(0),
+        /** Solid perimeter + top/bottom skin thickness (mm) and sparse infill fraction inside it. */
+        shellMm: doublePrecision('shell_mm').notNull().default(1.2),
+        infillPct: doublePrecision('infill_pct').notNull().default(0.4),
+        orderSetupCents: cents('order_setup_cents').notNull(),
+        postProcessCentsPerPart: cents('post_process_cents_per_part').notNull(),
+        qaCentsPerPart: cents('qa_cents_per_part').notNull(),
+        partHandlingCents: cents('part_handling_cents').notNull(),
+        packagingBaseCents: cents('packaging_base_cents').notNull(),
+        materialMarkup: doublePrecision('material_markup').notNull().default(1.1),
+        materialWastePct: doublePrecision('material_waste_pct').notNull().default(0.1),
+        platformMarginPct: doublePrecision('platform_margin_pct').notNull(),
+        /** Volume discounts come out of the margin and never take it below this. */
+        minMarginPct: doublePrecision('min_margin_pct').notNull(),
+        volumeDiscountMax: doublePrecision('volume_discount_max').notNull(),
+        minimumOrderCents: cents('minimum_order_cents').notNull(),
+        /** Unattended printer hours per business day (lead time). */
+        printerHoursPerDay: doublePrecision('printer_hours_per_day').notNull().default(20),
+        calibrated: boolean('calibrated').notNull().default(false),
+        notes: text('notes'),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [
+        uniqueIndex('shop_print_rate_cards_version_uq').on(t.shopId, t.version),
+        uniqueIndex('shop_print_rate_cards_one_active_uq')
+            .on(t.shopId)
+            .where(sql`${t.active} = true`),
+    ],
+);
+
+/** What a print quote was priced from (immutable, one per print quote). Dispatch and the passport read it. */
+export const printQuoteDetails = pgTable(
+    'print_quote_details',
+    {
+        quoteId: text('quote_id')
+            .primaryKey()
+            .references(() => quotes.id),
+        partId: text('part_id')
+            .notNull()
+            .references(() => parts.id),
+        buildId: text('build_id')
+            .notNull()
+            .references(() => builds.id),
+        printMaterialId: text('print_material_id')
+            .notNull()
+            .references(() => printMaterials.id),
+        printRateCardId: text('print_rate_card_id')
+            .notNull()
+            .references(() => shopPrintRateCards.id),
+        capabilityId: text('capability_id').references(() => shopPrintCapabilities.id),
+        process: text('process').notNull(),
+        family: text('family').notNull(),
+        /** Geometry the price came from: bbox, volume, area, min wall, bridge (worker manifest). */
+        geometry: jsonb('geometry').$type<Record<string, unknown>>().notNull(),
+        /** Buyer-confirmed caliper dimensions: they become the shop's QA checks. */
+        criticalDims: jsonb('critical_dims').$type<{ param: string; label: string; nominalMm: number }[]>().notNull().default([]),
+        stlSha256: text('stl_sha256').notNull(),
+        layerHeightMm: doublePrecision('layer_height_mm').notNull(),
+        printHoursPerPart: doublePrecision('print_hours_per_part').notNull(),
+        unitMassG: doublePrecision('unit_mass_g').notNull(),
+        notes: jsonb('notes').$type<string[]>().notNull().default([]),
+        createdAt: createdAt(),
+    },
+    (t) => [index('print_quote_details_part_idx').on(t.partId)],
+);
+
+/**
+ * One Reconstruct session per build (`builds.origin = 'reconstruct'`): what the buyer is
+ * replacing, their choices, and the photo measurements (estimates only). Confirmed caliper
+ * dimensions live in the Build Graph (REQUIREMENT `dim:*` nodes), never here.
+ */
+export const reconstructSessions = pgTable(
+    'reconstruct_sessions',
+    {
+        id: text('id').primaryKey(),
+        buildId: text('build_id')
+            .notNull()
+            .references(() => builds.id, { onDelete: 'cascade' }),
+        passportId: text('passport_id').references(() => passports.id),
+        partType: text('part_type').notNull(),
+        description: text('description').notNull().default(''),
+        options: jsonb('options').$type<Record<string, unknown>>().notNull().default({}),
+        /** Per photo: reference object, scale and measurement lines (pixel coordinates). */
+        measurements: jsonb('measurements').$type<Record<string, unknown>[]>().notNull().default([]),
+        printMaterialSlug: text('print_material_slug'),
+        quantity: integer('quantity').notNull().default(1),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [uniqueIndex('reconstruct_sessions_build_uq').on(t.buildId)],
+);
+
+// ---------------------------------------------------------------------------
+// R3 Prime experience (docs/architecture/r3-prime-experience.md)
+// Membership, build cart + upsells, cart payment groups, B2B invoices, order chat,
+// hold requests, ratings + UGC. User references are plain text ids (no FK to users).
+// Statuses are text with CHECK constraints (values in src/contracts/prime.ts).
+// ---------------------------------------------------------------------------
+
+/** One Prime membership per user (Stripe Billing subscription or the dev double). */
+export const memberships = pgTable(
+    'memberships',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('membership')),
+        userId: text('user_id').notNull(),
+        email: text('email').notNull(),
+        plan: text('plan').$type<'monthly' | 'annual'>().notNull(),
+        status: text('status').$type<'incomplete' | 'trialing' | 'active' | 'past_due' | 'canceled'>().notNull().default('incomplete'),
+        provider: paymentProviderEnum('provider').notNull(),
+        providerCustomerId: text('provider_customer_id'),
+        providerSubscriptionId: text('provider_subscription_id'),
+        /** Set once the first trial starts: a user never gets a second trial. */
+        trialUsed: boolean('trial_used').notNull().default(false),
+        trialStartedAt: tstz('trial_started_at'),
+        trialEndsAt: tstz('trial_ends_at'),
+        currentPeriodEnd: tstz('current_period_end'),
+        cancelAtPeriodEnd: boolean('cancel_at_period_end').notNull().default(false),
+        canceledAt: tstz('canceled_at'),
+        trialReminderSentAt: tstz('trial_reminder_sent_at'),
+        /** Provider event time of the last applied lifecycle event (out-of-order events are ignored). */
+        lastEventAt: tstz('last_event_at'),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [
+        uniqueIndex('memberships_user_uq').on(t.userId),
+        uniqueIndex('memberships_provider_sub_uq').on(t.provider, t.providerSubscriptionId),
+        index('memberships_trial_end_idx').on(t.status, t.trialEndsAt),
+        check('memberships_status_ck', sql`${t.status} in ('incomplete','trialing','active','past_due','canceled')`),
+        check('memberships_plan_ck', sql`${t.plan} in ('monthly','annual')`),
+    ],
+);
+
+/** Append-only membership lifecycle audit (one row per applied transition). */
+export const membershipEvents = pgTable(
+    'membership_events',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('membershipEvent')),
+        membershipId: text('membership_id')
+            .notNull()
+            .references(() => memberships.id, { onDelete: 'cascade' }),
+        kind: text('kind').notNull(),
+        fromStatus: text('from_status'),
+        toStatus: text('to_status').notNull(),
+        providerEventId: text('provider_event_id'),
+        createdAt: createdAt(),
+    },
+    (t) => [index('membership_events_membership_idx').on(t.membershipId, t.createdAt)],
+);
+
+/** Membership benefits applied to an order at checkout (Shop Console priority, promise engine input). */
+export const orderBenefits = pgTable('order_benefits', {
+    orderId: text('order_id')
+        .primaryKey()
+        .references(() => orders.id, { onDelete: 'cascade' }),
+    userId: text('user_id'),
+    membershipId: text('membership_id'),
+    priority: boolean('priority').notNull().default(false),
+    guaranteedDates: boolean('guaranteed_dates').notNull().default(false),
+    shippingWaivedCents: cents('shipping_waived_cents').notNull().default(0),
+    materialDiscountCents: cents('material_discount_cents').notNull().default(0),
+    createdAt: createdAt(),
+});
+
+/** Build cart: guest (device hash) or user (user id). One open cart per owner. */
+export const carts = pgTable(
+    'carts',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('cart')),
+        userId: text('user_id'),
+        deviceHash: text('device_hash'),
+        status: text('status').$type<'open' | 'checked_out' | 'merged'>().notNull().default('open'),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [
+        uniqueIndex('carts_open_user_uq').on(t.userId).where(sql`${t.status} = 'open' and ${t.userId} is not null`),
+        uniqueIndex('carts_open_device_uq').on(t.deviceHash).where(sql`${t.status} = 'open' and ${t.userId} is null`),
+        check('carts_owner_ck', sql`${t.userId} is not null or ${t.deviceHash} is not null`),
+        check('carts_status_ck', sql`${t.status} in ('open','checked_out','merged')`),
+    ],
+);
+
+/** One BINDING quote per part per cart (adding a newer quote of the same part replaces it). */
+export const cartItems = pgTable(
+    'cart_items',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('cartItem')),
+        cartId: text('cart_id')
+            .notNull()
+            .references(() => carts.id, { onDelete: 'cascade' }),
+        quoteId: text('quote_id')
+            .notNull()
+            .references(() => quotes.id),
+        partId: text('part_id')
+            .notNull()
+            .references(() => parts.id),
+        /** Upsells applied to reach this quote (each one re-quoted by the engine). */
+        upsells: jsonb('upsells').$type<string[]>().notNull().default([]),
+        addedAt: tstz('added_at').notNull().defaultNow(),
+    },
+    (t) => [uniqueIndex('cart_items_cart_part_uq').on(t.cartId, t.partId), index('cart_items_quote_idx').on(t.quoteId)],
+);
+
+/** Upsell offers computed once per base quote (each offer is a persisted engine quote). */
+export const upsellOffers = pgTable(
+    'upsell_offers',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('upsellOffer')),
+        baseQuoteId: text('base_quote_id')
+            .notNull()
+            .references(() => quotes.id),
+        kind: text('kind').notNull(),
+        offerQuoteId: text('offer_quote_id')
+            .notNull()
+            .references(() => quotes.id),
+        title: text('title').notNull(),
+        description: text('description').notNull(),
+        createdAt: createdAt(),
+    },
+    (t) => [uniqueIndex('upsell_offers_base_kind_uq').on(t.baseQuoteId, t.kind)],
+);
+
+/**
+ * One payment for several orders (cart checkout, B2B invoice). Each order still has its
+ * own `payments` row (provider_ref = `<group ref>#<n>`); the provider session / invoice
+ * reference lives here and webhooks for it are fanned out per order.
+ */
+export const cartCheckouts = pgTable(
+    'cart_checkouts',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('cartCheckout')),
+        cartId: text('cart_id'),
+        userId: text('user_id'),
+        deviceHash: text('device_hash'),
+        provider: paymentProviderEnum('provider').notNull(),
+        providerRef: text('provider_ref').notNull(),
+        mode: text('mode').$type<'card' | 'invoice'>().notNull().default('card'),
+        orderIds: jsonb('order_ids').$type<string[]>().notNull(),
+        amountCents: cents('amount_cents').notNull(),
+        currency: text('currency').notNull().default('usd'),
+        status: text('status').$type<'PENDING' | 'SUCCEEDED' | 'FAILED'>().notNull().default('PENDING'),
+        failureReason: text('failure_reason'),
+        /** HMAC of the confirmation-page token + the token sealed for redirects (like orders). */
+        accessTokenHash: text('access_token_hash').notNull(),
+        sealedToken: text('sealed_token').notNull(),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [uniqueIndex('cart_checkouts_provider_ref_uq').on(t.provider, t.providerRef)],
+);
+
+/** B2B "Pay by invoice (ACH / wire)". Production starts only when the invoice is paid. */
+export const invoices = pgTable(
+    'invoices',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('invoice')),
+        checkoutId: text('checkout_id')
+            .notNull()
+            .references(() => cartCheckouts.id),
+        provider: paymentProviderEnum('provider').notNull(),
+        providerInvoiceId: text('provider_invoice_id').notNull(),
+        status: text('status').$type<'open' | 'paid' | 'overdue' | 'void'>().notNull().default('open'),
+        amountCents: cents('amount_cents').notNull(),
+        currency: text('currency').notNull().default('usd'),
+        netDays: integer('net_days').notNull(),
+        dueDate: date('due_date', { mode: 'string' }).notNull(),
+        hostedUrl: text('hosted_url'),
+        buyerEmail: text('buyer_email').notNull(),
+        company: text('company').notNull(),
+        poNumber: text('po_number'),
+        paidAt: tstz('paid_at'),
+        /** Manual wire: who marked it received and the bank reference (audited). */
+        markedPaidBy: text('marked_paid_by'),
+        paidReference: text('paid_reference'),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [
+        uniqueIndex('invoices_provider_invoice_uq').on(t.provider, t.providerInvoiceId),
+        index('invoices_status_idx').on(t.status),
+        check('invoices_status_ck', sql`${t.status} in ('open','paid','overdue','void')`),
+    ],
+);
+
+/** Buyer ↔ shop/ops thread per order. */
+export const orderMessages = pgTable(
+    'order_messages',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('orderMessage')),
+        orderId: text('order_id')
+            .notNull()
+            .references(() => orders.id, { onDelete: 'cascade' }),
+        authorKind: text('author_kind').$type<'buyer' | 'shop' | 'ops' | 'system'>().notNull(),
+        /** user id, shop id, 'ops' or 'system'. */
+        authorId: text('author_id').notNull(),
+        body: text('body').notNull(),
+        quickReply: text('quick_reply'),
+        attachmentKey: text('attachment_key'),
+        createdAt: createdAt(),
+    },
+    (t) => [
+        index('order_messages_order_idx').on(t.orderId, t.createdAt),
+        check('order_messages_author_ck', sql`${t.authorKind} in ('buyer','shop','ops','system')`),
+        check('order_messages_body_ck', sql`char_length(${t.body}) <= 2000`),
+    ],
+);
+
+/** Per-party chat state: read marker + notification throttle. party = 'buyer' | 'shop' | 'ops'. */
+export const orderChatState = pgTable(
+    'order_chat_state',
+    {
+        orderId: text('order_id')
+            .notNull()
+            .references(() => orders.id, { onDelete: 'cascade' }),
+        party: text('party').notNull(),
+        lastReadAt: tstz('last_read_at'),
+        lastNotifiedAt: tstz('last_notified_at'),
+    },
+    (t) => [uniqueIndex('order_chat_state_uq').on(t.orderId, t.party)],
+);
+
+/** "Hold production": a request ops must acknowledge. It never stops a job by itself. */
+export const holdRequests = pgTable(
+    'hold_requests',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('holdRequest')),
+        orderId: text('order_id')
+            .notNull()
+            .references(() => orders.id, { onDelete: 'cascade' }),
+        messageId: text('message_id'),
+        status: text('status').$type<'requested' | 'acknowledged' | 'declined'>().notNull().default('requested'),
+        note: text('note'),
+        resolvedBy: text('resolved_by'),
+        resolvedAt: tstz('resolved_at'),
+        createdAt: createdAt(),
+    },
+    (t) => [index('hold_requests_status_idx').on(t.status, t.createdAt), index('hold_requests_order_idx').on(t.orderId)],
+);
+
+/** One rating per delivered order; public only once ops approve it. */
+export const ratings = pgTable(
+    'ratings',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('rating')),
+        orderId: text('order_id')
+            .notNull()
+            .references(() => orders.id, { onDelete: 'cascade' }),
+        shopId: text('shop_id').references(() => shops.id),
+        userId: text('user_id'),
+        stars: integer('stars').notNull(),
+        tags: jsonb('tags').$type<string[]>().notNull().default([]),
+        caption: text('caption'),
+        photoKey: text('photo_key'),
+        status: text('status').$type<'pending' | 'approved' | 'rejected'>().notNull().default('pending'),
+        moderatedBy: text('moderated_by'),
+        moderatedAt: tstz('moderated_at'),
+        rejectReason: text('reject_reason'),
+        createdAt: createdAt(),
+    },
+    (t) => [
+        uniqueIndex('ratings_order_uq').on(t.orderId),
+        index('ratings_status_idx').on(t.status, t.createdAt),
+        index('ratings_shop_idx').on(t.shopId, t.status),
+        check('ratings_stars_ck', sql`${t.stars} between 1 and 5`),
+        check('ratings_status_ck', sql`${t.status} in ('pending','approved','rejected')`),
+    ],
+);
+
+// ---------------------------------------------------------------------------
+// R5 Media (workflows 07 / 08 / 09, docs/architecture/r5-media.md)
+// ---------------------------------------------------------------------------
+//
+// User references are plain `text` user ids, like the Live tables. Money is integer cents.
+
+export const buildVisibilityEnum = pgEnum('build_visibility', BUILD_VISIBILITIES);
+export const remixLicenseEnum = pgEnum('remix_license', REMIX_LICENSES);
+export const clipOriginEnum = pgEnum('clip_origin', CLIP_ORIGINS);
+export const creatorEarningKindEnum = pgEnum('creator_earning_kind', CREATOR_EARNING_KINDS);
+export const auctionStatusEnum = pgEnum('auction_status', AUCTION_STATUSES);
+export const auctionBidStatusEnum = pgEnum('auction_bid_status', AUCTION_BID_STATUSES);
+export const dropQueueStatusEnum = pgEnum('drop_queue_status', DROP_QUEUE_STATUSES);
+
+/**
+ * A build's publication: visibility, remix licence and royalty % (0–30). One row per build,
+ * written only by the build owner. `search_text` feeds the full-text index (title,
+ * description, tags, creator); Discover, channels and `/b/:buildId` read public rows only.
+ */
+export const buildPublications = pgTable(
+    'build_publications',
+    {
+        buildId: text('build_id')
+            .primaryKey()
+            .references(() => builds.id, { onDelete: 'cascade' }),
+        ownerUserId: text('owner_user_id').notNull(),
+        visibility: buildVisibilityEnum('visibility').notNull().default('private'),
+        license: remixLicenseEnum('license').notNull().default('personal'),
+        royaltyPct: integer('royalty_pct').notNull().default(10),
+        title: text('title').notNull(),
+        description: text('description'),
+        tags: jsonb('tags').$type<string[]>().notNull().default([]),
+        /** Tags that are onboarding interest slugs (seed For You). */
+        interests: jsonb('interests').$type<InterestSlug[]>().notNull().default([]),
+        coverAttachmentId: text('cover_attachment_id').references(() => buildAttachments.id, { onDelete: 'set null' }),
+        searchText: text('search_text').notNull().default(''),
+        /** First time the build went public (kept when it goes private again). */
+        publishedAt: tstz('published_at'),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [
+        index('build_publications_public_idx')
+            .on(t.publishedAt)
+            .where(sql`${t.visibility} = 'public'`),
+        index('build_publications_owner_idx').on(t.ownerUserId),
+        index('build_publications_fts_idx').using('gin', sql`to_tsvector('english', ${t.searchText})`),
+        check('build_publications_royalty_ck', sql`${t.royaltyPct} >= 0 and ${t.royaltyPct} <= 30`),
+    ],
+);
+
+/** A creator's Stripe Connect Express account (the shop Connect flow, keyed by user). */
+export const creatorAccounts = pgTable('creator_accounts', {
+    userId: text('user_id').primaryKey(),
+    stripeAccountId: text('stripe_account_id'),
+    stripePayoutsEnabled: boolean('stripe_payouts_enabled').notNull().default(false),
+    createdAt: createdAt(),
+    updatedAt: updatedAt(),
+});
+
+/**
+ * Creator subledger. Every row mirrors one balanced ledger transaction (`txn_key`):
+ * accruals DEBIT PLATFORM_REVENUE / CREDIT CREATOR_PAYABLE, reversals the opposite.
+ * `amount_cents` is signed (reversals negative). One row per (order, creator, kind).
+ */
+export const creatorEarnings = pgTable(
+    'creator_earnings',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('creatorEarning')),
+        creatorUserId: text('creator_user_id').notNull(),
+        kind: creatorEarningKindEnum('kind').notNull(),
+        orderId: text('order_id')
+            .notNull()
+            .references(() => orders.id),
+        /** The ordered build. */
+        buildId: text('build_id')
+            .notNull()
+            .references(() => builds.id),
+        /** The licensing build (royalties) or the drop / auction build (revenue). */
+        sourceBuildId: text('source_build_id').references(() => builds.id),
+        amountCents: integer('amount_cents').notNull(),
+        currency: text('currency').notNull().default('usd'),
+        txnKey: text('txn_key').notNull(),
+        createdAt: createdAt(),
+    },
+    (t) => [
+        uniqueIndex('creator_earnings_order_kind_uq').on(t.orderId, t.creatorUserId, t.kind),
+        index('creator_earnings_creator_idx').on(t.creatorUserId, t.createdAt),
+        check('creator_earnings_amount_ck', sql`${t.amountCents} <> 0`),
+    ],
+);
+
+/** Creator payouts (balance -> Stripe Connect transfer, or a manual payout ops mark paid). */
+export const creatorPayouts = pgTable(
+    'creator_payouts',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('creatorPayout')),
+        creatorUserId: text('creator_user_id').notNull(),
+        amountCents: integer('amount_cents').notNull(),
+        currency: text('currency').notNull().default('usd'),
+        status: payoutStatusEnum('status').notNull().default('PENDING'),
+        /** 'stripe_connect' | 'manual' */
+        method: text('method').notNull().default('manual'),
+        providerRef: text('provider_ref'),
+        failureReason: text('failure_reason'),
+        paidAt: tstz('paid_at'),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [index('creator_payouts_creator_idx').on(t.creatorUserId, t.createdAt), check('creator_payouts_amount_ck', sql`${t.amountCents} > 0`)],
+);
+
+/** A clip: a time range of a show's replay with a featured build. The player seeks; nothing is transcoded. */
+export const clips = pgTable(
+    'clips',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('clip')),
+        showId: text('show_id')
+            .notNull()
+            .references(() => shows.id, { onDelete: 'cascade' }),
+        channelId: text('channel_id')
+            .notNull()
+            .references(() => channels.id, { onDelete: 'cascade' }),
+        buildId: text('build_id').references(() => builds.id),
+        title: text('title').notNull(),
+        startMs: integer('start_ms').notNull(),
+        endMs: integer('end_ms').notNull(),
+        /** Offset of the pinned product (its `product.focus`) from the show start. */
+        productAtMs: integer('product_at_ms'),
+        origin: clipOriginEnum('origin').notNull(),
+        /** Live Build Protocol seq the clip was suggested from (system clips are unique per event). */
+        eventSeq: integer('event_seq'),
+        createdBy: text('created_by').notNull(),
+        searchText: text('search_text').notNull().default(''),
+        createdAt: createdAt(),
+    },
+    (t) => [
+        index('clips_show_idx').on(t.showId, t.startMs),
+        index('clips_created_idx').on(t.createdAt),
+        uniqueIndex('clips_system_event_uq')
+            .on(t.showId, t.eventSeq)
+            .where(sql`${t.origin} = 'system'`),
+        index('clips_fts_idx').using('gin', sql`to_tsvector('english', ${t.searchText})`),
+        check('clips_range_ck', sql`${t.startMs} >= 0 and ${t.endMs} > ${t.startMs}`),
+    ],
+);
+
+/** High-demand drops whose claims go through the fair queue (a row per queued drop). */
+export const dropQueues = pgTable('drop_queues', {
+    dropId: text('drop_id')
+        .primaryKey()
+        .references(() => drops.id, { onDelete: 'cascade' }),
+    createdAt: createdAt(),
+});
+
+/**
+ * Fair-queue entries. Admitted in (enqueued_second, tie_break, id) order under the drop row
+ * lock once their second has passed, so claims that arrive in the same second are ordered at
+ * random instead of by network luck.
+ */
+export const dropQueueEntries = pgTable(
+    'drop_queue_entries',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('dropQueueEntry')),
+        dropId: text('drop_id')
+            .notNull()
+            .references(() => drops.id, { onDelete: 'cascade' }),
+        userId: text('user_id').notNull(),
+        buyerEmail: text('buyer_email').notNull(),
+        buyerName: text('buyer_name').notNull(),
+        quantity: integer('quantity').notNull(),
+        /** The validated ClaimSlotsRequest (ship-to, method), replayed when the entry is admitted. */
+        request: jsonb('request').$type<Record<string, unknown>>().notNull(),
+        /** Unix second the claim arrived: everyone in the same second is ordered by `tie_break`. */
+        enqueuedSecond: integer('enqueued_second').notNull(),
+        tieBreak: integer('tie_break').notNull(),
+        status: dropQueueStatusEnum('status').notNull().default('QUEUED'),
+        claimId: text('claim_id').references(() => slotClaims.id),
+        reason: text('reason'),
+        processedAt: tstz('processed_at'),
+        createdAt: createdAt(),
+    },
+    (t) => [
+        index('drop_queue_entries_order_idx').on(t.dropId, t.status, t.enqueuedSecond, t.tieBreak),
+        uniqueIndex('drop_queue_entries_one_queued_uq')
+            .on(t.dropId, t.userId)
+            .where(sql`${t.status} = 'QUEUED'`),
+        check('drop_queue_entries_quantity_ck', sql`${t.quantity} > 0`),
+    ],
+);
+
+/** One-of-one live auctions. The bid ladder and the anti-snipe extension run under this row's lock. */
+export const auctions = pgTable(
+    'auctions',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('auction')),
+        showId: text('show_id').references(() => shows.id),
+        channelId: text('channel_id')
+            .notNull()
+            .references(() => channels.id),
+        buildId: text('build_id')
+            .notNull()
+            .references(() => builds.id),
+        /** Orderable BINDING quote at quantity 1 (price floor + the shop's cost). */
+        quoteId: text('quote_id')
+            .notNull()
+            .references(() => quotes.id),
+        title: text('title').notNull(),
+        currency: text('currency').notNull().default('usd'),
+        startingBidCents: integer('starting_bid_cents').notNull(),
+        minIncrementCents: integer('min_increment_cents').notNull(),
+        currentBidCents: integer('current_bid_cents'),
+        leadingBidId: text('leading_bid_id'),
+        leadingBidderName: text('leading_bidder_name'),
+        bidCount: integer('bid_count').notNull().default(0),
+        status: auctionStatusEnum('status').notNull().default('OPEN'),
+        opensAt: tstz('opens_at').notNull(),
+        endsAt: tstz('ends_at').notNull(),
+        originalEndsAt: tstz('original_ends_at').notNull(),
+        extensions: integer('extensions').notNull().default(0),
+        winningBidId: text('winning_bid_id'),
+        closedAt: tstz('closed_at'),
+        createdBy: text('created_by').notNull(),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [
+        index('auctions_show_idx').on(t.showId),
+        index('auctions_open_idx')
+            .on(t.endsAt)
+            .where(sql`${t.status} = 'OPEN'`),
+        check('auctions_amounts_ck', sql`${t.startingBidCents} > 0 and ${t.minIncrementCents} > 0 and ${t.bidCount} >= 0`),
+    ],
+);
+
+/** Each bid is a LIVE_DROP order with an authorize-only payment; only authorized bids can win. */
+export const auctionBids = pgTable(
+    'auction_bids',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('auctionBid')),
+        auctionId: text('auction_id')
+            .notNull()
+            .references(() => auctions.id),
+        userId: text('user_id').notNull(),
+        buyerEmail: text('buyer_email').notNull(),
+        bidderName: text('bidder_name').notNull(),
+        amountCents: integer('amount_cents').notNull(),
+        orderId: text('order_id')
+            .notNull()
+            .references(() => orders.id),
+        checkoutUrl: text('checkout_url'),
+        status: auctionBidStatusEnum('status').notNull().default('PLACED'),
+        createdAt: createdAt(),
+        updatedAt: updatedAt(),
+    },
+    (t) => [
+        index('auction_bids_auction_idx').on(t.auctionId, t.amountCents),
+        index('auction_bids_user_idx').on(t.userId),
+        uniqueIndex('auction_bids_order_uq').on(t.orderId),
+        uniqueIndex('auction_bids_amount_uq').on(t.auctionId, t.amountCents),
+    ],
+);
+
+/** Discover feed impressions / clicks / Make This (training data for a future learned ranker). */
+export const feedEvents = pgTable(
+    'feed_events',
+    {
+        id: text('id').primaryKey().$defaultFn(() => newId('feedEvent')),
+        /** `usr_…` when signed in, else `dev:<device hash prefix>`. */
+        viewerKey: text('viewer_key').notNull(),
+        userId: text('user_id'),
+        kind: text('kind').notNull(),
+        itemKind: text('item_kind').notNull(),
+        itemId: text('item_id').notNull(),
+        tab: text('tab').notNull(),
+        position: integer('position'),
+        score: doublePrecision('score'),
+        createdAt: createdAt(),
+    },
+    (t) => [index('feed_events_item_idx').on(t.itemId, t.kind, t.createdAt), index('feed_events_viewer_idx').on(t.viewerKey, t.createdAt)],
 );
