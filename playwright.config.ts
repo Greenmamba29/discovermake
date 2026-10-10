@@ -53,7 +53,7 @@ const CHROMIUM_EXECUTABLE = chromiumExecutable();
 const video = (size: { width: number; height: number }) => (process.env.RECORD_VIDEO ? { video: { mode: 'on' as const, size } } : {});
 
 /** Buyer journeys that must also pass on emulated phones (touch, mobile UA, small viewport). */
-const MOBILE_JOURNEYS = /(smoke|order-journey|accounts-journey|reconstruct-journey|live-journey|media-journey|prime-experience|mobile-touch)\.spec\.ts/;
+const MOBILE_JOURNEYS = /(smoke|order-journey|accounts-journey|reconstruct-journey|live-journey|media-journey|prime-experience|mobile-touch|kids-family-journey)\.spec\.ts/;
 
 export default defineConfig({
     testDir: './tests/e2e',
