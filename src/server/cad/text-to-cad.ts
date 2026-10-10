@@ -16,6 +16,7 @@ import { createHash } from 'node:crypto';
 import type { z } from 'zod';
 import {
     KidTemplateParams,
+    TEXT_TO_CAD_MAX_SCRIPT_BYTES,
     TextToCadBuildRequest,
     TextToCadBuildResponse,
     type KidTemplateId,
@@ -57,14 +58,14 @@ export function isTextToCadConfigured(): boolean {
 export async function buildFromScript(script: string, opts: { outputs?: TextToCadOutput[]; fetchImpl?: typeof fetch } = {}): Promise<TextToCadResult> {
     const parsed = TextToCadBuildRequest.safeParse({ script, ...(opts.outputs ? { outputs: opts.outputs } : {}) });
     if (!parsed.success) throw new TextToCadError('GATE_REJECTED', 'The model script is empty or larger than the worker accepts.', [{ line: 0, rule: parsed.error.issues[0]?.message ?? 'invalid script' }]);
-    if (Buffer.byteLength(parsed.data.script, 'utf8') > 64 * 1024) throw new TextToCadError('GATE_REJECTED', 'The model script is larger than the worker accepts.', [{ line: 0, rule: 'script over 64 KB' }]);
+    if (Buffer.byteLength(parsed.data.script, 'utf8') > TEXT_TO_CAD_MAX_SCRIPT_BYTES) throw new TextToCadError('GATE_REJECTED', 'The model script is larger than the worker accepts.', [{ line: 0, rule: `script over ${TEXT_TO_CAD_MAX_SCRIPT_BYTES / 1024} KB` }]);
     return post('/v1/text-to-cad/build', parsed.data, parsed.data.outputs, opts.fetchImpl);
 }
 
 export async function buildKidTemplate<T extends KidTemplateId>(template: T, params: KidTemplateParams<T>, opts: { fetchImpl?: typeof fetch } = {}): Promise<TextToCadResult> {
     // Re-validate with the template's own schema (labels: letters, digits and spaces only).
     const clean = KidTemplateParams[template].parse(params);
-    return post(`/v1/kid-templates/${encodeURIComponent(template)}/build`, { params: clean }, ['step', 'glb', 'stl'], opts.fetchImpl);
+    return post(`/v1/kid-templates/${encodeURIComponent(template)}/build`, { template, params: clean }, ['step', 'glb', 'stl'], opts.fetchImpl);
 }
 
 async function post(path: string, body: unknown, outputs: TextToCadOutput[], fetchImpl?: typeof fetch): Promise<TextToCadResult> {

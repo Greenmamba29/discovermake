@@ -7,8 +7,9 @@ describe('Netlify scheduled functions', () => {
         const jobs = readdirSync('netlify/functions')
             .filter((f) => f.startsWith('cron-'))
             .map((f) => {
-                const m = /cronJob\('([^']+)', '([^']+)'\)/.exec(readFileSync(`netlify/functions/${f}`, 'utf8'));
-                return { path: m?.[1], schedule: m?.[2] };
+                const src = readFileSync(`netlify/functions/${f}`, 'utf8');
+                // Netlify parses `config` statically, so the schedule must be a string literal.
+                return { path: /triggerCronRoute\('([^']+)'\)/.exec(src)?.[1], schedule: /export const config: Config = \{ schedule: '([^']+)' \};/.exec(src)?.[1] };
             });
         expect(jobs.sort((a, b) => String(a.path).localeCompare(String(b.path)))).toEqual([...crons].sort((a, b) => a.path.localeCompare(b.path)));
     });

@@ -43,7 +43,7 @@ from dataclasses import dataclass, field
 from .bd_names import ALLOWED_BD_NAMES
 
 #: TEXT_TO_CAD_MAX_SCRIPT_BYTES in src/contracts/text-to-cad.ts.
-MAX_SCRIPT_BYTES = 64 * 1024
+MAX_SCRIPT_BYTES = 48 * 1024
 
 OUTPUT_KINDS = ("step", "glb", "stl")
 _EXTENSIONS = {"step": (".step", ".stp"), "glb": (".glb",), "stl": (".stl",)}

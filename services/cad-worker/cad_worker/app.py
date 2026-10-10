@@ -3,7 +3,7 @@
     GET  /healthz             -> {"ok": true, "version": ...}
     POST /v1/generate         GenerateRequest -> GenerateResponse   (Bearer CAD_WORKER_TOKEN)
     POST /v1/text-to-cad/build              TextToCadBuildRequest -> TextToCadBuildResponse (same bearer)
-    POST /v1/kid-templates/{template}/build {params} -> TextToCadBuildResponse            (same bearer)
+    POST /v1/kid-templates/{template}/build {template, params} -> TextToCadBuildResponse            (same bearer)
 
 Each generation runs in a separate process with a hard timeout, so a pathological
 spec that slips past validation cannot hang the server or leak memory into it.
@@ -43,8 +43,9 @@ from .text_to_cad.models import KidTemplateBuildRequest, TextToCadBuildRequest
 from .text_to_cad.templates import TEMPLATES as KID_TEMPLATES
 
 MAX_BODY_BYTES = 64 * 1024  # specs are small; anything bigger is not a spec
-#: A 64 KB script, JSON-escaped (quotes, newlines, non-ASCII as \uXXXX) fits well inside this.
-TTC_MAX_BODY_BYTES = 512 * 1024
+#: TEXT_TO_CAD_MAX_BODY_BYTES in src/contracts/text-to-cad.ts. A 48 KiB script, JSON-escaped
+#: (quotes, newlines, non-ASCII as \uXXXX), fits inside it.
+TTC_MAX_BODY_BYTES = 256 * 1024
 
 
 def _settings() -> dict:
@@ -172,6 +173,8 @@ def create_app() -> FastAPI:
             params = model.model_validate(req.params)
         except ValidationError as e:
             return JSONResponse(status_code=422, content={"error": {"code": "VALIDATION_FAILED", "message": "Invalid template options", "details": e.errors(include_url=False, include_context=False, include_input=False)}})
+        if req.template != template:
+            return JSONResponse(status_code=422, content={"error": {"code": "VALIDATION_FAILED", "message": "The body's template does not match the path", "details": []}})
         async with ttc_sem:
             result = await asyncio.to_thread(ttc_runner.build_template, template, params)
         return ttc_response(result)

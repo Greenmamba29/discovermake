@@ -21,4 +21,6 @@ class TextToCadBuildRequest(BaseModel):
 class KidTemplateBuildRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
+    #: Must equal the {template} path segment.
+    template: str
     params: dict[str, Any]

@@ -134,7 +134,7 @@ describe('buildKidTemplate', () => {
         const calls: Call[] = [];
         const r = await buildKidTemplate('name_keychain', { label: ' Mia ', color: 'purple', size: 'small' }, { fetchImpl: fakeFetch(200, OK(), calls) });
         expect(calls[0]!.url).toBe('http://cad.test/v1/kid-templates/name_keychain/build');
-        expect(JSON.parse(String(calls[0]!.init.body))).toEqual({ params: { label: 'Mia', color: 'purple', size: 'small' } });
+        expect(JSON.parse(String(calls[0]!.init.body))).toEqual({ template: 'name_keychain', params: { label: 'Mia', color: 'purple', size: 'small' } });
         expect(r.artifacts).toHaveLength(3);
     });
 

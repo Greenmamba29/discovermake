@@ -247,7 +247,7 @@ AUTH = {"Authorization": "Bearer test-token"}
 
 def test_routes_need_the_bearer_token(client):
     assert client.post("/v1/text-to-cad/build", json={"script": BOX}).status_code == 401
-    assert client.post("/v1/kid-templates/bookmark/build", json={"params": {}}).status_code == 401
+    assert client.post("/v1/kid-templates/bookmark/build", json={"template": "bookmark", "params": {}}).status_code == 401
 
 
 def test_route_gate_rejection(client):
@@ -261,10 +261,13 @@ def test_route_gate_rejection(client):
 def test_route_validation(client):
     assert client.post("/v1/text-to-cad/build", json={"script": ""}, headers=AUTH).status_code == 422
     assert client.post("/v1/text-to-cad/build", json={"script": BOX, "outputs": ["dxf"]}, headers=AUTH).status_code == 422
-    assert client.post("/v1/kid-templates/rocket/build", json={"params": {}}, headers=AUTH).status_code == 404
-    r = client.post("/v1/kid-templates/name_keychain/build", json={"params": {"label": "hi@x.com", "color": "red"}}, headers=AUTH)
+    assert client.post("/v1/kid-templates/rocket/build", json={"template": "rocket", "params": {}}, headers=AUTH).status_code == 404
+    r = client.post("/v1/kid-templates/name_keychain/build", json={"template": "name_keychain", "params": {"label": "hi@x.com", "color": "red"}}, headers=AUTH)
     assert r.status_code == 422 and r.json()["error"]["code"] == "VALIDATION_FAILED"
-    big = {"script": "#" * 600_000}
+    r = client.post("/v1/kid-templates/bike_hook/build", json={"template": "bookmark", "params": {"color": "red"}}, headers=AUTH)
+    assert r.status_code == 422 and r.json()["error"]["code"] == "VALIDATION_FAILED"
+    assert client.post("/v1/kid-templates/bike_hook/build", json={"params": {"color": "red"}}, headers=AUTH).status_code == 422
+    big = {"script": "#" * 300_000}
     assert client.post("/v1/text-to-cad/build", json=big, headers=AUTH).status_code == 413
 
 
@@ -272,13 +275,13 @@ def test_route_unavailable_is_503(client, monkeypatch):
     monkeypatch.delenv("CADGEN_PYTHON", raising=False)
     r = client.post("/v1/text-to-cad/build", json={"script": BOX}, headers=AUTH)
     assert r.status_code == 503 and r.json()["code"] == "UNAVAILABLE"
-    r = client.post("/v1/kid-templates/bike_hook/build", json={"params": {"color": "red"}}, headers=AUTH)
+    r = client.post("/v1/kid-templates/bike_hook/build", json={"template": "bike_hook", "params": {"color": "red"}}, headers=AUTH)
     assert r.status_code == 503 and r.json()["code"] == "UNAVAILABLE"
 
 
 @needs_cadgen
 def test_route_builds_a_template(client):
-    r = client.post("/v1/kid-templates/bike_hook/build", json={"params": {"color": "green"}}, headers=AUTH)
+    r = client.post("/v1/kid-templates/bike_hook/build", json={"template": "bike_hook", "params": {"color": "green"}}, headers=AUTH)
     assert r.status_code == 200, r.text
     body = r.json()
     assert body["ok"] is True and body["engine"]["name"] == "cadgen"
