@@ -20,7 +20,8 @@
         "eval:cad": "bun --conditions=react-server evals/cad/run.ts",
         "videos:tests": "RECORD_VIDEO=1 playwright test --grep-invert \"Mobbin page sweep\" --output videos/raw/tests",
         "videos:tours": "playwright test -c playwright.tours.config.ts",
-        "videos:collect": "bun scripts/videos/collect.ts"
+        "videos:collect": "bun scripts/videos/collect.ts",
+        "vercel-build": "bash scripts/ops/vercel-build.sh"
     },
     "dependencies": {
         "@ai-sdk/google": "^4.0.88",

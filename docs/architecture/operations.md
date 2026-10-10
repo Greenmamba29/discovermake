@@ -1,5 +1,8 @@
 # Operations runbook (GA)
 
+## Deploys and the database
+Vercel runs `bun run vercel-build` (`scripts/ops/vercel-build.sh`). On a **production** deploy with `DATABASE_URL` set it applies the migrations (`db:migrate`, including the manual immutability trigger) and the idempotent catalog seed (`db:seed --catalog-only`: materials, rate tables, DFM ruleset; never the dev shop), then runs `next build`. Preview deploys never touch the production database. Attaching a database therefore needs only one redeploy. If the project's Build Command is overridden in Vercel settings, set it to `bun run vercel-build`.
+
 ## Health and alerting
 - `GET /api/health`: 200 `{"status":"ok"}` when Postgres answers within 2 s, else 503 `degraded`. It reports which integrations are configured (booleans only, never values). Point the uptime monitor and load balancer here, at 1-minute intervals; page after 3 consecutive failures.
 - Server errors: `src/instrumentation.ts` writes one JSON line per error that Next captures: `event: "server.request_error"`, with path (no query string), method, route, render source and digest. Alert when there are more than 5 per minute for 5 minutes. Use the digest to find the matching client-side error.
