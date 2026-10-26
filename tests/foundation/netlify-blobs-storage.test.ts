@@ -94,3 +94,30 @@ describe('APP_URL default', () => {
         }
     });
 });
+
+describe('paymentsAvailable', () => {
+    it('is false for the dev payment double in production, and for Stripe without a key', async () => {
+        const { resetEnvCache } = await import('@/server/env');
+        const { paymentsAvailable } = await import('@/server/payments');
+        const keys = ['NODE_ENV', 'PAYMENT_PROVIDER', 'STRIPE_SECRET_KEY'] as const;
+        const saved = Object.fromEntries(keys.map((k) => [k, process.env[k]]));
+        const set = (vars: Partial<Record<(typeof keys)[number], string>>) => {
+            for (const k of keys) delete (process.env as Record<string, string | undefined>)[k];
+            Object.assign(process.env, vars);
+            resetEnvCache();
+            return paymentsAvailable();
+        };
+        try {
+            expect(set({ NODE_ENV: 'test', PAYMENT_PROVIDER: 'dev' })).toBe(true);
+            expect(set({ NODE_ENV: 'production', PAYMENT_PROVIDER: 'dev' })).toBe(false);
+            expect(set({ NODE_ENV: 'production', PAYMENT_PROVIDER: 'stripe' })).toBe(false);
+            expect(set({ NODE_ENV: 'production', PAYMENT_PROVIDER: 'stripe', STRIPE_SECRET_KEY: 'sk_test_x' })).toBe(true);
+        } finally {
+            for (const k of keys) {
+                if (saved[k] === undefined) delete (process.env as Record<string, string | undefined>)[k];
+                else (process.env as Record<string, string | undefined>)[k] = saved[k];
+            }
+            resetEnvCache();
+        }
+    });
+});

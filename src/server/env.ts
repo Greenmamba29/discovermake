@@ -29,7 +29,11 @@ const EnvSchema = z.object({
 
     /** Unset: `netlify-blobs` on Netlify (no writable shared disk there), else `local`. */
     STORAGE_DRIVER: z.preprocess(
-        (v) => (typeof v === 'string' && v.trim() !== '' ? v.trim() : process.env.NETLIFY_BLOBS_CONTEXT || process.env.NETLIFY === 'true' ? 'netlify-blobs' : 'local'),
+        (v) => {
+            if (typeof v === 'string' && v.trim() !== '') return v.trim();
+            const onNetlify = Boolean(process.env.NETLIFY_BLOBS_CONTEXT) || process.env.NETLIFY === 'true';
+            return onNetlify ? 'netlify-blobs' : 'local';
+        },
         z.enum(['local', 'netlify-blobs', 's3']),
     ),
     STORAGE_LOCAL_DIR: z.string().default('.data/storage'),

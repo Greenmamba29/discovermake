@@ -10,7 +10,7 @@
  *   `/checkout/dev-pay?ref=<providerRef>` which calls POST /api/webhooks/dev-payment.
  */
 import type { PaymentProviderName } from '../../contracts/enums';
-import { env } from '../env';
+import { env, isProduction } from '../env';
 import { DevPaymentProvider } from './dev';
 import { StripePaymentProvider } from './stripe';
 import type { PaymentProvider } from './types';
@@ -37,10 +37,14 @@ export function getPaymentProviderByName(name: PaymentProviderName): PaymentProv
 /** Shown to buyers when card payments cannot run here (Stripe selected but not connected). */
 export const PAYMENTS_UNAVAILABLE_MESSAGE = 'Online payment is not switched on yet, so orders cannot be placed right now. Your price is saved; please come back soon.';
 
-/** Whether a card payment can be started: the dev double, or Stripe with its secret key. */
+/**
+ * Whether a card payment can be started: Stripe with its secret key, or the dev double outside
+ * production (it refuses to run in production, so it never counts as available there).
+ */
 export function paymentsAvailable(): boolean {
     const e = env();
-    return e.PAYMENT_PROVIDER === 'dev' || Boolean(e.STRIPE_SECRET_KEY);
+    if (e.PAYMENT_PROVIDER === 'dev') return !isProduction();
+    return Boolean(e.STRIPE_SECRET_KEY);
 }
 
 /** The configured provider (PAYMENT_PROVIDER=stripe|dev). */
