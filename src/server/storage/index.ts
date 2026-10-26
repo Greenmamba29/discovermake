@@ -1,14 +1,16 @@
 /**
- * `getStorage()` — the configured object store (STORAGE_DRIVER=local|s3).
+ * `getStorage()` — the configured object store (STORAGE_DRIVER=local|netlify-blobs|s3).
  * Tests may inject a driver with `setStorage()`.
  */
 import { env, requireSecret } from '../env';
 import { LocalDiskStorage } from './local';
+import { NetlifyBlobsStorage } from './netlify-blobs';
 import { S3Storage } from './s3';
 import type { Storage } from './types';
 
 export * from './types';
 export { LocalDiskStorage, LOCAL_STORAGE_ROUTE, verifyLocalSignature } from './local';
+export { NetlifyBlobsStorage } from './netlify-blobs';
 export { S3Storage } from './s3';
 
 let instance: Storage | null = null;
@@ -28,6 +30,8 @@ export function getStorage(): Storage {
             secretAccessKey: e.S3_SECRET_ACCESS_KEY,
             forcePathStyle: e.S3_FORCE_PATH_STYLE,
         });
+    } else if (e.STORAGE_DRIVER === 'netlify-blobs') {
+        instance = new NetlifyBlobsStorage({ appUrl: e.APP_URL, signingSecret: requireSecret('STORAGE_SIGNING_SECRET') });
     } else {
         instance = new LocalDiskStorage({
             rootDir: e.STORAGE_LOCAL_DIR,

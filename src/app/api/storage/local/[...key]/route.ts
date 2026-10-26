@@ -1,7 +1,7 @@
 /**
- * Local object storage endpoint (STORAGE_DRIVER=local only).
- * Serves signed GET/PUT URLs minted by LocalDiskStorage.getSignedUrl().
- * Foundation-owned; not used when STORAGE_DRIVER=s3 (returns 404).
+ * Signed object storage endpoint for STORAGE_DRIVER=local and netlify-blobs.
+ * Serves signed GET/PUT URLs minted by LocalDiskStorage.getSignedUrl() (NetlifyBlobsStorage reuses it).
+ * Not used when STORAGE_DRIVER=s3 (returns 404): S3 serves its own presigned URLs.
  */
 import { env, requireSecret } from '@/server/env';
 import { ApiError, errorResponse, readBodyBytes, route } from '@/server/http';
@@ -13,6 +13,8 @@ export const dynamic = 'force-dynamic';
 type Params = { key: string[] };
 
 /** Ceiling for signed PUTs minted without an explicit maxBytes. */
+const SIGNED_ROUTE_DRIVERS = new Set(['local', 'netlify-blobs']);
+
 const LOCAL_PUT_MAX_BYTES = 50 * 1024 * 1024;
 
 function keyFrom(parts: string[]): string {
@@ -20,7 +22,7 @@ function keyFrom(parts: string[]): string {
 }
 
 export const GET = route<Params>(async (request, { params }) => {
-    if (env().STORAGE_DRIVER !== 'local') return errorResponse('NOT_FOUND', 'Not found', 404);
+    if (!SIGNED_ROUTE_DRIVERS.has(env().STORAGE_DRIVER)) return errorResponse('NOT_FOUND', 'Not found', 404);
     const key = keyFrom((await params).key);
     const v = verifyLocalSignature(requireSecret('STORAGE_SIGNING_SECRET'), key, new URL(request.url).searchParams, 'GET');
     if (!v) return errorResponse('FORBIDDEN', 'Invalid or expired signature', 403);
@@ -38,7 +40,7 @@ export const GET = route<Params>(async (request, { params }) => {
 });
 
 export const PUT = route<Params>(async (request, { params }) => {
-    if (env().STORAGE_DRIVER !== 'local') return errorResponse('NOT_FOUND', 'Not found', 404);
+    if (!SIGNED_ROUTE_DRIVERS.has(env().STORAGE_DRIVER)) return errorResponse('NOT_FOUND', 'Not found', 404);
     const key = keyFrom((await params).key);
     const v = verifyLocalSignature(requireSecret('STORAGE_SIGNING_SECRET'), key, new URL(request.url).searchParams, 'PUT');
     if (!v) return errorResponse('FORBIDDEN', 'Invalid or expired signature', 403);

@@ -7,7 +7,7 @@
 import { mkdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { hmacHex, safeEqual } from '../auth/tokens';
-import { assertValidKey, type ObjectHead, type SignedUrl, type SignedUrlOptions, type Storage } from './types';
+import { assertValidKey, type ObjectHead, type SignedUrl, type SignedUrlOptions, type Storage, type StorageDriverName } from './types';
 
 export type LocalDiskStorageOptions = {
     rootDir: string;
@@ -18,7 +18,7 @@ export type LocalDiskStorageOptions = {
 export const LOCAL_STORAGE_ROUTE = '/api/storage/local';
 
 export class LocalDiskStorage implements Storage {
-    readonly driver = 'local' as const;
+    readonly driver: StorageDriverName = 'local';
     private readonly root: string;
 
     constructor(private readonly opts: LocalDiskStorageOptions) {

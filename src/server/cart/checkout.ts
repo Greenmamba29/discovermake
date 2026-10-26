@@ -27,7 +27,7 @@ import { newId, newOrderNumber } from '../ids';
 import { dueDateFor, getInvoiceProvider, toInvoiceView } from '../invoices';
 import { guestBuyerActor, priceOrderForCheckout, type CheckoutPricing } from '../orders/checkout';
 import { SEALED_TOKEN_KEY, sealOrderToken } from '../orders/link-vault';
-import { getPaymentProvider } from '../payments';
+import { getPaymentProvider, paymentsAvailable, PAYMENTS_UNAVAILABLE_MESSAGE } from '../payments';
 import type { BenefitResult, MembershipForBenefits } from '../prime/benefits';
 import { recordOrderBenefits } from '../prime/order-benefits';
 import { closeCart, SUPPLIER_ROUTE_MESSAGE } from './cart';
@@ -88,6 +88,8 @@ export async function checkoutQuotes(input: MultiCheckoutInput): Promise<CartChe
     const ids = [...new Set(input.quoteIds)];
     if (!ids.length) throw new ApiError('CONFLICT', 'Your cart is empty.');
     if (ids.length > MAX_CART_ITEMS) throw new ApiError('VALIDATION_FAILED', `A cart can hold up to ${MAX_CART_ITEMS} parts.`);
+    // Invoices need no card; a card checkout fails up front while payments are not connected.
+    if (input.payment.mode === 'card' && !paymentsAvailable()) throw new ApiError('PAYMENT_ERROR', PAYMENTS_UNAVAILABLE_MESSAGE, 503);
     if (input.payment.mode === 'invoice' && !input.shippingAddress.company?.trim()) {
         throw new ApiError('VALIDATION_FAILED', 'Pay by invoice is for business buyers: enter your company name.');
     }

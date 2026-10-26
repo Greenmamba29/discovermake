@@ -16,7 +16,7 @@ import { env } from '../env';
 import { emitEvent } from '../events/outbox';
 import { ApiError } from '../http';
 import { newId, newOrderNumber } from '../ids';
-import { getPaymentProvider } from '../payments';
+import { getPaymentProvider, paymentsAvailable, PAYMENTS_UNAVAILABLE_MESSAGE } from '../payments';
 import { isQuoteOrderable } from '../quote';
 import { addBusinessDays, orderStartDate } from '../quote/leadtime';
 import { applyMembershipBenefits, type BenefitResult, type MembershipForBenefits } from '../prime/benefits';
@@ -169,6 +169,8 @@ export async function createCheckout(input: CheckoutRequest, opts: CheckoutConte
 
     const orderType = orderTypeForQuantity(pricing.quantity);
     const actor: Actor = opts.buyerUserId ? { kind: 'buyer', id: opts.buyerUserId } : guestBuyerActor(input.buyer.email);
+    // Fail before any order work, with a message that says retrying will not help.
+    if (!paymentsAvailable()) throw new ApiError('PAYMENT_ERROR', PAYMENTS_UNAVAILABLE_MESSAGE, 503);
     const provider = getPaymentProvider();
     const appUrl = env().APP_URL;
 

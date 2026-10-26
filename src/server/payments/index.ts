@@ -34,6 +34,15 @@ export function getPaymentProviderByName(name: PaymentProviderName): PaymentProv
     }
 }
 
+/** Shown to buyers when card payments cannot run here (Stripe selected but not connected). */
+export const PAYMENTS_UNAVAILABLE_MESSAGE = 'Online payment is not switched on yet, so orders cannot be placed right now. Your price is saved; please come back soon.';
+
+/** Whether a card payment can be started: the dev double, or Stripe with its secret key. */
+export function paymentsAvailable(): boolean {
+    const e = env();
+    return e.PAYMENT_PROVIDER === 'dev' || Boolean(e.STRIPE_SECRET_KEY);
+}
+
 /** The configured provider (PAYMENT_PROVIDER=stripe|dev). */
 export function getPaymentProvider(): PaymentProvider {
     return getPaymentProviderByName(env().PAYMENT_PROVIDER);

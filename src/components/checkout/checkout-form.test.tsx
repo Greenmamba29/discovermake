@@ -53,11 +53,11 @@ afterEach(() => {
     vi.unstubAllGlobals();
 });
 
-function renderForm() {
+function renderForm(paymentsReady = true) {
     const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
     return render(
         <QueryClientProvider client={client}>
-            <CheckoutForm quoteId={quote.id} cancelled={false} />
+            <CheckoutForm quoteId={quote.id} cancelled={false} paymentsReady={paymentsReady} />
         </QueryClientProvider>,
     );
 }
@@ -65,6 +65,13 @@ function renderForm() {
 const fill = (testId: string, value: string) => fireEvent.change(screen.getByTestId(testId), { target: { value } });
 
 describe('CheckoutForm', () => {
+    it('says up front that ordering is not open while payments are not connected, and disables pay', async () => {
+        renderForm(false);
+        const pay = await screen.findByTestId('pay-cta');
+        expect((pay as HTMLButtonElement).disabled).toBe(true);
+        expect(screen.getByTestId('payments-unavailable').textContent).toContain('Online payment is not switched on yet');
+    });
+
     it('blocks submit with field errors until the form is valid', async () => {
         renderForm();
         const pay = await screen.findByTestId('pay-cta');

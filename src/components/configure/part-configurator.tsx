@@ -387,6 +387,11 @@ function Configurator({ part, catalog, fromQuoteId, onPartChange }: { part: Part
                     <div className="rounded-2xl bg-graphite-900 p-4 ring-1 ring-graphite-700 sm:p-5">
                         <OptionGroup id="grp-material" title="Material" rule="Required · Select 1" required satisfied={Boolean(material)}>
                             <div className="grid gap-2">
+                                {catalog.materials.length === 0 && (
+                                    <Notice tone="info" title="Instant prices are not open yet" testId="catalog-empty">
+                                        No partner shop is taking orders for cut parts right now, so we can&apos;t price this part yet. Bookmark this page to come back to your part once shops are live.
+                                    </Notice>
+                                )}
                                 {catalog.materials.map((m) => {
                                     const anyFits = m.thicknessOptions.some((t) => fits(part, t));
                                     return (

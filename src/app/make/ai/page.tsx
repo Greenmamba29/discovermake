@@ -1,8 +1,9 @@
 import type { Metadata } from 'next'
-import { notFound } from 'next/navigation'
 import { MakeAiIntake } from '@/components/make-ai/make-ai-intake'
 import { MakeIt3dEntry } from '@/components/make-it-3d/make-it-3d-entry'
 import { BottomNav } from '@/components/site/bottom-nav'
+import { ButtonLink } from '@/components/ui/button'
+import { Notice } from '@/components/ui/state'
 import { SiteFooter } from '@/components/site/site-footer'
 import { SiteHeader } from '@/components/site/site-header'
 import { MAKE_AI_MAX_INPUT_CHARS } from '@/contracts/make-ai'
@@ -11,14 +12,15 @@ import { env } from '@/server/env'
 export const metadata: Metadata = { title: 'Make AI', robots: { index: false } }
 
 /**
- * /make/ai: Make AI intake (spec §7.5, R2 seed). Shown only when
- * NEXT_PUBLIC_MAKE_AI_ENABLED=true; the API it calls has its own server-side flag.
+ * /make/ai: Make AI intake (spec §7.5, R2 seed) when NEXT_PUBLIC_MAKE_AI_ENABLED=true (the API it
+ * calls has its own server-side flag). Switched off, the page explains that and points to the
+ * DXF upload instead of answering 404, since Home, Discover and the Build Workspace link here.
  * Lives at /make/ai because /make is the R1 DXF upload page.
  */
 type Props = { searchParams: Promise<Record<string, string | string[] | undefined>> }
 
 export default async function MakeAiPage({ searchParams }: Props) {
-    if (!env().NEXT_PUBLIC_MAKE_AI_ENABLED) notFound()
+    const enabled = env().NEXT_PUBLIC_MAKE_AI_ENABLED
     // ?prompt= prefills the composer (Home intake, Make-anything tiles, Discover starters). Never auto-submitted.
     const raw = (await searchParams).prompt
     const prompt = typeof raw === 'string' ? raw.slice(0, MAKE_AI_MAX_INPUT_CHARS) : ''
@@ -32,12 +34,26 @@ export default async function MakeAiPage({ searchParams }: Props) {
                     <p className="mt-4 max-w-xl text-fg-muted">
                         Tell Make AI what you want to make. It drafts the requirements, the questions we need answered and the materials and processes that fit. It is an AI estimate, not a quote.
                     </p>
-                    <div className="mt-8">
-                        <MakeAiIntake initialText={prompt} />
-                    </div>
-                    <div className="mt-10">
-                        <MakeIt3dEntry />
-                    </div>
+                    {enabled ? (
+                        <>
+                            <div className="mt-8">
+                                <MakeAiIntake initialText={prompt} />
+                            </div>
+                            <div className="mt-10">
+                                <MakeIt3dEntry />
+                            </div>
+                        </>
+                    ) : (
+                        <Notice
+                            tone="info"
+                            className="mt-8"
+                            title="Make AI is not switched on yet"
+                            testId="make-ai-off"
+                            action={<ButtonLink href="/make">Upload a DXF instead</ButtonLink>}
+                        >
+                            Have a drawing already? Upload a DXF file and get a price from a partner shop.
+                        </Notice>
+                    )}
                 </div>
             </main>
             <SiteFooter />
