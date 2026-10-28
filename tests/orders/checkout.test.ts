@@ -104,6 +104,28 @@ describe('checkout (server-priced)', () => {
         expect(res.orderType).toBe('PRODUCTION_RUN');
     });
 
+    it('refuses up front, with a clear reason, when Stripe is selected but not connected', async () => {
+        const { resetEnvCache } = await import('@/server/env');
+        const saved = { provider: process.env.PAYMENT_PROVIDER, key: process.env.STRIPE_SECRET_KEY };
+        process.env.PAYMENT_PROVIDER = 'stripe';
+        delete process.env.STRIPE_SECRET_KEY;
+        resetEnvCache();
+        try {
+            const { quote } = await createQuoteFixture(ctx.db);
+            const before = await ctx.db.select({ id: orders.id }).from(orders);
+            const err = await createCheckout(checkoutBody(quote.id)).catch((e) => e);
+            expect(err).toBeInstanceOf(ApiError);
+            expect(err.status).toBe(503);
+            expect(err.message).toMatch(/not switched on yet/);
+            expect(await ctx.db.select({ id: orders.id }).from(orders)).toHaveLength(before.length);
+        } finally {
+            process.env.PAYMENT_PROVIDER = saved.provider;
+            if (saved.key === undefined) delete process.env.STRIPE_SECRET_KEY;
+            else process.env.STRIPE_SECRET_KEY = saved.key;
+            resetEnvCache();
+        }
+    });
+
     it('rejects an expired quote', async () => {
         const { quote } = await createQuoteFixture(ctx.db, { validUntil: new Date(Date.now() - 1000) });
         await expectConflict(createCheckout(checkoutBody(quote.id)), /expired/i);

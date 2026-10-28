@@ -18,19 +18,21 @@ import { PartConfigurator } from './part-configurator';
 import { catalog, part, quoteFor } from '../__fixtures__/contracts';
 
 const quoteBodies: unknown[] = [];
+let catalogBody: typeof catalog = catalog;
 
 beforeEach(() => {
     push.mockReset();
     // jsdom has no WebGL: the viewer falls back to the flat pattern (the same path as old browsers).
     HTMLCanvasElement.prototype.getContext = (() => null) as typeof HTMLCanvasElement.prototype.getContext;
     quoteBodies.length = 0;
+    catalogBody = catalog;
     vi.stubGlobal(
         'fetch',
         vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
             const url = String(input);
             const ok = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { 'content-type': 'application/json' } });
             if (url.endsWith('/api/parts/prt_test')) return ok(part);
-            if (url.endsWith('/api/catalog')) return ok(catalog);
+            if (url.endsWith('/api/catalog')) return ok(catalogBody);
             if (url.endsWith('/api/quotes') && init?.method === 'POST') {
                 const body = JSON.parse(String(init.body));
                 quoteBodies.push(body);
@@ -91,5 +93,13 @@ describe('PartConfigurator', () => {
         expect(quoteBodies).toHaveLength(0);
         fireEvent.click(screen.getByTestId('thickness-option-thk_crs_14ga').querySelector('input')!);
         await waitFor(() => expect(quoteBodies).toHaveLength(1), { timeout: 3000 });
+    });
+
+    it('explains that no partner shop is live when the catalog has no materials', async () => {
+        catalogBody = { ...catalog, materials: [] };
+        renderConfigurator();
+        expect((await screen.findByTestId('catalog-empty')).textContent).toContain('Instant prices are not open yet');
+        expect(screen.queryByTestId('material-option-mat_al_6061')).toBeNull();
+        expect(quoteBodies).toHaveLength(0);
     });
 });

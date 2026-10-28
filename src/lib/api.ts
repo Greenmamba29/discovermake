@@ -128,6 +128,21 @@ export function errorMessage(err: unknown): string {
 const enc = encodeURIComponent;
 const statusQuery = (status?: readonly string[]) => (status && status.length ? `?status=${status.map(enc).join(',')}` : '');
 
+/**
+ * The app's own signed storage route is host-independent (the signature covers method, key,
+ * expiry, type and size, not the host), so it is always sent to the current origin: a URL minted
+ * under another of the site's hostnames (APP_URL vs. the custom domain) would be a cross-origin
+ * PUT the browser blocks. S3 presigned URLs are left untouched.
+ */
+export function sameOriginUploadUrl(url: string, origin: string): string {
+    try {
+        const u = new URL(url, origin);
+        return u.pathname.startsWith('/api/storage/local/') ? `${u.pathname}${u.search}` : url;
+    } catch {
+        return url;
+    }
+}
+
 /** PUT raw bytes to a signed upload target with progress (XHR: fetch has no upload progress). */
 export function putSigned(
     upload: { url: string; method: 'PUT'; headers: Record<string, string> },
@@ -137,7 +152,7 @@ export function putSigned(
 ): Promise<void> {
     return new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
-        xhr.open(upload.method, upload.url, true);
+        xhr.open(upload.method, sameOriginUploadUrl(upload.url, window.location.origin), true);
         for (const [k, v] of Object.entries(upload.headers)) {
             // Browsers forbid setting these; they are derived from the body automatically.
             if (/^(content-length|host)$/i.test(k)) continue;

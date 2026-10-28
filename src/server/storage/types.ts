@@ -1,6 +1,6 @@
 /**
  * Object storage abstraction (CAD files, QA photos, labels).
- * Drivers: `local` (dev, files under `.data/storage`) and `s3` (any S3-compatible:
+ * Drivers: `local` (dev, files under `.data/storage`), `netlify-blobs` (Netlify, the default there) and `s3` (any S3-compatible:
  * AWS S3, Cloudflare R2, Supabase Storage S3 endpoint, MinIO). Selected by STORAGE_DRIVER.
  *
  * Key conventions (always use these helpers' layout):
@@ -8,7 +8,7 @@
  *   qa/<jobId>/<random>.<ext>
  *   labels/<shipmentId>.<ext>
  */
-export type StorageDriverName = 'local' | 's3';
+export type StorageDriverName = 'local' | 'netlify-blobs' | 's3';
 
 export type SignedUrlOptions = {
     method: 'GET' | 'PUT';

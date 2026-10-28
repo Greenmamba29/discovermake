@@ -88,7 +88,7 @@ function buildRequest(quoteId: string, f: FormState) {
     };
 }
 
-export function CheckoutForm({ quoteId, cancelled }: { quoteId: string; cancelled: boolean }) {
+export function CheckoutForm({ quoteId, cancelled, paymentsReady = true }: { quoteId: string; cancelled: boolean; paymentsReady?: boolean }) {
     const quoteQuery = useQuery({ queryKey: ['quote', quoteId], queryFn: () => api.getQuote(quoteId) });
     const quote = quoteQuery.data;
     const partQuery = useQuery({ queryKey: ['part', quote?.partId], queryFn: () => api.getPart(quote!.partId), enabled: Boolean(quote) });
@@ -105,7 +105,7 @@ export function CheckoutForm({ quoteId, cancelled }: { quoteId: string; cancelle
         );
     }
     if (!quote.orderable) return <NotOrderable quote={quote} />;
-    return <CheckoutBody quote={quote} preview={partQuery.data?.preview ?? null} cancelled={cancelled} />;
+    return <CheckoutBody quote={quote} preview={partQuery.data?.preview ?? null} cancelled={cancelled} paymentsReady={paymentsReady} />;
 }
 
 function NotOrderable({ quote }: { quote: QuoteView }) {
@@ -119,7 +119,7 @@ function NotOrderable({ quote }: { quote: QuoteView }) {
     return <ErrorState title={c.title} message={c.body} action={<ButtonLink href={`/parts/${quote.partId}?from=${quote.id}`}>Get a fresh quote</ButtonLink>} />;
 }
 
-function CheckoutBody({ quote, preview, cancelled }: { quote: QuoteView; preview: import('@/contracts').PartPreview | null; cancelled: boolean }) {
+function CheckoutBody({ quote, preview, cancelled, paymentsReady }: { quote: QuoteView; preview: import('@/contracts').PartPreview | null; cancelled: boolean; paymentsReady: boolean }) {
     const defaultMethod = quote.shippingOptions.find((o) => o.method === 'STANDARD')?.method ?? quote.shippingOptions[0].method;
     const [form, setForm] = useState<FormState>({ ...EMPTY, shippingMethod: defaultMethod });
     const [touched, setTouched] = useState<Partial<Record<FieldKey, boolean>>>({});
@@ -208,6 +208,12 @@ function CheckoutBody({ quote, preview, cancelled }: { quote: QuoteView; preview
             </Link>
             <p className="eyebrow mt-4">Step 4 of 4 · Approve and pay</p>
             <h1 className="mt-1 font-display font-wide text-3xl font-extrabold">Checkout</h1>
+
+            {!paymentsReady && (
+                <Notice tone="warning" className="mt-4" title="Ordering opens soon" testId="payments-unavailable">
+                    Online payment is not switched on yet, so orders cannot be placed right now. Your price is held until {shortDate(quote.validUntil)}.
+                </Notice>
+            )}
 
             {cancelled && (
                 <Notice tone="warning" className="mt-4" title="Payment was cancelled">
@@ -422,7 +428,7 @@ function CheckoutBody({ quote, preview, cancelled }: { quote: QuoteView; preview
                         </div>
                     ) : (
                         <div className="sticky bottom-0 z-20 -mx-4 border-t border-graphite-700 bg-graphite-950/95 p-3 backdrop-blur sm:static sm:mx-0 sm:border-0 sm:bg-transparent sm:p-0">
-                            <Button type="submit" size="lg" className="w-full" loading={submitting} data-testid="pay-cta">
+                            <Button type="submit" size="lg" className="w-full" loading={submitting} disabled={!paymentsReady} data-testid="pay-cta">
                                 <Lock className="h-4 w-4" aria-hidden />
                                 {supplier
                                     ? `Pay ${money(depositCents, quote.currency)} deposit and place the order`

@@ -20,10 +20,22 @@ const flag = z
 
 const EnvSchema = z.object({
     NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
-    APP_URL: z.string().url().default('http://localhost:3000'),
+    /** Public base URL. Unset: Netlify's primary site URL (`URL`, the custom domain once attached), else localhost. */
+    APP_URL: z.preprocess(
+        (v) => (typeof v === 'string' && v.trim() !== '' ? v.trim() : process.env.URL?.trim() || 'http://localhost:3000'),
+        z.string().url(),
+    ),
     DATABASE_URL: z.string().default('postgresql://dm:dm@localhost:5432/discovermake'),
 
-    STORAGE_DRIVER: z.enum(['local', 's3']).default('local'),
+    /** Unset: `netlify-blobs` on Netlify (no writable shared disk there), else `local`. */
+    STORAGE_DRIVER: z.preprocess(
+        (v) => {
+            if (typeof v === 'string' && v.trim() !== '') return v.trim();
+            const onNetlify = Boolean(process.env.NETLIFY_BLOBS_CONTEXT) || process.env.NETLIFY === 'true';
+            return onNetlify ? 'netlify-blobs' : 'local';
+        },
+        z.enum(['local', 'netlify-blobs', 's3']),
+    ),
     STORAGE_LOCAL_DIR: z.string().default('.data/storage'),
     /** HMAC key for local-driver signed URLs. Falls back to a dev-only constant outside production. */
     STORAGE_SIGNING_SECRET: optionalString,
