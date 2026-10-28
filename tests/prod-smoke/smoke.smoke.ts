@@ -145,3 +145,44 @@ test('shop console logs in with a console token (PROD_SMOKE_SHOP_TOKEN)', async 
     await page.goto('/shop/jobs', { waitUntil: 'networkidle' });
     expect(page.url()).toContain('/shop');
 });
+
+// The three "no file handy" entry points share the DXF upload pipeline (POST /api/parts -> signed
+// PUT -> analyze). These were the screens that failed on the live site, so each is checked on its own.
+
+test('sample part ("No file handy? Try a sample mounting plate") reaches the configurator', async ({ page }) => {
+    watch(page, () => 'sample-part ' + new URL(page.url()).pathname);
+    await page.goto('/make');
+    await page.getByTestId('sample-part').click();
+    await page.waitForURL(/\/parts\/prt_/, { timeout: 60_000 });
+    await page.waitForLoadState('networkidle');
+    await expect(page.getByTestId('upload-error')).toHaveCount(0);
+    await expect(page.getByTestId('part-problem')).toHaveCount(0);
+    await expect(page.getByTestId('part-dimensions')).toContainText('120.0 mm');
+});
+
+test('Discover "Get an instant quote" on the wall bracket reaches the configurator', async ({ page }) => {
+    watch(page, () => 'discover-start ' + new URL(page.url()).pathname);
+    await page.goto('/discover');
+    await page.getByTestId('discover-start-wall-bracket').first().click();
+    await page.waitForURL(/\/parts\/prt_/, { timeout: 60_000 });
+    await page.waitForLoadState('networkidle');
+    await expect(page.getByTestId('part-problem')).toHaveCount(0);
+    const body = await page.locator('main').innerText();
+    expect(body).not.toMatch(/Internal error/i);
+});
+
+test('onboarding step 3 prices the sample (or says honestly why it cannot)', async ({ page }) => {
+    watch(page, () => 'onboarding ' + new URL(page.url()).pathname);
+    await page.goto('/onboarding');
+    await page.getByTestId('intent-option-make').click();
+    await page.getByTestId('onboarding-continue').click();
+    await page.getByTestId('onboarding-skip').click(); // interests: Skip is on every step
+    await expect(page.getByTestId('onboarding')).toHaveAttribute('data-step', 'first-build', { timeout: 15_000 });
+    const result = page.getByTestId('first-build-price').or(page.getByText('We could not price the sample'));
+    await expect(result).toBeVisible({ timeout: 90_000 });
+    const text = await page.getByTestId('onboarding').innerText();
+    // With no partner shop the honest state is "could not price"; "Internal error" is never acceptable.
+    expect(text).not.toMatch(/Internal error/i);
+    if (await page.getByTestId('first-build-price').isVisible()) console.log('first build priced:', await page.getByTestId('first-build-price').innerText());
+    else problems.push({ where: 'onboarding step 3', what: `not priced: ${text.match(/We could not price the sample[\s\S]{0,120}/)?.[0]?.replace(/\s+/g, ' ')}` });
+});
