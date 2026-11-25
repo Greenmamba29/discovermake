@@ -72,7 +72,8 @@ jobs:
           SOLIDCRAFT_CLI: /usr/local/bin/solidcraft-cli
 
   e2e:
-    runs-on: ubuntu-latest
+    # Pinned: Playwright's browser builds do not support ubuntu-latest (26.04) yet.
+    runs-on: ubuntu-24.04
     timeout-minutes: 45
     services:
       postgres:
