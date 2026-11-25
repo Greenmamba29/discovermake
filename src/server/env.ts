@@ -101,6 +101,12 @@ const EnvSchema = z.object({
     CAD_WORKER_URL: optionalString,
     /** Bearer token the CAD worker expects (its CAD_WORKER_TOKEN). */
     CAD_WORKER_TOKEN: optionalString,
+    /**
+     * Which engine Make AI models with for "Make it in 3D": "cadgen" (build123d Python scripts, the
+     * default) or "solidcraft" (SolidCraft command scripts: data, not code, with named sizes the buyer
+     * can change without Make AI). The CAD worker must have that engine installed.
+     */
+    TEXT_TO_CAD_ENGINE: optionalString.pipe(z.enum(['cadgen', 'solidcraft']).optional()).transform((v) => v ?? 'cadgen'),
     /** R6 optional GPU reconstruction worker (SAM 2 -> OpenCV -> COLMAP / Open3D). Unset = no "Auto-detect". */
     RECONSTRUCT_WORKER_URL: optionalString,
     /** Bearer token the reconstruction worker expects. */

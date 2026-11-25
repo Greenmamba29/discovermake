@@ -2,9 +2,10 @@
 
 /**
  * "Make it in 3D" in the Build Workspace (Object View): the buyer describes the object, Make AI
- * writes a cadgen model and the CAD worker builds it in its sandbox. The result is a NEW DRAFT
- * design version shown in the Object View. The buyer approves that version, then gets a BINDING
- * 3D-print quote from the print engine and goes to the existing checkout.
+ * writes a model (cadgen, or SolidCraft with named sizes) and the CAD worker builds it in its
+ * sandbox. The result is a NEW DRAFT design version shown in the Object View. A SolidCraft model's
+ * sizes can then be changed directly ("Change sizes": a new version, no AI). The buyer approves the
+ * version, then gets a BINDING 3D-print quote from the print engine and goes to the existing checkout.
  */
 import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -12,6 +13,7 @@ import { CheckCircle2, Printer, Sparkles, Truck } from 'lucide-react';
 import type { BuildGraphView } from '@/contracts';
 import type { MakeIt3dStatus } from '@/contracts/make-it-3d';
 import { MakeIt3dFailureNotice, MakeIt3dForm, MakeIt3dProgress, type MakeIt3dFailure } from '@/components/make-it-3d/make-it-3d-form';
+import { SizesCard } from '@/components/make-it-3d/sizes-card';
 import { TrustChip } from '@/components/trust';
 import { Button, ButtonLink } from '@/components/ui/button';
 import { QtyStepper } from '@/components/ui/qty-stepper';
@@ -53,6 +55,16 @@ export function MakeIt3dPanel({ view, isCurrent, compact = false }: { view: Buil
             else await refresh();
         },
     });
+    const [sizesError, setSizesError] = useState<string | null>(null);
+    const sizes = useMutation({
+        mutationFn: (changes: Record<string, string>) => workspaceApi.changeTextToCadSizes(buildId, changes),
+        onMutate: () => setSizesError(null),
+        onSuccess: async (res) => {
+            if (res.status === 'generated') await refresh();
+            else setSizesError(res.status === 'failed' ? (res.detail ?? res.message) : res.reason);
+        },
+        onError: (err) => setSizesError(errorMessage(err)),
+    });
     const approve = useMutation({
         mutationFn: (version: number) => workspaceApi.approve(buildId, version),
         onSuccess: refresh,
@@ -71,9 +83,17 @@ export function MakeIt3dPanel({ view, isCurrent, compact = false }: { view: Buil
                     {record && (
                         <div className="space-y-1 text-sm" data-testid="make3d-record">
                             <p>
-                                <span className="font-semibold">Made with Make AI</span>
-                                <span className="text-fg-muted"> · version {record.version} · cadgen {record.engine.version}</span>
+                                <span className="font-semibold">{record.origin === 'parameters' ? 'You changed its sizes' : 'Made with Make AI'}</span>
+                                <span className="text-fg-muted">
+                                    {' '}
+                                    · version {record.version} · {record.engine.name === 'solidcraft' ? 'SolidCraft' : 'cadgen'} {record.engine.version}
+                                </span>
                             </p>
+                            {record.changes.length > 0 && (
+                                <p className="text-xs text-fg-subtle" data-testid="make3d-record-changes">
+                                    {record.changes.map((c) => `${c.name} ${c.from} → ${c.to}`).join(' · ')}
+                                </p>
+                            )}
                             <p className="text-fg-muted">“{record.prompt}”</p>
                             {record.minWallMm !== null && <p className="text-xs text-fg-subtle">Thinnest wall about {record.minWallMm.toFixed(1)} mm.</p>}
                             {record.warnings.length > 0 && (
@@ -84,6 +104,10 @@ export function MakeIt3dPanel({ view, isCurrent, compact = false }: { view: Buil
                                 </ul>
                             )}
                         </div>
+                    )}
+
+                    {record && s && isCurrent && !compact && record.engine.name === 'solidcraft' && record.parameters.length > 0 && (
+                        <SizesCard key={`${record.version}:${record.scriptSha256}`} record={record} nextVersion={s.latestVersion + 1} busy={sizes.isPending} error={sizesError} onSubmit={(c) => sizes.mutate(c)} />
                     )}
 
                     {record && s && <ApproveAndQuote status={s} buildId={buildId} approving={approve.isPending} approveError={approve.isError ? errorMessage(approve.error) : null} onApprove={(v) => approve.mutate(v)} />}

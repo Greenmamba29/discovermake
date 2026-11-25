@@ -72,6 +72,19 @@ Shops and creators get a longer verified track: business details, machines or ch
 | [Whatnot · home live feed](https://mobbin.com/screens/ef2533f6-b2f7-493f-9fe6-88e09bc65569) | Category chips, a "Get started · Go live · Step 3 of 4" checklist, and live tiles with **Live · 387** badges. | Live home with channel chips (Mega Builds, Factory Floor, Drops…). Creator go-live checklist. Live tiles show viewers and the product price. |
 | [Whatnot · seller profile](https://mobbin.com/screens/f0203959-3478-4ca1-af8a-e8632df0866b) | Rating, average ship time, units sold, follow, and live-notification settings. | Creator/factory channel: rating, avg lead time, builds made, quality score, Follow, notification preferences. |
 
+### Change sizes (SolidCraft models, Nov 2026)
+
+The buyer changes a model's named sizes and gets the next version to approve (`src/components/make-it-3d/sizes-card.tsx`).
+
+| Mobbin reference | What we take | DiscoverMake translation |
+|---|---|---|
+| [Krea AI · Object panel](https://mobbin.com/screens/1afb1366-7b6c-4538-8d3e-ced25ade4b66) | A compact panel beside the 3D view: each value a labelled numeric field, units beside it. | One field per named size, labelled in plain words from the model ("Overall length"), with the engine's name and the old value under it. |
+| [GitHub · Files changed](https://mobbin.com/screens/c06533bc-cfd8-40da-b005-c0d4633a4eba) and [ChatGPT · Last turn](https://mobbin.com/screens/444a5859-204c-475b-b446-8315d93e15dc) | What changes is listed before you commit it, old struck through, new highlighted. | "1 change · Overall length ~~60 mm~~ → 80 mm" appears as soon as a value differs; nothing is sent until the buyer presses the button. |
+| [Wabi · Version rows](https://mobbin.com/screens/f9776c91-0b37-4d38-af76-a74b90fddbef) | Each change becomes a version with its own chip. | "Make version 3"; the record then reads "You changed its sizes · version 3" with `L 60 mm → 80 mm`, and approval names that version. |
+| [Canva · Print order panel](https://mobbin.com/screens/0f49cf27-e604-46fa-890a-48d90c771bd8) | Size and finish choices in one side panel ending in one primary action and a subtotal. | Change sizes, Approve and the binding quote stack in the same panel, one primary action at a time. |
+
+**What we change:** no sliders (sizes are exact numbers with units, typed or pasted); no live re-render while typing (the engine rebuilds once, on the button, and the result is a DRAFT to check); invalid values are refused in words ("Use a number with its unit, for example 80 mm.").
+
 ## Query backlog (run during the research sprint)
 
 | Surface | Mobbin queries |

@@ -7,6 +7,8 @@
  *   GET  /api/builds/:buildId/text-to-cad          -> MakeIt3dStatus
  *   POST /api/builds/:buildId/text-to-cad {prompt} -> MakeIt3dResponse (a NEW DRAFT design version)
  *   POST /api/builds/:buildId/text-to-cad/quote    -> QuoteView (BINDING print quote once approved)
+ *   POST /api/builds/:buildId/text-to-cad/parameters {changes} -> MakeIt3dResponse (SolidCraft models:
+ *        new sizes, rebuilt from the stored script without Make AI; a NEW DRAFT design version)
  *
  * Make AI writes a cadgen script for the buyer's words; the CAD worker gates and builds it in a
  * sandbox. The result is a DRAFT version: the buyer approves it before any quote. Kids never
@@ -15,7 +17,7 @@
 import { z } from 'zod';
 import { MAKE_AI_MAX_INPUT_CHARS } from './make-ai';
 import { PrintMaterialOption } from './reconstruct';
-import { TextToCadErrorCode, TextToCadGeometry } from './text-to-cad';
+import { SolidcraftOverrides, TextToCadEngine, TextToCadErrorCode, TextToCadGeometry, TextToCadParameter } from './text-to-cad';
 
 export const MakeIt3dPrompt = z
     .string()
@@ -47,8 +49,14 @@ export const MakeIt3dRecordView = z.object({
     /** The design version this geometry was generated in (a DRAFT until the buyer approves it). */
     version: z.number().int().positive(),
     prompt: z.string(),
-    engine: z.object({ name: z.literal('cadgen'), version: z.string() }),
+    engine: TextToCadEngine,
     scriptSha256: z.string(),
+    /** SolidCraft models: the sizes the buyer can change for a new version (empty for cadgen). */
+    parameters: z.array(TextToCadParameter).default([]),
+    /** What made this version: Make AI from the description, or the buyer changing sizes. */
+    origin: z.enum(['make_ai', 'parameters']).default('make_ai'),
+    /** For origin `parameters`: each size changed from the version before. */
+    changes: z.array(z.object({ name: z.string(), from: z.string(), to: z.string() })).default([]),
     geometry: TextToCadGeometry,
     /** Thinnest wall measured on the STL (mm); null when it could not be measured. */
     minWallMm: z.number().nullable(),
@@ -102,3 +110,9 @@ export const MakeIt3dQuoteRequest = z.object({
     quantity: z.number().int().min(1).max(100).default(1),
 });
 export type MakeIt3dQuoteRequest = z.infer<typeof MakeIt3dQuoteRequest>;
+
+/** New sizes for a SolidCraft model: parameter name -> expression (for example "80 mm"). */
+export const MakeIt3dParametersRequest = z.object({
+    changes: SolidcraftOverrides.refine((c) => Object.keys(c).length > 0, 'Change at least one size.'),
+});
+export type MakeIt3dParametersRequest = z.infer<typeof MakeIt3dParametersRequest>;

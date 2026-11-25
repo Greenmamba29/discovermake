@@ -1,0 +1,82 @@
+{
+ "artifacts": [
+  {
+   "bytes": 43840,
+   "filename": "model.step",
+   "kind": "step",
+   "sha256": "2c6cca53573162e0e14016d9d0bc27af490599c80439b89f404b0dccf0233d44"
+  },
+  {
+   "bytes": 34992,
+   "filename": "model.glb",
+   "kind": "glb",
+   "sha256": "0fbcfe582f69bae4d0a63a02b3bb38863678f017d7dc0290a53531de435c8944"
+  },
+  {
+   "bytes": 768584,
+   "filename": "model.stl",
+   "kind": "stl",
+   "sha256": "7ec271bf3ce1231c4922fc408badfcec1f3cd0d04d4a50b29e867601f741b865"
+  }
+ ],
+ "build_ms": 1200,
+ "design": {
+  "bytes": 30054,
+  "filename": "model.sc",
+  "sha256": "665017115697b5aca39a14ca440b96d9027f3511979dd1727f19010007304160"
+ },
+ "engine": {
+  "name": "solidcraft",
+  "version": "0.48.1"
+ },
+ "geometry": {
+  "area_mm2": 8762.422,
+  "bbox_mm": [
+   80.0,
+   24.0,
+   18.0
+  ],
+  "solids": 1,
+  "sound": true,
+  "volume_mm3": 30114.08
+ },
+ "ok": true,
+ "parameters": [
+  {
+   "comment": "overall length",
+   "expression": "80 mm",
+   "name": "L",
+   "unit": "mm",
+   "value": 80.0
+  },
+  {
+   "comment": "depth front to back",
+   "expression": "24 mm",
+   "name": "W",
+   "unit": "mm",
+   "value": 24.0
+  },
+  {
+   "comment": "height",
+   "expression": "18 mm",
+   "name": "H",
+   "unit": "mm",
+   "value": 18.0
+  },
+  {
+   "comment": "cable slot width",
+   "expression": "5 mm",
+   "name": "slot",
+   "unit": "mm",
+   "value": 5.0
+  },
+  {
+   "comment": "distance between slots",
+   "expression": "16 mm",
+   "name": "pitch",
+   "unit": "mm",
+   "value": 16.0
+  }
+ ],
+ "warnings": []
+}

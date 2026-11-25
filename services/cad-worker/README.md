@@ -85,6 +85,28 @@ POST /v1/kid-templates/{template}/build { params }            -> TextToCadBuildR
 
 See `docs/architecture/text-to-cad.md` for the sandbox layers production must add around this.
 
+## SolidCraft
+
+Two more routes build models with [SolidCraft](https://github.com/tangency-labs/solidcraft) v0.48.1
+(MIT OR Apache-2.0; only the headless `solidcraft-cli` is installed):
+
+```
+POST /v1/solidcraft/build    { script: {commands: [...]}, outputs? }           -> TextToCadBuildResponse + parameters, script, design
+POST /v1/solidcraft/rebuild  { design: {content_base64, sha256}, parameters }   -> TextToCadBuildResponse + parameters, design
+```
+
+- A script is JSON data, not code. `cad_worker/solidcraft/gate.py` allows only modelling commands
+  (`commands.py`, generated from the engine's own registry) and refuses any parameter that names a
+  file, folder, URL, plugin or output.
+- `runner.py` builds in the same sandbox as cadgen, saves the design (`model.sc`) and measures the
+  STEP in a second, separate run (`solidcraft-cli eval`).
+- `rebuild` reopens a design this worker saved (sha256-checked) with `--param NAME=EXPR`, so edge
+  and face picks follow their geometry; replaying the script would not.
+- `python -m cad_worker.solidcraft.golden` rewrites the app's goldens in
+  `tests/fixtures/text-to-cad/solidcraft/`.
+- Tests that build for real skip unless `SOLIDCRAFT_CLI` is set. `/healthz` reports
+  `engines: {cadgen, solidcraft}`.
+
 ## Configuration
 
 | Variable | Default | |
@@ -96,7 +118,9 @@ See `docs/architecture/text-to-cad.md` for the sandbox layers production must ad
 | `CADGEN_PYTHON` | — | cadgen venv python (`/opt/cadgen/bin/python` in Docker); unset means text-to-CAD answers `UNAVAILABLE` |
 | `CADGEN_NODE` | `node` on PATH | Node >= 20 for cadgen's GLB / STL export (`/opt/node22/bin/node` in Docker) |
 | `CADGEN_TIMEOUT_S` | 120 | Per text-to-CAD build |
-| `TEXT_TO_CAD_CONCURRENCY` | 1 | Parallel text-to-CAD builds (each may use up to ~3 GB) |
+| `TEXT_TO_CAD_CONCURRENCY` | 1 | Parallel text-to-CAD builds (each may use up to ~3 GB); SolidCraft builds share these slots |
+| `SOLIDCRAFT_CLI` | — | `solidcraft-cli` path (`/opt/solidcraft/bin/solidcraft-cli` in Docker); unset means SolidCraft answers `UNAVAILABLE` |
+| `SOLIDCRAFT_TIMEOUT_S` | 90 | Per SolidCraft build |
 
 The web app reads `CAD_WORKER_URL` and `CAD_WORKER_TOKEN` (see `src/server/cad/client.ts`).
 
@@ -118,5 +142,6 @@ Deploy with the `Dockerfile` to a container host (Fly.io, Render, Cloud Run). It
 ## Licenses
 
 - CadQuery: Apache-2.0
+- SolidCraft (`solidcraft-cli`, release binary): MIT OR Apache-2.0; its brand-licensed interface is not installed
 - ezdxf: MIT
 - OCP / OpenCascade: LGPL-2.1 with exception. It is used as the unmodified upstream wheel in an isolated service, per the copyleft rule in `docs/architecture/open-source-register.md`.

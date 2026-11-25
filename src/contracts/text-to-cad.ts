@@ -11,9 +11,18 @@
  *   2. Kid project templates: our own parametric build123d models. Kids choose a template and a few
  *      bounded options; they never type free-form design text and no model is generated for them.
  *
+ * A second engine builds Make AI models when TEXT_TO_CAD_ENGINE=solidcraft: SolidCraft
+ * (tangency-labs/solidcraft, MIT OR Apache-2.0). Its model is DATA, not code: a JSON list of engine
+ * commands, checked against an allow-list and built by `solidcraft-cli` in the same sandbox. Its
+ * named parameters come back with the build, with the saved design (`model.sc`), so the buyer can
+ * change a size and get a new version without Make AI writing the model again: the worker applies
+ * the new values to that design, where every edge and face pick follows its geometry.
+ *
  * Worker routes (services/cad-worker, bearer CAD_WORKER_TOKEN, like /v1/generate):
  *   POST /v1/text-to-cad/build              TextToCadBuildRequest -> TextToCadBuildResponse
  *   POST /v1/kid-templates/{template}/build KidTemplateBuildRequest -> TextToCadBuildResponse
+ *   POST /v1/solidcraft/build               SolidcraftBuildRequest -> TextToCadBuildResponse (+ design)
+ *   POST /v1/solidcraft/rebuild             SolidcraftRebuildRequest -> TextToCadBuildResponse (+ design)
  */
 import { z } from 'zod';
 
@@ -50,6 +59,72 @@ export const TextToCadArtifact = z.object({
 });
 export type TextToCadArtifact = z.infer<typeof TextToCadArtifact>;
 
+export const TEXT_TO_CAD_ENGINES = ['cadgen', 'solidcraft'] as const;
+export const TextToCadEngineName = z.enum(TEXT_TO_CAD_ENGINES);
+export type TextToCadEngineName = z.infer<typeof TextToCadEngineName>;
+export const TextToCadEngine = z.object({ name: TextToCadEngineName, version: z.string() });
+export type TextToCadEngine = z.infer<typeof TextToCadEngine>;
+
+// ---------------------------------------------------------------------------
+// SolidCraft: a model is a list of engine commands (data), never code
+// ---------------------------------------------------------------------------
+
+/** Mirrors the worker gate's bounds (services/cad-worker/cad_worker/solidcraft/gate.py). */
+export const SOLIDCRAFT_MAX_COMMANDS = 400;
+export const SOLIDCRAFT_MAX_SCRIPT_BYTES = 192 * 1024;
+export const SOLIDCRAFT_MAX_OVERRIDES = 64;
+
+export const SolidcraftStep = z.object({ command: z.string().min(3).max(80).regex(/^[a-z][a-z0-9_]*(\.[a-z0-9_]+)+$/), params: z.record(z.unknown()).default({}) }).strict();
+export const SolidcraftScript = z.object({ commands: z.array(SolidcraftStep).min(1).max(SOLIDCRAFT_MAX_COMMANDS) }).strict();
+export type SolidcraftScript = z.infer<typeof SolidcraftScript>;
+
+export const SolidcraftParameterName = z.string().regex(/^[A-Za-z_][A-Za-z0-9_]{0,63}$/, 'Parameter names are letters, digits and _.');
+/** A length, angle or count: numbers, names, units and arithmetic. No quotes. */
+export const SolidcraftExpression = z
+    .string()
+    .trim()
+    .min(1, 'Type a value, for example 80 mm.')
+    .max(80)
+    .regex(/^(?!.*--)[A-Za-z0-9_ .+\-*/()^,]+$/, 'Use a number with its unit, for example 80 mm.');
+export const SolidcraftOverrides = z.record(SolidcraftParameterName, SolidcraftExpression).refine((o) => Object.keys(o).length <= SOLIDCRAFT_MAX_OVERRIDES, `At most ${SOLIDCRAFT_MAX_OVERRIDES} values at once.`);
+export type SolidcraftOverrides = z.infer<typeof SolidcraftOverrides>;
+
+export const SolidcraftBuildRequest = z.object({
+    script: SolidcraftScript,
+    outputs: z.array(TextToCadOutput).min(1).default(['step', 'glb', 'stl']),
+});
+export type SolidcraftBuildRequest = z.infer<typeof SolidcraftBuildRequest>;
+
+/** Largest saved design the worker writes or reopens (bytes). */
+export const SOLIDCRAFT_MAX_DESIGN_BYTES = 20 * 1024 * 1024;
+
+export const SolidcraftRebuildRequest = z.object({
+    /** A design this worker saved, with the sha256 it reported (it refuses anything else). */
+    design: z.object({ content_base64: z.string().min(4), sha256: z.string().regex(/^[0-9a-f]{64}$/) }).strict(),
+    /** Name -> new expression, applied as the engine's --param NAME=EXPR. */
+    parameters: SolidcraftOverrides.refine((o) => Object.keys(o).length > 0, 'Change at least one size.'),
+    outputs: z.array(TextToCadOutput).min(1).default(['step', 'glb', 'stl']),
+});
+export type SolidcraftRebuildRequest = z.infer<typeof SolidcraftRebuildRequest>;
+
+/** SolidCraft's saved design (`model.sc`): the timeline and parameters the next size change opens. */
+export const SolidcraftDesignFile = z.object({
+    filename: z.literal('model.sc'),
+    content_base64: z.string(),
+    sha256: z.string().regex(/^[0-9a-f]{64}$/),
+    bytes: z.number().int().nonnegative().max(SOLIDCRAFT_MAX_DESIGN_BYTES),
+});
+
+/** A named size of the model that a person can change (SolidCraft's user parameters). */
+export const TextToCadParameter = z.object({
+    name: SolidcraftParameterName,
+    expression: z.string().max(80),
+    value: z.number().nullable(),
+    unit: z.string().max(12),
+    comment: z.string().max(200).default(''),
+});
+export type TextToCadParameter = z.infer<typeof TextToCadParameter>;
+
 /** Facts measured on the built solid by the worker's own check (never by the submitted script). */
 export const TextToCadGeometry = z.object({
     bbox_mm: z.tuple([z.number().nonnegative(), z.number().nonnegative(), z.number().nonnegative()]),
@@ -73,9 +148,15 @@ export const TextToCadErrorCode = z.enum(TEXT_TO_CAD_ERROR_CODES);
 export const TextToCadBuildResponse = z.discriminatedUnion('ok', [
     z.object({
         ok: z.literal(true),
-        engine: z.object({ name: z.literal('cadgen'), version: z.string() }),
+        engine: TextToCadEngine,
         artifacts: z.array(TextToCadArtifact),
         geometry: TextToCadGeometry,
+        /** SolidCraft only: the model's named parameters after the build. */
+        parameters: z.array(TextToCadParameter).max(64).default([]),
+        /** SolidCraft builds only: the exact script that produced these files (not on a rebuild). */
+        script: SolidcraftScript.optional(),
+        /** SolidCraft only: the saved design, for the next size change. */
+        design: SolidcraftDesignFile.optional(),
         warnings: z.array(z.string()),
         build_ms: z.number().int().nonnegative(),
     }),

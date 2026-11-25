@@ -1,0 +1,220 @@
+{
+ "artifacts": [
+  {
+   "bytes": 50108,
+   "filename": "model.step",
+   "kind": "step",
+   "sha256": "e98e09d5558fd766172bb041d14fab25eb2f27c77c198d55eab71c5250bbd7ce"
+  },
+  {
+   "bytes": 64156,
+   "filename": "model.glb",
+   "kind": "glb",
+   "sha256": "3d05f54708b410ce99dafb388085b1ce219bb2cc713b62cfd88f67993dc1d78e"
+  },
+  {
+   "bytes": 751784,
+   "filename": "model.stl",
+   "kind": "stl",
+   "sha256": "2f619fcfcd61d9304267d32842a54e6ad69faf2d340ded1d8a574244a2f745fe"
+  }
+ ],
+ "build_ms": 1200,
+ "design": {
+  "bytes": 35824,
+  "filename": "model.sc",
+  "sha256": "e5a2ea4ab740fddeadd9be23c8f46980f2fa98d1224da8015b85260ceef2b463"
+ },
+ "engine": {
+  "name": "solidcraft",
+  "version": "0.48.1"
+ },
+ "geometry": {
+  "area_mm2": 6643.457,
+  "bbox_mm": [
+   60.0,
+   24.0,
+   18.0
+  ],
+  "solids": 1,
+  "sound": true,
+  "volume_mm3": 22798.222
+ },
+ "ok": true,
+ "parameters": [
+  {
+   "comment": "overall length",
+   "expression": "60 mm",
+   "name": "L",
+   "unit": "mm",
+   "value": 60.0
+  },
+  {
+   "comment": "depth front to back",
+   "expression": "24 mm",
+   "name": "W",
+   "unit": "mm",
+   "value": 24.0
+  },
+  {
+   "comment": "height",
+   "expression": "18 mm",
+   "name": "H",
+   "unit": "mm",
+   "value": 18.0
+  },
+  {
+   "comment": "cable slot width",
+   "expression": "5 mm",
+   "name": "slot",
+   "unit": "mm",
+   "value": 5.0
+  },
+  {
+   "comment": "distance between slots",
+   "expression": "16 mm",
+   "name": "pitch",
+   "unit": "mm",
+   "value": 16.0
+  }
+ ],
+ "script": {
+  "commands": [
+   {
+    "command": "parameters.add",
+    "params": {
+     "comment": "overall length",
+     "expression": "60 mm",
+     "name": "L"
+    }
+   },
+   {
+    "command": "parameters.add",
+    "params": {
+     "comment": "depth front to back",
+     "expression": "24 mm",
+     "name": "W"
+    }
+   },
+   {
+    "command": "parameters.add",
+    "params": {
+     "comment": "height",
+     "expression": "18 mm",
+     "name": "H"
+    }
+   },
+   {
+    "command": "parameters.add",
+    "params": {
+     "comment": "cable slot width",
+     "expression": "5 mm",
+     "name": "slot"
+    }
+   },
+   {
+    "command": "parameters.add",
+    "params": {
+     "comment": "distance between slots",
+     "expression": "16 mm",
+     "name": "pitch"
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "body_name": "Cable holder",
+     "center": [
+      0,
+      0,
+      "H/2"
+     ],
+     "height": "H",
+     "length": "L",
+     "name": "Block",
+     "width": "W"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       30,
+       12,
+       9
+      ],
+      [
+       -30,
+       12,
+       9
+      ],
+      [
+       30,
+       -12,
+       9
+      ],
+      [
+       -30,
+       -12,
+       9
+      ]
+     ],
+     "name": "Corners",
+     "radius": 3
+    }
+   },
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "SlotSketch",
+     "offset": "-W/2 - 1",
+     "plane": "XZ"
+    }
+   },
+   {
+    "command": "sketch.slot.center_to_center",
+    "params": {
+     "p0": [
+      0,
+      -18
+     ],
+     "p1": [
+      0,
+      -8
+     ],
+     "width": 5
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": "W + 2",
+     "name": "Slot",
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.pattern.rectangular",
+    "params": {
+     "count1": 3,
+     "dir1": [
+      1,
+      0,
+      0
+     ],
+     "features": [
+      "Slot"
+     ],
+     "name": "Slots",
+     "spacing1": "pitch"
+    }
+   }
+  ]
+ },
+ "warnings": []
+}

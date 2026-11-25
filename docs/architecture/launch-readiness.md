@@ -63,6 +63,7 @@ All of these are configuration and accounts; the code paths exist and are tested
 - `GOOGLE_GENERATIVE_AI_API_KEY` for Make AI.
 - Deploy the CAD worker container, then set `CAD_WORKER_URL` and `CAD_WORKER_TOKEN`.
 - Text to CAD ("Make it in 3D" and the Kids & Family templates, `text-to-cad.md`): deploy the worker image built from `services/cad-worker/Dockerfile`, which carries cadgen 0.7.20 in its own venv at `/opt/cadgen` and Node 22. Keep `CADGEN_PYTHON=/opt/cadgen/bin/python` and `CADGEN_NODE=/opt/node22/bin/node` set (unset `CADGEN_PYTHON` answers `UNAVAILABLE`). Run the worker with no outbound network (egress-deny policy, or a gVisor/Firecracker sandbox), a memory limit of at least 4 GB per `TEXT_TO_CAD_CONCURRENCY` build, and a read-only root filesystem with a writable `/tmp`.
+- SolidCraft for "Make it in 3D" (named sizes the buyer changes without AI, `text-to-cad.md`): the same worker image carries `solidcraft-cli` 0.48.1 (`SOLIDCRAFT_CLI=/opt/solidcraft/bin/solidcraft-cli`). Set `TEXT_TO_CAD_ENGINE=solidcraft` on the web app to switch Make AI to it; unset keeps cadgen. `GET /healthz` on the worker lists the engines it can run.
 
 **Live**
 - A LiveKit Cloud project (`LIVEKIT_*`), or an HLS source per show.

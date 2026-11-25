@@ -37,6 +37,8 @@ export const workspaceApi = {
     // ---- Make AI "Make it in 3D" (text to CAD) ----
     textToCad: async (buildId: string, signal?: AbortSignal) => MakeIt3dStatus.parse(await apiFetch<unknown>(`/api/builds/${enc(buildId)}/text-to-cad`, { signal })),
     makeIn3D: async (buildId: string, prompt: string) => MakeIt3dResponse.parse(await apiFetch<unknown>(`/api/builds/${enc(buildId)}/text-to-cad`, { body: { prompt } })),
+    changeTextToCadSizes: async (buildId: string, changes: Record<string, string>) =>
+        MakeIt3dResponse.parse(await apiFetch<unknown>(`/api/builds/${enc(buildId)}/text-to-cad/parameters`, { body: { changes } })),
     quoteTextToCad: async (buildId: string, printMaterialSlug: string, quantity: number) =>
         QuoteView.parse(await apiFetch<unknown>(`/api/builds/${enc(buildId)}/text-to-cad/quote`, { body: { printMaterialSlug, quantity } })),
     getQuote: async (quoteId: string, signal?: AbortSignal) => QuoteView.parse(await apiFetch<unknown>(`/api/quotes/${enc(quoteId)}`, { signal })),
