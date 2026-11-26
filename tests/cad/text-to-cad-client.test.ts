@@ -7,7 +7,7 @@ import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
-import { buildFromScript, buildKidTemplate, isTextToCadConfigured, TextToCadError } from '@/server/cad/text-to-cad';
+import { buildFromCommands, buildFromScript, buildKidTemplate, isTextToCadConfigured, rebuildDesign, TextToCadError } from '@/server/cad/text-to-cad';
 import { resetEnvCache } from '@/server/env';
 
 const FIX = path.join(process.cwd(), 'tests', 'fixtures', 'text-to-cad');
@@ -142,5 +142,56 @@ describe('buildKidTemplate', () => {
         const calls: Call[] = [];
         await expect(buildKidTemplate('bookmark', { label: 'me@mail.com', color: 'red', shape: 'rounded' }, { fetchImpl: fakeFetch(200, OK(), calls) })).rejects.toThrow();
         expect(calls).toHaveLength(0);
+    });
+});
+
+describe('SolidCraft: buildFromCommands and rebuildDesign', () => {
+    const SC_SCRIPT = { commands: [{ command: 'parameters.add', params: { name: 'L', expression: '30 mm' } }, { command: 'solid.box', params: { length: 'L', width: 20, height: 10 } }] };
+    const DESIGN = Buffer.from('PK\u0003\u0004design-bytes');
+    const SC_OK = (over: Record<string, unknown> = {}) => ({
+        ...OK(),
+        engine: { name: 'solidcraft', version: '0.48.1' },
+        parameters: [{ name: 'L', expression: '30 mm', value: 30, unit: 'mm', comment: '' }],
+        script: SC_SCRIPT,
+        design: { filename: 'model.sc', content_base64: DESIGN.toString('base64'), sha256: sha(DESIGN), bytes: DESIGN.byteLength },
+        ...over,
+    });
+
+    it('posts the script as data and returns its sizes, the exact script and the verified design', async () => {
+        const calls: Call[] = [];
+        const r = await buildFromCommands(SC_SCRIPT, { fetchImpl: fakeFetch(200, SC_OK(), calls) });
+        expect(calls[0]!.url).toBe('http://cad.test/v1/solidcraft/build');
+        expect(JSON.parse(String(calls[0]!.init.body))).toEqual({ script: SC_SCRIPT, outputs: ['step', 'glb', 'stl'] });
+        expect(r.engine).toEqual({ name: 'solidcraft', version: '0.48.1' });
+        expect(r.parameters).toEqual([{ name: 'L', expression: '30 mm', value: 30, unit: 'mm', comment: '' }]);
+        expect(r.script).toEqual(SC_SCRIPT);
+        expect(r.design).toMatchObject({ filename: 'model.sc', sha256: sha(DESIGN), bytes: DESIGN.byteLength });
+        expect(Buffer.from(r.design!.data).equals(DESIGN)).toBe(true);
+    });
+
+    it('refuses a malformed script before calling the worker, and a reply for another engine', async () => {
+        const calls: Call[] = [];
+        const bad = await caught(buildFromCommands({ commands: [{ command: 'Solid Box', params: {} }] } as never, { fetchImpl: fakeFetch(200, SC_OK(), calls) }));
+        expect(bad.code).toBe('GATE_REJECTED');
+        expect(calls).toHaveLength(0);
+        expect((await caught(buildFromCommands(SC_SCRIPT, { fetchImpl: fakeFetch(200, OK()) }))).code).toBe('NETWORK');
+        const damaged = SC_OK({ design: { filename: 'model.sc', content_base64: DESIGN.toString('base64'), sha256: '0'.repeat(64), bytes: DESIGN.byteLength } });
+        expect((await caught(buildFromCommands(SC_SCRIPT, { fetchImpl: fakeFetch(200, damaged) }))).message).toContain('damaged');
+    });
+
+    it('rebuildDesign sends the design with its checksum and only valid sizes', async () => {
+        const calls: Call[] = [];
+        const r = await rebuildDesign(new Uint8Array(DESIGN), sha(DESIGN), { L: '45 mm' }, { fetchImpl: fakeFetch(200, SC_OK({ script: undefined }), calls) });
+        expect(calls[0]!.url).toBe('http://cad.test/v1/solidcraft/rebuild');
+        const body = JSON.parse(String(calls[0]!.init.body)) as { design: { content_base64: string; sha256: string }; parameters: unknown };
+        expect(body.parameters).toEqual({ L: '45 mm' });
+        expect(Buffer.from(body.design.content_base64, 'base64').equals(DESIGN)).toBe(true);
+        expect(r.script).toBeNull();
+
+        const none: Call[] = [];
+        expect((await caught(rebuildDesign(new Uint8Array(DESIGN), '0'.repeat(64), { L: '45 mm' }, { fetchImpl: fakeFetch(200, SC_OK(), none) }))).code).toBe('GATE_REJECTED');
+        expect((await caught(rebuildDesign(new Uint8Array(DESIGN), sha(DESIGN), { L: '45 mm --allow-any-path' }, { fetchImpl: fakeFetch(200, SC_OK(), none) }))).code).toBe('GATE_REJECTED');
+        expect((await caught(rebuildDesign(new Uint8Array(DESIGN), sha(DESIGN), {}, { fetchImpl: fakeFetch(200, SC_OK(), none) }))).code).toBe('GATE_REJECTED');
+        expect(none).toHaveLength(0);
     });
 });

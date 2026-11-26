@@ -2864,7 +2864,7 @@ export const feedEvents = pgTable(
 
 /** What the workshop (text-to-CAD worker) built for a kid design; artifacts live in storage. */
 export type KidCadRecord = {
-    engine: { name: 'cadgen'; version: string };
+    engine: { name: 'cadgen' | 'solidcraft'; version: string };
     geometry: { bbox_mm: [number, number, number]; volume_mm3: number; area_mm2: number; solids: number; sound: boolean };
     artifacts: { kind: 'step' | 'glb' | 'stl'; filename: string; key: string; sha256: string; bytes: number }[];
     warnings: string[];

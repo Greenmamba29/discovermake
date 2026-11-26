@@ -4,6 +4,8 @@
     POST /v1/generate         GenerateRequest -> GenerateResponse   (Bearer CAD_WORKER_TOKEN)
     POST /v1/text-to-cad/build              TextToCadBuildRequest -> TextToCadBuildResponse (same bearer)
     POST /v1/kid-templates/{template}/build {template, params} -> TextToCadBuildResponse            (same bearer)
+    POST /v1/solidcraft/build {script, outputs?} -> TextToCadBuildResponse + design                (same bearer)
+    POST /v1/solidcraft/rebuild {design, parameters, outputs?} -> TextToCadBuildResponse + design   (same bearer)
 
 Each generation runs in a separate process with a hard timeout, so a pathological
 spec that slips past validation cannot hang the server or leak memory into it.
@@ -19,11 +21,15 @@ Environment:
     CADGEN_NODE             node >= 20 for cadgen mesh exports
     CADGEN_TIMEOUT_S        per text-to-CAD build (default 120)
     TEXT_TO_CAD_CONCURRENCY parallel text-to-CAD builds (default 1; each may use ~3 GB)
+    SOLIDCRAFT_CLI          solidcraft-cli path (Docker: /opt/solidcraft/bin/solidcraft-cli); unset -> UNAVAILABLE
+    SOLIDCRAFT_TIMEOUT_S    per SolidCraft build (default 90)
 """
 
 from __future__ import annotations
 
 import asyncio
+import base64
+import binascii
 import hmac
 import multiprocessing as mp
 import os
@@ -39,13 +45,16 @@ from . import __version__
 from .generate import generate
 from .specs import GenerateRequest
 from .text_to_cad import runner as ttc_runner
-from .text_to_cad.models import KidTemplateBuildRequest, TextToCadBuildRequest
+from .solidcraft import runner as sc_runner
+from .text_to_cad.models import KidTemplateBuildRequest, SolidcraftBuildRequest, SolidcraftRebuildRequest, TextToCadBuildRequest
 from .text_to_cad.templates import TEMPLATES as KID_TEMPLATES
 
 MAX_BODY_BYTES = 64 * 1024  # specs are small; anything bigger is not a spec
 #: TEXT_TO_CAD_MAX_BODY_BYTES in src/contracts/text-to-cad.ts. A 48 KiB script, JSON-escaped
 #: (quotes, newlines, non-ASCII as \uXXXX), fits inside it.
 TTC_MAX_BODY_BYTES = 256 * 1024
+#: A saved SolidCraft design (at most 20 MB) base64-encoded, plus the envelope.
+SC_REBUILD_MAX_BODY_BYTES = 28 * 1024 * 1024
 
 
 def _settings() -> dict:
@@ -102,7 +111,10 @@ def create_app() -> FastAPI:
 
     @app.get("/healthz")
     def healthz() -> dict:
-        return {"ok": True, "version": __version__}
+        # Which model engines this worker can run (text-to-CAD answers UNAVAILABLE without them).
+        sc = sc_runner.solidcraft_cli()
+        engines = {"cadgen": ttc_runner.cadgen_python() is not None, "solidcraft": sc_runner.engine_version(sc) if sc else None}
+        return {"ok": True, "version": __version__, "engines": engines}
 
     @app.post("/v1/generate", dependencies=[Depends(auth)])
     async def generate_route(request: Request) -> JSONResponse:
@@ -177,6 +189,31 @@ def create_app() -> FastAPI:
             return JSONResponse(status_code=422, content={"error": {"code": "VALIDATION_FAILED", "message": "The body's template does not match the path", "details": []}})
         async with ttc_sem:
             result = await asyncio.to_thread(ttc_runner.build_template, template, params)
+        return ttc_response(result)
+
+    # ---- SolidCraft: gated command scripts (data, not code); shares the text-to-CAD slots ----
+    @app.post("/v1/solidcraft/build", dependencies=[Depends(auth)])
+    async def solidcraft_route(request: Request) -> JSONResponse:
+        body = await read_capped(request, TTC_MAX_BODY_BYTES)
+        try:
+            req = SolidcraftBuildRequest.model_validate_json(body)
+        except ValidationError as e:
+            return JSONResponse(status_code=422, content={"error": {"code": "VALIDATION_FAILED", "message": "Invalid SolidCraft request", "details": e.errors(include_url=False, include_context=False, include_input=False)}})
+        async with ttc_sem:
+            result = await asyncio.to_thread(sc_runner.build_commands, req.script, list(req.outputs))
+        return ttc_response(result)
+
+    @app.post("/v1/solidcraft/rebuild", dependencies=[Depends(auth)])
+    async def solidcraft_rebuild_route(request: Request) -> JSONResponse:
+        body = await read_capped(request, SC_REBUILD_MAX_BODY_BYTES)
+        try:
+            req = SolidcraftRebuildRequest.model_validate_json(body)
+            design = base64.b64decode(req.design.content_base64, validate=True)
+        except (ValidationError, binascii.Error, ValueError) as e:
+            details = e.errors(include_url=False, include_context=False, include_input=False) if isinstance(e, ValidationError) else []
+            return JSONResponse(status_code=422, content={"error": {"code": "VALIDATION_FAILED", "message": "Invalid SolidCraft rebuild request", "details": details}})
+        async with ttc_sem:
+            result = await asyncio.to_thread(sc_runner.rebuild_design, design, req.design.sha256, dict(req.parameters), list(req.outputs))
         return ttc_response(result)
 
     app.router.on_shutdown.append(reset_pool)

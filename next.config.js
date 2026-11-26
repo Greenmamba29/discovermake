@@ -49,7 +49,7 @@ const nextConfig = {
     },
     // "Make it in 3D" reads the vendored text-to-cad guide (src/server/text-to-cad/guide) at runtime.
     outputFileTracingIncludes: {
-        '/api/builds/*/text-to-cad': ['./src/server/text-to-cad/guide/**/*'],
+        '/api/builds/*/text-to-cad': ['./src/server/text-to-cad/guide/**/*', './src/server/text-to-cad/solidcraft-guide/**/*'],
     },
     async headers() {
         return [{ source: '/:path*', headers: securityHeaders }];

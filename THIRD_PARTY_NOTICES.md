@@ -67,3 +67,42 @@ The full text also ships at `src/server/text-to-cad/guide/LICENSE`.
   with letters, digits and space only, for raised and engraved labels on the kid templates.
 - License: Bitstream Vera Fonts license (DejaVu changes are in the public domain). Full text:
   `services/cad-worker/cad_worker/text_to_cad/templates/DejaVu-LICENSE.txt`.
+
+## SolidCraft
+
+- Source: https://github.com/tangency-labs/solidcraft, release v0.48.1 (commit e5bc928)
+- Used: the headless `solidcraft-cli` from the official Linux release (checksum-verified),
+  installed unmodified in the CAD worker image (`/opt/solidcraft`) and run as a sandboxed
+  subprocess; the modelling skill (`skills/solidcraft-modeling/SKILL.md` and `reference.md`) copied
+  verbatim into `src/server/text-to-cad/solidcraft-guide/` as Make AI's model-writing guide. The
+  geometry kernel inside it is solidcore, a Rust port of NVIDIA's USD BRep (Apache-2.0).
+- License: MIT OR Apache-2.0, at the user's option; DiscoverMake uses it under MIT. SolidCraft's
+  brand and interface (`crates/ui-kit`, `crates/look`, `crates/theme`, the name, logo and icons) are
+  under a separate SolidCraft Brand and Interface Licence and are NOT used: no part of SolidCraft's
+  interface ships in DiscoverMake, and the name appears only to say which engine built a model.
+
+```
+MIT License
+
+Copyright (c) 2026 SolidCraft contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+The full text also ships at `src/server/text-to-cad/solidcraft-guide/LICENSE-MIT`.

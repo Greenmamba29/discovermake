@@ -45,6 +45,66 @@ The print DFM needs a minimum wall. A generated model has no spec that declares 
 
 Without `GOOGLE_GENERATIVE_AI_API_KEY`, `MAKE_AI_ENABLED` or `CAD_WORKER_URL`, every surface shows an honest unavailable state (the same pattern as Ask Make AI) and nothing is written.
 
+## SolidCraft engine (`TEXT_TO_CAD_ENGINE=solidcraft`)
+
+Contract: the same file (`SolidcraftBuildRequest`, `SolidcraftRebuildRequest`, `TextToCadParameter`),
+worker routes `POST /v1/solidcraft/build` and `POST /v1/solidcraft/rebuild`.
+
+[SolidCraft](https://github.com/tangency-labs/solidcraft) **v0.48.1** (MIT OR Apache-2.0) is a
+parametric CAD engine in Rust. Its app, CLI and MCP server all run one command registry. The worker
+runs the release's `solidcraft-cli` (checksum-pinned in the Dockerfile; the desktop app and its
+brand-licensed interface are not installed).
+
+What it changes for "Make it in 3D":
+
+| | cadgen | SolidCraft |
+|---|---|---|
+| What Make AI writes | Python (build123d): untrusted code, AST gate + sandbox | JSON engine commands (`{"commands": [...]}`): **data**, allow-list gate + sandbox |
+| Gate | imports, names, attributes | 306 modelling command ids (`cad_worker/solidcraft/commands.py`); no key may name a file, folder, URL, plugin or output at any depth; `path` only as curve/occurrence ids; no string that looks like a path or URL; size and depth bounds |
+| Repair loop | `BUILD_FAILED` only | `BUILD_FAILED` (the engine names the step: `Step 7 (solid.fillet): ...`) and `GATE_REJECTED` (the rule and step go back to Make AI) |
+| After the build | STEP/GLB/STL | the same, plus the model's **named sizes** and its **saved design** (`model.sc`) |
+| Changing a size | describe it again (Make AI) | **Change sizes** in the panel: the worker reopens the saved design with `--param NAME=EXPR`; no AI call |
+
+**Why the saved design, not the script.** A script's edge and face picks are plain points. Replayed
+with a new length, a fillet picked at `[30, 12, 9]` on a 60 mm block finds no edge at 80 mm. The
+saved design keeps each pick tied to its geometry, so the same change rebuilds correctly. The worker
+test `test_real_new_sizes_rebuild_from_the_saved_design` proves both halves, the second as a
+negative control.
+
+Data flow (Change sizes):
+
+```
+buyer: Overall length 60 mm -> 80 mm                  (Object View, "Change sizes")
+  -> POST /api/builds/:id/text-to-cad/parameters {changes}   owner only, the Make it in 3D rate limit
+  -> the record's model.sc and script read from storage, both sha256-checked
+  -> rebuildDesign (src/server/cad/text-to-cad.ts) -> worker /v1/solidcraft/rebuild
+       design sha256 re-checked, "PK" container, names and values bounded (no quotes, no "--")
+       solidcraft-cli run --in model.sc --param "L=80 mm" --out ... --save model.sc   (sandbox)
+       solidcraft-cli eval model.step                                                  (our measurement)
+  -> NEW DRAFT version: textToCad {origin: 'parameters', changes: [{L, 60 mm, 80 mm}], design: new model.sc}
+  -> the buyer approves it -> BINDING print quote, as for any model
+```
+
+A size the model cannot take comes back in the engine's words (`Corners: ... the largest radius
+that fits is 2.5 mm`) and nothing is written.
+
+Sandbox: the same layers as cadgen (fresh job folder and HOME, empty environment, rlimits, process
+group timeout `SOLIDCRAFT_TIMEOUT_S` default 90 s, `unshare --net`). SolidCraft's apps send usage
+statistics and check for updates; the environment sets `SOLIDCRAFT_NO_TELEMETRY=1`, `DO_NOT_TRACK=1`
+and `SOLIDCRAFT_UPDATE_CHECK=0` for every run and in the image. The headless CLI was run here under
+`unshare --net` with no network at all.
+
+Tests: `services/cad-worker/tests/test_solidcraft.py` (gate accept/reject, negative control on the
+allow-list, env spy, real builds measured exactly, the design rebuild and its negative control,
+plain engine errors, timeout, routes, health); `tests/cad/text-to-cad-client.test.ts`;
+`tests/text-to-cad/solidcraft.test.ts` (goldens from `python -m cad_worker.solidcraft.golden`);
+`src/components/make-it-3d/sizes-card.test.tsx`; `tests/e2e/solidcraft-sizes-journey.spec.ts` at
+390 and 1280 px.
+
+Not used: SolidCraft's interface. Its UI kit, look, theme, name, logo and icons are under the
+SolidCraft Brand and Interface Licence; embedding its editor (hand sketching in the browser) needs
+the maintainers' written permission first. See `solidcraft-editor.md`.
+
 ## The gate (`gate.py`, runs before anything executes)
 
 - Imports: only `from __future__ import annotations`, `math`, `typing`, and `from cadgen import step, glb, stl, build123d [as bd]`.
@@ -96,6 +156,7 @@ A model that is not one sound solid is stored with a warning and cannot be quote
 | build123d 0.11.1 | Apache-2.0 | Installed by cadgen |
 | OCP / Open CASCADE (`cadquery-ocp-novtk`) | LGPL-2.1 (with the OCCT exception) | The unmodified upstream wheel, in an isolated service (see `open-source-register.md`) |
 | Node.js 22 | MIT | Mesh export runtime in the worker image |
+| SolidCraft v0.48.1 (tangency-labs/solidcraft) | MIT OR Apache-2.0 (engine); interface under LICENSE-BRAND, not used | `solidcraft-cli` from the release, checksum-pinned, sandboxed in the worker; its modelling skill docs vendored verbatim in `src/server/text-to-cad/solidcraft-guide/` |
 | DejaVu Sans Bold (subset: letters, digits, space) | Bitstream Vera license (DejaVu changes public domain) | Kid template labels; license next to the font |
 
 All are listed in `THIRD_PARTY_NOTICES.md`.

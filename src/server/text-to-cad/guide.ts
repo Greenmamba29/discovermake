@@ -25,3 +25,24 @@ export function loadGuide(): string {
     cached = parts.join('\n\n---\n\n');
     return cached;
 }
+
+// ---------------------------------------------------------------------------
+// SolidCraft (TEXT_TO_CAD_ENGINE=solidcraft): our preamble plus SolidCraft's modelling skill,
+// v0.48.1 (e5bc928, MIT OR Apache-2.0; see ./solidcraft-guide/README.md).
+// ---------------------------------------------------------------------------
+
+export const SOLIDCRAFT_GUIDE_VERSION = 'solidcraft-0.48.1+e5bc928/dm-1';
+export const SOLIDCRAFT_GUIDE_FILES = ['PREAMBLE.md', 'SKILL.md', 'reference.md'] as const;
+
+let cachedSolidcraft: string | null = null;
+
+export function solidcraftGuideDir(): string {
+    return path.join(process.cwd(), 'src', 'server', 'text-to-cad', 'solidcraft-guide');
+}
+
+export function loadSolidcraftGuide(): string {
+    if (cachedSolidcraft) return cachedSolidcraft;
+    const dir = solidcraftGuideDir();
+    cachedSolidcraft = SOLIDCRAFT_GUIDE_FILES.map((f) => `<!-- ${f} -->\n${readFileSync(path.join(dir, f), 'utf8').trim()}`).join('\n\n---\n\n');
+    return cachedSolidcraft;
+}

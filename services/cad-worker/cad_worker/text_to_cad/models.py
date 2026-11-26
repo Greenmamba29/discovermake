@@ -24,3 +24,29 @@ class KidTemplateBuildRequest(BaseModel):
     #: Must equal the {template} path segment.
     template: str
     params: dict[str, Any]
+
+
+class SolidcraftBuildRequest(BaseModel):
+    """POST /v1/solidcraft/build: a SolidCraft command script (data, never code), gated before it runs."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    script: dict[str, Any]
+    outputs: list[Output] = Field(default_factory=lambda: ["step", "glb", "stl"], min_length=1, max_length=3)
+
+
+class SolidcraftDesign(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    content_base64: str = Field(min_length=4)
+    sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+
+
+class SolidcraftRebuildRequest(BaseModel):
+    """POST /v1/solidcraft/rebuild: new sizes for a design this worker saved (checked by its sha256)."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    design: SolidcraftDesign
+    parameters: dict[str, str] = Field(min_length=1, max_length=64)
+    outputs: list[Output] = Field(default_factory=lambda: ["step", "glb", "stl"], min_length=1, max_length=3)

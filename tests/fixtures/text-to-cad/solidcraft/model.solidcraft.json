@@ -1,0 +1,138 @@
+{
+ "commands": [
+  {
+   "command": "parameters.add",
+   "params": {
+    "name": "L",
+    "expression": "60 mm",
+    "comment": "overall length"
+   }
+  },
+  {
+   "command": "parameters.add",
+   "params": {
+    "name": "W",
+    "expression": "24 mm",
+    "comment": "depth front to back"
+   }
+  },
+  {
+   "command": "parameters.add",
+   "params": {
+    "name": "H",
+    "expression": "18 mm",
+    "comment": "height"
+   }
+  },
+  {
+   "command": "parameters.add",
+   "params": {
+    "name": "slot",
+    "expression": "5 mm",
+    "comment": "cable slot width"
+   }
+  },
+  {
+   "command": "parameters.add",
+   "params": {
+    "name": "pitch",
+    "expression": "16 mm",
+    "comment": "distance between slots"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "L",
+    "width": "W",
+    "height": "H",
+    "center": [
+     0,
+     0,
+     "H/2"
+    ],
+    "body_name": "Cable holder",
+    "name": "Block"
+   }
+  },
+  {
+   "command": "solid.fillet",
+   "params": {
+    "edges": [
+     [
+      30,
+      12,
+      9
+     ],
+     [
+      -30,
+      12,
+      9
+     ],
+     [
+      30,
+      -12,
+      9
+     ],
+     [
+      -30,
+      -12,
+      9
+     ]
+    ],
+    "radius": 3,
+    "name": "Corners"
+   }
+  },
+  {
+   "command": "sketch.create",
+   "params": {
+    "plane": "XZ",
+    "offset": "-W/2 - 1",
+    "name": "SlotSketch"
+   }
+  },
+  {
+   "command": "sketch.slot.center_to_center",
+   "params": {
+    "p0": [
+     0,
+     -18
+    ],
+    "p1": [
+     0,
+     -8
+    ],
+    "width": 5
+   }
+  },
+  {
+   "command": "sketch.finish",
+   "params": {}
+  },
+  {
+   "command": "solid.extrude",
+   "params": {
+    "distance": "W + 2",
+    "operation": "cut",
+    "name": "Slot"
+   }
+  },
+  {
+   "command": "solid.pattern.rectangular",
+   "params": {
+    "features": [
+     "Slot"
+    ],
+    "dir1": [
+     1,
+     0,
+     0
+    ],
+    "count1": 3,
+    "spacing1": "pitch",
+    "name": "Slots"
+   }
+  }
+ ]
+}

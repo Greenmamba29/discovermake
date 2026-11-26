@@ -123,3 +123,78 @@ export async function plantGoldenTextToCad(buildId: string): Promise<number> {
         await sql.end();
     }
 }
+
+// ---------------------------------------------------------------------------
+// SolidCraft (TEXT_TO_CAD_ENGINE=solidcraft): the golden build recorded from the real engine by
+// `python -m cad_worker.solidcraft.golden` (tests/fixtures/text-to-cad/solidcraft/build), with its
+// named sizes and the saved design, planted exactly as makeIn3D stores it.
+// ---------------------------------------------------------------------------
+
+const SC_GOLDEN = path.join(GOLDEN, 'solidcraft');
+type RecordedSolidcraft = Omit<Recorded, 'engine' | 'prompt'> & {
+    engine: { name: 'solidcraft'; version: string };
+    design: { filename: 'model.sc'; sha256: string; bytes: number };
+    parameters: { name: string; expression: string; value: number | null; unit: string; comment: string }[];
+};
+
+/** Plant the golden SolidCraft model as the next (DRAFT) design version. Returns that version. */
+export async function plantGoldenSolidcraft(buildId: string, prompt = TEXT_TO_CAD_INTENT.summary): Promise<number> {
+    const response = JSON.parse(readFileSync(path.join(SC_GOLDEN, 'build', 'response.json'), 'utf8')) as RecordedSolidcraft;
+    const script = `${JSON.stringify(JSON.parse(readFileSync(path.join(SC_GOLDEN, 'model.solidcraft.json'), 'utf8')), null, 1)}\n`;
+    const sql = postgres(E2E_DATABASE_URL, { max: 1, onnotice: () => {} });
+    try {
+        const [latest] = await sql<{ version: number }[]>`select max(version)::int as version from design_versions where build_id = ${buildId}`;
+        const from = latest!.version;
+        const version = from + 1;
+        let minWallMm: number | null = null;
+        const artifacts = response.artifacts.map((a) => {
+            const body = readFileSync(path.join(SC_GOLDEN, 'build', a.filename));
+            expect(sha256(body)).toBe(a.sha256);
+            if (a.kind === 'stl') minWallMm = measureMinWall(parseStl(new Uint8Array(body)))?.minWallMm ?? null;
+            const key = `builds/${buildId}/cad/v${version}/${a.filename}`;
+            writeObject(key, body, CONTENT_TYPE[a.kind]);
+            return { kind: KIND[a.kind], key, filename: a.filename, bytes: a.bytes, sha256: a.sha256 };
+        });
+        const designBody = readFileSync(path.join(SC_GOLDEN, 'build', 'model.sc'));
+        expect(sha256(designBody)).toBe(response.design.sha256);
+        const designKey = `builds/${buildId}/cad/v${version}/model.sc`;
+        writeObject(designKey, designBody, 'application/zip');
+        const scriptKey = `builds/${buildId}/cad/v${version}/model.solidcraft.json`;
+        writeObject(scriptKey, script, 'application/json');
+        const textToCad = {
+            prompt,
+            engine: response.engine,
+            scriptSha256: sha256(script),
+            scriptKey,
+            geometry: response.geometry,
+            minWallMm,
+            warnings: response.warnings,
+            artifacts,
+            parameters: response.parameters,
+            design: { key: designKey, sha256: response.design.sha256, bytes: response.design.bytes },
+            origin: 'make_ai',
+            changes: [],
+            attempts: 1,
+            model: 'e2e-golden',
+            promptVersion: 'make-it-3d-solidcraft/1',
+            guideVersion: 'solidcraft-0.48.1+e5bc928/dm-1',
+            generatedAt: new Date().toISOString(),
+        };
+        await sql.begin(async (tx) => {
+            await tx`insert into design_versions (id, build_id, version, status, summary, parent_version, created_by)
+                     values (${`dv_${rid()}`}, ${buildId}, ${version}, ${'DRAFT'}, ${`Made in 3D with Make AI: ${prompt}`.slice(0, 300)}, ${from}, ${`buyer:guest:${buildId}`})`;
+            await tx`insert into bg_nodes (id, build_id, design_version, key, type, label, data, confidence, source, provenance)
+                     select 'bgn_' || substr(md5(random()::text || id), 1, 20), build_id, ${version}, key, type, label,
+                            case when key = 'part:main' then (data - 'cad') || ${tx.json({ textToCad, dimensionsStatus: 'cad', partId: null } as never)} else data end,
+                            confidence, source, provenance
+                     from bg_nodes where build_id = ${buildId} and design_version = ${from}`;
+            await tx`insert into bg_edges (id, build_id, design_version, type, from_key, to_key, data)
+                     select 'bge_' || substr(md5(random()::text || id), 1, 20), build_id, ${version}, type, from_key, to_key, data
+                     from bg_edges where build_id = ${buildId} and design_version = ${from}`;
+            await tx`update builds set current_version = ${version}, updated_at = now() where id = ${buildId}`;
+        });
+        return version;
+    } finally {
+        await sql.end();
+    }
+}
